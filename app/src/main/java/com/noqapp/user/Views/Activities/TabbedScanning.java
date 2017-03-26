@@ -114,7 +114,7 @@ public class TabbedScanning extends AppCompatActivity implements ActionBar.TabLi
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_tabbed_scanning, container, false);
-            barcodeView = (DecoratedBarcodeView)rootView.findViewById(R.id.barcode_view);
+            barcodeView = (DecoratedBarcodeView) rootView.findViewById(R.id.barcode_view);
             return rootView;
         }
 
@@ -127,7 +127,7 @@ public class TabbedScanning extends AppCompatActivity implements ActionBar.TabLi
         @Override
         public void setUserVisibleHint(boolean isVisibleToUser) {
             super.setUserVisibleHint(isVisibleToUser);
-            if(barcodeView != null) {
+            if (barcodeView != null) {
                 if (isVisibleToUser) {
                     barcodeView.resume();
                 } else {
@@ -172,7 +172,7 @@ public class TabbedScanning extends AppCompatActivity implements ActionBar.TabLi
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_tabbed_camera, container, false);
-            cameraPreview = (CameraPreview)rootView.findViewById(R.id.camera_preview);
+            cameraPreview = (CameraPreview) rootView.findViewById(R.id.camera_preview);
             return rootView;
         }
 
@@ -202,7 +202,6 @@ public class TabbedScanning extends AppCompatActivity implements ActionBar.TabLi
     }
 
 
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -215,7 +214,7 @@ public class TabbedScanning extends AppCompatActivity implements ActionBar.TabLi
 
         @Override
         public Fragment getItem(int position) {
-            if(position == 0) {
+            if (position == 0) {
                 return ScanFragment.newInstance();
             } else {
                 return CameraFragment.newInstance();

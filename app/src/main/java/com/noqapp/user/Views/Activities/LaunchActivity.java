@@ -18,8 +18,6 @@ import com.noqapp.user.Presenter.Beans.ScanQRCode;
 import com.noqapp.user.Presenter.QRCodePresenter;
 import com.noqapp.user.R;
 
-import org.w3c.dom.Text;
-
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -29,12 +27,18 @@ import butterknife.OnClick;
 
 public class LaunchActivity extends AppCompatActivity implements View.OnClickListener, QRCodePresenter {
 
-    @BindView(R.id.txtBussinessName)TextView txtBussinessName;
-    @BindView(R.id.txtStoreAddress)TextView txtStoreAddress;
-    @BindView(R.id.txtStorePhone)TextView txtStorePhone;
-    @BindView(R.id.txtServiceLabel)TextView txtServiceLabel;
-    @BindView(R.id.txtPeopleInQ)TextView txtPleopleInQ;
-    @BindView(R.id.txtDisplayName)TextView txtDisplayName;
+    @BindView(R.id.txtBussinessName)
+    TextView txtBussinessName;
+    @BindView(R.id.txtStoreAddress)
+    TextView txtStoreAddress;
+    @BindView(R.id.txtStorePhone)
+    TextView txtStorePhone;
+    @BindView(R.id.txtServiceLabel)
+    TextView txtServiceLabel;
+    @BindView(R.id.txtPeopleInQ)
+    TextView txtPleopleInQ;
+    @BindView(R.id.txtDisplayName)
+    TextView txtDisplayName;
 
 
     private static String DID = UUID.randomUUID().toString();
@@ -69,8 +73,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @OnClick(R.id.btnJoin)
-    public void join(View view)
-    {
+    public void join(View view) {
 
     }
 

@@ -9,6 +9,7 @@ import com.noqapp.user.Presenter.Beans.ScanQRCode;
 public interface QRCodePresenter {
 
     public void didQRCodeResponse(ScanQRCode qrCode);
+
     public void didQRCodeError();
 
 }

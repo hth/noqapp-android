@@ -1,9 +1,6 @@
 package com.noqapp.user.Views.Activities;
 
 import android.app.Fragment;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-
 
 
 /**
@@ -11,7 +8,6 @@ import android.support.annotation.Nullable;
  */
 
 public class BarcodeScannerActivity extends Fragment {
-
 
 
 }

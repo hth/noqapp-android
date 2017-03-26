@@ -6,18 +6,18 @@ package com.noqapp.user.Presenter.Beans;
 
 public class ScanQRCode {
 
-private int b;
-private String c;
-private String d;
-private int e;
-private int f;
-private int l;
-private String n;
-private String o;
-private String p;
-private String q;
-private int s;
-private String sa;
+    private int b;
+    private String c;
+    private String d;
+    private int e;
+    private int f;
+    private int l;
+    private String n;
+    private String o;
+    private String p;
+    private String q;
+    private int s;
+    private String sa;
 
     public int getB() {
         return b;
