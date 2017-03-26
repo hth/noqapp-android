@@ -1,4 +1,4 @@
-package com.noqapp.user.Views.Activities;
+package com.noqapp.client.Views.Activities;
 
 import android.app.Fragment;
 

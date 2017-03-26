@@ -1,4 +1,4 @@
-package com.noqapp.user.Presenter.Beans;
+package com.noqapp.client.Presenter.Beans;
 
 /**
  * Created by omkar on 3/26/17.

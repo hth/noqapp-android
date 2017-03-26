@@ -1,6 +1,6 @@
-package com.noqapp.user.Model.ResponsesInterface;
+package com.noqapp.client.Model.ResponsesInterface;
 
-import com.noqapp.user.Presenter.Beans.ScanQRCode;
+import com.noqapp.client.Presenter.Beans.ScanQRCode;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

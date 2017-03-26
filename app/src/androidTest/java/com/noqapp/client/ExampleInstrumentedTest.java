@@ -1,4 +1,4 @@
-package com.noqapp.user;
+package com.noqapp.client;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.noqapp.user", appContext.getPackageName());
+        assertEquals("com.noqapp.client", appContext.getPackageName());
     }
 }

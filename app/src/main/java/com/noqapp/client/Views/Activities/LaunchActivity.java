@@ -1,4 +1,4 @@
-package com.noqapp.user.Views.Activities;
+package com.noqapp.client.Views.Activities;
 
 import android.content.Intent;
 import android.os.Build;
@@ -13,10 +13,10 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.noqapp.user.Model.ScanQRCodeModel;
-import com.noqapp.user.Presenter.Beans.ScanQRCode;
-import com.noqapp.user.Presenter.QRCodePresenter;
-import com.noqapp.user.R;
+import com.noqapp.client.Model.ScanQRCodeModel;
+import com.noqapp.client.Presenter.Beans.ScanQRCode;
+import com.noqapp.client.Presenter.QRCodePresenter;
+import com.noqapp.client.R;
 
 import java.util.UUID;
 

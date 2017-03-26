@@ -1,4 +1,4 @@
-package com.noqapp.user;
+package com.noqapp.client;
 
 import org.junit.Test;
 

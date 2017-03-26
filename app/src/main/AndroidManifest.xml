@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.noqapp.user">
+    package="com.noqapp.client">
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus"/>
@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Views.Activities.LaunchActivity"
+            android:name="com.noqapp.client.Views.Activities.LaunchActivity"
             android:label="@string/title_activity_launch"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Views.Activities.TabbedScanning"
+            android:name="com.noqapp.client.Views.Activities.TabbedScanning"
             android:theme="@style/Theme.AppCompat"
             android:label="tabscanning"></activity>
     </application>

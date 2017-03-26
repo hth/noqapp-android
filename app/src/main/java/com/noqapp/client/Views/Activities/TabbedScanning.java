@@ -1,4 +1,4 @@
-package com.noqapp.user.Views.Activities;
+package com.noqapp.client.Views.Activities;
 
 
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.journeyapps.barcodescanner.CameraPreview;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
-import com.noqapp.user.R;
+import com.noqapp.client.R;
 
 
 public class TabbedScanning extends AppCompatActivity implements ActionBar.TabListener {

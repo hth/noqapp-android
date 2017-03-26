@@ -1,11 +1,11 @@
-package com.noqapp.user.Model;
+package com.noqapp.client.Model;
 
 import android.util.Log;
 
-import com.noqapp.user.Model.ResponsesInterface.ScanQRCodeService;
-import com.noqapp.user.NetworkUtilities.RetrofitClient;
-import com.noqapp.user.Presenter.Beans.ScanQRCode;
-import com.noqapp.user.Presenter.QRCodePresenter;
+import com.noqapp.client.Model.ResponsesInterface.ScanQRCodeService;
+import com.noqapp.client.NetworkUtilities.RetrofitClient;
+import com.noqapp.client.Presenter.Beans.ScanQRCode;
+import com.noqapp.client.Presenter.QRCodePresenter;
 
 import retrofit2.Call;
 import retrofit2.Callback;

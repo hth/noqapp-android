@@ -1,6 +1,6 @@
-package com.noqapp.user.Presenter;
+package com.noqapp.client.Presenter;
 
-import com.noqapp.user.Presenter.Beans.ScanQRCode;
+import com.noqapp.client.Presenter.Beans.ScanQRCode;
 
 /**
  * Created by omkar on 3/26/17.

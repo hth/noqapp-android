@@ -1,4 +1,4 @@
-package com.noqapp.user.NetworkUtilities;
+package com.noqapp.client.NetworkUtilities;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
