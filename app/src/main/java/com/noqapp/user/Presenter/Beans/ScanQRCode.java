@@ -15,7 +15,7 @@ private int l;
 private String n;
 private String o;
 private String p;
-private int q;
+private String q;
 private int s;
 private String sa;
 
@@ -55,7 +55,7 @@ private String sa;
         return p;
     }
 
-    public int getQ() {
+    public String getQ() {
         return q;
     }
 
@@ -103,7 +103,7 @@ private String sa;
         this.p = p;
     }
 
-    public void setQ(int q) {
+    public void setQ(String q) {
         this.q = q;
     }
 
@@ -113,5 +113,23 @@ private String sa;
 
     public void setSa(String sa) {
         this.sa = sa;
+    }
+
+    @Override
+    public String toString() {
+        return "ScanQRCode{" +
+                "b=" + b +
+                ", c='" + c + '\'' +
+                ", d='" + d + '\'' +
+                ", e=" + e +
+                ", f=" + f +
+                ", l=" + l +
+                ", n='" + n + '\'' +
+                ", o='" + o + '\'' +
+                ", p='" + p + '\'' +
+                ", q='" + q + '\'' +
+                ", s=" + s +
+                ", sa='" + sa + '\'' +
+                '}';
     }
 }

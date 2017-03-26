@@ -1,41 +1,52 @@
 package com.noqapp.user.Views.Activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Camera;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.noqapp.user.Model.ScanQRCodeModel;
+import com.noqapp.user.Presenter.Beans.ScanQRCode;
+import com.noqapp.user.Presenter.QRCodePresenter;
 import com.noqapp.user.R;
+
+import org.w3c.dom.Text;
 
 import java.util.UUID;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class LaunchActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button btnScanner;
+public class LaunchActivity extends AppCompatActivity implements View.OnClickListener, QRCodePresenter {
+
+    @BindView(R.id.txtBussinessName)TextView txtBussinessName;
+    @BindView(R.id.txtStoreAddress)TextView txtStoreAddress;
+    @BindView(R.id.txtStorePhone)TextView txtStorePhone;
+    @BindView(R.id.txtServiceLabel)TextView txtServiceLabel;
+    @BindView(R.id.txtPeopleInQ)TextView txtPleopleInQ;
+    @BindView(R.id.txtDisplayName)TextView txtDisplayName;
+
+
     private static String DID = UUID.randomUUID().toString();
+    private Button btnScanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-       btnScanner = (Button)findViewById(R.id.btnBarcodeScanner);
+        btnScanner = (Button) findViewById(R.id.btnBarcodeScanner);
         btnScanner.setOnClickListener(this);
+        ButterKnife.bind(this);
 
     }
 
@@ -43,8 +54,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id)
-        {
+        switch (id) {
             case R.id.btnBarcodeScanner:
                 IntentIntegrator integrator = new IntentIntegrator(LaunchActivity.this);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
@@ -58,14 +68,18 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    public void scanFromBarcodeScannerFragment()
+    @OnClick(R.id.btnJoin)
+    public void join(View view)
     {
 
     }
 
+    public void scanFromBarcodeScannerFragment() {
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public int getCameraId()
-    {
+    public int getCameraId() {
 //        int cameraId = -1;
 //        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
 //        try {
@@ -99,14 +113,19 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
+        if (result != null) {
+            if (result.getContents() == null) {
                 Log.d("MainActivity", "Cancelled scan");
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 Log.d("MainActivity", "Scanned");
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                Log.d("QRCode Result:",result.getContents());
+                Log.d("QRCode Result:", result.getContents());
+
+                String qrcode = result.getContents();
+                ScanQRCodeModel model = new ScanQRCodeModel();
+                model.presenter = this;
+                model.getQRCodeResponse(DID, "A", "58d75f4d51bf63ca840f529c");
             }
         } else {
             // This is important, otherwise the result will not be passed to the fragment
@@ -114,5 +133,20 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    @Override
+    public void didQRCodeResponse(ScanQRCode qrCode) {
+        Log.d("QRCode Response :", qrCode.toString());
+        txtBussinessName.setText(qrCode.getN());
+        txtDisplayName.setText(qrCode.getD());
+        txtStoreAddress.setText(qrCode.getSa());
+        txtStorePhone.setText(qrCode.getP());
+        txtPleopleInQ.setText(String.valueOf(qrCode.getL()));
+        txtServiceLabel.setText(String.valueOf(qrCode.getS()));
+    }
 
+    @Override
+    public void didQRCodeError() {
+        Log.d("QRCodeError", "Error");
+
+    }
 }

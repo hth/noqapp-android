@@ -16,6 +16,6 @@ import retrofit2.http.Path;
 
 public interface ScanQRCodeService {
 
-   @GET("/token-mobile/open/token/{QRCode}.json")
+   @GET("open/token/{QRCode}.json")
     Call <ScanQRCode> getQRCodeResult(@Header("X-R-DID")String did,@Header("X-R-DT")String dt,@Path("QRCode")String qrCode);
 }
