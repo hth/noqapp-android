@@ -1,4 +1,4 @@
-package com.noqapp.client.networkUtilities;
+package com.noqapp.client.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;

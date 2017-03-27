@@ -8,8 +8,8 @@ import com.noqapp.client.presenter.Beans.JsonQueue;
  */
 public interface QueuePresenter {
 
-    void didQRCodeResponse(JsonQueue queue);
+    void queueResponse(JsonQueue queue);
 
-    void didQRCodeError();
+    void queueError();
 
 }
