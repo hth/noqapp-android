@@ -1,4 +1,4 @@
-package com.noqapp.client.Views.Activities;
+package com.noqapp.client.views.activities;
 
 
 import android.os.Bundle;

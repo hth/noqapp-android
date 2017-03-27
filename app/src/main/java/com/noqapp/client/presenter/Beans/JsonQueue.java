@@ -1,4 +1,4 @@
-package com.noqapp.client.Presenter.Beans;
+package com.noqapp.client.presenter.Beans;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.client.Model.types.QueueStatusEnum;
+import com.noqapp.client.model.types.QueueStatusEnum;
 import com.noqapp.client.utils.Constants;
 
 import java.util.Date;

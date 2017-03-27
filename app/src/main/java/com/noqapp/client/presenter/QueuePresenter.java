@@ -1,6 +1,6 @@
-package com.noqapp.client.Presenter;
+package com.noqapp.client.presenter;
 
-import com.noqapp.client.Presenter.Beans.JsonQueue;
+import com.noqapp.client.presenter.Beans.JsonQueue;
 
 /**
  * Created by omkar on 3/26/17.

@@ -1,4 +1,4 @@
-package com.noqapp.client.Model;
+package com.noqapp.client.model;
 
 /**
  * User: Omkar Gharat

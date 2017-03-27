@@ -1,4 +1,4 @@
-package com.noqapp.client.Model.types;
+package com.noqapp.client.model.types;
 
 /**
  * User: hitender
