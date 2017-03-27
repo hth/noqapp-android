@@ -1,5 +1,6 @@
 package com.noqapp.client.presenter.Beans;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -135,5 +136,25 @@ public class JsonQueue {
     public JsonQueue setCreated(Date created) {
         this.created = DateFormatUtils.format(created, Constants.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("codeQR", codeQR)
+                .append("businessName", businessName)
+                .append("displayName", displayName)
+                .append("storeAddress", storeAddress)
+                .append("storePhone", storePhone)
+                .append("tokenAvailableFrom", tokenAvailableFrom)
+                .append("startHour", startHour)
+                .append("tokenNotAvailableFrom", tokenNotAvailableFrom)
+                .append("endHour", endHour)
+                .append("topic", topic)
+                .append("servingNumber", servingNumber)
+                .append("lastNumber", lastNumber)
+                .append("queueStatus", queueStatus)
+                .append("created", created)
+                .toString();
     }
 }

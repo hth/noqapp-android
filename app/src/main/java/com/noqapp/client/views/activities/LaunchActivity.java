@@ -24,7 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public class LaunchActivity extends AppCompatActivity implements View.OnClickListener, QueuePresenter {
 
     @BindView(R.id.txtBusinessName)
@@ -33,15 +32,14 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
     TextView txtStoreAddress;
     @BindView(R.id.txtStorePhone)
     TextView txtStorePhone;
-    @BindView(R.id.txtServiceLabel)
-    TextView txtServiceLabel;
-    @BindView(R.id.txtPeopleInQ)
-    TextView txtPeopleInQ;
+    @BindView(R.id.txtServingNumber)
+    TextView txtServingNumber;
+    @BindView(R.id.txtLastNumber)
+    TextView txtLastNumber;
     @BindView(R.id.txtDisplayName)
     TextView txtDisplayName;
 
-
-    private static String DID = UUID.randomUUID().toString();
+    private static final String DID = UUID.randomUUID().toString();
     private Button btnScanner;
 
     @Override
@@ -51,9 +49,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
         btnScanner = (Button) findViewById(R.id.btnBarcodeScanner);
         btnScanner.setOnClickListener(this);
         ButterKnife.bind(this);
-
     }
-
 
     @Override
     public void onClick(View v) {
@@ -69,7 +65,6 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
                 integrator.initiateScan();
                 break;
         }
-
     }
 
     @OnClick(R.id.btnJoin)
@@ -128,9 +123,8 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
 
                 if (result.getContents().startsWith("https://tp.receiptofi.com")) {
                     String[] codeQR = result.getContents().split("/");
-                    QueueModel model = QueueModel.newInstance();
-                    model.queuePresenter = this;
-                    model.getQueueInformation(DID, "A", codeQR[3]);
+                    QueueModel.queuePresenter = this;
+                    QueueModel.getQueueInformation(DID, "A", codeQR[3]);
                 } else {
                     //TODO invalid scan
                 }
@@ -143,17 +137,17 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void queueResponse(JsonQueue queue) {
-        Log.d("QRCode Response :", queue.toString());
+        Log.d("Queue=", queue.toString());
         txtBusinessName.setText(queue.getBusinessName());
         txtDisplayName.setText(queue.getDisplayName());
         txtStoreAddress.setText(queue.getStoreAddress());
         txtStorePhone.setText(queue.getStorePhone());
-        txtPeopleInQ.setText(String.valueOf(queue.getLastNumber()));
-        txtServiceLabel.setText(String.valueOf(queue.getServingNumber()));
+        txtLastNumber.setText(String.valueOf(queue.getLastNumber()));
+        txtServingNumber.setText(String.valueOf(queue.getServingNumber()));
     }
 
     @Override
     public void queueError() {
-        Log.d("QRCodeError", "Error");
+        Log.d("Queue=", "Error");
     }
 }
