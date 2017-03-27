@@ -1,4 +1,4 @@
-package com.noqapp.client.Views;
+package com.noqapp.client.views;
 
 /**
  * Created by Omkar Gharat on 3/1/2017.

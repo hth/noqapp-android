@@ -1,4 +1,4 @@
-package com.noqapp.client.Views.Activities;
+package com.noqapp.client.views.activities;
 
 import android.content.Intent;
 import android.os.Build;
@@ -13,9 +13,9 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.noqapp.client.Model.ScanQRCodeModel;
-import com.noqapp.client.Presenter.Beans.ScanQRCode;
-import com.noqapp.client.Presenter.QRCodePresenter;
+import com.noqapp.client.model.CodeQRModel;
+import com.noqapp.client.presenter.Beans.JsonQueue;
+import com.noqapp.client.presenter.QueuePresenter;
 import com.noqapp.client.R;
 
 import java.util.UUID;
@@ -25,10 +25,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class LaunchActivity extends AppCompatActivity implements View.OnClickListener, QRCodePresenter {
+public class LaunchActivity extends AppCompatActivity implements View.OnClickListener, QueuePresenter {
 
-    @BindView(R.id.txtBussinessName)
-    TextView txtBussinessName;
+    @BindView(R.id.txtBusinessName)
+    TextView txtBusinessName;
     @BindView(R.id.txtStoreAddress)
     TextView txtStoreAddress;
     @BindView(R.id.txtStorePhone)
@@ -36,7 +36,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
     @BindView(R.id.txtServiceLabel)
     TextView txtServiceLabel;
     @BindView(R.id.txtPeopleInQ)
-    TextView txtPleopleInQ;
+    TextView txtPeopleInQ;
     @BindView(R.id.txtDisplayName)
     TextView txtDisplayName;
 
@@ -126,8 +126,8 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
                 Log.d("QRCode Result:", result.getContents());
 
                 String qrcode = result.getContents();
-                ScanQRCodeModel model = new ScanQRCodeModel();
-                model.presenter = this;
+                CodeQRModel model = new CodeQRModel();
+                model.queuePresenter = this;
                 model.getQRCodeResponse(DID, "A", "58d75f4d51bf63ca840f529c");
             }
         } else {
@@ -137,19 +137,18 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void didQRCodeResponse(ScanQRCode qrCode) {
-        Log.d("QRCode Response :", qrCode.toString());
-        txtBussinessName.setText(qrCode.getN());
-        txtDisplayName.setText(qrCode.getD());
-        txtStoreAddress.setText(qrCode.getSa());
-        txtStorePhone.setText(qrCode.getP());
-        txtPleopleInQ.setText(String.valueOf(qrCode.getL()));
-        txtServiceLabel.setText(String.valueOf(qrCode.getS()));
+    public void didQRCodeResponse(JsonQueue queue) {
+        Log.d("QRCode Response :", queue.toString());
+        txtBusinessName.setText(queue.getBusinessName());
+        txtDisplayName.setText(queue.getDisplayName());
+        txtStoreAddress.setText(queue.getStoreAddress());
+        txtStorePhone.setText(queue.getStorePhone());
+        txtPeopleInQ.setText(String.valueOf(queue.getLastNumber()));
+        txtServiceLabel.setText(String.valueOf(queue.getServingNumber()));
     }
 
     @Override
     public void didQRCodeError() {
         Log.d("QRCodeError", "Error");
-
     }
 }

@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.noqapp.client.Views.Activities.LaunchActivity"
+            android:name="com.noqapp.client.views.activities.LaunchActivity"
             android:label="@string/title_activity_launch"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.noqapp.client.Views.Activities.TabbedScanning"
+            android:name="com.noqapp.client.views.activities.TabbedScanning"
             android:theme="@style/Theme.AppCompat"
             android:label="tabscanning"></activity>
     </application>

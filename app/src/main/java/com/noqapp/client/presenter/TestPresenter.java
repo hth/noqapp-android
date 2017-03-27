@@ -1,4 +1,4 @@
-package com.noqapp.client.Presenter;
+package com.noqapp.client.presenter;
 
 /**
  * Created by Omkar Gharat on 3/1/2017.

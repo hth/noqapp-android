@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.noqapp.client.Views.Activities.LaunchActivity">
+    tools:context="com.noqapp.client.views.activities.LaunchActivity">
 
    <Button
        android:layout_width="match_parent"
@@ -13,7 +13,7 @@
        android:text="@string/btnBarcodeScanner" />
       <TextView
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content" android:id="@+id/txtBussinessName" android:textSize="20dp"
+          android:layout_height="wrap_content" android:id="@+id/txtBusinessName" android:textSize="20dp"
           android:textStyle="bold"
           />
    <TextView
