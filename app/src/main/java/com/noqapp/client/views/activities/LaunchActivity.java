@@ -13,10 +13,10 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.noqapp.client.model.CodeQRModel;
+import com.noqapp.client.R;
+import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.Beans.JsonQueue;
 import com.noqapp.client.presenter.QueuePresenter;
-import com.noqapp.client.R;
 
 import java.util.UUID;
 
@@ -125,10 +125,15 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 Log.d("QRCode Result:", result.getContents());
 
-                String qrcode = result.getContents();
-                CodeQRModel model = new CodeQRModel();
-                model.queuePresenter = this;
-                model.getQRCodeResponse(DID, "A", "58d75f4d51bf63ca840f529c");
+
+                if (result.getContents().startsWith("https://tp.receiptofi.com")) {
+                    String[] codeQR = result.getContents().split("/");
+                    QueueModel model = QueueModel.newInstance();
+                    model.queuePresenter = this;
+                    model.getQueueInformation(DID, "A", codeQR[3]);
+                } else {
+                    //TODO invalid scan
+                }
             }
         } else {
             // This is important, otherwise the result will not be passed to the fragment
@@ -137,7 +142,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void didQRCodeResponse(JsonQueue queue) {
+    public void queueResponse(JsonQueue queue) {
         Log.d("QRCode Response :", queue.toString());
         txtBusinessName.setText(queue.getBusinessName());
         txtDisplayName.setText(queue.getDisplayName());
@@ -148,7 +153,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void didQRCodeError() {
+    public void queueError() {
         Log.d("QRCodeError", "Error");
     }
 }
