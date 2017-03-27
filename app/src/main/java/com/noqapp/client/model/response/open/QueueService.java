@@ -1,4 +1,4 @@
-package com.noqapp.client.model.response;
+package com.noqapp.client.model.response.open;
 
 import com.noqapp.client.presenter.Beans.JsonQueue;
 
@@ -9,6 +9,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
+ * Unregistered client APIs.
+ *
  * User: omkar
  * Date: 3/26/17 11:50 PM
  */
