@@ -27,17 +27,17 @@ import butterknife.OnClick;
 public class LaunchActivity extends AppCompatActivity implements View.OnClickListener, QueuePresenter {
 
     @BindView(R.id.txtBusinessName)
-    TextView txtBusinessName;
+    protected TextView txtBusinessName;
     @BindView(R.id.txtStoreAddress)
-    TextView txtStoreAddress;
+    protected TextView txtStoreAddress;
     @BindView(R.id.txtStorePhone)
-    TextView txtStorePhone;
+    protected TextView txtStorePhone;
     @BindView(R.id.txtServingNumber)
-    TextView txtServingNumber;
+    protected TextView txtServingNumber;
     @BindView(R.id.txtLastNumber)
-    TextView txtLastNumber;
+    protected TextView txtLastNumber;
     @BindView(R.id.txtDisplayName)
-    TextView txtDisplayName;
+    protected TextView txtDisplayName;
 
     private static final String DID = UUID.randomUUID().toString();
     private Button btnScanner;
