@@ -1,8 +1,8 @@
 package com.noqapp.client.Model;
 
 /**
- * Created by Omkar Gharat on 3/1/2017.
+ * User: Omkar Gharat
+ * Date: 3/1/2017 11:52 PM
  */
-
 public class TestClass {
 }

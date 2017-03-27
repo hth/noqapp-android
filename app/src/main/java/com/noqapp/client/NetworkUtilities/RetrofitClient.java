@@ -1,12 +1,12 @@
 package com.noqapp.client.NetworkUtilities;
 
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
- * Created by omkar on 3/26/17.
+ * User: omkar
+ * Date: 3/26/17 11:52 PM
  */
-
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
@@ -16,7 +16,7 @@ public class RetrofitClient {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(JacksonConverterFactory.create())
                     .build();
         }
         return retrofit;
