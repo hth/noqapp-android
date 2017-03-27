@@ -124,7 +124,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
                 if (result.getContents().startsWith("https://tp.receiptofi.com")) {
                     String[] codeQR = result.getContents().split("/");
                     QueueModel.queuePresenter = this;
-                    QueueModel.getQueueInformation(DID, "A", codeQR[3]);
+                    QueueModel.getQueueState(DID, codeQR[3]);
                 } else {
                     //TODO invalid scan
                 }
