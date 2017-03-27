@@ -150,6 +150,5 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void didQRCodeError() {
         Log.d("QRCodeError", "Error");
-
     }
 }
