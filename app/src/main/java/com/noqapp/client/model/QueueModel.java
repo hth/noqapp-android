@@ -18,10 +18,13 @@ import retrofit2.Response;
 public class QueueModel {
 
     public QueuePresenter queuePresenter;
-    private QueueService queueService;
+    private static final QueueService queueService;
+
+    static {
+        queueService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(QueueService.class);
+    }
 
     private QueueModel() {
-        queueService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(QueueService.class);
     }
 
     public static QueueModel newInstance() {
@@ -40,9 +43,7 @@ public class QueueModel {
             public void onFailure(Call<JsonQueue> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 queuePresenter.queueError();
-
             }
         });
     }
-
 }
