@@ -15,23 +15,16 @@ import retrofit2.Response;
  * User: omkar
  * Date: 3/26/17 11:49 PM
  */
-public class QueueModel {
+public final class QueueModel {
 
-    public QueuePresenter queuePresenter;
+    public static QueuePresenter queuePresenter;
     private static final QueueService queueService;
 
     static {
         queueService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(QueueService.class);
     }
 
-    private QueueModel() {
-    }
-
-    public static QueueModel newInstance() {
-        return new QueueModel();
-    }
-
-    public void getQueueInformation(String did, String dt, String qrCode) {
+    public static void getQueueInformation(String did, String dt, String qrCode) {
         queueService.getQueue(did, dt, qrCode).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(Call<JsonQueue> call, Response<JsonQueue> response) {
