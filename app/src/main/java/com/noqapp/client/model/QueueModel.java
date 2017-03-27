@@ -2,7 +2,7 @@ package com.noqapp.client.model;
 
 import android.util.Log;
 
-import com.noqapp.client.model.response.QueueService;
+import com.noqapp.client.model.response.open.QueueService;
 import com.noqapp.client.network.RetrofitClient;
 import com.noqapp.client.presenter.Beans.JsonQueue;
 import com.noqapp.client.presenter.QueuePresenter;
