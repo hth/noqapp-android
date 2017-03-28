@@ -1,6 +1,6 @@
 package com.noqapp.client.model.response.api;
 
-import com.noqapp.client.presenter.Beans.JsonQueue;
+import com.noqapp.client.presenter.beans.JsonQueue;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

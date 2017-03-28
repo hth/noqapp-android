@@ -15,7 +15,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
-import com.noqapp.client.presenter.Beans.JsonQueue;
+import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.presenter.QueuePresenter;
 
 import java.util.UUID;
