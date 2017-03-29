@@ -1,4 +1,4 @@
-package com.noqapp.client.presenter.Beans;
+package com.noqapp.client.presenter.beans;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.time.DateFormatUtils;

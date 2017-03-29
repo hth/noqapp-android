@@ -1,6 +1,6 @@
 package com.noqapp.client.presenter;
 
-import com.noqapp.client.presenter.Beans.JsonQueue;
+import com.noqapp.client.presenter.beans.JsonQueue;
 
 /**
  * User: omkar
