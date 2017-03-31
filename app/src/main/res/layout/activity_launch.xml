@@ -7,32 +7,17 @@
     android:layout_height="match_parent"
     tools:context="com.noqapp.client.views.activities.LaunchActivity">
 
-   <Button
+
+   <android.support.v4.view.ViewPager
        android:layout_width="match_parent"
-       android:layout_height="wrap_content" android:id="@+id/btnBarcodeScanner"
-       android:text="@string/btnBarcodeScanner" />
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" android:id="@+id/txtBusinessName" android:textSize="20dp"
-          android:textStyle="bold"
+       android:layout_height="match_parent"
+       android:id="@+id/viewPager">
+      <android.support.v4.view.PagerTabStrip
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="top"
+          android:id="@+id/pagerHeader"
           />
-   <TextView
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content" android:id="@+id/txtStoreAddress"
-       android:textSize="15sp"/>
-   <TextView
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content" android:id="@+id/txtStorePhone"  android:textSize="15sp"/>
-   <TextView
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content" android:id="@+id/txtDisplayName" android:textSize="15sp"/>
-   <TextView
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content" android:id="@+id/txtServingNumber" android:textSize="15sp" />
-   <TextView
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content" android:id="@+id/txtLastNumber" android:textSize="15sp" />
-   <Button
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content" android:id="@+id/btnJoin" android:textSize="18sp" android:text="Join"/>
+   </android.support.v4.view.ViewPager>
+
 </LinearLayout>

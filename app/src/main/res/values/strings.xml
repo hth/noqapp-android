@@ -2,5 +2,16 @@
     <string name="app_name">NoQApp</string>LaunchActivity
     <string name="title_activity_launch">NoQApp</string>
     <string name="btnBarcodeScanner">Me</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--<string name="bussinessName">Bussiness Name</string>-->
+    <string-array name="title_main_viewpager_tab">
+        <item>Scan Queue</item>
+        <item>Queue List</item>
+        <item>Me</item>
+    </string-array>
+    <string name="title_activity_queue_list">QueueListActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="join">JOIN</string>
 </resources>

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.client.model.types.QueueStatusEnum;
 import com.noqapp.client.utils.Constants;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -31,7 +32,7 @@ import java.util.TimeZone;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonQueue {
+public class JsonQueue implements Serializable {
 
     @JsonProperty("c")
     private String codeQR;
