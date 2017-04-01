@@ -139,6 +139,24 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
+    public JsonTokenAndQueue getJsonTokenAndQueue() {
+        JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
+        jsonTokenAndQueue.setCodeQR(codeQR);
+        jsonTokenAndQueue.setBusinessName(businessName);
+        jsonTokenAndQueue.setDisplayName(displayName);
+        jsonTokenAndQueue.setStoreAddress(storeAddress);
+        jsonTokenAndQueue.setStorePhone(storePhone);
+        jsonTokenAndQueue.setTokenAvailableFrom(tokenAvailableFrom);
+        jsonTokenAndQueue.setStartHour(startHour);
+        jsonTokenAndQueue.setEndHour(endHour);
+        jsonTokenAndQueue.setTopic(topic);
+        jsonTokenAndQueue.setServingNumber(servingNumber);
+        jsonTokenAndQueue.setLastNumber(lastNumber);
+        jsonTokenAndQueue.setQueueStatus(queueStatus);
+        jsonTokenAndQueue.setCreateDate(created);
+        return jsonTokenAndQueue;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)

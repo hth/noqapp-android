@@ -99,4 +99,15 @@ public class JsonToken {
     public int afterHowLong() {
         return token - servingNumber;
     }
+
+    @JsonIgnoreProperties
+    public JsonTokenAndQueue getJsonTokenAndQueue() {
+        JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
+        jsonTokenAndQueue.setCodeQR(codeQR);
+        jsonTokenAndQueue.setDisplayName(displayName);
+        jsonTokenAndQueue.setQueueStatus(queueStatus);
+        jsonTokenAndQueue.setServingNumber(servingNumber);
+        jsonTokenAndQueue.setToken(token);
+        return jsonTokenAndQueue;
+    }
 }
