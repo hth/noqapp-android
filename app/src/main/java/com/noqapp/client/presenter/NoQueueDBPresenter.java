@@ -1,14 +1,11 @@
 package com.noqapp.client.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.noqapp.client.model.database.NoQueueDB;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.interfaces.NOQueueDBPreseneterInterface;
 import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
-
-import org.apache.commons.lang3.ClassUtils;
 
 import java.util.List;
 
@@ -18,16 +15,14 @@ import java.util.List;
 
 public class NoQueueDBPresenter implements NOQueueDBPreseneterInterface {
 
-    private  Context context;
+    private Context context;
     public Token_QueueViewInterface tokenQueueViewInterface;
 
-    public NoQueueDBPresenter(Context context)
-    {
+    public NoQueueDBPresenter(Context context) {
         this.context = context;
     }
 
-    public void saveToken_Queue(List<JsonTokenAndQueue> listTokenAndQueue)
-    {
+    public void saveToken_Queue(List<JsonTokenAndQueue> listTokenAndQueue) {
         NoQueueDB queueDB = new NoQueueDB(context);
         queueDB.queueDBPreseneterInterface = this;
         queueDB.save(listTokenAndQueue);
@@ -37,6 +32,6 @@ public class NoQueueDBPresenter implements NOQueueDBPreseneterInterface {
 
     @Override
     public void dbSaved(String msg) {
-     tokenQueueViewInterface.dataSavedStatus(msg);
+        tokenQueueViewInterface.dataSavedStatus(msg);
     }
 }

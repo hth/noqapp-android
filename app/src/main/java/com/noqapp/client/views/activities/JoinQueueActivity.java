@@ -1,8 +1,6 @@
 package com.noqapp.client.views.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,8 +12,6 @@ import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonToken;
 import com.noqapp.client.views.fragments.ListQueueFragment;
-
-import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +26,7 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
     TextView txtPhoneNo;
     @BindView(R.id.txtQueueName)
     TextView txtQueueName;
-     @BindView(R.id.txtyourToken)
+    @BindView(R.id.txtyourToken)
     TextView txtYourToken;
     @BindView(R.id.txtservingNow)
     TextView txtServingNow;
@@ -47,12 +43,12 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
     private String storePhone;
     private String queueName;
 
-    public void callQueue()
-    {
-        if (codeQR != null){
-            Log.d("code qr ::",codeQR);
+    public void callQueue() {
+        if (codeQR != null) {
+            Log.d("code qr ::", codeQR);
             QueueModel.tokenPresenter = this;
-            QueueModel.joinQueue(LaunchActivity.DID,codeQR);}
+            QueueModel.joinQueue(LaunchActivity.DID, codeQR);
+        }
     }
 
     @Override
@@ -61,14 +57,13 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
         setContentView(R.layout.activity_join_queue);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null)
-        {
+        if (getSupportActionBar() != null) {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         codeQR = getIntent().getExtras().getString(KEY_CODEQR);
-        displayName  = getIntent().getExtras().getString(KEY_DISPLAYNAME);
+        displayName = getIntent().getExtras().getString(KEY_DISPLAYNAME);
         storePhone = getIntent().getExtras().getString(KEY_STOREPHONE);
         queueName = getIntent().getExtras().getString(KEY_QUEUENAME);
 
@@ -90,7 +85,7 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG,"Back Click ");
+                Log.i(TAG, "Back Click ");
                 finish();
                 LaunchActivity.tempViewpager.setCurrentItem(1);
                 ListQueueFragment fragment = new ListQueueFragment();
@@ -102,7 +97,7 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
 
     @Override
     public void queueResponse(JsonToken token) {
-        Log.d(TAG,token.toString());
+        Log.d(TAG, token.toString());
         txtYourToken.setText(String.valueOf(token.getToken()));
         txtServingNow.setText(String.valueOf(token.getServingNumber()));
         txtyourAfter.setText(String.valueOf(token.afterHowLong()));
@@ -110,7 +105,7 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
 
     @Override
     public void queueError() {
-        Log.d(TAG,"Error");
+        Log.d(TAG, "Error");
 
     }
 }

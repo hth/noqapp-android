@@ -12,65 +12,65 @@ import com.noqapp.client.model.types.QueueStatusEnum;
  * Date: 4/1/17 3:23 PM
  */
 
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable",
         "unused"
 })
-@JsonAutoDetect (
+@JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude (JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonTokenAndQueue {
 
     @JsonProperty("c")
     private String codeQR;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String businessName;
 
-    @JsonProperty ("d")
+    @JsonProperty("d")
     private String displayName;
 
-    @JsonProperty ("sa")
+    @JsonProperty("sa")
     private String storeAddress;
 
-    @JsonProperty ("p")
+    @JsonProperty("p")
     private String storePhone;
 
-    @JsonProperty ("f")
+    @JsonProperty("f")
     private int tokenAvailableFrom;
 
     /* Store business start hour. */
-    @JsonProperty ("b")
+    @JsonProperty("b")
     private int startHour;
 
     /* Store business end hour. */
-    @JsonProperty ("e")
+    @JsonProperty("e")
     private int endHour;
 
-    @JsonProperty ("o")
+    @JsonProperty("o")
     private String topic;
 
-    @JsonProperty ("s")
+    @JsonProperty("s")
     private int servingNumber;
 
-    @JsonProperty ("l")
+    @JsonProperty("l")
     private int lastNumber;
 
-    @JsonProperty ("t")
+    @JsonProperty("t")
     private int token;
 
-    @JsonProperty ("q")
+    @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
-    @JsonProperty ("u")
+    @JsonProperty("u")
     private String createDate;
 
     public String getCodeQR() {

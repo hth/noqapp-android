@@ -18,8 +18,8 @@ public class MeFragment extends Fragment {
     public MeFragment() {
         // Required empty public constructor
     }
-    public static Fragment getInstance()
-    {
+
+    public static Fragment getInstance() {
         return new MeFragment();
     }
 
