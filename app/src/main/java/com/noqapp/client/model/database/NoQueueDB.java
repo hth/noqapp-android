@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.client.presenter.interfaces.NOQueueDBPreseneterInterface;
+import com.noqapp.client.presenter.interfaces.NOQueueDBPresenterInterface;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.List;
@@ -24,22 +24,22 @@ public class NoQueueDB extends SQLiteAssetHelper {
     private static final String TOKEN_QUEUE = "TOKEN_QUEUE";
 
     //QUEUE_TOKEN column names
-    private static final String COLUMN_CODEQR = "codeqr";
-    private static final String COLUMN_BUSINNESSNAME = "bussinessname";
-    private static final String COLUMN_DISPLAYNAME = "displayname";
-    private static final String COLUMN_STOREADDRESS = "storeaddress";
-    private static final String COLUMN_STOREPHONE = "storephone";
-    private static final String COLUMN_TOKENAVAILABLEFROM = "tokenavailablefrom";
-    private static final String COLUMN_STARTHOUR = "starthour";
-    private static final String COLUMN_ENDHOUR = "endhour";
+    private static final String COLUMN_CODE_QR = "codeqr";
+    private static final String COLUMN_BUSINESS_NAME = "bussinessname";
+    private static final String COLUMN_DISPLAY_NAME = "displayname";
+    private static final String COLUMN_STORE_ADDRESS = "storeaddress";
+    private static final String COLUMN_STORE_PHONE = "storephone";
+    private static final String COLUMN_TOKEN_AVAILABLE_FROM = "tokenavailablefrom";
+    private static final String COLUMN_START_HOUR = "starthour";
+    private static final String COLUMN_END_HOUR = "endhour";
     private static final String COLUMN_TOPIC = "topic";
-    private static final String COLUMN_SERVINGNUMBER = "servingnumber";
-    private static final String COLUMN_LASTNUMBER = "lastnumber";
+    private static final String COLUMN_SERVING_NUMBER = "servingnumber";
+    private static final String COLUMN_LAST_NUMBER = "lastnumber";
     private static final String COLUMN_TOKEN = "token";
-    private static final String COLUMN_QUEUESTATUS = "queuestatus";
-    private static final String COLUMN_CREATEDATE = "createdate";
+    private static final String COLUMN_QUEUE_STATUS = "queuestatus";
+    private static final String COLUMN_CREATE_DATE = "createdate";
 
-    public NOQueueDBPreseneterInterface queueDBPreseneterInterface;
+    public NOQueueDBPresenterInterface queueDBPresenterInterface;
     public SQLiteDatabase db;
 
 
@@ -48,34 +48,32 @@ public class NoQueueDB extends SQLiteAssetHelper {
 
     }
 
-    public void save(List<JsonTokenAndQueue> list)
-    {
+    public void save(List<JsonTokenAndQueue> list) {
         db = this.getWritableDatabase();
-        for (JsonTokenAndQueue tokenAndQueue:list) {
+        for (JsonTokenAndQueue tokenAndQueue : list) {
             ContentValues values = new ContentValues();
-            values.put(COLUMN_CODEQR,tokenAndQueue.getCodeQR());
-            values.put(COLUMN_BUSINNESSNAME,tokenAndQueue.getBusinessName());
-            values.put(COLUMN_DISPLAYNAME,tokenAndQueue.getDisplayName());
-            values.put(COLUMN_STOREADDRESS,tokenAndQueue.getStoreAddress());
-            values.put(COLUMN_STOREPHONE,tokenAndQueue.getStorePhone());
-            values.put(COLUMN_TOKENAVAILABLEFROM,tokenAndQueue.getTokenAvailableFrom());
-            values.put(COLUMN_STARTHOUR,tokenAndQueue.getStartHour());
-            values.put(COLUMN_ENDHOUR,tokenAndQueue.getEndHour());
-            values.put(COLUMN_TOPIC,tokenAndQueue.getTopic());
-            values.put(COLUMN_SERVINGNUMBER,tokenAndQueue.getServingNumber());
-            values.put(COLUMN_LASTNUMBER,tokenAndQueue.getLastNumber());
-            values.put(COLUMN_TOKEN,tokenAndQueue.getToken());
-            values.put(COLUMN_QUEUESTATUS,tokenAndQueue.getQueueStatus().getName());
-            values.put(COLUMN_CREATEDATE,tokenAndQueue.getCreateDate());
-         long msg =   db.insert(TOKEN_QUEUE,null,values);
+            values.put(COLUMN_CODE_QR, tokenAndQueue.getCodeQR());
+            values.put(COLUMN_BUSINESS_NAME, tokenAndQueue.getBusinessName());
+            values.put(COLUMN_DISPLAY_NAME, tokenAndQueue.getDisplayName());
+            values.put(COLUMN_STORE_ADDRESS, tokenAndQueue.getStoreAddress());
+            values.put(COLUMN_STORE_PHONE, tokenAndQueue.getStorePhone());
+            values.put(COLUMN_TOKEN_AVAILABLE_FROM, tokenAndQueue.getTokenAvailableFrom());
+            values.put(COLUMN_START_HOUR, tokenAndQueue.getStartHour());
+            values.put(COLUMN_END_HOUR, tokenAndQueue.getEndHour());
+            values.put(COLUMN_TOPIC, tokenAndQueue.getTopic());
+            values.put(COLUMN_SERVING_NUMBER, tokenAndQueue.getServingNumber());
+            values.put(COLUMN_LAST_NUMBER, tokenAndQueue.getLastNumber());
+            values.put(COLUMN_TOKEN, tokenAndQueue.getToken());
+            values.put(COLUMN_QUEUE_STATUS, tokenAndQueue.getQueueStatus().getName());
+            values.put(COLUMN_CREATE_DATE, tokenAndQueue.getCreateDate());
+            long msg = db.insert(TOKEN_QUEUE, null, values);
 
             if (msg > 0) {
                 Log.d(TAG, "DATA success saved " + String.valueOf(msg));
             }
         }
 
-        queueDBPreseneterInterface.dbSaved("data successfully saved");
-
+        queueDBPresenterInterface.dbSaved("data successfully saved");
 
 
     }

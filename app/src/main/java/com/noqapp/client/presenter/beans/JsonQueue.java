@@ -1,14 +1,14 @@
 package com.noqapp.client.presenter.beans;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.time.DateFormatUtils;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.client.model.types.QueueStatusEnum;
 import com.noqapp.client.utils.Constants;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,14 +18,14 @@ import java.util.TimeZone;
  * User: omkar
  * Date: 3/26/17 2:19 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable",
         "unused"
 })
-@JsonAutoDetect (
+@JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE
@@ -37,45 +37,45 @@ public class JsonQueue implements Serializable {
     @JsonProperty("c")
     private String codeQR;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String businessName;
 
-    @JsonProperty ("d")
+    @JsonProperty("d")
     private String displayName;
 
-    @JsonProperty ("sa")
+    @JsonProperty("sa")
     private String storeAddress;
 
-    @JsonProperty ("p")
+    @JsonProperty("p")
     private String storePhone;
 
-    @JsonProperty ("f")
+    @JsonProperty("f")
     private int tokenAvailableFrom;
 
     /* Store business start hour. */
-    @JsonProperty ("b")
+    @JsonProperty("b")
     private int startHour;
 
-    @JsonProperty ("m")
+    @JsonProperty("m")
     private int tokenNotAvailableFrom;
 
     /* Store business end hour. */
-    @JsonProperty ("e")
+    @JsonProperty("e")
     private int endHour;
 
-    @JsonProperty ("o")
+    @JsonProperty("o")
     private String topic;
 
-    @JsonProperty ("s")
+    @JsonProperty("s")
     private int servingNumber;
 
-    @JsonProperty ("l")
+    @JsonProperty("l")
     private int lastNumber;
 
-    @JsonProperty ("q")
+    @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
-    @JsonProperty ("u")
+    @JsonProperty("u")
     private String created;
 
     public String getCodeQR() {
@@ -137,6 +137,24 @@ public class JsonQueue implements Serializable {
     public JsonQueue setCreated(Date created) {
         this.created = DateFormatUtils.format(created, Constants.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         return this;
+    }
+
+    public JsonTokenAndQueue getJsonTokenAndQueue() {
+        JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
+        jsonTokenAndQueue.setCodeQR(codeQR);
+        jsonTokenAndQueue.setBusinessName(businessName);
+        jsonTokenAndQueue.setDisplayName(displayName);
+        jsonTokenAndQueue.setStoreAddress(storeAddress);
+        jsonTokenAndQueue.setStorePhone(storePhone);
+        jsonTokenAndQueue.setTokenAvailableFrom(tokenAvailableFrom);
+        jsonTokenAndQueue.setStartHour(startHour);
+        jsonTokenAndQueue.setEndHour(endHour);
+        jsonTokenAndQueue.setTopic(topic);
+        jsonTokenAndQueue.setServingNumber(servingNumber);
+        jsonTokenAndQueue.setLastNumber(lastNumber);
+        jsonTokenAndQueue.setQueueStatus(queueStatus);
+        jsonTokenAndQueue.setCreateDate(created);
+        return jsonTokenAndQueue;
     }
 
     @Override
