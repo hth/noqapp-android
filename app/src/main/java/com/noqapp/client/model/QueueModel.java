@@ -29,9 +29,9 @@ import static com.noqapp.client.utils.Constants.DEVICE_TYPE;
  */
 public final class QueueModel {
     public static QueuePresenter queuePresenter;
-    private static TokenPresenter tokenPresenter;
-    private static ResponsePresenter responsePresenter;
-    private static TokenAndQueuePresenter tokenAndQueuePresenter;
+    public static TokenPresenter tokenPresenter;
+    public static ResponsePresenter responsePresenter;
+    public static TokenAndQueuePresenter tokenAndQueuePresenter;
 
     private static final QueueService queueService;
 

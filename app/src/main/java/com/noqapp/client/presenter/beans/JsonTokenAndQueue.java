@@ -184,4 +184,24 @@ public class JsonTokenAndQueue {
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
+
+    @Override
+    public String toString() {
+        return "JsonTokenAndQueue{" +
+                "codeQR='" + codeQR + '\'' +
+                ", businessName='" + businessName + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", storeAddress='" + storeAddress + '\'' +
+                ", storePhone='" + storePhone + '\'' +
+                ", tokenAvailableFrom=" + tokenAvailableFrom +
+                ", startHour=" + startHour +
+                ", endHour=" + endHour +
+                ", topic='" + topic + '\'' +
+                ", servingNumber=" + servingNumber +
+                ", lastNumber=" + lastNumber +
+                ", token=" + token +
+                ", queueStatus=" + queueStatus +
+                ", createDate='" + createDate + '\'' +
+                '}';
+    }
 }

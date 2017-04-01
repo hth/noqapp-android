@@ -4,6 +4,7 @@ package com.noqapp.client.views.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,19 +12,27 @@ import android.view.ViewGroup;
 
 import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
+import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.QueuePresenter;
+import com.noqapp.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.presenter.beans.JsonToken;
+import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.views.activities.LaunchActivity;
+import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListQueueFragment extends Fragment implements TokenPresenter {
+public class ListQueueFragment extends Fragment implements TokenAndQueuePresenter,Token_QueueViewInterface {
 
     public  String codeQR ;
     private static String TAG = ListQueueFragment.class.getSimpleName();
+    private static FragmentActivity context;
+
     public ListQueueFragment() {
         // Required empty public constructor
     }
@@ -32,11 +41,18 @@ public class ListQueueFragment extends Fragment implements TokenPresenter {
         return new ListQueueFragment();
     }
 
+    public void callQueue()
+    {
+            QueueModel.tokenAndQueuePresenter = this;
+            QueueModel.getAllJoinedQueue(LaunchActivity.DID);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        context = getActivity();
         return inflater.inflate(R.layout.fragment_list_queue, container, false);
     }
 
@@ -60,26 +76,25 @@ public class ListQueueFragment extends Fragment implements TokenPresenter {
     }
 
 
-
-
-    public void callQueue()
-    {
-        if (codeQR != null){
-            Log.d("code qr ::",codeQR);
-            QueueModel.tokenPresenter = ListQueueFragment.this;
-            QueueModel.joinQueue(LaunchActivity.DID,codeQR);}
-    }
-
     @Override
-    public void queueResponse(JsonToken token) {
-
-        Log.d(TAG,token.toString());
+    public void queueResponse(List<JsonTokenAndQueue> tokenAndQueues) {
+        Log.d(TAG,"Tokent and Queue Response::" + tokenAndQueues.toString());
+        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(ListQueueFragment.context);
+        dbPresenter.tokenQueueViewInterface = this;
+        dbPresenter.saveToken_Queue(tokenAndQueues);
 
     }
 
     @Override
     public void queueError() {
-        Log.d(TAG,"Error");
+        Log.d(TAG,"Token and queue Error");
+
+    }
+
+    @Override
+    public void dataSavedStatus(String msg) {
+
+        Log.d(TAG,msg);
 
     }
 }
