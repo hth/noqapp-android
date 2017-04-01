@@ -107,7 +107,7 @@ public final class QueueModel {
             }
 
             @Override
-            public void onFailure(Call<JsonQueue> call, Throwable t) {
+            public void onFailure(Call<JsonToken> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 queuePresenter.queueError();
             }
