@@ -122,7 +122,8 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
                     QueueModel.queuePresenter = ScanQueueFragment.this;
                     QueueModel.getQueueState(LaunchActivity.DID, codeQR[3]);
                 } else {
-                    //TODO invalid scan
+                    Toast toast = Toast.makeText(getActivity(),"No scan data received!", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         } else {

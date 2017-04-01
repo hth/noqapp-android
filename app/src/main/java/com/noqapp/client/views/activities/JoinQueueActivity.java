@@ -103,14 +103,9 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
     @Override
     public void queueResponse(JsonToken token) {
         Log.d(TAG,token.toString());
-        int tokenNo  = token.getToken();
-        int serviceNo = token.getServingNumber();
-        int previousNo = tokenNo - serviceNo;
-        txtYourToken.setText(String.valueOf(tokenNo));
-        txtServingNow.setText(String.valueOf(serviceNo));
-        txtyourAfter.setText(String.valueOf(previousNo));
-
-
+        txtYourToken.setText(String.valueOf(token.getToken()));
+        txtServingNow.setText(String.valueOf(token.getServingNumber()));
+        txtyourAfter.setText(String.valueOf(token.afterHowLong()));
     }
 
     @Override

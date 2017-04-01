@@ -95,4 +95,8 @@ public class JsonToken {
                 '}';
     }
 
+    @JsonIgnoreProperties
+    public int afterHowLong() {
+        return token - servingNumber;
+    }
 }
