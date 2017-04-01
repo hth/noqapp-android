@@ -4,10 +4,16 @@ import android.util.Log;
 
 import com.noqapp.client.model.response.open.QueueService;
 import com.noqapp.client.network.RetrofitClient;
+import com.noqapp.client.presenter.QueuePresenter;
+import com.noqapp.client.presenter.ResponsePresenter;
+import com.noqapp.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
-import com.noqapp.client.presenter.QueuePresenter;
+import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
+import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -17,13 +23,16 @@ import static com.noqapp.client.utils.Constants.DEVICE_TYPE;
 
 /**
  * Unregistered client access.
- *
+ * <p>
  * User: omkar
  * Date: 3/26/17 11:49 PM
  */
 public final class QueueModel {
     public static QueuePresenter queuePresenter;
-    public static TokenPresenter tokenPresenter;
+    private static TokenPresenter tokenPresenter;
+    private static ResponsePresenter responsePresenter;
+    private static TokenAndQueuePresenter tokenAndQueuePresenter;
+
     private static final QueueService queueService;
 
     static {
@@ -58,17 +67,17 @@ public final class QueueModel {
      * @param did
      */
     public static void getAllJoinedQueue(String did) {
-        queueService.getAllJoinedQueue(did, DEVICE_TYPE).enqueue(new Callback<JsonQueue>() {
+        queueService.getAllJoinedQueue(did, DEVICE_TYPE).enqueue(new Callback<List<JsonTokenAndQueue>>() {
             @Override
-            public void onResponse(Call<JsonQueue> call, Response<JsonQueue> response) {
+            public void onResponse(Call<List<JsonTokenAndQueue>> call, Response<List<JsonTokenAndQueue>> response) {
                 Log.d("Response", String.valueOf(response.body()));
-                queuePresenter.queueResponse(response.body());
+                tokenAndQueuePresenter.queueResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<JsonQueue> call, Throwable t) {
+            public void onFailure(Call<List<JsonTokenAndQueue>> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                queuePresenter.queueError();
+                tokenAndQueuePresenter.queueError();
             }
         });
     }
@@ -79,17 +88,17 @@ public final class QueueModel {
      * @param did
      */
     public static void getAllHistoricalJoinedQueue(String did) {
-        queueService.getAllHistoricalJoinedQueue(did, DEVICE_TYPE).enqueue(new Callback<JsonQueue>() {
+        queueService.getAllHistoricalJoinedQueue(did, DEVICE_TYPE).enqueue(new Callback<List<JsonTokenAndQueue>>() {
             @Override
-            public void onResponse(Call<JsonQueue> call, Response<JsonQueue> response) {
+            public void onResponse(Call<List<JsonTokenAndQueue>> call, Response<List<JsonTokenAndQueue>> response) {
                 Log.d("Response", String.valueOf(response.body()));
-                queuePresenter.queueResponse(response.body());
+                tokenAndQueuePresenter.queueResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<JsonQueue> call, Throwable t) {
+            public void onFailure(Call<List<JsonTokenAndQueue>> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                queuePresenter.queueError();
+                tokenAndQueuePresenter.queueError();
             }
         });
     }
@@ -123,17 +132,17 @@ public final class QueueModel {
      * @param codeQR
      */
     public static void abortQueue(String did, String codeQR) {
-        queueService.abortQueue(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonQueue>() {
+        queueService.abortQueue(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
-            public void onResponse(Call<JsonQueue> call, Response<JsonQueue> response) {
+            public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
                 Log.d("Response", String.valueOf(response.body()));
-                queuePresenter.queueResponse(response.body());
+                responsePresenter.queueResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<JsonQueue> call, Throwable t) {
+            public void onFailure(Call<JsonResponse> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                queuePresenter.queueError();
+                responsePresenter.queueError();
             }
         });
     }

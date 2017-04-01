@@ -1,7 +1,11 @@
 package com.noqapp.client.model.response.open;
 
 import com.noqapp.client.presenter.beans.JsonQueue;
+import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
+import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -30,7 +34,7 @@ public interface QueueService {
     );
 
     @GET("open/token/queues.json")
-    Call<JsonQueue> getAllJoinedQueue(
+    Call<List<JsonTokenAndQueue>> getAllJoinedQueue(
             @Header("X-R-DID")
             String did,
 
@@ -39,7 +43,7 @@ public interface QueueService {
     );
 
     @GET("open/token/historical.json")
-    Call<JsonQueue> getAllHistoricalJoinedQueue(
+    Call<List<JsonTokenAndQueue>> getAllHistoricalJoinedQueue(
             @Header("X-R-DID")
             String did,
 
@@ -60,7 +64,7 @@ public interface QueueService {
     );
 
     @POST("open/token/abort/{codeQR}.json")
-    Call<JsonQueue> abortQueue(
+    Call<JsonResponse> abortQueue(
             @Header("X-R-DID")
             String did,
 
