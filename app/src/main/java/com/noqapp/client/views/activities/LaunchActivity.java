@@ -45,6 +45,7 @@ public class LaunchActivity extends FragmentActivity  {
     public final static String fragment_scan = ScanQueueFragment.class.getSimpleName();
 
 
+    private static final String TAG = LaunchActivity.class.getSimpleName();
     public static final String DID = UUID.randomUUID().toString();
     private Button btnScanner;
     private ViewPagerAdapter viewPagerAdapter;
@@ -59,27 +60,9 @@ public class LaunchActivity extends FragmentActivity  {
         viewPagerAdapter = new ViewPagerAdapter(this,getSupportFragmentManager(),titleTabs);
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setCurrentItem(0);
+        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.addOnPageChangeListener(viewPagerAdapter);
         tempViewpager = viewPager;
-
-//        Bundle bundle = getIntent().getExtras();
-//        if (bundle != null)
-//        {
-//            String fragmentname = bundle.getString(KEY_SHOWFRAGMENT);
-//
-//            if (fragmentname.equalsIgnoreCase(fragment_queueList))
-//            {
-//                viewPager.postDelayed(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-//                        viewPager.setCurrentItem(1);
-//                    }
-//                }, 100);
-//               // viewPager.setCurrentItem(1);
-//
-//            }
-//
-//        }
     }
 
 

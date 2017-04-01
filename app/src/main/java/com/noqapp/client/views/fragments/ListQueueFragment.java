@@ -21,6 +21,7 @@ import com.noqapp.client.views.activities.LaunchActivity;
 public class ListQueueFragment extends Fragment implements QueuePresenter {
 
     public  String codeQR ;
+    private static String TAG = ListQueueFragment.class.getSimpleName();
     public ListQueueFragment() {
         // Required empty public constructor
     }
@@ -40,22 +41,20 @@ public class ListQueueFragment extends Fragment implements QueuePresenter {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(ListQueueFragment.class.getSimpleName(), "onResume: ");
+        Log.i(TAG,"onResume: ");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(ListQueueFragment.class.getSimpleName(), "onResume: ");
-//        if (codeQR != null){
-//        QueueModel.queuePresenter = ListQueueFragment.this;
-//        QueueModel.joinQueue(LaunchActivity.DID,codeQR);}
+        Log.i(TAG,"onResume: ");
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(ListQueueFragment.class.getSimpleName(), "onActivityCreated: ");
+        Log.i(TAG, "onActivityCreated: ");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.noqapp.client.views.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -39,7 +40,12 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     protected TextView txtLastNumber;
     @BindView(R.id.txtDisplayName)
     protected TextView txtDisplayName;
+
+    private static final String TAG = ScanQueueFragment.class.getSimpleName();
+
     private String codeQr;
+    private JsonQueue jsonQueue;
+
 
     public ScanQueueFragment() {
         // Required empty public constructor
@@ -47,6 +53,18 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     public static Fragment getInstance()
     {
         return new ScanQueueFragment();
+    }
+
+
+    public void startScanningBarcode(Activity context)
+    {
+        IntentIntegrator integrator = new IntentIntegrator(context);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setPrompt("Scan");
+        integrator.setCameraId(0);
+        integrator.setBeepEnabled(false);
+        integrator.setBarcodeImageEnabled(false);
+        integrator.forSupportFragment(this).initiateScan();
     }
 
     @Override
@@ -61,31 +79,27 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        IntentIntegrator integrator = new IntentIntegrator(getActivity());
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        integrator.setPrompt("Scan");
-        integrator.setCameraId(0);
-        integrator.setBeepEnabled(false);
-        integrator.setBarcodeImageEnabled(false);
-        integrator.forSupportFragment(this).initiateScan();
+        Log.i(TAG,"onActivityCreated ::");
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.i(TAG,"onStart ::");
     }
 
     @Override
     public void onResume() {
-       ;
         super.onResume();
+        Log.i(TAG,"onResume ::");
 
             }
 
     @Override
     public void onPause() {
-
         super.onPause();
+        Log.i(TAG,"onResume ::");
     }
 
     @Override
@@ -120,17 +134,13 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
         Log.d("Queue=", jsonQueue.toString());
-//        Intent intent = new Intent(getActivity(), JoinQueueListActivity.class);
-//        intent.putExtra(JoinQueueListActivity.KEY_QueDataAfterScan,queue);
-//        getActivity().startActivity(intent);
-//
         txtBusinessName.setText(jsonQueue.getBusinessName());
         txtDisplayName.setText(jsonQueue.getDisplayName());
         txtStoreAddress.setText(jsonQueue.getStoreAddress());
         txtStorePhone.setText(jsonQueue.getStorePhone());
         txtLastNumber.setText(String.valueOf(jsonQueue.getLastNumber()));
         txtServingNumber.setText(String.valueOf(jsonQueue.getServingNumber()));
-       codeQr = jsonQueue.getCodeQR();
+        codeQr = jsonQueue.getCodeQR();
     }
 
     @Override
@@ -147,5 +157,17 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
         queueFragment.codeQR = codeQr;
         queueFragment.callQueue();
 
+    }
+
+    @OnClick(R.id.btnscanQRCode)
+    public void scanQR(View view)
+    {
+        IntentIntegrator integrator = new IntentIntegrator(getActivity());
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setPrompt("Scan");
+        integrator.setCameraId(0);
+        integrator.setBeepEnabled(false);
+        integrator.setBarcodeImageEnabled(false);
+        integrator.forSupportFragment(this).initiateScan();
     }
 }

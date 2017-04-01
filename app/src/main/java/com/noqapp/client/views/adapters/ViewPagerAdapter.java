@@ -1,12 +1,17 @@
 package com.noqapp.client.views.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.noqapp.client.views.activities.LaunchActivity;
 import com.noqapp.client.views.fragments.ListQueueFragment;
 import com.noqapp.client.views.fragments.MeFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
@@ -15,14 +20,15 @@ import com.noqapp.client.views.fragments.ScanQueueFragment;
  * Created by omkar on 3/31/17.
  */
 
-public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+public class ViewPagerAdapter extends FragmentStatePagerAdapter implements ViewPager.OnPageChangeListener {
 
     private final String[] pageTitles;
-    private  Context context;
+    private static Activity context;
     private FragmentManager fragmentManager;
     private static  int NUM_ITEM = 3;
+    private static final String TAG = ViewPagerAdapter.class.getSimpleName();
 
-    public ViewPagerAdapter(Context context, FragmentManager fragmentManager,String[] pageTitles)
+    public ViewPagerAdapter(Activity context, FragmentManager fragmentManager,String[] pageTitles)
     {
         super(fragmentManager);
         this.context = context;
@@ -66,5 +72,25 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return pageTitles[position];
     }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Log.i(TAG,"onPageSelected :::"+ String.valueOf(position));
+        if (position == 0) {
+
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+        Log.i(TAG,"onPageScrollStateChanged :::"+ String.valueOf(state));
+    }
+
 
 }

@@ -10,7 +10,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
-    public static String BaseURL = "http://192.168.0.104:9090/token-mobile/";
+    public static String BaseURL = "http://192.168.0.101:9090/token-mobile/";
 
     public static Retrofit getClient(String baseUrl) {
         if (retrofit == null) {
