@@ -6,6 +6,7 @@ import com.noqapp.client.model.response.open.QueueService;
 import com.noqapp.client.network.RetrofitClient;
 import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.presenter.QueuePresenter;
+import com.noqapp.client.presenter.beans.JsonToken;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -98,9 +99,9 @@ public final class QueueModel {
      * @param codeQR
      */
     public static void joinQueue(String did, String codeQR) {
-        queueService.joinQueue(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonQueue>() {
+        queueService.joinQueue(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
-            public void onResponse(Call<JsonQueue> call, Response<JsonQueue> response) {
+            public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
                 Log.d("Response", String.valueOf(response.body()));
                 queuePresenter.queueResponse(response.body());
             }
