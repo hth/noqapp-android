@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.noqapp.client.model.response.open.QueueService;
 import com.noqapp.client.network.RetrofitClient;
+import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.presenter.QueuePresenter;
 import com.noqapp.client.presenter.beans.JsonToken;
@@ -22,6 +23,7 @@ import static com.noqapp.client.utils.Constants.DEVICE_TYPE;
  */
 public final class QueueModel {
     public static QueuePresenter queuePresenter;
+    public static TokenPresenter tokenPresenter;
     private static final QueueService queueService;
 
     static {
@@ -103,13 +105,13 @@ public final class QueueModel {
             @Override
             public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
                 Log.d("Response", String.valueOf(response.body()));
-                queuePresenter.queueResponse(response.body());
+                tokenPresenter.queueResponse(response.body());
             }
 
             @Override
             public void onFailure(Call<JsonToken> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                queuePresenter.queueError();
+                tokenPresenter.queueError();
             }
         });
     }
