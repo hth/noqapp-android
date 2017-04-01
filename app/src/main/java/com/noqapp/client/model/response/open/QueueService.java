@@ -1,6 +1,7 @@
 package com.noqapp.client.model.response.open;
 
 import com.noqapp.client.presenter.beans.JsonQueue;
+import com.noqapp.client.presenter.beans.JsonToken;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -47,7 +48,7 @@ public interface QueueService {
     );
 
     @POST("open/token/queue/{codeQR}.json")
-    Call<JsonQueue> joinQueue(
+    Call<JsonToken> joinQueue(
             @Header("X-R-DID")
             String did,
 
