@@ -83,4 +83,16 @@ public class JsonToken {
     public void setToken(int token) {
         this.token = token;
     }
+
+    @Override
+    public String toString() {
+        return "JsonToken{" +
+                "codeQR='" + codeQR + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", queueStatus=" + queueStatus +
+                ", servingNumber=" + servingNumber +
+                ", token=" + token +
+                '}';
+    }
+
 }

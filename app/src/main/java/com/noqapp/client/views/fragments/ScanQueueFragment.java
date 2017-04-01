@@ -19,6 +19,7 @@ import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.QueuePresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
+import com.noqapp.client.views.activities.JoinQueueActivity;
 import com.noqapp.client.views.activities.LaunchActivity;
 
 import butterknife.BindView;
@@ -134,6 +135,7 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
         Log.d("Queue=", jsonQueue.toString());
+        this.jsonQueue = jsonQueue;
         txtBusinessName.setText(jsonQueue.getBusinessName());
         txtDisplayName.setText(jsonQueue.getDisplayName());
         txtStoreAddress.setText(jsonQueue.getStoreAddress());
@@ -152,10 +154,18 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     public void joinQueue(View view)
     {
 
-        LaunchActivity.tempViewpager.setCurrentItem(1);
-        ListQueueFragment queueFragment = new ListQueueFragment();
-        queueFragment.codeQR = codeQr;
-        queueFragment.callQueue();
+        Intent intent = new Intent(getActivity(), JoinQueueActivity.class);
+        intent.putExtra(JoinQueueActivity.KEY_CODEQR,this.jsonQueue.getCodeQR());
+        intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME,this.jsonQueue.getDisplayName());
+        intent.putExtra(JoinQueueActivity.KEY_STOREPHONE,this.jsonQueue.getStorePhone());
+        intent.putExtra(JoinQueueActivity.KEY_QUEUENAME,this.jsonQueue.getBusinessName());
+
+        startActivity(intent);
+
+//        LaunchActivity.tempViewpager.setCurrentItem(1);
+//        ListQueueFragment queueFragment = new ListQueueFragment();
+//        queueFragment.codeQR = codeQr;
+//        queueFragment.callQueue();
 
     }
 

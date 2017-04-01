@@ -12,13 +12,15 @@ import android.view.ViewGroup;
 import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.QueuePresenter;
+import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
+import com.noqapp.client.presenter.beans.JsonToken;
 import com.noqapp.client.views.activities.LaunchActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListQueueFragment extends Fragment implements QueuePresenter {
+public class ListQueueFragment extends Fragment implements TokenPresenter {
 
     public  String codeQR ;
     private static String TAG = ListQueueFragment.class.getSimpleName();
@@ -57,22 +59,27 @@ public class ListQueueFragment extends Fragment implements QueuePresenter {
         Log.i(TAG, "onActivityCreated: ");
     }
 
-    @Override
-    public void queueResponse(JsonQueue queue) {
 
-        Log.d(ListQueueFragment.class.getSimpleName(),queue.toString());
-    }
 
-    @Override
-    public void queueError() {
-        Log.d(ListQueueFragment.class.getSimpleName(),"Error");
-    }
 
     public void callQueue()
     {
         if (codeQR != null){
             Log.d("code qr ::",codeQR);
-            QueueModel.queuePresenter = ListQueueFragment.this;
+            QueueModel.tokenPresenter = ListQueueFragment.this;
             QueueModel.joinQueue(LaunchActivity.DID,codeQR);}
+    }
+
+    @Override
+    public void queueResponse(JsonToken token) {
+
+        Log.d(TAG,token.toString());
+
+    }
+
+    @Override
+    public void queueError() {
+        Log.d(TAG,"Error");
+
     }
 }
