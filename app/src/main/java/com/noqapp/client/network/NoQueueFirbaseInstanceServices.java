@@ -12,12 +12,13 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 public class NoQueueFirbaseInstanceServices extends FirebaseInstanceIdService {
 
     private static final String TAG = NoQueueFirbaseInstanceServices.class.getSimpleName();
+
     @Override
     public void onTokenRefresh() {
         super.onTokenRefresh();
 
         String refereshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG,"Refress Token ::: "+refereshedToken);
+        Log.d(TAG, "Refress Token ::: " + refereshedToken);
 
     }
 }

@@ -15,26 +15,27 @@ import java.util.List;
 
 public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
 
-    private Context context;
     public Token_QueueViewInterface tokenQueueViewInterface;
+    private Context context;
 
     public NoQueueDBPresenter(Context context) {
         this.context = context;
     }
 
-    public void saveToken_Queue(List<JsonTokenAndQueue> listTokenAndQueue) {
+    public void saveToken_Queue(List<JsonTokenAndQueue> listTokenAndQueue, boolean isCurrentQueueCall) {
         NoQueueDB queueDB = new NoQueueDB(context);
         queueDB.queueDBPresenterInterface = this;
-        queueDB.save(listTokenAndQueue);
+        queueDB.save(listTokenAndQueue, isCurrentQueueCall);
 
     }
 
-    public void currentTokenQueueListFromDB()
-    {
+    public void currentandHistoryTokenQueueListFromDB() {
         NoQueueDB queueDB = new NoQueueDB(context);
         queueDB.queueDBPresenterInterface = this;
         List<JsonTokenAndQueue> list = queueDB.getCurrentQueueList();
-        this.token_QueueList(list);
+        List<JsonTokenAndQueue> historyQueuelist = queueDB.getHistoryQueueList();
+
+        this.token_QueueList(list, historyQueuelist);
     }
 
 
@@ -44,7 +45,9 @@ public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
     }
 
     @Override
-    public void token_QueueList(List<JsonTokenAndQueue> list) {
-        tokenQueueViewInterface.token_QueueList(list);
+    public void token_QueueList(List<JsonTokenAndQueue> list, List<JsonTokenAndQueue> historylist) {
+        tokenQueueViewInterface.token_QueueList(list, historylist);
     }
+
+
 }

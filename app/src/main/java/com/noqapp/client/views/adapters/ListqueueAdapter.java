@@ -8,55 +8,82 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.noqapp.client.R;
-import com.noqapp.client.presenter.beans.JsonToken;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Created by omkar on 4/2/17.
  */
 
-public class ListqueueAdapter extends RecyclerView.Adapter<ListqueueAdapter.ListQueueVH> {
+public class ListqueueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
-    private  List<JsonTokenAndQueue> list;
-    private  Context context;
+    private static final int TYPE_HISTORY = 1;
+    private static final int TYPE_CURRENT = 0;
+    private List<JsonTokenAndQueue> list;
+    private List<JsonTokenAndQueue> historyList;
+    private Context context;
+    private int historyCount_row = 0;
 
-    public ListqueueAdapter (Context context , List<JsonTokenAndQueue> list)
-    {
+    public ListqueueAdapter(Context context, List<JsonTokenAndQueue> list, List<JsonTokenAndQueue> historylist) {
         this.context = context;
         this.list = list;
+        this.historyList = historylist;
     }
 
     @Override
-    public ListQueueVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.currentqueue,parent,false);
-        return new ListQueueVH(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_CURRENT) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_currentqueue, parent, false);
+            return new ListQueueVH(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_historyqueue, parent, false);
+            return new ListHistoryQueueVH(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(ListQueueVH holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        JsonTokenAndQueue queue = list.get(position);
-        holder.txtnumber.setText(String.valueOf(position));
-        holder.txtStoreName.setText(queue.getBusinessName());
-        holder.txtStorePhoneNumber.setText(queue.getStorePhone());
-        holder.txtToken.setText(String.valueOf(queue.getToken()));
+        if (holder instanceof ListQueueVH) {
+            ListQueueVH mholder = (ListQueueVH) holder;
+            JsonTokenAndQueue queue = list.get(position);
+            mholder.txtnumber.setText(String.valueOf(position));
+            mholder.txtStoreName.setText(queue.getBusinessName());
+            mholder.txtStorePhoneNumber.setText(queue.getStorePhone());
+            mholder.txtToken.setText(String.valueOf(queue.getToken()));
+        } else {
+            ListHistoryQueueVH mholder = (ListHistoryQueueVH) holder;
+            JsonTokenAndQueue queue = historyList.get(historyCount_row);
+            mholder.txtStoreName.setText(queue.getBusinessName());
+            mholder.txtStorePhoneNumber.setText(queue.getStorePhone());
+            mholder.txtToken.setText(String.valueOf(queue.getToken()));
+            historyCount_row++;
+
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        int count = list.size() + historyList.size();
+        return count;
     }
 
+    @Override
+    public int getItemViewType(int position) {
 
-    public class ListQueueVH extends RecyclerView.ViewHolder
-    {
-       public TextView txtnumber, txtStoreName , txtStorePhoneNumber , txtToken;
+        int result = TYPE_HISTORY;
+        int currentCount = list.size() - 1;
+        if (currentCount >= position) {
+            result = TYPE_CURRENT;
+        }
+        return result;
+    }
+
+    public class ListQueueVH extends RecyclerView.ViewHolder {
+        public TextView txtnumber, txtStoreName, txtStorePhoneNumber, txtToken;
 
         public ListQueueVH(View itemView) {
             super(itemView);
@@ -68,6 +95,17 @@ public class ListqueueAdapter extends RecyclerView.Adapter<ListqueueAdapter.List
 
     }
 
+    public class ListHistoryQueueVH extends RecyclerView.ViewHolder {
+        public TextView txtStoreName, txtStorePhoneNumber, txtToken;
+
+        public ListHistoryQueueVH(View itemView) {
+            super(itemView);
+            txtStoreName = (TextView) itemView.findViewById(R.id.txtStoreName);
+            txtStorePhoneNumber = (TextView) itemView.findViewById(R.id.txtStorePhoneNo);
+            txtToken = (TextView) itemView.findViewById(R.id.txtToken);
+        }
+
+    }
 
 
 }

@@ -10,7 +10,7 @@ import retrofit2.http.Path;
 /**
  * Registered client APIs.
  * //TODO
- *
+ * <p>
  * User: hitender
  * Date: 3/27/17 8:05 PM
  */
@@ -20,12 +20,12 @@ public interface QueueService {
     @GET("api/token/{codeQR}.json")
     Call<JsonQueue> getQueueState(
             @Header("X-R-DID")
-            String did,
+                    String did,
 
             @Header("X-R-DT")
-            String dt,
+                    String dt,
 
             @Path("codeQR")
-            String codeQR
+                    String codeQR
     );
 }

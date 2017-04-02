@@ -24,9 +24,6 @@ import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -34,10 +31,10 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
 
 
     public static RecyclerView listViewQueue;
-
-    public String codeQR;
+    public static boolean isCurrentQueueCall = false;
     private static String TAG = ListQueueFragment.class.getSimpleName();
     private static FragmentActivity context;
+    public String codeQR;
 
     public ListQueueFragment() {
         // Required empty public constructor
@@ -50,6 +47,15 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
     public void callQueue() {
         QueueModel.tokenAndQueuePresenter = this;
         QueueModel.getAllJoinedQueue(LaunchActivity.DID);
+        isCurrentQueueCall = true;
+    }
+
+    public void callQueueHistory() {
+        QueueModel.tokenAndQueuePresenter = this;
+
+        //Todo Check the flow of history queue
+        // QueueModel.getAllHistoricalJoinedQueue(LaunchActivity.DID);
+        QueueModel.getAllJoinedQueue(LaunchActivity.DID);
     }
 
 
@@ -59,7 +65,7 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
         // Inflate the layout for this fragment
         context = getActivity();
         View view = inflater.inflate(R.layout.fragment_list_queue, container, false);
-        listViewQueue = (RecyclerView)view.findViewById(R.id.listView_quequList);
+        listViewQueue = (RecyclerView) view.findViewById(R.id.listView_quequList);
         //ButterKnife.bind(this,view);
         return view;
     }
@@ -89,7 +95,7 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
         Log.d(TAG, "Tokent and Queue Response::" + tokenAndQueues.toString());
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(ListQueueFragment.context);
         dbPresenter.tokenQueueViewInterface = this;
-        dbPresenter.saveToken_Queue(tokenAndQueues);
+        dbPresenter.saveToken_Queue(tokenAndQueues, isCurrentQueueCall);
 
     }
 
@@ -102,21 +108,31 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
     @Override
     public void dataSavedStatus(int msg) {
         Log.d(TAG, String.valueOf(msg));
-        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(this.context);
-        dbPresenter.tokenQueueViewInterface = this;
-        dbPresenter.currentTokenQueueListFromDB();
+        if (isCurrentQueueCall) {
+            isCurrentQueueCall = false;
+            callQueueHistory();
+
+        } else {
+            NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(this.context);
+            dbPresenter.tokenQueueViewInterface = this;
+            dbPresenter.currentandHistoryTokenQueueListFromDB();
+        }
+
 
     }
 
     @Override
-    public void token_QueueList(List<JsonTokenAndQueue> list) {
+    public void token_QueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
 
-        Log.d(TAG,"Current Queue Count : "+ String.valueOf(list.size()));
+        Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size()));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         this.listViewQueue.setLayoutManager(layoutManager);
         this.listViewQueue.setItemAnimator(new DefaultItemAnimator());
-        ListqueueAdapter adapter = new ListqueueAdapter(context,list);
+        ListqueueAdapter adapter = new ListqueueAdapter(context, currentlist, historylist);
         this.listViewQueue.setAdapter(adapter);
 
+
     }
+
+
 }

@@ -1,8 +1,5 @@
 package com.noqapp.client.network;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -11,6 +8,7 @@ import com.google.firebase.messaging.RemoteMessage;
 public class NOQueueMessagingService extends FirebaseMessagingService {
 
     private final static String TAG = NOQueueMessagingService.class.getSimpleName();
+
     public NOQueueMessagingService() {
     }
 

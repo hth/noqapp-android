@@ -28,12 +28,11 @@ import static com.noqapp.client.utils.Constants.DEVICE_TYPE;
  * Date: 3/26/17 11:49 PM
  */
 public final class QueueModel {
+    private static final QueueService queueService;
     public static QueuePresenter queuePresenter;
     public static TokenPresenter tokenPresenter;
     public static ResponsePresenter responsePresenter;
     public static TokenAndQueuePresenter tokenAndQueuePresenter;
-
-    private static final QueueService queueService;
 
     static {
         queueService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(QueueService.class);

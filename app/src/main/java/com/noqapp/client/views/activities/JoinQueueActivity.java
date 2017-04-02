@@ -11,13 +11,17 @@ import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonToken;
-import com.noqapp.client.views.fragments.ListQueueFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class JoinQueueActivity extends AppCompatActivity implements TokenPresenter {
+    public static final String KEY_CODEQR = "codeqr";
+    public static final String KEY_STOREPHONE = "storephone";
+    public static final String KEY_DISPLAYNAME = "displayname";
+    public static final String KEY_QUEUENAME = "queuename";
+    private static final String TAG = JoinQueueActivity.class.getSimpleName();
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.txtBusinessName)
@@ -32,12 +36,6 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
     TextView txtServingNow;
     @BindView(R.id.txtyourAfter)
     TextView txtyourAfter;
-
-    private static final String TAG = JoinQueueActivity.class.getSimpleName();
-    public static final String KEY_CODEQR = "codeqr";
-    public static final String KEY_STOREPHONE = "storephone";
-    public static final String KEY_DISPLAYNAME = "displayname";
-    public static final String KEY_QUEUENAME = "queuename";
     private String codeQR;
     private String displayName;
     private String storePhone;
@@ -88,7 +86,7 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
                 Log.i(TAG, "Back Click ");
                 finish();
                 LaunchActivity.tempViewpager.setCurrentItem(1);
-               // LaunchActivity.tempViewpager.getAdapter().notifyDataSetChanged();
+                // LaunchActivity.tempViewpager.getAdapter().notifyDataSetChanged();
 
             }
         });

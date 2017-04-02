@@ -17,11 +17,11 @@ import com.noqapp.client.views.fragments.ScanQueueFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter implements ViewPager.OnPageChangeListener {
 
-    private final String[] pageTitles;
-    private static Activity context;
-    private FragmentManager fragmentManager;
-    private static int NUM_ITEM = 3;
     private static final String TAG = ViewPagerAdapter.class.getSimpleName();
+    private static Activity context;
+    private static int NUM_ITEM = 3;
+    private final String[] pageTitles;
+    private FragmentManager fragmentManager;
 
     public ViewPagerAdapter(Activity context, FragmentManager fragmentManager, String[] pageTitles) {
         super(fragmentManager);
@@ -82,7 +82,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter implements ViewP
         if (position == 1) {
             notifyDataSetChanged();
             ListQueueFragment fragment = new ListQueueFragment();
+            ListQueueFragment.isCurrentQueueCall = true;
             fragment.callQueue();
+
 
         }
     }

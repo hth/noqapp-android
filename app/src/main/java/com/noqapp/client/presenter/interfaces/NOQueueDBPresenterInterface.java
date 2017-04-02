@@ -11,5 +11,6 @@ import java.util.List;
 public interface NOQueueDBPresenterInterface {
 
     void dbSaved(int msd);
-    void token_QueueList(List<JsonTokenAndQueue> list);
+
+    void token_QueueList(List<JsonTokenAndQueue> list, List<JsonTokenAndQueue> historylist);
 }

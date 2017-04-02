@@ -28,6 +28,7 @@ import butterknife.OnClick;
 
 public class ScanQueueFragment extends Fragment implements QueuePresenter {
 
+    private static final String TAG = ScanQueueFragment.class.getSimpleName();
     @BindView(R.id.txtBusinessName)
     protected TextView txtBusinessName;
     @BindView(R.id.txtStoreAddress)
@@ -40,9 +41,6 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     protected TextView txtLastNumber;
     @BindView(R.id.txtDisplayName)
     protected TextView txtDisplayName;
-
-    private static final String TAG = ScanQueueFragment.class.getSimpleName();
-
     private String codeQr;
     private JsonQueue jsonQueue;
 

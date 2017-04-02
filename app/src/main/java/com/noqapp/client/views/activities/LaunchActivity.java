@@ -19,19 +19,17 @@ import butterknife.ButterKnife;
 public class LaunchActivity extends FragmentActivity {
 
 
-    @BindView(R.id.viewPager)
-    public ViewPager viewPager;
-    //    @BindView(R.id.pagerHeader)
-//    protected PagerTabStrip tabStrip;
-    public static ViewPager tempViewpager;
     public final static String KEY_SHOWFRAGMENT = "show_fragment";
     public final static String fragment_queueList = ListQueueFragment.class.getSimpleName();
     public final static String fragment_Me = MeFragment.class.getSimpleName();
     public final static String fragment_scan = ScanQueueFragment.class.getSimpleName();
-
-
-    private static final String TAG = LaunchActivity.class.getSimpleName();
     public static final String DID = UUID.randomUUID().toString();
+    private static final String TAG = LaunchActivity.class.getSimpleName();
+    //    @BindView(R.id.pagerHeader)
+//    protected PagerTabStrip tabStrip;
+    public static ViewPager tempViewpager;
+    @BindView(R.id.viewPager)
+    public ViewPager viewPager;
     private Button btnScanner;
     private ViewPagerAdapter viewPagerAdapter;
     private String[] titleTabs;
