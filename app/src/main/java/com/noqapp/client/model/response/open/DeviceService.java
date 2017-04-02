@@ -1,6 +1,8 @@
 package com.noqapp.client.model.response.open;
 
+import com.noqapp.client.presenter.beans.DeviceRegistered;
 import com.noqapp.client.presenter.beans.JsonQueue;
+import com.noqapp.client.presenter.beans.body.DeviceToken;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -10,19 +12,20 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
- * Created by omkar on 4/2/17.
+ * User: omkar
+ * Date: 4/2/17 6:37 PM
  */
-
 public interface DeviceService {
+
     @POST("open/device/register.json")
-    Call<JsonQueue> getQueueState(
+    Call<DeviceRegistered> register(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt
+            String dt,
 
-//            @Body("")
-//                    String codeQR
+            @Body
+            DeviceToken deviceToken
     );
 }
