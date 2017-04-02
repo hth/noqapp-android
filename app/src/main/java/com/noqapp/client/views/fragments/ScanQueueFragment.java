@@ -157,7 +157,6 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
         intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME, this.jsonQueue.getDisplayName());
         intent.putExtra(JoinQueueActivity.KEY_STOREPHONE, this.jsonQueue.getStorePhone());
         intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, this.jsonQueue.getBusinessName());
-
         startActivity(intent);
 
 //        LaunchActivity.tempViewpager.setCurrentItem(1);

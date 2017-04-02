@@ -2,6 +2,8 @@ package com.noqapp.client.model.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -9,6 +11,7 @@ import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.interfaces.NOQueueDBPresenterInterface;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +27,7 @@ public class NoQueueDB extends SQLiteAssetHelper {
     private static final String TOKEN_QUEUE = "TOKEN_QUEUE";
 
     //QUEUE_TOKEN column names
+    private static final String TABLE_TOKENQUEUE = "TOKEN_QUEUE";
     private static final String COLUMN_CODE_QR = "codeqr";
     private static final String COLUMN_BUSINESS_NAME = "bussinessname";
     private static final String COLUMN_DISPLAY_NAME = "displayname";
@@ -48,8 +52,9 @@ public class NoQueueDB extends SQLiteAssetHelper {
 
     }
 
-    public void save(List<JsonTokenAndQueue> list) {
+    public void save(List<JsonTokenAndQueue> list)  {
         db = this.getWritableDatabase();
+        long msg = 0;
         for (JsonTokenAndQueue tokenAndQueue : list) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_CODE_QR, tokenAndQueue.getCodeQR());
@@ -66,15 +71,56 @@ public class NoQueueDB extends SQLiteAssetHelper {
             values.put(COLUMN_TOKEN, tokenAndQueue.getToken());
             values.put(COLUMN_QUEUE_STATUS, tokenAndQueue.getQueueStatus().getName());
             values.put(COLUMN_CREATE_DATE, tokenAndQueue.getCreateDate());
-            long msg = db.insert(TOKEN_QUEUE, null, values);
+            try
+            {
+                msg = db.insertOrThrow(TOKEN_QUEUE, null, values);
+                if (msg > 0) {
+                    Log.d(TAG,"Data Saved "+String.valueOf(msg));
 
-            if (msg > 0) {
-                Log.d(TAG, "DATA success saved " + String.valueOf(msg));
+                }
+
+            }
+            catch (SQLException e)
+            {
+                Log.e(TAG,"Exception ::"+e.getMessage().toString());
+
+            }
+
+        }
+        queueDBPresenterInterface.dbSaved((int) msg);
+
+}
+
+    public List<JsonTokenAndQueue> getCurrentQueueList()
+    {
+        db = this.getReadableDatabase();
+        String [] columns = new String[]{COLUMN_BUSINESS_NAME,COLUMN_CODE_QR,COLUMN_STORE_ADDRESS,COLUMN_STORE_PHONE,COLUMN_TOKEN};
+        String whereClause = COLUMN_CODE_QR+" = ? and "+COLUMN_CREATE_DATE+" = ?";
+        //String [] selectionArgs = new String[] {codeQR,dateTime};
+        String orderBy = COLUMN_CREATE_DATE;
+
+        List<JsonTokenAndQueue> listJsonQueue = new ArrayList<>();
+       Cursor cursor = db.query(true,TABLE_TOKENQUEUE,null,null,null,null,null,orderBy,null);
+
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+
+                try {
+                    while (cursor.moveToNext()) {
+                        JsonTokenAndQueue tokenAndQueue = new JsonTokenAndQueue();
+                        tokenAndQueue.setBusinessName(cursor.getString(1));
+                        tokenAndQueue.setCodeQR(cursor.getString(0));
+                        tokenAndQueue.setStoreAddress(cursor.getString(3));
+                        tokenAndQueue.setStorePhone(cursor.getString(4));
+                        tokenAndQueue.setToken(cursor.getInt(11));
+                        listJsonQueue.add(tokenAndQueue);
+
+                    }
+                } finally {
+                    cursor.close();
+                }
             }
         }
-
-        queueDBPresenterInterface.dbSaved("data successfully saved");
-
-
+        return listJsonQueue;
     }
 }

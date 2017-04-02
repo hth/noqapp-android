@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +19,21 @@ import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.views.activities.LaunchActivity;
+import com.noqapp.client.views.adapters.ListqueueAdapter;
 import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ListQueueFragment extends Fragment implements TokenAndQueuePresenter, Token_QueueViewInterface {
+
+
+    public static RecyclerView listViewQueue;
 
     public String codeQR;
     private static String TAG = ListQueueFragment.class.getSimpleName();
@@ -48,7 +58,10 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         context = getActivity();
-        return inflater.inflate(R.layout.fragment_list_queue, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_queue, container, false);
+        listViewQueue = (RecyclerView)view.findViewById(R.id.listView_quequList);
+        //ButterKnife.bind(this,view);
+        return view;
     }
 
     @Override
@@ -87,9 +100,23 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
     }
 
     @Override
-    public void dataSavedStatus(String msg) {
+    public void dataSavedStatus(int msg) {
+        Log.d(TAG, String.valueOf(msg));
+        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(this.context);
+        dbPresenter.tokenQueueViewInterface = this;
+        dbPresenter.currentTokenQueueListFromDB();
 
-        Log.d(TAG, msg);
+    }
+
+    @Override
+    public void token_QueueList(List<JsonTokenAndQueue> list) {
+
+        Log.d(TAG,"Current Queue Count : "+ String.valueOf(list.size()));
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+        this.listViewQueue.setLayoutManager(layoutManager);
+        this.listViewQueue.setItemAnimator(new DefaultItemAnimator());
+        ListqueueAdapter adapter = new ListqueueAdapter(context,list);
+        this.listViewQueue.setAdapter(adapter);
 
     }
 }

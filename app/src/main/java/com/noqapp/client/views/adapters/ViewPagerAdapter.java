@@ -62,6 +62,11 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter implements ViewP
     }
 
     @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    @Override
     public CharSequence getPageTitle(int position) {
         return pageTitles[position];
     }
@@ -74,7 +79,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter implements ViewP
     @Override
     public void onPageSelected(int position) {
         Log.i(TAG, "onPageSelected :::" + String.valueOf(position));
-        if (position == 0) {
+        if (position == 1) {
+            notifyDataSetChanged();
+            ListQueueFragment fragment = new ListQueueFragment();
+            fragment.callQueue();
 
         }
     }

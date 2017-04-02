@@ -29,9 +29,22 @@ public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
 
     }
 
+    public void currentTokenQueueListFromDB()
+    {
+        NoQueueDB queueDB = new NoQueueDB(context);
+        queueDB.queueDBPresenterInterface = this;
+        List<JsonTokenAndQueue> list = queueDB.getCurrentQueueList();
+        this.token_QueueList(list);
+    }
+
 
     @Override
-    public void dbSaved(String msg) {
+    public void dbSaved(int msg) {
         tokenQueueViewInterface.dataSavedStatus(msg);
+    }
+
+    @Override
+    public void token_QueueList(List<JsonTokenAndQueue> list) {
+        tokenQueueViewInterface.token_QueueList(list);
     }
 }

@@ -88,8 +88,8 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
                 Log.i(TAG, "Back Click ");
                 finish();
                 LaunchActivity.tempViewpager.setCurrentItem(1);
-                ListQueueFragment fragment = new ListQueueFragment();
-                fragment.callQueue();
+               // LaunchActivity.tempViewpager.getAdapter().notifyDataSetChanged();
+
             }
         });
     }
