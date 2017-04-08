@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -8,21 +7,98 @@
     tools:context="com.noqapp.client.views.activities.LaunchActivity">
 
 <android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar_actionbar"
     android:layout_width="match_parent"
     android:layout_height="58dp"
-    android:background="?attr/colorPrimary"
-    android:titleTextColor="#ffffff">
+    android:background="@color/colorActionbar">
+
+   <TextView
+       android:id="@+id/tv_title"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="center"
+       android:textSize="20sp"
+       android:textColor="@android:color/white"
+       android:textStyle="bold"/>
+
+
 </android.support.v7.widget.Toolbar>
-   <android.support.v4.view.ViewPager
+   <RelativeLayout
+       android:id="@+id/activity_main"
        android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:id="@+id/viewPager">
-      <android.support.v4.view.PagerTabStrip
+       android:layout_height="match_parent">
+
+      <FrameLayout
+          android:id="@+id/frame_layout"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_above="@+id/navigation"
+          >
+
+      </FrameLayout>
+
+      <LinearLayout
+          android:id="@+id/navigation"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_gravity="top"
-          android:id="@+id/pagerHeader"
-          />
-   </android.support.v4.view.ViewPager>
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:orientation="horizontal"
+          android:weightSum="1">
+         <RelativeLayout
+
+             android:id="@+id/rl_home"
+             style="@style/style_home_rl">
+
+            <ImageView
+
+                android:id="@+id/iv_home"
+                style="@style/style_home"
+                android:background="@mipmap/ic_launcher" />
+
+            <TextView
+                style="@style/style_home"
+                android:layout_below="@+id/iv_home"
+                android:text="Home" />
+
+         </RelativeLayout>
+
+         <RelativeLayout
+             android:id="@+id/rl_list"
+             style="@style/style_home_rl">
+
+            <ImageView
+                android:id="@+id/iv_list"
+                style="@style/style_home"
+                android:background="@mipmap/ic_launcher" />
+
+            <TextView
+                style="@style/style_home"
+                android:layout_below="@+id/iv_list"
+                android:text="List" />
+
+         </RelativeLayout>
+
+         <RelativeLayout
+             android:id="@+id/rl_me"
+             style="@style/style_home_rl">
+
+            <ImageView
+                android:id="@+id/iv_me"
+                style="@style/style_home"
+                android:background="@mipmap/ic_launcher" />
+
+            <TextView
+                style="@style/style_home"
+                android:layout_below="@+id/iv_me"
+                android:text="Me" />
+
+         </RelativeLayout>
+
+
+      </LinearLayout>
+
+   </RelativeLayout>
 
 </LinearLayout>

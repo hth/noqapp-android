@@ -90,7 +90,7 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume ::");
-
+        LaunchActivity.getLaunchActivity().setActionBarTitle("Home");
     }
 
     @Override

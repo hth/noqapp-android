@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.noqapp.client.R;
+import com.noqapp.client.views.activities.LaunchActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,4 +32,10 @@ public class MeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_me, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        LaunchActivity.getLaunchActivity().setActionBarTitle("Me");
+
+    }
 }

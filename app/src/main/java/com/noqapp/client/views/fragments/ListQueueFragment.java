@@ -80,6 +80,7 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume: ");
+        LaunchActivity.getLaunchActivity().setActionBarTitle("List");
 
     }
 

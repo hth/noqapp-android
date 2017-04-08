@@ -85,7 +85,7 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
             public void onClick(View v) {
                 Log.i(TAG, "Back Click ");
                 finish();
-                LaunchActivity.tempViewpager.setCurrentItem(1);
+                //LaunchActivity.tempViewpager.setCurrentItem(1);
                 // LaunchActivity.tempViewpager.getAdapter().notifyDataSetChanged();
 
             }
