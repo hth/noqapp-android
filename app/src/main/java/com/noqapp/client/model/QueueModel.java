@@ -90,7 +90,7 @@ public final class QueueModel {
         queueService.getAllHistoricalJoinedQueue(did, DEVICE_TYPE).enqueue(new Callback<List<JsonTokenAndQueue>>() {
             @Override
             public void onResponse(Call<List<JsonTokenAndQueue>> call, Response<List<JsonTokenAndQueue>> response) {
-                Log.d("Response", String.valueOf(response.body()));
+                Log.d("History size :: ", String.valueOf(response.body().size()));
                 tokenAndQueuePresenter.queueResponse(response.body());
             }
 

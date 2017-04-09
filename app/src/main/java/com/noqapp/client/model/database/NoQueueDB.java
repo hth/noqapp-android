@@ -3,6 +3,7 @@ package com.noqapp.client.model.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -59,6 +60,8 @@ public class NoQueueDB extends SQLiteAssetHelper {
         db = this.getWritableDatabase();
         long msg = 0;
         for (JsonTokenAndQueue tokenAndQueue : list) {
+
+            String tempTableName = "";
             ContentValues values = new ContentValues();
             values.put(COLUMN_CODE_QR, tokenAndQueue.getCodeQR());
             values.put(COLUMN_BUSINESS_NAME, tokenAndQueue.getBusinessName());
@@ -72,13 +75,37 @@ public class NoQueueDB extends SQLiteAssetHelper {
             values.put(COLUMN_SERVING_NUMBER, tokenAndQueue.getServingNumber());
             values.put(COLUMN_LAST_NUMBER, tokenAndQueue.getLastNumber());
             values.put(COLUMN_TOKEN, tokenAndQueue.getToken());
-            values.put(COLUMN_QUEUE_STATUS, tokenAndQueue.getQueueStatus().getName());
+            if (null != tokenAndQueue.getQueueStatus())
+            {
+                values.put(COLUMN_QUEUE_STATUS, tokenAndQueue.getQueueStatus().getName());
+
+            }
+
             values.put(COLUMN_CREATE_DATE, tokenAndQueue.getCreateDate());
             try {
                 if (isCurrentQueueCall) {
-                    msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
+                    tempTableName = TABLE_TOKENQUEUE;
+                    if (isTokenExist(tempTableName,tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate())) {
+                        String wherClause = COLUMN_CODE_QR+" = ?"+" AND "+COLUMN_CREATE_DATE+" = ?";
+                        values.remove(COLUMN_CODE_QR);
+                        values.remove(COLUMN_CREATE_DATE);
+
+                        db.update(tempTableName,values,wherClause,new String[]{tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate()});
+                    } else {
+                        msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
+                    }
+
                 } else {
-                    msg = db.insertOrThrow(TABLE_TOKENQUEUE_H, null, values);
+                    tempTableName = TABLE_TOKENQUEUE_H;
+                    if (isTokenExist(tempTableName,tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate())) {
+                        String wherClause = COLUMN_CODE_QR+" = ?"+" AND "+COLUMN_CREATE_DATE+" = ?";
+                        values.remove(COLUMN_CODE_QR);
+                        values.remove(COLUMN_CREATE_DATE);
+                        db.update(tempTableName,values,wherClause,new String[]{tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate()});
+                    } else {
+                        msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
+                    }
+
                 }
 
                 if (msg > 0) {
@@ -89,12 +116,26 @@ public class NoQueueDB extends SQLiteAssetHelper {
             } catch (SQLException e) {
                 Log.e(TAG, "Exception ::" + e.getMessage().toString());
 
+
+
             }
 
         }
         queueDBPresenterInterface.dbSaved((int) msg);
 
     }
+
+    public boolean isTokenExist(String table_name, String qrcode, String date) {
+        //String mToken = String.valueOf(token);
+        String wherClause = COLUMN_CODE_QR+" = ?"+" AND "+COLUMN_CREATE_DATE+" = ?";
+        long line = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM " + table_name + " WHERE " + wherClause,
+                new String[]{qrcode,date});
+        return line > 0;
+    }
+
+
+
+
 
     public List<JsonTokenAndQueue> getCurrentQueueList() {
         db = this.getReadableDatabase();

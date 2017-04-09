@@ -54,10 +54,10 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
 
     public void callQueueHistory() {
         QueueModel.tokenAndQueuePresenter = this;
-
         //Todo Check the flow of history queue
-        // QueueModel.getAllHistoricalJoinedQueue(LaunchActivity.DID);
-        QueueModel.getAllJoinedQueue(LaunchActivity.DID);
+        //QueueModel.getAllHistoricalJoinedQueue(LaunchActivity.DID);
+        QueueModel.getAllHistoricalJoinedQueue("123");
+        //QueueModel.getAllJoinedQueue(LaunchActivity.DID);
     }
 
 
@@ -95,7 +95,7 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
 
     @Override
     public void queueResponse(List<JsonTokenAndQueue> tokenAndQueues) {
-        Log.d(TAG, "Tokent and Queue Response::" + tokenAndQueues.toString());
+        Log.d(TAG, "Tokent and Queue Response::" + tokenAndQueues.size());
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.saveToken_Queue(tokenAndQueues, isCurrentQueueCall);
