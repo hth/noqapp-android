@@ -32,5 +32,5 @@ public class NoQueueBaseActivity extends AppCompatActivity{
         return editor;
     }
 
-    
+
 }

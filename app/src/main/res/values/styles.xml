@@ -17,7 +17,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-
+    <style name="BaseTheme" parent="AppTheme.NoActionBar">
+        <item name="colorControlNormal">@android:color/white</item>
+        //the rest of your codes...
+    </style>
     <style name="style_home" >
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -25,9 +28,24 @@
     </style>
 
     <style name="style_home_rl" >
-        <item name="android:layout_width">0dp</item>
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">center</item>
+    <item name="android:layout_weight">.33</item>
+</style>
+
+    <style name="style_invite_tv" >
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_weight">.33</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="style_join_queue_tv" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:text">""</item>
     </style>
 </resources>
