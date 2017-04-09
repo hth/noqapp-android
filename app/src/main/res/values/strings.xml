@@ -16,4 +16,22 @@
     <string name="join">JOIN</string>
     <string name="cancel">Cancel</string>
     <string name="title_activity_join_queue">JoinQueueActivity</string>
+    <string name="registration">Registration</string>
+    <string name="login">Login</string>
+    <string name="autojoinon">Auto Join On Scan</string>
+    <string name="remotescanavail">Remote Scan Available</string>
+    <string name="invite">Invite</string>
+    <string name="firstname">First Name</string>
+    <string name="phonenumber">Phone Number</string>
+    <string name="freeremotescan">Get Free remote scan</string>
+    <string name="register">Register</string>
+    <string name="phonerequired">Phone(Required)</string>
+    <string name="namerequired">Name(Required)</string>
+    <string name="mail">Mail</string>
+    <string name="birthday">Birthday</string>
+    <string name="gender">Gender(M/F)(required)</string>
+    <string name="invitecode">Invite code</string>
+  <string name="ACCOUNT_KIT_CLIENT_TOKEN">ec365faae446a61474e707beaa4e0131</string>
+    <string name="FACEBOOK_APP_ID">982366595228298</string>
+
 </resources>

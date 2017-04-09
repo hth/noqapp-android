@@ -14,7 +14,7 @@ import retrofit2.http.POST;
 
 public interface RegisterService {
 
-    @POST("/open/client/register.json")
+    @POST("open/client/registration.json")
     Call<Profile> register(
             @Body
             Registration registration

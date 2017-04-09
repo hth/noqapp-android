@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.NoQueueDBPresenter;

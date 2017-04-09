@@ -101,4 +101,17 @@ public class Profile {
     public void setRemoteScanAvailable(int remoteScanAvailable) {
         this.remoteScanAvailable = remoteScanAvailable;
     }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "name='" + name + '\'' +
+                ", mail='" + mail + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
+                ", phoneRaw='" + phoneRaw + '\'' +
+                ", timeZone='" + timeZone + '\'' +
+                ", inviteCode='" + inviteCode + '\'' +
+                ", remoteScanAvailable=" + remoteScanAvailable +
+                '}';
+    }
 }

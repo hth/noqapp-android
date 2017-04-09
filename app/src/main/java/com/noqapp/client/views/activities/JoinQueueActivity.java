@@ -1,5 +1,7 @@
 package com.noqapp.client.views.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.TokenPresenter;
@@ -16,13 +20,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class JoinQueueActivity extends AppCompatActivity implements TokenPresenter {
+public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPresenter {
     public static final String KEY_CODEQR = "codeqr";
     public static final String KEY_STOREPHONE = "storephone";
     public static final String KEY_DISPLAYNAME = "displayname";
     public static final String KEY_QUEUENAME = "queuename";
     public static final String KEY_ADDRESS = "address";
+    public static final String KEY_TOPIC = "topic";
     private static final String TAG = JoinQueueActivity.class.getSimpleName();
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tv_store_name)
@@ -39,12 +45,15 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
     public TextView tv_current_value;
     @BindView(R.id.tv_how_long)
     public TextView tv_how_long;
+
+    public JsonToken mJsonToken;
     private String codeQR;
     private String displayName;
     private String storePhone;
     private String queueName;
     private String address;
 
+    private String topic;
     public void callQueue() {
         if (codeQR != null) {
             Log.d("code qr ::", codeQR);
@@ -78,10 +87,7 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
         tv_queue_name.setText(queueName);
         tv_address.setText(address);
         tv_mobile.setText(storePhone);
-
-//        txtBussinessName.setText(displayName);
-//        txtPhoneNo.setText(storePhone);
-//        txtQueueName.setText(queueName);
+        topic = getIntent().getExtras().getString(KEY_TOPIC);
     }
 
     @Override
@@ -106,18 +112,33 @@ public class JoinQueueActivity extends AppCompatActivity implements TokenPresent
         });
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if(mJsonToken!=null)
+        {
+
+            Intent intent = new Intent();
+            intent.putExtra(KEY_CODEQR,mJsonToken.getToken());
+            if (getParent() == null) {
+                setResult(Activity.RESULT_OK, intent);
+            }else
+            {
+                getParent().setResult(Activity.RESULT_OK,intent);
+            }
+            //finish();
+        }
+        super.onBackPressed();
+    }
 
     @Override
     public void queueResponse(JsonToken token) {
         Log.d(TAG, token.toString());
-//        txtYourToken.setText(String.valueOf(token.getToken()));
-//        txtServingNow.setText(String.valueOf(token.getServingNumber()));
-//        txtyourAfter.setText(String.valueOf(token.afterHowLong()));
-
+        this.mJsonToken = token;
         tv_total_value.setText(String.valueOf(String.valueOf(token.getToken())));
         tv_current_value.setText(String.valueOf(String.valueOf(token.getServingNumber())));
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
-
+        FirebaseMessaging.getInstance().subscribeToTopic(topic);
     }
 
     @Override

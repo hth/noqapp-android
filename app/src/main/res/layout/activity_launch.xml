@@ -28,14 +28,14 @@
        android:layout_width="match_parent"
        android:layout_height="match_parent">
 
-      <FrameLayout
+      <LinearLayout
           android:id="@+id/frame_layout"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_above="@+id/navigation"
           >
 
-      </FrameLayout>
+      </LinearLayout>
 
       <LinearLayout
           android:id="@+id/navigation"
