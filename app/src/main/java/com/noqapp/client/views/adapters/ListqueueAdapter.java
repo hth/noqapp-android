@@ -2,6 +2,7 @@ package com.noqapp.client.views.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +60,9 @@ public class ListqueueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mholder.txtStoreName.setText(queue.getBusinessName());
             mholder.txtStorePhoneNumber.setText(queue.getStorePhone());
             mholder.txtToken.setText(String.valueOf(queue.getToken()));
-            historyCount_row++;
 
+            historyCount_row++;
+Log.v("Histroy count",""+historyCount_row +" pos : "+""+position);
         }
 
     }
