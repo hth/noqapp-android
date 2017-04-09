@@ -52,6 +52,9 @@ public class Profile {
     @JsonProperty ("ge")
     private String gender;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public String getName() {
         return name;
     }
@@ -122,6 +125,14 @@ public class Profile {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
     }
 
     @Override
