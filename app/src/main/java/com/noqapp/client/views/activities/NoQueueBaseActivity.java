@@ -16,6 +16,14 @@ import com.noqapp.client.R;
 
 public class NoQueueBaseActivity extends AppCompatActivity{
 
+    public static final String PREKEY_PHONE = "phone";
+    public static final String PREKEY_NAME = "name";
+    public static final String PREKEY_MAIL = "mail";
+    public static final String PREKEY_GENDER = "gender";
+    public static final String PREKEY_REMOTESCAN = "remotescan";
+    public static final String PREKEY_AUTOJOIN = "autojoin";
+    public static final String PREKEY_INVITECODE = "invitecode";
+
 
     public static final int ACCOUNTKIT_REQUEST_CODE = 99;
     public void replaceFragmentWithoutBackStack(int container, Fragment fragment)
@@ -32,5 +40,5 @@ public class NoQueueBaseActivity extends AppCompatActivity{
         return editor;
     }
 
-
+    
 }

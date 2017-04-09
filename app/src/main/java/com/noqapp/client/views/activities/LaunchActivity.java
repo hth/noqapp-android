@@ -68,8 +68,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         iv_home.setBackgroundResource(R.mipmap.home_select);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
         replaceFragmentWithoutBackStack(R.id.frame_layout, new ScanQueueFragment());
-        Intent in =new Intent(this,InviteActivity.class);
-        startActivity(in);
+
 
     }
 

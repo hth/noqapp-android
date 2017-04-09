@@ -77,10 +77,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
-            <TextView
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtinvite"
+                android:id="@+id/btn_invite"
                 android:text="@string/invite"/>
             <TextView
                 android:layout_width="match_parent"

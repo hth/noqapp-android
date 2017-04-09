@@ -70,6 +70,11 @@ public class InviteActivity extends AppCompatActivity {
             String title = bundle.getString("title", "");
             String details = bundle.getString("details", "");
             String invite_code = bundle.getString("invite_code", "");
+
+            if (invite_code.isEmpty())
+            {
+                btn_send_invite.setEnabled(false);
+            }
             tv_title.setText(title);
             tv_details.setText(details);
             tv_invite_code.setText(invite_code);
