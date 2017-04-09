@@ -3,7 +3,9 @@ package com.noqapp.client.views.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -30,6 +32,7 @@ import com.noqapp.client.views.interfaces.MeView;
 
 import org.w3c.dom.Text;
 
+import java.util.Locale;
 import java.util.TimeZone;
 
 import butterknife.BindView;
@@ -42,7 +45,7 @@ import static com.facebook.accountkit.internal.AccountKitController.getApplicati
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegistrationFormFragment extends Fragment implements MeView,RadioGroup.OnCheckedChangeListener {
+public class RegistrationFormFragment extends NoQueueBaseFragment implements MeView,RadioGroup.OnCheckedChangeListener {
 
     @BindView(R.id.edt_phone)
     EditText edt_phoneNo;
@@ -77,7 +80,9 @@ public class RegistrationFormFragment extends Fragment implements MeView,RadioGr
         System.out.println("TimeZone   "+tz.getDisplayName(false, TimeZone.SHORT)+" Timezon id :: " +tz.getID());
 
 
-        String country = getApplicationContext().getResources().getConfiguration().locale.getISO3Country();
+
+        // Todo :Change to 2character country code
+        String country = Locale.getDefault().getISO3Country();
 
         AccessToken accessToken = AccountKit.getCurrentAccessToken();
 
@@ -154,6 +159,18 @@ public class RegistrationFormFragment extends Fragment implements MeView,RadioGr
     @Override
     public void queueResponse(Profile profile) {
         Log.d(TAG,"profile :"+profile.toString());
+        SharedPreferences.Editor editor = ((NoQueueBaseActivity)getActivity()).getSharedprefEdit(getActivity());
+        editor.putString(NoQueueBaseActivity.PREKEY_PHONE,profile.getPhoneRaw());
+        editor.putString(NoQueueBaseActivity.PREKEY_NAME,profile.getName());
+        editor.putString(NoQueueBaseActivity.PREKEY_GENDER,profile.getGender());
+        editor.putString(NoQueueBaseActivity.PREKEY_MAIL,profile.getMail());
+        editor.putInt(NoQueueBaseActivity.PREKEY_REMOTESCAN,profile.getRemoteScanAvailable());
+        editor.putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN,true);
+        editor.putString(NoQueueBaseActivity.PREKEY_INVITECODE,profile.getInviteCode());
+        editor.commit();
+
+        replaceFragmentWithoutBackStack(getActivity(),R.id.frame_layout,new MeSuccessFragment(),TAG);
+
     }
 
     @Override
