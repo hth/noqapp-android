@@ -29,7 +29,11 @@ public class MePresenter implements ProfilePresenter {
 
     @Override
     public void queueResponse(Profile profile) {
-        meView.queueResponse(profile);
+        if(profile.getError() == null) {
+            meView.queueResponse(profile);
+        } else {
+            //TODO show error message
+        }
     }
 
     @Override
