@@ -30,7 +30,7 @@ public class Registration {
     @JsonProperty("FN")
     private String firstName;
 
-    @JsonProperty("EN")
+    @JsonProperty("EM")
     private String mail;
 
     @JsonProperty("BD")
