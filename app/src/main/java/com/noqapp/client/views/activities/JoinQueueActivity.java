@@ -3,14 +3,12 @@ package com.noqapp.client.views.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.TokenPresenter;
@@ -30,21 +28,23 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     private static final String TAG = JoinQueueActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    protected Toolbar toolbar;
+    @BindView(R.id.tv_toolbar_title)
+    protected TextView tv_toolbar_title;
     @BindView(R.id.tv_store_name)
-    public TextView tv_store_name;
+    protected TextView tv_store_name;
     @BindView(R.id.tv_queue_name)
-    public TextView tv_queue_name;
+    protected TextView tv_queue_name;
     @BindView(R.id.tv_address)
-    public TextView tv_address;
+    protected TextView tv_address;
     @BindView(R.id.tv_mobile)
-    public TextView tv_mobile;
+    protected TextView tv_mobile;
     @BindView(R.id.tv_total_value)
-    public TextView tv_total_value;
+    protected TextView tv_total_value;
     @BindView(R.id.tv_current_value)
-    public TextView tv_current_value;
+    protected TextView tv_current_value;
     @BindView(R.id.tv_how_long)
-    public TextView tv_how_long;
+    protected TextView tv_how_long;
 
     public JsonToken mJsonToken;
     private String codeQR;
@@ -66,14 +66,11 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_queue);
-
-        //Ttv_title =(TextView)findViewById(R.id.tv_title);
-        setSupportActionBar(toolbar);
-       // getSupportActionBar().setTitle("");
         ButterKnife.bind(this);
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        tv_toolbar_title.setText("Join");
         if (getSupportActionBar() != null) {
-
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -88,6 +85,13 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
         tv_address.setText(address);
         tv_mobile.setText(storePhone);
         topic = getIntent().getExtras().getString(KEY_TOPIC);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+
+            }
+        });
     }
 
     @Override
@@ -96,21 +100,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
         callQueue();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "Back Click ");
-                finish();
-                //LaunchActivity.tempViewpager.setCurrentItem(1);
-                // LaunchActivity.tempViewpager.getAdapter().notifyDataSetChanged();
-
-            }
-        });
-    }
 
     @Override
     public void onBackPressed() {

@@ -72,16 +72,11 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.i(TAG, "onResume: ");
-    }
+
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "onResume: ");
         LaunchActivity.getLaunchActivity().setActionBarTitle("List");
 
     }
@@ -89,7 +84,6 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i(TAG, "onActivityCreated: ");
     }
 
 

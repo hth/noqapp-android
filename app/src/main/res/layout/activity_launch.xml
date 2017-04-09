@@ -6,23 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.noqapp.client.views.activities.LaunchActivity">
 
-<android.support.v7.widget.Toolbar
-    android:id="@+id/toolbar_actionbar"
-    android:layout_width="match_parent"
-    android:layout_height="58dp"
-    android:background="@color/colorActionbar">
-
-   <TextView
-       android:id="@+id/tv_title"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_gravity="center"
-       android:textSize="20sp"
-       android:textColor="@android:color/white"
-       android:textStyle="bold"/>
-
-
-</android.support.v7.widget.Toolbar>
+   <include layout="@layout/toolbar_layout"/>
    <RelativeLayout
        android:id="@+id/activity_main"
        android:layout_width="match_parent"
@@ -32,6 +16,7 @@
           android:id="@+id/frame_layout"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
+          android:orientation="vertical"
           android:layout_above="@+id/navigation"
           >
 

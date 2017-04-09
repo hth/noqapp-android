@@ -17,5 +17,6 @@
     <color name="color_btn_unselect">#80e92270</color>
 
     <color name="color_list_text">#928c9d</color>
+    <color name="color_invite_details">#cccccc</color>
 
 </resources>

@@ -1,6 +1,6 @@
 package com.noqapp.client.views.fragments;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +45,14 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     protected TextView tv_total_value;
     @BindView(R.id.tv_current_value)
     protected TextView tv_current_value;
-
+    @BindView(R.id.ll_top)
+    protected LinearLayout ll_top;
+    @BindView(R.id.rl_empty)
+    protected RelativeLayout rl_empty;
+    @BindView(R.id.btn_joinqueue)
+    protected Button btn_joinqueue;
+    @BindView(R.id.btnscanQRCode)
+    protected Button btnscanQRCode;
 
     private String codeQr;
     private JsonQueue jsonQueue;
@@ -50,21 +60,6 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
 
     public ScanQueueFragment() {
         // Required empty public constructor
-    }
-
-    public static Fragment getInstance() {
-        return new ScanQueueFragment();
-    }
-
-
-    public void startScanningBarcode(Activity context) {
-        IntentIntegrator integrator = new IntentIntegrator(context);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        integrator.setPrompt("Scan");
-        integrator.setCameraId(0);
-        integrator.setBeepEnabled(false);
-        integrator.setBarcodeImageEnabled(false);
-        integrator.forSupportFragment(this).initiateScan();
     }
 
     @Override
@@ -79,29 +74,14 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i(TAG, "onActivityCreated ::");
+        startScanningBarcode();
 
-        startScanningBarcode(getActivity());
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.i(TAG, "onStart ::");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "onResume ::");
         LaunchActivity.getLaunchActivity().setActionBarTitle("Home");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.i(TAG, "onResume ::");
     }
 
     @Override
@@ -112,6 +92,7 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
             if (result.getContents() == null) {
                 Log.d("MainActivity", "Cancelled scan");
                 Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+                showEmptyScreen(true);
             } else {
                 Log.d("MainActivity", "Scanned");
                 Toast.makeText(getActivity(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
@@ -122,9 +103,11 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
                     String[] codeQR = result.getContents().split("/");
                     QueueModel.queuePresenter = ScanQueueFragment.this;
                     QueueModel.getQueueState(LaunchActivity.DID, codeQR[3]);
+                    showEmptyScreen(false);
                 } else {
                     Toast toast = Toast.makeText(getActivity(), "No scan data received!", Toast.LENGTH_SHORT);
                     toast.show();
+                    showEmptyScreen(true);
                 }
             }
         } else {
@@ -153,8 +136,7 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     }
 
     @OnClick(R.id.btn_joinqueue)
-    public void joinQueue(View view) {
-
+    public void joinQueue() {
         if(null!=jsonQueue){
             Intent intent = new Intent(getActivity(), JoinQueueActivity.class);
             intent.putExtra(JoinQueueActivity.KEY_CODEQR, this.jsonQueue.getCodeQR());
@@ -178,15 +160,28 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
 
     }
 
-   // @OnClick(R.id.btnscanQRCode)
-//    @OnClick(R.id.btn_joinqueue)
-//    public void scanQR(View view) {
-//        IntentIntegrator integrator = new IntentIntegrator(getActivity());
-//        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-//        integrator.setPrompt("Scan");
-//        integrator.setCameraId(0);
-//        integrator.setBeepEnabled(false);
-//        integrator.setBarcodeImageEnabled(false);
-//        integrator.forSupportFragment(this).initiateScan();
-//    }
+    @OnClick(R.id.btnscanQRCode)
+    public void scanQR() {
+        startScanningBarcode();
+    }
+
+    private void startScanningBarcode() {
+        IntentIntegrator integrator = new IntentIntegrator(getActivity());
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setPrompt("Scan");
+        integrator.setCameraId(0);
+        integrator.setBeepEnabled(false);
+        integrator.setBarcodeImageEnabled(false);
+        integrator.forSupportFragment(this).initiateScan();
+    }
+
+    private void showEmptyScreen(boolean isShown){
+        if(isShown){
+        rl_empty.setVisibility(View.VISIBLE);
+        ll_top.setVisibility(View.GONE);
+    }else {
+            rl_empty.setVisibility(View.GONE);
+            ll_top.setVisibility(View.VISIBLE);
+        }
+    }
 }

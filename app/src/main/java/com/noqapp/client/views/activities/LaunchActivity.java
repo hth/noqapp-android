@@ -4,17 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,7 +20,6 @@ import com.noqapp.client.views.fragments.MeFragment;
 import com.noqapp.client.views.fragments.RegistrationFormFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
 
-import org.w3c.dom.Text;
 
 import java.util.UUID;
 
@@ -36,40 +30,46 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
 
     public static final String DID = UUID.randomUUID().toString();
-    private RelativeLayout rl_list,rl_home,rl_me;
-    private TextView tv_home,tv_list,tv_me;
-    private ImageView iv_home,iv_list,iv_me;
     private static LaunchActivity launchActivity;
-    private Toolbar actionBarToolbar;
-    private  TextView tv_title;
+
+    @BindView(R.id.rl_list)
+    protected RelativeLayout rl_list;
+    @BindView(R.id.rl_home)
+    protected RelativeLayout rl_home;
+    @BindView(R.id.rl_me)
+    protected RelativeLayout rl_me;
+    @BindView(R.id.tv_home)
+    protected  TextView tv_home;
+    @BindView(R.id.tv_list)
+    protected TextView tv_list;
+    @BindView(R.id.tv_me)
+    protected TextView tv_me;
+    @BindView(R.id.iv_home)
+    protected ImageView iv_home;
+    @BindView(R.id.iv_list)
+    protected ImageView iv_list;
+    @BindView(R.id.iv_me)
+    protected ImageView iv_me;
+    @BindView(R.id.toolbar)
+    protected  Toolbar toolbar;
+    @BindView(R.id.tv_toolbar_title)
+    protected TextView tv_toolbar_title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
         launchActivity=this;
-        actionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-        tv_title =(TextView)findViewById(R.id.tv_title);
-        setSupportActionBar(actionBarToolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-        rl_home=(RelativeLayout) findViewById(R.id.rl_home);
         rl_home.setOnClickListener(this);
-        rl_list=(RelativeLayout) findViewById(R.id.rl_list);
         rl_list.setOnClickListener(this);
-        rl_me=(RelativeLayout) findViewById(R.id.rl_me);
         rl_me.setOnClickListener(this);
-
-        iv_home=(ImageView) findViewById(R.id.iv_home);
-        iv_list=(ImageView) findViewById(R.id.iv_list);
-        iv_me=(ImageView) findViewById(R.id.iv_me);
-
-        tv_home=(TextView) findViewById(R.id.tv_home);
-        tv_list=(TextView) findViewById(R.id.tv_list);
-        tv_me=(TextView) findViewById(R.id.tv_me);
         iv_home.setBackgroundResource(R.mipmap.home_select);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
-        replaceFragmentWithoutBackStack(R.id.frame_layout, ScanQueueFragment.getInstance());
-
+        replaceFragmentWithoutBackStack(R.id.frame_layout, new ScanQueueFragment());
+        Intent in =new Intent(this,InviteActivity.class);
+        startActivity(in);
 
     }
 
@@ -102,11 +102,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 break;
 
         }
-
         replaceFragmentWithoutBackStack(R.id.frame_layout,fragment);
-
-
-
 
     }
 
@@ -114,7 +110,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         return  launchActivity;
     }
     public void setActionBarTitle(String title){
-        tv_title.setText(title);
+        tv_toolbar_title.setText(title);
     }
 
     private void  resetButtons(){
