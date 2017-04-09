@@ -22,6 +22,7 @@ import com.noqapp.client.R;
 import com.noqapp.client.utils.Constants;
 import com.noqapp.client.views.fragments.ListQueueFragment;
 import com.noqapp.client.views.fragments.MeFragment;
+import com.noqapp.client.views.fragments.RegistrationFormFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
 
 import org.w3c.dom.Text;
@@ -128,11 +129,13 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.requestCodeJoinQActiviy)
-        if (resultCode == Activity.RESULT_OK) {
-           int qrCode = data.getExtras().getInt(JoinQueueActivity.KEY_CODEQR);
-            Log.d("QR Code :: ", String.valueOf(qrCode));
-            onClick(rl_list);
+        if (requestCode == Constants.requestCodeJoinQActiviy) {
+            if (resultCode == Activity.RESULT_OK) {
+                int qrCode = data.getExtras().getInt(JoinQueueActivity.KEY_CODEQR);
+                Log.d("QR Code :: ", String.valueOf(qrCode));
+                onClick(rl_list);
+            }
         }
+
     }
 }

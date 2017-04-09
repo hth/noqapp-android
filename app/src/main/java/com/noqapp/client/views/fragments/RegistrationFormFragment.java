@@ -1,9 +1,11 @@
 package com.noqapp.client.views.fragments;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import com.noqapp.client.R;
 import com.noqapp.client.presenter.MePresenter;
 import com.noqapp.client.presenter.beans.Profile;
 import com.noqapp.client.presenter.beans.body.Registration;
+import com.noqapp.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.client.views.interfaces.MeView;
 
 import org.w3c.dom.Text;
@@ -31,6 +34,7 @@ import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 import static com.facebook.accountkit.internal.AccountKitController.getApplicationContext;
@@ -38,7 +42,7 @@ import static com.facebook.accountkit.internal.AccountKitController.getApplicati
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegistrationFormFragment extends Fragment implements MeView {
+public class RegistrationFormFragment extends Fragment implements MeView,RadioGroup.OnCheckedChangeListener {
 
     @BindView(R.id.edt_phone)
     EditText edt_phoneNo;
@@ -56,31 +60,19 @@ public class RegistrationFormFragment extends Fragment implements MeView {
     RadioButton rb_female;
 
     private  static final String TAG = "RegistrationForm";
+    public String gender = "";
 
-    public static int APP_REQUEST_CODE = 99;
+
     public RegistrationFormFragment() {
         // Required empty public constructor
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_registration_form, container, false);
-        ButterKnife.bind(this,view);
-        return view;
-    }
-
-    @OnClick(R.id.btnContinueRegistration)
-    public void action_Registration(View view)
+    public void callRegistrationAPI()
     {
-
         String phoneNo = edt_phoneNo.getText().toString();
         String name = edt_Name.getText().toString();
         String mail = edt_Mail.getText().toString();
         String birthday = edtBirthday.getText().toString();
-        String gender = "M";
         TimeZone tz = TimeZone.getDefault();
         System.out.println("TimeZone   "+tz.getDisplayName(false, TimeZone.SHORT)+" Timezon id :: " +tz.getID());
 
@@ -92,7 +84,7 @@ public class RegistrationFormFragment extends Fragment implements MeView {
         //String ic = e
 
         Registration registrationbean = new Registration();
-         registrationbean.setPhone(phoneNo);
+        registrationbean.setPhone(phoneNo);
         registrationbean.setFirstName(name);
         registrationbean.setMail(mail);
         registrationbean.setBirthday(birthday);
@@ -111,6 +103,29 @@ public class RegistrationFormFragment extends Fragment implements MeView {
             //Handle new or logged out user
         }
 
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_registration_form, container, false);
+        ButterKnife.bind(this,view);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        genderGroup.setOnCheckedChangeListener(this);
+    }
+
+    @OnClick(R.id.btnContinueRegistration)
+    public void action_Registration(View view)
+    {
+
+
 
         final Intent intent = new Intent(getActivity(), AccountKitActivity.class);
         AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
@@ -121,17 +136,44 @@ public class RegistrationFormFragment extends Fragment implements MeView {
         intent.putExtra(
                 AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
                 configurationBuilder.build());
-        startActivityForResult(intent, APP_REQUEST_CODE);
+        startActivityForResult(intent, NoQueueBaseActivity.ACCOUNTKIT_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+         if (requestCode == NoQueueBaseActivity.ACCOUNTKIT_REQUEST_CODE)
+        {
+            if (resultCode == Activity.RESULT_OK) {
+                Log.d("FB accont res:: ",data.toString());
+                callRegistrationAPI();
+            }
+        }
     }
 
     @Override
     public void queueResponse(Profile profile) {
-
         Log.d(TAG,"profile :"+profile.toString());
     }
 
     @Override
     public void queueError() {
         Log.d(TAG,"Error");
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+
+        switch (checkedId)
+        {
+            case R.id.rbMale:
+                gender = "M";
+                break;
+            case R.id.rbfemale:
+                gender = "F";
+                break;
+            default:
+                gender = "";
+        }
     }
 }

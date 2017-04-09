@@ -85,26 +85,28 @@ public class NoQueueDB extends SQLiteAssetHelper {
             try {
                 if (isCurrentQueueCall) {
                     tempTableName = TABLE_TOKENQUEUE;
-                    if (isTokenExist(tempTableName,tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate())) {
-                        String wherClause = COLUMN_CODE_QR+" = ?"+" AND "+COLUMN_CREATE_DATE+" = ?";
-                        values.remove(COLUMN_CODE_QR);
-                        values.remove(COLUMN_CREATE_DATE);
-
-                        db.update(tempTableName,values,wherClause,new String[]{tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate()});
-                    } else {
-                        msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
-                    }
+//                    if (isTokenExist(tempTableName,tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate())) {
+//                        String wherClause = COLUMN_CODE_QR+" = ?"+" AND "+COLUMN_CREATE_DATE+" = ?";
+//                        values.remove(COLUMN_CODE_QR);
+//                        values.remove(COLUMN_CREATE_DATE);
+//
+//                        db.update(tempTableName,values,wherClause,new String[]{tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate()});
+//                    } else {
+//                        msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
+//                    }
+                    db.insertWithOnConflict(tempTableName,null,values,SQLiteDatabase.CONFLICT_REPLACE);
 
                 } else {
                     tempTableName = TABLE_TOKENQUEUE_H;
-                    if (isTokenExist(tempTableName,tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate())) {
-                        String wherClause = COLUMN_CODE_QR+" = ?"+" AND "+COLUMN_CREATE_DATE+" = ?";
-                        values.remove(COLUMN_CODE_QR);
-                        values.remove(COLUMN_CREATE_DATE);
-                        db.update(tempTableName,values,wherClause,new String[]{tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate()});
-                    } else {
-                        msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
-                    }
+//                    if (isTokenExist(tempTableName,tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate())) {
+//                        String wherClause = COLUMN_CODE_QR+" = ?"+" AND "+COLUMN_CREATE_DATE+" = ?";
+//                        values.remove(COLUMN_CODE_QR);
+//                        values.remove(COLUMN_CREATE_DATE);
+//                        db.update(tempTableName,values,wherClause,new String[]{tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate()});
+//                    } else {
+//                        msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
+//                    }
+                    db.insertWithOnConflict(tempTableName,null,values,SQLiteDatabase.CONFLICT_REPLACE);
 
                 }
 
