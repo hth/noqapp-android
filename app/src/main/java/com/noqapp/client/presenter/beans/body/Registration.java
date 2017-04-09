@@ -24,28 +24,28 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Registration {
-    @JsonProperty("ph")
+    @JsonProperty("PH")
     private String phone;
 
-    @JsonProperty("fn")
+    @JsonProperty("FN")
     private String firstName;
 
-    @JsonProperty("em")
+    @JsonProperty("EN")
     private String mail;
 
-    @JsonProperty("bd")
+    @JsonProperty("BD")
     private String birthday;
 
-    @JsonProperty("ge")
+    @JsonProperty("GE")
     private String gender;
 
-    @JsonProperty("cs")
+    @JsonProperty("CS")
     private String countryShortName;
 
-    @JsonProperty("tz")
+    @JsonProperty("TZ")
     private String timeZoneId;
 
-    @JsonProperty("ic")
+    @JsonProperty("IC")
     private String inviteCode;
 
     public String getPhone() {

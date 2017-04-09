@@ -1,5 +1,7 @@
 package com.noqapp.client.views.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,10 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.noqapp.client.R;
+import com.noqapp.client.utils.Constants;
 import com.noqapp.client.views.fragments.ListQueueFragment;
 import com.noqapp.client.views.fragments.MeFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
@@ -21,9 +27,11 @@ import com.noqapp.client.views.fragments.ScanQueueFragment;
 import org.w3c.dom.Text;
 
 import java.util.UUID;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LaunchActivity extends AppCompatActivity implements OnClickListener {
+public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener {
 
 
     public static final String DID = UUID.randomUUID().toString();
@@ -59,9 +67,8 @@ public class LaunchActivity extends AppCompatActivity implements OnClickListener
         tv_me=(TextView) findViewById(R.id.tv_me);
         iv_home.setBackgroundResource(R.mipmap.home_select);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frame_layout, new ScanQueueFragment()).commit();
+        replaceFragmentWithoutBackStack(R.id.frame_layout, ScanQueueFragment.getInstance());
+
 
     }
 
@@ -95,9 +102,8 @@ public class LaunchActivity extends AppCompatActivity implements OnClickListener
 
         }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frame_layout, fragment).commit();
+        replaceFragmentWithoutBackStack(R.id.frame_layout,fragment);
+
 
 
 
@@ -118,5 +124,15 @@ public class LaunchActivity extends AppCompatActivity implements OnClickListener
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
         tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
         tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.requestCodeJoinQActiviy)
+        if (resultCode == Activity.RESULT_OK) {
+           int qrCode = data.getExtras().getInt(JoinQueueActivity.KEY_CODEQR);
+            Log.d("QR Code :: ", String.valueOf(qrCode));
+            onClick(rl_list);
+        }
     }
 }

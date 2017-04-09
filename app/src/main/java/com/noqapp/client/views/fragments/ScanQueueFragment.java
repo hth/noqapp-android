@@ -18,6 +18,7 @@ import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.QueuePresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
+import com.noqapp.client.utils.Constants;
 import com.noqapp.client.views.activities.JoinQueueActivity;
 import com.noqapp.client.views.activities.LaunchActivity;
 
@@ -162,10 +163,13 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
             intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, this.jsonQueue.getBusinessName());
             intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, this.jsonQueue.getBusinessName());
             intent.putExtra(JoinQueueActivity.KEY_ADDRESS, this.jsonQueue.getFormattedAddress());
-            startActivity(intent);
+            intent.putExtra(JoinQueueActivity.KEY_TOPIC, this.jsonQueue.getTopic());
+            getActivity().startActivityForResult(intent, Constants.requestCodeJoinQActiviy);
         }else{
             Toast.makeText(getActivity(),"Please scan first",Toast.LENGTH_LONG).show();
         }
+
+       // startActivity(intent);
 
 //        LaunchActivity.tempViewpager.setCurrentItem(1);
 //        ListQueueFragment queueFragment = new ListQueueFragment();
