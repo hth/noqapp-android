@@ -17,12 +17,12 @@
         android:gravity="center"
         android:background="@drawable/home_top_bg"
         android:orientation="vertical">
-        <TextView
+        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
             style="@style/style_join_queue_tv"
             android:id="@+id/tv_store_name"
             android:textColor="@color/colorActionbar"
             android:textSize="24sp"/>
-        <TextView
+        <com.noqapp.client.views.cutomviews.TextViewRobotoRegular
             style="@style/style_join_queue_tv"
             android:id="@+id/tv_queue_name"
             android:layout_below="@+id/tv_store_name"
@@ -30,14 +30,14 @@
             android:layout_marginBottom="10dp"
             android:textSize="15sp"
             />
-        <TextView
+        <com.noqapp.client.views.cutomviews.TextViewRobotoLight
             style="@style/style_join_queue_tv"
             android:id="@+id/tv_address"
             android:layout_below="@+id/tv_queue_name"
             android:textColor="@color/colorAddress"
             android:layout_marginBottom="10dp"
             android:textSize="18sp"/>
-        <TextView
+        <com.noqapp.client.views.cutomviews.TextViewRobotoLight
             style="@style/style_join_queue_tv"
             android:id="@+id/tv_mobile"
             android:layout_below="@+id/tv_address"
@@ -74,14 +74,14 @@
                     android:layout_alignRight="@id/strut"
                     android:layout_alignParentLeft="true"
                     android:gravity="center">
-                    <TextView
+                    <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
                         android:id="@+id/tv_current"
                         style="@style/style_join_queue_tv"
                         android:text="current"
                         android:textColor="@color/colorAddress"
                         android:textSize="15sp"
                          />
-                    <TextView
+                    <com.noqapp.client.views.cutomviews.TextViewRobotoLight
                         android:id="@+id/tv_current_value"
                         android:layout_below="@+id/tv_current"
                         style="@style/style_join_queue_tv"
@@ -94,13 +94,13 @@
                     android:layout_alignLeft="@id/strut"
                     android:layout_alignParentRight="true"
                     android:gravity="center">
-                    <TextView
+                    <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
                         android:id="@+id/tv_total"
                         style="@style/style_join_queue_tv"
                         android:text="total"
                         android:textColor="@color/colorAddress"
                         android:textSize="15sp" />
-                    <TextView
+                    <com.noqapp.client.views.cutomviews.TextViewRobotoLight
                         android:id="@+id/tv_total_value"
                         android:layout_below="@+id/tv_total"
                         style="@style/style_join_queue_tv"
@@ -122,7 +122,7 @@
             android:layout_height="0dp"
             android:layout_weight=".66"
             >
-            <Button
+            <com.noqapp.client.views.cutomviews.CustomButton
                 android:id="@+id/btn_joinqueue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
             android:textColor="@color/color_list_text"
             android:textSize="15sp" />
 
-        <Button
+        <com.noqapp.client.views.cutomviews.CustomButton
             android:id="@+id/btnscanQRCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

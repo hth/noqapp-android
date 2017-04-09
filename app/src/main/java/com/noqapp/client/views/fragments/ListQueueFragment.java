@@ -124,6 +124,7 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size()));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         listViewQueue.setLayoutManager(layoutManager);
+        listViewQueue.setHasFixedSize(true);
         listViewQueue.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         listViewQueue.setItemAnimator(new DefaultItemAnimator());
         ListqueueAdapter adapter = new ListqueueAdapter(context, currentlist, historylist);

@@ -18,14 +18,14 @@
        android:padding="20dp"
        android:layout_height="wrap_content">
 
-      <TextView
+      <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
           android:id="@+id/tv_title"
           style="@style/style_invite_tv"
           android:textColor="@color/colorActionbar"
           android:textSize="48sp"
           />
 
-      <TextView
+      <com.noqapp.client.views.cutomviews.TextViewRobotoLight
           android:id="@+id/tv_details"
           android:textColor="@color/colorAddress"
           android:textSize="18sp"

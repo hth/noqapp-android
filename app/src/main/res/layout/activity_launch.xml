@@ -46,7 +46,7 @@
                 android:background="@mipmap/home_inactive"
                 />
 
-            <TextView
+            <com.noqapp.client.views.cutomviews.TextViewRalewayBold
                 android:id="@+id/tv_home"
                 style="@style/style_home"
                 android:layout_below="@+id/iv_home"
@@ -64,7 +64,7 @@
                 android:background="@mipmap/list_inactive"
                  />
 
-            <TextView
+            <com.noqapp.client.views.cutomviews.TextViewRalewayBold
                 android:id="@+id/tv_list"
                 style="@style/style_home"
                 android:layout_below="@+id/iv_list"
@@ -82,7 +82,7 @@
                 android:background="@mipmap/me_inactive"
                  />
 
-            <TextView
+            <com.noqapp.client.views.cutomviews.TextViewRalewayBold
                 style="@style/style_home"
                 android:id="@+id/tv_me"
                 android:layout_below="@+id/iv_me"

@@ -15,21 +15,21 @@
     android:layout_height="wrap_content">
 
 
-    <TextView
+    <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
         android:id="@+id/tv_title"
         style="@style/style_invite_tv"
         android:textColor="@color/colorActionbar"
         android:textSize="24sp"
         />
 
-    <TextView
+    <com.noqapp.client.views.cutomviews.TextViewRobotoLight
         android:id="@+id/tv_details"
         android:textColor="@color/colorAddress"
         android:textSize="15sp"
         style="@style/style_invite_tv"
          />
 
-    <TextView
+    <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
         android:id="@+id/tv_how_it_works"
         style="@style/style_invite_tv"
         android:textColor="@color/colorActionbar"
@@ -59,14 +59,14 @@
         android:padding="10dp"
         android:background="@drawable/square_white_bg_drawable"
         >
-        <TextView
+        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
             android:id="@+id/tv_invite_code"
             android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="" />
 
-        <TextView
+        <com.noqapp.client.views.cutomviews.TextViewRobotoLight
             android:id="@+id/tv_copy"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
     </RelativeLayout>
 
 
-    <Button
+    <com.noqapp.client.views.cutomviews.CustomButton
         android:id="@+id/btn_send_invite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
