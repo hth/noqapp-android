@@ -29,18 +29,20 @@ import butterknife.OnClick;
 public class ScanQueueFragment extends Fragment implements QueuePresenter {
 
     private static final String TAG = ScanQueueFragment.class.getSimpleName();
-    @BindView(R.id.txtBusinessName)
-    protected TextView txtBusinessName;
-    @BindView(R.id.txtStoreAddress)
-    protected TextView txtStoreAddress;
-    @BindView(R.id.txtStorePhone)
-    protected TextView txtStorePhone;
-    @BindView(R.id.txtServingNumber)
-    protected TextView txtServingNumber;
-    @BindView(R.id.txtLastNumber)
-    protected TextView txtLastNumber;
-    @BindView(R.id.txtDisplayName)
-    protected TextView txtDisplayName;
+    @BindView(R.id.tv_store_name)
+    protected TextView tv_store_name;
+    @BindView(R.id.tv_queue_name)
+    protected TextView tv_queue_name;
+    @BindView(R.id.tv_address)
+    protected TextView tv_address;
+    @BindView(R.id.tv_mobile)
+    protected TextView tv_mobile;
+    @BindView(R.id.tv_total_value)
+    protected TextView tv_total_value;
+    @BindView(R.id.tv_current_value)
+    protected TextView tv_current_value;
+
+
     private String codeQr;
     private JsonQueue jsonQueue;
 
@@ -77,6 +79,8 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "onActivityCreated ::");
+
+        startScanningBarcode(getActivity());
 
     }
 
@@ -133,12 +137,12 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     public void queueResponse(JsonQueue jsonQueue) {
         Log.d("Queue=", jsonQueue.toString());
         this.jsonQueue = jsonQueue;
-        txtBusinessName.setText(jsonQueue.getBusinessName());
-        txtDisplayName.setText(jsonQueue.getDisplayName());
-        txtStoreAddress.setText(jsonQueue.getStoreAddress());
-        txtStorePhone.setText(jsonQueue.getStorePhone());
-        txtLastNumber.setText(String.valueOf(jsonQueue.getLastNumber()));
-        txtServingNumber.setText(String.valueOf(jsonQueue.getServingNumber()));
+        tv_store_name.setText(jsonQueue.getBusinessName());
+        tv_queue_name.setText(jsonQueue.getDisplayName());
+        tv_address.setText(jsonQueue.getFormattedAddress());
+        tv_mobile.setText(jsonQueue.getStorePhone());
+        tv_total_value.setText(String.valueOf(jsonQueue.getLastNumber()));
+        tv_current_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         codeQr = jsonQueue.getCodeQR();
     }
 
@@ -150,12 +154,18 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     @OnClick(R.id.btn_joinqueue)
     public void joinQueue(View view) {
 
-        Intent intent = new Intent(getActivity(), JoinQueueActivity.class);
-        intent.putExtra(JoinQueueActivity.KEY_CODEQR, this.jsonQueue.getCodeQR());
-        intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME, this.jsonQueue.getDisplayName());
-        intent.putExtra(JoinQueueActivity.KEY_STOREPHONE, this.jsonQueue.getStorePhone());
-        intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, this.jsonQueue.getBusinessName());
-        startActivity(intent);
+        if(null!=jsonQueue){
+            Intent intent = new Intent(getActivity(), JoinQueueActivity.class);
+            intent.putExtra(JoinQueueActivity.KEY_CODEQR, this.jsonQueue.getCodeQR());
+            intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME, this.jsonQueue.getDisplayName());
+            intent.putExtra(JoinQueueActivity.KEY_STOREPHONE, this.jsonQueue.getStorePhone());
+            intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, this.jsonQueue.getBusinessName());
+            intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, this.jsonQueue.getBusinessName());
+            intent.putExtra(JoinQueueActivity.KEY_ADDRESS, this.jsonQueue.getFormattedAddress());
+            startActivity(intent);
+        }else{
+            Toast.makeText(getActivity(),"Please scan first",Toast.LENGTH_LONG).show();
+        }
 
 //        LaunchActivity.tempViewpager.setCurrentItem(1);
 //        ListQueueFragment queueFragment = new ListQueueFragment();
@@ -164,14 +174,15 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
 
     }
 
-    @OnClick(R.id.btnscanQRCode)
-    public void scanQR(View view) {
-        IntentIntegrator integrator = new IntentIntegrator(getActivity());
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        integrator.setPrompt("Scan");
-        integrator.setCameraId(0);
-        integrator.setBeepEnabled(false);
-        integrator.setBarcodeImageEnabled(false);
-        integrator.forSupportFragment(this).initiateScan();
-    }
+   // @OnClick(R.id.btnscanQRCode)
+//    @OnClick(R.id.btn_joinqueue)
+//    public void scanQR(View view) {
+//        IntentIntegrator integrator = new IntentIntegrator(getActivity());
+//        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+//        integrator.setPrompt("Scan");
+//        integrator.setCameraId(0);
+//        integrator.setBeepEnabled(false);
+//        integrator.setBarcodeImageEnabled(false);
+//        integrator.forSupportFragment(this).initiateScan();
+//    }
 }

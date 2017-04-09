@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.client.model.types.QueueStatusEnum;
 import com.noqapp.client.utils.Constants;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -175,5 +176,24 @@ public class JsonQueue implements Serializable {
                 .append("queueStatus", queueStatus)
                 .append("created", created)
                 .toString();
+    }
+
+    public String getFormattedAddress(){
+
+
+        if(storeAddress.contains(",")){
+            String [] arr =storeAddress.split(",");
+            if(arr.length>2){
+
+                int secondIndex = storeAddress.indexOf(',', storeAddress.indexOf(',')+1);
+                return storeAddress.substring(0,secondIndex)+"\n"+storeAddress.substring(secondIndex,storeAddress.length()-1);
+            }
+
+            else
+            return storeAddress;
+        }else{
+            return storeAddress;
+        }
+
     }
 }

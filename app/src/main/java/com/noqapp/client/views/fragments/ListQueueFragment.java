@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,17 +31,17 @@ import java.util.List;
 public class ListQueueFragment extends Fragment implements TokenAndQueuePresenter, Token_QueueViewInterface {
 
 
-    public static RecyclerView listViewQueue;
+    private RecyclerView listViewQueue;
     public static boolean isCurrentQueueCall = false;
-    private static String TAG = ListQueueFragment.class.getSimpleName();
-    private static FragmentActivity context;
-    public String codeQR;
+    private String TAG = ListQueueFragment.class.getSimpleName();
+    private FragmentActivity context;
+
 
     public ListQueueFragment() {
         // Required empty public constructor
     }
 
-    public static Fragment getInstance() {
+    public static ListQueueFragment getInstance() {
         return new ListQueueFragment();
     }
 
@@ -94,7 +95,7 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
     @Override
     public void queueResponse(List<JsonTokenAndQueue> tokenAndQueues) {
         Log.d(TAG, "Tokent and Queue Response::" + tokenAndQueues.toString());
-        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(ListQueueFragment.context);
+        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.saveToken_Queue(tokenAndQueues, isCurrentQueueCall);
 
@@ -114,7 +115,7 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
             callQueueHistory();
 
         } else {
-            NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(this.context);
+            NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
             dbPresenter.tokenQueueViewInterface = this;
             dbPresenter.currentandHistoryTokenQueueListFromDB();
         }
@@ -127,10 +128,11 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
 
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size()));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-        this.listViewQueue.setLayoutManager(layoutManager);
-        this.listViewQueue.setItemAnimator(new DefaultItemAnimator());
+        listViewQueue.setLayoutManager(layoutManager);
+        listViewQueue.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        listViewQueue.setItemAnimator(new DefaultItemAnimator());
         ListqueueAdapter adapter = new ListqueueAdapter(context, currentlist, historylist);
-        this.listViewQueue.setAdapter(adapter);
+        listViewQueue.setAdapter(adapter);
 
 
     }
