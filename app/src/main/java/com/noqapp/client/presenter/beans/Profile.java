@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
 public class Profile {
-    @JsonProperty("nm")
+    @JsonProperty ("nm")
     private String name;
 
     @JsonProperty ("em")
@@ -45,6 +45,12 @@ public class Profile {
 
     @JsonProperty ("rs")
     private int remoteScanAvailable;
+
+    @JsonProperty ("bd")
+    private String birthday;
+
+    @JsonProperty ("ge")
+    private String gender;
 
     public String getName() {
         return name;
@@ -100,6 +106,22 @@ public class Profile {
 
     public void setRemoteScanAvailable(int remoteScanAvailable) {
         this.remoteScanAvailable = remoteScanAvailable;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     @Override
