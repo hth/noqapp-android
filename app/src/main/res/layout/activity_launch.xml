@@ -44,6 +44,9 @@
           android:layout_alignParentBottom="true"
           android:layout_alignParentLeft="true"
           android:layout_alignParentStart="true"
+          android:paddingBottom="2dp"
+          android:paddingTop="5dp"
+          android:background="@color/color_grey_bg"
           android:orientation="horizontal"
           android:weightSum="1">
          <RelativeLayout
@@ -55,9 +58,11 @@
 
                 android:id="@+id/iv_home"
                 style="@style/style_home"
-                android:background="@mipmap/ic_launcher" />
+                android:background="@mipmap/home_inactive"
+                />
 
             <TextView
+                android:id="@+id/tv_home"
                 style="@style/style_home"
                 android:layout_below="@+id/iv_home"
                 android:text="Home" />
@@ -71,9 +76,11 @@
             <ImageView
                 android:id="@+id/iv_list"
                 style="@style/style_home"
-                android:background="@mipmap/ic_launcher" />
+                android:background="@mipmap/list_inactive"
+                 />
 
             <TextView
+                android:id="@+id/tv_list"
                 style="@style/style_home"
                 android:layout_below="@+id/iv_list"
                 android:text="List" />
@@ -87,10 +94,12 @@
             <ImageView
                 android:id="@+id/iv_me"
                 style="@style/style_home"
-                android:background="@mipmap/ic_launcher" />
+                android:background="@mipmap/me_inactive"
+                 />
 
             <TextView
                 style="@style/style_home"
+                android:id="@+id/tv_me"
                 android:layout_below="@+id/iv_me"
                 android:text="Me" />
 

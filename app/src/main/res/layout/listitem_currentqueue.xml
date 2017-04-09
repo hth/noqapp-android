@@ -1,24 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" android:orientation="horizontal">
-<TextView
-    android:layout_width="0dp"
-    android:layout_height="match_parent" android:id="@+id/txtNumber" android:layout_weight="0.25"/>
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/list_item_margin"
+    android:layout_marginTop="@dimen/list_item_margin"
+    android:orientation="horizontal">
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.75"
+        android:gravity="center"
+        android:layout_weight="0.25">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNumber"
+            android:text=""
+            android:background="@drawable/circle_bg_drawable"
+            android:textColor="@color/colorMobile"
+            android:gravity="center"
+
+
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.50"
         android:orientation="vertical"
         >
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/txtStoreName" android:textSize="17sp" />
+            android:layout_height="wrap_content"
+            android:id="@+id/txtStoreName"
+            android:textColor="@color/colorActionbar"
+            android:textSize="20sp" />
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/txtStorePhoneNo" android:textSize="15sp"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/txtStorePhoneNo"
+            android:textSize="15sp"/>
     </LinearLayout>
     <TextView
         android:layout_width="0dp"
-        android:layout_height="match_parent" android:id="@+id/txtToken" android:layout_weight="0.25" android:textSize="15sp" />
+        android:layout_height="match_parent"
+        android:id="@+id/txtToken"
+        android:gravity="center"
+        android:layout_weight="0.25"
+        android:textSize="24sp" />
 </LinearLayout>
