@@ -4,8 +4,6 @@ package com.noqapp.client.views.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Geocoder;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -16,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.facebook.accountkit.AccessToken;
 import com.facebook.accountkit.AccountKit;
@@ -25,22 +22,17 @@ import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
 import com.noqapp.client.R;
 import com.noqapp.client.presenter.MePresenter;
-import com.noqapp.client.presenter.beans.Profile;
+import com.noqapp.client.presenter.beans.JsonProfile;
 import com.noqapp.client.presenter.beans.body.Registration;
 import com.noqapp.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.client.views.interfaces.MeView;
-
-import org.w3c.dom.Text;
 
 import java.util.Locale;
 import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-
-import static com.facebook.accountkit.internal.AccountKitController.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -157,7 +149,7 @@ public class RegistrationFormFragment extends NoQueueBaseFragment implements MeV
     }
 
     @Override
-    public void queueResponse(Profile profile) {
+    public void queueResponse(JsonProfile profile) {
         Log.d(TAG,"profile :"+profile.toString());
         SharedPreferences.Editor editor = ((NoQueueBaseActivity)getActivity()).getSharedprefEdit(getActivity());
         editor.putString(NoQueueBaseActivity.PREKEY_PHONE,profile.getPhoneRaw());
