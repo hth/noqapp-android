@@ -1,6 +1,6 @@
 package com.noqapp.client.presenter;
 
-import com.noqapp.client.presenter.beans.Profile;
+import com.noqapp.client.presenter.beans.JsonProfile;
 
 /**
  * User: hitender
@@ -9,7 +9,7 @@ import com.noqapp.client.presenter.beans.Profile;
 
 public interface ProfilePresenter {
 
-    void queueResponse(Profile profile);
+    void queueResponse(JsonProfile profile);
 
     void queueError();
 }

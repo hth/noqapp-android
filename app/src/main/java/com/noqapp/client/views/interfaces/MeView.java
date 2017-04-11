@@ -1,6 +1,6 @@
 package com.noqapp.client.views.interfaces;
 
-import com.noqapp.client.presenter.beans.Profile;
+import com.noqapp.client.presenter.beans.JsonProfile;
 
 /**
  * Created by omkar on 4/8/17.
@@ -8,7 +8,7 @@ import com.noqapp.client.presenter.beans.Profile;
 
 public interface MeView {
 
-    void queueResponse(Profile profile);
+    void queueResponse(JsonProfile profile);
      void queueError();
 
 }

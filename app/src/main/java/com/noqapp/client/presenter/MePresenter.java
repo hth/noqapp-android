@@ -3,9 +3,8 @@ package com.noqapp.client.presenter;
 import android.content.Context;
 
 import com.noqapp.client.model.RegisterModel;
-import com.noqapp.client.presenter.beans.Profile;
+import com.noqapp.client.presenter.beans.JsonProfile;
 import com.noqapp.client.presenter.beans.body.Registration;
-import com.noqapp.client.presenter.interfaces.MePresenterInterface;
 import com.noqapp.client.views.interfaces.MeView;
 
 /**
@@ -28,7 +27,7 @@ public class MePresenter implements ProfilePresenter {
     }
 
     @Override
-    public void queueResponse(Profile profile) {
+    public void queueResponse(JsonProfile profile) {
         if(profile.getError() == null) {
             meView.queueResponse(profile);
         } else {
