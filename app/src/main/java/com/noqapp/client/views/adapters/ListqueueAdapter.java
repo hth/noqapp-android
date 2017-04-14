@@ -62,7 +62,7 @@ public class ListqueueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mholder.txtToken.setText(String.valueOf(queue.getToken()));
 
             historyCount_row++;
-Log.v("Histroy count",""+historyCount_row +" pos : "+""+position);
+            Log.v("Histroy count", "" + historyCount_row + " pos : " + "" + position);
         }
 
     }

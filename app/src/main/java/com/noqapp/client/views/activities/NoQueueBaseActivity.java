@@ -8,13 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.noqapp.client.R;
-
 /**
  * Created by omkar on 4/8/17.
  */
 
-public class NoQueueBaseActivity extends AppCompatActivity{
+public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static final String PREKEY_PHONE = "phone";
     public static final String PREKEY_NAME = "name";
@@ -26,19 +24,18 @@ public class NoQueueBaseActivity extends AppCompatActivity{
 
 
     public static final int ACCOUNTKIT_REQUEST_CODE = 99;
-    public void replaceFragmentWithoutBackStack(int container, Fragment fragment)
-    {
+
+    public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(container, fragment).commit();
     }
 
-    public SharedPreferences.Editor getSharedprefEdit(Activity activity)
-    {
+    public SharedPreferences.Editor getSharedprefEdit(Activity activity) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         return editor;
     }
 
-    
+
 }

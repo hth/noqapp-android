@@ -75,8 +75,7 @@ public class NoQueueDB extends SQLiteAssetHelper {
             values.put(COLUMN_SERVING_NUMBER, tokenAndQueue.getServingNumber());
             values.put(COLUMN_LAST_NUMBER, tokenAndQueue.getLastNumber());
             values.put(COLUMN_TOKEN, tokenAndQueue.getToken());
-            if (null != tokenAndQueue.getQueueStatus())
-            {
+            if (null != tokenAndQueue.getQueueStatus()) {
                 values.put(COLUMN_QUEUE_STATUS, tokenAndQueue.getQueueStatus().getName());
 
             }
@@ -94,7 +93,7 @@ public class NoQueueDB extends SQLiteAssetHelper {
 //                    } else {
 //                        msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
 //                    }
-                    db.insertWithOnConflict(tempTableName,null,values,SQLiteDatabase.CONFLICT_REPLACE);
+                    db.insertWithOnConflict(tempTableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 } else {
                     tempTableName = TABLE_TOKENQUEUE_H;
@@ -106,7 +105,7 @@ public class NoQueueDB extends SQLiteAssetHelper {
 //                    } else {
 //                        msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
 //                    }
-                    db.insertWithOnConflict(tempTableName,null,values,SQLiteDatabase.CONFLICT_REPLACE);
+                    db.insertWithOnConflict(tempTableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 }
 
@@ -119,7 +118,6 @@ public class NoQueueDB extends SQLiteAssetHelper {
                 Log.e(TAG, "Exception ::" + e.getMessage().toString());
 
 
-
             }
 
         }
@@ -129,14 +127,11 @@ public class NoQueueDB extends SQLiteAssetHelper {
 
     public boolean isTokenExist(String table_name, String qrcode, String date) {
         //String mToken = String.valueOf(token);
-        String wherClause = COLUMN_CODE_QR+" = ?"+" AND "+COLUMN_CREATE_DATE+" = ?";
+        String wherClause = COLUMN_CODE_QR + " = ?" + " AND " + COLUMN_CREATE_DATE + " = ?";
         long line = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM " + table_name + " WHERE " + wherClause,
-                new String[]{qrcode,date});
+                new String[]{qrcode, date});
         return line > 0;
     }
-
-
-
 
 
     public List<JsonTokenAndQueue> getCurrentQueueList() {

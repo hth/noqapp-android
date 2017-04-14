@@ -8,14 +8,13 @@ import com.google.zxing.client.android.CaptureActivity;
 import com.noqapp.client.R;
 
 
-
 public class BarcodeScannerActivity extends CaptureActivity {
 
     @Override
     public void onCreate(Bundle bundle) {
         // TODO Auto-generated method stub
         super.onCreate(bundle);
-        Button btnAnnuler = (Button)findViewById(R.id.btnClose);
+        Button btnAnnuler = (Button) findViewById(R.id.btnClose);
 
         btnAnnuler.setOnClickListener(new View.OnClickListener() {
 

@@ -27,8 +27,7 @@ public class NoQueueFirbaseInstanceServices extends FirebaseInstanceIdService {
 
     }
 
-    private  void sendRegistrationToServer(String refreshToken)
-    {
+    private void sendRegistrationToServer(String refreshToken) {
         DeviceModel deviceModel = new DeviceModel();
         DeviceToken deviceToken = new DeviceToken();
         deviceToken.setFcmToken(refreshToken);

@@ -54,6 +54,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     private String address;
 
     private String topic;
+
     public void callQueue() {
         if (codeQR != null) {
             Log.d("code qr ::", codeQR);
@@ -78,7 +79,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
         displayName = getIntent().getExtras().getString(KEY_DISPLAYNAME);
         storePhone = getIntent().getExtras().getString(KEY_STOREPHONE);
         queueName = getIntent().getExtras().getString(KEY_QUEUENAME);
-        address= getIntent().getExtras().getString(KEY_ADDRESS);
+        address = getIntent().getExtras().getString(KEY_ADDRESS);
 
         tv_store_name.setText(displayName);
         tv_queue_name.setText(queueName);
@@ -101,20 +102,17 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     }
 
 
-
     @Override
     public void onBackPressed() {
 
-        if(mJsonToken!=null)
-        {
+        if (mJsonToken != null) {
 
             Intent intent = new Intent();
-            intent.putExtra(KEY_CODEQR,mJsonToken.getToken());
+            intent.putExtra(KEY_CODEQR, mJsonToken.getToken());
             if (getParent() == null) {
                 setResult(Activity.RESULT_OK, intent);
-            }else
-            {
-                getParent().setResult(Activity.RESULT_OK,intent);
+            } else {
+                getParent().setResult(Activity.RESULT_OK, intent);
             }
             //finish();
         }

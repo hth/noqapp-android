@@ -26,7 +26,6 @@ public final class RegisterModel {
     }
 
     /**
-     *
      * @param registration
      */
     public static void register(Registration registration) {
