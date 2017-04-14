@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.noqapp.client.R;
 import com.noqapp.client.views.fragments.ListQueueFragment;
+import com.noqapp.client.views.fragments.MeFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
-import com.noqapp.client.views.fragments.UserInfoFragment;
 
 import java.util.UUID;
 
@@ -92,7 +92,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 break;
 
             case R.id.rl_me:
-                fragment = UserInfoFragment.getInstance();
+                fragment = MeFragment.getInstance();
                 iv_me.setBackgroundResource(R.mipmap.me_select);
                 tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;

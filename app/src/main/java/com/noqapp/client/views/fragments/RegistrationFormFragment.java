@@ -213,7 +213,7 @@ public class RegistrationFormFragment extends NoQueueBaseFragment implements MeV
             editor.putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, true);
             editor.putString(NoQueueBaseActivity.PREKEY_INVITECODE, profile.getInviteCode());
             editor.commit();
-            replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new UserInfoFragment(), TAG);
+            replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
         } else {
             //Rejected from  server
             ErrorEncounteredJson eej = profile.getError();

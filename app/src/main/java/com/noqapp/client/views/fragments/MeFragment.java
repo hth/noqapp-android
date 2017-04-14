@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class UserInfoFragment extends NoQueueBaseFragment {
+public class MeFragment extends NoQueueBaseFragment {
 
     @BindView(R.id.tv_firstLastName)
     TextView tv_firstName;
@@ -46,13 +46,13 @@ public class UserInfoFragment extends NoQueueBaseFragment {
     private String inviteCode;
     public static final String TAG = "UserInfoFragment";
 
-    public UserInfoFragment() {
+    public MeFragment() {
 
     }
 
 
-    public static UserInfoFragment getInstance() {
-        UserInfoFragment fragment = new UserInfoFragment();
+    public static MeFragment getInstance() {
+        MeFragment fragment = new MeFragment();
 
         return fragment;
     }
@@ -62,7 +62,7 @@ public class UserInfoFragment extends NoQueueBaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_userinfo, container, false);
+        View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -112,7 +112,7 @@ public class UserInfoFragment extends NoQueueBaseFragment {
                             SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
                             preferences.edit().clear().commit();
                             //navigate to signup/login
-                            replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new UserInfoFragment(), TAG);
+                            replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
