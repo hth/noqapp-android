@@ -17,7 +17,7 @@ import java.util.List;
  * Created by omkar on 4/2/17.
  */
 
-public class ListqueueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ListQueueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private static final int TYPE_HISTORY = 1;
@@ -27,7 +27,7 @@ public class ListqueueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context context;
     private int historyCount_row = 0;
 
-    public ListqueueAdapter(Context context, List<JsonTokenAndQueue> list, List<JsonTokenAndQueue> historylist) {
+    public ListQueueAdapter(Context context, List<JsonTokenAndQueue> list, List<JsonTokenAndQueue> historylist) {
         this.context = context;
         this.list = list;
         this.historyList = historylist;

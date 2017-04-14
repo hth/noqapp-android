@@ -21,7 +21,7 @@ import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.views.activities.LaunchActivity;
-import com.noqapp.client.views.adapters.ListqueueAdapter;
+import com.noqapp.client.views.adapters.ListQueueAdapter;
 import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
 
 import java.util.List;
@@ -128,7 +128,7 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
         listViewQueue.setHasFixedSize(true);
         listViewQueue.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         listViewQueue.setItemAnimator(new DefaultItemAnimator());
-        ListqueueAdapter adapter = new ListqueueAdapter(context, currentlist, historylist);
+        ListQueueAdapter adapter = new ListQueueAdapter(context, currentlist, historylist);
         listViewQueue.setAdapter(adapter);
         rl_empty_screen.setVisibility(View.GONE);
         listViewQueue.setVisibility(View.VISIBLE);
