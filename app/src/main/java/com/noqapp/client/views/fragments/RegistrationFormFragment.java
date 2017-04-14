@@ -158,7 +158,7 @@ public class RegistrationFormFragment extends NoQueueBaseFragment implements MeV
 
         Locale l = new Locale(Locale.getDefault().getLanguage(),countryCode);
         countryISO = l.getISO3Country();
-                CountryPicker picker = CountryPicker.newInstance("Select Country");
+        CountryPicker picker = CountryPicker.newInstance("Select Country");
         Country country = picker.getCountryByLocale(getActivity(),l);
         edt_country_code.setBackgroundResource(country.getFlag());
         edt_country_code.setError(null);
