@@ -48,4 +48,28 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:text">""</item>
     </style>
+
+
+    <style name="style_register_tv" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="style_register_edt" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:background">@drawable/square_white_bg_drawable</item>
+    </style>
+
+
+
+
+
 </resources>

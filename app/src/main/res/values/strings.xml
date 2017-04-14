@@ -23,15 +23,7 @@
     <string name="remotescanavail">Remote Scan Available</string>
     <string name="invite">Invite</string>
     <string name="firstname">First Name</string>
-    <string name="phonenumber">Phone Number</string>
-    <string name="freeremotescan">Get Free remote scan</string>
-    <string name="register">Register</string>
-    <string name="phonerequired">Phone(Required)</string>
-    <string name="namerequired">Name(Required)</string>
-    <string name="mail">Mail</string>
-    <string name="birthday">Birthday</string>
-    <string name="gender">Gender(M/F)(required)</string>
-    <string name="invitecode">Invite code</string>
+
   <string name="ACCOUNT_KIT_CLIENT_TOKEN">ec365faae446a61474e707beaa4e0131</string>
     <string name="FACEBOOK_APP_ID">982366595228298</string>
 
@@ -44,4 +36,22 @@
     <string name="copy">Copy</string>
     <string name="send_invite">Send Invites-></string>
 
+    <string name="offline">Network unavailable. Please connect your device to network.</string>
+    <string name="empty_history">You don\'t have any \n recent history.</string>
+    <string name="close">close</string>
+
+
+
+    <!--Register Screen-->
+
+    <string name="phonenumber">Phone Number</string>
+    <string name="freeremotescan">Get Free Remote Scan</string>
+    <string name="register">Register</string>
+    <string name="phone">Phone*</string>
+    <string name="name">Name*</string>
+    <string name="mail">Mail</string>
+    <string name="birthday">Birthday</string>
+    <string name="gender">Gender*</string>
+    <string name="invitecode">Invite code</string>
+    <string name="btnregister">Continue Register</string>
 </resources>

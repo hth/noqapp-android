@@ -67,8 +67,8 @@ public class InviteActivity extends AppCompatActivity {
         }
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String title = bundle.getString("title", "");
-            String details = bundle.getString("details", "");
+            String title = bundle.getString("title", "Hardcoded Title");
+            String details = bundle.getString("details", "Hardcoded Details....");
             String invite_code = bundle.getString("invite_code", "");
 
             if (invite_code.isEmpty())
@@ -81,7 +81,7 @@ public class InviteActivity extends AppCompatActivity {
         }else {
             tv_title.setText("Title is here");
             tv_details.setText("Details are .....");
-            tv_invite_code.setText("2332341");
+            tv_invite_code.setText("");
         }
         selectedText=tv_invite_code.getText().toString();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

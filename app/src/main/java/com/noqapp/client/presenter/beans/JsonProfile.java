@@ -131,13 +131,9 @@ public class JsonProfile {
         return error;
     }
 
-    public void setError(ErrorEncounteredJson error) {
-        this.error = error;
-    }
-
     @Override
     public String toString() {
-        return "Profile{" +
+        return "JsonProfile{" +
                 "name='" + name + '\'' +
                 ", mail='" + mail + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
@@ -145,6 +141,15 @@ public class JsonProfile {
                 ", timeZone='" + timeZone + '\'' +
                 ", inviteCode='" + inviteCode + '\'' +
                 ", remoteScanAvailable=" + remoteScanAvailable +
+                ", birthday='" + birthday + '\'' +
+                ", gender='" + gender + '\'' +
+                ", error=" + error +
                 '}';
     }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+
 }

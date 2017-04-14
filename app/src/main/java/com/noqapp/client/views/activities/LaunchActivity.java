@@ -1,7 +1,6 @@
 package com.noqapp.client.views.activities;
 
-import android.app.Activity;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -9,16 +8,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.util.Log;
+
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.noqapp.client.R;
-import com.noqapp.client.utils.Constants;
 import com.noqapp.client.views.fragments.ListQueueFragment;
-import com.noqapp.client.views.fragments.MeFragment;
-import com.noqapp.client.views.fragments.RegistrationFormFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
+import com.noqapp.client.views.fragments.UserInfoFragment;
 
 
 import java.util.UUID;
@@ -54,6 +52,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     protected  Toolbar toolbar;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
+    private long lastPress;
+    private Toast backpressToast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +67,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         rl_me.setOnClickListener(this);
         iv_home.setBackgroundResource(R.mipmap.home_select);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
-        replaceFragmentWithoutBackStack(R.id.frame_layout, new ScanQueueFragment());
-
+        
+        onClick(rl_home);
 
     }
 
@@ -93,7 +93,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 break;
 
             case R.id.rl_me:
-                fragment = MeFragment.getInstance();
+                fragment = UserInfoFragment.getInstance();
                 iv_me.setBackgroundResource(R.mipmap.me_select);
                 tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
@@ -121,16 +121,30 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
         tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.requestCodeJoinQActiviy) {
-            if (resultCode == Activity.RESULT_OK) {
-                int qrCode = data.getExtras().getInt(JoinQueueActivity.KEY_CODEQR);
-                Log.d("QR Code :: ", String.valueOf(qrCode));
-                onClick(rl_list);
-            }
-        }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == Constants.requestCodeJoinQActiviy) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                int qrCode = data.getExtras().getInt(JoinQueueActivity.KEY_CODEQR);
+//                Log.d("QR Code :: ", String.valueOf(qrCode));
+//                onClick(rl_list);
+//            }
+//        }
+//
+//    }
 
+
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if(currentTime - lastPress > 3000){
+            backpressToast= Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
+            backpressToast.show();
+            lastPress = currentTime;
+        }else {
+            if (backpressToast != null) backpressToast.cancel();
+            super.onBackPressed();
+        }
     }
 }
