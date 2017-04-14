@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.client.R;
@@ -33,6 +34,7 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
 
 
     private RecyclerView listViewQueue;
+    private RelativeLayout rl_empty_screen;
     public static boolean isCurrentQueueCall = false;
     private String TAG = ListQueueFragment.class.getSimpleName();
     private FragmentActivity context;
@@ -68,6 +70,7 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
         context = getActivity();
         View view = inflater.inflate(R.layout.fragment_list_queue, container, false);
         listViewQueue = (RecyclerView) view.findViewById(R.id.listView_quequList);
+        rl_empty_screen=(RelativeLayout)view.findViewById(R.id.rl_empty_screen);
         //ButterKnife.bind(this,view);
         return view;
     }
@@ -129,7 +132,8 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
         listViewQueue.setItemAnimator(new DefaultItemAnimator());
         ListqueueAdapter adapter = new ListqueueAdapter(context, currentlist, historylist);
         listViewQueue.setAdapter(adapter);
-
+        rl_empty_screen.setVisibility(View.GONE);
+        listViewQueue.setVisibility(View.VISIBLE);
 
     }
 

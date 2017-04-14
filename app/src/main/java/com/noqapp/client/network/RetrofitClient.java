@@ -9,7 +9,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public class RetrofitClient {
 
-    public static String BaseURL = "https://tp.receiptofi.com/noqapp-mobile/";
+    public static String BaseURL = "http://192.168.0.105:9090/noqapp-mobile/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient(String baseUrl) {

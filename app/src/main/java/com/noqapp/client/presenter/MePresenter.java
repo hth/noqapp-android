@@ -28,11 +28,11 @@ public class MePresenter implements ProfilePresenter {
 
     @Override
     public void queueResponse(JsonProfile profile) {
-        if(profile.getError() == null) {
+       // if(profile.getError() == null) {
             meView.queueResponse(profile);
-        } else {
+       // } else {
             //TODO show error message
-        }
+       // }
     }
 
     @Override

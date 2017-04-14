@@ -18,5 +18,7 @@
 
     <color name="color_list_text">#928c9d</color>
     <color name="color_invite_details">#cccccc</color>
-
+    <color name="color_tab">#f8f9f9</color>
+    <color name="color_tab1">#dddddd</color>
+    <color name="color_tab2">#f6f5f5</color>
 </resources>

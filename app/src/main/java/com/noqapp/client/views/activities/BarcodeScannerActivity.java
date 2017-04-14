@@ -7,9 +7,7 @@ import android.widget.Button;
 import com.google.zxing.client.android.CaptureActivity;
 import com.noqapp.client.R;
 
-/**
- * Created by C0678642 on 4/13/2017.
- */
+
 
 public class BarcodeScannerActivity extends CaptureActivity {
 
