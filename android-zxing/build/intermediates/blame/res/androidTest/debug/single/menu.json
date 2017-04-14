@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/res/merged/androidTest/debug/menu/encode.xml",
+        "source": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/bundles/debug/res/menu/encode.xml"
+    },
+    {
+        "merged": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/res/merged/androidTest/debug/menu/history.xml",
+        "source": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/bundles/debug/res/menu/history.xml"
+    },
+    {
+        "merged": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/res/merged/androidTest/debug/menu/capture.xml",
+        "source": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/bundles/debug/res/menu/capture.xml"
+    }
+]

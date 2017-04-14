@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +17,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.client.android.CaptureActivity;
+//import com.google.zxing.integration.android.IntentIntegrator;
+//import com.google.zxing.integration.android.IntentResult;
 import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.QueuePresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.utils.Constants;
+import com.noqapp.client.views.activities.BarcodeScannerActivity;
 import com.noqapp.client.views.activities.JoinQueueActivity;
 import com.noqapp.client.views.activities.LaunchActivity;
 
@@ -30,7 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ScanQueueFragment extends Fragment implements QueuePresenter {
+public class ScanQueueFragment extends Fragment implements QueuePresenter,CaptureActivity.BarcodeScannedResultCallback  {
 
     private static final String TAG = ScanQueueFragment.class.getSimpleName();
     @BindView(R.id.tv_store_name)
@@ -68,6 +72,7 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
         ButterKnife.bind(this, view);
+        BarcodeScannerActivity.barcodeScannedResultCallback = this;
         return view;
     }
 
@@ -84,37 +89,37 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
         LaunchActivity.getLaunchActivity().setActionBarTitle("Home");
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() == null) {
-                Log.d("MainActivity", "Cancelled scan");
-                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
-                showEmptyScreen(true);
-            } else {
-                Log.d("MainActivity", "Scanned");
-                Toast.makeText(getActivity(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                Log.d("QRCode Result:", result.getContents());
-
-
-                if (result.getContents().startsWith("https://tp.receiptofi.com")) {
-                    String[] codeQR = result.getContents().split("/");
-                    QueueModel.queuePresenter = ScanQueueFragment.this;
-                    QueueModel.getQueueState(LaunchActivity.DID, codeQR[3]);
-                    showEmptyScreen(false);
-                } else {
-                    Toast toast = Toast.makeText(getActivity(), "No scan data received!", Toast.LENGTH_SHORT);
-                    toast.show();
-                    showEmptyScreen(true);
-                }
-            }
-        } else {
-            // This is important, otherwise the result will not be passed to the fragment
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+//        if (result != null) {
+//            if (result.getContents() == null) {
+//                Log.d("MainActivity", "Cancelled scan");
+//                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+//                showEmptyScreen(true);
+//            } else {
+//                Log.d("MainActivity", "Scanned");
+//                Toast.makeText(getActivity(), "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+//                Log.d("QRCode Result:", result.getContents());
+//
+//
+//                if (result.getContents().startsWith("https://tp.receiptofi.com")) {
+//                    String[] codeQR = result.getContents().split("/");
+//                    QueueModel.queuePresenter = ScanQueueFragment.this;
+//                    QueueModel.getQueueState(LaunchActivity.DID, codeQR[3]);
+//                    showEmptyScreen(false);
+//                } else {
+//                    Toast toast = Toast.makeText(getActivity(), "No scan data received!", Toast.LENGTH_SHORT);
+//                    toast.show();
+//                    showEmptyScreen(true);
+//                }
+//            }
+//        } else {
+//            // This is important, otherwise the result will not be passed to the fragment
+//            super.onActivityResult(requestCode, resultCode, data);
+//        }
+//    }
 
 
     @Override
@@ -166,13 +171,30 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     }
 
     private void startScanningBarcode() {
-        IntentIntegrator integrator = new IntentIntegrator(getActivity());
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        integrator.setPrompt("Scan");
-        integrator.setCameraId(0);
-        integrator.setBeepEnabled(false);
-        integrator.setBarcodeImageEnabled(false);
-        integrator.forSupportFragment(this).initiateScan();
+//        IntentIntegrator integrator = new IntentIntegrator(getActivity());
+//        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+//        integrator.setPrompt("Scan");
+//        integrator.setCameraId(0);
+//        integrator.setBeepEnabled(false);
+//        integrator.setBarcodeImageEnabled(false);
+//        integrator.forSupportFragment(this).initiateScan();
+
+        //if(isCameraAndStoragePermissionAllowed()){
+         //   tv_scan_result.setText("");
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            DisplayMetrics dm = new DisplayMetrics();
+            display.getMetrics(dm);
+            int width = dm.widthPixels*2/3;
+            int height = dm.heightPixels*1/2;
+            Intent intent = new Intent(getActivity(),
+                    BarcodeScannerActivity.class);
+            intent.setAction("com.google.zxing.client.android.SCAN");
+            intent.putExtra("SCAN_WIDTH", width);
+            intent.putExtra("SCAN_HEIGHT", height);
+            startActivityForResult(intent, 0);
+//        }else{
+//            requestCameraAndStoragePermission();
+//        }
     }
 
     private void showEmptyScreen(boolean isShown){
@@ -182,6 +204,34 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter {
     }else {
             rl_empty.setVisibility(View.GONE);
             ll_top.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void barcodeScannedResult(String rawData) {
+        Log.v("Barcode vaue",rawData.toString());
+//        if(!rawData.equals("")) {
+//            //tv_scan_result.setText("Scan result is : "+rawData);
+//            Toast.makeText(getActivity(), rawData, Toast.LENGTH_LONG).show();
+//        }
+
+            if (rawData == null) {
+                Log.d("MainActivity", "Cancelled scan");
+                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+                showEmptyScreen(true);
+            } else {
+                Toast.makeText(getActivity(), rawData, Toast.LENGTH_LONG).show();
+                if (rawData.startsWith("https://tp.receiptofi.com")) {
+                    String[] codeQR = rawData.split("/");
+                    QueueModel.queuePresenter = ScanQueueFragment.this;
+                    QueueModel.getQueueState(LaunchActivity.DID, codeQR[3]);
+                    showEmptyScreen(false);
+                } else {
+                    Toast toast = Toast.makeText(getActivity(), "No scan data received!", Toast.LENGTH_SHORT);
+                    toast.show();
+                    showEmptyScreen(true);
+                }
+
         }
     }
 }

@@ -44,4 +44,8 @@
     <string name="copy">Copy</string>
     <string name="send_invite">Send Invites-></string>
 
+    <string name="offline">Network unavailable. Please connect your device to network.</string>
+    <string name="empty_history">You don\'t have any \n recent history.</string>
+    <string name="close">close</string>
+
 </resources>

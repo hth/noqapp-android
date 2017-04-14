@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/res/merged/androidTest/debug/layout/encode.xml",
+        "source": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/bundles/debug/res/layout/encode.xml"
+    },
+    {
+        "merged": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/res/merged/androidTest/debug/layout/search_book_contents.xml",
+        "source": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/bundles/debug/res/layout/search_book_contents.xml"
+    },
+    {
+        "merged": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/res/merged/androidTest/debug/layout/help.xml",
+        "source": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/bundles/debug/res/layout/help.xml"
+    },
+    {
+        "merged": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/res/merged/androidTest/debug/layout/capture.xml",
+        "source": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/bundles/debug/res/layout/capture.xml"
+    },
+    {
+        "merged": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/res/merged/androidTest/debug/layout/history_list_item.xml",
+        "source": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/bundles/debug/res/layout/history_list_item.xml"
+    },
+    {
+        "merged": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/res/merged/androidTest/debug/layout/app_picker_list_item.xml",
+        "source": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/bundles/debug/res/layout/app_picker_list_item.xml"
+    },
+    {
+        "merged": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/res/merged/androidTest/debug/layout/search_book_contents_list_item.xml",
+        "source": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/bundles/debug/res/layout/search_book_contents_list_item.xml"
+    },
+    {
+        "merged": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/res/merged/androidTest/debug/layout/search_book_contents_header.xml",
+        "source": "/Users/chandra/_work/NoQApp_Android/android-zxing/build/intermediates/bundles/debug/res/layout/search_book_contents_header.xml"
+    }
+]
