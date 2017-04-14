@@ -56,8 +56,8 @@ public class InviteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite);
         ButterKnife.bind(this);
-        tv_how_it_works.setPaintFlags(tv_how_it_works.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-        tv_copy.setPaintFlags(tv_copy.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+        tv_how_it_works.setPaintFlags(tv_how_it_works.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        tv_copy.setPaintFlags(tv_copy.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         tv_toolbar_title.setText("Invite");
@@ -71,19 +71,18 @@ public class InviteActivity extends AppCompatActivity {
             String details = bundle.getString("details", "Hardcoded Details....");
             String invite_code = bundle.getString("invite_code", "");
 
-            if (invite_code.isEmpty())
-            {
+            if (invite_code.isEmpty()) {
                 btn_send_invite.setEnabled(false);
             }
             tv_title.setText(title);
             tv_details.setText(details);
             tv_invite_code.setText(invite_code);
-        }else {
+        } else {
             tv_title.setText("Title is here");
             tv_details.setText("Details are .....");
             tv_invite_code.setText("");
         }
-        selectedText=tv_invite_code.getText().toString();
+        selectedText = tv_invite_code.getText().toString();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,7 +102,7 @@ public class InviteActivity extends AppCompatActivity {
             sendIntent.putExtra(Intent.EXTRA_TEXT, selectedText);
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
-        }catch (ActivityNotFoundException e){
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(this, "No app to share invitation", Toast.LENGTH_SHORT).show();
         }
     }
@@ -118,7 +117,7 @@ public class InviteActivity extends AppCompatActivity {
 
     @OnClick(R.id.tv_how_it_works)
     public void howItWorks() {
-        Intent in=new Intent(this,InviteDetailActivity.class);
+        Intent in = new Intent(this, InviteDetailActivity.class);
         in.putExtra("title", tv_title.getText().toString());
         in.putExtra("details", tv_details.getText().toString());
         startActivity(in);

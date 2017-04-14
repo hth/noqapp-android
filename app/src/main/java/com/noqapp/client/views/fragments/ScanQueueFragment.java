@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ScanQueueFragment extends Fragment implements QueuePresenter,CaptureActivity.BarcodeScannedResultCallback  {
+public class ScanQueueFragment extends Fragment implements QueuePresenter, CaptureActivity.BarcodeScannedResultCallback {
 
     private static final String TAG = ScanQueueFragment.class.getSimpleName();
     @BindView(R.id.tv_store_name)
@@ -108,7 +108,7 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter,Captur
 
     @OnClick(R.id.btn_joinqueue)
     public void joinQueue() {
-        if(null!=jsonQueue){
+        if (null != jsonQueue) {
             Intent intent = new Intent(getActivity(), JoinQueueActivity.class);
             intent.putExtra(JoinQueueActivity.KEY_CODEQR, this.jsonQueue.getCodeQR());
             intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME, this.jsonQueue.getDisplayName());
@@ -118,8 +118,8 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter,Captur
             intent.putExtra(JoinQueueActivity.KEY_ADDRESS, this.jsonQueue.getFormattedAddress());
             intent.putExtra(JoinQueueActivity.KEY_TOPIC, this.jsonQueue.getTopic());
             getActivity().startActivityForResult(intent, Constants.requestCodeJoinQActiviy);
-        }else{
-            Toast.makeText(getActivity(),"Please scan first",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getActivity(), "Please scan first", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -133,28 +133,28 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter,Captur
 
 
         //if(isCameraAndStoragePermissionAllowed()){
-         //   tv_scan_result.setText("");
-            Display display = getActivity().getWindowManager().getDefaultDisplay();
-            DisplayMetrics dm = new DisplayMetrics();
-            display.getMetrics(dm);
-            int width = dm.widthPixels*2/3;
-            int height = dm.heightPixels*1/2;
-            Intent intent = new Intent(getActivity(),
-                    BarcodeScannerActivity.class);
-            intent.setAction("com.google.zxing.client.android.SCAN");
-            intent.putExtra("SCAN_WIDTH", width);
-            intent.putExtra("SCAN_HEIGHT", height);
-            startActivityForResult(intent, 0);
+        //   tv_scan_result.setText("");
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        display.getMetrics(dm);
+        int width = dm.widthPixels * 2 / 3;
+        int height = dm.heightPixels * 1 / 2;
+        Intent intent = new Intent(getActivity(),
+                BarcodeScannerActivity.class);
+        intent.setAction("com.google.zxing.client.android.SCAN");
+        intent.putExtra("SCAN_WIDTH", width);
+        intent.putExtra("SCAN_HEIGHT", height);
+        startActivityForResult(intent, 0);
 //        }else{
 //            requestCameraAndStoragePermission();
 //        }
     }
 
-    private void showEmptyScreen(boolean isShown){
-        if(isShown){
-        rl_empty.setVisibility(View.VISIBLE);
-        ll_top.setVisibility(View.GONE);
-    }else {
+    private void showEmptyScreen(boolean isShown) {
+        if (isShown) {
+            rl_empty.setVisibility(View.VISIBLE);
+            ll_top.setVisibility(View.GONE);
+        } else {
             rl_empty.setVisibility(View.GONE);
             ll_top.setVisibility(View.VISIBLE);
         }
@@ -162,23 +162,23 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter,Captur
 
     @Override
     public void barcodeScannedResult(String rawData) {
-        Log.v("Barcode vaue",rawData.toString());
-            if (rawData == null) {
-                Log.d("MainActivity", "Cancelled scan");
-                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
-                showEmptyScreen(true);
+        Log.v("Barcode vaue", rawData.toString());
+        if (rawData == null) {
+            Log.d("MainActivity", "Cancelled scan");
+            Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+            showEmptyScreen(true);
+        } else {
+            Toast.makeText(getActivity(), rawData, Toast.LENGTH_LONG).show();
+            if (rawData.startsWith("https://tp.receiptofi.com")) {
+                String[] codeQR = rawData.split("/");
+                QueueModel.queuePresenter = ScanQueueFragment.this;
+                QueueModel.getQueueState(LaunchActivity.DID, codeQR[3]);
+                showEmptyScreen(false);
             } else {
-                Toast.makeText(getActivity(), rawData, Toast.LENGTH_LONG).show();
-                if (rawData.startsWith("https://tp.receiptofi.com")) {
-                    String[] codeQR = rawData.split("/");
-                    QueueModel.queuePresenter = ScanQueueFragment.this;
-                    QueueModel.getQueueState(LaunchActivity.DID, codeQR[3]);
-                    showEmptyScreen(false);
-                } else {
-                    Toast toast = Toast.makeText(getActivity(), "No scan data received!", Toast.LENGTH_SHORT);
-                    toast.show();
-                    showEmptyScreen(true);
-                }
+                Toast toast = Toast.makeText(getActivity(), "No scan data received!", Toast.LENGTH_SHORT);
+                toast.show();
+                showEmptyScreen(true);
+            }
 
         }
     }

@@ -20,12 +20,12 @@ public interface QueueService {
     @GET("api/token/{codeQR}.json")
     Call<JsonQueue> getQueueState(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Path("codeQR")
-                    String codeQR
+            String codeQR
     );
 }

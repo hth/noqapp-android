@@ -9,26 +9,26 @@ import com.noqapp.client.R;
 
 public class ShowAlertInformation {
 
-	public static void showDialog(Context context, String Title, String Message) {
+    public static void showDialog(Context context, String Title, String Message) {
 
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-				context);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                context);
 
-		alertDialog.setTitle(Title);
+        alertDialog.setTitle(Title);
 
-		alertDialog.setMessage(Message);
+        alertDialog.setMessage(Message);
 
-		alertDialog.setIcon(R.mipmap.ic_launcher);
+        alertDialog.setIcon(R.mipmap.ic_launcher);
 
-		alertDialog.setNegativeButton("OK",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setNegativeButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
 
-						dialog.cancel();
-					}
-				});
+                        dialog.cancel();
+                    }
+                });
 
-		alertDialog.show();
-	}
+        alertDialog.show();
+    }
 
 }

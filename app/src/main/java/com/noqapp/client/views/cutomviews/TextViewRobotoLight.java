@@ -12,7 +12,7 @@ import android.widget.TextView;
  * Created by chandra on 4/9/17.
  */
 
-public class TextViewRobotoLight extends  TextView {
+public class TextViewRobotoLight extends TextView {
     private static final String TAG = "TextView";
 
     public TextViewRobotoLight(Context context) {
@@ -38,9 +38,9 @@ public class TextViewRobotoLight extends  TextView {
     public boolean setCustomFont(Context ctx, String asset) {
         Typeface typeface = null;
         try {
-            typeface = Typeface.createFromAsset(ctx.getAssets(), asset); 
+            typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {
-            Log.e(TAG, "Unable to load typeface: "+e.getMessage());
+            Log.e(TAG, "Unable to load typeface: " + e.getMessage());
             return false;
         }
         setTypeface(typeface);

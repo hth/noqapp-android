@@ -32,8 +32,8 @@ public class UserInfoFragment extends NoQueueBaseFragment {
     @BindView(R.id.tv_phoneno)
     TextView tv_phoneNo;
 
-   @BindView(R.id.tv_RemoteScanCount)
-   TextView tv_scanCount;
+    @BindView(R.id.tv_RemoteScanCount)
+    TextView tv_scanCount;
 
     @BindView(R.id.toggleAutojoin)
     ToggleButton toggelAutoJoin;
@@ -45,6 +45,7 @@ public class UserInfoFragment extends NoQueueBaseFragment {
     Button btn_register_login_logout;
     private String inviteCode;
     public static final String TAG = "UserInfoFragment";
+
     public UserInfoFragment() {
 
     }
@@ -62,30 +63,30 @@ public class UserInfoFragment extends NoQueueBaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_userinfo, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         return view;
-     }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Me");
         SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        String name = preferences.getString(NoQueueBaseActivity.PREKEY_NAME,"Guest User");
-        String phone = preferences.getString(NoQueueBaseActivity.PREKEY_PHONE,"");
-        String gender = preferences.getString(NoQueueBaseActivity.PREKEY_GENDER,"");
-        int remoteScanCount = preferences.getInt(NoQueueBaseActivity.PREKEY_REMOTESCAN,0);
-        boolean isAutoScanAvail = preferences.getBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN,false);
-        inviteCode = preferences.getString(NoQueueBaseActivity.PREKEY_INVITECODE,"");
+        String name = preferences.getString(NoQueueBaseActivity.PREKEY_NAME, "Guest User");
+        String phone = preferences.getString(NoQueueBaseActivity.PREKEY_PHONE, "");
+        String gender = preferences.getString(NoQueueBaseActivity.PREKEY_GENDER, "");
+        int remoteScanCount = preferences.getInt(NoQueueBaseActivity.PREKEY_REMOTESCAN, 0);
+        boolean isAutoScanAvail = preferences.getBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, false);
+        inviteCode = preferences.getString(NoQueueBaseActivity.PREKEY_INVITECODE, "");
 
         tv_firstName.setText(name);
         tv_phoneNo.setText(phone);
         tv_scanCount.setText(String.valueOf(remoteScanCount));
         toggelAutoJoin.setChecked(isAutoScanAvail);
-        if(!phone.equals("")){
+        if (!phone.equals("")) {
             btn_register_login_logout.setText("Logout");
             tv_phoneNo.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             btn_register_login_logout.setText("Login/Register");
             tv_phoneNo.setVisibility(View.GONE);
         }
@@ -93,10 +94,9 @@ public class UserInfoFragment extends NoQueueBaseFragment {
     }
 
     @OnClick(R.id.iv_invite)
-    public void action_Invite(View view)
-    {
-        Intent in =new Intent(getActivity(),InviteActivity.class);
-        in.putExtra("invite_code",inviteCode);
+    public void action_Invite(View view) {
+        Intent in = new Intent(getActivity(), InviteActivity.class);
+        in.putExtra("invite_code", inviteCode);
         startActivity(in);
     }
 

@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.NoQueueDBPresenter;
@@ -70,11 +69,10 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
         context = getActivity();
         View view = inflater.inflate(R.layout.fragment_list_queue, container, false);
         listViewQueue = (RecyclerView) view.findViewById(R.id.listView_quequList);
-        rl_empty_screen=(RelativeLayout)view.findViewById(R.id.rl_empty_screen);
+        rl_empty_screen = (RelativeLayout) view.findViewById(R.id.rl_empty_screen);
         //ButterKnife.bind(this,view);
         return view;
     }
-
 
 
     @Override

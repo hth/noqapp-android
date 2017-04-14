@@ -9,6 +9,7 @@ import com.noqapp.client.presenter.beans.JsonProfile;
 public interface MeView {
 
     void queueResponse(JsonProfile profile);
-     void queueError();
+
+    void queueError();
 
 }

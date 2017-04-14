@@ -12,7 +12,7 @@ import android.widget.TextView;
  * Created by chandra on 4/9/17.
  */
 
-public class TextViewRalewayRegular extends  TextView {
+public class TextViewRalewayRegular extends TextView {
     private static final String TAG = "TextView";
 
     public TextViewRalewayRegular(Context context) {
@@ -40,7 +40,7 @@ public class TextViewRalewayRegular extends  TextView {
         try {
             typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {
-            Log.e(TAG, "Unable to load typeface: "+e.getMessage());
+            Log.e(TAG, "Unable to load typeface: " + e.getMessage());
             return false;
         }
         setTypeface(typeface);

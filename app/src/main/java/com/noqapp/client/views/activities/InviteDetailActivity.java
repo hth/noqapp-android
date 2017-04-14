@@ -2,16 +2,12 @@ package com.noqapp.client.views.activities;
 
 
 import android.os.Bundle;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.view.View;
 import android.widget.TextView;
 
 import com.noqapp.client.R;
-
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +55,7 @@ public class InviteDetailActivity extends AppCompatActivity {
                     " took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries," +
                     " but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s " +
                     "with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software " +
-                    "like Aldus PageMaker including versions of Lorem Ipsum.\n\n"+
+                    "like Aldus PageMaker including versions of Lorem Ipsum.\n\n" +
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text " +
                     "ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. " +
                     "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. " +
