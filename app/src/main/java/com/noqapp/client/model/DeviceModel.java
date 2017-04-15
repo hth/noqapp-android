@@ -19,6 +19,8 @@ import static com.noqapp.client.utils.Constants.DEVICE_TYPE;
  */
 
 public class DeviceModel {
+    private static final String TAG = DeviceModel.class.getSimpleName();
+
     private static final DeviceService deviceService;
 
     static {
@@ -35,7 +37,12 @@ public class DeviceModel {
         deviceService.register(did, DEVICE_TYPE, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(Call<DeviceRegistered> call, Response<DeviceRegistered> response) {
-                Log.d("Response", String.valueOf(response.body()));
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Empty history");
+                }
             }
 
             @Override

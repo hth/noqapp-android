@@ -124,7 +124,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == Constants.requestCodeJoinQActiviy) {
+//        if (requestCode == Constants.requestCodeJoinQActivity) {
 //            if (resultCode == Activity.RESULT_OK) {
 //                int qrCode = data.getExtras().getInt(JoinQueueActivity.KEY_CODEQR);
 //                Log.d("QR Code :: ", String.valueOf(qrCode));

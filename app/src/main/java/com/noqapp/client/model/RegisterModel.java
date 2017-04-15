@@ -18,6 +18,8 @@ import retrofit2.Response;
  */
 
 public final class RegisterModel {
+    private static final String TAG = RegisterModel.class.getSimpleName();
+
     private static final RegisterService registerService;
     public static ProfilePresenter profilePresenter;
 
@@ -32,8 +34,13 @@ public final class RegisterModel {
         registerService.register(registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(Call<JsonProfile> call, Response<JsonProfile> response) {
-                Log.d("Response", String.valueOf(response.body()));
-                profilePresenter.queueResponse(response.body());
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    profilePresenter.queueResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Empty history");
+                }
             }
 
             @Override
