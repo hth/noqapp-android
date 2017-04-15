@@ -28,6 +28,8 @@ import static com.noqapp.client.utils.Constants.DEVICE_TYPE;
  * Date: 3/26/17 11:49 PM
  */
 public final class QueueModel {
+    private static final String TAG = QueueModel.class.getSimpleName();
+
     private static final QueueService queueService;
     public static QueuePresenter queuePresenter;
     public static TokenPresenter tokenPresenter;
@@ -48,8 +50,13 @@ public final class QueueModel {
         queueService.getQueueState(did, DEVICE_TYPE, qrCode).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(Call<JsonQueue> call, Response<JsonQueue> response) {
-                Log.d("Response", String.valueOf(response.body()));
-                queuePresenter.queueResponse(response.body());
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    queuePresenter.queueResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Empty history");
+                }
             }
 
             @Override
@@ -69,8 +76,13 @@ public final class QueueModel {
         queueService.getAllJoinedQueue(did, DEVICE_TYPE).enqueue(new Callback<List<JsonTokenAndQueue>>() {
             @Override
             public void onResponse(Call<List<JsonTokenAndQueue>> call, Response<List<JsonTokenAndQueue>> response) {
-                Log.d("Response", String.valueOf(response.body()));
-                tokenAndQueuePresenter.queueResponse(response.body());
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    tokenAndQueuePresenter.queueResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Empty history");
+                }
             }
 
             @Override
@@ -90,8 +102,13 @@ public final class QueueModel {
         queueService.getAllHistoricalJoinedQueue(did, DEVICE_TYPE).enqueue(new Callback<List<JsonTokenAndQueue>>() {
             @Override
             public void onResponse(Call<List<JsonTokenAndQueue>> call, Response<List<JsonTokenAndQueue>> response) {
-                Log.d("History size :: ", String.valueOf(response.body().size()));
-                tokenAndQueuePresenter.queueResponse(response.body());
+                if (response.body() != null) {
+                    Log.d("History size :: ", String.valueOf(response.body().size()));
+                    tokenAndQueuePresenter.queueResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Empty history");
+                }
             }
 
             @Override
@@ -112,8 +129,13 @@ public final class QueueModel {
         queueService.joinQueue(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
-                Log.d("Response", String.valueOf(response.body()));
-                tokenPresenter.queueResponse(response.body());
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    tokenPresenter.queueResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Empty history");
+                }
             }
 
             @Override
@@ -134,8 +156,13 @@ public final class QueueModel {
         queueService.abortQueue(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
-                Log.d("Response", String.valueOf(response.body()));
-                responsePresenter.queueResponse(response.body());
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    responsePresenter.queueResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Empty history");
+                }
             }
 
             @Override
