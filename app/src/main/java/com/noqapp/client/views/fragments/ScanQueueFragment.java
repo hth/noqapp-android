@@ -117,7 +117,7 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter, Captu
             intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, this.jsonQueue.getBusinessName());
             intent.putExtra(JoinQueueActivity.KEY_ADDRESS, this.jsonQueue.getFormattedAddress());
             intent.putExtra(JoinQueueActivity.KEY_TOPIC, this.jsonQueue.getTopic());
-            getActivity().startActivityForResult(intent, Constants.requestCodeJoinQActiviy);
+            getActivity().startActivityForResult(intent, Constants.requestCodeJoinQActivity);
         } else {
             Toast.makeText(getActivity(), "Please scan first", Toast.LENGTH_LONG).show();
         }
