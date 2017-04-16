@@ -1,6 +1,7 @@
 package com.noqapp.client.views.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.noqapp.client.R;
+import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.TokenAndQueuePresenter;
@@ -29,7 +31,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListQueueFragment extends Fragment implements TokenAndQueuePresenter, Token_QueueViewInterface {
+public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQueuePresenter, Token_QueueViewInterface {
 
 
     private RecyclerView listViewQueue;
@@ -47,10 +49,22 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
         return new ListQueueFragment();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
     public void callQueue() {
-        QueueModel.tokenAndQueuePresenter = this;
-        QueueModel.getAllJoinedQueue(LaunchActivity.DID);
-        isCurrentQueueCall = true;
+            QueueModel.tokenAndQueuePresenter = this;
+            QueueModel.getAllJoinedQueue(LaunchActivity.DID);
+            isCurrentQueueCall = true;
     }
 
     public void callQueueHistory() {
@@ -66,6 +80,7 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        super.onCreateView(inflater,container,savedInstanceState);
         context = getActivity();
         View view = inflater.inflate(R.layout.fragment_list_queue, container, false);
         listViewQueue = (RecyclerView) view.findViewById(R.id.listView_quequList);
@@ -76,16 +91,22 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
 
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (networkHelper.isOnline()) {
+            callQueue();
+        }else
+        {
+            ShowAlertInformation.showDialog(getActivity(),getActivity().getResources().getString(R.string.networkerror),getActivity().getString(R.string.offline));
+        }
+    }
+    @Override
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("List");
 
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 
 
     @Override
@@ -104,6 +125,16 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
     }
 
     @Override
+    public void noCurentQueue() {
+        dataSavedStatus(0);
+    }
+
+    @Override
+    public void noHistoryQueue() {
+        dataSavedStatus(0);
+    }
+
+    @Override
     public void dataSavedStatus(int msg) {
         Log.d(TAG, String.valueOf(msg));
         if (isCurrentQueueCall) {
@@ -111,18 +142,23 @@ public class ListQueueFragment extends Fragment implements TokenAndQueuePresente
             callQueueHistory();
 
         } else {
-            NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
-            dbPresenter.tokenQueueViewInterface = this;
-            dbPresenter.currentandHistoryTokenQueueListFromDB();
+            fetchCurrentAndHistoryList();
         }
 
+    }
 
+
+    public void fetchCurrentAndHistoryList()
+    {
+        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
+        dbPresenter.tokenQueueViewInterface = this;
+        dbPresenter.currentandHistoryTokenQueueListFromDB();
     }
 
     @Override
     public void token_QueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
 
-        Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size()));
+        Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size())+ "::"+String.valueOf(historylist.size()));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         listViewQueue.setLayoutManager(layoutManager);
         listViewQueue.setHasFixedSize(true);

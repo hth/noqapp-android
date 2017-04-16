@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ScanQueueFragment extends Fragment implements QueuePresenter, CaptureActivity.BarcodeScannedResultCallback {
+public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePresenter, CaptureActivity.BarcodeScannedResultCallback {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     private final int CAMERA_AND_STORAGE_PERMISSION_CODE = 102;

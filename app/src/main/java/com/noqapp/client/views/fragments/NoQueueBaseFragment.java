@@ -1,15 +1,36 @@
 package com.noqapp.client.views.fragments;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.noqapp.client.helper.NetworkHelper;
 
 /**
  * Created by omkar on 4/8/17.
  */
 
 public class NoQueueBaseFragment extends Fragment {
+
+    protected NetworkHelper networkHelper;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        networkHelper = new NetworkHelper(getActivity());
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
     public void replaceFragmentWithoutBackStack(FragmentActivity activity, int container, Fragment fragment, String tag) {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
@@ -31,4 +52,6 @@ public class NoQueueBaseFragment extends Fragment {
         transaction.add(container, fragment, tag).commit();
 
     }
+
+
 }

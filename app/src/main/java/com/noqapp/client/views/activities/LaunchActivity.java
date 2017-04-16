@@ -1,10 +1,13 @@
 package com.noqapp.client.views.activities;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -13,6 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.client.R;
+import com.noqapp.client.helper.NetworkHelper;
+import com.noqapp.client.helper.ShowAlertInformation;
+import com.noqapp.client.utils.Constants;
 import com.noqapp.client.views.fragments.ListQueueFragment;
 import com.noqapp.client.views.fragments.MeFragment;
 import com.noqapp.client.views.fragments.RegistrationFormFragment;
@@ -78,6 +84,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         int id = v.getId();
         Fragment fragment = null;
         resetButtons();
+        NetworkHelper networkHelper = new NetworkHelper(LaunchActivity.this);
         switch (id) {
             case R.id.rl_home:
                 fragment = new ScanQueueFragment();
@@ -88,7 +95,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             case R.id.rl_list:
                 fragment = ListQueueFragment.getInstance();
                 ListQueueFragment.isCurrentQueueCall = true;
-                ((ListQueueFragment) fragment).callQueue();
+               // ((ListQueueFragment)fragment).fetchCurrentAndHistoryList();
                 iv_list.setBackgroundResource(R.mipmap.list_select);
                 tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
@@ -136,6 +143,16 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         } else {
             if (backpressToast != null) backpressToast.cancel();
             super.onBackPressed();
+        }
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.requestCodeJoinQActivity) {
+            if (resultCode == Activity.RESULT_OK) {
+                int qrCode = data.getExtras().getInt(JoinQueueActivity.KEY_CODEQR);
+                Log.d("QR Code :: ", String.valueOf(qrCode));
+                onClick(rl_list);
+            }
         }
     }
 
