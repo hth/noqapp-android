@@ -44,7 +44,7 @@ public class MeFragment extends NoQueueBaseFragment {
     @BindView(R.id.btn_register_login_logout)
     Button btn_register_login_logout;
     private String inviteCode;
-    public static final String TAG = "UserInfoFragment";
+    private final String TAG = "UserInfoFragment";
 
     public MeFragment() {
 
@@ -61,7 +61,6 @@ public class MeFragment extends NoQueueBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
         return view;

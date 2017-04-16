@@ -1,10 +1,13 @@
 package com.noqapp.client.views.fragments;
 
-
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -34,7 +37,12 @@ import butterknife.OnClick;
 
 public class ScanQueueFragment extends Fragment implements QueuePresenter, CaptureActivity.BarcodeScannedResultCallback {
 
-    private static final String TAG = ScanQueueFragment.class.getSimpleName();
+    private final String TAG = ScanQueueFragment.class.getSimpleName();
+    private final int CAMERA_AND_STORAGE_PERMISSION_CODE = 102;
+    private  final String[] CAMERA_AND_STORAGE_PERMISSION_PERMS={
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+    };
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
     @BindView(R.id.tv_queue_name)
@@ -132,22 +140,11 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter, Captu
     private void startScanningBarcode() {
 
 
-        //if(isCameraAndStoragePermissionAllowed()){
-        //   tv_scan_result.setText("");
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        DisplayMetrics dm = new DisplayMetrics();
-        display.getMetrics(dm);
-        int width = dm.widthPixels * 2 / 3;
-        int height = dm.heightPixels * 1 / 2;
-        Intent intent = new Intent(getActivity(),
-                BarcodeScannerActivity.class);
-        intent.setAction("com.google.zxing.client.android.SCAN");
-        intent.putExtra("SCAN_WIDTH", width);
-        intent.putExtra("SCAN_HEIGHT", height);
-        startActivityForResult(intent, 0);
-//        }else{
-//            requestCameraAndStoragePermission();
-//        }
+        if(isCameraAndStoragePermissionAllowed()){
+            scanBarcode();
+        }else{
+            requestCameraAndStoragePermission();
+        }
     }
 
     private void showEmptyScreen(boolean isShown) {
@@ -180,6 +177,64 @@ public class ScanQueueFragment extends Fragment implements QueuePresenter, Captu
                 showEmptyScreen(true);
             }
 
+        }
+    }
+
+    private void scanBarcode(){
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        display.getMetrics(dm);
+        int width = dm.widthPixels * 2 / 3;
+        int height = dm.heightPixels * 1 / 2;
+        Intent intent = new Intent(getActivity(),
+                BarcodeScannerActivity.class);
+        intent.setAction("com.google.zxing.client.android.SCAN");
+        intent.putExtra("SCAN_WIDTH", width);
+        intent.putExtra("SCAN_HEIGHT", height);
+        startActivityForResult(intent, 0);
+    }
+    private boolean isExternalStoragePermissionAllowed() {
+        //Getting the permission status
+        int result_read = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        int result_write = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //If permission is granted returning true
+        if (result_read == PackageManager.PERMISSION_GRANTED &&result_write == PackageManager.PERMISSION_GRANTED )
+            return true;
+        //If permission is not granted returning false
+        return false;
+    }
+    private boolean isCameraPermissionAllowed() {
+        //Getting the permission status
+        int result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
+        //If permission is granted returning true
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+        //If permission is not granted returning false
+        return false;
+    }
+    private boolean isCameraAndStoragePermissionAllowed() {
+        return  (isCameraPermissionAllowed() && isExternalStoragePermissionAllowed()) ;
+    }
+
+
+    private void requestCameraAndStoragePermission() {
+        ActivityCompat.requestPermissions(getActivity(), CAMERA_AND_STORAGE_PERMISSION_PERMS,
+                CAMERA_AND_STORAGE_PERMISSION_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == CAMERA_AND_STORAGE_PERMISSION_CODE) {
+            //both remaining permission allowed
+            if (grantResults.length==2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+               scanBarcode();
+            }else if (grantResults.length==1 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {//one remaining permission allowed
+                scanBarcode();
+            }else if (grantResults[0] == PackageManager.PERMISSION_DENIED){
+                //No permission allowed
+               //Do nothing
+            }
         }
     }
 }
