@@ -15,8 +15,10 @@ import android.widget.Toast;
 import com.noqapp.client.R;
 import com.noqapp.client.views.fragments.ListQueueFragment;
 import com.noqapp.client.views.fragments.MeFragment;
+import com.noqapp.client.views.fragments.RegistrationFormFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
 
+import java.util.List;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -67,7 +69,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         iv_home.setBackgroundResource(R.mipmap.home_select);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
 
-        onClick(rl_home);
+        onClick(rl_me);
 
     }
 
@@ -121,18 +123,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
         tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
     }
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == Constants.requestCodeJoinQActivity) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                int qrCode = data.getExtras().getInt(JoinQueueActivity.KEY_CODEQR);
-//                Log.d("QR Code :: ", String.valueOf(qrCode));
-//                onClick(rl_list);
-//            }
-//        }
-//
-//    }
+
 
 
     @Override
@@ -145,6 +136,17 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         } else {
             if (backpressToast != null) backpressToast.cancel();
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,  String[] permissions,  int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        Fragment f =getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+        if (f instanceof ScanQueueFragment||f instanceof RegistrationFormFragment)
+        {
+                f.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

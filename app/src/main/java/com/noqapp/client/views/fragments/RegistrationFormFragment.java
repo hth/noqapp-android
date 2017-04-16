@@ -1,14 +1,18 @@
 package com.noqapp.client.views.fragments;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -71,7 +75,12 @@ public class RegistrationFormFragment extends NoQueueBaseFragment implements MeV
     EditText tv_female;
 //color picker lib link -> https://github.com/madappstechnologies/country-picker-android
 
-    private static final String TAG = "RegistrationForm";
+    private  final String TAG = "RegistrationForm";
+    private final int READ_AND_RECIEVE_SMS__PERMISSION_CODE = 101;
+    private  final String[] READ_AND_RECIEVE_SMS__PERMISSION_PERMS={
+            Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.READ_SMS
+    };
     public String gender = "";
     private DatePickerDialog fromDatePickerDialog;
     private String countryCode;
@@ -168,22 +177,11 @@ public class RegistrationFormFragment extends NoQueueBaseFragment implements MeV
     @OnClick(R.id.btnContinueRegistration)
     public void action_Registration(View view) {
         if (validate()) {
-
-
-            final Intent intent = new Intent(getActivity(), AccountKitActivity.class);
-            AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
-                    new AccountKitConfiguration.AccountKitConfigurationBuilder(
-                            LoginType.PHONE,
-                            AccountKitActivity.ResponseType.CODE); // or .ResponseType.TOKEN
-            PhoneNumber pn = new PhoneNumber(country, edt_phoneNo.getText().toString(), countryISO);
-            configurationBuilder.setInitialPhoneNumber(pn);
-
-
-            // ... perform additional configuration ...
-            intent.putExtra(
-                    AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
-                    configurationBuilder.build());
-            startActivityForResult(intent, NoQueueBaseActivity.ACCOUNTKIT_REQUEST_CODE);
+            if(isReadAndRecieveSMSPermissionAllowed()) {
+                callFacebookAccountKit();
+            }else{
+                requestReadAndRecieveSMSPermissionAllowed();
+            }
         }
     }
 
@@ -302,5 +300,50 @@ public class RegistrationFormFragment extends NoQueueBaseFragment implements MeV
         return isValid;
     }
 
+    private void callFacebookAccountKit(){
+        final Intent intent = new Intent(getActivity(), AccountKitActivity.class);
+        AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
+                new AccountKitConfiguration.AccountKitConfigurationBuilder(
+                        LoginType.PHONE,
+                        AccountKitActivity.ResponseType.CODE); // or .ResponseType.TOKEN
+        PhoneNumber pn = new PhoneNumber(country, edt_phoneNo.getText().toString(), countryISO);
+        configurationBuilder.setInitialPhoneNumber(pn);
+        configurationBuilder.setReceiveSMS(true);
 
+        // ... perform additional configuration ...
+        intent.putExtra(
+                AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
+                configurationBuilder.build());
+        startActivityForResult(intent, NoQueueBaseActivity.ACCOUNTKIT_REQUEST_CODE);
+    }
+    private boolean isReadAndRecieveSMSPermissionAllowed() {
+        //Getting the permission status
+        int result_read = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECEIVE_SMS);
+        int result_write = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS);
+        //If permission is granted returning true
+        if (result_read == PackageManager.PERMISSION_GRANTED &&result_write == PackageManager.PERMISSION_GRANTED )
+            return true;
+        //If permission is not granted returning false
+        return false;
+    }
+
+    private void requestReadAndRecieveSMSPermissionAllowed() {
+        ActivityCompat.requestPermissions(getActivity(), READ_AND_RECIEVE_SMS__PERMISSION_PERMS,
+                READ_AND_RECIEVE_SMS__PERMISSION_CODE);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == READ_AND_RECIEVE_SMS__PERMISSION_CODE) {
+
+          if ( grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                callFacebookAccountKit();
+            }else if (grantResults[0] == PackageManager.PERMISSION_DENIED){
+                //No permission allowed
+                //Do nothing
+            }
+        }
+    }
 }
