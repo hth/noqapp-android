@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.noqapp.client.R;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 
 public class SplashScreen extends AppCompatActivity {
@@ -20,6 +22,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         //   getSupportActionBar().hide();
         SplashHandler mHandler = new SplashHandler();
         setContentView(R.layout.splash);
