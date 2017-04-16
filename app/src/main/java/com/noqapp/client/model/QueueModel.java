@@ -78,10 +78,14 @@ public final class QueueModel {
             public void onResponse(Call<List<JsonTokenAndQueue>> call, Response<List<JsonTokenAndQueue>> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
+                    //// TODO: 4/16/17 just for testing : remove below line after testing done
+                    //tokenAndQueuePresenter.noCurentQueue();
+                    //Todo : uncomment the queuresponse 
                     tokenAndQueuePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history");
+                    tokenAndQueuePresenter.noCurentQueue();
                 }
             }
 
@@ -104,10 +108,13 @@ public final class QueueModel {
             public void onResponse(Call<List<JsonTokenAndQueue>> call, Response<List<JsonTokenAndQueue>> response) {
                 if (response.body() != null) {
                     Log.d("History size :: ", String.valueOf(response.body().size()));
+                    //Todo: Remove below line after testing done and uncomment queue response
+                   // tokenAndQueuePresenter.noHistoryQueue();
                     tokenAndQueuePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history");
+                    tokenAndQueuePresenter.noHistoryQueue();
                 }
             }
 

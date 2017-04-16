@@ -13,4 +13,9 @@ public interface TokenAndQueuePresenter {
     void queueResponse(List<JsonTokenAndQueue> tokenAndQueues);
 
     void queueError();
+
+    void noCurentQueue();
+
+    void noHistoryQueue();
+
 }
