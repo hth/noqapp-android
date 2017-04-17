@@ -131,6 +131,10 @@ public class JsonProfile {
         return error;
     }
 
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
         return "JsonProfile{" +
@@ -145,10 +149,6 @@ public class JsonProfile {
                 ", gender='" + gender + '\'' +
                 ", error=" + error +
                 '}';
-    }
-
-    public void setError(ErrorEncounteredJson error) {
-        this.error = error;
     }
 
 
