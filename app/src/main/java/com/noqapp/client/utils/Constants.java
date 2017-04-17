@@ -11,4 +11,7 @@ public class Constants {
     public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final int requestCodeJoinQActivity = 11;
     public static final int requestCodeNotification = 2;
+
+    //TODO this needs to be compute from release version
+    public static final String VERSION_RELEASE = "100";
 }

@@ -12,6 +12,7 @@ import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.client.utils.Constants;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.noqapp.client.utils.Constants.DEVICE_TYPE;
+import static com.noqapp.client.utils.Constants.VERSION_RELEASE;
 
 /**
  * Unregistered client access.
@@ -133,7 +135,7 @@ public final class QueueModel {
      * @param codeQR
      */
     public static void joinQueue(String did, String codeQR) {
-        queueService.joinQueue(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonToken>() {
+        queueService.joinQueue(did, DEVICE_TYPE, VERSION_RELEASE, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
                 if (response.body() != null) {
