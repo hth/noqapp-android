@@ -11,11 +11,7 @@ import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
-import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueueList;
-import com.noqapp.client.utils.Constants;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,16 +75,20 @@ public final class QueueModel {
         queueService.getAllJoinedQueue(did, DEVICE_TYPE).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(Call<JsonTokenAndQueueList> call, Response<JsonTokenAndQueueList> response) {
-                if (response.body() != null && response.body().getTokenAndQueues().size() > 0) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    //// TODO: 4/16/17 just for testing : remove below line after testing done
-                    //tokenAndQueuePresenter.noCurentQueue();
-                    //Todo : uncomment the queuresponse 
-                    tokenAndQueuePresenter.queueResponse(response.body().getTokenAndQueues());
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history");
-                    tokenAndQueuePresenter.noCurentQueue();
+                if (response.body() != null && response.body().getError() == null) {
+                    if (response.body().getTokenAndQueues().size() > 0) {
+                        Log.d("Response", String.valueOf(response.body()));
+                        //// TODO: 4/16/17 just for testing : remove below line after testing done
+                        //tokenAndQueuePresenter.noCurentQueue();
+                        //Todo : uncomment the queuresponse
+                        tokenAndQueuePresenter.queueResponse(response.body().getTokenAndQueues());
+                    } else {
+                        //TODO something logical
+                        Log.d(TAG, "Empty history");
+                        tokenAndQueuePresenter.noCurentQueue();
+                    }
+                } else if (response.body() != null && response.body().getError() != null) {
+                    Log.e(TAG, "Got error");
                 }
             }
 
@@ -109,15 +109,19 @@ public final class QueueModel {
         queueService.getAllHistoricalJoinedQueue(did, DEVICE_TYPE).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(Call<JsonTokenAndQueueList> call, Response<JsonTokenAndQueueList> response) {
-                if (response.body() != null && response.body().getTokenAndQueues().size() > 0) {
-                    Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
-                    //Todo: Remove below line after testing done and uncomment queue response
-                   // tokenAndQueuePresenter.noHistoryQueue();
-                    tokenAndQueuePresenter.queueResponse(response.body().getTokenAndQueues());
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history");
-                    tokenAndQueuePresenter.noHistoryQueue();
+                if (response.body() != null && response.body().getError() == null) {
+                    if (response.body().getTokenAndQueues().size() > 0) {
+                        Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
+                        //Todo: Remove below line after testing done and uncomment queue response
+                        // tokenAndQueuePresenter.noHistoryQueue();
+                        tokenAndQueuePresenter.queueResponse(response.body().getTokenAndQueues());
+                    } else {
+                        //TODO something logical
+                        Log.d(TAG, "Empty history");
+                        tokenAndQueuePresenter.noHistoryQueue();
+                    }
+                } else if (response.body() != null && response.body().getError() != null) {
+                    Log.e(TAG, "Got error");
                 }
             }
 
