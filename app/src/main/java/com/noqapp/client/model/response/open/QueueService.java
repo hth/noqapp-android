@@ -4,6 +4,7 @@ import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.client.presenter.beans.JsonTokenAndQueueList;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public interface QueueService {
     );
 
     @GET("open/token/queues.json")
-    Call<List<JsonTokenAndQueue>> getAllJoinedQueue(
+    Call<JsonTokenAndQueueList> getAllJoinedQueue(
             @Header("X-R-DID")
             String did,
 
@@ -43,7 +44,7 @@ public interface QueueService {
     );
 
     @GET("open/token/historical.json")
-    Call<List<JsonTokenAndQueue>> getAllHistoricalJoinedQueue(
+    Call<JsonTokenAndQueueList> getAllHistoricalJoinedQueue(
             @Header("X-R-DID")
             String did,
 
