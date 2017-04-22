@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">व्यापारी</string>
+
+
+    <string name="join">जुड़ें</string>
+    <string name="skip">छोड़ें</string>
+    <string name="next">अगला</string>
+
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">ई-मेल</string>
+    <string name="prompt_pwd">पासवर्ड </string>
+    <string name="sign_in">लॉग इन</string>
+    <string name="offline">प्रसार अनुपलब्ध है। कृपया अपने डिवाइस को नेटवर्क से कनेक्ट करें</string>
+
+</resources>

@@ -58,11 +58,11 @@ public class LoginFragment extends Fragment {
 
 					//Login Process
 						LaunchActivity.getLaunchActivity().setSharPreferancename("", "",
-								email, true);
-						LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, new MerchantListFragment());
+                                email, true);
+                        LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, new MerchantListFragment());
 
-//                        ManageQueueModel.getQueues("123213","b@r.com",
-//                                "$2a$15$ed3VSsc5x367CNiwQ3fKsemHSZUr.D3EVjHVjZ2cBTySc/l7gwPua");
+                        ManageQueueModel.getQueues("123213","b@r.com",
+                                "$2a$15$ed3VSsc5x367CNiwQ3fKsemHSZUr.D3EVjHVjZ2cBTySc/l7gwPua");
                     } else {
 						ShowAlertInformation.showDialog(getActivity(), "Network error", getString(R.string.offline));
 					}
