@@ -13,8 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.noqapp.merchant.R;
+import com.noqapp.merchant.model.LoginModel;
 import com.noqapp.merchant.model.ManageQueueModel;
+import com.noqapp.merchant.model.MerchantProfileModel;
 import com.noqapp.merchant.presenter.beans.JsonTopic;
+import com.noqapp.merchant.presenter.beans.body.Authenticate;
 import com.noqapp.merchant.views.activities.LaunchActivity;
 import com.noqapp.merchant.helper.ShowAlertInformation;
 
@@ -60,9 +63,20 @@ public class LoginFragment extends Fragment {
 						LaunchActivity.getLaunchActivity().setSharPreferancename("", "",
                                 email, true);
                         LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, new MerchantListFragment());
+//
+//                        ManageQueueModel.getQueues("123213","b@r.com",
+//                                "$2a$15$ed3VSsc5x367CNiwQ3fKsemHSZUr.D3EVjHVjZ2cBTySc/l7gwPua");
+						Authenticate auth =new Authenticate();
+						auth.setMail(email);
+						auth.setPassword(pwd);
+//						LoginModel.login(auth);
+//						LaunchActivity.getLaunchActivity().progressDialog.show();
+//
+						MerchantProfileModel.fetch("b@r.com","$2a$15$ed3VSsc5x367CNiwQ3fKsemHSZUr.D3EVjHVjZ2cBTySc/l7gwPua");
 
-                        ManageQueueModel.getQueues("123213","b@r.com",
-                                "$2a$15$ed3VSsc5x367CNiwQ3fKsemHSZUr.D3EVjHVjZ2cBTySc/l7gwPua");
+
+
+
                     } else {
 						ShowAlertInformation.showDialog(getActivity(), "Network error", getString(R.string.offline));
 					}

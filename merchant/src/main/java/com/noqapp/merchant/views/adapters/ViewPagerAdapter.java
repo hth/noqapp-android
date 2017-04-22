@@ -13,18 +13,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.noqapp.merchant.R;
-import com.noqapp.merchant.presenter.beans.ListQueue;
+import com.noqapp.merchant.presenter.beans.JsonTopic;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class ViewPagerAdapter  extends PagerAdapter {
 
     private Context context;
-    private ArrayList<ListQueue> arrayList;
+    private List<JsonTopic> arrayList;
     private LayoutInflater inflater;
 
-    public ViewPagerAdapter(Context context, ArrayList<ListQueue> arrayList) {
+    public ViewPagerAdapter(Context context, List<JsonTopic> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
 
@@ -58,7 +58,7 @@ public class ViewPagerAdapter  extends PagerAdapter {
         tv_current_value = (TextView) itemView.findViewById(R.id.tv_current_value);
         tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
         tv_title= (TextView) itemView.findViewById(R.id.tv_title);
-        ListQueue lq = arrayList.get(position);
+        JsonTopic lq = arrayList.get(position);
         tv_current_value.setText(String.valueOf(lq.getServingNumber()));
         tv_total_value.setText(String.valueOf(lq.getToken()));
         tv_title.setText(lq.getDisplayName());

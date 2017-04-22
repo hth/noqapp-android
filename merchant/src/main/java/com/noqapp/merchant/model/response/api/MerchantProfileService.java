@@ -1,8 +1,7 @@
 package com.noqapp.merchant.model.response.api;
 
-import com.noqapp.merchant.model.MerchantProfileModel;
 import com.noqapp.merchant.presenter.beans.JsonMerchant;
-import com.noqapp.merchant.presenter.beans.JsonTopicList;
+
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -14,7 +13,7 @@ import retrofit2.http.Header;
  */
 
 public interface MerchantProfileService {
-    @GET("api/m/mq/queues.json")
+    @GET("api/m/profile/fetch.json")
     Call<JsonMerchant> fetch(
             @Header("X-R-MAIL")
             String mail,
