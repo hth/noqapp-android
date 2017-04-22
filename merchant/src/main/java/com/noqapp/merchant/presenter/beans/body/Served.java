@@ -33,7 +33,10 @@ public class Served {
     private int servedNumber;
 
     @JsonProperty("q")
-    private QueueUserStateEnum queueUserStateEnum;
+    private QueueUserStateEnum queueUserState;
+
+    @JsonProperty("s")
+    private QueueStatusEnum queueStatus;
 
     public String getCodeQR() {
         return codeQR;
@@ -51,12 +54,20 @@ public class Served {
         this.servedNumber = servedNumber;
     }
 
-    public QueueUserStateEnum getQueueUserStateEnum() {
-        return queueUserStateEnum;
+    public QueueUserStateEnum getQueueUserState() {
+        return queueUserState;
     }
 
-    public void setQueueUserStateEnum(QueueUserStateEnum queueUserStateEnum) {
-        this.queueUserStateEnum = queueUserStateEnum;
+    public void setQueueUserState(QueueUserStateEnum queueUserState) {
+        this.queueUserState = queueUserState;
+    }
+
+    public QueueStatusEnum getQueueStatus() {
+        return queueStatus;
+    }
+
+    public void setQueueStatus(QueueStatusEnum queueStatus) {
+        this.queueStatus = queueStatus;
     }
 }
 

@@ -77,7 +77,8 @@ public class ViewPagerAdapter  extends PagerAdapter {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
                 Served served=new Served();
                 served.setCodeQR(lq.getCodeQR());
-                served.setQueueUserStateEnum(QueueUserStateEnum.S);
+                served.setQueueStatus(lq.getQueueStatus());
+                served.setQueueUserState(QueueUserStateEnum.N);
                 served.setServedNumber(lq.getServingNumber());
 
                 ManageQueueModel.served("123213","b@r.com",
@@ -90,7 +91,8 @@ public class ViewPagerAdapter  extends PagerAdapter {
             public void onClick(View v) {
                 Served served=new Served();
                 served.setCodeQR(lq.getCodeQR());
-                served.setQueueUserStateEnum(QueueUserStateEnum.S);
+                served.setQueueStatus(lq.getQueueStatus());
+                served.setQueueUserState(QueueUserStateEnum.S);
                 served.setServedNumber(lq.getServingNumber());
                 ManageQueueModel.served("123213","b@r.com",
                         "$2a$15$ed3VSsc5x367CNiwQ3fKsemHSZUr.D3EVjHVjZ2cBTySc/l7gwPua",served);
