@@ -1,9 +1,8 @@
 package com.noqapp.merchant.model.response.api;
 
-import com.noqapp.merchant.presenter.beans.body.Authenticate;
-
 import retrofit2.Call;
-import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 /**
@@ -13,9 +12,13 @@ import retrofit2.http.POST;
 
 public interface LoginService {
 
+    @FormUrlEncoded
     @POST("login")
     Call<Void> login(
-            @Body
-            Authenticate deviceToken
+            @Field("mail")
+            String mail,
+
+            @Field("password")
+            String password
     );
 }

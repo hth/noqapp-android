@@ -14,14 +14,9 @@ import android.widget.EditText;
 
 import com.noqapp.merchant.R;
 import com.noqapp.merchant.model.LoginModel;
-import com.noqapp.merchant.model.ManageQueueModel;
 import com.noqapp.merchant.model.MerchantProfileModel;
-import com.noqapp.merchant.presenter.beans.JsonTopic;
-import com.noqapp.merchant.presenter.beans.body.Authenticate;
 import com.noqapp.merchant.views.activities.LaunchActivity;
 import com.noqapp.merchant.helper.ShowAlertInformation;
-
-import java.util.List;
 
 public class LoginFragment extends Fragment {
 
@@ -66,10 +61,7 @@ public class LoginFragment extends Fragment {
 //
 //                        ManageQueueModel.getQueues("123213","b@r.com",
 //                                "$2a$15$ed3VSsc5x367CNiwQ3fKsemHSZUr.D3EVjHVjZ2cBTySc/l7gwPua");
-						Authenticate auth =new Authenticate();
-						auth.setMail(email);
-						auth.setPassword(pwd);
-//						LoginModel.login(auth);
+						LoginModel.login(email, pwd);
 //						LaunchActivity.getLaunchActivity().progressDialog.show();
 //
 						MerchantProfileModel.fetch("b@r.com","$2a$15$ed3VSsc5x367CNiwQ3fKsemHSZUr.D3EVjHVjZ2cBTySc/l7gwPua");
