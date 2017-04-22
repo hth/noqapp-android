@@ -1,5 +1,6 @@
 package com.noqapp.merchant.model.response.api;
 
+import com.noqapp.merchant.presenter.beans.JsonToken;
 import com.noqapp.merchant.presenter.beans.JsonTopicList;
 
 import retrofit2.Call;
@@ -30,7 +31,7 @@ public interface ManageQueueService {
     );
 
     @POST("api/m/mq/served")
-    Call<String> served(
+    Call<JsonToken> served(
             @Header("X-R-DID")
             String did,
 

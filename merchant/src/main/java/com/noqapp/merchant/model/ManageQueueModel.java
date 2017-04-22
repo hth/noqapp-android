@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.noqapp.merchant.model.response.api.ManageQueueService;
 import com.noqapp.merchant.network.RetrofitClient;
+import com.noqapp.merchant.presenter.beans.JsonToken;
 import com.noqapp.merchant.presenter.beans.JsonTopic;
 import com.noqapp.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.merchant.utils.Constants;
@@ -50,6 +51,31 @@ public class ManageQueueModel {
 
             @Override
             public void onFailure(Call<JsonTopicList> call, Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+            }
+        });
+    }
+
+    /**
+     *
+     * @param did
+     * @param mail
+     * @param auth
+     */
+    public static void served(String did, String mail, String auth) {
+        manageQueueService.served(did, DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonToken>() {
+            @Override
+            public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Empty history");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonToken> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });
