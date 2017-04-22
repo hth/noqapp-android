@@ -7,6 +7,7 @@ import com.noqapp.merchant.network.MyCallBack;
 import com.noqapp.merchant.network.RetrofitClient;
 import com.noqapp.merchant.presenter.beans.JsonToken;
 import com.noqapp.merchant.presenter.beans.JsonTopicList;
+import com.noqapp.merchant.presenter.beans.body.Served;
 import com.noqapp.merchant.views.interfaces.TopicPresenter;
 
 import retrofit2.Call;
@@ -63,8 +64,8 @@ public class ManageQueueModel {
      * @param mail
      * @param auth
      */
-    public static void served(String did, String mail, String auth) {
-        manageQueueService.served(did, DEVICE_TYPE, mail, auth).enqueue(new MyCallBack<JsonToken>() {
+    public static void served(String did, String mail, String auth, Served served) {
+        manageQueueService.served(did, DEVICE_TYPE, mail, auth, served).enqueue(new MyCallBack<JsonToken>() {
             @Override
             public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
                 super.onResponse(call,response);
