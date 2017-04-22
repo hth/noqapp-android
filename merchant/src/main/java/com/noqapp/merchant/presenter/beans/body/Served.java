@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.merchant.model.types.QueueStatusEnum;
 
 /**
  * User: hitender
- * Date: 4/22/17 1:04 PM
+ * Date: 4/22/17 6:38 PM
  */
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
@@ -23,28 +24,37 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Authenticate {
+public class Served {
+    @JsonProperty("c")
+    private String codeQR;
 
-    @JsonProperty("mail")
-    private String mail;
+    @JsonProperty("s")
+    private String servedNumber;
 
-    @JsonProperty("password")
-    private String password;
+    @JsonProperty("q")
+    private QueueStatusEnum queueStatus;
 
-    public String getMail() {
-        return mail;
+    public String getCodeQR() {
+        return codeQR;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
     }
 
-    public String getPassword() {
-        return password;
+    public String getServedNumber() {
+        return servedNumber;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setServedNumber(String servedNumber) {
+        this.servedNumber = servedNumber;
+    }
+
+    public QueueStatusEnum getQueueStatus() {
+        return queueStatus;
+    }
+
+    public void setQueueStatus(QueueStatusEnum queueStatus) {
+        this.queueStatus = queueStatus;
     }
 }
-

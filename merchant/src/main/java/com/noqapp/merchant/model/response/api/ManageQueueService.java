@@ -2,8 +2,10 @@ package com.noqapp.merchant.model.response.api;
 
 import com.noqapp.merchant.presenter.beans.JsonToken;
 import com.noqapp.merchant.presenter.beans.JsonTopicList;
+import com.noqapp.merchant.presenter.beans.body.Served;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -42,6 +44,9 @@ public interface ManageQueueService {
             String mail,
 
             @Header("X-R-AUTH")
-            String auth
+            String auth,
+
+            @Body
+            Served served
     );
 }
