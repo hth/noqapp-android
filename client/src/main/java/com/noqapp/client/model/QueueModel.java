@@ -13,6 +13,7 @@ import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueueList;
+import com.noqapp.client.presenter.beans.body.DeviceToken;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -111,8 +112,8 @@ public final class QueueModel {
      *
      * @param did
      */
-    public static void getAllHistoricalJoinedQueue(String did) {
-        queueService.getAllHistoricalJoinedQueue(did, DEVICE_TYPE).enqueue(new MyCallBack<JsonTokenAndQueueList>() {
+    public static void getAllHistoricalJoinedQueue(String did, DeviceToken deviceToken) {
+        queueService.getAllHistoricalJoinedQueue(did, DEVICE_TYPE, deviceToken).enqueue(new MyCallBack<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(Call<JsonTokenAndQueueList> call, Response<JsonTokenAndQueueList> response) {
                 super.onResponse(call,response);

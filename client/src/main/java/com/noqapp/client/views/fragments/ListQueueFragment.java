@@ -16,12 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.noqapp.client.R;
 import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.client.presenter.beans.body.DeviceToken;
 import com.noqapp.client.views.activities.LaunchActivity;
 import com.noqapp.client.views.adapters.ListQueueAdapter;
 import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
@@ -71,7 +75,9 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         QueueModel.tokenAndQueuePresenter = this;
         //Todo Check the flow of history queue
         //QueueModel.getAllHistoricalJoinedQueue(LaunchActivity.DID);
-        QueueModel.getAllHistoricalJoinedQueue("123");
+        DeviceToken deviceToken = new DeviceToken();
+        deviceToken.setFcmToken(FirebaseInstanceId.getInstance().getToken());
+        QueueModel.getAllHistoricalJoinedQueue("123", deviceToken);
         //QueueModel.getAllJoinedQueue(LaunchActivity.DID);
     }
 
