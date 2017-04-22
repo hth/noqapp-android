@@ -32,7 +32,7 @@ public interface ManageQueueService {
             String auth
     );
 
-    @POST("api/m/mq/served")
+    @POST("api/m/mq/served.json")
     Call<JsonToken> served(
             @Header("X-R-DID")
             String did,
