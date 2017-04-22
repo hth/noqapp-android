@@ -6,19 +6,25 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
+import com.noqapp.client.presenter.ResponsePresenter;
 import com.noqapp.client.presenter.TokenPresenter;
+import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
-public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPresenter {
+public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPresenter,ResponsePresenter {
     public static final String KEY_CODEQR = "codeqr";
     public static final String KEY_STOREPHONE = "storephone";
     public static final String KEY_DISPLAYNAME = "displayname";
@@ -45,6 +51,8 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     protected TextView tv_current_value;
     @BindView(R.id.tv_how_long)
     protected TextView tv_how_long;
+    @BindView(R.id.btn_cancel_queue)
+    protected Button btn_cancel_queue;
 
     public JsonToken mJsonToken;
     private String codeQR;
@@ -130,8 +138,36 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     }
 
     @Override
+    public void queueResponse(JsonResponse response) {
+        // To cancel
+        if(null!=response){
+            if(response.getResponse()==1){
+                Toast.makeText(this,"You successfully cancel the queue",Toast.LENGTH_LONG).show();
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+                try {
+                    Thread.sleep(1000);
+                    finish();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }else{
+                Toast.makeText(this,"Failed to cancel the queue",Toast.LENGTH_LONG).show();
+            }
+        }else{
+            //Show error
+        }
+    }
+
+    @Override
     public void queueError() {
         Log.d(TAG, "Error");
 
+    }
+
+    @OnClick(R.id.btn_cancel_queue)
+    public void cancelQueue() {
+        QueueModel.responsePresenter=this;
+        QueueModel.abortQueue(LaunchActivity.DID, codeQR);
     }
 }
