@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ll_top"
+        android:weightSum="1"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:weightSum="1">
+            <com.noqapp.merchant.views.activities.customsviews.TextViewRalewayRegular
+                android:id="@+id/tv_title"
+                android:layout_height="0dp"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:textColor="@color/colorActionbar"
+                android:textSize="24sp"
+                />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/square_white_bg_drawable"
+                android:layout_weight=".4"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <View
+                        android:id="@+id/strut"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+
+                        android:background="@color/color_seprator"/>
+                    />
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignRight="@id/strut"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center">
+                        <com.noqapp.merchant.views.activities.customsviews.TextViewRalewayRegular
+                            android:id="@+id/tv_current"
+                            style="@style/style_join_queue_tv"
+                            android:text="current"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="15sp"
+                            />
+                        <com.noqapp.merchant.views.activities.customsviews.TextViewRobotoLight
+                            android:id="@+id/tv_current_value"
+                            android:layout_below="@+id/tv_current"
+                            style="@style/style_join_queue_tv"
+                            android:textColor="@color/colorMobile"
+                            android:textSize="36sp" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignLeft="@id/strut"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center">
+                        <com.noqapp.merchant.views.activities.customsviews.TextViewRalewayRegular
+                            android:id="@+id/tv_total"
+                            style="@style/style_join_queue_tv"
+                            android:text="total"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="15sp" />
+                        <com.noqapp.merchant.views.activities.customsviews.TextViewRobotoLight
+                            android:id="@+id/tv_total_value"
+                            android:layout_below="@+id/tv_total"
+                            style="@style/style_join_queue_tv"
+                            android:textSize="36sp"
+                            android:textColor="@color/color_total_val"
+                            />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="0dp"
+                android:layout_weight=".4"
+                android:gravity="center_vertical"
+                android:weightSum="1"
+                >
+                <com.noqapp.merchant.views.customsviews.CustomButton
+
+                android:id="@+id/btn_skip"
+                android:layout_width="0dp"
+                    android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:background="@mipmap/send_invite_small"
+                    android:layout_marginRight="@dimen/pager_btn_margin"
+                    android:layout_marginLeft="@dimen/pager_btn_margin"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:text="@string/skip" />
+                <com.noqapp.merchant.views.customsviews.CustomButton
+
+                android:id="@+id/btn_next"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/pager_btn_margin"
+                    android:layout_marginLeft="@dimen/pager_btn_margin"
+                android:textColor="@android:color/white"
+                android:background="@mipmap/send_invite_small"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:text="@string/next" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+    </LinearLayout>
