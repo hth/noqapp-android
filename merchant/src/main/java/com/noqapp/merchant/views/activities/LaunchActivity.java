@@ -1,6 +1,7 @@
 package com.noqapp.merchant.views.activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,6 +34,7 @@ public class LaunchActivity extends AppCompatActivity {
     private ImageView iv_logout;
     private long lastPress;
     private Toast backpressToast;
+    public ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class LaunchActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         tv_toolbar_title=(TextView) findViewById(R.id.tv_toolbar_title);
         iv_logout =(ImageView)findViewById(R.id.iv_logout);
+        initProgress();
         iv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,5 +165,22 @@ public class LaunchActivity extends AppCompatActivity {
         }else{
             super.onBackPressed();
         }
+    }
+
+    private void initProgress(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+
+    }
+
+    public void dismissProgress(){
+        if (null!= progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+    public void setProgressTitle(String msg){
+        progressDialog.setMessage(msg);
+
     }
 }

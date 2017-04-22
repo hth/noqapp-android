@@ -3,13 +3,11 @@ package com.noqapp.merchant.model;
 import android.util.Log;
 
 import com.noqapp.merchant.model.response.api.LoginService;
-import com.noqapp.merchant.model.response.api.MerchantProfileService;
+import com.noqapp.merchant.network.MyCallBack;
 import com.noqapp.merchant.network.RetrofitClient;
-import com.noqapp.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.merchant.presenter.beans.body.Authenticate;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -31,9 +29,10 @@ public class LoginModel {
      * @param authenticate
      */
     public static void login(Authenticate authenticate) {
-        loginService.login(authenticate).enqueue(new Callback<Void>() {
+        loginService.login(authenticate).enqueue(new MyCallBack<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                super.onResponse(call,response);
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                     Log.d("Response Mail", String.valueOf(response.headers().get(APIConstant.key.XR_MAIL)));
@@ -48,6 +47,7 @@ public class LoginModel {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                super.onFailure(call,t);
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });

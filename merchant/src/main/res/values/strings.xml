@@ -11,6 +11,7 @@
     <string name="prompt_email">E-mail</string>
     <string name="prompt_pwd">Password </string>
     <string name="sign_in">Login</string>
+    <string name="empty_list">You are not assign \n to any queue.</string>
     <string name="offline">Network unavailable. Please connect your device to network.</string>
 
 </resources>

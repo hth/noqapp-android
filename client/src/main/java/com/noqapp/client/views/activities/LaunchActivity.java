@@ -2,6 +2,7 @@ package com.noqapp.client.views.activities;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -61,7 +62,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     protected TextView tv_toolbar_title;
     private long lastPress;
     private Toast backpressToast;
-
+    public ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +76,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         rl_me.setOnClickListener(this);
         iv_home.setBackgroundResource(R.mipmap.home_select);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
-
+        initProgress();
         onClick(rl_me);
 
     }
@@ -170,5 +171,22 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         {
                 f.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    private void initProgress(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+
+    }
+
+    public void dismissProgress(){
+        if (null!= progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+    public void setProgressTitle(String msg){
+        progressDialog.setMessage(msg);
+
     }
 }

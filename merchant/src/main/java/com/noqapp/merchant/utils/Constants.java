@@ -7,4 +7,5 @@ package com.noqapp.merchant.utils;
 
 public class Constants {
     public static final String DEVICE_TYPE = "A";
+    public static final int requestCodeNotification = 2;
 }

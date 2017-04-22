@@ -1,6 +1,6 @@
 package com.noqapp.merchant.views.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,14 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.noqapp.merchant.R;
-import com.noqapp.merchant.presenter.beans.ListQueue;
+import com.noqapp.merchant.presenter.beans.JsonTopic;
 
 
 public class MerchantListAdapter extends BaseAdapter {
 	private Context context;
-	private ArrayList<ListQueue> items;
+	private List<JsonTopic> items;
 
-	public MerchantListAdapter(Context context, ArrayList<ListQueue> arrayList) {
+	public MerchantListAdapter(Context context, List<JsonTopic> arrayList) {
 		this.context = context;
 		this.items = arrayList;
 	}
@@ -53,11 +53,11 @@ public class MerchantListAdapter extends BaseAdapter {
 		} else {
 			recordHolder = (RecordHolder) view.getTag();
 		}
-		ListQueue listQueueItem = items.get(position);
+		JsonTopic jsonTopic = items.get(position);
 		recordHolder.txtNumber.setText(String.valueOf(position));
-		recordHolder.txtStoreName.setText(listQueueItem.getDisplayName());
-		recordHolder.txtStorePhoneNo.setText(String.valueOf(listQueueItem.getServingNumber()));
-		recordHolder.txtToken.setText(String.valueOf(listQueueItem.getToken()));
+		recordHolder.txtStoreName.setText(jsonTopic.getDisplayName());
+		recordHolder.txtStorePhoneNo.setText(String.valueOf(jsonTopic.getServingNumber()));
+		recordHolder.txtToken.setText(String.valueOf(jsonTopic.getToken()));
 
 
 		return view;

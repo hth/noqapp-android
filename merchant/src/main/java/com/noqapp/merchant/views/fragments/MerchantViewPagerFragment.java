@@ -11,12 +11,13 @@ import android.widget.ImageView;
 
 import com.noqapp.merchant.R;
 
-import com.noqapp.merchant.presenter.beans.ListQueue;
+import com.noqapp.merchant.presenter.beans.JsonTopic;
 import com.noqapp.merchant.views.activities.LaunchActivity;
 import com.noqapp.merchant.views.adapters.ViewPagerAdapter;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MerchantViewPagerFragment extends Fragment {
@@ -27,10 +28,10 @@ public class MerchantViewPagerFragment extends Fragment {
     private ViewPager        viewPager ;
     private static int pos=0;
     private ImageView leftNav,rightNav;
-    private static ArrayList<ListQueue> items =new ArrayList<>();
+    private static List<JsonTopic> items =new ArrayList<>();
     public static MerchantViewPagerFragment merchantViewPagerFragment;
 
-    public static  MerchantViewPagerFragment getInstance(int position,ArrayList<ListQueue> listitems) {
+    public static  MerchantViewPagerFragment getInstance(int position,List<JsonTopic> listitems) {
 
         pos=position;
         items=listitems;
