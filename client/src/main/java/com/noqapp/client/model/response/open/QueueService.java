@@ -5,10 +5,12 @@ import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueueList;
+import com.noqapp.client.presenter.beans.body.DeviceToken;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -43,13 +45,16 @@ public interface QueueService {
             String dt
     );
 
-    @GET("open/token/historical.json")
+    @POST("open/token/historical.json")
     Call<JsonTokenAndQueueList> getAllHistoricalJoinedQueue(
             @Header("X-R-DID")
             String did,
 
             @Header("X-R-DT")
-            String dt
+            String dt,
+
+            @Body
+            DeviceToken deviceToken
     );
 
     @POST("open/token/queue/{codeQR}.json")
