@@ -168,6 +168,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
             Toast.makeText(getActivity(), rawData, Toast.LENGTH_LONG).show();
             if (rawData.startsWith("https://tp.receiptofi.com")) {
                 String[] codeQR = rawData.split("/");
+                LaunchActivity.getLaunchActivity().progressDialog.show();
                 QueueModel.queuePresenter = ScanQueueFragment.this;
                 QueueModel.getQueueState(LaunchActivity.DID, codeQR[3]);
                 showEmptyScreen(false);
