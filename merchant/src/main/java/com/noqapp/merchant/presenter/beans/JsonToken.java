@@ -38,6 +38,9 @@ public class JsonToken {
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public String getCodeQR() {
         return codeQR;
     }
@@ -76,5 +79,13 @@ public class JsonToken {
 
     public void setToken(int token) {
         this.token = token;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
     }
 }
