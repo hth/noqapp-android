@@ -66,12 +66,14 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     }
 
     public void callQueue() {
+            LaunchActivity.getLaunchActivity().progressDialog.show();
             QueueModel.tokenAndQueuePresenter = this;
             QueueModel.getAllJoinedQueue(LaunchActivity.DID);
             isCurrentQueueCall = true;
     }
 
     public void callQueueHistory() {
+
         QueueModel.tokenAndQueuePresenter = this;
         //Todo Check the flow of history queue
         //QueueModel.getAllHistoricalJoinedQueue(LaunchActivity.DID);

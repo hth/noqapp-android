@@ -66,6 +66,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     public void callQueue() {
         if (codeQR != null) {
             Log.d("code qr ::", codeQR);
+            LaunchActivity.getLaunchActivity().progressDialog.show();
             QueueModel.tokenPresenter = this;
             QueueModel.joinQueue(LaunchActivity.DID, codeQR);
         }
@@ -97,8 +98,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-
+                navigateToList();
             }
         });
     }
@@ -112,19 +112,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
 
     @Override
     public void onBackPressed() {
-
-        if (mJsonToken != null) {
-
-            Intent intent = new Intent();
-            intent.putExtra(KEY_CODEQR, mJsonToken.getToken());
-            if (getParent() == null) {
-                setResult(Activity.RESULT_OK, intent);
-            } else {
-                getParent().setResult(Activity.RESULT_OK, intent);
-            }
-            //finish();
-        }
-        super.onBackPressed();
+        navigateToList();
     }
 
     @Override
@@ -169,5 +157,19 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     public void cancelQueue() {
         QueueModel.responsePresenter=this;
         QueueModel.abortQueue(LaunchActivity.DID, codeQR);
+    }
+
+    private void navigateToList(){
+        if (mJsonToken != null) {
+
+            Intent intent = new Intent();
+            intent.putExtra(KEY_CODEQR, mJsonToken.getToken());
+            if (getParent() == null) {
+                setResult(Activity.RESULT_OK, intent);
+            } else {
+                getParent().setResult(Activity.RESULT_OK, intent);
+            }
+        }
+        super.onBackPressed();
     }
 }
