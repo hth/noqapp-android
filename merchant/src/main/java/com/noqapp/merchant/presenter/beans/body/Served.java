@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.merchant.model.types.QueueStatusEnum;
+import com.noqapp.merchant.model.types.QueueUserStateEnum;
 
 /**
  * User: hitender
@@ -28,11 +29,11 @@ public class Served {
     @JsonProperty("c")
     private String codeQR;
 
-    @JsonProperty("s")
-    private String servedNumber;
+    @JsonProperty("t")
+    private int servedNumber;
 
     @JsonProperty("q")
-    private QueueStatusEnum queueStatus;
+    private QueueUserStateEnum queueUserStateEnum;
 
     public String getCodeQR() {
         return codeQR;
@@ -42,19 +43,20 @@ public class Served {
         this.codeQR = codeQR;
     }
 
-    public String getServedNumber() {
+    public int getServedNumber() {
         return servedNumber;
     }
 
-    public void setServedNumber(String servedNumber) {
+    public void setServedNumber(int servedNumber) {
         this.servedNumber = servedNumber;
     }
 
-    public QueueStatusEnum getQueueStatus() {
-        return queueStatus;
+    public QueueUserStateEnum getQueueUserStateEnum() {
+        return queueUserStateEnum;
     }
 
-    public void setQueueStatus(QueueStatusEnum queueStatus) {
-        this.queueStatus = queueStatus;
+    public void setQueueUserStateEnum(QueueUserStateEnum queueUserStateEnum) {
+        this.queueUserStateEnum = queueUserStateEnum;
     }
 }
+
