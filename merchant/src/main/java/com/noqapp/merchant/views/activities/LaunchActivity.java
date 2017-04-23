@@ -2,22 +2,31 @@ package com.noqapp.merchant.views.activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.merchant.R;
 import com.noqapp.merchant.helper.NetworkHelper;
+import com.noqapp.merchant.model.types.QueueStatusEnum;
+import com.noqapp.merchant.network.NOQueueMessagingService;
+import com.noqapp.merchant.presenter.beans.JsonTopic;
+import com.noqapp.merchant.utils.Constants;
 import com.noqapp.merchant.views.fragments.LoginFragment;
 import com.noqapp.merchant.views.fragments.MerchantListFragment;
 
@@ -39,16 +48,18 @@ public class LaunchActivity extends AppCompatActivity {
     private long lastPress;
     private Toast backpressToast;
     public ProgressDialog progressDialog;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private MerchantListFragment merchantListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        launchActivity=this;
-        networkHelper=new NetworkHelper(this);
+        launchActivity = this;
+        networkHelper = new NetworkHelper(this);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        tv_toolbar_title=(TextView) findViewById(R.id.tv_toolbar_title);
-        iv_logout =(ImageView)findViewById(R.id.iv_logout);
+        tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
+        iv_logout = (ImageView) findViewById(R.id.iv_logout);
         initProgress();
         iv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +69,8 @@ public class LaunchActivity extends AppCompatActivity {
                         .setMessage("Would you like to logout?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                //unsubscribe the topics
+                                unSubscribeTopics();
                                 // logout
                                 sharedpreferences.edit().clear().commit();
                                 //navigate to signup/login
@@ -73,11 +86,46 @@ public class LaunchActivity extends AppCompatActivity {
             }
         });
         if (isLoggedIn()) {
-            replaceFragmentWithoutBackStack(R.id.frame_layout, new MerchantListFragment());
-        }
-        else {
+            merchantListFragment = new MerchantListFragment();
+            replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
+        } else {
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
         }
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+                    String message = intent.getStringExtra("message");
+                    String qrcode = intent.getStringExtra("qrcode");
+                    String status = intent.getStringExtra("status");
+                    String current_serving = intent.getStringExtra("current_serving");
+                    String lastno = intent.getStringExtra("lastno");
+                    Log.v("notification response",
+                            "Push notification: " + message + "\n" + "qrcode : " + qrcode
+                                    + "\n" + "status : " + status
+                                    + "\n" + "current_serving : " + current_serving
+                                    + "\n" + "lastno : " + lastno
+                    );
+
+                    for (int i = 0; i < MerchantListFragment.topics.size(); i++) {
+                        JsonTopic jt = MerchantListFragment.topics.get(i);
+                        if (jt.getCodeQR().equalsIgnoreCase(qrcode)) {
+                            jt.setServingNumber(Integer.parseInt(current_serving));
+                            jt.setQueueStatus(QueueStatusEnum.valueOf(status));
+                            jt.setToken(Integer.parseInt(lastno));
+                            MerchantListFragment.topics.set(i, jt);
+                            merchantListFragment.adapter.notifyDataSetChanged();
+                            if (null != merchantListFragment.merchantViewPagerFragment)
+                                merchantListFragment.merchantViewPagerFragment.adapter.notifyDataSetChanged();
+                            break;
+                        }
+                    }
+                }
+            }
+        };
 
     }
 
@@ -94,7 +142,7 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
 
-    public void replaceFragmentWithBackStack( int container, Fragment fragment, String tag) {
+    public void replaceFragmentWithBackStack(int container, Fragment fragment, String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(container, fragment, tag).addToBackStack(tag).commit();
@@ -130,14 +178,14 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     public void setUserName(String name) {
-         sharedpreferences.edit().putString(KEY_USER_NAME, name);
+        sharedpreferences.edit().putString(KEY_USER_NAME, name);
     }
 
     public boolean isLoggedIn() {
         return sharedpreferences.getBoolean(IS_LOGIN, false);
     }
 
-    public void setSharPreferancename(String userName, String userID, String emailno,String auth, boolean isLogin) {
+    public void setSharPreferancename(String userName, String userID, String emailno, String auth, boolean isLogin) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(KEY_USER_NAME, userName);
         editor.putString(KEY_USER_ID, userID);
@@ -147,20 +195,19 @@ public class LaunchActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    private void enableLogout(){
+    private void enableLogout() {
 
         if (isLoggedIn()) {
             iv_logout.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             iv_logout.setVisibility(View.INVISIBLE);
         }
     }
 
 
-    private void restartApp(){
+    private void restartApp() {
         Intent i = getBaseContext().getPackageManager()
-                .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+                .getLaunchIntentForPackage(getBaseContext().getPackageName());
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
         finish();
@@ -169,35 +216,67 @@ public class LaunchActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
-        if(fm.getBackStackEntryCount()==0){
-                long currentTime = System.currentTimeMillis();
-                if (currentTime - lastPress > 3000) {
-                    backpressToast = Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
-                    backpressToast.show();
-                    lastPress = currentTime;
-                } else {
-                    if (backpressToast != null) backpressToast.cancel();
-                    super.onBackPressed();
-                }
-        }else{
+        if (fm.getBackStackEntryCount() == 0) {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastPress > 3000) {
+                backpressToast = Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
+                backpressToast.show();
+                lastPress = currentTime;
+            } else {
+                if (backpressToast != null) backpressToast.cancel();
+                super.onBackPressed();
+            }
+        } else {
             super.onBackPressed();
         }
     }
 
-    private void initProgress(){
+    private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading...");
 
     }
 
-    public void dismissProgress(){
-        if (null!= progressDialog && progressDialog.isShowing())
+    public void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing())
             progressDialog.dismiss();
     }
 
-    public void setProgressTitle(String msg){
+    public void setProgressTitle(String msg) {
         progressDialog.setMessage(msg);
 
+    }
+
+    private void unSubscribeTopics() {
+        if (null != MerchantListFragment.topics && MerchantListFragment.topics.size() > 0) {
+            for (int i = 0; i < MerchantListFragment.topics.size(); i++) {
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(MerchantListFragment.topics.get(i).getTopic());
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(MerchantListFragment.topics.get(i).getTopic() + "_M");
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Constants.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Constants.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NOQueueMessagingService.clearNotifications(getApplicationContext());
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
     }
 }

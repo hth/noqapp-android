@@ -27,10 +27,11 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
 
 
 
-    private MerchantListAdapter adapter;
+    public MerchantListAdapter adapter;
     public static List<JsonTopic> topics;
     private ListView listview;
     private RelativeLayout rl_empty_screen;
+    public MerchantViewPagerFragment merchantViewPagerFragment;
     public MerchantListFragment() {
 
     }
@@ -105,9 +106,9 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                    merchantViewPagerFragment=MerchantViewPagerFragment.getInstance(position);
                     LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout,
-                            MerchantViewPagerFragment.getInstance(position),"MerchantViewPagerFragment");
+                            merchantViewPagerFragment,"MerchantViewPagerFragment");
                 }
             });
         }
