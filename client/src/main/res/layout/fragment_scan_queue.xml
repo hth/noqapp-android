@@ -77,7 +77,7 @@
                     <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
                         android:id="@+id/tv_current"
                         style="@style/style_join_queue_tv"
-                        android:text="current"
+                        android:text="@string/people_in_queue"
                         android:textColor="@color/colorAddress"
                         android:textSize="15sp"
                          />
@@ -97,7 +97,7 @@
                     <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
                         android:id="@+id/tv_total"
                         style="@style/style_join_queue_tv"
-                        android:text="total"
+                        android:text="@string/currently_serving"
                         android:textColor="@color/colorAddress"
                         android:textSize="15sp" />
                     <com.noqapp.client.views.cutomviews.TextViewRobotoLight

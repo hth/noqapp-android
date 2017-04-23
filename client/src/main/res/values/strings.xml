@@ -62,4 +62,15 @@
     <!--Error and message-->
     <string name="networkerror">Network Error</string>
     <string name="offline">Network unavailable. Please connect your device to network.</string>
+
+    <!--- Join Screen -->
+    <string name="you_are_after">You are after</string>
+    <string name="serving_now">Serving now</string>
+    <string name="your_token">Your Token</string>
+
+
+    <!--- Scan Screen -->
+    <string name="currently_serving">Currently serving</string>
+    <string name="people_in_queue">People in queue</string>
+
 </resources>

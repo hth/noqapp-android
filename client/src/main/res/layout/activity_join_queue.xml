@@ -73,7 +73,7 @@
                     <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
                         android:id="@+id/tv_current"
                         style="@style/style_join_queue_tv"
-                        android:text="my bid:"
+                        android:text="@string/your_token"
                         android:textColor="@color/colorAddress"
                         android:textSize="15sp"
                         />
@@ -94,7 +94,7 @@
                     <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
                         android:id="@+id/tv_total"
                         style="@style/style_join_queue_tv"
-                        android:text="current bid:"
+                        android:text="@string/serving_now"
                         android:textColor="@color/colorAddress"
                         android:textSize="15sp"
                         />
@@ -134,7 +134,7 @@
 
                 <com.noqapp.client.views.cutomviews.TextViewRobotoLight
                     style="@style/style_join_queue_tv"
-                    android:text="you are:"
+                    android:text="@string/you_are_after"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/colorActionbar"
                     android:textSize="15sp"
