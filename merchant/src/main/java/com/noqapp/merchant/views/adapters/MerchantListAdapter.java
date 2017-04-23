@@ -55,7 +55,7 @@ public class MerchantListAdapter extends BaseAdapter {
 		JsonTopic jsonTopic = items.get(position);
 		recordHolder.tv_number.setText("#"+String.valueOf(position+1));
 		recordHolder.tv_queue_name.setText(jsonTopic.getDisplayName());
-		recordHolder.tv_serving_no.setText("Serving now : "+String.valueOf(jsonTopic.getServingNumber()));
+		recordHolder.tv_serving_no.setText("Serving now: "+String.valueOf(jsonTopic.getServingNumber()));
 		recordHolder.tv_inqueue.setText(String.valueOf(jsonTopic.getRemaining()));
 
 
