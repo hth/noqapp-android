@@ -1,6 +1,7 @@
 package com.noqapp.client.model.response.open;
 
 import com.noqapp.client.presenter.beans.JsonProfile;
+import com.noqapp.client.presenter.beans.body.Login;
 import com.noqapp.client.presenter.beans.body.Registration;
 
 import retrofit2.Call;
@@ -18,5 +19,11 @@ public interface RegisterService {
     Call<JsonProfile> register(
             @Body
             Registration registration
+    );
+
+    @POST("open/client/login.json")
+    Call<JsonProfile> login(
+            @Body
+            Login login
     );
 }
