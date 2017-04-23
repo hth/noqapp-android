@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.merchant.model.types.QueueStatusEnum;
 
+import java.io.Serializable;
 import java.util.logging.Logger;
 
 /**
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude (JsonInclude.Include.NON_NULL)
-public class JsonToken {
+public class JsonToken implements Serializable {
 
     @JsonProperty("c")
     private String codeQR;
@@ -87,5 +88,9 @@ public class JsonToken {
 
     public void setError(ErrorEncounteredJson error) {
         this.error = error;
+    }
+
+    public int getRemaining(){
+        return  token-servingNumber;
     }
 }

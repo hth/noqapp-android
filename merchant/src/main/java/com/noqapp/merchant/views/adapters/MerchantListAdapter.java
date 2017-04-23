@@ -57,7 +57,7 @@ public class MerchantListAdapter extends BaseAdapter {
 		recordHolder.txtNumber.setText(String.valueOf(position));
 		recordHolder.txtStoreName.setText(jsonTopic.getDisplayName());
 		recordHolder.txtStorePhoneNo.setText(String.valueOf(jsonTopic.getServingNumber()));
-		recordHolder.txtToken.setText(String.valueOf(jsonTopic.getToken()));
+		recordHolder.txtToken.setText(String.valueOf(jsonTopic.getRemaining()));
 
 
 		return view;

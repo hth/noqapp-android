@@ -5,6 +5,8 @@ import android.util.Log;
 import com.noqapp.merchant.model.response.api.LoginService;
 import com.noqapp.merchant.network.MyCallBack;
 import com.noqapp.merchant.network.RetrofitClient;
+import com.noqapp.merchant.views.interfaces.LoginPresenter;
+import com.noqapp.merchant.views.interfaces.TopicPresenter;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -18,7 +20,7 @@ public class LoginModel {
     private static final String TAG = LoginModel.class.getSimpleName();
 
     private static final LoginService loginService;
-
+    public static LoginPresenter loginPresenter;
     static {
         loginService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(LoginService.class);
     }
@@ -33,6 +35,8 @@ public class LoginModel {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 super.onResponse(call,response);
+                loginPresenter.loginResponse(String.valueOf(response.headers().get(APIConstant.key.XR_MAIL)),
+                        String.valueOf(response.headers().get(APIConstant.key.XR_AUTH)));
                 Log.d("Response", String.valueOf(response.body()));
                 Log.d("Response Mail", String.valueOf(response.headers().get(APIConstant.key.XR_MAIL)));
                 Log.d("Response Auth", String.valueOf(response.headers().get(APIConstant.key.XR_AUTH)));

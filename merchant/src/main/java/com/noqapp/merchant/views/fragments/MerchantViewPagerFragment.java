@@ -11,13 +11,9 @@ import android.widget.ImageView;
 
 import com.noqapp.merchant.R;
 
-import com.noqapp.merchant.presenter.beans.JsonTopic;
+
 import com.noqapp.merchant.views.activities.LaunchActivity;
 import com.noqapp.merchant.views.adapters.ViewPagerAdapter;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MerchantViewPagerFragment extends Fragment {
@@ -28,13 +24,12 @@ public class MerchantViewPagerFragment extends Fragment {
     private ViewPager        viewPager ;
     private static int pos=0;
     private ImageView leftNav,rightNav;
-    private static List<JsonTopic> items =new ArrayList<>();
+
+
     public static MerchantViewPagerFragment merchantViewPagerFragment;
 
-    public static  MerchantViewPagerFragment getInstance(int position,List<JsonTopic> listitems) {
-
+    public static  MerchantViewPagerFragment getInstance(int position) {
         pos=position;
-        items=listitems;
         return  merchantViewPagerFragment =new MerchantViewPagerFragment();
     }
 
@@ -43,7 +38,7 @@ public class MerchantViewPagerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantviewpager, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        adapter = new ViewPagerAdapter(getActivity(), items);
+        adapter = new ViewPagerAdapter(getActivity());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(pos);
         leftNav = (ImageView) view.findViewById(R.id.left_nav);
@@ -65,8 +60,10 @@ public class MerchantViewPagerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int tab = viewPager.getCurrentItem();
-                tab++;
-                viewPager.setCurrentItem(tab);
+                if(tab<viewPager.getAdapter().getCount()) {
+                    tab++;
+                    viewPager.setCurrentItem(tab);
+                }
             }
         });
         return view;
