@@ -6,7 +6,6 @@ import com.noqapp.merchant.model.response.api.LoginService;
 import com.noqapp.merchant.network.MyCallBack;
 import com.noqapp.merchant.network.RetrofitClient;
 import com.noqapp.merchant.views.interfaces.LoginPresenter;
-import com.noqapp.merchant.views.interfaces.TopicPresenter;
 
 import retrofit2.Call;
 import retrofit2.Response;

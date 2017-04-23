@@ -1,7 +1,5 @@
 package com.noqapp.merchant.presenter.beans;
 
-import android.os.Parcelable;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

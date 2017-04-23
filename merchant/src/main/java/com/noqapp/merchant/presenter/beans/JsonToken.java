@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.merchant.model.types.QueueStatusEnum;
 
 import java.io.Serializable;
-import java.util.logging.Logger;
 
 /**
  * User: hitender
