@@ -5,7 +5,6 @@ import android.util.Log;
 import com.noqapp.merchant.model.response.api.LoginService;
 import com.noqapp.merchant.network.MyCallBack;
 import com.noqapp.merchant.network.RetrofitClient;
-import com.noqapp.merchant.presenter.beans.body.Authenticate;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -26,23 +25,17 @@ public class LoginModel {
 
     /**
      *
-     * @param authenticate
+     * @param mail
+     * @param password
      */
-    public static void login(Authenticate authenticate) {
-        loginService.login(authenticate).enqueue(new MyCallBack<Void>() {
+    public static void login(String mail, String password) {
+        loginService.login(mail, password).enqueue(new MyCallBack<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 super.onResponse(call,response);
-                if (response.body() != null) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    Log.d("Response Mail", String.valueOf(response.headers().get(APIConstant.key.XR_MAIL)));
-                    Log.d("Response Auth", String.valueOf(response.headers().get(APIConstant.key.XR_AUTH)));
-
-                    //TODO success response ???
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history");
-                }
+                Log.d("Response", String.valueOf(response.body()));
+                Log.d("Response Mail", String.valueOf(response.headers().get(APIConstant.key.XR_MAIL)));
+                Log.d("Response Auth", String.valueOf(response.headers().get(APIConstant.key.XR_AUTH)));
             }
 
             @Override
