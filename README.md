@@ -1,1 +1,1 @@
-# NoQApp_Android
+# noqapp-android
