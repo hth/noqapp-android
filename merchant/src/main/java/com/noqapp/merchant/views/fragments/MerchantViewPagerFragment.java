@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.noqapp.merchant.R;
-
-
 import com.noqapp.merchant.views.activities.LaunchActivity;
 import com.noqapp.merchant.views.adapters.ViewPagerAdapter;
 
@@ -43,6 +41,13 @@ public class MerchantViewPagerFragment extends Fragment {
         viewPager.setCurrentItem(pos);
         leftNav = (ImageView) view.findViewById(R.id.left_nav);
         rightNav = (ImageView) view.findViewById(R.id.right_nav);
+        if(MerchantListFragment.topics.size()>1){
+            leftNav.setVisibility(View.VISIBLE);
+            rightNav.setVisibility(View.VISIBLE);
+        }else{
+            leftNav.setVisibility(View.INVISIBLE);
+            rightNav.setVisibility(View.INVISIBLE);
+        }
         leftNav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

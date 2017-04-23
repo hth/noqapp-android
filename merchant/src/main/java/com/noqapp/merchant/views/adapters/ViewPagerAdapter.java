@@ -3,13 +3,13 @@ package com.noqapp.merchant.views.adapters;
 /**
  * Created by chandra on 4/16/17.
  */
+
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +22,6 @@ import com.noqapp.merchant.presenter.beans.JsonTopic;
 import com.noqapp.merchant.presenter.beans.body.Served;
 import com.noqapp.merchant.views.activities.LaunchActivity;
 import com.noqapp.merchant.views.fragments.MerchantListFragment;
-import com.noqapp.merchant.views.fragments.MerchantViewPagerFragment;
 import com.noqapp.merchant.views.interfaces.ManageQueuePresenter;
 
 

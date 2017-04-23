@@ -1,7 +1,6 @@
 package com.noqapp.merchant.views.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import com.noqapp.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.merchant.views.activities.LaunchActivity;
 import com.noqapp.merchant.views.adapters.MerchantListAdapter;
 import com.noqapp.merchant.views.interfaces.TopicPresenter;
-
 
 import java.util.List;
 

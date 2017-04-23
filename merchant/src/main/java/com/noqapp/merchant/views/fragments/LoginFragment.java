@@ -4,7 +4,6 @@ package com.noqapp.merchant.views.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,12 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.noqapp.merchant.R;
-import com.noqapp.merchant.model.APIConstant;
+import com.noqapp.merchant.helper.ShowAlertInformation;
 import com.noqapp.merchant.model.LoginModel;
 import com.noqapp.merchant.model.MerchantProfileModel;
 import com.noqapp.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.merchant.views.activities.LaunchActivity;
-import com.noqapp.merchant.helper.ShowAlertInformation;
 import com.noqapp.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.merchant.views.interfaces.MerchantPresenter;
 

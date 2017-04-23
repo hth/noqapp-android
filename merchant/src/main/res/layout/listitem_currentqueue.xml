@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtNumber"
+            android:id="@+id/tv_number"
             android:text=""
             android:background="@drawable/circle_bg_drawable"
             android:textColor="@color/colorMobile"
@@ -33,19 +33,19 @@
         <com.noqapp.merchant.views.activities.customsviews.TextViewRalewayRegular
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtStoreName"
+            android:id="@+id/tv_queue_name"
             android:textColor="@color/colorActionbar"
             android:textSize="20sp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtStorePhoneNo"
+            android:id="@+id/tv_serving_no"
             android:textSize="15sp"/>
     </LinearLayout>
     <com.noqapp.merchant.views.activities.customsviews.TextViewRobotoLight
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:id="@+id/txtToken"
+        android:id="@+id/tv_inqueue"
         android:gravity="center"
         android:layout_weight="0.25"
         android:textSize="24sp" />

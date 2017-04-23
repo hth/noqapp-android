@@ -6,20 +6,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.merchant.R;
+import com.noqapp.merchant.helper.NetworkHelper;
 import com.noqapp.merchant.views.fragments.LoginFragment;
 import com.noqapp.merchant.views.fragments.MerchantListFragment;
-import com.noqapp.merchant.helper.NetworkHelper;
 
 import java.util.UUID;
 

@@ -1,7 +1,5 @@
 package com.noqapp.merchant.views.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +9,8 @@ import android.widget.TextView;
 
 import com.noqapp.merchant.R;
 import com.noqapp.merchant.presenter.beans.JsonTopic;
+
+import java.util.List;
 
 
 public class MerchantListAdapter extends BaseAdapter {
@@ -40,34 +40,33 @@ public class MerchantListAdapter extends BaseAdapter {
 		if (view == null) {
 			recordHolder = new RecordHolder();
 			view = layoutInflater.inflate(R.layout.listitem_currentqueue, null);
-			recordHolder.txtNumber = (TextView) view.findViewById(R.id.txtNumber);
-			recordHolder.txtStoreName = (TextView) view
-					.findViewById(R.id.txtStoreName);
-			recordHolder.txtStorePhoneNo = (TextView) view
-					.findViewById(R.id.txtStorePhoneNo);
-
-			recordHolder.txtToken = (TextView) view
-					.findViewById(R.id.txtToken);
+			recordHolder.tv_number = (TextView) view.findViewById(R.id.tv_number);
+			recordHolder.tv_queue_name = (TextView) view
+					.findViewById(R.id.tv_queue_name);
+			recordHolder.tv_serving_no = (TextView) view
+					.findViewById(R.id.tv_serving_no);
+			recordHolder.tv_inqueue = (TextView) view
+					.findViewById(R.id.tv_inqueue);
 
 			view.setTag(recordHolder);
 		} else {
 			recordHolder = (RecordHolder) view.getTag();
 		}
 		JsonTopic jsonTopic = items.get(position);
-		recordHolder.txtNumber.setText(String.valueOf(position));
-		recordHolder.txtStoreName.setText(jsonTopic.getDisplayName());
-		recordHolder.txtStorePhoneNo.setText(String.valueOf(jsonTopic.getServingNumber()));
-		recordHolder.txtToken.setText(String.valueOf(jsonTopic.getRemaining()));
+		recordHolder.tv_number.setText("#"+String.valueOf(position+1));
+		recordHolder.tv_queue_name.setText(jsonTopic.getDisplayName());
+		recordHolder.tv_serving_no.setText("Serving now : "+String.valueOf(jsonTopic.getServingNumber()));
+		recordHolder.tv_inqueue.setText(String.valueOf(jsonTopic.getRemaining()));
 
 
 		return view;
 	}
 
 	static class RecordHolder {
-		TextView txtNumber;
-		TextView txtStoreName;
-		TextView txtStorePhoneNo;
-		TextView txtToken;
+		TextView tv_number;
+		TextView tv_queue_name;
+		TextView tv_serving_no;
+		TextView tv_inqueue;
 
 		RecordHolder() {
 		}

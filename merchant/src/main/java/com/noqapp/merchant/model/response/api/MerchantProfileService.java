@@ -2,7 +2,6 @@ package com.noqapp.merchant.model.response.api;
 
 import com.noqapp.merchant.presenter.beans.JsonMerchant;
 
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;

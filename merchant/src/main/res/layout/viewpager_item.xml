@@ -54,7 +54,7 @@
                         <com.noqapp.merchant.views.activities.customsviews.TextViewRalewayRegular
                             android:id="@+id/tv_current"
                             style="@style/style_join_queue_tv"
-                            android:text="current"
+                            android:text="@string/serving"
                             android:textColor="@color/colorAddress"
                             android:textSize="15sp"
                             />
@@ -74,7 +74,7 @@
                         <com.noqapp.merchant.views.activities.customsviews.TextViewRalewayRegular
                             android:id="@+id/tv_total"
                             style="@style/style_join_queue_tv"
-                            android:text="total"
+                            android:text="@string/in_Queue"
                             android:textColor="@color/colorAddress"
                             android:textSize="15sp" />
                         <com.noqapp.merchant.views.activities.customsviews.TextViewRobotoLight
