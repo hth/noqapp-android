@@ -9,6 +9,5 @@ public class Constants {
     public static final String DEVICE_TYPE = "A";
     public static final int requestCodeNotification = 2;
     // broadcast receiver intent filters
-    public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static final String PUSH_NOTIFICATION = "pushNotification";
 }

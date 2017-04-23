@@ -48,7 +48,7 @@ public class LaunchActivity extends AppCompatActivity {
     private long lastPress;
     private Toast backpressToast;
     public ProgressDialog progressDialog;
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private BroadcastReceiver broadcastReceiver;
     private MerchantListFragment merchantListFragment;
 
     @Override
@@ -92,7 +92,7 @@ public class LaunchActivity extends AppCompatActivity {
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
         }
 
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+        broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 
@@ -261,13 +261,9 @@ public class LaunchActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // register GCM registration complete receiver
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Constants.REGISTRATION_COMPLETE));
-
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
                 new IntentFilter(Constants.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
@@ -276,7 +272,7 @@ public class LaunchActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
 }

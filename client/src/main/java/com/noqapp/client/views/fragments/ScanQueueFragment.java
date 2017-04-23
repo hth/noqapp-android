@@ -165,7 +165,6 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
             Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
             showEmptyScreen(true);
         } else {
-            Toast.makeText(getActivity(), rawData, Toast.LENGTH_LONG).show();
             if (rawData.startsWith("https://tp.receiptofi.com")) {
                 String[] codeQR = rawData.split("/");
                 LaunchActivity.getLaunchActivity().progressDialog.show();
@@ -173,7 +172,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
                 QueueModel.getQueueState(LaunchActivity.DID, codeQR[3]);
                 showEmptyScreen(false);
             } else {
-                Toast toast = Toast.makeText(getActivity(), "No scan data received!", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getActivity(), "Not a valid QR-Code", Toast.LENGTH_SHORT);
                 toast.show();
                 showEmptyScreen(true);
             }

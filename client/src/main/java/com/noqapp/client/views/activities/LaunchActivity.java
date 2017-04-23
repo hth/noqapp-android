@@ -3,11 +3,15 @@ package com.noqapp.client.views.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -20,8 +24,10 @@ import android.widget.Toast;
 import com.noqapp.client.R;
 import com.noqapp.client.helper.NetworkHelper;
 import com.noqapp.client.helper.ShowAlertInformation;
+import com.noqapp.client.network.NOQueueMessagingService;
 import com.noqapp.client.utils.Constants;
 import com.noqapp.client.views.fragments.ListQueueFragment;
+import com.noqapp.client.views.fragments.LoginFragment;
 import com.noqapp.client.views.fragments.MeFragment;
 import com.noqapp.client.views.fragments.RegistrationFormFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
@@ -63,6 +69,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private long lastPress;
     private Toast backpressToast;
     public ProgressDialog progressDialog;
+    private BroadcastReceiver broadcastReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +85,18 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
         initProgress();
         onClick(rl_me);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+                    String message = intent.getStringExtra("message");
+                    Toast.makeText(launchActivity,message,Toast.LENGTH_LONG).show();
+
+                }
+            }
+        };
 
     }
 
@@ -167,7 +186,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         Fragment f =getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-        if (f instanceof ScanQueueFragment||f instanceof RegistrationFormFragment)
+        if (f instanceof ScanQueueFragment||f instanceof RegistrationFormFragment||f instanceof LoginFragment)
         {
                 f.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -188,5 +207,24 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public void setProgressTitle(String msg){
         progressDialog.setMessage(msg);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
+                new IntentFilter(Constants.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NOQueueMessagingService.clearNotifications(getApplicationContext());
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        super.onPause();
     }
 }
