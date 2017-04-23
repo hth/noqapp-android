@@ -126,7 +126,12 @@ public class MeFragment extends NoQueueBaseFragment {
                     })
                     .show();
         } else {
-            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new RegistrationFormFragment(), TAG);
+
+
+
+
+            //replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new RegistrationFormFragment(), TAG);
+            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LoginFragment(), TAG);
         }
 
 

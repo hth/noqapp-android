@@ -198,7 +198,7 @@ public class ListQueueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             tv_historyHeader = (Button)itemView.findViewById(R.id.btn_historyheader);
         }
     }
-
+      // When List is empty
     public class NOCurrentQueueVH extends RecyclerView.ViewHolder
     {
         public Button btn_scanQueue;
