@@ -119,8 +119,8 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     public void queueResponse(JsonToken token) {
         Log.d(TAG, token.toString());
         this.mJsonToken = token;
-        tv_total_value.setText(String.valueOf(String.valueOf(token.getToken())));
-        tv_current_value.setText(String.valueOf(String.valueOf(token.getServingNumber())));
+        tv_total_value.setText(String.valueOf(String.valueOf(token.getServingNumber())));
+        tv_current_value.setText(String.valueOf(String.valueOf(token.getToken())));
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
     }
