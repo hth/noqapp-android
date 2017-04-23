@@ -3,7 +3,7 @@
 android:id="@+id/toolbar"
 android:layout_width="match_parent"
 android:layout_height="58dp"
-android:background="@color/colorActionbar">
+android:background="@color/color_action_bar">
 
 <TextView
     android:id="@+id/tv_toolbar_title"

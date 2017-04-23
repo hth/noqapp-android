@@ -30,16 +30,17 @@
         android:layout_weight="0.50"
         android:orientation="vertical"
         >
-        <com.noqapp.merchant.views.activities.customsviews.TextViewRalewayRegular
+        <com.noqapp.merchant.views.activities.customsviews.TextViewRobotoLight
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_queue_name"
-            android:textColor="@color/colorActionbar"
+            android:textColor="@color/color_action_bar"
             android:textSize="20sp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_serving_no"
+            android:textColor="@color/color_list_subtitle"
             android:textSize="15sp"/>
     </LinearLayout>
     <com.noqapp.merchant.views.activities.customsviews.TextViewRobotoLight
@@ -48,5 +49,6 @@
         android:id="@+id/tv_inqueue"
         android:gravity="center"
         android:layout_weight="0.25"
+        android:textColor="@color/color_list_subtitle"
         android:textSize="24sp" />
 </LinearLayout>

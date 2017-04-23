@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Merchant</string>
+    <string name="app_name">NoQApp Merchant</string>
 
 
     <string name="join">JOIN</string>
@@ -8,8 +8,8 @@
 
 
     <!-- Strings related to login -->
-    <string name="prompt_email">E-mail</string>
-    <string name="prompt_pwd">Password </string>
+    <string name="prompt_email">email...</string>
+    <string name="prompt_pwd">password</string>
     <string name="sign_in">Login</string>
     <string name="empty_list">You are not assign \n to any queue.</string>
     <string name="offline">Network unavailable. Please connect your device to network.</string>

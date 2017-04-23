@@ -72,8 +72,7 @@ public class LoginFragment extends Fragment implements LoginPresenter,MerchantPr
 	@Override
 	public void onResume() {
 		super.onResume();
-		LaunchActivity.getLaunchActivity().setActionBarTitle("Login");
-
+		LaunchActivity.getLaunchActivity();
 	}
 
 	@Override

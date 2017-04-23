@@ -6,10 +6,15 @@
 
 
 
-    <color name="colorActionbar">#e92270</color>
+    <color name="colorActionbar">#FFFFFF</color>
     <color name="colorMobile">#e92270</color>
     <color name="color_grey_bg">#f5f5f5</color>
-    <color name="color_seprator">#EAEAEA</color>
+    <color name="color_separator">#EAEAEA</color>
     <color name="color_total_val">#227be9</color>
     <color name="colorAddress">#403648</color>
+
+    <color name="color_login_hint">#928c9e</color>
+    <color name="color_action_bar">#8339ff</color>
+    <color name="color_list_subtitle">#403648</color>
+
 </resources>
