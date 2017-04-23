@@ -18,7 +18,7 @@ public class MerchantViewPagerFragment extends Fragment {
 
 
 
-    private ViewPagerAdapter adapter;
+    public ViewPagerAdapter adapter;
     private ViewPager        viewPager ;
     private static int pos=0;
     private ImageView leftNav,rightNav;
