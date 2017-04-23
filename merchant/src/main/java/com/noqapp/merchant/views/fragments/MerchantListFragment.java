@@ -64,7 +64,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity().setActionBarTitle("List");
+        LaunchActivity.getLaunchActivity().setActionBarTitle("Queues");
 
     }
 

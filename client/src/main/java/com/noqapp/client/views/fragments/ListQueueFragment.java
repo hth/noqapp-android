@@ -111,7 +111,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity().setActionBarTitle("List");
+        LaunchActivity.getLaunchActivity().setActionBarTitle("Queues");
 
     }
 
