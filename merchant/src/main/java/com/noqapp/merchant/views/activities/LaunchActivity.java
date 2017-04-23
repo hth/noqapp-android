@@ -21,7 +21,10 @@ import com.noqapp.merchant.views.fragments.LoginFragment;
 import com.noqapp.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.merchant.helper.NetworkHelper;
 
+import java.util.UUID;
+
 public class LaunchActivity extends AppCompatActivity {
+    public static final String DID = UUID.randomUUID().toString();
     private static LaunchActivity launchActivity;
     protected TextView tv_toolbar_title;
     public NetworkHelper networkHelper;
@@ -31,6 +34,7 @@ public class LaunchActivity extends AppCompatActivity {
     private final String KEY_USER_EMAIL = "userEmail";
     private final String KEY_USER_NAME = "userName";
     private final String KEY_USER_ID = "userID";
+    private final String KEY_USER_AUTH = "auth";
     private ImageView iv_logout;
     private long lastPress;
     private Toast backpressToast;
@@ -117,15 +121,28 @@ public class LaunchActivity extends AppCompatActivity {
         return sharedpreferences.getString(KEY_USER_ID, "");
     }
 
+    public String getAuth() {
+        return sharedpreferences.getString(KEY_USER_AUTH, "");
+    }
+
+    public String getEmail() {
+        return sharedpreferences.getString(KEY_USER_EMAIL, "");
+    }
+
+    public void setUserName(String name) {
+         sharedpreferences.edit().putString(KEY_USER_NAME, name);
+    }
+
     public boolean isLoggedIn() {
         return sharedpreferences.getBoolean(IS_LOGIN, false);
     }
 
-    public void setSharPreferancename(String userName, String userID, String emailno, boolean isLogin) {
+    public void setSharPreferancename(String userName, String userID, String emailno,String auth, boolean isLogin) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(KEY_USER_NAME, userName);
         editor.putString(KEY_USER_ID, userID);
         editor.putString(KEY_USER_EMAIL, emailno);
+        editor.putString(KEY_USER_AUTH, auth);
         editor.putBoolean(IS_LOGIN, isLogin);
         editor.commit();
     }

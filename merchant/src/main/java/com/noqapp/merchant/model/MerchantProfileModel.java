@@ -6,6 +6,8 @@ import com.noqapp.merchant.model.response.api.MerchantProfileService;
 import com.noqapp.merchant.network.MyCallBack;
 import com.noqapp.merchant.network.RetrofitClient;
 import com.noqapp.merchant.presenter.beans.JsonMerchant;
+import com.noqapp.merchant.views.interfaces.LoginPresenter;
+import com.noqapp.merchant.views.interfaces.MerchantPresenter;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -20,6 +22,7 @@ public class MerchantProfileModel {
     private static final String TAG = MerchantProfileModel.class.getSimpleName();
 
     private static final MerchantProfileService merchantProfileService;
+    public static MerchantPresenter merchantPresenter;
 
     static {
         merchantProfileService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(MerchantProfileService.class);
@@ -36,6 +39,7 @@ public class MerchantProfileModel {
             public void onResponse(Call<JsonMerchant> call, Response<JsonMerchant> response) {
                 super.onResponse(call,response);
                 if (response.body() != null) {
+                    merchantPresenter.merchantResponse(response.body());
                     Log.d("Response", String.valueOf(response.body()));
                 } else {
                     //TODO something logical

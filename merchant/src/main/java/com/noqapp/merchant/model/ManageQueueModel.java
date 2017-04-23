@@ -8,6 +8,7 @@ import com.noqapp.merchant.network.RetrofitClient;
 import com.noqapp.merchant.presenter.beans.JsonToken;
 import com.noqapp.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.merchant.presenter.beans.body.Served;
+import com.noqapp.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.merchant.views.interfaces.TopicPresenter;
 
 import retrofit2.Call;
@@ -24,6 +25,7 @@ public class ManageQueueModel {
     private static final String TAG = ManageQueueModel.class.getSimpleName();
 
     private static final ManageQueueService manageQueueService;
+    public static  ManageQueuePresenter manageQueuePresenter;
     public static TopicPresenter topicPresenter;
     static {
         manageQueueService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(ManageQueueService.class);
@@ -71,6 +73,7 @@ public class ManageQueueModel {
                 super.onResponse(call,response);
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
+                    manageQueuePresenter.manageQueueResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history");
