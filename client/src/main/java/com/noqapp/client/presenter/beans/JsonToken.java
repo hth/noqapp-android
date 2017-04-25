@@ -44,6 +44,9 @@ public class JsonToken {
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty ("n")
+    private String customerName;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -85,6 +88,14 @@ public class JsonToken {
 
     public void setToken(int token) {
         this.token = token;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public ErrorEncounteredJson getError() {
