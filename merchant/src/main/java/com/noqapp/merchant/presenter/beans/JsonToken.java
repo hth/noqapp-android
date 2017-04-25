@@ -38,6 +38,9 @@ public class JsonToken implements Serializable {
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty ("n")
+    private String customerName;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -79,6 +82,14 @@ public class JsonToken implements Serializable {
 
     public void setToken(int token) {
         this.token = token;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public ErrorEncounteredJson getError() {

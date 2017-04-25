@@ -57,7 +57,7 @@ public final class QueueModel {
                     queuePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Empty history");
+                    Log.e(TAG, "Get state of queue upon scan");
                 }
             }
 
@@ -90,7 +90,7 @@ public final class QueueModel {
                         tokenAndQueuePresenter.queueResponse(response.body().getTokenAndQueues());
                     } else {
                         //TODO something logical
-                        Log.d(TAG, "Empty history");
+                        Log.d(TAG, "Empty currently joined history");
                         tokenAndQueuePresenter.noCurentQueue();
                     }
                 } else if (response.body() != null && response.body().getError() != null) {
@@ -125,7 +125,7 @@ public final class QueueModel {
                         tokenAndQueuePresenter.queueResponse(response.body().getTokenAndQueues());
                     } else {
                         //TODO something logical
-                        Log.d(TAG, "Empty history");
+                        Log.d(TAG, "Empty historical history");
                         tokenAndQueuePresenter.noHistoryQueue();
                     }
                 } else if (response.body() != null && response.body().getError() != null) {
@@ -158,7 +158,7 @@ public final class QueueModel {
                     tokenPresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Empty history");
+                    Log.e(TAG, "Failed to join queue");
                 }
             }
 
@@ -187,7 +187,7 @@ public final class QueueModel {
                     responsePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Empty history");
+                    Log.e(TAG, "Failed abort queue");
                 }
             }
 

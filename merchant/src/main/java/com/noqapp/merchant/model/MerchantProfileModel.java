@@ -2,6 +2,7 @@ package com.noqapp.merchant.model;
 
 import android.util.Log;
 
+import com.noqapp.merchant.BuildConfig;
 import com.noqapp.merchant.model.response.api.MerchantProfileService;
 import com.noqapp.merchant.network.MyCallBack;
 import com.noqapp.merchant.network.RetrofitClient;
@@ -24,7 +25,7 @@ public class MerchantProfileModel {
     public static MerchantPresenter merchantPresenter;
 
     static {
-        merchantProfileService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(MerchantProfileService.class);
+        merchantProfileService = RetrofitClient.getClient(BuildConfig.NOQAPP_MOBILE).create(MerchantProfileService.class);
     }
 
     /**

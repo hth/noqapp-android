@@ -7,6 +7,7 @@ package com.noqapp.merchant.views.adapters;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,10 @@ import com.noqapp.merchant.views.activities.LaunchActivity;
 import com.noqapp.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.merchant.views.interfaces.ManageQueuePresenter;
 
+import org.apache.commons.lang3.StringUtils;
 
 public class ViewPagerAdapter  extends PagerAdapter implements ManageQueuePresenter{
+    private static final String TAG = ViewPagerAdapter.class.getSimpleName();
 
     private Context context;
 
@@ -153,6 +156,9 @@ public class ViewPagerAdapter  extends PagerAdapter implements ManageQueuePresen
         if(null!=token){
             JsonTopic jt = MerchantListFragment.topics.get(selectedpos);
             if(token.getCodeQR().equalsIgnoreCase(jt.getCodeQR())) {
+                if (StringUtils.isNotBlank(jt.getCustomerName())) {
+                    Log.i(TAG, "Show customer name=" + jt.getCustomerName());
+                }
                 jt.setToken(token.getToken());
                 jt.setQueueStatus(token.getQueueStatus());
                 jt.setServingNumber(token.getServingNumber());

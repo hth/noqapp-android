@@ -42,6 +42,8 @@ import com.noqapp.client.presenter.beans.body.Registration;
 import com.noqapp.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.client.views.interfaces.MeView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -50,6 +52,8 @@ import java.util.TimeZone;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.noqapp.client.utils.AppUtilities.convertDOBToValidFormat;
 
 
 /**
@@ -108,7 +112,7 @@ public class RegistrationFormFragment extends NoQueueBaseFragment implements MeV
         registrationbean.setPhone(phoneNo);
         registrationbean.setFirstName(name);
         registrationbean.setMail(mail);
-        registrationbean.setBirthday(birthday);
+        registrationbean.setBirthday(convertDOBToValidFormat(birthday));
         registrationbean.setGender(gender);
         registrationbean.setTimeZoneId(tz.getID());
         registrationbean.setCountryShortName("IN"); // need to change
@@ -154,8 +158,10 @@ public class RegistrationFormFragment extends NoQueueBaseFragment implements MeV
 
         TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
         countryCode = tm.getSimCountryIso();
-
-
+        if (StringUtils.isBlank(countryCode)) {
+            countryCode = "US";
+            Log.i(TAG, "Default country code=" + countryCode);
+        }
         Locale l = new Locale(Locale.getDefault().getLanguage(), countryCode);
         countryISO = l.getISO3Country();
         CountryPicker picker = CountryPicker.newInstance("Select Country");
