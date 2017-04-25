@@ -2,6 +2,7 @@ package com.noqapp.merchant.model;
 
 import android.util.Log;
 
+import com.noqapp.merchant.BuildConfig;
 import com.noqapp.merchant.model.response.api.LoginService;
 import com.noqapp.merchant.network.MyCallBack;
 import com.noqapp.merchant.network.RetrofitClient;
@@ -21,7 +22,7 @@ public class LoginModel {
     private static final LoginService loginService;
     public static LoginPresenter loginPresenter;
     static {
-        loginService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(LoginService.class);
+        loginService = RetrofitClient.getClient(BuildConfig.NOQAPP_MOBILE).create(LoginService.class);
     }
 
     /**

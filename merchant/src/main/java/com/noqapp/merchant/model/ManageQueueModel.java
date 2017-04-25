@@ -2,14 +2,18 @@ package com.noqapp.merchant.model;
 
 import android.util.Log;
 
+import com.noqapp.merchant.BuildConfig;
 import com.noqapp.merchant.model.response.api.ManageQueueService;
 import com.noqapp.merchant.network.MyCallBack;
 import com.noqapp.merchant.network.RetrofitClient;
+import com.noqapp.merchant.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.merchant.presenter.beans.JsonToken;
 import com.noqapp.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.merchant.presenter.beans.body.Served;
 import com.noqapp.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.merchant.views.interfaces.TopicPresenter;
+
+import org.apache.commons.lang3.StringUtils;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -28,7 +32,7 @@ public class ManageQueueModel {
     public static  ManageQueuePresenter manageQueuePresenter;
     public static TopicPresenter topicPresenter;
     static {
-        manageQueueService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(ManageQueueService.class);
+        manageQueueService = RetrofitClient.getClient(BuildConfig.NOQAPP_MOBILE).create(ManageQueueService.class);
     }
 
     /**
@@ -71,12 +75,17 @@ public class ManageQueueModel {
             @Override
             public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
                 super.onResponse(call,response);
-                if (response.body() != null) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    manageQueuePresenter.manageQueueResponse(response.body());
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history");
+                if (response.body() != null && response.body().getError() == null) {
+                    if (StringUtils.isNotBlank(response.body().getCodeQR())) {
+                        Log.d("Response", String.valueOf(response.body()));
+                        manageQueuePresenter.manageQueueResponse(response.body());
+                    } else {
+                        //TODO something logical
+                        Log.e(TAG, "Failed to get token");
+                    }
+                }  else if (response.body() != null && response.body().getError() != null) {
+                    ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                    Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
                 }
             }
 

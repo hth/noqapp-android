@@ -13,10 +13,12 @@ public class NetworkHelper {
     }
 
     public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = cm.getActiveNetworkInfo();
-        return (null == info) ? false : info.isConnected();
+        NetworkInfo info = getNetworkInfo();
+        return null != info && info.isConnected();
     }
 
+    private NetworkInfo getNetworkInfo() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo();
+    }
 }
