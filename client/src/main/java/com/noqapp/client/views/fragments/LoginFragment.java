@@ -37,6 +37,7 @@ import com.mukesh.countrypicker.models.Country;
 import com.noqapp.client.R;
 import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.RegisterModel;
+import com.noqapp.client.network.NoQueueFirbaseInstanceServices;
 import com.noqapp.client.presenter.MePresenter;
 import com.noqapp.client.presenter.ProfilePresenter;
 import com.noqapp.client.presenter.beans.ErrorEncounteredJson;
@@ -45,6 +46,8 @@ import com.noqapp.client.presenter.beans.body.Login;
 import com.noqapp.client.presenter.beans.body.Registration;
 import com.noqapp.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.client.views.interfaces.MeView;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -60,6 +63,7 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class LoginFragment extends NoQueueBaseFragment implements ProfilePresenter, OnClickListener {
+    private static final String TAG = LoginFragment.class.getSimpleName();
 
     @BindView(R.id.edt_phone)
     EditText edt_phoneNo;
@@ -70,8 +74,6 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     @BindView(R.id.btn_login)
     Button btn_login;
 
-
-    private  final String TAG = "LoginForm";
     private final int READ_AND_RECIEVE_SMS__PERMISSION_CODE = 101;
     private  final String[] READ_AND_RECIEVE_SMS__PERMISSION_PERMS={
             Manifest.permission.RECEIVE_SMS,
@@ -99,6 +101,10 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         RegisterModel.profilePresenter=this;
         TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
         countryCode = tm.getSimCountryIso();
+        if (StringUtils.isBlank(countryCode)) {
+            countryCode = "US";
+            Log.i(TAG, "Default country code=" + countryCode);
+        }
         Locale l = new Locale(Locale.getDefault().getLanguage(), countryCode);
         countryISO = l.getISO3Country();
         CountryPicker picker = CountryPicker.newInstance("Select Country");
