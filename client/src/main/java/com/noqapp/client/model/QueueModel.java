@@ -158,7 +158,7 @@ public final class QueueModel {
                     tokenPresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Empty history");
+                    Log.e(TAG, "Failed to join queue");
                 }
             }
 
