@@ -54,7 +54,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.noqapp.client.utils.AppUtilities.convertDOBToValidFormat;ntryCode;
+import static com.noqapp.client.utils.AppUtilities.convertDOBToValidFormat;
 
 
 /**
