@@ -39,6 +39,7 @@ import com.noqapp.client.presenter.MePresenter;
 import com.noqapp.client.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.client.presenter.beans.JsonProfile;
 import com.noqapp.client.presenter.beans.body.Registration;
+import com.noqapp.client.utils.AppUtilities;
 import com.noqapp.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.client.views.interfaces.MeView;
 
@@ -163,7 +164,7 @@ public class RegistrationFormFragment extends NoQueueBaseFragment implements MeV
             Log.i(TAG, "Default country code=" + countryCode);
         }
         Locale l = new Locale(Locale.getDefault().getLanguage(), countryCode);
-        countryISO = l.getISO3Country();
+        countryISO = AppUtilities.iso3CountryCodeToIso2CountryCode(l.getISO3Country());
         CountryPicker picker = CountryPicker.newInstance("Select Country");
         Country country = picker.getCountryByLocale(getActivity(), l);
         edt_country_code.setBackgroundResource(country.getFlag());
