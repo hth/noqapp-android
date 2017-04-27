@@ -99,7 +99,7 @@ android {
 
     defaultConfig {
         applicationId "com.noqapp.client"
-        minSdkVersion 21
+        minSdkVersion 18
         targetSdkVersion 25
         multiDexEnabled true
         testHandleProfiling true
