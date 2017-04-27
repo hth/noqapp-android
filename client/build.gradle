@@ -44,7 +44,7 @@ android {
     def versionPatch = 0;
 
     if (versionPropsFile.canRead()) {
-        if (env == "release" || env == "staging") {
+        if (env == "release") {
             def Properties versionProps = new Properties()
             versionProps.load(new FileInputStream(versionPropsFile))
             versionMajor = versionProps['VERSION_MAJOR'].toInteger()
@@ -58,7 +58,7 @@ android {
     def versionBuildPropsFile = file('version.properties')
     def versionBuild = 0;
 
-    if (env == "release" || env == "staging") {
+    if (env == "release") {
         if (versionBuildPropsFile.canRead()) {
             def Properties versionBuildProps = new Properties()
             versionBuildProps.load(new FileInputStream(versionBuildPropsFile))
@@ -112,7 +112,7 @@ android {
         buildConfigField 'boolean', 'STRICT_MODE', 'true'
         buildConfigField "String", "BUILD", "\"$buildNumber\""
 
-        if (env == 'debug' || env == 'release' || env == 'staging') {
+        if (env == 'debug' || env == 'release') {
             apkName = "-" + versionMajor + "." + versionMinor + "." + versionPatch + "." + versionBuild + "-" + buildNumber + ".apk"
         }
 
@@ -153,7 +153,6 @@ android {
     }
 
     signingConfigs {
-        staging
         release
     }
     apply from: 'noqapp-signing/signing.gradle'
@@ -194,36 +193,6 @@ android {
             buildConfigField STRING, "PROVIDER_AUTHORITY", debugProviderAuthority
             buildConfigField STRING, "NOQAPP_MOBILE", debugEndpoint
             resValue "string", "FACEBOOK_APP_ID", facebookAppIdLocal
-            resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientToken
-        }
-
-        staging {
-            debuggable false
-            minifyEnabled true
-            zipAlignEnabled true
-
-            proguardFile '../library-proguard/proguard-crashlytics.pro'
-            proguardFile '../library-proguard/proguard-facebook.pro'
-            proguardFile '../library-proguard/proguard-facebook-conceal.pro'
-            proguardFile '../library-proguard/proguard-google-analytics.pro'
-            proguardFile '../library-proguard/proguard-google-play-services.pro'
-            proguardFile '../library-proguard/proguard-gson.pro'
-            proguardFile '../library-proguard/proguard-org-apache.pro'
-
-            proguardFile 'client-staging-proguard.config'
-            proguardFile 'proguard-rules.pro'
-
-            signingConfig signingConfigs.staging
-
-            buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, TRUE
-            buildConfigField BOOLEAN, REPORT_CRASHES, TRUE
-            buildConfigField BOOLEAN, ENABLE_VIEW_SERVER, FALSE
-            buildConfigField BOOLEAN, ENABLE_SHARING, FALSE
-            buildConfigField BOOLEAN, DEBUG_IMAGES, FALSE
-
-            buildConfigField STRING, "PROVIDER_AUTHORITY", stagingProviderAuthority
-            buildConfigField STRING, "NOQAPP_MOBILE", stagingEndpoint
-            resValue "string", "FACEBOOK_APP_ID", facebookAppIdStaging
             resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientToken
         }
 
