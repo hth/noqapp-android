@@ -316,7 +316,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.5'
 }
 
-apply plugin: 'com.google.gms.google-services'
-
 /** Gradle default task. */
 defaultTasks 'clean', 'assembleDebug'
+
+apply plugin: 'com.google.gms.google-services'

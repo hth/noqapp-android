@@ -346,7 +346,8 @@ dependencies {
         transitive = true;
     }
 }
-apply plugin: 'com.google.gms.google-services'
 
 /** Gradle default task. */
 defaultTasks 'clean', 'assembleDebug'
+
+apply plugin: 'com.google.gms.google-services'
