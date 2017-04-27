@@ -283,7 +283,6 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     compile 'org.apache.commons:commons-lang3:3.5'
-    compile 'com.android.support:multidex:1.0.1'
 }
 
 /** Gradle default task. */
