@@ -77,8 +77,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         QueueModel.tokenAndQueuePresenter = this;
         //Todo Check the flow of history queue
         //QueueModel.getAllHistoricalJoinedQueue(LaunchActivity.DID);
-        DeviceToken deviceToken = new DeviceToken();
-        deviceToken.setFcmToken(FirebaseInstanceId.getInstance().getToken());
+        DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
         QueueModel.getAllHistoricalJoinedQueue("123", deviceToken);
         //QueueModel.getAllJoinedQueue(LaunchActivity.DID);
     }
