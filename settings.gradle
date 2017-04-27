@@ -1,1 +1,1 @@
-include ':client', ':android-zxing', ':merchant'
+include ':android-zxing', ':client', ':merchant'
