@@ -24,13 +24,7 @@
     <string name="invite">Invite</string>
     <string name="firstname">First Name</string>
 
-  <string name="ACCOUNT_KIT_CLIENT_TOKEN">ec365faae446a61474e707beaa4e0131</string>
-    <string name="FACEBOOK_APP_ID">982366595228298</string>
-
-
-
-
-        <!--Invite Screen-->
+    <!--Invite Screen-->
     <string name="how_it_works">how it works</string>
     <string name="your_invite_code">Your Invite Code</string>
     <string name="copy">Copy</string>
