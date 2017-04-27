@@ -1,3 +1,20 @@
+import groovy.xml.Namespace
+apply plugin: 'com.android.application'
+apply from: '../config/quality.gradle'
+
+if (!hasProperty('env')) {
+    env = System.env['GRADLE_ENV']
+}
+
+def buildNumber = System.getenv("BUILD_NUMBER") ?: "0"
+
+def manifestVersionName() {
+    def manifestFile = file(project.projectDir.absolutePath + '/src/main/AndroidManifest.xml')
+    def ns = new Namespace("http://schemas.android.com/apk/res/android", "android")
+    def xml = new XmlParser().parse(manifestFile)
+    return xml.attributes()[ns.versionName].toString()
+}
+
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
@@ -20,20 +37,104 @@ android {
 
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+
+    def versionPropsFile = file('version.properties')
+    def versionMajor = 0;
+    def versionMinor = 0;
+    def versionPatch = 0;
+
+    if (versionPropsFile.canRead()) {
+        if (env == "release" || env == "staging") {
+            def Properties versionProps = new Properties()
+            versionProps.load(new FileInputStream(versionPropsFile))
+            versionMajor = versionProps['VERSION_MAJOR'].toInteger()
+            versionMinor = versionProps['VERSION_MINOR'].toInteger()
+            versionPatch = versionProps['VERSION_PATCH'].toInteger()
+        }
+    } else {
+        throw new GradleException("Could not read version.properties!")
+    }
+
+    def versionBuildPropsFile = file('version.build.properties')
+    def versionBuild = 0;
+
+    if (env == "release" || env == "staging") {
+        if (versionBuildPropsFile.canRead()) {
+            def Properties versionBuildProps = new Properties()
+            versionBuildProps.load(new FileInputStream(versionBuildPropsFile))
+
+            if (versionBuildProps['VERSION_MAJOR'].toInteger() != versionMajor ||
+                    versionBuildProps['VERSION_MINOR'].toInteger() != versionMinor) {
+
+                println "versionPatch: " + 0.toString() +
+                        " versionBuild: " + versionBuildProps['VERSION_BUILD']
+                versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
+                versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
+
+                versionBuildProps['VERSION_MAJOR'] = versionMajor.toString()
+                versionBuildProps['VERSION_MINOR'] = versionMinor.toString()
+                versionBuildProps['VERSION_PATCH'] = versionPatch.toString()
+                versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
+            } else {
+                println "versionBuild: " + versionBuildProps['VERSION_BUILD'] +
+                        " versionBuild: " + versionBuildProps['VERSION_BUILD']
+                versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
+                versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
+
+                versionBuildProps['VERSION_MAJOR'] = versionMajor.toString()
+                versionBuildProps['VERSION_MINOR'] = versionMinor.toString()
+
+                versionPatch = versionBuildProps['VERSION_PATCH'].toInteger() + 1
+                versionBuildProps['VERSION_PATCH'] = versionPatch.toString()
+                versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
+            }
+        } else {
+            throw new GradleException("Could not read version.build.properties!")
+        }
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
     defaultConfig {
         applicationId "com.noqapp.client"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        testHandleProfiling true
+        testFunctionalTest true
+        versionCode versionBuild
+        versionName versionMajor + "." + versionMinor + "." + versionPatch
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // For now we enable strict mode for all the configs
+        buildConfigField 'boolean', 'STRICT_MODE', 'true'
+        buildConfigField "String", "BUILD", "\"$buildNumber\""
+
+        if (env == 'debug' || env == 'release' || env == 'staging') {
+            apkName = "-" + versionMajor + "." + versionMinor + "." + versionPatch + "." + versionBuild + "-" + buildNumber + ".apk"
         }
+
+        ext.versionName = manifestVersionName()
+        println "Building NoQueue NoQApp for " +
+                "environment: $env " +
+                "app-version: $versionName " +
+                "apkName ends with : $apkName"
+
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                output.outputFile = new File(
+                        output.outputFile.parent,
+                        output.outputFile.name.replace(".apk", "$apkName")
+                )
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     packagingOptions {
@@ -49,6 +150,170 @@ android {
         exclude 'META-INF/LGPL2.1'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
         exclude 'LICENSE.txt'
+    }
+
+    signingConfigs {
+        staging
+        release
+    }
+    apply from: 'noqapp-signing/signing.gradle'
+
+    buildTypes {
+        def BOOLEAN = "boolean"
+        def STRING = "String"
+        def TRUE = "true"
+        def FALSE = "false"
+        def LOG_HTTP_REQUESTS = "LOG_HTTP_REQUESTS"
+        def REPORT_CRASHES = "REPORT_CRASHES"
+        def ENABLE_VIEW_SERVER = "ENABLE_VIEW_SERVER"
+        def ENABLE_SHARING = "ENABLE_SHARING"
+        def DEBUG_IMAGES = "DEBUG_IMAGES"
+
+        debug {
+            debuggable true
+            //when minifyEnabled is true gets exception com.android.dx.cf.code.SimException:
+            minifyEnabled false
+
+            proguardFile '../library-proguard/proguard-crashlytics.pro'
+            proguardFile '../library-proguard/proguard-facebook.pro'
+            proguardFile '../library-proguard/proguard-facebook-conceal.pro'
+            proguardFile '../library-proguard/proguard-google-analytics.pro'
+            proguardFile '../library-proguard/proguard-google-play-services.pro'
+            proguardFile '../library-proguard/proguard-gson.pro'
+            proguardFile '../library-proguard/proguard-org-apache.pro'
+
+            proguardFile 'client-debug-proguard.config'
+            proguardFile 'proguard-rules.pro'
+
+            buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, TRUE
+            buildConfigField BOOLEAN, REPORT_CRASHES, FALSE
+            buildConfigField BOOLEAN, ENABLE_VIEW_SERVER, TRUE
+            buildConfigField BOOLEAN, ENABLE_SHARING, TRUE
+            buildConfigField BOOLEAN, DEBUG_IMAGES, TRUE
+
+            buildConfigField STRING, "PROVIDER_AUTHORITY", debugProviderAuthority
+            buildConfigField STRING, "NOQAPP_MOBILE", debugEndpoint
+            resValue "string", "FACEBOOK_APP_ID", facebookAppIdLocal
+            resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientToken
+        }
+
+        staging {
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+
+            proguardFile '../library-proguard/proguard-crashlytics.pro'
+            proguardFile '../library-proguard/proguard-facebook.pro'
+            proguardFile '../library-proguard/proguard-facebook-conceal.pro'
+            proguardFile '../library-proguard/proguard-google-analytics.pro'
+            proguardFile '../library-proguard/proguard-google-play-services.pro'
+            proguardFile '../library-proguard/proguard-gson.pro'
+            proguardFile '../library-proguard/proguard-org-apache.pro'
+
+            proguardFile 'client-staging-proguard.config'
+            proguardFile 'proguard-rules.pro'
+
+            signingConfig signingConfigs.staging
+
+            buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, TRUE
+            buildConfigField BOOLEAN, REPORT_CRASHES, TRUE
+            buildConfigField BOOLEAN, ENABLE_VIEW_SERVER, FALSE
+            buildConfigField BOOLEAN, ENABLE_SHARING, FALSE
+            buildConfigField BOOLEAN, DEBUG_IMAGES, FALSE
+
+            buildConfigField STRING, "PROVIDER_AUTHORITY", stagingProviderAuthority
+            buildConfigField STRING, "NOQAPP_MOBILE", stagingEndpoint
+            resValue "string", "FACEBOOK_APP_ID", facebookAppIdStaging
+            resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientToken
+        }
+
+        release {
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+
+            proguardFile '../library-proguard/proguard-crashlytics.pro'
+            proguardFile '../library-proguard/proguard-facebook.pro'
+            proguardFile '../library-proguard/proguard-facebook-conceal.pro'
+            proguardFile '../library-proguard/proguard-google-analytics.pro'
+            proguardFile '../library-proguard/proguard-google-play-services.pro'
+            proguardFile '../library-proguard/proguard-gson.pro'
+            proguardFile '../library-proguard/proguard-org-apache.pro'
+
+            proguardFile 'client-release-proguard.config'
+            proguardFile 'proguard-rules.pro'
+
+            signingConfig signingConfigs.release
+
+            buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, FALSE
+            buildConfigField BOOLEAN, REPORT_CRASHES, TRUE
+            buildConfigField BOOLEAN, ENABLE_VIEW_SERVER, FALSE
+            buildConfigField BOOLEAN, ENABLE_SHARING, FALSE
+            buildConfigField BOOLEAN, DEBUG_IMAGES, FALSE
+
+            buildConfigField STRING, "PROVIDER_AUTHORITY", releaseProviderAuthority
+            buildConfigField STRING, "NOQAPP_MOBILE", releaseEndpoint
+            resValue "string", "FACEBOOK_APP_ID", facebookAppIdLive
+            resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientToken
+        }
+    }
+
+    lintOptions {
+        // set to true to turn off analysis progress reporting by lint
+        quiet true
+        // if true, stop the gradle build if errors are found
+        abortOnError false
+        // if true, only report errors
+        ignoreWarnings true
+        // if true, emit full/absolute paths to files with errors (true by default)
+        //absolutePaths true
+        // if true, check all issues, including those that are off by default
+        checkAllWarnings true
+        // if true, treat all warnings as errors
+        warningsAsErrors true
+        // turn off checking the given issue id's
+        disable 'TypographyFractions', 'TypographyQuotes'
+        // turn on the given issue id's
+        enable 'RtlHardcoded', 'RtlCompat', 'RtlEnabled'
+        // check *only* the given issue id's
+        check 'NewApi', 'InlinedApi'
+        // if true, don't include source code lines in the error output
+        noLines true
+        // if true, show all locations for an error, do not truncate lists, etc.
+        showAll true
+        // Fallback lint configuration (default severities, etc.)
+        lintConfig file("default-lint.xml")
+        // if true, generate a text report of issues (false by default)
+        textReport true
+        // location to write the output; can be a file or 'stdout'
+        textOutput 'stdout'
+        // if true, generate an XML report for use by for example Jenkins
+        xmlReport false
+        // file to write report to (if not specified, defaults to lint-results.xml)
+        xmlOutput file("lint-report.xml")
+        // if true, generate an HTML report (with issue explanations, sourcecode, etc)
+        htmlReport true
+        // optional path to report (default will be lint-results.html in the builddir)
+        htmlOutput file("lint-report.html")
+
+        // set to true to have all release builds run lint on issues with severity=fatal
+        // and abort the build (controlled by abortOnError above) if fatal issues are found
+        checkReleaseBuilds true
+        // Set the severity of the given issues to fatal (which means they will be
+        // checked during release builds (even if the lint target is not included)
+        fatal 'NewApi', 'InlineApi'
+        // Set the severity of the given issues to error
+        error 'Wakelock', 'TextViewEdits'
+        // Set the severity of the given issues to warning
+        warning 'ResourceAsColor'
+        // Set the severity of the given issues to ignore (same as disabling the check)
+        ignore 'TypographyQuotes'
+    }
+
+    sourceSets {
+        androidTest {
+            java.srcDirs = ['androidTest/java']
+        }
     }
 }
 
@@ -82,3 +347,6 @@ dependencies {
     }
 }
 apply plugin: 'com.google.gms.google-services'
+
+/** Gradle default task. */
+defaultTasks 'clean', 'assembleDebug'
