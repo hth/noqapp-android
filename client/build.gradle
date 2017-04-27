@@ -99,7 +99,7 @@ android {
 
     defaultConfig {
         applicationId "com.noqapp.client"
-        minSdkVersion 18
+        minSdkVersion 15
         targetSdkVersion 25
         multiDexEnabled true
         testHandleProfiling true
@@ -314,7 +314,6 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
-    compile 'com.android.support:multidex:1.0.1'
 }
 
 /** Gradle default task. */
