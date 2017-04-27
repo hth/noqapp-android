@@ -28,11 +28,7 @@ public class DeviceToken {
     @JsonProperty("tk")
     private String fcmToken;
 
-    public String getFcmToken() {
-        return fcmToken;
-    }
-
-    public void setFcmToken(String fcmToken) {
+    public DeviceToken(String fcmToken) {
         this.fcmToken = fcmToken;
     }
 }
