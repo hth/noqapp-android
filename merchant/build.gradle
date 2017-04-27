@@ -82,7 +82,7 @@ android {
 
     defaultConfig {
         applicationId "com.noqapp.merchant"
-        minSdkVersion 21
+        minSdkVersion 15
         targetSdkVersion 25
         multiDexEnabled true
         testHandleProfiling true
