@@ -156,13 +156,17 @@ android {
             //when minifyEnabled is true gets exception com.android.dx.cf.code.SimException:
             minifyEnabled false
 
+            proguardFile '../library-proguard/proguard-butterknife-7.pro'
             proguardFile '../library-proguard/proguard-crashlytics.pro'
             proguardFile '../library-proguard/proguard-facebook.pro'
             proguardFile '../library-proguard/proguard-facebook-conceal.pro'
             proguardFile '../library-proguard/proguard-google-analytics.pro'
             proguardFile '../library-proguard/proguard-google-play-services.pro'
             proguardFile '../library-proguard/proguard-gson.pro'
+            proguardFile '../library-proguard/proguard-jackson-2.pro'
             proguardFile '../library-proguard/proguard-org-apache.pro'
+            proguardFile '../library-proguard/proguard-square-okhttp3.pro'
+            proguardFile '../library-proguard/proguard-square-retrofit2.pro'
 
             proguardFile 'merchant-debug-proguard.config'
             proguardFile 'proguard-rules.pro'
@@ -184,13 +188,17 @@ android {
             minifyEnabled true
             zipAlignEnabled true
 
+            proguardFile '../library-proguard/proguard-butterknife-7.pro'
             proguardFile '../library-proguard/proguard-crashlytics.pro'
             proguardFile '../library-proguard/proguard-facebook.pro'
             proguardFile '../library-proguard/proguard-facebook-conceal.pro'
             proguardFile '../library-proguard/proguard-google-analytics.pro'
             proguardFile '../library-proguard/proguard-google-play-services.pro'
             proguardFile '../library-proguard/proguard-gson.pro'
+            proguardFile '../library-proguard/proguard-jackson-2.pro'
             proguardFile '../library-proguard/proguard-org-apache.pro'
+            proguardFile '../library-proguard/proguard-square-okhttp3.pro'
+            proguardFile '../library-proguard/proguard-square-retrofit2.pro'
 
             proguardFile 'merchant-release-proguard.config'
             proguardFile 'proguard-rules.pro'
