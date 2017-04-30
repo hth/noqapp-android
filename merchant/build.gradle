@@ -179,8 +179,8 @@ android {
 
             buildConfigField STRING, "PROVIDER_AUTHORITY", debugProviderAuthority
             buildConfigField STRING, "NOQAPP_MOBILE", debugEndpoint
-            buildConfigField STRING, "GOOGLE_CLIENT_ID", googleClientIdLocal
-            resValue "string", "FACEBOOK_APP_ID", facebookAppIdLocal
+            buildConfigField STRING, "GOOGLE_CLIENT_ID", googleClientIdDebug
+            resValue "string", "FACEBOOK_APP_ID", facebookAppIdDebug
         }
 
         release {

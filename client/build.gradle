@@ -196,8 +196,8 @@ android {
 
             buildConfigField STRING, "PROVIDER_AUTHORITY", debugProviderAuthority
             buildConfigField STRING, "NOQAPP_MOBILE", debugEndpoint
-            resValue "string", "FACEBOOK_APP_ID", facebookAppIdLocal
-            resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientToken
+            resValue "string", "FACEBOOK_APP_ID", facebookAppIdDebug
+            resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientTokenDebug
         }
 
         release {
@@ -231,7 +231,7 @@ android {
             buildConfigField STRING, "PROVIDER_AUTHORITY", releaseProviderAuthority
             buildConfigField STRING, "NOQAPP_MOBILE", releaseEndpoint
             resValue "string", "FACEBOOK_APP_ID", facebookAppIdLive
-            resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientToken
+            resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientTokenLive
         }
     }
 
