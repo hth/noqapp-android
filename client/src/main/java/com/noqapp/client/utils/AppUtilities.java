@@ -3,7 +3,6 @@ package com.noqapp.client.utils;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -51,13 +50,13 @@ public class AppUtilities {
         return localeMap.get(iso3CountryCode).getCountry();
     }
 
-    public static String iso2CountryCodeToIso3CountryCode(String iso2CountryCode){
+    public static String iso2CountryCodeToIso3CountryCode(String iso2CountryCode) {
         Locale locale = new Locale("", iso2CountryCode);
         return locale.getISO3Country();
     }
 
 
-    public static void makeCall(Activity context, String mobileno){
+    public static void makeCall(Activity context, String mobileno) {
         if (!TextUtils.isEmpty(mobileno)) {
             int checkPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
             if (checkPermission != PackageManager.PERMISSION_GRANTED) {
@@ -79,13 +78,12 @@ public class AppUtilities {
 
     }
 
-    public static  void openAddressInMap(Activity context,String address){
-        try{
-        String map = "http://maps.google.co.in/maps?q=" + address;
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
-        context.startActivity(intent);
-        }catch(ActivityNotFoundException ex)
-        {
+    public static void openAddressInMap(Activity context, String address) {
+        try {
+            String map = "http://maps.google.co.in/maps?q=" + address;
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
             ex.printStackTrace();
             Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
         }

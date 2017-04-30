@@ -13,7 +13,7 @@ import java.util.List;
  * User: hitender
  * Date: 4/21/17 2:12 PM
  */
-@JsonAutoDetect (
+@JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE

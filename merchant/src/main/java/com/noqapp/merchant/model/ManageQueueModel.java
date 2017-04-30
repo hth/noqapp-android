@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.noqapp.merchant.BuildConfig;
 import com.noqapp.merchant.model.response.api.ManageQueueService;
-
 import com.noqapp.merchant.network.RetrofitClient;
 import com.noqapp.merchant.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.merchant.presenter.beans.JsonToken;
@@ -30,14 +29,14 @@ public class ManageQueueModel {
     private static final String TAG = ManageQueueModel.class.getSimpleName();
 
     private static final ManageQueueService manageQueueService;
-    public static  ManageQueuePresenter manageQueuePresenter;
+    public static ManageQueuePresenter manageQueuePresenter;
     public static TopicPresenter topicPresenter;
+
     static {
         manageQueueService = RetrofitClient.getClient(BuildConfig.NOQAPP_MOBILE).create(ManageQueueService.class);
     }
 
     /**
-     *
      * @param did
      * @param mail
      * @param auth
@@ -64,7 +63,6 @@ public class ManageQueueModel {
     }
 
     /**
-     *
      * @param did
      * @param mail
      * @param auth
@@ -81,7 +79,7 @@ public class ManageQueueModel {
                         //TODO something logical
                         Log.e(TAG, "Failed to get token");
                     }
-                }  else if (response.body() != null && response.body().getError() != null) {
+                } else if (response.body() != null && response.body().getError() != null) {
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
                     Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
                 }

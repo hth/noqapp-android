@@ -9,7 +9,8 @@ import com.noqapp.merchant.helper.ApkVersionModel;
 
 public class AppUtils {
 
-    private AppUtils() {}
+    private AppUtils() {
+    }
 
     public static ApkVersionModel parseVersion(String version) {
         if (null == version || !version.contains(".")) {

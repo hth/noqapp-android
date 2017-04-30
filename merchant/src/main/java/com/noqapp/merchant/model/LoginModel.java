@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.noqapp.merchant.BuildConfig;
 import com.noqapp.merchant.model.response.api.LoginService;
-
 import com.noqapp.merchant.network.RetrofitClient;
 import com.noqapp.merchant.views.interfaces.LoginPresenter;
 
@@ -22,12 +21,12 @@ public class LoginModel {
 
     private static final LoginService loginService;
     public static LoginPresenter loginPresenter;
+
     static {
         loginService = RetrofitClient.getClient(BuildConfig.NOQAPP_MOBILE).create(LoginService.class);
     }
 
     /**
-     *
      * @param mail
      * @param password
      */

@@ -17,8 +17,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.noqapp.client.R;
 import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;

@@ -3,11 +3,8 @@ package com.noqapp.client.model.response.open;
 import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
-import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.client.presenter.beans.body.DeviceToken;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

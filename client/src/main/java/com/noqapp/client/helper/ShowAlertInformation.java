@@ -30,7 +30,8 @@ public class ShowAlertInformation {
 
         alertDialog.show();
     }
-    public static void showNetworkDialog(Context context){
+
+    public static void showNetworkDialog(Context context) {
         showDialog(context, context.getString(R.string.networkerror), context.getString(R.string.offline));
     }
 }

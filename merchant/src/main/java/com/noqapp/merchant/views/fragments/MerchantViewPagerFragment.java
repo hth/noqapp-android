@@ -17,18 +17,17 @@ import com.noqapp.merchant.views.adapters.ViewPagerAdapter;
 public class MerchantViewPagerFragment extends Fragment {
 
 
-
     public ViewPagerAdapter adapter;
-    private ViewPager        viewPager ;
-    private static int pos=0;
-    private ImageView leftNav,rightNav;
+    private ViewPager viewPager;
+    private static int pos = 0;
+    private ImageView leftNav, rightNav;
 
 
     public static MerchantViewPagerFragment merchantViewPagerFragment;
 
-    public static  MerchantViewPagerFragment getInstance(int position) {
-        pos=position;
-        return  merchantViewPagerFragment =new MerchantViewPagerFragment();
+    public static MerchantViewPagerFragment getInstance(int position) {
+        pos = position;
+        return merchantViewPagerFragment = new MerchantViewPagerFragment();
     }
 
     @Override
@@ -41,10 +40,10 @@ public class MerchantViewPagerFragment extends Fragment {
         viewPager.setCurrentItem(pos);
         leftNav = (ImageView) view.findViewById(R.id.left_nav);
         rightNav = (ImageView) view.findViewById(R.id.right_nav);
-        if(MerchantListFragment.topics.size()>1){
+        if (MerchantListFragment.topics.size() > 1) {
             leftNav.setVisibility(View.VISIBLE);
             rightNav.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             leftNav.setVisibility(View.INVISIBLE);
             rightNav.setVisibility(View.INVISIBLE);
         }
@@ -65,7 +64,7 @@ public class MerchantViewPagerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int tab = viewPager.getCurrentItem();
-                if(tab<viewPager.getAdapter().getCount()) {
+                if (tab < viewPager.getAdapter().getCount()) {
                     tab++;
                     viewPager.setCurrentItem(tab);
                 }

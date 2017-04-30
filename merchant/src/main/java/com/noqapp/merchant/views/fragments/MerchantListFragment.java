@@ -26,8 +26,7 @@ import com.noqapp.merchant.views.interfaces.TopicPresenter;
 import java.util.List;
 
 
-public class MerchantListFragment extends Fragment implements TopicPresenter{
-
+public class MerchantListFragment extends Fragment implements TopicPresenter {
 
 
     public MerchantListAdapter adapter;
@@ -35,7 +34,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
     private ListView listview;
     private RelativeLayout rl_empty_screen;
     public MerchantViewPagerFragment merchantViewPagerFragment;
-    public static  int selected_pos=-1;
+    public static int selected_pos = -1;
+
     public MerchantListFragment() {
 
     }
@@ -45,26 +45,24 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantlist, container, false);
-        listview =(ListView) view.findViewById(R.id.listview);
+        listview = (ListView) view.findViewById(R.id.listview);
         rl_empty_screen = (RelativeLayout) view.findViewById(R.id.rl_empty_screen);
         Bundle bundle = getArguments();
-        if(null!=bundle){
+        if (null != bundle) {
             JsonMerchant jsonMerchant = (JsonMerchant) bundle.getSerializable("jsonMerchant");
-            topics=jsonMerchant.getTopics();
+            topics = jsonMerchant.getTopics();
             subscribeTopics();
             initListView();
-        }else{
+        } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
                 ManageQueueModel.topicPresenter = this;
-                ManageQueueModel.getQueues(LaunchActivity.DID,LaunchActivity.getLaunchActivity().getEmail(),
+                ManageQueueModel.getQueues(LaunchActivity.DID, LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth());
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
         }
-
-
 
 
         return view;
@@ -83,11 +81,11 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
     public void queueResponse(JsonTopicList topiclist) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         // To cancel
-        if(null!=topiclist){
-            topics=topiclist.getTopics();
+        if (null != topiclist) {
+            topics = topiclist.getTopics();
             subscribeTopics();
             initListView();
-        }else{
+        } else {
             //Show error
             rl_empty_screen.setVisibility(View.VISIBLE);
             listview.setVisibility(View.GONE);
@@ -100,37 +98,37 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
     }
 
 
-        private void subscribeTopics(){
-            if(null!=topics&& topics.size()>0){
-            for (int i=0;i<topics.size();i++) {
+    private void subscribeTopics() {
+        if (null != topics && topics.size() > 0) {
+            for (int i = 0; i < topics.size(); i++) {
                 FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic());
-                FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic()+"_M");
-            }
+                FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic() + "_M");
             }
         }
+    }
 
-        private void initListView(){
-            rl_empty_screen.setVisibility(View.GONE);
-            listview.setVisibility(View.VISIBLE);
-            adapter = new MerchantListAdapter(getActivity(), topics);
-            listview.setAdapter(adapter);
+    private void initListView() {
+        rl_empty_screen.setVisibility(View.GONE);
+        listview.setVisibility(View.VISIBLE);
+        adapter = new MerchantListAdapter(getActivity(), topics);
+        listview.setAdapter(adapter);
 
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    merchantViewPagerFragment=MerchantViewPagerFragment.getInstance(position);
-                    LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout,
-                            merchantViewPagerFragment,"MerchantViewPagerFragment");
-                    for (int j = 0; j < parent.getChildCount(); j++)
-                        parent.getChildAt(j).setBackgroundColor(Color.TRANSPARENT);
-                    // change the background color of the selected element
-                    view.setBackgroundColor(ContextCompat.getColor(
-                            getActivity(),R.color.pressed_color));
-                    selected_pos=position;
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                merchantViewPagerFragment = MerchantViewPagerFragment.getInstance(position);
+                LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout,
+                        merchantViewPagerFragment, "MerchantViewPagerFragment");
+                for (int j = 0; j < parent.getChildCount(); j++)
+                    parent.getChildAt(j).setBackgroundColor(Color.TRANSPARENT);
+                // change the background color of the selected element
+                view.setBackgroundColor(ContextCompat.getColor(
+                        getActivity(), R.color.pressed_color));
+                selected_pos = position;
 
-                }
-            });
-        }
+            }
+        });
+    }
 
 
 }

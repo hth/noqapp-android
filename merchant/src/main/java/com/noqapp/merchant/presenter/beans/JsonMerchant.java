@@ -23,7 +23,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonMerchant implements Serializable {
-    @JsonProperty ("p")
+    @JsonProperty("p")
     private JsonProfile jsonProfile;
 
     @JsonProperty("ts")
