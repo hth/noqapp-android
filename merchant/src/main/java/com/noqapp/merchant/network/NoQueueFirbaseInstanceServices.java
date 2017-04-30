@@ -14,11 +14,9 @@ public class NoQueueFirbaseInstanceServices extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         super.onTokenRefresh();
 
-        String refereshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refress Token ::: " + refereshedToken);
-
-        sendRegistrationToServer(refereshedToken);
-
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "Refreshed Token ::: " + refreshedToken);
+        sendRegistrationToServer(refreshedToken);
     }
 
     private void sendRegistrationToServer(String refreshToken) {
