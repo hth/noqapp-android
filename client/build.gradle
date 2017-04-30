@@ -194,10 +194,10 @@ android {
             buildConfigField BOOLEAN, ENABLE_SHARING, TRUE
             buildConfigField BOOLEAN, DEBUG_IMAGES, TRUE
 
-            buildConfigField STRING, "PROVIDER_AUTHORITY", debugProviderAuthority
-            buildConfigField STRING, "NOQAPP_MOBILE", debugEndpoint
-            resValue "string", "FACEBOOK_APP_ID", facebookAppIdDebug
-            resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientTokenDebug
+            buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityStaging
+            buildConfigField STRING, "NOQAPP_MOBILE", endpointStaging
+            resValue "string", "FACEBOOK_APP_ID", facebookAppIdStaging
+            resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientTokenStaging
         }
 
         release {
@@ -228,8 +228,8 @@ android {
             buildConfigField BOOLEAN, ENABLE_SHARING, FALSE
             buildConfigField BOOLEAN, DEBUG_IMAGES, FALSE
 
-            buildConfigField STRING, "PROVIDER_AUTHORITY", releaseProviderAuthority
-            buildConfigField STRING, "NOQAPP_MOBILE", releaseEndpoint
+            buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityLive
+            buildConfigField STRING, "NOQAPP_MOBILE", endpointLive
             resValue "string", "FACEBOOK_APP_ID", facebookAppIdLive
             resValue "string", "ACCOUNT_KIT_CLIENT_TOKEN", accountKitClientTokenLive
         }
