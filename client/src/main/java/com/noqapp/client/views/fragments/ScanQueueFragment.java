@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -40,7 +39,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     private final int CAMERA_AND_STORAGE_PERMISSION_CODE = 102;
-    private  final String[] CAMERA_AND_STORAGE_PERMISSION_PERMS={
+    private final String[] CAMERA_AND_STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
@@ -70,27 +69,26 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
 
 
     public ScanQueueFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
         ButterKnife.bind(this, view);
         BarcodeScannerActivity.barcodeScannedResultCallback = this;
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtilities.makeCall(LaunchActivity.getLaunchActivity(),tv_mobile.getText().toString());
+                AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
             }
         });
 
         tv_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(),tv_address.getText().toString());
+                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
             }
         });
         return view;
@@ -155,9 +153,9 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
     private void startScanningBarcode() {
 
 
-        if(isCameraAndStoragePermissionAllowed()){
+        if (isCameraAndStoragePermissionAllowed()) {
             scanBarcode();
-        }else{
+        } else {
             requestCameraAndStoragePermission();
         }
     }
@@ -195,7 +193,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
         }
     }
 
-    private void scanBarcode(){
+    private void scanBarcode() {
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         DisplayMetrics dm = new DisplayMetrics();
         display.getMetrics(dm);
@@ -208,16 +206,18 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
         intent.putExtra("SCAN_HEIGHT", height);
         startActivityForResult(intent, 0);
     }
+
     private boolean isExternalStoragePermissionAllowed() {
         //Getting the permission status
         int result_read = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
         int result_write = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
         //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED &&result_write == PackageManager.PERMISSION_GRANTED )
+        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
             return true;
         //If permission is not granted returning false
         return false;
     }
+
     private boolean isCameraPermissionAllowed() {
         //Getting the permission status
         int result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
@@ -227,8 +227,9 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
         //If permission is not granted returning false
         return false;
     }
+
     private boolean isCameraAndStoragePermissionAllowed() {
-        return  (isCameraPermissionAllowed() && isExternalStoragePermissionAllowed()) ;
+        return (isCameraPermissionAllowed() && isExternalStoragePermissionAllowed());
     }
 
 
@@ -241,14 +242,13 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == CAMERA_AND_STORAGE_PERMISSION_CODE) {
             //both remaining permission allowed
-            if (grantResults.length==2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-               scanBarcode();
-            }else if (grantResults.length==1 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {//one remaining permission allowed
+            if (grantResults.length == 2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
                 scanBarcode();
-            }else if (grantResults[0] == PackageManager.PERMISSION_DENIED){
+            } else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//one remaining permission allowed
+                scanBarcode();
+            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 //No permission allowed
-               //Do nothing
+                //Do nothing
             }
         }
     }

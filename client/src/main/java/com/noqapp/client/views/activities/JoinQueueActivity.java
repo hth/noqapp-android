@@ -13,12 +13,18 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.noqapp.client.R;
+import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
+import com.noqapp.client.model.database.NoQueueDB;
+import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.ResponsePresenter;
 import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
+import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.utils.AppUtilities;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,25 +67,14 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     private String storePhone;
     private String queueName;
     private String address;
-
     private String topic;
 
-    public void callQueue() {
-        if (codeQR != null) {
-            Log.d("code qr ::", codeQR);
-            LaunchActivity.getLaunchActivity().progressDialog.show();
-            QueueModel.tokenPresenter = this;
-            QueueModel.joinQueue(LaunchActivity.DID, codeQR);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_queue);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
         tv_toolbar_title.setText("Join");
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -114,13 +109,16 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
                 navigateToList();
             }
         });
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            LaunchActivity.getLaunchActivity().progressDialog.show();
+            callQueue();
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        callQueue();
-    }
+
+
 
 
     @Override
@@ -136,6 +134,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
         tv_current_value.setText(String.valueOf(String.valueOf(token.getToken())));
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
@@ -145,12 +144,9 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
             if(response.getResponse()==1){
                 Toast.makeText(this,"You successfully cancel the queue",Toast.LENGTH_LONG).show();
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
-                try {
-                    Thread.sleep(1000);
-                    finish();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+                NoQueueDB queueDB = new NoQueueDB(this);
+                queueDB.deleteRecord(codeQR);
+                navigateToList();
 
             }else{
                 Toast.makeText(this,"Failed to cancel the queue",Toast.LENGTH_LONG).show();
@@ -158,6 +154,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
         }else{
             //Show error
         }
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
@@ -168,13 +165,18 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
 
     @OnClick(R.id.btn_cancel_queue)
     public void cancelQueue() {
-        QueueModel.responsePresenter=this;
-        QueueModel.abortQueue(LaunchActivity.DID, codeQR);
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            LaunchActivity.getLaunchActivity().progressDialog.show();
+            QueueModel.responsePresenter=this;
+            QueueModel.abortQueue(LaunchActivity.DID, codeQR);
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
+
     }
 
     private void navigateToList(){
         if (mJsonToken != null) {
-
             Intent intent = new Intent();
             intent.putExtra(KEY_CODEQR, mJsonToken.getToken());
             if (getParent() == null) {
@@ -185,4 +187,13 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
         }
         super.onBackPressed();
     }
+
+    private void callQueue() {
+        if (codeQR != null) {
+            Log.d("code qr ::", codeQR);
+            QueueModel.tokenPresenter = this;
+            QueueModel.joinQueue(LaunchActivity.DID, codeQR);
+        }
+    }
+
 }

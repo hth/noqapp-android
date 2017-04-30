@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -30,26 +31,21 @@ public class MeFragment extends NoQueueBaseFragment {
 
     @BindView(R.id.tv_firstLastName)
     TextView tv_firstName;
-
     @BindView(R.id.tv_phoneno)
     TextView tv_phoneNo;
-
     @BindView(R.id.tv_RemoteScanCount)
     TextView tv_scanCount;
-
     @BindView(R.id.toggleAutojoin)
     ToggleButton toggelAutoJoin;
-
     @BindView(R.id.iv_invite)
     ImageView iv_invite;
     @BindView(R.id.iv_rate)
     ImageView iv_rate;
-
-
     @BindView(R.id.btn_register_login_logout)
     Button btn_register_login_logout;
+
     private String inviteCode;
-    private final String TAG = "UserInfoFragment";
+    private final String TAG = MeFragment.class.getSimpleName();
 
     public MeFragment() {
 
@@ -58,7 +54,6 @@ public class MeFragment extends NoQueueBaseFragment {
 
     public static MeFragment getInstance() {
         MeFragment fragment = new MeFragment();
-
         return fragment;
     }
 
@@ -87,6 +82,15 @@ public class MeFragment extends NoQueueBaseFragment {
         tv_phoneNo.setText(phone);
         tv_scanCount.setText(String.valueOf(remoteScanCount));
         toggelAutoJoin.setChecked(isAutoScanAvail);
+        toggelAutoJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
+                SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedprefEdit(getActivity());
+                editor.putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, isChecked);
+                editor.commit();
+
+            }
+        });
         if (!phone.equals("")) {
             btn_register_login_logout.setText("Logout");
             tv_phoneNo.setVisibility(View.VISIBLE);
@@ -98,14 +102,14 @@ public class MeFragment extends NoQueueBaseFragment {
     }
 
     @OnClick(R.id.iv_invite)
-    public void action_Invite(View view) {
+    public void action_Invite() {
         Intent in = new Intent(getActivity(), InviteActivity.class);
         in.putExtra("invite_code", inviteCode);
         startActivity(in);
     }
 
     @OnClick(R.id.btn_register_login_logout)
-    public void actionLogout(View view) {
+    public void actionLogout() {
         if (btn_register_login_logout.getText().equals("Logout")) {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Logout")
@@ -126,11 +130,6 @@ public class MeFragment extends NoQueueBaseFragment {
                     })
                     .show();
         } else {
-
-
-
-
-            //replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new RegistrationFormFragment(), TAG);
             replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LoginFragment(), TAG);
         }
 
@@ -138,12 +137,10 @@ public class MeFragment extends NoQueueBaseFragment {
     }
 
     @OnClick(R.id.iv_rate)
-    public void action_RateApp(View view) {
+    public void action_RateApp() {
         Uri uri = Uri.parse("market://details?id=" + "com.google.android.youtube");
-                //getActivity().getPackageName());
+        //getActivity().getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-        // To count with Play market backstack, After pressing back button,
-        // to taken back to our application, we need to add following flags to intent.
         goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK);

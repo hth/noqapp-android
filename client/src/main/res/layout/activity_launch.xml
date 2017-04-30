@@ -1,98 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical">
 
-   <include layout="@layout/toolbar_layout"/>
-   <RelativeLayout
-       android:id="@+id/activity_main"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+    <include layout="@layout/toolbar_layout" />
 
-      <LinearLayout
-          android:id="@+id/frame_layout"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:orientation="vertical"
-          android:layout_above="@+id/navigation"
-          >
+    <RelativeLayout
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-      </LinearLayout>
+        <LinearLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/seprator"
+            android:background="@android:color/white"
+            android:orientation="vertical">
 
-      <LinearLayout
-          android:id="@+id/navigation"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_alignParentBottom="true"
-          android:layout_alignParentLeft="true"
-          android:layout_alignParentStart="true"
-          android:paddingBottom="2dp"
-          android:paddingTop="5dp"
-          android:background="@color/color_tab"
-          android:orientation="horizontal"
-          android:weightSum="1">
-         <RelativeLayout
+        </LinearLayout>
+        <View
+            android:id="@+id/seprator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/navigation"
 
-             android:id="@+id/rl_home"
-             style="@style/style_home_rl">
+            android:background="@color/color_seprator" />
+        <LinearLayout
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/color_tab"
+            android:orientation="horizontal"
+            android:paddingBottom="2dp"
+            android:paddingTop="5dp"
+            android:weightSum="1">
 
-            <ImageView
+            <RelativeLayout
 
-                android:id="@+id/iv_home"
-                style="@style/style_home"
-                android:background="@mipmap/home_inactive"
-                />
+                android:id="@+id/rl_home"
+                style="@style/style_home_rl">
 
-            <com.noqapp.client.views.cutomviews.TextViewRalewayBold
-                android:id="@+id/tv_home"
-                style="@style/style_home"
-                android:layout_below="@+id/iv_home"
-                android:text="Home" />
+                <ImageView
 
-         </RelativeLayout>
+                    android:id="@+id/iv_home"
+                    style="@style/style_home"
+                    android:background="@mipmap/home_inactive" />
 
-         <RelativeLayout
-             android:id="@+id/rl_list"
-             style="@style/style_home_rl">
+                <com.noqapp.client.views.cutomviews.TextViewRalewayBold
+                    android:id="@+id/tv_home"
+                    style="@style/style_home"
+                    android:layout_below="@+id/iv_home"
+                    android:text="Home" />
 
-            <ImageView
-                android:id="@+id/iv_list"
-                style="@style/style_home"
-                android:background="@mipmap/list_inactive"
-                 />
+            </RelativeLayout>
 
-            <com.noqapp.client.views.cutomviews.TextViewRalewayBold
-                android:id="@+id/tv_list"
-                style="@style/style_home"
-                android:layout_below="@+id/iv_list"
-                android:text="List" />
+            <RelativeLayout
+                android:id="@+id/rl_list"
+                style="@style/style_home_rl">
 
-         </RelativeLayout>
+                <ImageView
+                    android:id="@+id/iv_list"
+                    style="@style/style_home"
+                    android:background="@mipmap/list_inactive" />
 
-         <RelativeLayout
-             android:id="@+id/rl_me"
-             style="@style/style_home_rl">
+                <com.noqapp.client.views.cutomviews.TextViewRalewayBold
+                    android:id="@+id/tv_list"
+                    style="@style/style_home"
+                    android:layout_below="@+id/iv_list"
+                    android:text="List" />
 
-            <ImageView
-                android:id="@+id/iv_me"
-                style="@style/style_home"
-                android:background="@mipmap/me_inactive"
-                 />
+            </RelativeLayout>
 
-            <com.noqapp.client.views.cutomviews.TextViewRalewayBold
-                style="@style/style_home"
-                android:id="@+id/tv_me"
-                android:layout_below="@+id/iv_me"
-                android:text="Me" />
+            <RelativeLayout
+                android:id="@+id/rl_me"
+                style="@style/style_home_rl">
 
-         </RelativeLayout>
+                <ImageView
+                    android:id="@+id/iv_me"
+                    style="@style/style_home"
+                    android:background="@mipmap/me_inactive" />
+
+                <com.noqapp.client.views.cutomviews.TextViewRalewayBold
+                    android:id="@+id/tv_me"
+                    style="@style/style_home"
+                    android:layout_below="@+id/iv_me"
+                    android:text="Me" />
+
+            </RelativeLayout>
 
 
-      </LinearLayout>
+        </LinearLayout>
 
-   </RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>

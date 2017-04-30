@@ -133,6 +133,13 @@ public class NoQueueDB extends SQLiteAssetHelper {
         return line > 0;
     }
 
+    public void deleteRecord(String qrcode){
+        // db.delete(TABLE_TOKENQUEUE, COLUMN_CODE_QR + " = " + qrcode, null) ;
+        db = this.getReadableDatabase();
+        boolean qq= db.delete(TABLE_TOKENQUEUE,"codeqr=?",new String[]{qrcode})>0;
+        Log.v("deleted",String.valueOf(qq));
+
+    }
 
     public List<JsonTokenAndQueue> getCurrentQueueList() {
         db = this.getReadableDatabase();

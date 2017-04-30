@@ -58,8 +58,6 @@ public class InviteActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         tv_how_it_works.setPaintFlags(tv_how_it_works.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tv_copy.setPaintFlags(tv_copy.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
         tv_toolbar_title.setText("Invite");
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
