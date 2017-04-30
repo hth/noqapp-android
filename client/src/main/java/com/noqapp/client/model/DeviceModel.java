@@ -3,7 +3,6 @@ package com.noqapp.client.model;
 import android.util.Log;
 
 import com.noqapp.client.model.response.open.DeviceService;
-import com.noqapp.client.network.MyCallBack;
 import com.noqapp.client.network.RetrofitClient;
 import com.noqapp.client.presenter.beans.DeviceRegistered;
 import com.noqapp.client.presenter.beans.body.DeviceToken;
@@ -35,10 +34,9 @@ public class DeviceModel {
      * @param deviceToken
      */
     public static void register(String did, DeviceToken deviceToken) {
-        deviceService.register(did, DEVICE_TYPE, deviceToken).enqueue(new MyCallBack<DeviceRegistered>() {
+        deviceService.register(did, DEVICE_TYPE, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(Call<DeviceRegistered> call, Response<DeviceRegistered> response) {
-                super.onResponse(call,response);
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                 } else {
@@ -49,7 +47,6 @@ public class DeviceModel {
 
             @Override
             public void onFailure(Call<DeviceRegistered> call, Throwable t) {
-                super.onFailure(call, t);
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });

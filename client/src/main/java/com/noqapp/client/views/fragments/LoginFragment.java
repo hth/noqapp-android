@@ -261,7 +261,13 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
             ErrorEncounteredJson eej = profile.getError();
             if (null != eej&& eej.getSystemErrorCode().equals("412")) {
                 // pass mobile no and country code
-                replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new RegistrationFormFragment(), TAG);
+
+                Bundle b =new Bundle();
+                b.putString("mobile_no",edt_phoneNo.getText().toString());
+                b.putString("country_code",edt_country_code.getText().toString());
+                RegistrationFragment rff=new RegistrationFragment();
+                rff.setArguments(b);
+                replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, rff, TAG);
             }
         }
     }

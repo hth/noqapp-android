@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
@@ -23,16 +22,14 @@ import android.widget.Toast;
 
 import com.noqapp.client.R;
 import com.noqapp.client.helper.NetworkHelper;
-import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.network.NOQueueMessagingService;
 import com.noqapp.client.utils.Constants;
 import com.noqapp.client.views.fragments.ListQueueFragment;
 import com.noqapp.client.views.fragments.LoginFragment;
 import com.noqapp.client.views.fragments.MeFragment;
-import com.noqapp.client.views.fragments.RegistrationFormFragment;
+import com.noqapp.client.views.fragments.RegistrationFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
 
-import java.util.List;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -76,8 +73,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
         launchActivity = this;
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
         rl_home.setOnClickListener(this);
         rl_list.setOnClickListener(this);
         rl_me.setOnClickListener(this);
@@ -157,9 +152,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     public void onBackPressed() {
 
-
-
-
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastPress > 3000) {
             backpressToast = Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
@@ -186,7 +178,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         Fragment f =getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-        if (f instanceof ScanQueueFragment||f instanceof RegistrationFormFragment||f instanceof LoginFragment)
+        if (f instanceof ScanQueueFragment||f instanceof RegistrationFragment ||f instanceof LoginFragment)
         {
                 f.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -205,6 +197,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
     public void setProgressTitle(String msg){
+        if (null!= progressDialog && progressDialog.isShowing())
         progressDialog.setMessage(msg);
 
     }

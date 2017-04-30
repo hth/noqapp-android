@@ -60,7 +60,7 @@ import static com.noqapp.client.utils.AppUtilities.convertDOBToValidFormat;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegistrationFormFragment extends NoQueueBaseFragment implements MeView, OnClickListener {
+public class RegistrationFragment extends NoQueueBaseFragment implements MeView, OnClickListener {
 
     @BindView(R.id.edt_phone)
     EditText edt_phoneNo;
@@ -93,7 +93,7 @@ public class RegistrationFormFragment extends NoQueueBaseFragment implements MeV
     private SimpleDateFormat dateFormatter;
     private String country;
 
-    public RegistrationFormFragment() {
+    public RegistrationFragment() {
         // Required empty public constructor
     }
 
@@ -171,7 +171,24 @@ public class RegistrationFormFragment extends NoQueueBaseFragment implements MeV
         edt_country_code.setError(null);
         edt_country_code.setText(country.getCode());
         this.country = country.getDialCode();
+        Bundle bundle = getArguments();
+        if(null!=bundle){
+            edt_phoneNo.setText(bundle.getString("mobile_no",""));
+            edt_phoneNo.setEnabled(false);
 
+            //
+            Locale l1 = new Locale(Locale.getDefault().getLanguage(), bundle.getString("country_code","US"));
+            countryISO = AppUtilities.iso3CountryCodeToIso2CountryCode(l1.getISO3Country());
+            CountryPicker picker1 = CountryPicker.newInstance("Select Country");
+            Country country1 = picker1.getCountryByLocale(getActivity(), l1);
+            edt_country_code.setBackgroundResource(country1.getFlag());
+            edt_country_code.setError(null);
+            edt_country_code.setText(country1.getCode());
+            this.country = country1.getDialCode();
+            edt_country_code.setOnClickListener(null);
+        }else {
+
+        }
         return view;
     }
 

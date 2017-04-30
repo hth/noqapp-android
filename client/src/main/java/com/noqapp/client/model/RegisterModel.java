@@ -3,7 +3,6 @@ package com.noqapp.client.model;
 import android.util.Log;
 
 import com.noqapp.client.model.response.open.RegisterService;
-import com.noqapp.client.network.MyCallBack;
 import com.noqapp.client.network.RetrofitClient;
 import com.noqapp.client.presenter.ProfilePresenter;
 import com.noqapp.client.presenter.beans.JsonProfile;
@@ -33,10 +32,9 @@ public final class RegisterModel {
      * @param registration
      */
     public static void register(Registration registration) {
-        registerService.register(registration).enqueue(new MyCallBack<JsonProfile>() {
+        registerService.register(registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(Call<JsonProfile> call, Response<JsonProfile> response) {
-                super.onResponse(call,response);
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.queueResponse(response.body());
@@ -48,7 +46,6 @@ public final class RegisterModel {
 
             @Override
             public void onFailure(Call<JsonProfile> call, Throwable t) {
-                super.onFailure(call, t);
                 Log.e("Response", t.getLocalizedMessage(), t);
                 profilePresenter.queueError();
             }
@@ -59,10 +56,9 @@ public final class RegisterModel {
      * @param login
      */
     public static void login(Login login) {
-        registerService.login(login).enqueue(new MyCallBack<JsonProfile>() {
+        registerService.login(login).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(Call<JsonProfile> call, Response<JsonProfile> response) {
-                super.onResponse(call,response);
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.queueResponse(response.body());
@@ -74,7 +70,6 @@ public final class RegisterModel {
 
             @Override
             public void onFailure(Call<JsonProfile> call, Throwable t) {
-                super.onFailure(call, t);
                 Log.e("Response", t.getLocalizedMessage(), t);
                 profilePresenter.queueError();
             }

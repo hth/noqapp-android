@@ -104,7 +104,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
             callQueue();
         }else
         {
-            ShowAlertInformation.showDialog(getActivity(),getActivity().getResources().getString(R.string.networkerror),getActivity().getString(R.string.offline));
+            ShowAlertInformation.showNetworkDialog(getActivity());
         }
     }
     @Override
@@ -164,7 +164,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
 
     @Override
     public void token_QueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
-
+        LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size())+ "::"+String.valueOf(historylist.size()));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         listViewQueue.setLayoutManager(layoutManager);
