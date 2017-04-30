@@ -4,11 +4,12 @@ import android.util.Log;
 
 import com.noqapp.merchant.BuildConfig;
 import com.noqapp.merchant.model.response.api.LoginService;
-import com.noqapp.merchant.network.MyCallBack;
+
 import com.noqapp.merchant.network.RetrofitClient;
 import com.noqapp.merchant.views.interfaces.LoginPresenter;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -31,12 +32,12 @@ public class LoginModel {
      * @param password
      */
     public static void login(String mail, String password) {
-        loginService.login(mail, password).enqueue(new MyCallBack<Void>() {
+        loginService.login(mail, password).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                super.onResponse(call,response);
-                loginPresenter.loginResponse(String.valueOf(response.headers().get(APIConstant.key.XR_MAIL)),
-                        String.valueOf(response.headers().get(APIConstant.key.XR_AUTH)));
+
+                loginPresenter.loginResponse(response.headers().get(APIConstant.key.XR_MAIL),
+                        response.headers().get(APIConstant.key.XR_AUTH));
                 Log.d("Response", String.valueOf(response.body()));
                 Log.d("Response Mail", String.valueOf(response.headers().get(APIConstant.key.XR_MAIL)));
                 Log.d("Response Auth", String.valueOf(response.headers().get(APIConstant.key.XR_AUTH)));
@@ -44,7 +45,7 @@ public class LoginModel {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                super.onFailure(call,t);
+
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });

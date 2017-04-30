@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.noqapp.merchant.BuildConfig;
 import com.noqapp.merchant.model.response.api.ManageQueueService;
-import com.noqapp.merchant.network.MyCallBack;
+
 import com.noqapp.merchant.network.RetrofitClient;
 import com.noqapp.merchant.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.merchant.presenter.beans.JsonToken;
@@ -16,6 +16,7 @@ import com.noqapp.merchant.views.interfaces.TopicPresenter;
 import org.apache.commons.lang3.StringUtils;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.noqapp.merchant.utils.Constants.DEVICE_TYPE;
@@ -42,10 +43,9 @@ public class ManageQueueModel {
      * @param auth
      */
     public static void getQueues(String did, String mail, String auth) {
-        manageQueueService.getQueues(did, DEVICE_TYPE, mail, auth).enqueue(new MyCallBack<JsonTopicList>() {
+        manageQueueService.getQueues(did, DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
             public void onResponse(Call<JsonTopicList> call, Response<JsonTopicList> response) {
-                super.onResponse(call,response);
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                     topicPresenter.queueResponse(response.body());
@@ -57,7 +57,6 @@ public class ManageQueueModel {
 
             @Override
             public void onFailure(Call<JsonTopicList> call, Throwable t) {
-                super.onFailure(call,t);
                 Log.e("Response", t.getLocalizedMessage(), t);
                 topicPresenter.queueError();
             }
@@ -71,10 +70,9 @@ public class ManageQueueModel {
      * @param auth
      */
     public static void served(String did, String mail, String auth, Served served) {
-        manageQueueService.served(did, DEVICE_TYPE, mail, auth, served).enqueue(new MyCallBack<JsonToken>() {
+        manageQueueService.served(did, DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
-                super.onResponse(call,response);
                 if (response.body() != null && response.body().getError() == null) {
                     if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                         Log.d("Response", String.valueOf(response.body()));
@@ -91,7 +89,6 @@ public class ManageQueueModel {
 
             @Override
             public void onFailure(Call<JsonToken> call, Throwable t) {
-                super.onFailure(call,t);
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });

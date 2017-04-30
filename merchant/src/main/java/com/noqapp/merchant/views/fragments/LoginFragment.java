@@ -1,6 +1,7 @@
 package com.noqapp.merchant.views.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -9,8 +10,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.noqapp.merchant.R;
 import com.noqapp.merchant.helper.ShowAlertInformation;
@@ -20,6 +23,8 @@ import com.noqapp.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.merchant.views.activities.LaunchActivity;
 import com.noqapp.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.merchant.views.interfaces.MerchantPresenter;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class LoginFragment extends Fragment implements LoginPresenter,MerchantPresenter{
 
@@ -45,6 +50,7 @@ public class LoginFragment extends Fragment implements LoginPresenter,MerchantPr
 
 			@Override
 			public void onClick(View v) {
+				hideKeyBoard();
 				String email = edt_email.getText().toString().trim();
 				String pwd = edt_pwd.getText().toString().trim();
 				edt_email.setError(null);
@@ -60,7 +66,7 @@ public class LoginFragment extends Fragment implements LoginPresenter,MerchantPr
 						LaunchActivity.getLaunchActivity().progressDialog.show();
 						LoginModel.login(email, pwd);
                     } else {
-						ShowAlertInformation.showDialog(getActivity(), "Network error", getString(R.string.offline));
+						ShowAlertInformation.showNetworkDialog(getActivity());
 					}
 				}
 
@@ -73,6 +79,8 @@ public class LoginFragment extends Fragment implements LoginPresenter,MerchantPr
 	public void onResume() {
 		super.onResume();
 		LaunchActivity.getLaunchActivity();
+		LaunchActivity.getLaunchActivity().setActionBarTitle("");
+		LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -92,14 +100,20 @@ public class LoginFragment extends Fragment implements LoginPresenter,MerchantPr
 
 	@Override
 	public void loginResponse(String email, String outh) {
-		LaunchActivity.getLaunchActivity().setSharPreferancename("", "",
-				email,outh, true);
-		MerchantProfileModel.fetch(email,outh);
+		if(StringUtils.isNotBlank(email) && StringUtils.isNotBlank(outh)) {
+			LaunchActivity.getLaunchActivity().setSharPreferancename("", "",
+					email, outh, true);
+			MerchantProfileModel.fetch(email, outh);
+		}else{
+			LaunchActivity.getLaunchActivity().dismissProgress();
+			Toast.makeText(getActivity(),"Invalid Credential",Toast.LENGTH_LONG).show();
+
+		}
 	}
 
 	@Override
 	public void loginError() {
-
+		LaunchActivity.getLaunchActivity().dismissProgress();
 	}
 
 	@Override
@@ -112,11 +126,20 @@ public class LoginFragment extends Fragment implements LoginPresenter,MerchantPr
 			mlf.setArguments(b);
 			LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, mlf);
 		}
-
+		LaunchActivity.getLaunchActivity().dismissProgress();
 	}
 
 	@Override
 	public void merchantError() {
+		LaunchActivity.getLaunchActivity().dismissProgress();
+	}
 
+
+	private void hideKeyBoard(){
+		View view = getActivity().getCurrentFocus();
+		if (view != null) {
+			InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
 	}
 }

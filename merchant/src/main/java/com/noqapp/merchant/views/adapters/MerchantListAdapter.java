@@ -1,6 +1,8 @@
 package com.noqapp.merchant.views.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import com.noqapp.merchant.R;
 import com.noqapp.merchant.presenter.beans.JsonTopic;
+import com.noqapp.merchant.views.fragments.MerchantListFragment;
 
 import java.util.List;
 
@@ -58,7 +61,19 @@ public class MerchantListAdapter extends BaseAdapter {
 		recordHolder.tv_serving_no.setText("Serving now: "+String.valueOf(jsonTopic.getServingNumber()));
 		recordHolder.tv_inqueue.setText(String.valueOf(jsonTopic.getRemaining()));
 
+		if(position== MerchantListFragment.selected_pos){
+			view.setBackgroundColor(ContextCompat.getColor(
+					context,R.color.pressed_color));
+			recordHolder.tv_queue_name.setTextColor(Color.WHITE);
+			recordHolder.tv_serving_no.setTextColor(Color.WHITE);
+			recordHolder.tv_inqueue.setTextColor(Color.WHITE);
 
+		}else{
+			view.setBackgroundColor(Color.TRANSPARENT);
+			recordHolder.tv_queue_name.setTextColor(ContextCompat.getColor(context,R.color.color_action_bar));
+			recordHolder.tv_serving_no.setTextColor(ContextCompat.getColor(context,R.color.color_list_subtitle));
+			recordHolder.tv_inqueue.setTextColor(ContextCompat.getColor(context,R.color.color_list_subtitle));
+		}
 		return view;
 	}
 

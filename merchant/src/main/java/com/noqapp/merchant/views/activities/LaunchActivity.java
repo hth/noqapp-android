@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -50,6 +51,7 @@ public class LaunchActivity extends AppCompatActivity {
     public ProgressDialog progressDialog;
     private BroadcastReceiver broadcastReceiver;
     private MerchantListFragment merchantListFragment;
+    public Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class LaunchActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         iv_logout = (ImageView) findViewById(R.id.iv_logout);
+        toolbar=(Toolbar)findViewById(R.id.toolbar);
         initProgress();
         iv_logout.setOnClickListener(new View.OnClickListener() {
             @Override

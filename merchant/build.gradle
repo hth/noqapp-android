@@ -19,7 +19,7 @@ android {
     archivesBaseName = "merchant";
 
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
 
     def versionPropsFile = file('version.properties')
     def versionMajor = 0;

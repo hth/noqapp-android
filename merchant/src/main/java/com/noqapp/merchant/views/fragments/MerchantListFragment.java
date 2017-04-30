@@ -1,8 +1,10 @@
 package com.noqapp.merchant.views.fragments;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.merchant.R;
+import com.noqapp.merchant.helper.ShowAlertInformation;
 import com.noqapp.merchant.model.ManageQueueModel;
 import com.noqapp.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.merchant.presenter.beans.JsonTopic;
@@ -32,6 +35,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
     private ListView listview;
     private RelativeLayout rl_empty_screen;
     public MerchantViewPagerFragment merchantViewPagerFragment;
+    public static  int selected_pos=-1;
     public MerchantListFragment() {
 
     }
@@ -50,10 +54,14 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
             subscribeTopics();
             initListView();
         }else{
-            LaunchActivity.getLaunchActivity().progressDialog.show();
-            ManageQueueModel.topicPresenter = this;
-            ManageQueueModel.getQueues(LaunchActivity.DID,LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth());
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                LaunchActivity.getLaunchActivity().progressDialog.show();
+                ManageQueueModel.topicPresenter = this;
+                ManageQueueModel.getQueues(LaunchActivity.DID,LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth());
+            } else {
+                ShowAlertInformation.showNetworkDialog(getActivity());
+            }
         }
 
 
@@ -62,15 +70,18 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
         return view;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Queues");
+        LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void queueResponse(JsonTopicList topiclist) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
         // To cancel
         if(null!=topiclist){
             topics=topiclist.getTopics();
@@ -85,7 +96,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
 
     @Override
     public void queueError() {
-
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
 
@@ -103,13 +114,23 @@ public class MerchantListFragment extends Fragment implements TopicPresenter{
             listview.setVisibility(View.VISIBLE);
             adapter = new MerchantListAdapter(getActivity(), topics);
             listview.setAdapter(adapter);
+
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     merchantViewPagerFragment=MerchantViewPagerFragment.getInstance(position);
                     LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout,
                             merchantViewPagerFragment,"MerchantViewPagerFragment");
+                    for (int j = 0; j < parent.getChildCount(); j++)
+                        parent.getChildAt(j).setBackgroundColor(Color.TRANSPARENT);
+                    // change the background color of the selected element
+                    view.setBackgroundColor(ContextCompat.getColor(
+                            getActivity(),R.color.pressed_color));
+                    selected_pos=position;
+
                 }
             });
         }
+
+
 }
