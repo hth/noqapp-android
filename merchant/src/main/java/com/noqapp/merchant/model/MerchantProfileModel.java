@@ -4,14 +4,13 @@ import android.util.Log;
 
 import com.noqapp.merchant.BuildConfig;
 import com.noqapp.merchant.model.response.api.MerchantProfileService;
-import com.noqapp.merchant.network.MyCallBack;
 import com.noqapp.merchant.network.RetrofitClient;
 import com.noqapp.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.merchant.views.interfaces.MerchantPresenter;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
-
 
 /**
  * User: hitender
@@ -34,10 +33,9 @@ public class MerchantProfileModel {
      * @param auth
      */
     public static void fetch(String mail, String auth) {
-        merchantProfileService.fetch(mail, auth).enqueue(new MyCallBack<JsonMerchant>() {
+        merchantProfileService.fetch(mail, auth).enqueue(new Callback<JsonMerchant>() {
             @Override
             public void onResponse(Call<JsonMerchant> call, Response<JsonMerchant> response) {
-                super.onResponse(call,response);
                 if (response.body() != null) {
                     merchantPresenter.merchantResponse(response.body());
                     Log.d("Response", String.valueOf(response.body()));
@@ -49,7 +47,6 @@ public class MerchantProfileModel {
 
             @Override
             public void onFailure(Call<JsonMerchant> call, Throwable t) {
-                super.onFailure(call,t);
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });

@@ -25,7 +25,7 @@
                 android:layout_weight=".2"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:textColor="@color/colorActionbar"
+                android:textColor="@color/color_action_bar"
                 android:textSize="24sp"
                 />
             <RelativeLayout

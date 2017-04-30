@@ -79,6 +79,7 @@ public class MerchantViewPagerFragment extends Fragment {
 
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Queue Detail");
+        LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
     }
 
 }
