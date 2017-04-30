@@ -17,4 +17,7 @@
     <color name="color_action_bar">#8339ff</color>
     <color name="color_list_subtitle">#403648</color>
 
+    <color name="pressed_color">#e92270</color>
+    <color name="default_color">#ffffff</color>
+
 </resources>

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.merchant.R;
+import com.noqapp.merchant.helper.ShowAlertInformation;
 import com.noqapp.merchant.model.ManageQueueModel;
 import com.noqapp.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.merchant.presenter.beans.JsonToken;
@@ -101,7 +102,10 @@ public class ViewPagerAdapter  extends PagerAdapter implements ManageQueuePresen
             @Override
             public void onClick(View v) {
                 if(!status.equals("Start") && !status.equals("Done")) {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        LaunchActivity.getLaunchActivity().progressDialog.show();
+
+
                     Served served = new Served();
                     served.setCodeQR(lq.getCodeQR());
                     served.setQueueStatus(lq.getQueueStatus());
@@ -109,6 +113,9 @@ public class ViewPagerAdapter  extends PagerAdapter implements ManageQueuePresen
                     served.setServedNumber(lq.getServingNumber());
                     ManageQueueModel.served(LaunchActivity.DID,LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(), served);
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(context);
+                    }
                 }else if (status.equals("Start")){
                     Toast.makeText(context,"Queue hasn't stated, you can't skip.",Toast.LENGTH_LONG).show();
                 }else if (status.equals("Done")){
@@ -125,7 +132,10 @@ public class ViewPagerAdapter  extends PagerAdapter implements ManageQueuePresen
                 }else if(lq.getRemaining()==0) {
                     Toast.makeText(context,"No one in the queue. Please wait",Toast.LENGTH_LONG).show();
                 }else {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        LaunchActivity.getLaunchActivity().progressDialog.show();
+
+
                     Served served = new Served();
                     served.setCodeQR(lq.getCodeQR());
                     served.setQueueStatus(lq.getQueueStatus());
@@ -133,6 +143,9 @@ public class ViewPagerAdapter  extends PagerAdapter implements ManageQueuePresen
                     served.setServedNumber(lq.getServingNumber());
                     ManageQueueModel.served(LaunchActivity.DID,LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(), served);
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(context);
+                    }
                 }
             }
         });
@@ -153,6 +166,7 @@ public class ViewPagerAdapter  extends PagerAdapter implements ManageQueuePresen
 
     @Override
     public void manageQueueResponse(JsonToken token) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
         if(null!=token){
             JsonTopic jt = MerchantListFragment.topics.get(selectedpos);
             if(token.getCodeQR().equalsIgnoreCase(jt.getCodeQR())) {
@@ -171,6 +185,6 @@ public class ViewPagerAdapter  extends PagerAdapter implements ManageQueuePresen
 
     @Override
     public void manageQueueError() {
-
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 }
