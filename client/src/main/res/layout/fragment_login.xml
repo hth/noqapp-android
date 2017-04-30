@@ -4,10 +4,18 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/close" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
         android:text="@string/login"
         android:textColor="@color/colorActionbar"
         android:textSize="20sp" />
@@ -17,24 +25,24 @@
         android:text="@string/phone" />
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="1">
+
         <EditText
             android:id="@+id/edt_country_code"
             style="@style/style_register_edt"
             android:layout_width="0dp"
-            android:padding="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".20"
             android:layout_gravity="center_horizontal"
-            android:textColor="@android:color/transparent"
             android:layout_marginRight="5dp"
+            android:layout_weight=".20"
             android:focusable="false"
-            />
+            android:padding="0dp"
+            android:textColor="@android:color/transparent" />
+
         <EditText
             android:id="@+id/edt_phone"
             style="@style/style_register_edt"
@@ -46,11 +54,6 @@
     </LinearLayout>
 
 
-
-
-
-
-
     <!--android:hint="@string/invitecode"-->
 
     <Button
@@ -58,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/button_drawable"
         android:drawablePadding="5dp"
         android:gravity="center"

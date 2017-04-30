@@ -1,54 +1,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp"
+    android:background="@color/color_me_bg"
     android:orientation="vertical"
-    android:background="@color/color_invite_details"
-    >
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="@dimen/screen_padding"
-        android:paddingLeft="@dimen/screen_padding"
-        android:minHeight="@dimen/cell_size"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
         android:orientation="horizontal"
-        >
+        android:paddingLeft="@dimen/screen_padding"
+        android:paddingRight="@dimen/screen_padding">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.70"
             android:layout_height="wrap_content"
-           android:gravity="center_vertical"
             android:layout_gravity="center_vertical"
-            android:orientation="vertical"
-            >
+            android:layout_weight="0.70"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
             <TextView
-                android:layout_height="wrap_content"
+                android:id="@+id/tv_firstLastName"
                 android:layout_width="match_parent"
 
-                android:textSize="18sp"
-                android:paddingRight="@dimen/screen_padding"
-                android:paddingLeft="@dimen/screen_padding"
-                android:textColor="@android:color/black"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:id="@+id/tv_firstLastName"
+                android:paddingLeft="@dimen/screen_padding"
+                android:paddingRight="@dimen/screen_padding"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
 
                 />
+
             <TextView
 
+                android:id="@+id/tv_phoneno"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:textSize="18sp"
-                android:paddingRight="@dimen/screen_padding"
-                android:paddingLeft="@dimen/screen_padding"
                 android:layout_marginBottom="20dp"
+                android:layout_weight=".5"
+                android:paddingLeft="@dimen/screen_padding"
+                android:paddingRight="@dimen/screen_padding"
                 android:textColor="@color/colorAccent"
-                android:id="@+id/tv_phoneno"
-
+                android:textSize="18sp"
 
 
                 />
@@ -59,143 +57,158 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="Login/Register"
-            android:textColor="@android:color/white"
             android:layout_weight="0.30"
-            android:background="@mipmap/send_invite_small"
+            android:background="@drawable/btn_bg"
+            android:text="Login/Register"
             android:textAllCaps="false"
-            android:textSize="15sp"
-            />
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="@dimen/screen_padding"
-        android:paddingLeft="@dimen/screen_padding"
-        android:minHeight="@dimen/cell_size"
         android:background="@android:color/white"
-        android:orientation="horizontal">
+        android:minHeight="@dimen/cell_size"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/screen_padding"
+        android:paddingRight="@dimen/screen_padding">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="0.75"
             android:gravity="center_vertical"
             android:text="@string/autojoinon"
             android:textColor="@color/color_total_val"
-            android:textSize="20sp"
-            android:layout_weight="0.75"
-            />
+            android:textSize="20sp" />
+
         <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
             android:id="@+id/toggleAutojoin"
-            />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.25"
+            android:background="@null"
+            android:drawableRight="@drawable/toggle_selector"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textOff=""
+            android:textOn="" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/cell_size"
-        android:paddingRight="@dimen/screen_padding"
-        android:paddingLeft="@dimen/screen_padding"
         android:background="@android:color/white"
+        android:minHeight="@dimen/cell_size"
         android:orientation="horizontal"
-        >
+        android:paddingLeft="@dimen/screen_padding"
+        android:paddingRight="@dimen/screen_padding">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.75"
-            android:textColor="@color/color_total_val"
             android:gravity="center_vertical"
             android:text="@string/remotescanavail"
-            android:textSize="20sp"/>
+            android:textColor="@color/color_total_val"
+            android:textSize="20sp" />
+
         <TextView
+            android:id="@+id/tv_RemoteScanCount"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            android:textSize="20sp"
-            android:text="0"
             android:gravity="center_vertical|right"
-            android:id="@+id/tv_RemoteScanCount"/>
+            android:text="0"
+            android:textSize="20sp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="@dimen/screen_padding"
-        android:paddingLeft="@dimen/screen_padding"
-        android:minHeight="@dimen/cell_size"
         android:background="@android:color/white"
+        android:minHeight="@dimen/cell_size"
         android:orientation="horizontal"
-        >
+        android:paddingLeft="@dimen/screen_padding"
+        android:paddingRight="@dimen/screen_padding">
+
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.70"
             android:layout_height="wrap_content"
-            android:weightSum="1"
             android:layout_gravity="center_vertical"
+            android:layout_weight="0.75"
             android:orientation="vertical"
-            >
+            android:weightSum="1">
+
             <TextView
 
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".5"
-                android:layout_width="match_parent"
-                android:textColor="@color/color_total_val"
                 android:gravity="center_vertical"
                 android:text="@string/invite"
-                android:textSize="20sp"/>
+                android:textColor="@color/color_total_val"
+                android:textSize="20sp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".5"
+                android:text="@string/freeremotescan"
                 android:textColor="@color/color_list_text"
-                android:textSize="18sp"
-                android:text="@string/freeremotescan"/>
+                android:textSize="18sp" />
         </LinearLayout>
+
         <ImageView
             android:id="@+id/iv_invite"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/cancel_button"
-            android:layout_weight="0.30"/>
+            android:src="@drawable/arrow_red_large" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/cell_size"
-        android:paddingRight="@dimen/screen_padding"
-        android:paddingLeft="@dimen/screen_padding"
         android:background="@android:color/white"
+        android:minHeight="@dimen/cell_size"
         android:orientation="horizontal"
-        >
+        android:paddingLeft="@dimen/screen_padding"
+        android:paddingRight="@dimen/screen_padding">
+
         <TextView
+            android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.75"
-            android:textColor="@color/color_total_val"
             android:gravity="center_vertical"
             android:text="@string/ratetheapp"
-            android:textSize="20sp"/>
+            android:textColor="@color/color_total_val"
+            android:textSize="20sp" />
+
         <ImageView
             android:id="@+id/iv_rate"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/rateapp"
-            android:layout_weight="0.30"/>
+            android:src="@mipmap/rateapp" />
     </LinearLayout>
 </LinearLayout>

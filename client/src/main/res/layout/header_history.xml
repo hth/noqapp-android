@@ -2,26 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-<!--<TextView-->
+    <!--<TextView-->
     <!--android:id="@+id/tv_historyheader"-->
     <!--android:layout_width="wrap_content"-->
     <!--android:layout_height="match_parent"-->
-     <!--android:textSize="24sp"-->
+    <!--android:textSize="24sp"-->
     <!--android:textColor="@color/colorMobile" />-->
     <com.noqapp.client.views.cutomviews.CustomButton
         android:id="@+id/btn_historyheader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/button_drawable"
-        android:textAllCaps="false"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:text="@string/history"
+        android:textAllCaps="false"
         android:textColor="@color/colorMobile"
         android:textSize="24sp" />
 </RelativeLayout>
