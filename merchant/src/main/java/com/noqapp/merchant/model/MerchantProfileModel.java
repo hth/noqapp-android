@@ -28,7 +28,6 @@ public class MerchantProfileModel {
     }
 
     /**
-     *
      * @param mail
      * @param auth
      */

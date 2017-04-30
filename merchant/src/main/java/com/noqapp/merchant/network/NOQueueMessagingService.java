@@ -51,14 +51,12 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: ln-" + remoteMessage.getData().get("ln"));
 
 
-
-
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            String title= remoteMessage.getNotification().getTitle();
+            String title = remoteMessage.getNotification().getTitle();
 
             clearNotifications(this);
             if (!isAppIsInBackground(getApplicationContext())) {
@@ -74,7 +72,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
 
             } else {
                 // app is in background, show the notification in notification tray
-                sendNotification(title,remoteMessage.getNotification().getBody());
+                sendNotification(title, remoteMessage.getNotification().getBody());
             }
 
         }
@@ -83,7 +81,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
-    private void sendNotification(String title,String messageBody) {
+    private void sendNotification(String title, String messageBody) {
 
         Intent intent = new Intent(this, LaunchActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -100,11 +98,11 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 , notificationBuilder.build());
+        notificationManager.notify(0, notificationBuilder.build());
     }
 
     // Clears notification tray messages
-    public  static void clearNotifications(Context context) {
+    public static void clearNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
     }
@@ -113,7 +111,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
     /**
      * Method checks if the app is in background or not
      */
-   private boolean isAppIsInBackground(Context context) {
+    private boolean isAppIsInBackground(Context context) {
         boolean isInBackground = true;
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {

@@ -24,28 +24,28 @@ public class JsonProfile implements Serializable {
     @JsonProperty("nm")
     private String name;
 
-    @JsonProperty ("em")
+    @JsonProperty("em")
     private String mail;
 
-    @JsonProperty ("cs")
+    @JsonProperty("cs")
     private String countryShortName;
 
-    @JsonProperty ("pr")
+    @JsonProperty("pr")
     private String phoneRaw;
 
-    @JsonProperty ("tz")
+    @JsonProperty("tz")
     private String timeZone;
 
-    @JsonProperty ("ic")
+    @JsonProperty("ic")
     private String inviteCode;
 
-    @JsonProperty ("rs")
+    @JsonProperty("rs")
     private int remoteScanAvailable;
 
-    @JsonProperty ("bd")
+    @JsonProperty("bd")
     private String birthday;
 
-    @JsonProperty ("ge")
+    @JsonProperty("ge")
     private String gender;
 
     public String getName() {

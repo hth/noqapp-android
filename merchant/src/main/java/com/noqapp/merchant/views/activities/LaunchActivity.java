@@ -62,7 +62,7 @@ public class LaunchActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         iv_logout = (ImageView) findViewById(R.id.iv_logout);
-        toolbar=(Toolbar)findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         initProgress();
         iv_logout.setOnClickListener(new View.OnClickListener() {
             @Override

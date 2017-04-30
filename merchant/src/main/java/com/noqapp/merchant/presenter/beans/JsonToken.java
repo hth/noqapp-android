@@ -13,14 +13,14 @@ import java.io.Serializable;
  * User: hitender
  * Date: 4/16/17 5:49 PM
  */
-@JsonAutoDetect (
+@JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude (JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonToken implements Serializable {
 
     @JsonProperty("c")
@@ -38,7 +38,7 @@ public class JsonToken implements Serializable {
     @JsonProperty("t")
     private int token;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String customerName;
 
     @JsonProperty("error")
@@ -100,7 +100,7 @@ public class JsonToken implements Serializable {
         this.error = error;
     }
 
-    public int getRemaining(){
-        return  token-servingNumber;
+    public int getRemaining() {
+        return token - servingNumber;
     }
 }

@@ -13,7 +13,7 @@ import java.io.Serializable;
  * Date: 4/16/17 5:49 PM
  */
 
-@JsonAutoDetect (
+@JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE
