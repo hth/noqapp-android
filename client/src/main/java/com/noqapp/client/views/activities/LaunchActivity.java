@@ -67,6 +67,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private Toast backpressToast;
     public ProgressDialog progressDialog;
     private BroadcastReceiver broadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +89,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
                     String message = intent.getStringExtra("message");
-                    Toast.makeText(launchActivity,message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(launchActivity, message, Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -147,7 +148,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
 
-
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
@@ -165,6 +165,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             super.onBackPressed();
         }
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.requestCodeJoinQActivity) {
@@ -176,37 +177,37 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,  String[] permissions,  int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        Fragment f =getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-        if (f instanceof ScanQueueFragment||f instanceof RegistrationFragment ||f instanceof LoginFragment)
-        {
-                f.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+        if (f instanceof ScanQueueFragment || f instanceof RegistrationFragment || f instanceof LoginFragment) {
+            f.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
-    private void initProgress(){
+    private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading...");
 
     }
 
-    public void dismissProgress(){
-        if (null!= progressDialog && progressDialog.isShowing())
+    public void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing())
             progressDialog.dismiss();
     }
 
-    public void setProgressTitle(String msg){
-        if (null!= progressDialog && progressDialog.isShowing())
-        progressDialog.setMessage(msg);
+    public void setProgressTitle(String msg) {
+        if (null != progressDialog && progressDialog.isShowing())
+            progressDialog.setMessage(msg);
 
     }
 
     public boolean isOnline() {
         return networkHelper.isOnline();
     }
+
     @Override
     protected void onResume() {
         super.onResume();

@@ -11,27 +11,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.noqapp.client.R;
 import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.model.database.NoQueueDB;
-import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.ResponsePresenter;
 import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
-import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.utils.AppUtilities;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPresenter,ResponsePresenter {
+public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPresenter, ResponsePresenter {
     public static final String KEY_CODEQR = "codeqr";
     public static final String KEY_STOREPHONE = "storephone";
     public static final String KEY_DISPLAYNAME = "displayname";
@@ -93,13 +88,13 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtilities.makeCall(LaunchActivity.getLaunchActivity(),tv_mobile.getText().toString());
+                AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
             }
         });
         tv_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(),tv_address.getText().toString());
+                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
             }
         });
         topic = getIntent().getExtras().getString(KEY_TOPIC);
@@ -116,9 +111,6 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
             ShowAlertInformation.showNetworkDialog(this);
         }
     }
-
-
-
 
 
     @Override
@@ -140,18 +132,18 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     @Override
     public void queueResponse(JsonResponse response) {
         // To cancel
-        if(null!=response){
-            if(response.getResponse()==1){
-                Toast.makeText(this,"You successfully cancel the queue",Toast.LENGTH_LONG).show();
+        if (null != response) {
+            if (response.getResponse() == 1) {
+                Toast.makeText(this, "You successfully cancel the queue", Toast.LENGTH_LONG).show();
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
                 NoQueueDB queueDB = new NoQueueDB(this);
                 queueDB.deleteRecord(codeQR);
                 navigateToList();
 
-            }else{
-                Toast.makeText(this,"Failed to cancel the queue",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Failed to cancel the queue", Toast.LENGTH_LONG).show();
             }
-        }else{
+        } else {
             //Show error
         }
         LaunchActivity.getLaunchActivity().dismissProgress();
@@ -167,7 +159,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     public void cancelQueue() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             LaunchActivity.getLaunchActivity().progressDialog.show();
-            QueueModel.responsePresenter=this;
+            QueueModel.responsePresenter = this;
             QueueModel.abortQueue(LaunchActivity.DID, codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
@@ -175,7 +167,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
 
     }
 
-    private void navigateToList(){
+    private void navigateToList() {
         if (mJsonToken != null) {
             Intent intent = new Intent();
             intent.putExtra(KEY_CODEQR, mJsonToken.getToken());

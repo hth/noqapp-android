@@ -7,8 +7,9 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
-import com.noqapp.client.R;
 import com.crashlytics.android.Crashlytics;
+import com.noqapp.client.R;
+
 import io.fabric.sdk.android.Fabric;
 
 

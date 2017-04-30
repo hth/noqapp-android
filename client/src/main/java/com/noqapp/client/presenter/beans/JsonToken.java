@@ -44,7 +44,7 @@ public class JsonToken {
     @JsonProperty("t")
     private int token;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String customerName;
 
     @JsonProperty("error")

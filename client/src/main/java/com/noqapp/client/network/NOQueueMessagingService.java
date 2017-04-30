@@ -43,7 +43,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            String title= remoteMessage.getNotification().getTitle();
+            String title = remoteMessage.getNotification().getTitle();
             clearNotifications(this);
             if (!isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
@@ -58,7 +58,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
 
             } else {
                 // app is in background, show the notification in notification tray
-                sendNotification(title,remoteMessage.getNotification().getBody());
+                sendNotification(title, remoteMessage.getNotification().getBody());
             }
         }
 
@@ -66,7 +66,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
-    private void sendNotification(String title,String messageBody) {
+    private void sendNotification(String title, String messageBody) {
 
         Intent intent = new Intent(this, LaunchActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -89,7 +89,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
     }
 
     // Clears notification tray messages
-    public  static void clearNotifications(Context context) {
+    public static void clearNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
     }

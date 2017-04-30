@@ -94,7 +94,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         edt_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
-       edt_phoneNo.setEnabled(false);
+        edt_phoneNo.setEnabled(false);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(getActivity(), new OnDateSetListener() {
 
@@ -133,7 +133,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             Country country = picker.getCountryByLocale(getActivity(), l);
             edt_country_code.setBackgroundResource(country.getFlag());
             edt_country_code.setText(country.getCode());
-            countryDialCode= country.getDialCode();
+            countryDialCode = country.getDialCode();
         }
         iv_close.setOnClickListener(new OnClickListener() {
             @Override
