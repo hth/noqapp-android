@@ -25,6 +25,7 @@ import com.noqapp.client.R;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.QueuePresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
+import com.noqapp.client.utils.AppUtilities;
 import com.noqapp.client.utils.Constants;
 import com.noqapp.client.views.activities.BarcodeScannerActivity;
 import com.noqapp.client.views.activities.JoinQueueActivity;
@@ -79,6 +80,19 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
         View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
         ButterKnife.bind(this, view);
         BarcodeScannerActivity.barcodeScannedResultCallback = this;
+        tv_mobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppUtilities.makeCall(LaunchActivity.getLaunchActivity(),tv_mobile.getText().toString());
+            }
+        });
+
+        tv_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(),tv_address.getText().toString());
+            }
+        });
         return view;
     }
 
@@ -98,6 +112,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
 
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d("Queue=", jsonQueue.toString());
         this.jsonQueue = jsonQueue;
         tv_store_name.setText(jsonQueue.getBusinessName());

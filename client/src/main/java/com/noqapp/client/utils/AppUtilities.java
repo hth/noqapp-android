@@ -1,6 +1,17 @@
 package com.noqapp.client.utils;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.noqapp.client.network.NoQueueFirbaseInstanceServices;
 
@@ -43,5 +54,40 @@ public class AppUtilities {
     public static String iso2CountryCodeToIso3CountryCode(String iso2CountryCode){
         Locale locale = new Locale("", iso2CountryCode);
         return locale.getISO3Country();
+    }
+
+
+    public static void makeCall(Activity context, String mobileno){
+        if (!TextUtils.isEmpty(mobileno)) {
+            int checkPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
+            if (checkPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                        context,
+                        new String[]{Manifest.permission.CALL_PHONE},
+                        111);
+            } else {
+                try {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:" + mobileno));
+                    context.startActivity(callIntent);
+                } catch (ActivityNotFoundException ex) {
+                    ex.printStackTrace();
+                    Toast.makeText(context, "Please install a calling application", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+    }
+
+    public static  void openAddressInMap(Activity context,String address){
+        try{
+        String map = "http://maps.google.co.in/maps?q=" + address;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+        context.startActivity(intent);
+        }catch(ActivityNotFoundException ex)
+        {
+            ex.printStackTrace();
+            Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+        }
     }
 }

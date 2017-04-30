@@ -32,6 +32,6 @@ public class ShowAlertInformation {
     }
 
     public static void showNetworkDialog(Context context){
-        showDialog(context, "Network error", context.getString(R.string.offline));
+        showDialog(context, context.getString(R.string.networkerror), context.getString(R.string.offline));
     }
 }
