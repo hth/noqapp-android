@@ -20,8 +20,6 @@ import java.util.List;
  */
 
 public class NoQueueDB extends SQLiteAssetHelper {
-
-
     private static final String TAG = NoQueueDB.class.getSimpleName();
     private static final String DATABASE_NAME = "noqueue.db";
     private static final int DATABASE_VERSION = 1;
@@ -44,16 +42,13 @@ public class NoQueueDB extends SQLiteAssetHelper {
     private static final String COLUMN_QUEUE_STATUS = "queuestatus";
     private static final String COLUMN_CREATE_DATE = "createdate";
 
-
-    // Hitory Token queue
+    // History Token queue
     private static final String TABLE_TOKENQUEUE_H = "TOKEN_QUEUE_H";
     public NOQueueDBPresenterInterface queueDBPresenterInterface;
-    public SQLiteDatabase db;
-
+    private SQLiteDatabase db;
 
     public NoQueueDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
     }
 
     public void save(List<JsonTokenAndQueue> list, boolean isCurrentQueueCall) {
@@ -61,7 +56,7 @@ public class NoQueueDB extends SQLiteAssetHelper {
         long msg = 0;
         for (JsonTokenAndQueue tokenAndQueue : list) {
 
-            String tempTableName = "";
+            String tempTableName;
             ContentValues values = new ContentValues();
             values.put(COLUMN_CODE_QR, tokenAndQueue.getCodeQR());
             values.put(COLUMN_BUSINESS_NAME, tokenAndQueue.getBusinessName());
@@ -111,13 +106,10 @@ public class NoQueueDB extends SQLiteAssetHelper {
 
                 if (msg > 0) {
                     Log.d(TAG, "Data Saved " + String.valueOf(msg));
-
                 }
 
             } catch (SQLException e) {
                 Log.e(TAG, "Exception ::" + e.getMessage().toString());
-
-
             }
 
         }
@@ -126,46 +118,38 @@ public class NoQueueDB extends SQLiteAssetHelper {
     }
 
     public boolean isTokenExist(String table_name, String qrcode, String date) {
-        //String mToken = String.valueOf(token);
-        String wherClause = COLUMN_CODE_QR + " = ?" + " AND " + COLUMN_CREATE_DATE + " = ?";
-        long line = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM " + table_name + " WHERE " + wherClause,
-                new String[]{qrcode, date});
-        return line > 0;
+        String whereClause = COLUMN_CODE_QR + " = ?" + " AND " + COLUMN_CREATE_DATE + " = ?";
+        return DatabaseUtils.longForQuery(
+                db,
+                "SELECT COUNT(*) FROM " + table_name + " WHERE " + whereClause,
+                new String[]{qrcode, date}) > 0;
     }
 
-    public void deleteRecord(String qrcode) {
-        // db.delete(TABLE_TOKENQUEUE, COLUMN_CODE_QR + " = " + qrcode, null) ;
+    public void deleteTokenQueue(String codeQR) {
         db = this.getReadableDatabase();
-        boolean qq = db.delete(TABLE_TOKENQUEUE, "codeqr=?", new String[]{qrcode}) > 0;
-        Log.v("deleted", String.valueOf(qq));
-
+        boolean resultStatus = db.delete(TABLE_TOKENQUEUE, "codeqr=?", new String[]{codeQR}) > 0;
+        Log.v("deleted", String.valueOf(resultStatus));
     }
 
     public List<JsonTokenAndQueue> getCurrentQueueList() {
         db = this.getReadableDatabase();
-        String[] columns = new String[]{COLUMN_BUSINESS_NAME, COLUMN_CODE_QR, COLUMN_STORE_ADDRESS, COLUMN_STORE_PHONE, COLUMN_TOKEN};
-        String whereClause = COLUMN_CODE_QR + " = ? and " + COLUMN_CREATE_DATE + " = ?";
-        //String [] selectionArgs = new String[] {codeQR,dateTime};
-        String orderBy = COLUMN_CREATE_DATE;
-
         List<JsonTokenAndQueue> listJsonQueue = new ArrayList<>();
-        Cursor cursor = db.query(true, TABLE_TOKENQUEUE, null, null, null, null, null, orderBy, null);
-
-        if (cursor != null) {
-            if (cursor.getCount() > 0) {
-
-                try {
-                    while (cursor.moveToNext()) {
-                        JsonTokenAndQueue tokenAndQueue = new JsonTokenAndQueue();
-                        tokenAndQueue.setBusinessName(cursor.getString(1));
-                        tokenAndQueue.setCodeQR(cursor.getString(0));
-                        tokenAndQueue.setStoreAddress(cursor.getString(3));
-                        tokenAndQueue.setStorePhone(cursor.getString(4));
-                        tokenAndQueue.setToken(cursor.getInt(11));
-                        listJsonQueue.add(tokenAndQueue);
-
-                    }
-                } finally {
+        Cursor cursor = db.query(true, TABLE_TOKENQUEUE, null, null, null, null, null, COLUMN_CREATE_DATE, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            try {
+                while (cursor.moveToNext()) {
+                    JsonTokenAndQueue tokenAndQueue = new JsonTokenAndQueue();
+                    tokenAndQueue.setBusinessName(cursor.getString(1));
+                    tokenAndQueue.setCodeQR(cursor.getString(0));
+                    tokenAndQueue.setStoreAddress(cursor.getString(3));
+                    tokenAndQueue.setStorePhone(cursor.getString(4));
+                    tokenAndQueue.setToken(cursor.getInt(11));
+                    listJsonQueue.add(tokenAndQueue);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Parsing error reason=" + e.getLocalizedMessage(), e);
+            } finally {
+                if (!cursor.isClosed()) {
                     cursor.close();
                 }
             }

@@ -137,7 +137,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
                 Toast.makeText(this, "You successfully cancel the queue", Toast.LENGTH_LONG).show();
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
                 NoQueueDB queueDB = new NoQueueDB(this);
-                queueDB.deleteRecord(codeQR);
+                queueDB.deleteTokenQueue(codeQR);
                 navigateToList();
 
             } else {

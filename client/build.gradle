@@ -318,6 +318,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
+    compile 'com.googlecode.libphonenumber:libphonenumber:8.4.2'
 }
 
 /** Gradle default task. */
