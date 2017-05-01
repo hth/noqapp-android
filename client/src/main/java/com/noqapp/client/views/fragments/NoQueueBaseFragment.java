@@ -12,13 +12,23 @@ import android.view.ViewGroup;
 
 import com.noqapp.client.R;
 import com.noqapp.client.helper.NetworkHelper;
+import com.noqapp.client.views.activities.LaunchActivity;
 
 /**
  * Created by omkar on 4/8/17.
  */
 
 public class NoQueueBaseFragment extends Fragment {
-
+    protected final String KEY_CODEQR = "codeqr";
+    protected final String KEY_STOREPHONE = "storephone";
+    protected final String KEY_DISPLAYNAME = "displayname";
+    protected final String KEY_QUEUENAME = "queuename";
+    protected final String KEY_ADDRESS = "address";
+    protected final String KEY_TOPIC = "topic";
+    protected final String KEY_FROM_LIST = "fromlist";
+    protected final String KEY_SERVING_NO = "servingno";
+    protected final String KEY_TOKEN = "token";
+    protected final String KEY_HOW_LONG = "howlong";
 
 
     @Override
@@ -39,12 +49,17 @@ public class NoQueueBaseFragment extends Fragment {
 
     }
 
-    public void replaceFragmentWithBackStack(FragmentActivity activity, int container, Fragment fragment, String tag) {
+    public void replaceFragmentWithBackStack(FragmentActivity activity, int container, Fragment fragment, String tag,String selectedTab) {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-        transaction.replace(container, fragment, tag).addToBackStack(tag).commit();
-
+       // transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+        transaction.replace(container, fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
+        //Added to maintaing the stack
+        if(!selectedTab.equals("")) {
+            LaunchActivity.getLaunchActivity().setCurrentSelectedTabTag(selectedTab);
+            LaunchActivity.getLaunchActivity().addFragmentToStack(fragment);
+        }
     }
 
     public void addFragment(FragmentActivity activity, int container, Fragment fragment, String tag) {

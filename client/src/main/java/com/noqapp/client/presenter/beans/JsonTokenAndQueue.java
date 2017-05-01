@@ -185,6 +185,10 @@ public class JsonTokenAndQueue {
         this.createDate = createDate;
     }
 
+    @JsonIgnoreProperties
+    public int afterHowLong() {
+        return token - servingNumber;
+    }
     @Override
     public String toString() {
         return "JsonTokenAndQueue{" +
