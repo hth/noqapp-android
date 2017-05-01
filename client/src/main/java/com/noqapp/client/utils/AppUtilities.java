@@ -88,4 +88,7 @@ public class AppUtilities {
             Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
         }
     }
+
+
+
 }

@@ -56,7 +56,7 @@ public class ListQueueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_nohistory, parent, false);
             return new NoHistoryQueueVH(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_historyqueue, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_historyqueueold, parent, false);
             return new ListHistoryQueueVH(view);
         }
     }

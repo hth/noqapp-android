@@ -2,19 +2,17 @@ package com.noqapp.client.views.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.client.R;
@@ -24,25 +22,31 @@ import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.beans.body.DeviceToken;
+import com.noqapp.client.utils.Constants;
+import com.noqapp.client.utils.Formatter;
+import com.noqapp.client.views.activities.JoinQueueActivity;
 import com.noqapp.client.views.activities.LaunchActivity;
-import com.noqapp.client.views.adapters.ListQueueAdapter;
+import com.noqapp.client.views.adapters.ExpandableListAdapter;
 import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
+
 public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQueuePresenter, Token_QueueViewInterface {
 
 
-    private RecyclerView listViewQueue;
+
     private RelativeLayout rl_empty_screen;
     public static boolean isCurrentQueueCall = false;
     private String TAG = ListQueueFragment.class.getSimpleName();
     private FragmentActivity context;
-
-
+    private ExpandableListAdapter listAdapter;
+    private ExpandableListView expListView;
+    private List<String> listDataHeader;
+    private HashMap<String, List<JsonTokenAndQueue>> listDataChild;
     public ListQueueFragment() {
 
     }
@@ -86,8 +90,8 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
-        View view = inflater.inflate(R.layout.fragment_list_queue, container, false);
-        listViewQueue = (RecyclerView) view.findViewById(R.id.listView_quequList);
+        View view = inflater.inflate(R.layout.fragment_listqueue, container, false);
+        expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
         rl_empty_screen = (RelativeLayout) view.findViewById(R.id.rl_empty_screen);
         //ButterKnife.bind(this,view);
         return view;
@@ -97,7 +101,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (networkHelper.isOnline()) {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
             callQueue();
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -161,17 +165,92 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     public void token_QueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size()) + "::" + String.valueOf(historylist.size()));
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-        listViewQueue.setLayoutManager(layoutManager);
-        listViewQueue.setHasFixedSize(true);
-        listViewQueue.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        listViewQueue.setItemAnimator(new DefaultItemAnimator());
-        ListQueueAdapter adapter = new ListQueueAdapter(context, currentlist, historylist);
-        listViewQueue.setAdapter(adapter);
+       initListView(currentlist,historylist);
         rl_empty_screen.setVisibility(View.GONE);
-        listViewQueue.setVisibility(View.VISIBLE);
+        expListView.setVisibility(View.VISIBLE);
 
     }
 
 
+    private void initListView(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist){
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<JsonTokenAndQueue>>();
+
+        // Adding child data
+        listDataHeader.add("Current Queue");
+        listDataHeader.add("History");
+        listDataChild.put(listDataHeader.get(0), currentlist); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), historylist);
+        listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+
+        expListView.setAdapter(listAdapter);
+        expListView.expandGroup(0);//By default expand the list first group
+        expListView.expandGroup(1);
+        // Listview Group click listener
+        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v,
+                                        int groupPosition, long id) {
+                // Toast.makeText(getApplicationContext(),
+                // "Group Clicked " + listDataHeader.get(groupPosition),
+                // Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        // Listview Group expanded listener
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+//                Toast.makeText(getActivity(),
+//                        listDataHeader.get(groupPosition) + " Expanded",
+//                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Listview Group collasped listener
+        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+//                Toast.makeText(getActivity(),
+//                        listDataHeader.get(groupPosition) + " Collapsed",
+//                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        // Listview on child click listener
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+
+                if(groupPosition==0){
+                    JsonTokenAndQueue jsonQueue= listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
+                    Intent intent = new Intent(getActivity(), JoinQueueActivity.class);
+                    intent.putExtra(JoinQueueActivity.KEY_CODEQR, jsonQueue.getCodeQR());
+                    intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME, jsonQueue.getBusinessName());
+                    intent.putExtra(JoinQueueActivity.KEY_STOREPHONE, jsonQueue.getStorePhone());
+                    intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, jsonQueue.getDisplayName());
+                    intent.putExtra(JoinQueueActivity.KEY_ADDRESS, Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
+                    intent.putExtra(JoinQueueActivity.KEY_TOPIC, jsonQueue.getTopic());
+                    getActivity().startActivityForResult(intent, Constants.requestCodeJoinQActivity);
+                }else {
+                    Toast.makeText(
+                            getActivity(),
+                            listDataHeader.get(groupPosition)
+                                    + " : "
+                                    + listDataChild.get(
+                                    listDataHeader.get(groupPosition)).get(
+                                    childPosition), Toast.LENGTH_SHORT)
+                            .show();
+                }
+                return false;
+            }
+        });
+    }
 }
