@@ -117,7 +117,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
         tv_store_name.setText(jsonQueue.getBusinessName());
         tv_queue_name.setText(jsonQueue.getDisplayName());
         tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
-        tv_mobile.setText(jsonQueue.getStorePhone());
+        tv_mobile.setText(jsonQueue.getStorePhoneFormatted());
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getLastNumber()));
         codeQr = jsonQueue.getCodeQR();
