@@ -1,49 +1,36 @@
-package com.noqapp.client.views.activities;
+package com.noqapp.client.views.fragments;
 
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.noqapp.client.R;
+import com.noqapp.client.views.activities.LaunchActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class InviteDetailActivity extends AppCompatActivity {
+public class InviteDetailFragment extends NoQueueBaseFragment {
 
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-    @BindView(R.id.toolbar)
-    protected Toolbar toolbar;
     @BindView(R.id.tv_title)
     protected TextView tv_title;
     @BindView(R.id.tv_details)
     protected TextView tv_details;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_invitedetail);
-        ButterKnife.bind(this);
-        tv_toolbar_title.setText("Invite Details");
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-            }
-        });
-        Bundle extras = getIntent().getExtras();
-        if (null != extras) {
-            String title = extras.getString("title", "");
-            String details = extras.getString("details", "");
+        View view = inflater.inflate(R.layout.fragment_invitedetail, container, false);
+        ButterKnife.bind(this,view);
+        Bundle bundle = getArguments();
+        if (null != bundle) {
+            String title = bundle.getString("title", "");
+            String details = bundle.getString("details", "");
             tv_title.setText(title);
             tv_details.setText(details);
             //added to check the content
@@ -63,7 +50,20 @@ public class InviteDetailActivity extends AppCompatActivity {
             tv_title.setText("");
             tv_details.setText("");
         }
-    }
 
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//
+//            }
+//        });
+        return view;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        LaunchActivity.getLaunchActivity().setActionBarTitle("Invite Details");
+    }
 
 }

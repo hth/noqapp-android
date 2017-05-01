@@ -228,26 +228,36 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-
+                JsonTokenAndQueue jsonQueue= listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
+                Bundle b = new Bundle();
+                b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
+                b.putBoolean(KEY_FROM_LIST,true);
                 if(groupPosition==0){
-                    JsonTokenAndQueue jsonQueue= listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
-                    Intent intent = new Intent(getActivity(), JoinQueueActivity.class);
-                    intent.putExtra(JoinQueueActivity.KEY_CODEQR, jsonQueue.getCodeQR());
-                    intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME, jsonQueue.getBusinessName());
-                    intent.putExtra(JoinQueueActivity.KEY_STOREPHONE, jsonQueue.getStorePhone());
-                    intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, jsonQueue.getDisplayName());
-                    intent.putExtra(JoinQueueActivity.KEY_ADDRESS, Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
-                    intent.putExtra(JoinQueueActivity.KEY_TOPIC, jsonQueue.getTopic());
-                    getActivity().startActivityForResult(intent, Constants.requestCodeJoinQActivity);
+
+//                    Intent intent = new Intent(getActivity(), JoinQueueActivity.class);
+//                    intent.putExtra(JoinQueueActivity.KEY_CODEQR, jsonQueue.getCodeQR());
+//                    intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME, jsonQueue.getBusinessName());
+//                    intent.putExtra(JoinQueueActivity.KEY_STOREPHONE, jsonQueue.getStorePhone());
+//                    intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, jsonQueue.getDisplayName());
+//                    intent.putExtra(JoinQueueActivity.KEY_ADDRESS, Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
+//                    intent.putExtra(JoinQueueActivity.KEY_TOPIC, jsonQueue.getTopic());
+//                    getActivity().startActivityForResult(intent, Constants.requestCodeJoinQActivity);
+                    b.putString(KEY_DISPLAYNAME, jsonQueue.getBusinessName());
+                    b.putString(KEY_STOREPHONE, jsonQueue.getStorePhone());
+                    b.putString(KEY_QUEUENAME, jsonQueue.getDisplayName());
+                    b.putString(KEY_ADDRESS, jsonQueue.getStoreAddress());
+                    b.putString(KEY_TOPIC, jsonQueue.getTopic());
+                    b.putString(KEY_SERVING_NO,String.valueOf(jsonQueue.getServingNumber()));
+                    b.putString(KEY_TOKEN,String.valueOf(jsonQueue.getToken()));
+                    b.putString(KEY_HOW_LONG,String.valueOf(jsonQueue.afterHowLong()));
+                    AfterJoinFragment ajf = new AfterJoinFragment();
+                    ajf.setArguments(b);
+                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG,LaunchActivity.tabList);
                 }else {
-                    Toast.makeText(
-                            getActivity(),
-                            listDataHeader.get(groupPosition)
-                                    + " : "
-                                    + listDataChild.get(
-                                    listDataHeader.get(groupPosition)).get(
-                                    childPosition), Toast.LENGTH_SHORT)
-                            .show();
+
+                    JoinFragment jf = new JoinFragment();
+                    jf.setArguments(b);
+                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG,"");
                 }
                 return false;
             }

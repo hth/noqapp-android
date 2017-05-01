@@ -136,9 +136,11 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
             intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME, this.jsonQueue.getBusinessName());
             intent.putExtra(JoinQueueActivity.KEY_STOREPHONE, this.jsonQueue.getStorePhone());
             intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, this.jsonQueue.getDisplayName());
-            intent.putExtra(JoinQueueActivity.KEY_ADDRESS, Formatter.getFormattedAddress(this.jsonQueue.getStoreAddress()));
+            intent.putExtra(JoinQueueActivity.KEY_ADDRESS, this.jsonQueue.getStoreAddress());
             intent.putExtra(JoinQueueActivity.KEY_TOPIC, this.jsonQueue.getTopic());
             getActivity().startActivityForResult(intent, Constants.requestCodeJoinQActivity);
+
+
         } else {
             Toast.makeText(getActivity(), "Please scan first", Toast.LENGTH_LONG).show();
         }
@@ -180,10 +182,16 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
         } else {
             if (rawData.startsWith("https://tp.receiptofi.com")) {
                 String[] codeQR = rawData.split("/");
-                LaunchActivity.getLaunchActivity().progressDialog.show();
-                QueueModel.queuePresenter = ScanQueueFragment.this;
-                QueueModel.getQueueState(LaunchActivity.DID, codeQR[3]);
-                showEmptyScreen(false);
+//                LaunchActivity.getLaunchActivity().progressDialog.show();
+//                QueueModel.queuePresenter = ScanQueueFragment.this;
+//                QueueModel.getQueueState(LaunchActivity.DID, codeQR[3]);
+//                showEmptyScreen(false);
+                Bundle b = new Bundle();
+                b.putString(KEY_CODEQR, codeQR[3]);
+                b.putBoolean(KEY_FROM_LIST,false);
+                JoinFragment jf = new JoinFragment();
+                jf.setArguments(b);
+                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG,"");
             } else {
                 Toast toast = Toast.makeText(getActivity(), "Not a valid QR-Code", Toast.LENGTH_SHORT);
                 toast.show();
@@ -192,7 +200,10 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
 
         }
     }
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //No call for super(). Bug on API Level > 11.
+    }
     private void scanBarcode() {
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         DisplayMetrics dm = new DisplayMetrics();

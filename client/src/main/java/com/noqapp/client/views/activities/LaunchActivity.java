@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
@@ -24,12 +24,17 @@ import com.noqapp.client.R;
 import com.noqapp.client.helper.NetworkHelper;
 import com.noqapp.client.network.NOQueueMessagingService;
 import com.noqapp.client.utils.Constants;
+import com.noqapp.client.views.fragments.AfterJoinFragment;
 import com.noqapp.client.views.fragments.ListQueueFragment;
 import com.noqapp.client.views.fragments.LoginFragment;
 import com.noqapp.client.views.fragments.MeFragment;
 import com.noqapp.client.views.fragments.RegistrationFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -67,7 +72,17 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private Toast backpressToast;
     public ProgressDialog progressDialog;
     private BroadcastReceiver broadcastReceiver;
+    // Tabs associated with list of fragments
+    public Map<String, List<Fragment>> fragmentsStack = new HashMap<String, List<Fragment>>();
+    private String currentSelectedTabTag = "";
 
+    public static String tabHome="HOME";
+    public static String tabList="LIST";
+    public static String tabMe="ME";
+    // Used in TabListener to keep currentSelectedTabTag actual.
+    public void setCurrentSelectedTabTag(String currentSelectedTabTag) {
+        this.currentSelectedTabTag = currentSelectedTabTag;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +104,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
                     String message = intent.getStringExtra("message");
-                    Toast.makeText(launchActivity, message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(launchActivity, "Notification : "+message, Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -104,20 +119,45 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         resetButtons();
         switch (id) {
             case R.id.rl_home:
-                fragment = new ScanQueueFragment();
+                setCurrentSelectedTabTag(tabHome);
+                if(null==fragmentsStack.get(tabHome)) {
+                    fragment = new ScanQueueFragment();
+                    createStackForTab(tabHome);
+                    addFragmentToStack(fragment);
+                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+                }else{
+                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
+                }
+
                 iv_home.setBackgroundResource(R.mipmap.home_select);
                 tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
 
             case R.id.rl_list:
-                fragment = ListQueueFragment.getInstance();
-                ListQueueFragment.isCurrentQueueCall = true;
+                setCurrentSelectedTabTag(tabList);
+                if(null==fragmentsStack.get(tabList)) {
+                    fragment = ListQueueFragment.getInstance();
+                    ListQueueFragment.isCurrentQueueCall = true;
+                    createStackForTab(tabList);
+                    addFragmentToStack(fragment);
+                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+                }else{
+                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
+                }
                 iv_list.setBackgroundResource(R.mipmap.list_select);
                 tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
 
             case R.id.rl_me:
-                fragment = MeFragment.getInstance();
+                setCurrentSelectedTabTag(tabMe);
+                if(null==fragmentsStack.get(tabMe)) {
+                    fragment = MeFragment.getInstance();
+                    createStackForTab(tabMe);
+                    addFragmentToStack(fragment);
+                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+                }else{
+                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
+                }
                 iv_me.setBackgroundResource(R.mipmap.me_select);
                 tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
@@ -125,7 +165,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 break;
 
         }
-        replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+
 
     }
 
@@ -148,23 +188,23 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
 
-    @Override
-    public void onBackPressed() {
-        FragmentManager fm = getSupportFragmentManager();
-        if (fm.getBackStackEntryCount() == 0) {
-            long currentTime = System.currentTimeMillis();
-            if (currentTime - lastPress > 3000) {
-                backpressToast = Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
-                backpressToast.show();
-                lastPress = currentTime;
-            } else {
-                if (backpressToast != null) backpressToast.cancel();
-                super.onBackPressed();
-            }
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        FragmentManager fm = getSupportFragmentManager();
+//        if (fm.getBackStackEntryCount() == 0) {
+//            long currentTime = System.currentTimeMillis();
+//            if (currentTime - lastPress > 3000) {
+//                backpressToast = Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
+//                backpressToast.show();
+//                lastPress = currentTime;
+//            } else {
+//                if (backpressToast != null) backpressToast.cancel();
+//                super.onBackPressed();
+//            }
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -225,5 +265,59 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     protected void onPause() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onPause();
+    }
+
+    /**
+     * Method for adding list of fragment for tab to our Back Stack
+     * @param tabTag The identifier tag for the tab
+     */
+    public void createStackForTab(String tabTag) {
+        List<Fragment> tabFragments = new ArrayList<Fragment>();
+        fragmentsStack.put(tabTag, tabFragments);
+    }
+
+    /**
+     * @param fragment The fragment that will be added to the Back Stack
+     */
+    public void addFragmentToStack(Fragment fragment) {
+        fragmentsStack.get(currentSelectedTabTag).add(fragment);
+    }
+
+    /**
+     * Used in TabListener for showing last opened screen from selected tab
+     * @return The last added fragment of actual tab will be returned
+     */
+    public Fragment getLastFragment() {
+        List<Fragment> fragments = fragmentsStack.get(currentSelectedTabTag);
+        return fragments.get(fragments.size() - 1);
+    }
+
+    /**
+     * Override default behavior of hardware Back button
+     * for navigation thru fragments on tab hierarchy
+     */
+    @Override
+    public void onBackPressed() {
+        List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
+
+        if (currentTabFragments.size() > 1) {
+            // if it is not first screen then
+            // current screen is closed and removed from Back Stack and shown the previous one
+            int size = currentTabFragments.size();
+            Fragment fragment = currentTabFragments.get(size - 2);
+            Fragment currentfrg=currentTabFragments.get(size - 1);
+            currentTabFragments.remove(size - 1);
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_layout, fragment);
+            fragmentTransaction.commit();
+            if(currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())){
+                onClick(rl_list);
+            }
+
+        } else {
+            // if it is the first screen then close application
+            finish();
+        }
     }
 }

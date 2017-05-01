@@ -262,7 +262,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                 b.putString("country_code", countryISO);
                 RegistrationFragment rff = new RegistrationFragment();
                 rff.setArguments(b);
-                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, rff, TAG);
+                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, rff, TAG,LaunchActivity.tabMe);
                 LaunchActivity.getLaunchActivity().dismissProgress();
             }
         }

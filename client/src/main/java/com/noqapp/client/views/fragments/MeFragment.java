@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.noqapp.client.R;
-import com.noqapp.client.views.activities.InviteActivity;
 import com.noqapp.client.views.activities.LaunchActivity;
 import com.noqapp.client.views.activities.NoQueueBaseActivity;
 
@@ -103,9 +102,15 @@ public class MeFragment extends NoQueueBaseFragment {
 
     @OnClick(R.id.iv_invite)
     public void action_Invite() {
-        Intent in = new Intent(getActivity(), InviteActivity.class);
-        in.putExtra("invite_code", inviteCode);
-        startActivity(in);
+//        Intent in = new Intent(getActivity(), InviteActivity.class);
+//        in.putExtra("invite_code", inviteCode);
+//        startActivity(in);
+
+        Bundle b = new Bundle();
+        b.putString("invite_code", inviteCode);
+        InviteFragment inf = new InviteFragment();
+        inf.setArguments(b);
+        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, inf, TAG,LaunchActivity.tabMe);
     }
 
     @OnClick(R.id.btn_register_login_logout)
@@ -130,7 +135,8 @@ public class MeFragment extends NoQueueBaseFragment {
                     })
                     .show();
         } else {
-            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LoginFragment(), TAG);
+            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LoginFragment(), TAG,LaunchActivity.tabMe);
+
         }
 
 

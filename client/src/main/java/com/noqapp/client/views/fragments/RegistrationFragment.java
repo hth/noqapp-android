@@ -179,6 +179,8 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             editor.putString(NoQueueBaseActivity.PREKEY_INVITECODE, profile.getInviteCode());
             editor.commit();
             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
+            //remove the login and register fragment from stack
+            LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).clear();
         } else {
             //Rejected from  server
             ErrorEncounteredJson eej = profile.getError();

@@ -20,6 +20,7 @@ import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
 import com.noqapp.client.utils.AppUtilities;
+import com.noqapp.client.utils.Formatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +34,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
     public static final String KEY_QUEUENAME = "queuename";
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_TOPIC = "topic";
+    public static final String KEY_FROM_LIST = "fromlist";
     private static final String TAG = JoinQueueActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar)
@@ -83,7 +85,7 @@ public class JoinQueueActivity extends NoQueueBaseActivity implements TokenPrese
 
         tv_store_name.setText(displayName);
         tv_queue_name.setText(queueName);
-        tv_address.setText(address);
+        tv_address.setText(Formatter.getFormattedAddress(address));
         tv_mobile.setText(storePhone);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
