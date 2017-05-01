@@ -26,6 +26,7 @@ import com.noqapp.client.presenter.QueuePresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.utils.AppUtilities;
 import com.noqapp.client.utils.Constants;
+import com.noqapp.client.utils.Formatter;
 import com.noqapp.client.views.activities.BarcodeScannerActivity;
 import com.noqapp.client.views.activities.JoinQueueActivity;
 import com.noqapp.client.views.activities.LaunchActivity;
@@ -115,7 +116,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
         this.jsonQueue = jsonQueue;
         tv_store_name.setText(jsonQueue.getBusinessName());
         tv_queue_name.setText(jsonQueue.getDisplayName());
-        tv_address.setText(jsonQueue.getFormattedAddress());
+        tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
         tv_mobile.setText(jsonQueue.getStorePhone());
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getLastNumber()));
@@ -132,11 +133,10 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements QueuePrese
         if (null != jsonQueue) {
             Intent intent = new Intent(getActivity(), JoinQueueActivity.class);
             intent.putExtra(JoinQueueActivity.KEY_CODEQR, this.jsonQueue.getCodeQR());
-            intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME, this.jsonQueue.getDisplayName());
+            intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME, this.jsonQueue.getBusinessName());
             intent.putExtra(JoinQueueActivity.KEY_STOREPHONE, this.jsonQueue.getStorePhone());
-            intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, this.jsonQueue.getBusinessName());
-            intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, this.jsonQueue.getBusinessName());
-            intent.putExtra(JoinQueueActivity.KEY_ADDRESS, this.jsonQueue.getFormattedAddress());
+            intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, this.jsonQueue.getDisplayName());
+            intent.putExtra(JoinQueueActivity.KEY_ADDRESS, Formatter.getFormattedAddress(this.jsonQueue.getStoreAddress()));
             intent.putExtra(JoinQueueActivity.KEY_TOPIC, this.jsonQueue.getTopic());
             getActivity().startActivityForResult(intent, Constants.requestCodeJoinQActivity);
         } else {

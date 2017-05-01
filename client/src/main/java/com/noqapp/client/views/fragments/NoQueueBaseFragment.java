@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.noqapp.client.R;
 import com.noqapp.client.helper.NetworkHelper;
 
 /**
@@ -18,7 +19,7 @@ import com.noqapp.client.helper.NetworkHelper;
 
 public class NoQueueBaseFragment extends Fragment {
 
-    protected NetworkHelper networkHelper;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,7 +29,6 @@ public class NoQueueBaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        networkHelper = new NetworkHelper(getActivity());
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -42,6 +42,7 @@ public class NoQueueBaseFragment extends Fragment {
     public void replaceFragmentWithBackStack(FragmentActivity activity, int container, Fragment fragment, String tag) {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
         transaction.replace(container, fragment, tag).addToBackStack(tag).commit();
 
     }

@@ -139,10 +139,12 @@ public class NoQueueDB extends SQLiteAssetHelper {
             try {
                 while (cursor.moveToNext()) {
                     JsonTokenAndQueue tokenAndQueue = new JsonTokenAndQueue();
-                    tokenAndQueue.setBusinessName(cursor.getString(1));
                     tokenAndQueue.setCodeQR(cursor.getString(0));
+                    tokenAndQueue.setBusinessName(cursor.getString(1));
+                    tokenAndQueue.setDisplayName(cursor.getString(2));
                     tokenAndQueue.setStoreAddress(cursor.getString(3));
                     tokenAndQueue.setStorePhone(cursor.getString(4));
+                    tokenAndQueue.setTopic(cursor.getString(8));
                     tokenAndQueue.setToken(cursor.getInt(11));
                     listJsonQueue.add(tokenAndQueue);
                 }
@@ -173,10 +175,12 @@ public class NoQueueDB extends SQLiteAssetHelper {
                 try {
                     while (cursor.moveToNext()) {
                         JsonTokenAndQueue tokenAndQueue = new JsonTokenAndQueue();
-                        tokenAndQueue.setBusinessName(cursor.getString(1));
                         tokenAndQueue.setCodeQR(cursor.getString(0));
+                        tokenAndQueue.setBusinessName(cursor.getString(1));
+                        tokenAndQueue.setDisplayName(cursor.getString(2));
                         tokenAndQueue.setStoreAddress(cursor.getString(3));
                         tokenAndQueue.setStorePhone(cursor.getString(4));
+                        tokenAndQueue.setTopic(cursor.getString(8));
                         tokenAndQueue.setToken(cursor.getInt(11));
                         listJsonQueue.add(tokenAndQueue);
 

@@ -177,20 +177,5 @@ public class JsonQueue implements Serializable {
                 .toString();
     }
 
-    public String getFormattedAddress() {
 
-
-        if (storeAddress.contains(",")) {
-            String[] arr = storeAddress.split(",");
-            if (arr.length > 2) {
-
-                int secondIndex = storeAddress.indexOf(',', storeAddress.indexOf(',') + 1);
-                return storeAddress.substring(0, secondIndex) + "\n" + storeAddress.substring(secondIndex, storeAddress.length() - 1);
-            } else
-                return storeAddress;
-        } else {
-            return storeAddress;
-        }
-
-    }
 }
