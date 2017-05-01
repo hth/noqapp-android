@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.client.helper.PhoneFormatterUtil;
 import com.noqapp.client.model.types.QueueStatusEnum;
 import com.noqapp.client.utils.Constants;
 
@@ -177,5 +178,7 @@ public class JsonQueue implements Serializable {
                 .toString();
     }
 
-
+    public String getStorePhoneFormatted() {
+        return PhoneFormatterUtil.formatNumber("IN", storePhone);
+    }
 }

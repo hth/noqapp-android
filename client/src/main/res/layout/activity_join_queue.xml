@@ -48,7 +48,9 @@
                     android:layout_marginBottom="10dp"
                     android:gravity="center_horizontal"
                     android:textColor="@color/colorAddress"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:ellipsize="end"
+                    android:maxLines="2" />
 
                 <com.noqapp.client.views.cutomviews.TextViewRobotoLight
                     android:id="@+id/tv_mobile"

@@ -17,7 +17,7 @@ public class PhoneFormatterUtil {
     private static final String TAG = PhoneFormatterUtil.class.getSimpleName();
     private static PhoneNumberUtil phoneUtil;
 
-    private PhoneFormatterUtil() {
+    static {
         phoneUtil = PhoneNumberUtil.getInstance();
     }
 
