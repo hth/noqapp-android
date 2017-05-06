@@ -139,7 +139,12 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         if (requestCode == NoQueueBaseActivity.ACCOUNTKIT_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.d("FB accont res:: ", data.toString());
-                callLoginAPI();
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    callLoginAPI();
+                } else {
+                    ShowAlertInformation.showNetworkDialog(getActivity());
+                    LaunchActivity.getLaunchActivity().dismissProgress();
+                }
             } else {
                 LaunchActivity.getLaunchActivity().dismissProgress();
             }

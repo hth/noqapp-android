@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.noqapp.client.R;
+import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.QueuePresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
@@ -71,9 +72,13 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         Bundle bundle = getArguments();
         if (null != bundle) {
             codeQR = bundle.getString(KEY_CODEQR);
-            LaunchActivity.getLaunchActivity().progressDialog.show();
-            QueueModel.queuePresenter = JoinFragment.this;
-            QueueModel.getQueueState(LaunchActivity.DID, codeQR);
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                LaunchActivity.getLaunchActivity().progressDialog.show();
+                QueueModel.queuePresenter = this;
+                QueueModel.getQueueState(LaunchActivity.DID, codeQR);
+            } else {
+                ShowAlertInformation.showNetworkDialog(getActivity());
+            }
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 frtag = LaunchActivity.tabList;
             } else {

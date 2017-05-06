@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -36,12 +37,12 @@ public class MeFragment extends NoQueueBaseFragment {
     TextView tv_scanCount;
     @BindView(R.id.toggleAutojoin)
     ToggleButton toggelAutoJoin;
-    @BindView(R.id.iv_invite)
-    ImageView iv_invite;
-    @BindView(R.id.iv_rate)
-    ImageView iv_rate;
     @BindView(R.id.btn_register_login_logout)
     Button btn_register_login_logout;
+    @BindView(R.id.ll_rate_app)
+    LinearLayout ll_rate_app;
+    @BindView(R.id.ll_invite)
+    LinearLayout ll_invite;
 
     private String inviteCode;
     private final String TAG = MeFragment.class.getSimpleName();
@@ -100,7 +101,7 @@ public class MeFragment extends NoQueueBaseFragment {
 
     }
 
-    @OnClick(R.id.iv_invite)
+    @OnClick({ R.id.ll_invite})
     public void action_Invite() {
         Bundle b = new Bundle();
         b.putString("invite_code", inviteCode);
@@ -138,7 +139,7 @@ public class MeFragment extends NoQueueBaseFragment {
 
     }
 
-    @OnClick(R.id.iv_rate)
+    @OnClick({R.id.ll_rate_app})
     public void action_RateApp() {
         Uri uri = Uri.parse("market://details?id=" + "com.google.android.youtube");
         //getActivity().getPackageName());

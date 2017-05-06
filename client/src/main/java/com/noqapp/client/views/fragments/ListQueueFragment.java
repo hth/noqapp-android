@@ -161,7 +161,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     public void token_QueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size()) + "::" + String.valueOf(historylist.size()));
-       initListView(currentlist,historylist);
+        initListView(currentlist,historylist);
         rl_empty_screen.setVisibility(View.GONE);
         expListView.setVisibility(View.VISIBLE);
 

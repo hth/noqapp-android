@@ -137,6 +137,7 @@
         android:background="@android:color/transparent" />
 
     <LinearLayout
+        android:id="@+id/ll_invite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -186,6 +187,7 @@
         android:background="@android:color/transparent" />
 
     <LinearLayout
+        android:id="@+id/ll_rate_app"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
