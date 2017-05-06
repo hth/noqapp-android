@@ -10,17 +10,18 @@
         android:layout_marginBottom="10dp"
         android:padding="20dp">
 
-        <TextView
+        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
             android:text="@string/register"
             android:textColor="@color/colorActionbar"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
 
-        <TextView
+        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
             style="@style/style_register_tv"
+            android:textSize="15sp"
             android:text="@string/phone" />
 
 
@@ -42,39 +43,43 @@
                 android:padding="0dp"
                 android:textColor="@android:color/transparent" />
 
-            <EditText
+            <com.noqapp.client.views.cutomviews.TextEditRobotoLight
                 android:id="@+id/edt_phone"
                 style="@style/style_register_edt"
                 android:layout_width="0dp"
                 android:layout_weight=".80"
                 android:inputType="phone"
+                android:textSize="16sp"
                 android:maxLength="15" />
 
         </LinearLayout>
         <!--android:hint="@string/phonerequired" -->
 
-        <TextView
+        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
             style="@style/style_register_tv"
+            android:textSize="15sp"
             android:text="@string/name" />
 
 
-        <EditText
+        <com.noqapp.client.views.cutomviews.TextEditRobotoLight
             android:id="@+id/edt_name"
             style="@style/style_register_edt"
+            android:textSize="16sp"
             android:inputType="text"
 
             />
         <!--android:hint="@string/namerequired"-->
-        <TextView
+        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
             style="@style/style_register_tv"
+            android:textSize="15sp"
             android:text="@string/mail" />
 
 
-        <EditText
+        <com.noqapp.client.views.cutomviews.TextEditRobotoLight
             android:id="@+id/edt_email"
             style="@style/style_register_edt"
+            android:textSize="16sp"
             android:inputType="textEmailAddress"
-
             />
         <!--android:hint="@string/mail"-->
         <LinearLayout
@@ -91,13 +96,14 @@
                 android:orientation="vertical"
                 android:paddingRight="10dp">
 
-                <TextView
+                <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
                     style="@style/style_register_tv"
+                    android:textSize="15sp"
                     android:text="@string/birthday" />
 
-
-                <EditText
+                <com.noqapp.client.views.cutomviews.TextEditRobotoLight
                     android:id="@+id/edt_birthday"
+                    android:textSize="16sp"
                     style="@style/style_register_edt" />
 
                 <!--/>android:hint="@string/birthday"-->
@@ -109,8 +115,9 @@
                 android:layout_weight=".50"
                 android:orientation="vertical">
 
-                <TextView
+                <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
                     style="@style/style_register_tv"
+                    android:textSize="15sp"
                     android:text="@string/gender" />
 
                 <LinearLayout
@@ -119,9 +126,8 @@
                     android:layout_height="wrap_content"
                     android:weightSum="1">
 
-                    <EditText
+                    <com.noqapp.client.views.cutomviews.TextEditRobotoLight
                         android:id="@+id/tv_male"
-
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".5"
@@ -129,9 +135,10 @@
                         android:gravity="center"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
-                        android:text="Male" />
+                        android:textSize="14sp"
+                        android:text="male" />
 
-                    <EditText
+                    <com.noqapp.client.views.cutomviews.TextEditRobotoLight
                         android:id="@+id/tv_female"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -140,20 +147,16 @@
                         android:gravity="center"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
-                        android:text="Female" />
-
+                        android:textSize="14sp"
+                        android:text="female" />
 
                 </LinearLayout>
-
-
             </LinearLayout>
-
-
         </LinearLayout>
 
-        <TextView
+        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
             style="@style/style_register_tv"
-            android:maxLength="20"
+            android:textSize="15sp"
             android:text="@string/invitecode" />
 
 
@@ -165,7 +168,7 @@
             />
         <!--android:hint="@string/invitecode"-->
 
-        <Button
+        <com.noqapp.client.views.cutomviews.ButtonRalewayRegular
             android:id="@+id/btnContinueRegistration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
