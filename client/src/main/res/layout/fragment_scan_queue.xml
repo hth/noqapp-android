@@ -33,7 +33,7 @@
                 android:textColor="@color/color_list_text"
                 android:textSize="15sp" />
 
-            <com.noqapp.client.views.cutomviews.CustomButton
+            <com.noqapp.client.views.cutomviews.ButtonRalewayRegular
                 android:id="@+id/btnscanQRCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -167,7 +167,7 @@
 
                     </LinearLayout>
 
-                    <com.noqapp.client.views.cutomviews.CustomButton
+                    <com.noqapp.client.views.cutomviews.ButtonRalewayRegular
                         android:id="@+id/btn_cancel_queue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

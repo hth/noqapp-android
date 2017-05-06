@@ -72,7 +72,7 @@
         </RelativeLayout>
 
 
-        <com.noqapp.client.views.cutomviews.CustomButton
+        <com.noqapp.client.views.cutomviews.ButtonRalewayRegular
             android:id="@+id/btn_send_invite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
