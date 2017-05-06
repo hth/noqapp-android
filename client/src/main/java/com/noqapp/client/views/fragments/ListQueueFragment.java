@@ -2,7 +2,6 @@ package com.noqapp.client.views.fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.client.R;
@@ -22,11 +20,8 @@ import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.beans.body.DeviceToken;
-import com.noqapp.client.utils.Constants;
-import com.noqapp.client.utils.Formatter;
-import com.noqapp.client.views.activities.JoinQueueActivity;
 import com.noqapp.client.views.activities.LaunchActivity;
-import com.noqapp.client.views.adapters.ExpandableListAdapter;
+import com.noqapp.client.views.adapters.ListQueueAdapter;
 import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
 
 import java.util.ArrayList;
@@ -43,7 +38,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     public static boolean isCurrentQueueCall = false;
     private String TAG = ListQueueFragment.class.getSimpleName();
     private FragmentActivity context;
-    private ExpandableListAdapter listAdapter;
+    private ListQueueAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<JsonTokenAndQueue>> listDataChild;
@@ -181,7 +176,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         listDataHeader.add("History");
         listDataChild.put(listDataHeader.get(0), currentlist); // Header, Child data
         listDataChild.put(listDataHeader.get(1), historylist);
-        listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+        listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild);
 
         expListView.setAdapter(listAdapter);
         expListView.expandGroup(0);//By default expand the list first group
@@ -233,15 +228,6 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
                 b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
                 b.putBoolean(KEY_FROM_LIST,true);
                 if(groupPosition==0){
-
-//                    Intent intent = new Intent(getActivity(), JoinQueueActivity.class);
-//                    intent.putExtra(JoinQueueActivity.KEY_CODEQR, jsonQueue.getCodeQR());
-//                    intent.putExtra(JoinQueueActivity.KEY_DISPLAYNAME, jsonQueue.getBusinessName());
-//                    intent.putExtra(JoinQueueActivity.KEY_STOREPHONE, jsonQueue.getStorePhone());
-//                    intent.putExtra(JoinQueueActivity.KEY_QUEUENAME, jsonQueue.getDisplayName());
-//                    intent.putExtra(JoinQueueActivity.KEY_ADDRESS, Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
-//                    intent.putExtra(JoinQueueActivity.KEY_TOPIC, jsonQueue.getTopic());
-//                    getActivity().startActivityForResult(intent, Constants.requestCodeJoinQActivity);
                     b.putString(KEY_DISPLAYNAME, jsonQueue.getBusinessName());
                     b.putString(KEY_STOREPHONE, jsonQueue.getStorePhone());
                     b.putString(KEY_QUEUENAME, jsonQueue.getDisplayName());

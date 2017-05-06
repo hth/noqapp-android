@@ -255,8 +255,6 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
             // Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
             if (null != eej && eej.getSystemErrorCode().equals("412")) {
-                // pass mobile no and country code
-
                 Bundle b = new Bundle();
                 b.putString("mobile_no", edt_phoneNo.getText().toString());
                 b.putString("country_code", countryISO);

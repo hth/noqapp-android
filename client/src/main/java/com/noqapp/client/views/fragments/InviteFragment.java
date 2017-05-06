@@ -111,11 +111,6 @@ public class InviteFragment extends NoQueueBaseFragment {
 
     @OnClick(R.id.tv_how_it_works)
     public void howItWorks() {
-//        Intent in = new Intent(getActivity(), InviteDetailActivity.class);
-//        in.putExtra("title", tv_title.getText().toString());
-//        in.putExtra("details", tv_details.getText().toString());
-//        startActivity(in);
-
         Bundle b = new Bundle();
         b.putString("title", tv_title.getText().toString());
         b.putString("details", tv_details.getText().toString());

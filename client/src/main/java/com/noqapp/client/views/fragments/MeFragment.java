@@ -102,10 +102,6 @@ public class MeFragment extends NoQueueBaseFragment {
 
     @OnClick(R.id.iv_invite)
     public void action_Invite() {
-//        Intent in = new Intent(getActivity(), InviteActivity.class);
-//        in.putExtra("invite_code", inviteCode);
-//        startActivity(in);
-
         Bundle b = new Bundle();
         b.putString("invite_code", inviteCode);
         InviteFragment inf = new InviteFragment();
