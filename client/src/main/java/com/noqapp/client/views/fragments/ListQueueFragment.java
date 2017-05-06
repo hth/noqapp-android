@@ -123,6 +123,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     @Override
     public void queueError() {
         Log.d(TAG, "Token and queue Error");
+        LaunchActivity.getLaunchActivity().dismissProgress();
 
     }
 
@@ -243,7 +244,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
 
                     JoinFragment jf = new JoinFragment();
                     jf.setArguments(b);
-                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG,"");
+                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG,LaunchActivity.tabList);
                 }
                 return false;
             }

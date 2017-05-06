@@ -118,7 +118,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
 //    }
 
     @Override
-    public void queueResponse(JsonToken token) {
+    public void tokenPresenterResponse(JsonToken token) {
         Log.d(TAG, token.toString());
         this.mJsonToken = token;
         tv_total_value.setText(String.valueOf(String.valueOf(token.getServingNumber())));
@@ -129,7 +129,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     }
 
     @Override
-    public void queueResponse(JsonResponse response) {
+    public void responsePresenterResponse(JsonResponse response) {
         // To cancel
         if (null != response) {
             if (response.getResponse() == 1) {
@@ -149,9 +149,15 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     }
 
     @Override
-    public void queueError() {
-        Log.d(TAG, "Error");
+    public void responsePresenterError() {
+        Log.d(TAG, "responsePresenterError");
+        LaunchActivity.getLaunchActivity().dismissProgress();
+    }
 
+    @Override
+    public void tokenPresenterError() {
+
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @OnClick(R.id.btn_cancel_queue)

@@ -8,7 +8,7 @@ import com.noqapp.client.presenter.beans.JsonResponse;
  */
 
 public interface ResponsePresenter {
-    void queueResponse(JsonResponse response);
+    void responsePresenterResponse(JsonResponse response);
 
-    void queueError();
+    void responsePresenterError();
 }

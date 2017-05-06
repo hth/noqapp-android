@@ -8,7 +8,7 @@ import com.noqapp.client.presenter.beans.JsonToken;
  */
 
 public interface TokenPresenter {
-    void queueResponse(JsonToken token);
+    void tokenPresenterResponse(JsonToken token);
 
-    void queueError();
+    void tokenPresenterError();
 }

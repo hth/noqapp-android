@@ -94,6 +94,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     @Override
     public void queueError() {
         Log.d("Queue=", "Error");
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override

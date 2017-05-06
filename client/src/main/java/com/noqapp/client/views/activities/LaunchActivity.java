@@ -187,25 +187,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
     }
 
-
-//    @Override
-//    public void onBackPressed() {
-//        FragmentManager fm = getSupportFragmentManager();
-//        if (fm.getBackStackEntryCount() == 0) {
-//            long currentTime = System.currentTimeMillis();
-//            if (currentTime - lastPress > 3000) {
-//                backpressToast = Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
-//                backpressToast.show();
-//                lastPress = currentTime;
-//            } else {
-//                if (backpressToast != null) backpressToast.cancel();
-//                super.onBackPressed();
-//            }
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.requestCodeJoinQActivity) {
@@ -311,13 +292,20 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frame_layout, fragment);
             fragmentTransaction.commit();
-            if(currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())){
-                onClick(rl_list);
-            }
+//            if(currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())){
+//                onClick(rl_list);
+//            }
 
         } else {
-            // if it is the first screen then close application
-            finish();
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastPress > 3000) {
+                backpressToast = Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
+                backpressToast.show();
+                lastPress = currentTime;
+            } else {
+                if (backpressToast != null) backpressToast.cancel();
+                super.onBackPressed();
+            }
         }
     }
 }

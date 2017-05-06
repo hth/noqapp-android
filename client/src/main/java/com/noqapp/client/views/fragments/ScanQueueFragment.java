@@ -97,7 +97,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
                 b.putBoolean(KEY_FROM_LIST,false);
                 JoinFragment jf = new JoinFragment();
                 jf.setArguments(b);
-                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG,"");
+                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG,LaunchActivity.tabHome);
             } else {
                 Toast toast = Toast.makeText(getActivity(), "Not a valid QR-Code", Toast.LENGTH_SHORT);
                 toast.show();
