@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -42,6 +44,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<JsonTokenAndQueue>> listDataChild;
+    private FrameLayout frame_scan;
     public ListQueueFragment() {
 
     }
@@ -86,8 +89,14 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
         View view = inflater.inflate(R.layout.fragment_listqueue, container, false);
+        frame_scan=(FrameLayout) view.findViewById(R.id.frame_scan);
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
         rl_empty_screen = (RelativeLayout) view.findViewById(R.id.rl_empty_screen);
+        Bundle b = new Bundle();
+        b.putBoolean(KEY_FROM_LIST, true);
+        ScanQueueFragment sqc= new ScanQueueFragment();
+        sqc.setArguments(b);
+        replaceFragmentWithoutBackStack(getActivity(), R.id.frame_scan, sqc, TAG);
         //ButterKnife.bind(this,view);
         return view;
     }
@@ -171,17 +180,28 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     private void initListView(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist){
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<JsonTokenAndQueue>>();
-
+        //currentlist.clear();
+        //historylist.clear();
+//        for (int i=0;i<15;i++){
+//            currentlist.add(currentlist.get(0));
+//        }
         // Adding child data
         listDataHeader.add("Current Queue");
         listDataHeader.add("History");
         listDataChild.put(listDataHeader.get(0), currentlist); // Header, Child data
         listDataChild.put(listDataHeader.get(1), historylist);
+
         listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild);
 
         expListView.setAdapter(listAdapter);
         expListView.expandGroup(0);//By default expand the list first group
         expListView.expandGroup(1);
+
+        if(currentlist.size()==0){
+            frame_scan.setVisibility(View.VISIBLE);
+        }else{
+            frame_scan.setVisibility(View.GONE);
+        }
         // Listview Group click listener
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 

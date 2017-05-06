@@ -41,6 +41,8 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
     @BindView(R.id.btnscanQRCode)
     protected Button btnscanQRCode;
 
+    private String currenttab="";
+    private boolean fromlist=false;
     public ScanQueueFragment() {
 
     }
@@ -57,7 +59,19 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        startScanningBarcode();
+        currenttab=LaunchActivity.tabHome;
+        Bundle bundle = getArguments();
+        if (null != bundle) {
+            if( bundle.getBoolean(KEY_FROM_LIST, false)){
+                // don 't start the scanner
+                currenttab=LaunchActivity.tabList;
+                fromlist=true;
+            }else{
+                startScanningBarcode();
+            }
+
+        } else
+            startScanningBarcode();
 
     }
 
@@ -94,10 +108,10 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
                 String[] codeQR = rawData.split("/");
                 Bundle b = new Bundle();
                 b.putString(KEY_CODEQR, codeQR[3]);
-                b.putBoolean(KEY_FROM_LIST,false);
+                b.putBoolean(KEY_FROM_LIST,fromlist);
                 JoinFragment jf = new JoinFragment();
                 jf.setArguments(b);
-                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG,LaunchActivity.tabHome);
+                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG,currenttab);
             } else {
                 Toast toast = Toast.makeText(getActivity(), "Not a valid QR-Code", Toast.LENGTH_SHORT);
                 toast.show();

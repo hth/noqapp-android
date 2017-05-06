@@ -292,9 +292,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frame_layout, fragment);
             fragmentTransaction.commit();
-//            if(currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())){
-//                onClick(rl_list);
-//            }
+            if(currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())){
+                currentTabFragments.remove(currentTabFragments.size() - 1);
+                fragmentsStack.put(tabList,null);
+                onClick(rl_list);
+            }
 
         } else {
             long currentTime = System.currentTimeMillis();
