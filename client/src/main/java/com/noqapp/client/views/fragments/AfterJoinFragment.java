@@ -88,12 +88,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 }
             });
             topic = bundle.getString(KEY_TOPIC);
-//            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    navigateToList();
-//                }
-//            });
             if(bundle.getBoolean(KEY_FROM_LIST,false)) {
                 tv_total_value.setText(bundle.getString(KEY_SERVING_NO));
                 tv_current_value.setText(bundle.getString(KEY_TOKEN));
@@ -110,12 +104,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         return view;
     }
 
-
-
-//    @Override
-//    public void onBackPressed() {
-//        navigateToList();
-//    }
 
     @Override
     public void tokenPresenterResponse(JsonToken token) {
@@ -187,5 +175,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Details");
+        LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 }

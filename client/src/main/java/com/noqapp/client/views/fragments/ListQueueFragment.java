@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -116,6 +115,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Queues");
+        LaunchActivity.getLaunchActivity().enableDisableBack(false);
 
     }
 

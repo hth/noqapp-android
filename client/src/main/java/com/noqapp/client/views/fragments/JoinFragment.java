@@ -94,6 +94,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Join");
+        LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 
     @Override

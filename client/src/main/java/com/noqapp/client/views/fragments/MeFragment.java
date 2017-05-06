@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -70,6 +69,7 @@ public class MeFragment extends NoQueueBaseFragment {
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Me");
+        LaunchActivity.getLaunchActivity().enableDisableBack(false);
         SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         String name = preferences.getString(NoQueueBaseActivity.PREKEY_NAME, "Guest User");
         String phone = preferences.getString(NoQueueBaseActivity.PREKEY_PHONE, "");

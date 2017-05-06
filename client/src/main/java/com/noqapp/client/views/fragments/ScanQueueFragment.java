@@ -79,6 +79,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Home");
+        LaunchActivity.getLaunchActivity().enableDisableBack(false);
     }
 
     @OnClick(R.id.btnscanQRCode)

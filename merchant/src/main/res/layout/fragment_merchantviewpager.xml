@@ -15,16 +15,18 @@
 
         <ImageView
             android:id="@+id/left_nav"
+            android:layout_marginTop="30dp"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_gravity="center_vertical|left"
+            android:layout_gravity="left"
             android:src="@mipmap/arrow_left" />
 
         <ImageView
             android:id="@+id/right_nav"
+            android:layout_marginTop="30dp"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_gravity="center_vertical|right"
+            android:layout_gravity="right"
             android:src="@mipmap/arrow_right" />
 
     </FrameLayout>

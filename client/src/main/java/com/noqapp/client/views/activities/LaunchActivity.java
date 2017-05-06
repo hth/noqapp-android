@@ -68,6 +68,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     protected Toolbar toolbar;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
+    @BindView(R.id.actionbarBack)
+    protected ImageView actionbarBack;
+
     private long lastPress;
     private Toast backpressToast;
     public ProgressDialog progressDialog;
@@ -93,6 +96,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         rl_home.setOnClickListener(this);
         rl_list.setOnClickListener(this);
         rl_me.setOnClickListener(this);
+        actionbarBack.setOnClickListener(this);
         iv_home.setBackgroundResource(R.mipmap.home_select);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
         initProgress();
@@ -160,6 +164,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 }
                 iv_me.setBackgroundResource(R.mipmap.me_select);
                 tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
+                break;
+            case R.id.actionbarBack:
+                    onBackPressed();
                 break;
             default:
                 break;
@@ -309,5 +316,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 super.onBackPressed();
             }
         }
+    }
+
+    public void enableDisableBack(boolean isShown){
+        actionbarBack.setVisibility(isShown?View.VISIBLE:View.INVISIBLE);
     }
 }

@@ -75,13 +75,6 @@ public class InviteFragment extends NoQueueBaseFragment {
             tv_invite_code.setText("");
         }
         selectedText = tv_invite_code.getText().toString();
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//
-//            }
-//        });
         return view;
     }
 
@@ -123,5 +116,6 @@ public class InviteFragment extends NoQueueBaseFragment {
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Invite");
+        LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 }
