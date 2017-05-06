@@ -3,17 +3,17 @@ package com.noqapp.client.views.cutomviews;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.TextView;
 
+import com.noqapp.client.R;
 
 /**
  * Created by chandra on 4/9/17.
  */
-
-public class TextViewRalewayBold extends TextView {
-    private static final String TAG = "TextView";
+public class TextViewRalewayBold extends AppCompatTextView {
+    private static final String TAG = TextViewRalewayBold.class.getName();
 
     public TextViewRalewayBold(Context context) {
         super(context);
@@ -30,13 +30,11 @@ public class TextViewRalewayBold extends TextView {
     }
 
     private void setCustomFont(Context ctx, AttributeSet attrs) {
-        String customFont = "fonts/raleway_bold.ttf";
-        setCustomFont(ctx, customFont);
-
+        setCustomFont(ctx, ctx.getString(R.string.raleway_bold_font));
     }
 
     public boolean setCustomFont(Context ctx, String asset) {
-        Typeface typeface = null;
+        Typeface typeface;
         try {
             typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {

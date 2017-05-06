@@ -3,16 +3,16 @@ package com.noqapp.client.views.cutomviews;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.Button;
 
 
 /**
  * Created by chandra on 4/9/17.
  */
 
-public class CustomButton extends Button {
+public class CustomButton extends AppCompatButton {
     private static final String TAG = "TextView";
 
     public CustomButton(Context context) {
