@@ -43,11 +43,11 @@
     <string name="register">Register</string>
 
     <string name="login">Login</string>
-    <string name="phone">Phone*</string>
-    <string name="name">Name*</string>
+    <string name="phone">Phone *</string>
+    <string name="name">Name *</string>
     <string name="mail">Mail</string>
     <string name="birthday">Birthday</string>
-    <string name="gender">Gender*</string>
+    <string name="gender">Gender *</string>
     <string name="invitecode">Invite code</string>
     <string name="btnregister">Continue Register</string>
 
