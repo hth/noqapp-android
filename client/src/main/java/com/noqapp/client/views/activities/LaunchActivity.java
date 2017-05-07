@@ -25,6 +25,7 @@ import com.noqapp.client.R;
 import com.noqapp.client.helper.NetworkHelper;
 import com.noqapp.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.client.network.NOQueueMessagingService;
+import com.noqapp.client.network.NoQueueFirbaseInstanceServices;
 import com.noqapp.client.utils.Constants;
 import com.noqapp.client.views.fragments.AfterJoinFragment;
 import com.noqapp.client.views.fragments.ListQueueFragment;
