@@ -1,6 +1,7 @@
 package com.noqapp.client.model.response.open;
 
 import com.noqapp.client.presenter.beans.JsonProfile;
+import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.body.Registration;
 import com.noqapp.client.presenter.beans.body.ReviewRating;
 
@@ -15,7 +16,7 @@ import retrofit2.http.POST;
  */
 public interface ReviewService {
     @POST("open/review/service.json")
-    Call<JsonProfile> review(
+    Call<JsonResponse> review(
             @Header("X-R-DID")
             String did,
 
@@ -27,7 +28,7 @@ public interface ReviewService {
     );
 
     @POST("open/review/historical/service.json")
-    Call<JsonProfile> reviewHistorical(
+    Call<JsonResponse> reviewHistorical(
             @Header("X-R-DID")
             String did,
 

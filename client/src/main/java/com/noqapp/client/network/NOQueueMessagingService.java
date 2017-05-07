@@ -50,7 +50,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                 pushNotification.putExtra("message", remoteMessage.getNotification().getBody());
                 pushNotification.putExtra("f", remoteMessage.getData().get("f"));
-//                pushNotification.putExtra("qrcode", remoteMessage.getData().get("c"));
+                pushNotification.putExtra("c", remoteMessage.getData().get("c"));
 //                pushNotification.putExtra("status", remoteMessage.getData().get("q"));
 //                pushNotification.putExtra("current_serving", remoteMessage.getData().get("cs"));
 //                pushNotification.putExtra("lastno", remoteMessage.getData().get("ln"));

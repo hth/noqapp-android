@@ -7,6 +7,7 @@ import com.noqapp.client.model.response.open.ReviewService;
 import com.noqapp.client.network.RetrofitClient;
 import com.noqapp.client.presenter.ProfilePresenter;
 import com.noqapp.client.presenter.beans.JsonProfile;
+import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.body.Registration;
 import com.noqapp.client.presenter.beans.body.ReviewRating;
 
@@ -36,11 +37,11 @@ public class ReviewModel {
      * @param reviewRating
      */
     public static void review(String did, ReviewRating reviewRating) {
-        reviewService.review(did, DEVICE_TYPE, reviewRating).enqueue(new Callback<JsonProfile>() {
+        reviewService.review(did, DEVICE_TYPE, reviewRating).enqueue(new Callback<JsonResponse>() {
             @Override
-            public void onResponse(Call<JsonProfile> call, Response<JsonProfile> response) {
+            public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
                 if (response.body() != null) {
-                    Log.d("Response", String.valueOf(response.body()));
+                    Log.d("Response Review", String.valueOf(response.body()));
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history");
@@ -48,7 +49,7 @@ public class ReviewModel {
             }
 
             @Override
-            public void onFailure(Call<JsonProfile> call, Throwable t) {
+            public void onFailure(Call<JsonResponse> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });
@@ -60,9 +61,9 @@ public class ReviewModel {
      * @param reviewRating
      */
     public static void reviewHistorical(String did, ReviewRating reviewRating) {
-        reviewService.reviewHistorical(did, DEVICE_TYPE, reviewRating).enqueue(new Callback<JsonProfile>() {
+        reviewService.reviewHistorical(did, DEVICE_TYPE, reviewRating).enqueue(new Callback<JsonResponse>() {
             @Override
-            public void onResponse(Call<JsonProfile> call, Response<JsonProfile> response) {
+            public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                 } else {
@@ -72,7 +73,7 @@ public class ReviewModel {
             }
 
             @Override
-            public void onFailure(Call<JsonProfile> call, Throwable t) {
+            public void onFailure(Call<JsonResponse> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });

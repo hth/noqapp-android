@@ -36,4 +36,11 @@ public class JsonResponse {
     public void setResponse(int response) {
         this.response = response;
     }
+
+    @Override
+    public String toString() {
+        return "JsonResponse{" +
+                "response=" + response +
+                '}';
+    }
 }

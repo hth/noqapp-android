@@ -139,6 +139,7 @@ public class NoQueueDB extends SQLiteAssetHelper {
         db = this.getReadableDatabase();
         List<JsonTokenAndQueue> listJsonQueue = new ArrayList<>();
         Cursor cursor = db.query(true, TABLE_TOKENQUEUE, null, null, null, null, null, COLUMN_CREATE_DATE, null);
+
         if (cursor != null && cursor.getCount() > 0) {
             try {
                 while (cursor.moveToNext()) {
@@ -165,6 +166,37 @@ public class NoQueueDB extends SQLiteAssetHelper {
         return listJsonQueue;
     }
 
+    public JsonTokenAndQueue getCurrentQueueObject(String codeQR) {
+        db = this.getReadableDatabase();
+        JsonTokenAndQueue tokenAndQueue=null;
+       // Cursor cursor = db.query(true, TABLE_TOKENQUEUE, new String[]{COLUMN_CODE_QR}, codeQR, null, null, null, null, null);
+      ///  Cursor cursor = db.query(true,TABLE_TOKENQUEUE, null, "codeqr=?", new String[] { codeQR }, null, null,COLUMN_CREATE_DATE, null);
+        Cursor cursor = db.query(true, TABLE_TOKENQUEUE, null, COLUMN_CODE_QR + "=?", new String []{ codeQR}, null, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            try {
+                while (cursor.moveToNext()) {
+                    tokenAndQueue = new JsonTokenAndQueue();
+                    tokenAndQueue.setCodeQR(cursor.getString(0));
+                    tokenAndQueue.setBusinessName(cursor.getString(1));
+                    tokenAndQueue.setDisplayName(cursor.getString(2));
+                    tokenAndQueue.setStoreAddress(cursor.getString(3));
+                    tokenAndQueue.setCountryShortName(cursor.getString(4));
+                    tokenAndQueue.setStorePhone(cursor.getString(5));
+                    tokenAndQueue.setTopic(cursor.getString(9));
+                    tokenAndQueue.setToken(cursor.getInt(12));
+                    tokenAndQueue.setServicedTime(cursor.getString(14));
+
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Parsing error reason=" + e.getLocalizedMessage(), e);
+            } finally {
+                if (!cursor.isClosed()) {
+                    cursor.close();
+                }
+            }
+        }
+        return tokenAndQueue;
+    }
     public List<JsonTokenAndQueue> getHistoryQueueList() {
         db = this.getReadableDatabase();
         String[] columns = new String[]{COLUMN_BUSINESS_NAME, COLUMN_CODE_QR, COLUMN_STORE_ADDRESS, COLUMN_STORE_PHONE, COLUMN_TOKEN};

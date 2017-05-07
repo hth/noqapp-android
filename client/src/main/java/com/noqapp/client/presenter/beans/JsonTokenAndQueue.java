@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.client.model.types.QueueStatusEnum;
 
+import java.io.Serializable;
+
 /**
  * User: hitender
  * Date: 4/1/17 3:23 PM
@@ -27,7 +29,7 @@ import com.noqapp.client.model.types.QueueStatusEnum;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonTokenAndQueue {
+public class JsonTokenAndQueue implements Serializable{
 
     @JsonProperty("c")
     private String codeQR;
