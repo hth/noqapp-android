@@ -79,6 +79,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
+    @JsonProperty ("st")
+    private String servicedTime;
+
     @JsonProperty("u")
     private String created;
 
@@ -138,6 +141,10 @@ public class JsonQueue implements Serializable {
         return queueStatus;
     }
 
+    public String getServicedTime() {
+        return servicedTime;
+    }
+
     public String getCreated() {
         return created;
     }
@@ -161,6 +168,7 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setServingNumber(servingNumber);
         jsonTokenAndQueue.setLastNumber(lastNumber);
         jsonTokenAndQueue.setQueueStatus(queueStatus);
+        jsonTokenAndQueue.setServicedTime(servicedTime);
         jsonTokenAndQueue.setCreateDate(created);
         return jsonTokenAndQueue;
     }

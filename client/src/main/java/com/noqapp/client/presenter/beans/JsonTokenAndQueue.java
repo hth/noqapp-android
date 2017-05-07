@@ -73,6 +73,9 @@ public class JsonTokenAndQueue {
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
+    @JsonProperty ("st")
+    private String servicedTime;
+
     @JsonProperty("u")
     private String createDate;
 
@@ -186,6 +189,14 @@ public class JsonTokenAndQueue {
 
     public void setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+    }
+
+    public String getServicedTime() {
+        return servicedTime;
+    }
+
+    public void setServicedTime(String servicedTime) {
+        this.servicedTime = servicedTime;
     }
 
     public String getCreateDate() {
