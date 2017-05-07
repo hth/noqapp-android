@@ -12,19 +12,19 @@ import android.widget.Button;
  * Created by chandra on 4/9/17.
  */
 
-public class CustomButton extends Button {
+public class ButtonRalewayRegular extends Button {
     private static final String TAG = "TextView";
 
-    public CustomButton(Context context) {
+    public ButtonRalewayRegular(Context context) {
         super(context);
     }
 
-    public CustomButton(Context context, AttributeSet attrs) {
+    public ButtonRalewayRegular(Context context, AttributeSet attrs) {
         super(context, attrs);
         setCustomFont(context, attrs);
     }
 
-    public CustomButton(Context context, AttributeSet attrs, int defStyle) {
+    public ButtonRalewayRegular(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setCustomFont(context, attrs);
     }

@@ -40,7 +40,7 @@
             android:maxLines="1"
             android:singleLine="true" />
 
-        <com.noqapp.merchant.views.customsviews.CustomButton
+        <com.noqapp.merchant.views.customsviews.ButtonRalewayRegular
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
