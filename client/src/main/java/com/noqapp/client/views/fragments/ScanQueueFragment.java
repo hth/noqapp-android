@@ -78,6 +78,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
     @Override
     public void onResume() {
         super.onResume();
+        if(!fromlist)// to not modify the actionbar if it is coming from list
         LaunchActivity.getLaunchActivity().setActionBarTitle("Home");
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
     }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.client.R;
+import com.noqapp.client.helper.PhoneFormatterUtil;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 
 import java.util.HashMap;
@@ -61,7 +62,8 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 		TextView txtToken = (TextView) convertView.findViewById(R.id.txtToken);
 		txtnumber.setText("#"+String.valueOf(childPosition));
 		txtStoreName.setText(queue.getBusinessName());
-		txtStorePhoneNumber.setText(queue.getStorePhone());
+		// show only for current queue not for history
+		txtStorePhoneNumber.setText(PhoneFormatterUtil.formatNumber(queue.getCountryShortName(),queue.getStorePhone()));
 		txtToken.setText(String.valueOf(queue.getToken()));
 		return convertView;
 	}

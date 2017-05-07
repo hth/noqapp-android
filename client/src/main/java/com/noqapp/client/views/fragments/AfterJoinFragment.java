@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.client.R;
+import com.noqapp.client.helper.PhoneFormatterUtil;
 import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.model.database.NoQueueDB;
@@ -71,10 +72,12 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             storePhone = bundle.getString(KEY_STOREPHONE);
             queueName = bundle.getString(KEY_QUEUENAME);
             address = bundle.getString(KEY_ADDRESS);
+            String countryshortname=bundle.getString(KEY_COUNTRY_SHORT_NAME,"US");
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
             tv_mobile.setText(storePhone);
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(countryshortname,storePhone));
             tv_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

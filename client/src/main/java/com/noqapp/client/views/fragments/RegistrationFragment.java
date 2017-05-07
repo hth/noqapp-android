@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import com.mukesh.countrypicker.fragments.CountryPicker;
 import com.mukesh.countrypicker.models.Country;
 import com.noqapp.client.R;
+import com.noqapp.client.helper.PhoneFormatterUtil;
 import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.presenter.MePresenter;
 import com.noqapp.client.presenter.beans.ErrorEncounteredJson;
@@ -108,7 +109,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         onClick(tv_male);
         Bundle bundle = getArguments();
         if (null != bundle) {
-            edt_phoneNo.setText(bundle.getString("mobile_no", ""));
+           // edt_phoneNo.setText(bundle.getString("mobile_no", ""));
             edt_phoneNo.setEnabled(false);
             Locale l1 = new Locale(Locale.getDefault().getLanguage(), bundle.getString("country_code", "US"));
             countryISO = AppUtilities.iso3CountryCodeToIso2CountryCode(l1.getISO3Country());
@@ -119,6 +120,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             edt_country_code.setText(country1.getCode());
             countryDialCode = country1.getDialCode();
             edt_country_code.setOnClickListener(null);
+            edt_phoneNo.setText(PhoneFormatterUtil.formatAsYouType(countryISO,bundle.getString("mobile_no", "0000000000")));
         } else {
             TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
             String countryCode = tm.getSimCountryIso();

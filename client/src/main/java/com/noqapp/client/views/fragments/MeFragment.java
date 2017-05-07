@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.noqapp.client.R;
+import com.noqapp.client.helper.PhoneFormatterUtil;
 import com.noqapp.client.views.activities.LaunchActivity;
 import com.noqapp.client.views.activities.NoQueueBaseActivity;
 
@@ -77,9 +78,10 @@ public class MeFragment extends NoQueueBaseFragment {
         int remoteScanCount = preferences.getInt(NoQueueBaseActivity.PREKEY_REMOTESCAN, 0);
         boolean isAutoScanAvail = preferences.getBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, false);
         inviteCode = preferences.getString(NoQueueBaseActivity.PREKEY_INVITECODE, "");
-
+        String countryname= preferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME,"US");
         tv_firstName.setText(name);
-        tv_phoneNo.setText(phone);
+        if(!phone.equals(""))
+        tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(countryname,phone));
         tv_scanCount.setText(String.valueOf(remoteScanCount));
         toggelAutoJoin.setChecked(isAutoScanAvail);
         toggelAutoJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
