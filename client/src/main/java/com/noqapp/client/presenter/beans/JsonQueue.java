@@ -47,6 +47,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("sa")
     private String storeAddress;
 
+    @JsonProperty ("cs")
+    private String countryShortName;
+
     @JsonProperty("p")
     private String storePhone;
 
@@ -93,6 +96,10 @@ public class JsonQueue implements Serializable {
 
     public String getStoreAddress() {
         return storeAddress;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
     }
 
     public String getStorePhone() {

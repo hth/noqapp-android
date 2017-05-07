@@ -41,6 +41,9 @@ public class JsonTokenAndQueue {
     @JsonProperty("sa")
     private String storeAddress;
 
+    @JsonProperty ("cs")
+    private String countryShortName;
+
     @JsonProperty("p")
     private String storePhone;
 
@@ -103,6 +106,14 @@ public class JsonTokenAndQueue {
 
     public void setStoreAddress(String storeAddress) {
         this.storeAddress = storeAddress;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
     }
 
     public String getStorePhone() {
@@ -189,6 +200,7 @@ public class JsonTokenAndQueue {
     public int afterHowLong() {
         return token - servingNumber;
     }
+
     @Override
     public String toString() {
         return "JsonTokenAndQueue{" +
