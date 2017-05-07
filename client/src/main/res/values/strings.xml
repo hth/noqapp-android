@@ -69,6 +69,18 @@
     <string name="people_in_queue">People in queue</string>
 
 
+
+
+    <!--- Review Screen -->
+    <string name="radio_save_30min">Saved 30 min </string>
+    <string name="radio_save_1hr">Saved 1 hour </string>
+    <string name="radio_save_2hr">Saved 2 hour </string>
+    <string name="radio_save_3hr">Saved 3 hour </string>
+    <string name="radio_save_4hr">Saved 4 hour </string>
+    <string name="submit">Review</string>
+
+
+
     <!-- Custom Fonts -->
     <string name="raleway_bold_font">fonts/roboto_regular.ttf</string>
     <string name="raleway_regular_font">fonts/roboto_regular.ttf</string>
