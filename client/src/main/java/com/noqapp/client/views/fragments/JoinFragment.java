@@ -76,7 +76,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
                 QueueModel.queuePresenter = this;
-                QueueModel.getQueueState(LaunchActivity.DID, codeQR);
+                QueueModel.getQueueState(LaunchActivity.getLaunchActivity().getUdid(), codeQR);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }

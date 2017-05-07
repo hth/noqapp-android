@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.noqapp.client.R;
 import com.noqapp.client.helper.NetworkHelper;
+import com.noqapp.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.client.network.NOQueueMessagingService;
 import com.noqapp.client.utils.Constants;
 import com.noqapp.client.views.fragments.AfterJoinFragment;
@@ -29,6 +31,7 @@ import com.noqapp.client.views.fragments.ListQueueFragment;
 import com.noqapp.client.views.fragments.LoginFragment;
 import com.noqapp.client.views.fragments.MeFragment;
 import com.noqapp.client.views.fragments.RegistrationFragment;
+import com.noqapp.client.views.fragments.ReviewFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
 
 import java.util.ArrayList;
@@ -43,7 +46,7 @@ import butterknife.ButterKnife;
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener {
 
 
-    public static final String DID = UUID.randomUUID().toString();
+
     private static LaunchActivity launchActivity;
     public NetworkHelper networkHelper;
     @BindView(R.id.rl_list)
@@ -90,6 +93,13 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
+        if(getUDID(this).equals("")){
+            setUDID(this,UUID.randomUUID().toString());
+            Log.v("device ID :",getUDID(this));
+        }else{
+            Log.v("device ID :",getUDID(this));
+        }
+
         ButterKnife.bind(this);
         launchActivity = this;
         networkHelper = new NetworkHelper(this);
@@ -108,6 +118,12 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
                     String message = intent.getStringExtra("message");
+                    String payload =intent.getStringExtra("f");
+                    Log.v("payload",payload);
+                    if(null!=payload && !payload.equals("")&& payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())){
+
+                        Toast.makeText(launchActivity, "Notification payload: "+payload, Toast.LENGTH_LONG).show();
+                    }else
                     Toast.makeText(launchActivity, "Notification : "+message, Toast.LENGTH_LONG).show();
 
                 }
@@ -156,6 +172,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 setCurrentSelectedTabTag(tabMe);
                 if(null==fragmentsStack.get(tabMe)) {
                     fragment = MeFragment.getInstance();
+                    //fragment = new ReviewFragment();
                     createStackForTab(tabMe);
                     addFragmentToStack(fragment);
                     replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
@@ -320,5 +337,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     public void enableDisableBack(boolean isShown){
         actionbarBack.setVisibility(isShown?View.VISIBLE:View.INVISIBLE);
+    }
+
+    public  String getUdid(){
+        return getUDID(this);
     }
 }

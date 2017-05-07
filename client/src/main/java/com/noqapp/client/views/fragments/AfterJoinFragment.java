@@ -156,7 +156,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             LaunchActivity.getLaunchActivity().progressDialog.show();
             QueueModel.responsePresenter = this;
-            QueueModel.abortQueue(LaunchActivity.DID, codeQR);
+            QueueModel.abortQueue(LaunchActivity.getLaunchActivity().getUdid(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -171,7 +171,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         if (codeQR != null) {
             Log.d("code qr ::", codeQR);
             QueueModel.tokenPresenter = this;
-            QueueModel.joinQueue(LaunchActivity.DID, codeQR);
+            QueueModel.joinQueue(LaunchActivity.getLaunchActivity().getUdid(), codeQR);
         }
     }
     @Override

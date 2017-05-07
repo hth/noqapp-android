@@ -67,7 +67,7 @@ public class ReviewFragment extends NoQueueBaseFragment {
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Review");
-        LaunchActivity.getLaunchActivity().enableDisableBack(true);
+        LaunchActivity.getLaunchActivity().enableDisableBack(false);
     }
 
 }

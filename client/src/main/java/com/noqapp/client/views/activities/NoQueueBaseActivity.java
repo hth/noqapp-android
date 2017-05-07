@@ -22,7 +22,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_AUTOJOIN = "autojoin";
     public static final String PREKEY_INVITECODE = "invitecode";
     public static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
-
+    public static final String PREKEY_UUID= "uuid";
     public static final int ACCOUNTKIT_REQUEST_CODE = 99;
 
     public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
@@ -41,5 +41,14 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return this;
     }
 
+    protected String getUDID(Activity activity){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        return  sharedPref.getString(PREKEY_UUID, "");
+    }
 
+    protected void setUDID(Activity activity,String udid){
+        SharedPreferences.Editor editor = getSharedprefEdit(activity);
+        editor.putString(PREKEY_UUID, udid);
+        editor.commit();
+    }
 }
