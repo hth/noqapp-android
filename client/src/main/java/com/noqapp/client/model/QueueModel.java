@@ -147,7 +147,7 @@ public final class QueueModel {
             public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
-                    tokenPresenter.queueResponse(response.body());
+                    tokenPresenter.tokenPresenterResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed to join queue");
@@ -157,7 +157,7 @@ public final class QueueModel {
             @Override
             public void onFailure(Call<JsonToken> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                tokenPresenter.queueError();
+                tokenPresenter.tokenPresenterError();
             }
         });
     }
@@ -174,7 +174,7 @@ public final class QueueModel {
             public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
-                    responsePresenter.queueResponse(response.body());
+                    responsePresenter.responsePresenterResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed abort queue");
@@ -184,7 +184,7 @@ public final class QueueModel {
             @Override
             public void onFailure(Call<JsonResponse> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                responsePresenter.queueError();
+                responsePresenter.responsePresenterError();
             }
         });
     }

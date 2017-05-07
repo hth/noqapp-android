@@ -9,15 +9,25 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/frame_scan"
+            android:visibility="gone"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            />
         <ExpandableListView
             android:id="@+id/lvExp"
+            android:layout_below="@+id/frame_scan"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:groupIndicator="@null"
             android:cacheColorHint="#00000000"
             android:visibility="gone"/>
-
+        </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_empty_screen"
             android:layout_width="match_parent"

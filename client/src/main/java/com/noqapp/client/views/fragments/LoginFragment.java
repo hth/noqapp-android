@@ -64,8 +64,6 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     @BindView(R.id.btn_login)
     Button btn_login;
 
-    @BindView(R.id.iv_close)
-    ImageView iv_close;
 
     private final int READ_AND_RECIEVE_SMS__PERMISSION_CODE = 101;
     private final String[] READ_AND_RECIEVE_SMS__PERMISSION_PERMS = {
@@ -102,19 +100,13 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         Country country = picker.getCountryByLocale(getActivity(), l);
         edt_country_code.setBackgroundResource(country.getFlag());
         countryDialCode = country.getDialCode();
-        iv_close.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 
     @OnClick(R.id.btn_login)
@@ -139,7 +131,12 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         if (requestCode == NoQueueBaseActivity.ACCOUNTKIT_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.d("FB accont res:: ", data.toString());
-                callLoginAPI();
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    callLoginAPI();
+                } else {
+                    ShowAlertInformation.showNetworkDialog(getActivity());
+                    LaunchActivity.getLaunchActivity().dismissProgress();
+                }
             } else {
                 LaunchActivity.getLaunchActivity().dismissProgress();
             }
@@ -255,8 +252,6 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
             // Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
             if (null != eej && eej.getSystemErrorCode().equals("412")) {
-                // pass mobile no and country code
-
                 Bundle b = new Bundle();
                 b.putString("mobile_no", edt_phoneNo.getText().toString());
                 b.putString("country_code", countryISO);

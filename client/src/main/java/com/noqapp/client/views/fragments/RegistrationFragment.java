@@ -68,8 +68,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     EditText tv_female;
     @BindView(R.id.ll_gender)
     LinearLayout ll_gender;
-    @BindView(R.id.iv_close)
-    ImageView iv_close;
+
 //color picker lib link -> https://github.com/madappstechnologies/country-picker-android
 
     private final String TAG = RegistrationFragment.class.getSimpleName();
@@ -135,18 +134,14 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             edt_country_code.setText(country.getCode());
             countryDialCode = country.getDialCode();
         }
-        iv_close.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        LaunchActivity.getLaunchActivity().enableDisableBack(true);
 
     }
 

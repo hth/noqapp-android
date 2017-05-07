@@ -52,7 +52,7 @@ public class LaunchActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
     private MerchantListFragment merchantListFragment;
     public Toolbar toolbar;
-
+    private ImageView actionbarBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +62,7 @@ public class LaunchActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         iv_logout = (ImageView) findViewById(R.id.iv_logout);
+        actionbarBack=(ImageView) findViewById(R.id.actionbarBack);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         initProgress();
         iv_logout.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +87,13 @@ public class LaunchActivity extends AppCompatActivity {
                             }
                         })
                         .show();
+            }
+        });
+
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
         if (isLoggedIn()) {
@@ -277,5 +285,9 @@ public class LaunchActivity extends AppCompatActivity {
     protected void onPause() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onPause();
+    }
+
+    public void enableDisableBack(boolean isShown){
+        actionbarBack.setVisibility(isShown?View.VISIBLE:View.INVISIBLE);
     }
 }

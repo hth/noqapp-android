@@ -1,42 +1,42 @@
-package com.noqapp.client.views.cutomviews;
+package com.noqapp.merchant.views.customsviews;
 
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.Button;
+
+import com.noqapp.merchant.R;
 
 
 /**
  * Created by chandra on 4/9/17.
  */
 
-public class CustomButton extends Button {
-    private static final String TAG = "TextView";
+public class TextViewRobotoRegular extends AppCompatTextView {
+    private static final String TAG = TextViewRobotoRegular.class.getName();
 
-    public CustomButton(Context context) {
+    public TextViewRobotoRegular(Context context) {
         super(context);
     }
 
-    public CustomButton(Context context, AttributeSet attrs) {
+    public TextViewRobotoRegular(Context context, AttributeSet attrs) {
         super(context, attrs);
         setCustomFont(context, attrs);
     }
 
-    public CustomButton(Context context, AttributeSet attrs, int defStyle) {
+    public TextViewRobotoRegular(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setCustomFont(context, attrs);
     }
 
     private void setCustomFont(Context ctx, AttributeSet attrs) {
-        String customFont = "fonts/raleway_regular.ttf";
-        setCustomFont(ctx, customFont);
-
+        setCustomFont(ctx, ctx.getString(R.string.roboto_regular_font));
     }
 
     public boolean setCustomFont(Context ctx, String asset) {
-        Typeface typeface = null;
+        Typeface typeface;
         try {
             typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {

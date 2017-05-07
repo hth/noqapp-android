@@ -1,19 +1,21 @@
-package com.noqapp.merchant.views.activities.customsviews;
+package com.noqapp.merchant.views.customsviews;
 
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.TextView;
+
+import com.noqapp.client.R;
 
 
 /**
  * Created by chandra on 4/9/17.
  */
 
-public class TextViewRobotoLight extends TextView {
-    private static final String TAG = "TextView";
+public class TextViewRobotoLight extends AppCompatTextView {
+    private static final String TAG = TextViewRobotoLight.class.getName();
 
     public TextViewRobotoLight(Context context) {
         super(context);
@@ -30,13 +32,11 @@ public class TextViewRobotoLight extends TextView {
     }
 
     private void setCustomFont(Context ctx, AttributeSet attrs) {
-        String customFont = "fonts/roboto_light.ttf";
-        setCustomFont(ctx, customFont);
-
+        setCustomFont(ctx, ctx.getString(R.string.roboto_light_font));
     }
 
     public boolean setCustomFont(Context ctx, String asset) {
-        Typeface typeface = null;
+        Typeface typeface;
         try {
             typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {

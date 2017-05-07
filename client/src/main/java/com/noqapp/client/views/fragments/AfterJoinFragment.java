@@ -88,12 +88,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 }
             });
             topic = bundle.getString(KEY_TOPIC);
-//            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    navigateToList();
-//                }
-//            });
             if(bundle.getBoolean(KEY_FROM_LIST,false)) {
                 tv_total_value.setText(bundle.getString(KEY_SERVING_NO));
                 tv_current_value.setText(bundle.getString(KEY_TOKEN));
@@ -111,14 +105,8 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     }
 
 
-
-//    @Override
-//    public void onBackPressed() {
-//        navigateToList();
-//    }
-
     @Override
-    public void queueResponse(JsonToken token) {
+    public void tokenPresenterResponse(JsonToken token) {
         Log.d(TAG, token.toString());
         this.mJsonToken = token;
         tv_total_value.setText(String.valueOf(String.valueOf(token.getServingNumber())));
@@ -129,7 +117,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     }
 
     @Override
-    public void queueResponse(JsonResponse response) {
+    public void responsePresenterResponse(JsonResponse response) {
         // To cancel
         if (null != response) {
             if (response.getResponse() == 1) {
@@ -149,9 +137,15 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     }
 
     @Override
-    public void queueError() {
-        Log.d(TAG, "Error");
+    public void responsePresenterError() {
+        Log.d(TAG, "responsePresenterError");
+        LaunchActivity.getLaunchActivity().dismissProgress();
+    }
 
+    @Override
+    public void tokenPresenterError() {
+
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @OnClick(R.id.btn_cancel_queue)
@@ -181,5 +175,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Details");
+        LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 }

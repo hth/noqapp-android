@@ -74,6 +74,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Queues");
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
+        LaunchActivity.getLaunchActivity().enableDisableBack(false);
 
     }
 

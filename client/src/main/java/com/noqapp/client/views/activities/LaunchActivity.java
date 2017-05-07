@@ -68,6 +68,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     protected Toolbar toolbar;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
+    @BindView(R.id.actionbarBack)
+    protected ImageView actionbarBack;
+
     private long lastPress;
     private Toast backpressToast;
     public ProgressDialog progressDialog;
@@ -93,6 +96,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         rl_home.setOnClickListener(this);
         rl_list.setOnClickListener(this);
         rl_me.setOnClickListener(this);
+        actionbarBack.setOnClickListener(this);
         iv_home.setBackgroundResource(R.mipmap.home_select);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
         initProgress();
@@ -161,6 +165,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 iv_me.setBackgroundResource(R.mipmap.me_select);
                 tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
+            case R.id.actionbarBack:
+                    onBackPressed();
+                break;
             default:
                 break;
 
@@ -186,25 +193,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
         tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
     }
-
-
-//    @Override
-//    public void onBackPressed() {
-//        FragmentManager fm = getSupportFragmentManager();
-//        if (fm.getBackStackEntryCount() == 0) {
-//            long currentTime = System.currentTimeMillis();
-//            if (currentTime - lastPress > 3000) {
-//                backpressToast = Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
-//                backpressToast.show();
-//                lastPress = currentTime;
-//            } else {
-//                if (backpressToast != null) backpressToast.cancel();
-//                super.onBackPressed();
-//            }
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -312,12 +300,25 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             fragmentTransaction.replace(R.id.frame_layout, fragment);
             fragmentTransaction.commit();
             if(currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())){
+                currentTabFragments.remove(currentTabFragments.size() - 1);
+                fragmentsStack.put(tabList,null);
                 onClick(rl_list);
             }
 
         } else {
-            // if it is the first screen then close application
-            finish();
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastPress > 3000) {
+                backpressToast = Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
+                backpressToast.show();
+                lastPress = currentTime;
+            } else {
+                if (backpressToast != null) backpressToast.cancel();
+                super.onBackPressed();
+            }
         }
+    }
+
+    public void enableDisableBack(boolean isShown){
+        actionbarBack.setVisibility(isShown?View.VISIBLE:View.INVISIBLE);
     }
 }

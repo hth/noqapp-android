@@ -1,42 +1,40 @@
-package com.noqapp.merchant.views.customsviews;
+package com.noqapp.client.views.cutomviews;
 
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.Button;
 
+import com.noqapp.client.R;
 
 /**
  * Created by chandra on 4/9/17.
  */
+public class ButtonRalewayRegular extends AppCompatButton {
+    private static final String TAG = ButtonRalewayRegular.class.getName();
 
-public class CustomButton extends Button {
-    private static final String TAG = "TextView";
-
-    public CustomButton(Context context) {
+    public ButtonRalewayRegular(Context context) {
         super(context);
     }
 
-    public CustomButton(Context context, AttributeSet attrs) {
+    public ButtonRalewayRegular(Context context, AttributeSet attrs) {
         super(context, attrs);
         setCustomFont(context, attrs);
     }
 
-    public CustomButton(Context context, AttributeSet attrs, int defStyle) {
+    public ButtonRalewayRegular(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setCustomFont(context, attrs);
     }
 
     private void setCustomFont(Context ctx, AttributeSet attrs) {
-        String customFont = "fonts/raleway_regular.ttf";
-        setCustomFont(ctx, customFont);
-
+        setCustomFont(ctx, ctx.getString(R.string.raleway_regular_font));
     }
 
     public boolean setCustomFont(Context ctx, String asset) {
-        Typeface typeface = null;
+        Typeface typeface;
         try {
             typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {

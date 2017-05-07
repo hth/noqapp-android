@@ -51,19 +51,13 @@ public class InviteDetailFragment extends NoQueueBaseFragment {
             tv_details.setText("");
         }
 
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//
-//            }
-//        });
         return view;
     }
     @Override
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Invite Details");
+        LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 
 }

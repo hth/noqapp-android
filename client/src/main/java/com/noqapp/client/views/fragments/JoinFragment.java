@@ -1,6 +1,5 @@
 package com.noqapp.client.views.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.noqapp.client.R;
 import com.noqapp.client.helper.ShowAlertInformation;
@@ -16,9 +14,7 @@ import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.QueuePresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.utils.AppUtilities;
-import com.noqapp.client.utils.Constants;
 import com.noqapp.client.utils.Formatter;
-import com.noqapp.client.views.activities.JoinQueueActivity;
 import com.noqapp.client.views.activities.LaunchActivity;
 
 import butterknife.BindView;
@@ -76,9 +72,13 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         Bundle bundle = getArguments();
         if (null != bundle) {
             codeQR = bundle.getString(KEY_CODEQR);
-            LaunchActivity.getLaunchActivity().progressDialog.show();
-            QueueModel.queuePresenter = JoinFragment.this;
-            QueueModel.getQueueState(LaunchActivity.DID, codeQR);
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                LaunchActivity.getLaunchActivity().progressDialog.show();
+                QueueModel.queuePresenter = this;
+                QueueModel.getQueueState(LaunchActivity.DID, codeQR);
+            } else {
+                ShowAlertInformation.showNetworkDialog(getActivity());
+            }
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 frtag = LaunchActivity.tabList;
             } else {
@@ -94,11 +94,13 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Join");
+        LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 
     @Override
     public void queueError() {
         Log.d("Queue=", "Error");
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
@@ -117,16 +119,6 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
 
     @OnClick(R.id.btn_joinqueue)
     public void joinQueue() {
-
-//            Intent intent = new Intent(getActivity(), JoinQueueActivity.class);
-//            intent.putExtra(KEY_CODEQR, this.jsonQueue.getCodeQR());
-//            intent.putExtra(KEY_DISPLAYNAME, this.jsonQueue.getBusinessName());
-//            intent.putExtra(KEY_STOREPHONE, this.jsonQueue.getStorePhone());
-//            intent.putExtra(KEY_QUEUENAME, this.jsonQueue.getDisplayName());
-//            intent.putExtra(KEY_ADDRESS, this.jsonQueue.getStoreAddress());
-//            intent.putExtra(KEY_TOPIC, this.jsonQueue.getTopic());
-//            getActivity().startActivityForResult(intent, Constants.requestCodeJoinQActivity);
-
         Bundle b = new Bundle();
         b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
         b.putString(KEY_DISPLAYNAME, jsonQueue.getBusinessName());
@@ -139,8 +131,6 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         AfterJoinFragment ajf = new AfterJoinFragment();
         ajf.setArguments(b);
         replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, frtag);
-
-
     }
 
 
