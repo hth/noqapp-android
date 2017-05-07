@@ -45,8 +45,6 @@ import butterknife.ButterKnife;
 
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener {
 
-
-
     private static LaunchActivity launchActivity;
     public NetworkHelper networkHelper;
     @BindView(R.id.rl_list)
@@ -93,12 +91,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-        if(getUDID(this).equals("")){
-            setUDID(this,UUID.randomUUID().toString());
-            Log.v("device ID :",getUDID(this));
-        }else{
-            Log.v("device ID :",getUDID(this));
-        }
+
+
 
         ButterKnife.bind(this);
         launchActivity = this;
@@ -339,7 +333,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         actionbarBack.setVisibility(isShown?View.VISIBLE:View.INVISIBLE);
     }
 
-    public  String getUdid(){
-        return getUDID(this);
+    public static String getUdid(){
+        return getUDID(launchActivity);
     }
+
+
+
 }
