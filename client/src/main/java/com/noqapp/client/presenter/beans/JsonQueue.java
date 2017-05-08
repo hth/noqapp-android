@@ -47,6 +47,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("sa")
     private String storeAddress;
 
+    @JsonProperty ("cs")
+    private String countryShortName;
+
     @JsonProperty("p")
     private String storePhone;
 
@@ -76,6 +79,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
+    @JsonProperty ("st")
+    private String servicedTime;
+
     @JsonProperty("u")
     private String created;
 
@@ -93,6 +99,10 @@ public class JsonQueue implements Serializable {
 
     public String getStoreAddress() {
         return storeAddress;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
     }
 
     public String getStorePhone() {
@@ -131,6 +141,10 @@ public class JsonQueue implements Serializable {
         return queueStatus;
     }
 
+    public String getServicedTime() {
+        return servicedTime;
+    }
+
     public String getCreated() {
         return created;
     }
@@ -154,6 +168,7 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setServingNumber(servingNumber);
         jsonTokenAndQueue.setLastNumber(lastNumber);
         jsonTokenAndQueue.setQueueStatus(queueStatus);
+        jsonTokenAndQueue.setServicedTime(servicedTime);
         jsonTokenAndQueue.setCreateDate(created);
         return jsonTokenAndQueue;
     }

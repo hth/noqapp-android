@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.noqapp.client.R;
+import com.noqapp.client.helper.PhoneFormatterUtil;
 import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.QueuePresenter;
@@ -75,7 +76,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
                 QueueModel.queuePresenter = this;
-                QueueModel.getQueueState(LaunchActivity.DID, codeQR);
+                QueueModel.getQueueState(LaunchActivity.getLaunchActivity().getUdid(), codeQR);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
@@ -111,7 +112,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_store_name.setText(jsonQueue.getBusinessName());
         tv_queue_name.setText(jsonQueue.getDisplayName());
         tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
-        tv_mobile.setText(jsonQueue.getStorePhone());
+        tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(),jsonQueue.getStorePhone()));
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getLastNumber()));
         codeQR = jsonQueue.getCodeQR();
@@ -126,6 +127,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         b.putString(KEY_QUEUENAME, jsonQueue.getDisplayName());
         b.putString(KEY_ADDRESS, jsonQueue.getStoreAddress());
         b.putString(KEY_TOPIC, jsonQueue.getTopic());
+        b.putString(KEY_COUNTRY_SHORT_NAME, jsonQueue.getCountryShortName());
         b.putBoolean(KEY_FROM_LIST, false);
         b.putString(KEY_SERVING_NO, String.valueOf(jsonQueue.getServingNumber()));
         AfterJoinFragment ajf = new AfterJoinFragment();

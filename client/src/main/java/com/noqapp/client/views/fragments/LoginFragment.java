@@ -12,7 +12,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +32,7 @@ import com.mukesh.countrypicker.fragments.CountryPicker;
 import com.mukesh.countrypicker.interfaces.CountryPickerListener;
 import com.mukesh.countrypicker.models.Country;
 import com.noqapp.client.R;
+import com.noqapp.client.helper.PhoneFormatterUtil;
 import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.RegisterModel;
 import com.noqapp.client.presenter.ProfilePresenter;
@@ -100,6 +103,9 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         Country country = picker.getCountryByLocale(getActivity(), l);
         edt_country_code.setBackgroundResource(country.getFlag());
         countryDialCode = country.getDialCode();
+
+        edt_phoneNo.addTextChangedListener(tw);
+
         return view;
     }
 
@@ -245,6 +251,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
             editor.putInt(NoQueueBaseActivity.PREKEY_REMOTESCAN, profile.getRemoteScanAvailable());
             editor.putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, true);
             editor.putString(NoQueueBaseActivity.PREKEY_INVITECODE, profile.getInviteCode());
+            editor.putString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
             editor.commit();
             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
             LaunchActivity.getLaunchActivity().dismissProgress();
@@ -268,4 +275,23 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     public void queueError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
+
+   TextWatcher tw = new TextWatcher(){
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+        int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before,
+        int count) {
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+            if(!s.equals("") ) {
+                edt_phoneNo.removeTextChangedListener(tw);
+                edt_phoneNo.setText(PhoneFormatterUtil.formatAsYouType(countryISO,s.toString()));
+                edt_phoneNo.setSelection(edt_phoneNo.getText().length());//added to put the cursor at end
+                edt_phoneNo.addTextChangedListener(tw);
+            }
+        }};
 }

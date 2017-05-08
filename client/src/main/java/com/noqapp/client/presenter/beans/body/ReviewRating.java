@@ -1,4 +1,4 @@
-package com.noqapp.client.presenter.beans;
+package com.noqapp.client.presenter.beans.body;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -7,9 +7,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * User: hitender
- * Date: 4/1/17 4:21 PM
+ * Date: 5/7/17 12:54 PM
  */
-
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
@@ -24,23 +23,27 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonResponse {
 
-    @JsonProperty("r")
-    private int response;
+public class ReviewRating {
+    @JsonProperty("ra")
+    private String ratingCount;
 
-    public int getResponse() {
-        return response;
+    @JsonProperty("hr")
+    private String hoursSaved;
+
+    public String getRatingCount() {
+        return ratingCount;
     }
 
-    public void setResponse(int response) {
-        this.response = response;
+    public void setRatingCount(String ratingCount) {
+        this.ratingCount = ratingCount;
     }
 
-    @Override
-    public String toString() {
-        return "JsonResponse{" +
-                "response=" + response +
-                '}';
+    public String getHoursSaved() {
+        return hoursSaved;
+    }
+
+    public void setHoursSaved(String hoursSaved) {
+        this.hoursSaved = hoursSaved;
     }
 }

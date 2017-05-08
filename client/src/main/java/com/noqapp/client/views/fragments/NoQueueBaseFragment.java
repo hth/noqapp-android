@@ -29,6 +29,7 @@ public class NoQueueBaseFragment extends Fragment {
     protected final String KEY_SERVING_NO = "servingno";
     protected final String KEY_TOKEN = "token";
     protected final String KEY_HOW_LONG = "howlong";
+    protected final String KEY_COUNTRY_SHORT_NAME = "countryshortname";
 
 
     @Override

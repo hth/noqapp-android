@@ -31,9 +31,10 @@ public class PhoneFormatterUtil {
         }
     }
 
-    public static String formatAsYouType(String countryShortName, char singleDigit) {
+    public static String formatAsYouType(String countryShortName, String singleDigit) {
         AsYouTypeFormatter formatter = phoneUtil.getAsYouTypeFormatter(countryShortName);
-        return formatter.inputDigit(singleDigit);
+        //return formatter.inputDigit(singleDigit);
+        return singleDigit;
     }
 
     public static String formatNumber(String countryShortName, String rawPhoneNumber) {

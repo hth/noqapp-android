@@ -67,7 +67,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     public void callQueue() {
         LaunchActivity.getLaunchActivity().progressDialog.show();
         QueueModel.tokenAndQueuePresenter = this;
-        QueueModel.getAllJoinedQueue(LaunchActivity.DID);
+        QueueModel.getAllJoinedQueue(LaunchActivity.getLaunchActivity().getUdid());
         isCurrentQueueCall = true;
     }
 
@@ -257,6 +257,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
                     b.putString(KEY_SERVING_NO,String.valueOf(jsonQueue.getServingNumber()));
                     b.putString(KEY_TOKEN,String.valueOf(jsonQueue.getToken()));
                     b.putString(KEY_HOW_LONG,String.valueOf(jsonQueue.afterHowLong()));
+                    b.putString(KEY_COUNTRY_SHORT_NAME, jsonQueue.getCountryShortName());
                     AfterJoinFragment ajf = new AfterJoinFragment();
                     ajf.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG,LaunchActivity.tabList);

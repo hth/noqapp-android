@@ -31,6 +31,7 @@ public class NoQueueDB extends SQLiteAssetHelper {
     private static final String COLUMN_BUSINESS_NAME = "bussinessname";
     private static final String COLUMN_DISPLAY_NAME = "displayname";
     private static final String COLUMN_STORE_ADDRESS = "storeaddress";
+    private static final String COLUMN_COUNTRY_SHORT_NAME = "countryShortName";
     private static final String COLUMN_STORE_PHONE = "storephone";
     private static final String COLUMN_TOKEN_AVAILABLE_FROM = "tokenavailablefrom";
     private static final String COLUMN_START_HOUR = "starthour";
@@ -40,6 +41,7 @@ public class NoQueueDB extends SQLiteAssetHelper {
     private static final String COLUMN_LAST_NUMBER = "lastnumber";
     private static final String COLUMN_TOKEN = "token";
     private static final String COLUMN_QUEUE_STATUS = "queuestatus";
+    private static final String COLUMN_SERVICED_TIME = "servicedTime";
     private static final String COLUMN_CREATE_DATE = "createdate";
 
     // History Token queue
@@ -62,6 +64,7 @@ public class NoQueueDB extends SQLiteAssetHelper {
             values.put(COLUMN_BUSINESS_NAME, tokenAndQueue.getBusinessName());
             values.put(COLUMN_DISPLAY_NAME, tokenAndQueue.getDisplayName());
             values.put(COLUMN_STORE_ADDRESS, tokenAndQueue.getStoreAddress());
+            values.put(COLUMN_COUNTRY_SHORT_NAME, tokenAndQueue.getCountryShortName());
             values.put(COLUMN_STORE_PHONE, tokenAndQueue.getStorePhone());
             values.put(COLUMN_TOKEN_AVAILABLE_FROM, tokenAndQueue.getTokenAvailableFrom());
             values.put(COLUMN_START_HOUR, tokenAndQueue.getStartHour());
@@ -75,6 +78,7 @@ public class NoQueueDB extends SQLiteAssetHelper {
 
             }
 
+            values.put(COLUMN_SERVICED_TIME, tokenAndQueue.getServicedTime());
             values.put(COLUMN_CREATE_DATE, tokenAndQueue.getCreateDate());
             try {
                 if (isCurrentQueueCall) {
@@ -135,6 +139,7 @@ public class NoQueueDB extends SQLiteAssetHelper {
         db = this.getReadableDatabase();
         List<JsonTokenAndQueue> listJsonQueue = new ArrayList<>();
         Cursor cursor = db.query(true, TABLE_TOKENQUEUE, null, null, null, null, null, COLUMN_CREATE_DATE, null);
+
         if (cursor != null && cursor.getCount() > 0) {
             try {
                 while (cursor.moveToNext()) {
@@ -143,9 +148,11 @@ public class NoQueueDB extends SQLiteAssetHelper {
                     tokenAndQueue.setBusinessName(cursor.getString(1));
                     tokenAndQueue.setDisplayName(cursor.getString(2));
                     tokenAndQueue.setStoreAddress(cursor.getString(3));
-                    tokenAndQueue.setStorePhone(cursor.getString(4));
-                    tokenAndQueue.setTopic(cursor.getString(8));
-                    tokenAndQueue.setToken(cursor.getInt(11));
+                    tokenAndQueue.setCountryShortName(cursor.getString(4));
+                    tokenAndQueue.setStorePhone(cursor.getString(5));
+                    tokenAndQueue.setTopic(cursor.getString(9));
+                    tokenAndQueue.setToken(cursor.getInt(12));
+                    tokenAndQueue.setServicedTime(cursor.getString(14));
                     listJsonQueue.add(tokenAndQueue);
                 }
             } catch (Exception e) {
@@ -159,6 +166,37 @@ public class NoQueueDB extends SQLiteAssetHelper {
         return listJsonQueue;
     }
 
+    public JsonTokenAndQueue getCurrentQueueObject(String codeQR) {
+        db = this.getReadableDatabase();
+        JsonTokenAndQueue tokenAndQueue=null;
+       // Cursor cursor = db.query(true, TABLE_TOKENQUEUE, new String[]{COLUMN_CODE_QR}, codeQR, null, null, null, null, null);
+      ///  Cursor cursor = db.query(true,TABLE_TOKENQUEUE, null, "codeqr=?", new String[] { codeQR }, null, null,COLUMN_CREATE_DATE, null);
+        Cursor cursor = db.query(true, TABLE_TOKENQUEUE, null, COLUMN_CODE_QR + "=?", new String []{ codeQR}, null, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            try {
+                while (cursor.moveToNext()) {
+                    tokenAndQueue = new JsonTokenAndQueue();
+                    tokenAndQueue.setCodeQR(cursor.getString(0));
+                    tokenAndQueue.setBusinessName(cursor.getString(1));
+                    tokenAndQueue.setDisplayName(cursor.getString(2));
+                    tokenAndQueue.setStoreAddress(cursor.getString(3));
+                    tokenAndQueue.setCountryShortName(cursor.getString(4));
+                    tokenAndQueue.setStorePhone(cursor.getString(5));
+                    tokenAndQueue.setTopic(cursor.getString(9));
+                    tokenAndQueue.setToken(cursor.getInt(12));
+                    tokenAndQueue.setServicedTime(cursor.getString(14));
+
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Parsing error reason=" + e.getLocalizedMessage(), e);
+            } finally {
+                if (!cursor.isClosed()) {
+                    cursor.close();
+                }
+            }
+        }
+        return tokenAndQueue;
+    }
     public List<JsonTokenAndQueue> getHistoryQueueList() {
         db = this.getReadableDatabase();
         String[] columns = new String[]{COLUMN_BUSINESS_NAME, COLUMN_CODE_QR, COLUMN_STORE_ADDRESS, COLUMN_STORE_PHONE, COLUMN_TOKEN};
@@ -179,11 +217,11 @@ public class NoQueueDB extends SQLiteAssetHelper {
                         tokenAndQueue.setBusinessName(cursor.getString(1));
                         tokenAndQueue.setDisplayName(cursor.getString(2));
                         tokenAndQueue.setStoreAddress(cursor.getString(3));
-                        tokenAndQueue.setStorePhone(cursor.getString(4));
-                        tokenAndQueue.setTopic(cursor.getString(8));
-                        tokenAndQueue.setToken(cursor.getInt(11));
+                        tokenAndQueue.setStorePhone(cursor.getString(5));
+                        tokenAndQueue.setTopic(cursor.getString(9));
+                        tokenAndQueue.setToken(cursor.getInt(12));
+                        tokenAndQueue.setServicedTime(cursor.getString(14));
                         listJsonQueue.add(tokenAndQueue);
-
                     }
                 } finally {
                     cursor.close();

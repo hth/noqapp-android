@@ -45,6 +45,7 @@
                 android:layout_weight=".5"
                 android:paddingLeft="@dimen/screen_padding"
                 android:paddingRight="@dimen/screen_padding"
+                android:text=""
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp"
 

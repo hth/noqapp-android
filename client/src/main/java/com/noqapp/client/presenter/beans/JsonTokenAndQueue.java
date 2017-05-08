@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.client.model.types.QueueStatusEnum;
 
+import java.io.Serializable;
+
 /**
  * User: hitender
  * Date: 4/1/17 3:23 PM
@@ -27,7 +29,7 @@ import com.noqapp.client.model.types.QueueStatusEnum;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonTokenAndQueue {
+public class JsonTokenAndQueue implements Serializable{
 
     @JsonProperty("c")
     private String codeQR;
@@ -40,6 +42,9 @@ public class JsonTokenAndQueue {
 
     @JsonProperty("sa")
     private String storeAddress;
+
+    @JsonProperty ("cs")
+    private String countryShortName;
 
     @JsonProperty("p")
     private String storePhone;
@@ -69,6 +74,9 @@ public class JsonTokenAndQueue {
 
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
+
+    @JsonProperty ("st")
+    private String servicedTime;
 
     @JsonProperty("u")
     private String createDate;
@@ -103,6 +111,14 @@ public class JsonTokenAndQueue {
 
     public void setStoreAddress(String storeAddress) {
         this.storeAddress = storeAddress;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
     }
 
     public String getStorePhone() {
@@ -177,6 +193,14 @@ public class JsonTokenAndQueue {
         this.queueStatus = queueStatus;
     }
 
+    public String getServicedTime() {
+        return servicedTime;
+    }
+
+    public void setServicedTime(String servicedTime) {
+        this.servicedTime = servicedTime;
+    }
+
     public String getCreateDate() {
         return createDate;
     }
@@ -189,6 +213,7 @@ public class JsonTokenAndQueue {
     public int afterHowLong() {
         return token - servingNumber;
     }
+
     @Override
     public String toString() {
         return "JsonTokenAndQueue{" +
