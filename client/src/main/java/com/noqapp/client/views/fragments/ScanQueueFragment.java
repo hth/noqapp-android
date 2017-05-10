@@ -38,11 +38,13 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
 
     @BindView(R.id.rl_empty)
     protected RelativeLayout rl_empty;
+
     @BindView(R.id.btnscanQRCode)
     protected Button btnscanQRCode;
 
-    private String currenttab="";
-    private boolean fromlist=false;
+    private String currentTab = "";
+    private boolean fromList = false;
+
     public ScanQueueFragment() {
 
     }
@@ -59,14 +61,14 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        currenttab=LaunchActivity.tabHome;
+        currentTab = LaunchActivity.tabHome;
         Bundle bundle = getArguments();
         if (null != bundle) {
-            if( bundle.getBoolean(KEY_FROM_LIST, false)){
+            if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 // don 't start the scanner
-                currenttab=LaunchActivity.tabList;
-                fromlist=true;
-            }else{
+                currentTab = LaunchActivity.tabList;
+                fromList = true;
+            } else {
                 startScanningBarcode();
             }
 
@@ -78,8 +80,8 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
     @Override
     public void onResume() {
         super.onResume();
-        if(!fromlist)// to not modify the actionbar if it is coming from list
-        LaunchActivity.getLaunchActivity().setActionBarTitle("Home");
+        if (!fromList)// to not modify the actionbar if it is coming from list
+            LaunchActivity.getLaunchActivity().setActionBarTitle("Home");
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
     }
 
@@ -96,36 +98,33 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
         }
     }
 
-
-
     @Override
     public void barcodeScannedResult(String rawData) {
         Log.v("Barcode vaue", rawData.toString());
         if (rawData == null) {
             Log.d("MainActivity", "Cancelled scan");
             Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
-
         } else {
             if (rawData.startsWith("https://tp.receiptofi.com")) {
                 String[] codeQR = rawData.split("/");
                 Bundle b = new Bundle();
                 b.putString(KEY_CODEQR, codeQR[3]);
-                b.putBoolean(KEY_FROM_LIST,fromlist);
+                b.putBoolean(KEY_FROM_LIST, fromList);
                 JoinFragment jf = new JoinFragment();
                 jf.setArguments(b);
-                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG,currenttab);
+                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, currentTab);
             } else {
-                Toast toast = Toast.makeText(getActivity(), "Not a valid QR-Code", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getActivity(), "Code scanned is not a NoQueue Code", Toast.LENGTH_SHORT);
                 toast.show();
-
             }
-
         }
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         //No call for super(). Bug on API Level > 11.
     }
+
     private void scanBarcode() {
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         DisplayMetrics dm = new DisplayMetrics();
