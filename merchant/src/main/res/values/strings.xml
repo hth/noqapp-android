@@ -22,8 +22,8 @@
 
 
     <!-- Custom Fonts -->
-    <string name="raleway_bold_font">fonts/roboto_regular.ttf</string>
-    <string name="raleway_regular_font">fonts/roboto_regular.ttf</string>
-    <string name="roboto_regular_font">fonts/roboto_regular.ttf</string>
+    <string name="raleway_bold_font">fonts/raleway_old.ttf</string>
+    <string name="raleway_regular_font">fonts/raleway_regular.ttf</string>
     <string name="roboto_light_font">fonts/roboto_light.ttf</string>
+    <string name="roboto_regular_font">fonts/roboto_regular.ttf</string>
 </resources>
