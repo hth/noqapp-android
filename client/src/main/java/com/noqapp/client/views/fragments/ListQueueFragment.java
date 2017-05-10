@@ -34,8 +34,6 @@ import java.util.List;
 
 public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQueuePresenter, Token_QueueViewInterface {
 
-
-
     private RelativeLayout rl_empty_screen;
     public static boolean isCurrentQueueCall = false;
     private String TAG = ListQueueFragment.class.getSimpleName();
@@ -123,7 +121,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
 
     @Override
     public void queueResponse(List<JsonTokenAndQueue> tokenAndQueues) {
-        Log.d(TAG, "Tokent and Queue Response::" + tokenAndQueues.size());
+        Log.d(TAG, "TokenAndQueues size=" + tokenAndQueues.size());
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.saveToken_Queue(tokenAndQueues, isCurrentQueueCall);
