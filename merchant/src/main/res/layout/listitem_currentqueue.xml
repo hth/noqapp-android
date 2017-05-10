@@ -30,7 +30,7 @@
         android:layout_weight="0.50"
         android:orientation="vertical"
         >
-        <com.noqapp.merchant.views.activities.customsviews.TextViewRobotoLight
+        <com.noqapp.merchant.views.customsviews.TextViewRobotoLight
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_queue_name"
@@ -43,7 +43,7 @@
             android:textColor="@color/color_list_subtitle"
             android:textSize="15sp"/>
     </LinearLayout>
-    <com.noqapp.merchant.views.activities.customsviews.TextViewRobotoLight
+    <com.noqapp.merchant.views.customsviews.TextViewRobotoLight
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:id="@+id/tv_inqueue"
