@@ -21,9 +21,9 @@
             <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
                 android:id="@+id/tv_store_name"
                 style="@style/style_join_queue_tv"
-                android:textColor="@color/colorActionbar"
                 android:layout_gravity="center_horizontal"
                 android:text="Costco"
+                android:textColor="@color/colorActionbar"
                 android:textSize="24sp" />
 
             <com.noqapp.client.views.cutomviews.TextViewRobotoRegular
@@ -31,8 +31,8 @@
                 style="@style/style_join_queue_tv"
                 android:layout_below="@+id/tv_store_name"
                 android:layout_gravity="center_horizontal"
-                android:text="Name"
                 android:layout_marginBottom="10dp"
+                android:text="Name"
                 android:textColor="@android:color/black"
                 android:textSize="15sp" />
 
@@ -43,40 +43,40 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
-                android:textColor="@color/colorAddress"
                 android:text="Location -Address is Vashi"
+                android:textColor="@color/colorAddress"
                 android:textSize="18sp" />
 
             <com.noqapp.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_mobile"
                 style="@style/style_join_queue_tv"
                 android:layout_below="@+id/tv_address"
-                android:textColor="@color/colorMobile"
-                android:layout_marginBottom="10dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
                 android:text="Date of service : Today"
+                android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
             <com.noqapp.client.views.cutomviews.TextViewRobotoLight
-                android:id="@+id/tv_ervice"
+                android:id="@+id/tv_service"
                 style="@style/style_join_queue_tv"
                 android:layout_below="@+id/tv_address"
                 android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorMobile"
                 android:layout_marginBottom="10dp"
                 android:text="How was your service?"
+                android:textColor="@color/colorMobile"
                 android:textSize="20sp" />
+
             <RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
-
-                android:progressDrawable="@drawable/ratingbar_selector"
                 android:numStars="5"
-                android:stepSize="1.0"
-                />
+                android:progressDrawable="@drawable/ratingbar_selector"
+                android:stepSize="1.0" />
+
             <com.noqapp.client.views.cutomviews.TextViewRobotoLight
 
                 style="@style/style_join_queue_tv"
@@ -84,66 +84,68 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
-                android:textColor="@color/colorAddress"
                 android:text="How much time did you saved ? "
+                android:textColor="@color/colorAddress"
                 android:textSize="18sp" />
+
             <RadioGroup
                 android:id="@+id/radioSave"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp">
 
                 <RadioButton
                     android:id="@+id/radio0min"
-                    android:button="@null"
-                    android:drawableRight="@drawable/radio_selector"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/radio_save_30min"
-                    android:checked="true" />
+                    android:button="@null"
+                    android:drawableRight="@drawable/radio_selector"
+                    android:text="@string/radio_save_30min" />
 
                 <RadioButton
                     android:id="@+id/radio1hr"
-                    android:button="@null"
-                    android:drawableRight="@drawable/radio_selector"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableRight="@drawable/radio_selector"
                     android:text="@string/radio_save_1hr" />
+
                 <RadioButton
                     android:id="@+id/radio2hr"
-                    android:button="@null"
-                    android:drawableRight="@drawable/radio_selector"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/radio_save_2hr"
-                    />
+                    android:button="@null"
+                    android:drawableRight="@drawable/radio_selector"
+                    android:text="@string/radio_save_2hr" />
 
                 <RadioButton
                     android:id="@+id/radio3hr"
-                    android:button="@null"
-                    android:drawableRight="@drawable/radio_selector"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableRight="@drawable/radio_selector"
                     android:text="@string/radio_save_3hr" />
+
                 <RadioButton
                     android:id="@+id/radio4hr"
-                    android:button="@null"
-                    android:drawableRight="@drawable/radio_selector"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/radio_save_4hr"
-                    />
-
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableRight="@drawable/radio_selector"
+                    android:text="@string/radio_save_4hr" />
 
 
             </RadioGroup>
+
             <com.noqapp.client.views.cutomviews.ButtonRalewayRegular
                 android:id="@+id/btn_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/button_drawable"
                 android:drawableLeft="@mipmap/join_button"
                 android:drawablePadding="5dp"
@@ -151,7 +153,6 @@
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
                 android:text="@string/submit"
-                android:layout_marginBottom="10dp"
                 android:textColor="@color/colorMobile"
                 android:textSize="15sp" />
         </LinearLayout>

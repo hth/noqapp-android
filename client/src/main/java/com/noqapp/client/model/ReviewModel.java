@@ -6,6 +6,7 @@ import com.noqapp.client.model.response.open.RegisterService;
 import com.noqapp.client.model.response.open.ReviewService;
 import com.noqapp.client.network.RetrofitClient;
 import com.noqapp.client.presenter.ProfilePresenter;
+import com.noqapp.client.presenter.ReviewPresenter;
 import com.noqapp.client.presenter.beans.JsonProfile;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.body.Registration;
@@ -26,7 +27,7 @@ public class ReviewModel {
     private static final String TAG = RegisterModel.class.getSimpleName();
 
     private static final ReviewService reviewService;
-
+    public static ReviewPresenter reviewPresenter;
     static {
         reviewService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(ReviewService.class);
     }
@@ -42,6 +43,7 @@ public class ReviewModel {
             public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
                 if (response.body() != null) {
                     Log.d("Response Review", String.valueOf(response.body()));
+                    reviewPresenter.reviewResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history");
@@ -51,6 +53,7 @@ public class ReviewModel {
             @Override
             public void onFailure(Call<JsonResponse> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
+                reviewPresenter.reviewError();
             }
         });
     }
