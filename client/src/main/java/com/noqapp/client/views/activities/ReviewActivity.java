@@ -93,7 +93,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         rr.setRatingCount(String.valueOf(ratingBar.getRating()));
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         ReviewModel.reviewPresenter = ReviewActivity.this;
-                        ReviewModel.review(LaunchActivity.getUdid(), rr);
+                        ReviewModel.review(UserUtils.getDeviceId(),rr);
                     } else {
                         ShowAlertInformation.showNetworkDialog(ReviewActivity.this);
                     }
