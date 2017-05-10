@@ -39,8 +39,8 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
     @BindView(R.id.rl_empty)
     protected RelativeLayout rl_empty;
 
-    @BindView(R.id.btnscanQRCode)
-    protected Button btnscanQRCode;
+    @BindView(R.id.btnScanQRCode)
+    protected Button btnScanQRCode;
 
     private String currentTab = "";
     private boolean fromList = false;
@@ -85,7 +85,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
     }
 
-    @OnClick(R.id.btnscanQRCode)
+    @OnClick(R.id.btnScanQRCode)
     public void scanQR() {
         startScanningBarcode();
     }
