@@ -17,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mukesh.countrypicker.fragments.CountryPicker;
@@ -52,6 +51,7 @@ import static com.noqapp.client.utils.AppUtilities.convertDOBToValidFormat;
  * A simple {@link Fragment} subclass.
  */
 public class RegistrationFragment extends NoQueueBaseFragment implements MeView, OnClickListener {
+    private final String TAG = RegistrationFragment.class.getSimpleName();
 
     @BindView(R.id.edt_phone)
     EditText edt_phoneNo;
@@ -72,7 +72,6 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
 
 //color picker lib link -> https://github.com/madappstechnologies/country-picker-android
 
-    private final String TAG = RegistrationFragment.class.getSimpleName();
     public String gender = "";
     private DatePickerDialog fromDatePickerDialog;
     private String countryDialCode;
@@ -109,7 +108,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         onClick(tv_male);
         Bundle bundle = getArguments();
         if (null != bundle) {
-           // edt_phoneNo.setText(bundle.getString("mobile_no", ""));
+            // edt_phoneNo.setText(bundle.getString("mobile_no", ""));
             edt_phoneNo.setEnabled(false);
             Locale l1 = new Locale(Locale.getDefault().getLanguage(), bundle.getString("country_code", "US"));
             countryISO = AppUtilities.iso3CountryCodeToIso2CountryCode(l1.getISO3Country());
@@ -120,7 +119,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             edt_country_code.setText(country1.getCode());
             countryDialCode = country1.getDialCode();
             edt_country_code.setOnClickListener(null);
-            edt_phoneNo.setText(PhoneFormatterUtil.formatAsYouType(countryISO,bundle.getString("mobile_no", "0000000000")));
+            edt_phoneNo.setText(PhoneFormatterUtil.formatAsYouType(countryISO, bundle.getString("mobile_no", "0000000000")));
         } else {
             TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
             String countryCode = tm.getSimCountryIso();
@@ -162,11 +161,9 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
 
     @Override
     public void queueResponse(JsonProfile profile) {
-
-
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedprefEdit(getActivity());
+            SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedPreferencesEditor(getActivity());
             editor.putString(NoQueueBaseActivity.PREKEY_PHONE, profile.getPhoneRaw());
             editor.putString(NoQueueBaseActivity.PREKEY_NAME, profile.getName());
             editor.putString(NoQueueBaseActivity.PREKEY_GENDER, profile.getGender());
@@ -248,24 +245,20 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         String mail = edt_Mail.getText().toString();
         String birthday = edt_birthday.getText().toString();
         TimeZone tz = TimeZone.getDefault();
-        System.out.println("TimeZone   " + tz.getDisplayName(false, TimeZone.SHORT) + " Timezon id :: " + tz.getID());
+        Log.d(TAG, "TimeZone=" + tz.getDisplayName(false, TimeZone.SHORT) + " TimezoneId=" + tz.getID());
 
-
-        Registration registrationbean = new Registration();
-        registrationbean.setPhone(phoneNo);
-        registrationbean.setFirstName(name);
-        registrationbean.setMail(mail);
-        registrationbean.setBirthday(convertDOBToValidFormat(birthday));
-        registrationbean.setGender(gender);
-        registrationbean.setTimeZoneId(tz.getID());
-        registrationbean.setCountryShortName(countryISO);
-        registrationbean.setInviteCode("");
+        Registration registration = new Registration();
+        registration.setPhone(phoneNo);
+        registration.setFirstName(name);
+        registration.setMail(mail);
+        registration.setBirthday(convertDOBToValidFormat(birthday));
+        registration.setGender(gender);
+        registration.setTimeZoneId(tz.getID());
+        registration.setCountryShortName(countryISO);
+        registration.setInviteCode("");
 
         MePresenter mePresenter = new MePresenter(getContext());
         mePresenter.meView = this;
-        mePresenter.callProfile(registrationbean);
-
-
+        mePresenter.callProfile(registration);
     }
-
 }
