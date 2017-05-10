@@ -23,8 +23,11 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, List<JsonTokenAndQueue>> listDataChild;
 
-    public ListQueueAdapter(Context context, List<String> listDataHeader,
-                            HashMap<String, List<JsonTokenAndQueue>> listChildData) {
+    public ListQueueAdapter(
+            Context context,
+            List<String> listDataHeader,
+            HashMap<String, List<JsonTokenAndQueue>> listChildData
+    ) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
