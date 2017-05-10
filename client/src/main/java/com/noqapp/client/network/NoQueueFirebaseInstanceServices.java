@@ -44,6 +44,7 @@ public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
 
     public static String createOrFindDeviceId() {
         if (DBUtils.countTables() > 0 && StringUtils.isNotBlank(KeyValueUtils.getValue(XR_DID))) {
+            /* Do not call UserUtils.getDeviceId() since it maps to this call. */
             deviceId = KeyValueUtils.getValue(XR_DID);
         } else {
             deviceId = UUID.randomUUID().toString();
