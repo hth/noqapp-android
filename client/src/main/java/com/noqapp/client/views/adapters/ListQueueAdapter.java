@@ -32,8 +32,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition))
-                .get(childPosititon);
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
     }
 
     @Override
@@ -42,19 +41,16 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
-
-
+    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         JsonTokenAndQueue queue = (JsonTokenAndQueue) getChild(groupPosition, childPosition);
 
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            if (groupPosition == 0)
-                convertView = infalInflater.inflate(R.layout.listitem_currentqueue, null);
-            else
-                convertView = infalInflater.inflate(R.layout.listitem_historyqueue, null);
+        if (null == convertView) {
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            if (groupPosition == 0) {
+                convertView = inflater.inflate(R.layout.listitem_currentqueue, null);
+            } else {
+                convertView = inflater.inflate(R.layout.listitem_historyqueue, null);
+            }
         }
         TextView txtnumber = (TextView) convertView.findViewById(R.id.txtNumber);
         TextView txtStoreName = (TextView) convertView.findViewById(R.id.txtStoreName);
@@ -70,8 +66,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition))
-                .size();
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).size();
     }
 
     @Override
@@ -94,19 +89,16 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             if (groupPosition == 0) {
-                convertView = infalInflater.inflate(R.layout.list_group_blank, null);
-
+                convertView = inflater.inflate(R.layout.list_group_blank, null);
             } else {
-                convertView = infalInflater.inflate(R.layout.list_group, null);
+                convertView = inflater.inflate(R.layout.list_group, null);
             }
         }
         if (groupPosition > 0) {
-            TextView lblListHeader = (TextView) convertView
-                    .findViewById(R.id.lblListHeader);
+            TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
             lblListHeader.setTypeface(null, Typeface.BOLD);
             lblListHeader.setText(headerTitle);
             ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
