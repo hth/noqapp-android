@@ -20,6 +20,7 @@ import com.noqapp.client.R;
 import com.noqapp.client.model.ReviewModel;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.beans.body.ReviewRating;
+import com.noqapp.client.utils.UserUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,7 +86,7 @@ public class ReviewActivity extends AppCompatActivity {
                 rr.setHoursSaved("1");
                 rr.setRatingCount("4");
 
-                ReviewModel.review(LaunchActivity.getUdid(),rr);
+                ReviewModel.review(UserUtils.getDeviceId(),rr);
 
             }
 

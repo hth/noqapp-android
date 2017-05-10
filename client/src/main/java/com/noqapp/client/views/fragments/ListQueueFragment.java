@@ -21,6 +21,7 @@ import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.beans.body.DeviceToken;
+import com.noqapp.client.utils.UserUtils;
 import com.noqapp.client.views.activities.LaunchActivity;
 import com.noqapp.client.views.adapters.ListQueueAdapter;
 import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
@@ -67,7 +68,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     public void callQueue() {
         LaunchActivity.getLaunchActivity().progressDialog.show();
         QueueModel.tokenAndQueuePresenter = this;
-        QueueModel.getAllJoinedQueue(LaunchActivity.getLaunchActivity().getUdid());
+        QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
         isCurrentQueueCall = true;
     }
 
