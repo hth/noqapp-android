@@ -19,22 +19,22 @@ public class DatabaseTable {
 
     public static class TokenQueue {
         public static final String TABLE_NAME = "TOKEN_QUEUE";
-        public static final String CODE_QR = "codeqr";
-        public static final String BUSINESS_NAME = "bussinessname";
-        public static final String DISPLAY_NAME = "displayname";
-        public static final String STORE_ADDRESS = "storeaddress";
+        public static final String CODE_QR = "codeQR";
+        public static final String BUSINESS_NAME = "businessName";
+        public static final String DISPLAY_NAME = "displayName";
+        public static final String STORE_ADDRESS = "storeAddress";
         public static final String COUNTRY_SHORT_NAME = "countryShortName";
-        public static final String STORE_PHONE = "storephone";
-        public static final String TOKEN_AVAILABLE_FROM = "tokenavailablefrom";
-        public static final String START_HOUR = "starthour";
-        public static final String END_HOUR = "endhour";
+        public static final String STORE_PHONE = "storePhone";
+        public static final String TOKEN_AVAILABLE_FROM = "tokenAvailableFrom";
+        public static final String START_HOUR = "startHour";
+        public static final String END_HOUR = "endHour";
         public static final String TOPIC = "topic";
-        public static final String SERVING_NUMBER = "servingnumber";
-        public static final String LAST_NUMBER = "lastnumber";
+        public static final String SERVING_NUMBER = "servingNumber";
+        public static final String LAST_NUMBER = "lastNumber";
         public static final String TOKEN = "token";
-        public static final String QUEUE_STATUS = "queuestatus";
+        public static final String QUEUE_STATUS = "queueStatus";
         public static final String SERVICED_TIME = "servicedTime";
-        public static final String CREATE_DATE = "createdate";
+        public static final String CREATE_DATE = "createDate";
 
         private TokenQueue () {
         }
