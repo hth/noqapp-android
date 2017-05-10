@@ -31,32 +31,32 @@ public class NoQueueDB {
 
             String tempTableName;
             ContentValues values = new ContentValues();
-            values.put(TokenQueue.COLUMN_CODE_QR, tokenAndQueue.getCodeQR());
-            values.put(TokenQueue.COLUMN_BUSINESS_NAME, tokenAndQueue.getBusinessName());
-            values.put(TokenQueue.COLUMN_DISPLAY_NAME, tokenAndQueue.getDisplayName());
-            values.put(TokenQueue.COLUMN_STORE_ADDRESS, tokenAndQueue.getStoreAddress());
-            values.put(TokenQueue.COLUMN_COUNTRY_SHORT_NAME, tokenAndQueue.getCountryShortName());
-            values.put(TokenQueue.COLUMN_STORE_PHONE, tokenAndQueue.getStorePhone());
-            values.put(TokenQueue.COLUMN_TOKEN_AVAILABLE_FROM, tokenAndQueue.getTokenAvailableFrom());
-            values.put(TokenQueue.COLUMN_START_HOUR, tokenAndQueue.getStartHour());
-            values.put(TokenQueue.COLUMN_END_HOUR, tokenAndQueue.getEndHour());
-            values.put(TokenQueue.COLUMN_TOPIC, tokenAndQueue.getTopic());
-            values.put(TokenQueue.COLUMN_SERVING_NUMBER, tokenAndQueue.getServingNumber());
-            values.put(TokenQueue.COLUMN_LAST_NUMBER, tokenAndQueue.getLastNumber());
-            values.put(TokenQueue.COLUMN_TOKEN, tokenAndQueue.getToken());
+            values.put(TokenQueue.CODE_QR, tokenAndQueue.getCodeQR());
+            values.put(TokenQueue.BUSINESS_NAME, tokenAndQueue.getBusinessName());
+            values.put(TokenQueue.DISPLAY_NAME, tokenAndQueue.getDisplayName());
+            values.put(TokenQueue.STORE_ADDRESS, tokenAndQueue.getStoreAddress());
+            values.put(TokenQueue.COUNTRY_SHORT_NAME, tokenAndQueue.getCountryShortName());
+            values.put(TokenQueue.STORE_PHONE, tokenAndQueue.getStorePhone());
+            values.put(TokenQueue.TOKEN_AVAILABLE_FROM, tokenAndQueue.getTokenAvailableFrom());
+            values.put(TokenQueue.START_HOUR, tokenAndQueue.getStartHour());
+            values.put(TokenQueue.END_HOUR, tokenAndQueue.getEndHour());
+            values.put(TokenQueue.TOPIC, tokenAndQueue.getTopic());
+            values.put(TokenQueue.SERVING_NUMBER, tokenAndQueue.getServingNumber());
+            values.put(TokenQueue.LAST_NUMBER, tokenAndQueue.getLastNumber());
+            values.put(TokenQueue.TOKEN, tokenAndQueue.getToken());
             if (null != tokenAndQueue.getQueueStatus()) {
-                values.put(TokenQueue.COLUMN_QUEUE_STATUS, tokenAndQueue.getQueueStatus().getName());
+                values.put(TokenQueue.QUEUE_STATUS, tokenAndQueue.getQueueStatus().getName());
             }
 
-            values.put(TokenQueue.COLUMN_SERVICED_TIME, tokenAndQueue.getServicedTime());
-            values.put(TokenQueue.COLUMN_CREATE_DATE, tokenAndQueue.getCreateDate());
+            values.put(TokenQueue.SERVICED_TIME, tokenAndQueue.getServicedTime());
+            values.put(TokenQueue.CREATE_DATE, tokenAndQueue.getCreateDate());
             try {
                 if (isCurrentQueueCall) {
                     tempTableName = TokenQueue.TABLE_NAME;
 //                    if (isTokenExist(tempTableName,tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate())) {
-//                        String wherClause = COLUMN_CODE_QR+" = ?"+" AND "+COLUMN_CREATE_DATE+" = ?";
-//                        values.remove(COLUMN_CODE_QR);
-//                        values.remove(COLUMN_CREATE_DATE);
+//                        String wherClause = CODE_QR+" = ?"+" AND "+CREATE_DATE+" = ?";
+//                        values.remove(CODE_QR);
+//                        values.remove(CREATE_DATE);
 //
 //                        db.update(tempTableName,values,wherClause,new String[]{tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate()});
 //                    } else {
@@ -67,9 +67,9 @@ public class NoQueueDB {
                 } else {
                     tempTableName = TokenQueueHistory.TABLE_NAME;
 //                    if (isTokenExist(tempTableName,tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate())) {
-//                        String wherClause = COLUMN_CODE_QR+" = ?"+" AND "+COLUMN_CREATE_DATE+" = ?";
-//                        values.remove(COLUMN_CODE_QR);
-//                        values.remove(COLUMN_CREATE_DATE);
+//                        String wherClause = CODE_QR+" = ?"+" AND "+CREATE_DATE+" = ?";
+//                        values.remove(CODE_QR);
+//                        values.remove(CREATE_DATE);
 //                        db.update(tempTableName,values,wherClause,new String[]{tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate()});
 //                    } else {
 //                        msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
@@ -92,7 +92,7 @@ public class NoQueueDB {
     }
 
     public boolean isTokenExist(String table_name, String qrcode, String date) {
-        String whereClause = TokenQueue.COLUMN_CODE_QR + " = ?" + " AND " + TokenQueue.COLUMN_CREATE_DATE + " = ?";
+        String whereClause = TokenQueue.CODE_QR + " = ?" + " AND " + TokenQueue.CREATE_DATE + " = ?";
         return DatabaseUtils.longForQuery(
                 RDH.getDb(),
                 "SELECT COUNT(*) FROM " + table_name + " WHERE " + whereClause,
@@ -106,7 +106,7 @@ public class NoQueueDB {
 
     public static List<JsonTokenAndQueue> getCurrentQueueList() {
         List<JsonTokenAndQueue> listJsonQueue = new ArrayList<>();
-        Cursor cursor = RDH.getReadableDatabase().query(true, TokenQueue.TABLE_NAME, null, null, null, null, null, TokenQueue.COLUMN_CREATE_DATE, null);
+        Cursor cursor = RDH.getReadableDatabase().query(true, TokenQueue.TABLE_NAME, null, null, null, null, null, TokenQueue.CREATE_DATE, null);
 
         if (cursor != null && cursor.getCount() > 0) {
             try {
@@ -136,9 +136,9 @@ public class NoQueueDB {
 
     public static JsonTokenAndQueue getCurrentQueueObject(String codeQR) {
         JsonTokenAndQueue tokenAndQueue = null;
-        // Cursor cursor = db.query(true, TABLE_TOKENQUEUE, new String[]{COLUMN_CODE_QR}, codeQR, null, null, null, null, null);
-        ///  Cursor cursor = db.query(true,TABLE_TOKENQUEUE, null, "codeqr=?", new String[] { codeQR }, null, null,COLUMN_CREATE_DATE, null);
-        Cursor cursor = RDH.getReadableDatabase().query(true, TokenQueue.TABLE_NAME, null, TokenQueue.COLUMN_CODE_QR + "=?", new String[]{codeQR}, null, null, null, null);
+        // Cursor cursor = db.query(true, TABLE_TOKENQUEUE, new String[]{CODE_QR}, codeQR, null, null, null, null, null);
+        ///  Cursor cursor = db.query(true,TABLE_TOKENQUEUE, null, "codeqr=?", new String[] { codeQR }, null, null,CREATE_DATE, null);
+        Cursor cursor = RDH.getReadableDatabase().query(true, TokenQueue.TABLE_NAME, null, TokenQueue.CODE_QR + "=?", new String[]{codeQR}, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             try {
                 while (cursor.moveToNext()) {
@@ -166,10 +166,10 @@ public class NoQueueDB {
     }
 
     public static List<JsonTokenAndQueue> getHistoryQueueList() {
-        String[] columns = new String[]{TokenQueue.COLUMN_BUSINESS_NAME, TokenQueue.COLUMN_CODE_QR, TokenQueue.COLUMN_STORE_ADDRESS, TokenQueue.COLUMN_STORE_PHONE, TokenQueue.COLUMN_TOKEN};
-        String whereClause = TokenQueue.COLUMN_CODE_QR + " = ? and " + TokenQueue.COLUMN_CREATE_DATE + " = ?";
+        String[] columns = new String[]{TokenQueue.BUSINESS_NAME, TokenQueue.CODE_QR, TokenQueue.STORE_ADDRESS, TokenQueue.STORE_PHONE, TokenQueue.TOKEN};
+        String whereClause = TokenQueue.CODE_QR + " = ? and " + TokenQueue.CREATE_DATE + " = ?";
         //String [] selectionArgs = new String[] {codeQR,dateTime};
-        String orderBy = TokenQueue.COLUMN_CREATE_DATE;
+        String orderBy = TokenQueue.CREATE_DATE;
 
         List<JsonTokenAndQueue> listJsonQueue = new ArrayList<>();
         Cursor cursor = RDH.getReadableDatabase().query(true, TokenQueueHistory.TABLE_NAME, null, null, null, null, null, orderBy, null);

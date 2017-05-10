@@ -19,22 +19,22 @@ public class DatabaseTable {
 
     public static class TokenQueue {
         public static final String TABLE_NAME = "TOKEN_QUEUE";
-        public static final String COLUMN_CODE_QR = "codeqr";
-        public static final String COLUMN_BUSINESS_NAME = "bussinessname";
-        public static final String COLUMN_DISPLAY_NAME = "displayname";
-        public static final String COLUMN_STORE_ADDRESS = "storeaddress";
-        public static final String COLUMN_COUNTRY_SHORT_NAME = "countryShortName";
-        public static final String COLUMN_STORE_PHONE = "storephone";
-        public static final String COLUMN_TOKEN_AVAILABLE_FROM = "tokenavailablefrom";
-        public static final String COLUMN_START_HOUR = "starthour";
-        public static final String COLUMN_END_HOUR = "endhour";
-        public static final String COLUMN_TOPIC = "topic";
-        public static final String COLUMN_SERVING_NUMBER = "servingnumber";
-        public static final String COLUMN_LAST_NUMBER = "lastnumber";
-        public static final String COLUMN_TOKEN = "token";
-        public static final String COLUMN_QUEUE_STATUS = "queuestatus";
-        public static final String COLUMN_SERVICED_TIME = "servicedTime";
-        public static final String COLUMN_CREATE_DATE = "createdate";
+        public static final String CODE_QR = "codeqr";
+        public static final String BUSINESS_NAME = "bussinessname";
+        public static final String DISPLAY_NAME = "displayname";
+        public static final String STORE_ADDRESS = "storeaddress";
+        public static final String COUNTRY_SHORT_NAME = "countryShortName";
+        public static final String STORE_PHONE = "storephone";
+        public static final String TOKEN_AVAILABLE_FROM = "tokenavailablefrom";
+        public static final String START_HOUR = "starthour";
+        public static final String END_HOUR = "endhour";
+        public static final String TOPIC = "topic";
+        public static final String SERVING_NUMBER = "servingnumber";
+        public static final String LAST_NUMBER = "lastnumber";
+        public static final String TOKEN = "token";
+        public static final String QUEUE_STATUS = "queuestatus";
+        public static final String SERVICED_TIME = "servicedTime";
+        public static final String CREATE_DATE = "createdate";
 
         private TokenQueue () {
         }
