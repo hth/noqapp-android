@@ -31,36 +31,39 @@ public class MeFragment extends NoQueueBaseFragment {
 
     @BindView(R.id.tv_firstLastName)
     TextView tv_firstName;
+
     @BindView(R.id.tv_phoneno)
     TextView tv_phoneNo;
+
     @BindView(R.id.tv_RemoteScanCount)
     TextView tv_scanCount;
+
     @BindView(R.id.toggleAutojoin)
     ToggleButton toggelAutoJoin;
+
     @BindView(R.id.btn_register_login_logout)
     Button btn_register_login_logout;
+
     @BindView(R.id.ll_rate_app)
     LinearLayout ll_rate_app;
+
     @BindView(R.id.ll_invite)
     LinearLayout ll_invite;
 
     private String inviteCode;
     private final String TAG = MeFragment.class.getSimpleName();
 
-    public MeFragment() {
-
-    }
-
-
     public static MeFragment getInstance() {
         MeFragment fragment = new MeFragment();
         return fragment;
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -78,38 +81,38 @@ public class MeFragment extends NoQueueBaseFragment {
         int remoteScanCount = preferences.getInt(NoQueueBaseActivity.PREKEY_REMOTESCAN, 0);
         boolean isAutoScanAvail = preferences.getBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, false);
         inviteCode = preferences.getString(NoQueueBaseActivity.PREKEY_INVITECODE, "");
-        String countryname= preferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME,"US");
+        String countryname = preferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, "US");
         tv_firstName.setText(name);
-        if(!phone.equals(""))
-        tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(countryname,phone));
+        if (!phone.equals("")) {
+            tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(countryname, phone));
+        }
         tv_scanCount.setText(String.valueOf(remoteScanCount));
         toggelAutoJoin.setChecked(isAutoScanAvail);
         toggelAutoJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
-                SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedprefEdit(getActivity());
+                SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedPreferencesEditor(getActivity());
                 editor.putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, isChecked);
                 editor.commit();
-
             }
         });
         if (!phone.equals("")) {
             btn_register_login_logout.setText("Logout");
             tv_phoneNo.setVisibility(View.VISIBLE);
         } else {
-            btn_register_login_logout.setText("Login/Register");
+            btn_register_login_logout.setText("Login / Register");
             tv_phoneNo.setVisibility(View.GONE);
         }
 
     }
 
-    @OnClick({ R.id.ll_invite})
+    @OnClick({R.id.ll_invite})
     public void action_Invite() {
         Bundle b = new Bundle();
         b.putString("invite_code", inviteCode);
         InviteFragment inf = new InviteFragment();
         inf.setArguments(b);
-        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, inf, TAG,LaunchActivity.tabMe);
+        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, inf, TAG, LaunchActivity.tabMe);
     }
 
     @OnClick(R.id.btn_register_login_logout)
@@ -134,11 +137,8 @@ public class MeFragment extends NoQueueBaseFragment {
                     })
                     .show();
         } else {
-            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LoginFragment(), TAG,LaunchActivity.tabMe);
-
+            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LoginFragment(), TAG, LaunchActivity.tabMe);
         }
-
-
     }
 
     @OnClick({R.id.ll_rate_app})
@@ -156,6 +156,4 @@ public class MeFragment extends NoQueueBaseFragment {
                     Uri.parse("http://play.google.com/store/apps/details?id=" + getActivity().getPackageName())));
         }
     }
-
-
 }

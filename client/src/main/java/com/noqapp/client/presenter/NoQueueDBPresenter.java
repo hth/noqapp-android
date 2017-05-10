@@ -2,7 +2,7 @@ package com.noqapp.client.presenter;
 
 import android.content.Context;
 
-import com.noqapp.client.model.database.NoQueueDB;
+import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.interfaces.NOQueueDBPresenterInterface;
 import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
@@ -23,21 +23,17 @@ public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
     }
 
     public void saveToken_Queue(List<JsonTokenAndQueue> listTokenAndQueue, boolean isCurrentQueueCall) {
-        NoQueueDB queueDB = new NoQueueDB(context);
-        queueDB.queueDBPresenterInterface = this;
-        queueDB.save(listTokenAndQueue, isCurrentQueueCall);
-
+        NoQueueDB.queueDBPresenterInterface = this;
+        NoQueueDB.save(listTokenAndQueue, isCurrentQueueCall);
     }
 
     public void currentandHistoryTokenQueueListFromDB() {
-        NoQueueDB queueDB = new NoQueueDB(context);
-        queueDB.queueDBPresenterInterface = this;
-        List<JsonTokenAndQueue> list = queueDB.getCurrentQueueList();
-        List<JsonTokenAndQueue> historyQueuelist = queueDB.getHistoryQueueList();
+        NoQueueDB.queueDBPresenterInterface = this;
+        List<JsonTokenAndQueue> list = NoQueueDB.getCurrentQueueList();
+        List<JsonTokenAndQueue> historyQueuelist = NoQueueDB.getHistoryQueueList();
 
         this.token_QueueList(list, historyQueuelist);
     }
-
 
     @Override
     public void dbSaved(int msg) {
@@ -48,6 +44,4 @@ public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
     public void token_QueueList(List<JsonTokenAndQueue> list, List<JsonTokenAndQueue> historylist) {
         tokenQueueViewInterface.token_QueueList(list, historylist);
     }
-
-
 }

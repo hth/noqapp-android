@@ -14,18 +14,22 @@ import com.noqapp.client.R;
 import com.noqapp.client.helper.PhoneFormatterUtil;
 import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
-import com.noqapp.client.model.database.NoQueueDB;
+import com.noqapp.client.model.database.utils.KeyValueUtils;
+import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.presenter.ResponsePresenter;
 import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
 import com.noqapp.client.utils.AppUtilities;
 import com.noqapp.client.utils.Formatter;
+import com.noqapp.client.utils.UserUtils;
 import com.noqapp.client.views.activities.LaunchActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.noqapp.client.model.database.utils.KeyValueUtils.KEYS.XR_DID;
 
 
 public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPresenter, ResponsePresenter {
@@ -126,8 +130,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             if (response.getResponse() == 1) {
                 Toast.makeText(getActivity(), "You successfully cancel the queue", Toast.LENGTH_LONG).show();
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
-                NoQueueDB queueDB = new NoQueueDB(getActivity());
-                queueDB.deleteTokenQueue(codeQR);
+                NoQueueDB.deleteTokenQueue(codeQR);
                 navigateToList();
 
             } else {
@@ -156,7 +159,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             LaunchActivity.getLaunchActivity().progressDialog.show();
             QueueModel.responsePresenter = this;
-            QueueModel.abortQueue(LaunchActivity.getLaunchActivity().getUdid(), codeQR);
+            QueueModel.abortQueue(UserUtils.getDeviceId(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -171,7 +174,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         if (codeQR != null) {
             Log.d("code qr ::", codeQR);
             QueueModel.tokenPresenter = this;
-            QueueModel.joinQueue(LaunchActivity.getLaunchActivity().getUdid(), codeQR);
+            QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
         }
     }
     @Override

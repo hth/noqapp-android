@@ -12,7 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.noqapp.client.network.NoQueueFirbaseInstanceServices;
+import com.noqapp.client.network.NoQueueFirebaseInstanceServices;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class AppUtilities {
-    private static final String TAG = NoQueueFirbaseInstanceServices.class.getSimpleName();
+    private static final String TAG = AppUtilities.class.getSimpleName();
 
     private static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
     private static final SimpleDateFormat SDF_DOB = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -88,7 +88,4 @@ public class AppUtilities {
             Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
         }
     }
-
-
-
 }

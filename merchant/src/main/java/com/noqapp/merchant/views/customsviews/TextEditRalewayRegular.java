@@ -5,7 +5,7 @@ import android.graphics.Typeface;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
-import com.noqapp.client.R;
+import com.noqapp.merchant.R;
 
 /**
  * User: hitender

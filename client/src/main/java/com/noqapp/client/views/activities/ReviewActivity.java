@@ -27,6 +27,7 @@ import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.beans.body.ReviewRating;
 import com.noqapp.client.utils.Formatter;
 import com.noqapp.client.views.fragments.AfterJoinFragment;
+import com.noqapp.client.utils.UserUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,7 +93,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         rr.setRatingCount(String.valueOf(ratingBar.getRating()));
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         ReviewModel.reviewPresenter = ReviewActivity.this;
-                        ReviewModel.review(LaunchActivity.getUdid(), rr);
+                        ReviewModel.review(UserUtils.getDeviceId(),rr);
                     } else {
                         ShowAlertInformation.showNetworkDialog(ReviewActivity.this);
                     }

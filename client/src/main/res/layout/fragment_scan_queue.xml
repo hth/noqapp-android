@@ -29,12 +29,12 @@
                 style="@style/style_join_queue_tv"
                 android:layout_below="@+id/iv_camera"
                 android:layout_marginBottom="20dp"
-                android:text="You don't have any scan data\n      Please scan barcode"
+                android:text="Please scan QR Code of a Queue.\n"
                 android:textColor="@color/color_list_text"
                 android:textSize="15sp" />
 
             <com.noqapp.client.views.cutomviews.ButtonRalewayRegular
-                android:id="@+id/btnscanQRCode"
+                android:id="@+id/btnScanQRCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_label"

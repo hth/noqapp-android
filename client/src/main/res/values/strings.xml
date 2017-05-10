@@ -3,19 +3,19 @@
     <string name="title_activity_launch">NoQApp</string>
     <string name="btnBarcodeScanner">Me</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <!--<string name="bussinessName">Bussiness Name</string>-->
-    <string-array name="title_main_viewpager_tab">
-        <item>Scan Queue</item>
-        <item>Queue List</item>
-        <item>Me</item>
-    </string-array>
-    <string name="title_activity_queue_list">QueueListActivity</string>
+    <!--&lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
+    <!--<string name="hello_blank_fragment">Hello blank fragment</string>-->
+    <!--&lt;!&ndash;<string name="bussinessName">Bussiness Name</string>&ndash;&gt;-->
+    <!--<string-array name="title_main_viewpager_tab">-->
+        <!--<item>Scan Queue</item>-->
+        <!--<item>Queue List</item>-->
+        <!--<item>Me</item>-->
+    <!--</string-array>-->
+    <!--<string name="title_activity_queue_list">QueueListActivity</string>-->
     <string name="action_settings">Settings</string>
     <string name="join">JOIN</string>
     <string name="cancel">Cancel</string>
-    <string name="scan">Scan QR-Code</string>
+    <string name="scan">Click to Scan Queue QR Code</string>
     <string name="title_activity_join_queue">JoinQueueActivity</string>
     <string name="registration">Registration</string>
     <string name="autojoinon">Auto Join On Scan</string>

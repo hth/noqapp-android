@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * User: hitender
  * Date: 4/2/17 6:44 PM
@@ -29,6 +31,13 @@ public class DeviceRegistered {
 
     public void setRegistered(int registered) {
         this.registered = registered;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("registered", registered)
+                .toString();
     }
 }
 

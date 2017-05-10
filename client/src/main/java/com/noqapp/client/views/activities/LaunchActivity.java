@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,30 +24,35 @@ import android.widget.Toast;
 
 import com.noqapp.client.R;
 import com.noqapp.client.helper.NetworkHelper;
-import com.noqapp.client.model.database.NoQueueDB;
+import com.noqapp.client.model.database.DBUtils;
+import com.noqapp.client.model.database.DatabaseHandler;
+import com.noqapp.client.model.database.utils.KeyValueUtils;
+import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.client.network.NOQueueMessagingService;
-import com.noqapp.client.network.NoQueueFirbaseInstanceServices;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.utils.Constants;
+import com.noqapp.client.utils.UserUtils;
 import com.noqapp.client.views.fragments.AfterJoinFragment;
 import com.noqapp.client.views.fragments.ListQueueFragment;
 import com.noqapp.client.views.fragments.LoginFragment;
 import com.noqapp.client.views.fragments.MeFragment;
 import com.noqapp.client.views.fragments.RegistrationFragment;
-import com.noqapp.client.views.fragments.ReviewFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.noqapp.client.model.database.utils.KeyValueUtils.KEYS.XR_DID;
+import static com.noqapp.client.network.NoQueueFirebaseInstanceServices.createOrFindDeviceId;
+
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener {
+    private static final String TAG = LaunchActivity.class.getSimpleName();
 
     private static LaunchActivity launchActivity;
     public NetworkHelper networkHelper;
@@ -75,6 +81,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
 
+    public static DatabaseHandler RDH;
     private long lastPress;
     private Toast backpressToast;
     public ProgressDialog progressDialog;
@@ -83,20 +90,26 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public Map<String, List<Fragment>> fragmentsStack = new HashMap<String, List<Fragment>>();
     private String currentSelectedTabTag = "";
 
-    public static String tabHome="HOME";
-    public static String tabList="LIST";
-    public static String tabMe="ME";
+    public static String tabHome = "ScanQ";
+    public static String tabList = "Queues";
+    public static String tabMe = "Me";
+
     // Used in TabListener to keep currentSelectedTabTag actual.
     public void setCurrentSelectedTabTag(String currentSelectedTabTag) {
         this.currentSelectedTabTag = currentSelectedTabTag;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RDH = DatabaseHandler.getsInstance(this);
+        if (DBUtils.countTables() == 0 || KeyValueUtils.doesTableExists() && TextUtils.isEmpty(UserUtils.getDeviceId())) {
+            Log.d(TAG, "Found authId empty, re-set data");
+            DBUtils.dbReInitialize();
+            KeyValueUtils.updateInsert(XR_DID, createOrFindDeviceId());
+        }
+
         setContentView(R.layout.activity_launch);
-
-
-
         ButterKnife.bind(this);
         launchActivity = this;
         networkHelper = new NetworkHelper(this);
@@ -115,23 +128,22 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
                     String message = intent.getStringExtra("message");
-                    String payload =intent.getStringExtra("f");
-                    String qrcode= intent.getStringExtra("c");
-                    Log.v("payload",payload);
-                    if(null!=payload && !payload.equals("")&& payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())){
+                    String payload = intent.getStringExtra("f");
+                    String qrcode = intent.getStringExtra("c");
+                    Log.v("payload", payload);
 
-                        Toast.makeText(launchActivity, "Notification payload: "+payload, Toast.LENGTH_LONG).show();
-                        NoQueueDB queueDB = new NoQueueDB(launchActivity);
-                        JsonTokenAndQueue jtk= queueDB.getCurrentQueueObject(qrcode);
-                        Intent in =new Intent(launchActivity,ReviewActivity.class);
+                    if (null != payload && !payload.equals("") && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                        Toast.makeText(launchActivity, "Notification payload: " + payload, Toast.LENGTH_LONG).show();
+                        JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(qrcode);
+                        Intent in = new Intent(launchActivity, ReviewActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("object", jtk);
                         in.putExtras(bundle);
                         startActivity(in);
-                        Log.v("object is :",         jtk.toString());
-                    }else
-                    Toast.makeText(launchActivity, "Notification : "+message, Toast.LENGTH_LONG).show();
-
+                        Log.v("object is :", jtk.toString());
+                    } else {
+                        Toast.makeText(launchActivity, "Notification : " + message, Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         };
@@ -141,17 +153,17 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        Fragment fragment = null;
+        Fragment fragment;
         resetButtons();
         switch (id) {
             case R.id.rl_home:
                 setCurrentSelectedTabTag(tabHome);
-                if(null==fragmentsStack.get(tabHome)) {
+                if (null == fragmentsStack.get(tabHome)) {
                     fragment = new ScanQueueFragment();
                     createStackForTab(tabHome);
                     addFragmentToStack(fragment);
                     replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-                }else{
+                } else {
                     replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
                 }
 
@@ -161,13 +173,13 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
             case R.id.rl_list:
                 setCurrentSelectedTabTag(tabList);
-                if(null==fragmentsStack.get(tabList)) {
+                if (null == fragmentsStack.get(tabList)) {
                     fragment = ListQueueFragment.getInstance();
                     ListQueueFragment.isCurrentQueueCall = true;
                     createStackForTab(tabList);
                     addFragmentToStack(fragment);
                     replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-                }else{
+                } else {
                     replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
                 }
                 iv_list.setBackgroundResource(R.mipmap.list_select);
@@ -176,27 +188,25 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
             case R.id.rl_me:
                 setCurrentSelectedTabTag(tabMe);
-                if(null==fragmentsStack.get(tabMe)) {
+                if (null == fragmentsStack.get(tabMe)) {
                     fragment = MeFragment.getInstance();
                     //fragment = new ReviewFragment();
                     createStackForTab(tabMe);
                     addFragmentToStack(fragment);
                     replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-                }else{
+                } else {
                     replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
                 }
                 iv_me.setBackgroundResource(R.mipmap.me_select);
                 tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
             case R.id.actionbarBack:
-                    onBackPressed();
+                onBackPressed();
                 break;
             default:
                 break;
 
         }
-
-
     }
 
     public static LaunchActivity getLaunchActivity() {
@@ -208,7 +218,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
     private void resetButtons() {
-
         iv_home.setBackgroundResource(R.mipmap.home_inactive);
         iv_list.setBackgroundResource(R.mipmap.list_inactive);
         iv_me.setBackgroundResource(R.mipmap.me_inactive);
@@ -241,7 +250,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading...");
-
     }
 
     public void dismissProgress() {
@@ -252,7 +260,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public void setProgressTitle(String msg) {
         if (null != progressDialog && progressDialog.isShowing())
             progressDialog.setMessage(msg);
-
     }
 
     public boolean isOnline() {
@@ -280,6 +287,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     /**
      * Method for adding list of fragment for tab to our Back Stack
+     *
      * @param tabTag The identifier tag for the tab
      */
     public void createStackForTab(String tabTag) {
@@ -296,6 +304,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     /**
      * Used in TabListener for showing last opened screen from selected tab
+     *
      * @return The last added fragment of actual tab will be returned
      */
     public Fragment getLastFragment() {
@@ -316,18 +325,17 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             // current screen is closed and removed from Back Stack and shown the previous one
             int size = currentTabFragments.size();
             Fragment fragment = currentTabFragments.get(size - 2);
-            Fragment currentfrg=currentTabFragments.get(size - 1);
+            Fragment currentfrg = currentTabFragments.get(size - 1);
             currentTabFragments.remove(size - 1);
 
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frame_layout, fragment);
             fragmentTransaction.commit();
-            if(currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())){
+            if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
                 currentTabFragments.remove(currentTabFragments.size() - 1);
-                fragmentsStack.put(tabList,null);
+                fragmentsStack.put(tabList, null);
                 onClick(rl_list);
             }
-
         } else {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastPress > 3000) {
@@ -341,14 +349,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         }
     }
 
-    public void enableDisableBack(boolean isShown){
-        actionbarBack.setVisibility(isShown?View.VISIBLE:View.INVISIBLE);
+    public void enableDisableBack(boolean isShown) {
+        actionbarBack.setVisibility(isShown ? View.VISIBLE : View.INVISIBLE);
     }
-
-    public static String getUdid(){
-        return getUDID(launchActivity);
-    }
-
-
-
 }

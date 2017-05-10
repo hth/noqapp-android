@@ -22,7 +22,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.facebook.accountkit.PhoneNumber;
 import com.facebook.accountkit.ui.AccountKitActivity;
@@ -136,7 +135,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NoQueueBaseActivity.ACCOUNTKIT_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                Log.d("FB accont res:: ", data.toString());
+                Log.d("FB Account data=", data.toString());
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     callLoginAPI();
                 } else {
@@ -150,12 +149,10 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     }
 
     private void callLoginAPI() {
-
         Login login = new Login();
         login.setPhone(edt_phoneNo.getText().toString());
         login.setCountryShortName(countryISO);
         RegisterModel.login(login);
-
     }
 
     @Override
@@ -221,10 +218,12 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     }
 
     private void requestReadAndRecieveSMSPermissionAllowed() {
-        ActivityCompat.requestPermissions(getActivity(), READ_AND_RECIEVE_SMS__PERMISSION_PERMS,
-                READ_AND_RECIEVE_SMS__PERMISSION_CODE);
+        ActivityCompat.requestPermissions(
+                getActivity(),
+                READ_AND_RECIEVE_SMS__PERMISSION_PERMS,
+                READ_AND_RECIEVE_SMS__PERMISSION_CODE
+        );
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -243,7 +242,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     public void queueResponse(JsonProfile profile) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedprefEdit(getActivity());
+            SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedPreferencesEditor(getActivity());
             editor.putString(NoQueueBaseActivity.PREKEY_PHONE, profile.getPhoneRaw());
             editor.putString(NoQueueBaseActivity.PREKEY_NAME, profile.getName());
             editor.putString(NoQueueBaseActivity.PREKEY_GENDER, profile.getGender());
@@ -264,11 +263,10 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                 b.putString("country_code", countryISO);
                 RegistrationFragment rff = new RegistrationFragment();
                 rff.setArguments(b);
-                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, rff, TAG,LaunchActivity.tabMe);
+                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, rff, TAG, LaunchActivity.tabMe);
                 LaunchActivity.getLaunchActivity().dismissProgress();
             }
         }
-
     }
 
     @Override
@@ -276,22 +274,31 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
-   TextWatcher tw = new TextWatcher(){
+    TextWatcher tw = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count,
-        int after) {
+        public void beforeTextChanged(
+                CharSequence s,
+                int start,
+                int count,
+                int after) {
         }
+
         @Override
-        public void onTextChanged(CharSequence s, int start, int before,
-        int count) {
+        public void onTextChanged(
+                CharSequence s,
+                int start,
+                int before,
+                int count) {
         }
+
         @Override
         public void afterTextChanged(Editable s) {
-            if(!s.equals("") ) {
+            if (!s.equals("")) {
                 edt_phoneNo.removeTextChangedListener(tw);
-                edt_phoneNo.setText(PhoneFormatterUtil.formatAsYouType(countryISO,s.toString()));
+                edt_phoneNo.setText(PhoneFormatterUtil.formatAsYouType(countryISO, s.toString()));
                 edt_phoneNo.setSelection(edt_phoneNo.getText().length());//added to put the cursor at end
                 edt_phoneNo.addTextChangedListener(tw);
             }
-        }};
+        }
+    };
 }
