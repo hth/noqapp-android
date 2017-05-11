@@ -2,6 +2,7 @@ package com.noqapp.client.model;
 
 import android.util.Log;
 
+import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.model.response.open.QueueService;
 import com.noqapp.client.network.RetrofitClient;
 import com.noqapp.client.presenter.QueuePresenter;
@@ -85,7 +86,7 @@ public final class QueueModel {
                         //Todo : uncomment the queuresponse
                         tokenAndQueuePresenter.queueResponse(response.body().getTokenAndQueues());
                     } else {
-                        //TODO something logical
+                        NoQueueDB.deleteCurrentQueue();
                         Log.d(TAG, "Empty currently joined history");
                         tokenAndQueuePresenter.noCurrentQueue();
                     }

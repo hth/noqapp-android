@@ -148,11 +148,9 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         if (isCurrentQueueCall) {
             isCurrentQueueCall = false;
             callQueueHistory();
-
         } else {
             fetchCurrentAndHistoryList();
         }
-
     }
 
     public void fetchCurrentAndHistoryList() {

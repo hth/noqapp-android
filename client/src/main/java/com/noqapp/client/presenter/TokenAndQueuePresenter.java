@@ -17,5 +17,4 @@ public interface TokenAndQueuePresenter {
     void noCurrentQueue();
 
     void noHistoryQueue();
-
 }
