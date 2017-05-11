@@ -37,7 +37,7 @@ public final class QueueModel {
     public static TokenAndQueuePresenter tokenAndQueuePresenter;
 
     static {
-        queueService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(QueueService.class);
+        queueService = RetrofitClient.getClient().create(QueueService.class);
     }
 
     /**

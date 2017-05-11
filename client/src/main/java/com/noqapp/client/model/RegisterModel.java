@@ -25,7 +25,7 @@ public final class RegisterModel {
     public static ProfilePresenter profilePresenter;
 
     static {
-        registerService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(RegisterService.class);
+        registerService = RetrofitClient.getClient().create(RegisterService.class);
     }
 
     /**

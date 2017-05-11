@@ -11,9 +11,9 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 
 public class RetrofitClient {
-    private static Retrofit retrofit = null;
+    private static Retrofit retrofit;
 
-    public static Retrofit getClient(String baseUrl) {
+    public static Retrofit getClient() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BuildConfig.NOQAPP_MOBILE)

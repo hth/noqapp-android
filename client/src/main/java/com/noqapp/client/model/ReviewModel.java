@@ -29,7 +29,7 @@ public class ReviewModel {
     private static final ReviewService reviewService;
     public static ReviewPresenter reviewPresenter;
     static {
-        reviewService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(ReviewService.class);
+        reviewService = RetrofitClient.getClient().create(ReviewService.class);
     }
 
     /**
