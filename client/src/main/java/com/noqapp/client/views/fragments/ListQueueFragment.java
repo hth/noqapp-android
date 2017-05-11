@@ -130,7 +130,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     }
 
     @Override
-    public void noCurentQueue() {
+    public void noCurrentQueue() {
         dataSavedStatus(0);
     }
 
@@ -165,9 +165,8 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         initListView(currentlist, historylist);
         rl_empty_screen.setVisibility(View.GONE);
         expListView.setVisibility(View.VISIBLE);
-
     }
-    
+
     private void initListView(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<JsonTokenAndQueue>>();
