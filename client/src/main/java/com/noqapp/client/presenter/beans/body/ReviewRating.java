@@ -27,6 +27,9 @@ public class ReviewRating {
     @JsonProperty("codeQR")
     private String codeQR;
 
+    @JsonProperty("t")
+    private int token;
+
     @JsonProperty("ra")
     private String ratingCount;
 
@@ -39,6 +42,14 @@ public class ReviewRating {
 
     public void setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+    }
+
+    public int getToken() {
+        return token;
+    }
+
+    public void setToken(int token) {
+        this.token = token;
     }
 
     public String getRatingCount() {
