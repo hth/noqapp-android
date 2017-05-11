@@ -40,6 +40,8 @@ import com.noqapp.client.views.fragments.MeFragment;
 import com.noqapp.client.views.fragments.RegistrationFragment;
 import com.noqapp.client.views.fragments.ScanQueueFragment;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -129,12 +131,12 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     // new push notification is received
                     String message = intent.getStringExtra("message");
                     String payload = intent.getStringExtra("f");
-                    String qrcode = intent.getStringExtra("c");
+                    String codeQR = intent.getStringExtra("c");
                     Log.v("payload", payload);
 
-                    if (null != payload && !payload.equals("") && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                    if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         Toast.makeText(launchActivity, "Notification payload: " + payload, Toast.LENGTH_LONG).show();
-                        JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(qrcode);
+                        JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
                         Intent in = new Intent(launchActivity, ReviewActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("object", jtk);
