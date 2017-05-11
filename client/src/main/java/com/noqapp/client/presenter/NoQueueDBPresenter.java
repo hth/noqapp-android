@@ -5,7 +5,7 @@ import android.content.Context;
 import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.interfaces.NOQueueDBPresenterInterface;
-import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
+import com.noqapp.client.views.interfaces.TokenQueueViewInterface;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
 
-    public Token_QueueViewInterface tokenQueueViewInterface;
+    public TokenQueueViewInterface tokenQueueViewInterface;
     private Context context;
 
     public NoQueueDBPresenter(Context context) {
@@ -45,6 +45,6 @@ public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
 
     @Override
     public void token_QueueList(List<JsonTokenAndQueue> currentQueueList, List<JsonTokenAndQueue> historyQueueList) {
-        tokenQueueViewInterface.token_QueueList(currentQueueList, historyQueueList);
+        tokenQueueViewInterface.tokenQueueList(currentQueueList, historyQueueList);
     }
 }

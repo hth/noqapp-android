@@ -1,6 +1,5 @@
 package com.noqapp.client.views.fragments;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,15 +23,13 @@ import com.noqapp.client.presenter.beans.body.DeviceToken;
 import com.noqapp.client.utils.UserUtils;
 import com.noqapp.client.views.activities.LaunchActivity;
 import com.noqapp.client.views.adapters.ListQueueAdapter;
-import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
+import com.noqapp.client.views.interfaces.TokenQueueViewInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-
-public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQueuePresenter, Token_QueueViewInterface {
+public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQueuePresenter, TokenQueueViewInterface {
 
     private RelativeLayout rl_empty_screen;
     public static boolean isCurrentQueueCall = false;
@@ -43,6 +40,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     private List<String> listDataHeader;
     private HashMap<String, List<JsonTokenAndQueue>> listDataChild;
     private FrameLayout frame_scan;
+
     public ListQueueFragment() {
 
     }
@@ -71,7 +69,6 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     }
 
     public void callQueueHistory() {
-
         QueueModel.tokenAndQueuePresenter = this;
         //Todo Check the flow of history queue
         //QueueModel.getAllHistoricalJoinedQueue(LaunchActivity.DID);
@@ -80,25 +77,26 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         //QueueModel.getAllJoinedQueue(LaunchActivity.DID);
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
         View view = inflater.inflate(R.layout.fragment_listqueue, container, false);
-        frame_scan=(FrameLayout) view.findViewById(R.id.frame_scan);
+        frame_scan = (FrameLayout) view.findViewById(R.id.frame_scan);
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
         rl_empty_screen = (RelativeLayout) view.findViewById(R.id.rl_empty_screen);
         Bundle b = new Bundle();
         b.putBoolean(KEY_FROM_LIST, true);
-        ScanQueueFragment sqc= new ScanQueueFragment();
+        ScanQueueFragment sqc = new ScanQueueFragment();
         sqc.setArguments(b);
         replaceFragmentWithoutBackStack(getActivity(), R.id.frame_scan, sqc, TAG);
         //ButterKnife.bind(this,view);
         return view;
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -115,9 +113,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Queues");
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
-
     }
-
 
     @Override
     public void queueResponse(List<JsonTokenAndQueue> tokenAndQueues) {
@@ -125,14 +121,12 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.saveTokenQueue(tokenAndQueues, isCurrentQueueCall);
-
     }
 
     @Override
     public void queueError() {
         Log.d(TAG, "Token and queue Error");
         LaunchActivity.getLaunchActivity().dismissProgress();
-
     }
 
     @Override
@@ -158,7 +152,6 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
 
     }
 
-
     public void fetchCurrentAndHistoryList() {
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
@@ -166,17 +159,16 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     }
 
     @Override
-    public void token_QueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
+    public void tokenQueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size()) + "::" + String.valueOf(historylist.size()));
-        initListView(currentlist,historylist);
+        initListView(currentlist, historylist);
         rl_empty_screen.setVisibility(View.GONE);
         expListView.setVisibility(View.VISIBLE);
 
     }
-
-
-    private void initListView(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist){
+    
+    private void initListView(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<JsonTokenAndQueue>>();
         //currentlist.clear();
@@ -196,9 +188,9 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         expListView.expandGroup(0);//By default expand the list first group
         expListView.expandGroup(1);
 
-        if(currentlist.size()==0){
+        if (currentlist.size() == 0) {
             frame_scan.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             frame_scan.setVisibility(View.GONE);
         }
         // Listview Group click listener
@@ -243,28 +235,27 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                JsonTokenAndQueue jsonQueue= listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
+                JsonTokenAndQueue jsonQueue = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
                 Bundle b = new Bundle();
                 b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
-                b.putBoolean(KEY_FROM_LIST,true);
-                if(groupPosition==0){
+                b.putBoolean(KEY_FROM_LIST, true);
+                if (groupPosition == 0) {
                     b.putString(KEY_DISPLAYNAME, jsonQueue.getBusinessName());
                     b.putString(KEY_STOREPHONE, jsonQueue.getStorePhone());
                     b.putString(KEY_QUEUENAME, jsonQueue.getDisplayName());
                     b.putString(KEY_ADDRESS, jsonQueue.getStoreAddress());
                     b.putString(KEY_TOPIC, jsonQueue.getTopic());
-                    b.putString(KEY_SERVING_NO,String.valueOf(jsonQueue.getServingNumber()));
-                    b.putString(KEY_TOKEN,String.valueOf(jsonQueue.getToken()));
-                    b.putString(KEY_HOW_LONG,String.valueOf(jsonQueue.afterHowLong()));
+                    b.putString(KEY_SERVING_NO, String.valueOf(jsonQueue.getServingNumber()));
+                    b.putString(KEY_TOKEN, String.valueOf(jsonQueue.getToken()));
+                    b.putString(KEY_HOW_LONG, String.valueOf(jsonQueue.afterHowLong()));
                     b.putString(KEY_COUNTRY_SHORT_NAME, jsonQueue.getCountryShortName());
                     AfterJoinFragment ajf = new AfterJoinFragment();
                     ajf.setArguments(b);
-                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG,LaunchActivity.tabList);
-                }else {
-
+                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, LaunchActivity.tabList);
+                } else {
                     JoinFragment jf = new JoinFragment();
                     jf.setArguments(b);
-                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG,LaunchActivity.tabList);
+                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
                 }
                 return false;
             }
