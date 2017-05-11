@@ -22,9 +22,13 @@ import com.noqapp.client.R;
 import com.noqapp.client.views.activities.BarcodeScannerActivity;
 import com.noqapp.client.views.activities.LaunchActivity;
 
+import org.apache.commons.lang3.StringUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.noqapp.client.BuildConfig.NOQAPP_MOBILE;
 
 
 public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureActivity.BarcodeScannedResultCallback {
@@ -100,8 +104,8 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
 
     @Override
     public void barcodeScannedResult(String rawData) {
-        Log.v("Barcode vaue", rawData.toString());
-        if (rawData == null) {
+        Log.v("Scanned CodeQR=", rawData);
+        if (StringUtils.isBlank(rawData)) {
             Log.d("MainActivity", "Cancelled scan");
             Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
         } else {
@@ -114,7 +118,7 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
                 jf.setArguments(b);
                 replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, currentTab);
             } else {
-                Toast toast = Toast.makeText(getActivity(), "Code scanned is not a NoQueue Code", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getActivity(), "QR Code is not a NoQueue Code", Toast.LENGTH_SHORT);
                 toast.show();
             }
         }

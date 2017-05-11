@@ -23,7 +23,7 @@ public class LoginModel {
     public static LoginPresenter loginPresenter;
 
     static {
-        loginService = RetrofitClient.getClient(BuildConfig.NOQAPP_MOBILE).create(LoginService.class);
+        loginService = RetrofitClient.getClient().create(LoginService.class);
     }
 
     /**

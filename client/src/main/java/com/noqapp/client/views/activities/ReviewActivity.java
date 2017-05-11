@@ -88,8 +88,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         ReviewRating rr = new ReviewRating();
                         JsonTokenAndQueue jtk = (JsonTokenAndQueue) extras.getSerializable("object");
                         rr.setCodeQR(jtk.getCodeQR());
+                        rr.setToken(jtk.getToken());
                         rr.setHoursSaved("1");
-                        rr.setRatingCount(String.valueOf(ratingBar.getRating()));
+                        rr.setRatingCount(String.valueOf(Math.round(ratingBar.getRating())));
 
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         ReviewModel.reviewPresenter = ReviewActivity.this;

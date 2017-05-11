@@ -13,9 +13,11 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.noqapp.client.R;
 import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
+import com.noqapp.client.network.NoQueueFirebaseInstanceServices;
 import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
@@ -73,7 +75,8 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         //Todo Check the flow of history queue
         //QueueModel.getAllHistoricalJoinedQueue(LaunchActivity.DID);
         DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-        QueueModel.getAllHistoricalJoinedQueue("123", deviceToken);
+        //QueueModel.getAllHistoricalJoinedQueue("123", deviceToken);
+        QueueModel.getAllHistoricalJoinedQueue(NoQueueFirebaseInstanceServices.createOrFindDeviceId(), deviceToken);
         //QueueModel.getAllJoinedQueue(LaunchActivity.DID);
     }
 
@@ -130,7 +133,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     }
 
     @Override
-    public void noCurentQueue() {
+    public void noCurrentQueue() {
         dataSavedStatus(0);
     }
 
@@ -145,11 +148,9 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         if (isCurrentQueueCall) {
             isCurrentQueueCall = false;
             callQueueHistory();
-
         } else {
             fetchCurrentAndHistoryList();
         }
-
     }
 
     public void fetchCurrentAndHistoryList() {
@@ -165,9 +166,8 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         initListView(currentlist, historylist);
         rl_empty_screen.setVisibility(View.GONE);
         expListView.setVisibility(View.VISIBLE);
-
     }
-    
+
     private void initListView(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<JsonTokenAndQueue>>();

@@ -33,7 +33,7 @@ public class ManageQueueModel {
     public static TopicPresenter topicPresenter;
 
     static {
-        manageQueueService = RetrofitClient.getClient(BuildConfig.NOQAPP_MOBILE).create(ManageQueueService.class);
+        manageQueueService = RetrofitClient.getClient().create(ManageQueueService.class);
     }
 
     /**

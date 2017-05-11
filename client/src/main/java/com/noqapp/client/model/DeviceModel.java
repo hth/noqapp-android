@@ -2,6 +2,7 @@ package com.noqapp.client.model;
 
 import android.util.Log;
 
+import com.noqapp.client.BuildConfig;
 import com.noqapp.client.model.response.open.DeviceService;
 import com.noqapp.client.network.RetrofitClient;
 import com.noqapp.client.presenter.beans.DeviceRegistered;
@@ -24,7 +25,7 @@ public class DeviceModel {
     private static final DeviceService deviceService;
 
     static {
-        deviceService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(DeviceService.class);
+        deviceService = RetrofitClient.getClient().create(DeviceService.class);
     }
 
     /**

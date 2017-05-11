@@ -2,6 +2,7 @@ package com.noqapp.client.model;
 
 import android.util.Log;
 
+import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.model.response.open.QueueService;
 import com.noqapp.client.network.RetrofitClient;
 import com.noqapp.client.presenter.QueuePresenter;
@@ -37,7 +38,7 @@ public final class QueueModel {
     public static TokenAndQueuePresenter tokenAndQueuePresenter;
 
     static {
-        queueService = RetrofitClient.getClient(RetrofitClient.BaseURL).create(QueueService.class);
+        queueService = RetrofitClient.getClient().create(QueueService.class);
     }
 
     /**
@@ -81,13 +82,13 @@ public final class QueueModel {
                     if (response.body().getTokenAndQueues().size() > 0) {
                         Log.d("Response", String.valueOf(response.body()));
                         //// TODO: 4/16/17 just for testing : remove below line after testing done
-                        //tokenAndQueuePresenter.noCurentQueue();
+                        //tokenAndQueuePresenter.noCurrentQueue();
                         //Todo : uncomment the queuresponse
                         tokenAndQueuePresenter.queueResponse(response.body().getTokenAndQueues());
                     } else {
-                        //TODO something logical
+                        NoQueueDB.deleteCurrentQueue();
                         Log.d(TAG, "Empty currently joined history");
-                        tokenAndQueuePresenter.noCurentQueue();
+                        tokenAndQueuePresenter.noCurrentQueue();
                     }
                 } else if (response.body() != null && response.body().getError() != null) {
                     Log.e(TAG, "Got error");
