@@ -80,19 +80,19 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         switch (status) {
 
             case "Start":
-                btn_next.setText("Start");
+                btn_next.setText(context.getString(R.string.start));
                 break;
             case "Re-Start":
-                btn_next.setText("Continue");
+                btn_next.setText(context.getString(R.string.continues));
                 break;
             case "Next":
-                btn_next.setText("Next");
+                btn_next.setText(context.getString(R.string.next));
                 break;
             case "Done":
-                btn_next.setText("Done");
+                btn_next.setText(context.getString(R.string.done));
                 break;
             case "Closed":
-                btn_next.setText("Closed");
+                btn_next.setText(context.getString(R.string.closed));
                 break;
         }
 
@@ -116,9 +116,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                         ShowAlertInformation.showNetworkDialog(context);
                     }
                 } else if (status.equals("Start")) {
-                    Toast.makeText(context, "Queue hasn't stated, you can't skip.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, context.getString(R.string.error_start), Toast.LENGTH_LONG).show();
                 } else if (status.equals("Done")) {
-                    Toast.makeText(context, "No one in the queue. you can't skip", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, context.getString(R.string.error_done), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -127,9 +127,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             @Override
             public void onClick(View v) {
                 if (lq.getToken() == 0) {
-                    Toast.makeText(context, "No one in the queue", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
                 } else if (lq.getRemaining() == 0) {
-                    Toast.makeText(context, "No one in the queue. Please wait", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, context.getString(R.string.error_empty_wait), Toast.LENGTH_LONG).show();
                 } else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();

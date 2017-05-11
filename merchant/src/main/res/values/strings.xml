@@ -2,15 +2,17 @@
     <string name="app_name">NoQApp Merchant</string>
 
 
-    <string name="join">JOIN</string>
-    <string name="skip">Skip</string>
-    <string name="next">Next</string>
+
 
 
     <!-- Strings related to login -->
     <string name="prompt_email">email...</string>
     <string name="prompt_pwd">password</string>
     <string name="sign_in">Login</string>
+    <string name="error_email_blank">Please enter email id</string>
+    <string name="error_email_invalid">Please enter valid email</string>
+    <string name="error_pwd_blank">Please enter password</string>
+    <string name="error_login">Invalid Credential</string>
     <string name="empty_list">You are not assign \n to any queue.</string>
     <string name="networkerror">Network Error</string>
     <string name="offline">Network unavailable. Please connect your device to network.</string>
@@ -19,9 +21,30 @@
     <!-- ViewPager Screen -->
     <string name="in_Queue">In Queue</string>
     <string name="serving">Serving </string>
+    <string name="start">Start </string>
+    <string name="continues">Continue</string>
+    <string name="join">JOIN</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="done">Done </string>
+    <string name="closed">Closed </string>
 
+    <string name="error_start">Queue hasn\'t stated, you can\'t skip.</string>
+    <string name="error_done">No one in the queue. you can\'t skip</string>
+    <string name="error_empty">No one in the queue </string>
+    <string name="error_empty_wait">No one in the queue. Please wait </string>
+    <!-- Screens-->
+    <string name="screen_queue">Queues</string>
+    <string name="screen_queue_detail">Queue Detail </string>
 
-    <!-- Custom Fonts -->
+    <!--General-->
+    <string name="exit_the_app">Press back again to exit</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="title_logout">Logout</string>
+    <string name="msg_logout">Would you like to logout?</string>
+    
+        <!-- Custom Fonts -->
     <string name="raleway_bold_font">fonts/roboto_regular.ttf</string>
     <string name="raleway_regular_font">fonts/roboto_regular.ttf</string>
     <string name="roboto_regular_font">fonts/roboto_regular.ttf</string>

@@ -1,5 +1,8 @@
 package com.noqapp.merchant.utils;
 
+import android.content.Context;
+import android.content.res.Configuration;
+
 import com.noqapp.merchant.helper.ApkVersionModel;
 
 /**
@@ -9,8 +12,6 @@ import com.noqapp.merchant.helper.ApkVersionModel;
 
 public class AppUtils {
 
-    private AppUtils() {
-    }
 
     public static ApkVersionModel parseVersion(String version) {
         if (null == version || !version.contains(".")) {
@@ -25,5 +26,9 @@ public class AppUtils {
             apkVersionModel = new ApkVersionModel(Integer.valueOf(split[0]), Integer.valueOf(split[1]), Integer.valueOf(split[2]));
         }
         return apkVersionModel;
+    }
+
+    public  boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }

@@ -57,12 +57,12 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                 edt_email.setError(null);
                 edt_pwd.setError(null);
                 if (TextUtils.isEmpty(email)) {
-                    edt_email.setError("Please enter email id");
+                    edt_email.setError(getString(R.string.error_email_blank));
                 }
                 if (!TextUtils.isEmpty(email) && !isValidEmail(email)) {
-                    edt_email.setError("Please enter valid email");
+                    edt_email.setError(getString(R.string.error_email_invalid));
                 } else if (pwd.equals("")) {
-                    edt_pwd.setError("Please enter password");
+                    edt_pwd.setError(getString(R.string.error_pwd_blank));
                 } else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
@@ -108,7 +108,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             MerchantProfileModel.fetch(email, outh);
         } else {
             LaunchActivity.getLaunchActivity().dismissProgress();
-            Toast.makeText(getActivity(), "Invalid Credential", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getString(R.string.error_login), Toast.LENGTH_LONG).show();
 
         }
     }
