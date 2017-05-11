@@ -197,4 +197,8 @@ public class NoQueueDB {
         }
         return listJsonQueue;
     }
+
+    public static void deleteCurrentQueue() {
+        RDH.getReadableDatabase().execSQL("delete from "+ TokenQueue.TABLE_NAME);
+    }
 }

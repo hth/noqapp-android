@@ -124,7 +124,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         Log.d(TAG, "TokenAndQueues size=" + tokenAndQueues.size());
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
-        dbPresenter.saveToken_Queue(tokenAndQueues, isCurrentQueueCall);
+        dbPresenter.saveTokenQueue(tokenAndQueues, isCurrentQueueCall);
 
     }
 
@@ -162,7 +162,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     public void fetchCurrentAndHistoryList() {
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
-        dbPresenter.currentandHistoryTokenQueueListFromDB();
+        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
     }
 
     @Override
