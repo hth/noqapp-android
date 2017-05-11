@@ -21,6 +21,7 @@ import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.beans.body.DeviceToken;
+import com.noqapp.client.utils.UserUtils;
 import com.noqapp.client.views.activities.LaunchActivity;
 import com.noqapp.client.views.adapters.ListQueueAdapter;
 import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
@@ -32,8 +33,6 @@ import java.util.List;
 
 
 public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQueuePresenter, Token_QueueViewInterface {
-
-
 
     private RelativeLayout rl_empty_screen;
     public static boolean isCurrentQueueCall = false;
@@ -67,7 +66,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     public void callQueue() {
         LaunchActivity.getLaunchActivity().progressDialog.show();
         QueueModel.tokenAndQueuePresenter = this;
-        QueueModel.getAllJoinedQueue(LaunchActivity.getLaunchActivity().getUdid());
+        QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
         isCurrentQueueCall = true;
     }
 
@@ -122,7 +121,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
 
     @Override
     public void queueResponse(List<JsonTokenAndQueue> tokenAndQueues) {
-        Log.d(TAG, "Tokent and Queue Response::" + tokenAndQueues.size());
+        Log.d(TAG, "TokenAndQueues size=" + tokenAndQueues.size());
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.saveToken_Queue(tokenAndQueues, isCurrentQueueCall);

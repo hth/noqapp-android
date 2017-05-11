@@ -57,7 +57,9 @@ public class MerchantListFragment extends Fragment implements TopicPresenter {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
                 ManageQueueModel.topicPresenter = this;
-                ManageQueueModel.getQueues(LaunchActivity.DID, LaunchActivity.getLaunchActivity().getEmail(),
+                ManageQueueModel.getQueues(
+                        LaunchActivity.DID,
+                        LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth());
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());

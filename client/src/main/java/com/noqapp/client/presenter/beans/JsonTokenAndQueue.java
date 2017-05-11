@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.client.model.types.QueueStatusEnum;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -216,21 +218,23 @@ public class JsonTokenAndQueue implements Serializable{
 
     @Override
     public String toString() {
-        return "JsonTokenAndQueue{" +
-                "codeQR='" + codeQR + '\'' +
-                ", businessName='" + businessName + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", storeAddress='" + storeAddress + '\'' +
-                ", storePhone='" + storePhone + '\'' +
-                ", tokenAvailableFrom=" + tokenAvailableFrom +
-                ", startHour=" + startHour +
-                ", endHour=" + endHour +
-                ", topic='" + topic + '\'' +
-                ", servingNumber=" + servingNumber +
-                ", lastNumber=" + lastNumber +
-                ", token=" + token +
-                ", queueStatus=" + queueStatus +
-                ", createDate='" + createDate + '\'' +
-                '}';
+        return new ToStringBuilder(this)
+                .append("codeQR", codeQR)
+                .append("businessName", businessName)
+                .append("displayName", displayName)
+                .append("storeAddress", storeAddress)
+                .append("countryShortName", countryShortName)
+                .append("storePhone", storePhone)
+                .append("tokenAvailableFrom", tokenAvailableFrom)
+                .append("startHour", startHour)
+                .append("endHour", endHour)
+                .append("topic", topic)
+                .append("servingNumber", servingNumber)
+                .append("lastNumber", lastNumber)
+                .append("token", token)
+                .append("queueStatus", queueStatus)
+                .append("servicedTime", servicedTime)
+                .append("createDate", createDate)
+                .toString();
     }
 }

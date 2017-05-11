@@ -75,7 +75,7 @@
             </intent-filter>
 
         </activity>
-        <service android:name=".network.NoQueueFirbaseInstanceServices">
+        <service android:name=".network.NoQueueFirebaseInstanceServices">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

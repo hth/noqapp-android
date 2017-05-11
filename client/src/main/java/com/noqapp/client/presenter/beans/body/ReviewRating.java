@@ -23,13 +23,23 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-
 public class ReviewRating {
+    @JsonProperty("codeQR")
+    private String codeQR;
+
     @JsonProperty("ra")
     private String ratingCount;
 
     @JsonProperty("hr")
     private String hoursSaved;
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public void setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+    }
 
     public String getRatingCount() {
         return ratingCount;

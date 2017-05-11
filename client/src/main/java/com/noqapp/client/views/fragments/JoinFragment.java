@@ -16,6 +16,7 @@ import com.noqapp.client.presenter.QueuePresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.utils.AppUtilities;
 import com.noqapp.client.utils.Formatter;
+import com.noqapp.client.utils.UserUtils;
 import com.noqapp.client.views.activities.LaunchActivity;
 
 import butterknife.BindView;
@@ -76,7 +77,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
                 QueueModel.queuePresenter = this;
-                QueueModel.getQueueState(LaunchActivity.getLaunchActivity().getUdid(), codeQR);
+                QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
