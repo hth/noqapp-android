@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +28,7 @@ import com.noqapp.merchant.helper.NetworkHelper;
 import com.noqapp.merchant.model.types.QueueStatusEnum;
 import com.noqapp.merchant.network.NOQueueMessagingService;
 import com.noqapp.merchant.presenter.beans.JsonTopic;
+import com.noqapp.merchant.utils.AppUtils;
 import com.noqapp.merchant.utils.Constants;
 import com.noqapp.merchant.views.fragments.LoginFragment;
 import com.noqapp.merchant.views.fragments.MerchantListFragment;
@@ -55,6 +57,10 @@ public class LaunchActivity extends AppCompatActivity {
     private ImageView actionbarBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (!new AppUtils().isTablet(getApplicationContext()))
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        else
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         launchActivity = this;
@@ -69,9 +75,9 @@ public class LaunchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(launchActivity)
-                        .setTitle("Logout")
-                        .setMessage("Would you like to logout?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setTitle(getString(R.string.title_logout))
+                        .setMessage(getString(R.string.msg_logout))
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //unsubscribe the topics
                                 unSubscribeTopics();
@@ -81,7 +87,7 @@ public class LaunchActivity extends AppCompatActivity {
                                 replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // user doesn't want to logout
                             }
@@ -230,7 +236,7 @@ public class LaunchActivity extends AppCompatActivity {
         if (fm.getBackStackEntryCount() == 0) {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastPress > 3000) {
-                backpressToast = Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
+                backpressToast = Toast.makeText(launchActivity, getString(R.string.exit_the_app), Toast.LENGTH_LONG);
                 backpressToast.show();
                 lastPress = currentTime;
             } else {

@@ -1,6 +1,7 @@
 package com.noqapp.merchant.views.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.noqapp.merchant.R;
+import com.noqapp.merchant.utils.AppUtils;
 
 
 public class SplashScreen extends AppCompatActivity {
@@ -19,6 +21,10 @@ public class SplashScreen extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (!new AppUtils().isTablet(getApplicationContext()))
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        else
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         super.onCreate(savedInstanceState);
         //   getSupportActionBar().hide();
         SplashHandler mHandler = new SplashHandler();
