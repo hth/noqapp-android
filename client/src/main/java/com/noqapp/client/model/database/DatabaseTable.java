@@ -6,7 +6,7 @@ package com.noqapp.client.model.database;
  */
 public class DatabaseTable {
 
-    public static final String DB_NAME = "noqueue.db";
+    static final String DB_NAME = "noqueue.db";
 
     public static class KeyValue {
         public static final String TABLE_NAME = "KEY_VALUE";
