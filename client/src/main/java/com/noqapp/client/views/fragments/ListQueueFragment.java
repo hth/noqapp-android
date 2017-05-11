@@ -24,7 +24,7 @@ import com.noqapp.client.presenter.beans.body.DeviceToken;
 import com.noqapp.client.utils.UserUtils;
 import com.noqapp.client.views.activities.LaunchActivity;
 import com.noqapp.client.views.adapters.ListQueueAdapter;
-import com.noqapp.client.views.interfaces.Token_QueueViewInterface;
+import com.noqapp.client.views.interfaces.TokenQueueViewInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import java.util.List;
 
 
 
-public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQueuePresenter, Token_QueueViewInterface {
+public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQueuePresenter, TokenQueueViewInterface {
 
     private RelativeLayout rl_empty_screen;
     public static boolean isCurrentQueueCall = false;
@@ -166,7 +166,7 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     }
 
     @Override
-    public void token_QueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
+    public void tokenQueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size()) + "::" + String.valueOf(historylist.size()));
         initListView(currentlist,historylist);

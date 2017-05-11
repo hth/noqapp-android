@@ -8,9 +8,9 @@ import java.util.List;
  * Created by omkar on 4/1/17.
  */
 
-public interface Token_QueueViewInterface {
+public interface TokenQueueViewInterface {
 
     void dataSavedStatus(int msg);
 
-    void token_QueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist);
+    void tokenQueueList(List<JsonTokenAndQueue> currentQueueList, List<JsonTokenAndQueue> historyQueueList);
 }
