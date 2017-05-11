@@ -24,7 +24,7 @@ public class MerchantProfileModel {
     public static MerchantPresenter merchantPresenter;
 
     static {
-        merchantProfileService = RetrofitClient.getClient(BuildConfig.NOQAPP_MOBILE).create(MerchantProfileService.class);
+        merchantProfileService = RetrofitClient.getClient().create(MerchantProfileService.class);
     }
 
     /**
