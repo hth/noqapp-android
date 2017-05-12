@@ -14,7 +14,6 @@ import com.noqapp.client.R;
 import com.noqapp.client.helper.PhoneFormatterUtil;
 import com.noqapp.client.helper.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
-import com.noqapp.client.model.database.utils.KeyValueUtils;
 import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.presenter.ResponsePresenter;
 import com.noqapp.client.presenter.TokenPresenter;
@@ -28,8 +27,6 @@ import com.noqapp.client.views.activities.LaunchActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.noqapp.client.model.database.utils.KeyValueUtils.KEYS.XR_DID;
 
 
 public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPresenter, ResponsePresenter {
@@ -68,7 +65,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_after_join, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         Bundle bundle = getArguments();
         if (null != bundle) {
             codeQR = bundle.getString(KEY_CODEQR);
@@ -76,12 +73,12 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             storePhone = bundle.getString(KEY_STOREPHONE);
             queueName = bundle.getString(KEY_QUEUENAME);
             address = bundle.getString(KEY_ADDRESS);
-            String countryshortname=bundle.getString(KEY_COUNTRY_SHORT_NAME,"US");
+            String countryShortName = bundle.getString(KEY_COUNTRY_SHORT_NAME, "US");
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
             tv_mobile.setText(storePhone);
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(countryshortname,storePhone));
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(countryShortName, storePhone));
             tv_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,11 +92,11 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 }
             });
             topic = bundle.getString(KEY_TOPIC);
-            if(bundle.getBoolean(KEY_FROM_LIST,false)) {
+            if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 tv_total_value.setText(bundle.getString(KEY_SERVING_NO));
                 tv_current_value.setText(bundle.getString(KEY_TOKEN));
                 tv_how_long.setText(bundle.getString(KEY_HOW_LONG));
-            }else{
+            } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
                     callQueue();
@@ -132,7 +129,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
                 NoQueueDB.deleteTokenQueue(codeQR);
                 navigateToList();
-
             } else {
                 Toast.makeText(getActivity(), "Failed to cancel the queue", Toast.LENGTH_LONG).show();
             }
@@ -150,7 +146,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
 
     @Override
     public void tokenPresenterError() {
-
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
@@ -175,8 +170,19 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             Log.d("code qr ::", codeQR);
             QueueModel.tokenPresenter = this;
             QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
+
+            //TODO put this on a background thread after sleep of 5 seconds
+            try {
+                /* Just for sanity, fetch current queue to populate table as user may not visit Queues tab. */
+                Thread.sleep(5000);
+                //Chandra need help here
+                //QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
+            } catch (InterruptedException e) {
+                Log.e(TAG, "Failed getting all joined queue reason=" + e.getLocalizedMessage(), e);
+            }
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();

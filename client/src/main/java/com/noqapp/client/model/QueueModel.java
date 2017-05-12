@@ -12,8 +12,12 @@ import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
+import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.client.presenter.beans.body.DeviceToken;
+import com.noqapp.client.utils.UserUtils;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,7 +88,8 @@ public final class QueueModel {
                         //// TODO: 4/16/17 just for testing : remove below line after testing done
                         //tokenAndQueuePresenter.noCurrentQueue();
                         //Todo : uncomment the queuresponse
-                        tokenAndQueuePresenter.queueResponse(response.body().getTokenAndQueues());
+                        List<JsonTokenAndQueue> jsonTokenAndQueues = response.body().getTokenAndQueues();
+                        tokenAndQueuePresenter.queueResponse(jsonTokenAndQueues);
                     } else {
                         NoQueueDB.deleteCurrentQueue();
                         Log.d(TAG, "Empty currently joined history");
@@ -146,7 +151,7 @@ public final class QueueModel {
         queueService.joinQueue(did, DEVICE_TYPE, VERSION_RELEASE, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
-                if (response.body() != null) {
+                if (response.body() != null && response.body().getError() == null) {
                     Log.d("Response", String.valueOf(response.body()));
                     tokenPresenter.tokenPresenterResponse(response.body());
                 } else {
