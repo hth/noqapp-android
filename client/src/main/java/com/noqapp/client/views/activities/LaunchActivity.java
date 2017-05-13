@@ -356,7 +356,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public String getDeviceID(){
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
                 NoQueueBaseActivity.mypref, Context.MODE_PRIVATE);
-        return sharedpreferences.getString(NoQueueBaseActivity.KEY_DEVICE_ID, "");
-       // Log.v("device id check",sharedpreferences.getString(NoQueueBaseActivity.KEY_DEVICE_ID, ""));
+        return sharedpreferences.getString(NoQueueBaseActivity.XR_DID, "");
+       // Log.v("device id check",sharedpreferences.getString(NoQueueBaseActivity.XR_DID, ""));
     }
 }

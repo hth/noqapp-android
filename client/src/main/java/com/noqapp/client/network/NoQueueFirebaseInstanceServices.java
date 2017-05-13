@@ -7,16 +7,10 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.noqapp.client.model.DeviceModel;
-import com.noqapp.client.model.database.DBUtils;
-import com.noqapp.client.model.database.utils.KeyValueUtils;
 import com.noqapp.client.presenter.beans.body.DeviceToken;
 import com.noqapp.client.views.activities.NoQueueBaseActivity;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.UUID;
-
-import static com.noqapp.client.model.database.utils.KeyValueUtils.KEYS.XR_DID;
 
 public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
     private final String TAG = NoQueueFirebaseInstanceServices.class.getSimpleName();
@@ -36,7 +30,7 @@ public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
 
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
                 NoQueueBaseActivity.mypref, Context.MODE_PRIVATE);
-        deviceId =sharedpreferences.getString(NoQueueBaseActivity.KEY_DEVICE_ID, "");
+        deviceId =sharedpreferences.getString(NoQueueBaseActivity.XR_DID, "");
         if(deviceId.equals("")){
             deviceId = UUID.randomUUID().toString();
             setSharPreferanceDeviceID(sharedpreferences,deviceId);
@@ -51,7 +45,7 @@ public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
 
     private void setSharPreferanceDeviceID(SharedPreferences sharedpreferences, String deviceid) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString(NoQueueBaseActivity.KEY_DEVICE_ID, deviceid);
+        editor.putString(NoQueueBaseActivity.XR_DID, deviceid);
         editor.commit();
     }
 

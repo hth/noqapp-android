@@ -197,10 +197,6 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
 
         listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild);
 
-        expListView.setAdapter(listAdapter);
-        expListView.expandGroup(0);//By default expand the list first group
-        expListView.expandGroup(1);
-
         if (currentlist.size() == 0) {
             LayoutInflater inflater = getActivity().getLayoutInflater();
             ViewGroup header = (ViewGroup)inflater.inflate(R.layout.listview_header, expListView, false);
@@ -220,6 +216,10 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
             ViewGroup footer = (ViewGroup) inflater.inflate(R.layout.listview_footer, expListView, false);
             expListView.addFooterView(footer, null, false);
         }
+        expListView.setAdapter(listAdapter);
+        expListView.expandGroup(0);//By default expand the list first group
+        expListView.expandGroup(1);
+
         // Listview Group click listener
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
