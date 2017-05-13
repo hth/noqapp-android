@@ -91,7 +91,7 @@ public class DBUtils {
                 count = cursor.getInt(0);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error counting tables " + e.getLocalizedMessage(), e);
+            Log.e(TAG, "Failed counting tables as DB does not exists, reason=" + e.getLocalizedMessage());
         } finally {
             if (null != cursor) {
                 cursor.close();
