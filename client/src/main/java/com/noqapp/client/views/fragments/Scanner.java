@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
@@ -13,88 +12,44 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.zxing.client.android.CaptureActivity;
-import com.noqapp.client.R;
 import com.noqapp.client.views.activities.BarcodeScannerActivity;
-import com.noqapp.client.views.activities.LaunchActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-import static com.noqapp.client.BuildConfig.NOQAPP_MOBILE;
+public abstract class Scanner extends NoQueueBaseFragment implements CaptureActivity.BarcodeScannedResultCallback {
 
-
-public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureActivity.BarcodeScannedResultCallback {
-
-    private final String TAG = ScanQueueFragment.class.getSimpleName();
+    private final String TAG = Scanner.class.getSimpleName();
     private final int CAMERA_AND_STORAGE_PERMISSION_CODE = 102;
     private final String[] CAMERA_AND_STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
 
-    @BindView(R.id.rl_empty)
-    protected RelativeLayout rl_empty;
 
-    @BindView(R.id.btnScanQRCode)
-    protected Button btnScanQRCode;
 
-    private String currentTab = "";
-    private boolean fromList = false;
-
-    public ScanQueueFragment() {
+    public Scanner() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
-        ButterKnife.bind(this, view);
+
         BarcodeScannerActivity.barcodeScannedResultCallback = this;
-        return view;
+        return super.onCreateView( inflater,  container,
+                 savedInstanceState);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        currentTab = LaunchActivity.tabHome;
-        Bundle bundle = getArguments();
-        if (null != bundle) {
-            if (bundle.getBoolean(KEY_FROM_LIST, false)) {
-                // don 't start the scanner
-                currentTab = LaunchActivity.tabList;
-                fromList = true;
-            } else {
-                startScanningBarcode();
-            }
 
-        } else
-            startScanningBarcode();
 
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!fromList)// to not modify the actionbar if it is coming from list
-            LaunchActivity.getLaunchActivity().setActionBarTitle("ScanQ");
-        LaunchActivity.getLaunchActivity().enableDisableBack(false);
-    }
 
-    @OnClick(R.id.btnScanQRCode)
-    public void scanQR() {
-        startScanningBarcode();
-    }
 
-    private void startScanningBarcode() {
+    protected void startScanningBarcode() {
         if (isCameraAndStoragePermissionAllowed()) {
             scanBarcode();
         } else {
@@ -110,20 +65,21 @@ public class ScanQueueFragment extends NoQueueBaseFragment implements CaptureAct
             Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
         } else {
             if (rawData.startsWith("https://tp.receiptofi.com")) {
-                String[] codeQR = rawData.split("/");
-                Bundle b = new Bundle();
-                b.putString(KEY_CODEQR, codeQR[3]);
-                b.putBoolean(KEY_FROM_LIST, fromList);
-                JoinFragment jf = new JoinFragment();
-                jf.setArguments(b);
-                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, currentTab);
+                try{
+                    String[] codeQR = rawData.split("/");
+                    barcodeResult(codeQR[3]);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
             } else {
                 Toast toast = Toast.makeText(getActivity(), "QR Code is not a NoQueue Code", Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
     }
-
+protected abstract void barcodeResult(String codeqr);
     @Override
     public void onSaveInstanceState(Bundle outState) {
         //No call for super(). Bug on API Level > 11.

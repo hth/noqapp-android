@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQueuePresenter, TokenQueueViewInterface {
+public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter, TokenQueueViewInterface {
 
     private RelativeLayout rl_empty_screen;
     public static boolean isCurrentQueueCall = false;
@@ -66,7 +67,8 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
     public void callQueue() {
         LaunchActivity.getLaunchActivity().progressDialog.show();
         QueueModel.tokenAndQueuePresenter = this;
-        QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
+       // QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
+        QueueModel.getAllJoinedQueue("123");
         isCurrentQueueCall = true;
     }
 
@@ -75,8 +77,8 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         //Todo Check the flow of history queue
         //QueueModel.getAllHistoricalJoinedQueue(LaunchActivity.DID);
         DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-        //QueueModel.getAllHistoricalJoinedQueue("123", deviceToken);
-        QueueModel.getAllHistoricalJoinedQueue(NoQueueFirebaseInstanceServices.createOrFindDeviceId(), deviceToken);
+        QueueModel.getAllHistoricalJoinedQueue("123", deviceToken);
+        //QueueModel.getAllHistoricalJoinedQueue(NoQueueFirebaseInstanceServices.createOrFindDeviceId(), deviceToken);
         //QueueModel.getAllJoinedQueue(LaunchActivity.DID);
     }
 
@@ -99,6 +101,16 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
 
         //ButterKnife.bind(this,view);
         return view;
+    }
+
+    @Override
+    protected void barcodeResult(String codeqr) {
+        Bundle b = new Bundle();
+        b.putString(KEY_CODEQR, codeqr);
+        b.putBoolean(KEY_FROM_LIST, true);
+        JoinFragment jf = new JoinFragment();
+        jf.setArguments(b);
+        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
     }
 
     @Override
@@ -175,9 +187,9 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         //historylist.clear();
        // currentlist=historylist;
 
-        for (int i=0;i<historylist.size();i++)
-            currentlist.add(historylist.get(i));
-        historylist.clear();
+//        for (int i=0;i<historylist.size();i++)
+//            currentlist.add(historylist.get(i));
+//        historylist.clear();
 //        for (int i=0;i<10;i++)
 //            currentlist.add(historylist.get(0));
         // Adding child data
@@ -195,16 +207,22 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         if (currentlist.size() == 0) {
             LayoutInflater inflater = getActivity().getLayoutInflater();
             ViewGroup header = (ViewGroup)inflater.inflate(R.layout.listview_header, expListView, false);
+            Button btn_scn =(Button) header.findViewById(R.id.btnScanQRCode);
+            btn_scn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startScanningBarcode();
+                }
+            });
             expListView.addHeaderView(header, null, false);
-            //frame_scan.setVisibility(View.VISIBLE);
         } else {
-            expListView.addHeaderView(null, null, false);
+           // expListView.addHeaderView(null, null, false);
         }
-       // if(historylist.size()==0){
+        if(historylist.size()==0) {
             LayoutInflater inflater = getActivity().getLayoutInflater();
-            ViewGroup header = (ViewGroup)inflater.inflate(R.layout.listview_footer, expListView, false);
-            expListView.addFooterView(header, null, false);
-       // }
+            ViewGroup footer = (ViewGroup) inflater.inflate(R.layout.listview_footer, expListView, false);
+            expListView.addFooterView(footer, null, false);
+        }
         // Listview Group click listener
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
