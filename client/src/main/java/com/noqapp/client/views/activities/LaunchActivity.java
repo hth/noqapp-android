@@ -7,13 +7,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,13 +26,11 @@ import com.noqapp.client.R;
 import com.noqapp.client.helper.NetworkHelper;
 import com.noqapp.client.model.database.DBUtils;
 import com.noqapp.client.model.database.DatabaseHandler;
-import com.noqapp.client.model.database.utils.KeyValueUtils;
 import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.client.network.NOQueueMessagingService;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.utils.Constants;
-import com.noqapp.client.utils.UserUtils;
 import com.noqapp.client.views.fragments.AfterJoinFragment;
 import com.noqapp.client.views.fragments.ListQueueFragment;
 import com.noqapp.client.views.fragments.LoginFragment;
@@ -50,8 +48,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.noqapp.client.model.database.utils.KeyValueUtils.KEYS.XR_DID;
-import static com.noqapp.client.network.NoQueueFirebaseInstanceServices.createOrFindDeviceId;
+
 
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
@@ -105,15 +102,16 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RDH = DatabaseHandler.getsInstance(this);
-        if (DBUtils.countTables() == 0 || KeyValueUtils.doesTableExists() && TextUtils.isEmpty(UserUtils.getDeviceId())) {
+        if (DBUtils.countTables() == 0 ) {
             Log.d(TAG, "Found authId empty, re-set data");
             DBUtils.dbReInitialize();
-            KeyValueUtils.updateInsert(XR_DID, createOrFindDeviceId());
         }
 
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
         launchActivity = this;
+        Log.v("device id check",getDeviceID());
+
         networkHelper = new NetworkHelper(this);
         rl_home.setOnClickListener(this);
         rl_list.setOnClickListener(this);
@@ -353,5 +351,12 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     public void enableDisableBack(boolean isShown) {
         actionbarBack.setVisibility(isShown ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public String getDeviceID(){
+        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
+                NoQueueBaseActivity.mypref, Context.MODE_PRIVATE);
+        return sharedpreferences.getString(NoQueueBaseActivity.KEY_DEVICE_ID, "");
+       // Log.v("device id check",sharedpreferences.getString(NoQueueBaseActivity.KEY_DEVICE_ID, ""));
     }
 }

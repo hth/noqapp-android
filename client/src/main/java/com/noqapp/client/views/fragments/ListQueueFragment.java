@@ -67,19 +67,16 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     public void callQueue() {
         LaunchActivity.getLaunchActivity().progressDialog.show();
         QueueModel.tokenAndQueuePresenter = this;
-       // QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
-        QueueModel.getAllJoinedQueue("123");
+        QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
         isCurrentQueueCall = true;
     }
 
     public void callQueueHistory() {
         QueueModel.tokenAndQueuePresenter = this;
         //Todo Check the flow of history queue
-        //QueueModel.getAllHistoricalJoinedQueue(LaunchActivity.DID);
+
         DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-        QueueModel.getAllHistoricalJoinedQueue("123", deviceToken);
-        //QueueModel.getAllHistoricalJoinedQueue(NoQueueFirebaseInstanceServices.createOrFindDeviceId(), deviceToken);
-        //QueueModel.getAllJoinedQueue(LaunchActivity.DID);
+        QueueModel.getAllHistoricalJoinedQueue(UserUtils.getDeviceId(), deviceToken);
     }
 
     @Override
