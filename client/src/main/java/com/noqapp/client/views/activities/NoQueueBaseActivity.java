@@ -24,6 +24,9 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_UUID= "uuid";
     public static final int ACCOUNTKIT_REQUEST_CODE = 99;
 
+    public static final String mypref="shared_pref";
+    public static String KEY_DEVICE_ID="device_id";
+
     public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();

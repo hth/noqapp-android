@@ -2,6 +2,7 @@ package com.noqapp.client.utils;
 
 import com.noqapp.client.model.database.utils.KeyValueUtils;
 import com.noqapp.client.network.NoQueueFirebaseInstanceServices;
+import com.noqapp.client.views.activities.LaunchActivity;
 
 /**
  * User: hitender
@@ -19,6 +20,6 @@ public class UserUtils {
     }
 
     public static String getDeviceId() {
-        return NoQueueFirebaseInstanceServices.createOrFindDeviceId();
+        return LaunchActivity.getLaunchActivity().getDeviceID();
     }
 }

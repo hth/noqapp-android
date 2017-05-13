@@ -1,5 +1,7 @@
 package com.noqapp.client.network;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -8,6 +10,7 @@ import com.noqapp.client.model.DeviceModel;
 import com.noqapp.client.model.database.DBUtils;
 import com.noqapp.client.model.database.utils.KeyValueUtils;
 import com.noqapp.client.presenter.beans.body.DeviceToken;
+import com.noqapp.client.views.activities.NoQueueBaseActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,9 +19,9 @@ import java.util.UUID;
 import static com.noqapp.client.model.database.utils.KeyValueUtils.KEYS.XR_DID;
 
 public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
-    private static final String TAG = NoQueueFirebaseInstanceServices.class.getSimpleName();
+    private final String TAG = NoQueueFirebaseInstanceServices.class.getSimpleName();
+    private String deviceId="";
 
-    public static String deviceId="";
 
     @Override
     public void onTokenRefresh() {
@@ -30,31 +33,27 @@ public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
 
     private void sendRegistrationToServer(String refreshToken) {
         DeviceToken deviceToken = new DeviceToken(refreshToken);
-        if (DBUtils.countTables() > 0) {
-            if (StringUtils.isBlank(KeyValueUtils.getValue(XR_DID))) {
-                KeyValueUtils.updateInsert(XR_DID, createOrFindDeviceId());
-            }
-            //TODO presenter to be included
-            DeviceModel.register(KeyValueUtils.getValue(XR_DID), deviceToken);
-            Log.d(TAG, "Registered deviceId=" + deviceId);
-        } else {
-            Log.d(TAG, "No tables, skipping registering deviceId");
+
+        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
+                NoQueueBaseActivity.mypref, Context.MODE_PRIVATE);
+        deviceId =sharedpreferences.getString(NoQueueBaseActivity.KEY_DEVICE_ID, "");
+        if(deviceId.equals("")){
+            deviceId = UUID.randomUUID().toString();
+            setSharPreferanceDeviceID(sharedpreferences,deviceId);
+            Log.v("device id_created",deviceId);
+
+        }else {
+            Log.v("device id exist", deviceId);
         }
+        DeviceModel.register(deviceId, deviceToken);
+
     }
 
-    public static String createOrFindDeviceId() {
-        try {
-            if (DBUtils.countTables() > 0 && StringUtils.isNotBlank(KeyValueUtils.getValue(XR_DID))) {
-            /* Do not call UserUtils.getDeviceId() since it maps to this call. */
-                deviceId = KeyValueUtils.getValue(XR_DID);
-            } else {
-                deviceId = UUID.randomUUID().toString();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-
-        return deviceId;
+    private void setSharPreferanceDeviceID(SharedPreferences sharedpreferences, String deviceid) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(NoQueueBaseActivity.KEY_DEVICE_ID, deviceid);
+        editor.commit();
     }
+
+
 }
