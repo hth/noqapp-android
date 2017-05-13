@@ -224,7 +224,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         } else if (v == tv_male) {
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-            tv_male.setBackgroundResource(R.drawable.square_redbg_drawable);
+            tv_male.setBackgroundResource(R.drawable.gender_redbg);
 
             SpannableString ss = new SpannableString("Male  ");
             Drawable d = getResources().getDrawable(R.drawable.check_white);
@@ -238,7 +238,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
                     0,0,0,0);
         } else if (v == tv_female) {
             gender = "F";
-            tv_female.setBackgroundResource(R.drawable.square_redbg_drawable);
+            tv_female.setBackgroundResource(R.drawable.gender_redbg);
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
             tv_female.setCompoundDrawablePadding(0);
             tv_male.setCompoundDrawablesWithIntrinsicBounds(
