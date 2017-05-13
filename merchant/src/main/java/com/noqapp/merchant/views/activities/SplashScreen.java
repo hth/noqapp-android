@@ -8,8 +8,10 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
+import com.crashlytics.android.Crashlytics;
 import com.noqapp.merchant.R;
 import com.noqapp.merchant.utils.AppUtils;
+import io.fabric.sdk.android.Fabric;
 
 
 public class SplashScreen extends AppCompatActivity {
@@ -26,6 +28,7 @@ public class SplashScreen extends AppCompatActivity {
         else
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         //   getSupportActionBar().hide();
         SplashHandler mHandler = new SplashHandler();
         setContentView(R.layout.splash);
