@@ -77,19 +77,14 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                     Toast.makeText(ReviewActivity.this, "Please rate the service", Toast.LENGTH_LONG).show();
                 } else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        int selectedId = radioSave.getCheckedRadioButtonId();
-                        RadioButton radioSexButton = (RadioButton) findViewById(selectedId);
-
-                        Toast.makeText(ReviewActivity.this,
-                                "Time saved :" + radioSexButton.getText() +
-                                        "\n Your rating is :" + ratingBar.getRating(),
-                                Toast.LENGTH_SHORT).show();
-
                         ReviewRating rr = new ReviewRating();
                         JsonTokenAndQueue jtk = (JsonTokenAndQueue) extras.getSerializable("object");
                         rr.setCodeQR(jtk.getCodeQR());
                         rr.setToken(jtk.getToken());
-                        rr.setHoursSaved("1");
+
+                        rr.setHoursSaved(String.valueOf(radioSave.indexOfChild(findViewById(radioSave.getCheckedRadioButtonId()))));
+                                //radioSave.indexOfChild(radioSave.getCheckedRadioButtonId()));
+
                         rr.setRatingCount(String.valueOf(Math.round(ratingBar.getRating())));
 
                         LaunchActivity.getLaunchActivity().progressDialog.show();

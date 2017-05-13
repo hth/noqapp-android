@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.noqapp.client.R;
@@ -47,23 +49,55 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         JsonTokenAndQueue queue = (JsonTokenAndQueue) getChild(groupPosition, childPosition);
 
-        if (null == convertView) {
-            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            if (groupPosition == 0) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        if (null == rowLayout) {
+//
+//            if (groupPosition == 0) {
+//                rowLayout = (LinearLayout) inflater.inflate(R.layout.listitem_currentqueue, null,false);
+//            } else {
+//                rowLayout = (LinearLayout) inflater.inflate(R.layout.listitem_historyqueue, null,false);
+//            }
+//        }else {
+//            rowLayout = (LinearLayout) convertView;
+//        }
+
+
+
+
+        switch (groupPosition){
+
+
+            case 0 :
                 convertView = inflater.inflate(R.layout.listitem_currentqueue, null);
-            } else {
+                TextView txtnumber = (TextView) convertView.findViewById(R.id.txtNumber);
+                TextView txtStoreName = (TextView) convertView.findViewById(R.id.txtStoreName);
+                TextView txtStorePhoneNumber = (TextView) convertView.findViewById(R.id.txtStorePhoneNo);
+                TextView txtToken = (TextView) convertView.findViewById(R.id.txtToken);
+                txtnumber.setText("#" + String.valueOf(childPosition));
+                txtStoreName.setText(queue.getBusinessName());
+                // show only for current queue not for history
+                txtStorePhoneNumber.setText(PhoneFormatterUtil.formatNumber(queue.getCountryShortName(), queue.getStorePhone()));
+                txtToken.setText(String.valueOf(queue.getToken()));
+                break;
+
+            case 1 :
                 convertView = inflater.inflate(R.layout.listitem_historyqueue, null);
-            }
-        }
-        TextView txtnumber = (TextView) convertView.findViewById(R.id.txtNumber);
-        TextView txtStoreName = (TextView) convertView.findViewById(R.id.txtStoreName);
-        TextView txtStorePhoneNumber = (TextView) convertView.findViewById(R.id.txtStorePhoneNo);
-        TextView txtToken = (TextView) convertView.findViewById(R.id.txtToken);
-        txtnumber.setText("#" + String.valueOf(childPosition));
-        txtStoreName.setText(queue.getBusinessName());
-        // show only for current queue not for history
-        txtStorePhoneNumber.setText(PhoneFormatterUtil.formatNumber(queue.getCountryShortName(), queue.getStorePhone()));
-        txtToken.setText(String.valueOf(queue.getToken()));
+                TextView txtnumber1 = (TextView) convertView.findViewById(R.id.txtNumber);
+                TextView txtStoreName1 = (TextView) convertView.findViewById(R.id.txtStoreName);
+                TextView txtStorePhoneNumber1 = (TextView) convertView.findViewById(R.id.txtStorePhoneNo);
+                TextView txtToken1 = (TextView) convertView.findViewById(R.id.txtToken);
+                txtnumber1.setText("#" + String.valueOf(childPosition));
+                txtStoreName1.setText(queue.getBusinessName());
+                // show only for current queue not for history
+                txtStorePhoneNumber1.setText(PhoneFormatterUtil.formatNumber(queue.getCountryShortName(), queue.getStorePhone()));
+                txtToken1.setText(String.valueOf(queue.getToken()));
+
+                break;
+
+
+
+
+    }
         return convertView;
     }
 
@@ -91,22 +125,40 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        if (rowLayout == null) {
+//
+//
+////            if (groupPosition == 0) {
+////                rowLayout = (RelativeLayout) inflater.inflate(R.layout.list_group_blank, null,false);
+////            } else {
+//                rowLayout = (RelativeLayout) inflater.inflate(R.layout.list_group, null,false);
+//          //  }
+//        }else{
+//            rowLayout=(RelativeLayout)convertView;
+//        }
 
-            if (groupPosition == 0) {
+        switch (groupPosition){
+
+
+            case 0 :
                 convertView = inflater.inflate(R.layout.list_group_blank, null);
-            } else {
+                break;
+
+            case 1 :
                 convertView = inflater.inflate(R.layout.list_group, null);
-            }
+                TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
+                ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
+                lblListHeader.setTypeface(null, Typeface.BOLD);
+                lblListHeader.setText(headerTitle);
+                ivGroupIndicator.setSelected(isExpanded);
+                break;
+
+
+
+
         }
-        if (groupPosition > 0) {
-            TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
-            lblListHeader.setTypeface(null, Typeface.BOLD);
-            lblListHeader.setText(headerTitle);
-            ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
-            ivGroupIndicator.setSelected(isExpanded);
-        }
+
 
         return convertView;
     }
