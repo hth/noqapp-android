@@ -5,10 +5,9 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
 
-public class NoQueueFirbaseInstanceServices extends FirebaseInstanceIdService {
-
-    private static final String TAG = NoQueueFirbaseInstanceServices.class.getSimpleName();
+    private static final String TAG = NoQueueFirebaseInstanceServices.class.getSimpleName();
 
     @Override
     public void onTokenRefresh() {
