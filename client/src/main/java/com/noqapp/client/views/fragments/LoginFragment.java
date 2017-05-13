@@ -179,6 +179,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
 
 
     private boolean validate() {
+        new AppUtilities().hideKeyBoard(getActivity());
         boolean isValid = true;
         edt_phoneNo.setError(null);
         if (TextUtils.isEmpty(edt_phoneNo.getText())) {

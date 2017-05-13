@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.mukesh.countrypicker.fragments.CountryPicker;
 import com.mukesh.countrypicker.models.Country;
@@ -37,6 +38,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -100,7 +102,17 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                edt_birthday.setText(dateFormatter.format(newDate.getTime()));
+                Date current = newDate.getTime();
+                int date_diff =new Date().compareTo(current);
+
+                if(date_diff<0){
+                    Toast.makeText(getActivity(), "Please select a valid date",  Toast.LENGTH_LONG).show();
+                    edt_birthday.setText("");
+                }
+                else{
+                    edt_birthday.setText(dateFormatter.format(newDate.getTime()));
+                }
+
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -222,13 +234,13 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);
-
+        new AppUtilities().hideKeyBoard(getActivity());
 
         if (TextUtils.isEmpty(edt_Name.getText())) {
             edt_Name.setError("Please enter name");
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Name.getText()) && edt_Name.getText().length() < 4) {
+        if (!TextUtils.isEmpty(edt_Name.getText()) && edt_Name.getText().length() < 5) {
             edt_Name.setError("Name length should be greater than 3");
             isValid = false;
         }
