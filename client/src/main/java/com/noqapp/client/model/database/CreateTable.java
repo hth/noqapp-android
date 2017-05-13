@@ -16,15 +16,6 @@ public class CreateTable {
     private CreateTable() {
     }
 
-    public static void createTableKeyValue(SQLiteDatabase db) {
-        Log.d(TAG, "executing createTableKeyValue");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + KeyValue.TABLE_NAME + "("
-                + KeyValue.KEY + " TEXT ,"
-                + KeyValue.VALUE + " TEXT " +
-
-                ");");
-    }
-
     public static void createTableTokenQueue(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableTokenQueue");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TokenQueue.TABLE_NAME + "("

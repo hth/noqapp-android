@@ -52,7 +52,7 @@ public class LaunchActivity extends AppCompatActivity {
     private Toast backpressToast;
     public ProgressDialog progressDialog;
     private BroadcastReceiver broadcastReceiver;
-    private MerchantListFragment merchantListFragment;
+    private static MerchantListFragment merchantListFragment;
     public Toolbar toolbar;
     private ImageView actionbarBack;
     @Override

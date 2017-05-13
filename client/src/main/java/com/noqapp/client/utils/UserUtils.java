@@ -1,7 +1,5 @@
 package com.noqapp.client.utils;
 
-import com.noqapp.client.model.database.utils.KeyValueUtils;
-import com.noqapp.client.network.NoQueueFirebaseInstanceServices;
 import com.noqapp.client.views.activities.LaunchActivity;
 
 /**
@@ -12,11 +10,11 @@ import com.noqapp.client.views.activities.LaunchActivity;
 public class UserUtils {
 
     public static String getEmail() {
-        return KeyValueUtils.getValue(KeyValueUtils.KEYS.XR_MAIL);
+        return null;
     }
 
     public static String getAuth() {
-        return KeyValueUtils.getValue(KeyValueUtils.KEYS.XR_AUTH);
+        return null;
     }
 
     public static String getDeviceId() {

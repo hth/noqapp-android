@@ -4,8 +4,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.util.Log;
 
-import com.noqapp.client.model.database.utils.KeyValueUtils;
-
 import static com.noqapp.client.views.activities.LaunchActivity.RDH;
 
 /**
@@ -24,10 +22,6 @@ public class DBUtils {
      */
     public static void dbReInitialize() {
         dbReInitializeNonKeyValues();
-        dbReInitializeKeyValues();
-
-        initializeDefaults();
-        initializeAuthDefaults();
     }
 
     public static void dbReInitializeNonKeyValues() {
@@ -40,35 +34,6 @@ public class DBUtils {
         /** Create tables. */
         CreateTable.createTableTokenQueue(RDH.getDb());
         CreateTable.createTableTokenQueueHistory(RDH.getDb());
-    }
-
-    private  static void dbReInitializeKeyValues() {
-        Log.d(TAG, "Initialize table " + DatabaseTable.KeyValue.TABLE_NAME);
-
-        /** Delete table. */
-        RDH.getWritableDatabase().execSQL("Drop table if exists " + DatabaseTable.KeyValue.TABLE_NAME);
-
-        /** Create table. */
-        CreateTable.createTableKeyValue(RDH.getDb());
-    }
-
-    /**
-     * Invoked in three different scenarios.
-     * Once called during onCreate() when app is installed
-     * And when X-R-MAIL does not exists
-     * And when new user logs in.
-     */
-    public static void initializeDefaults() {
-        Log.d(TAG, "Initialize key value defaults");
-
-        KeyValueUtils.updateInsert(KeyValueUtils.KEYS.XR_DID, "");
-    }
-
-    private static void initializeAuthDefaults() {
-        Log.d(TAG, "Initialize key value auth defaults");
-
-        KeyValueUtils.updateInsert(KeyValueUtils.KEYS.XR_MAIL, "");
-        KeyValueUtils.updateInsert(KeyValueUtils.KEYS.XR_AUTH, "");
     }
 
     /**

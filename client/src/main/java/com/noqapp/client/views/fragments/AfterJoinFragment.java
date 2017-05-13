@@ -170,16 +170,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             Log.d("code qr ::", codeQR);
             QueueModel.tokenPresenter = this;
             QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
-
-            //TODO put this on a background thread after sleep of 5 seconds
-            try {
-                /* Just for sanity, fetch current queue to populate table as user may not visit Queues tab. */
-                Thread.sleep(5000);
-                //Chandra need help here
-                //QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
-            } catch (InterruptedException e) {
-                Log.e(TAG, "Failed getting all joined queue reason=" + e.getLocalizedMessage(), e);
-            }
         }
     }
 

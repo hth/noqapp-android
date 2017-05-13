@@ -8,15 +8,6 @@ public class DatabaseTable {
 
     static final String DB_NAME = "noqueue.db";
 
-    public static class KeyValue {
-        public static final String TABLE_NAME = "KEY_VALUE";
-        public static final String KEY = "key";
-        public static final String VALUE = "value";
-
-        private KeyValue() {
-        }
-    }
-
     public static class TokenQueue {
         public static final String TABLE_NAME = "TOKEN_QUEUE";
         public static final String CODE_QR = "codeQR";
