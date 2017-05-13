@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.noqapp.merchant.R;
 import com.noqapp.merchant.views.activities.LaunchActivity;
@@ -20,6 +21,7 @@ public class MerchantViewPagerFragment extends Fragment {
     public ViewPagerAdapter adapter;
     private ViewPager viewPager;
     private static int pos = 0;
+    public static int pagercurrrentpos=0;
     private ImageView leftNav, rightNav;
 
 
@@ -27,6 +29,7 @@ public class MerchantViewPagerFragment extends Fragment {
 
     public static MerchantViewPagerFragment getInstance(int position) {
         pos = position;
+        pagercurrrentpos=position;
         return merchantViewPagerFragment = new MerchantViewPagerFragment();
     }
 
@@ -68,6 +71,28 @@ public class MerchantViewPagerFragment extends Fragment {
                     tab++;
                     viewPager.setCurrentItem(tab);
                 }
+            }
+        });
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int position) {
+                pagercurrrentpos=position;
+                //Toast.makeText(getActivity(),"position is : "+pagercurrrentpos,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+                // TODO Auto-generated method stub
+
+                System.out.println("onPageScrolled");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int num) {
+                // TODO Auto-generated method stub
+
+
             }
         });
         return view;

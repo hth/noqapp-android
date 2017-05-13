@@ -24,6 +24,7 @@ import com.noqapp.merchant.presenter.beans.JsonTopic;
 import com.noqapp.merchant.presenter.beans.body.Served;
 import com.noqapp.merchant.views.activities.LaunchActivity;
 import com.noqapp.merchant.views.fragments.MerchantListFragment;
+import com.noqapp.merchant.views.fragments.MerchantViewPagerFragment;
 import com.noqapp.merchant.views.interfaces.ManageQueuePresenter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +35,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     private Context context;
 
     private LayoutInflater inflater;
-    private int selectedpos = 0;
+
 
     public ViewPagerAdapter(Context context) {
         this.context = context;
@@ -60,7 +61,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
-        selectedpos = position;
+
 
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -128,7 +129,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             public void onClick(View v) {
                 if (lq.getToken() == 0) {
                     Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
-                } else if (lq.getRemaining() == 0) {
+                } else if (lq.getRemaining() == 0 && lq.getServingNumber()== 0) {
                     Toast.makeText(context, context.getString(R.string.error_empty_wait), Toast.LENGTH_LONG).show();
                 } else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -167,7 +168,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     public void manageQueueResponse(JsonToken token) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         if (null != token) {
-            JsonTopic jt = MerchantListFragment.topics.get(selectedpos);
+            JsonTopic jt = MerchantListFragment.topics.get(MerchantViewPagerFragment.pagercurrrentpos);
             if (token.getCodeQR().equalsIgnoreCase(jt.getCodeQR())) {
                 if (StringUtils.isNotBlank(jt.getCustomerName())) {
                     Log.i(TAG, "Show customer name=" + jt.getCustomerName());
@@ -175,7 +176,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 jt.setToken(token.getToken());
                 jt.setQueueStatus(token.getQueueStatus());
                 jt.setServingNumber(token.getServingNumber());
-                MerchantListFragment.topics.set(selectedpos, jt);
+                MerchantListFragment.topics.set(MerchantViewPagerFragment.pagercurrrentpos, jt);
                 notifyDataSetChanged();
             }
 

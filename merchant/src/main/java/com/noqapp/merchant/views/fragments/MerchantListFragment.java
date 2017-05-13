@@ -29,7 +29,7 @@ import java.util.List;
 public class MerchantListFragment extends Fragment implements TopicPresenter {
 
 
-    public MerchantListAdapter adapter;
+    public static MerchantListAdapter adapter;
     public static List<JsonTopic> topics;
     private ListView listview;
     private RelativeLayout rl_empty_screen;

@@ -53,27 +53,10 @@ public class NoQueueDB {
             try {
                 if (isCurrentQueueCall) {
                     tempTableName = TokenQueue.TABLE_NAME;
-//                    if (isTokenExist(tempTableName,tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate())) {
-//                        String wherClause = CODE_QR+" = ?"+" AND "+CREATE_DATE+" = ?";
-//                        values.remove(CODE_QR);
-//                        values.remove(CREATE_DATE);
-//
-//                        db.update(tempTableName,values,wherClause,new String[]{tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate()});
-//                    } else {
-//                        msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
-//                    }
                     RDH.getWritableDatabase().insertWithOnConflict(tempTableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 } else {
                     tempTableName = TokenQueueHistory.TABLE_NAME;
-//                    if (isTokenExist(tempTableName,tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate())) {
-//                        String wherClause = CODE_QR+" = ?"+" AND "+CREATE_DATE+" = ?";
-//                        values.remove(CODE_QR);
-//                        values.remove(CREATE_DATE);
-//                        db.update(tempTableName,values,wherClause,new String[]{tokenAndQueue.getCodeQR(),tokenAndQueue.getCreateDate()});
-//                    } else {
-//                        msg = db.insertOrThrow(TABLE_TOKENQUEUE, null, values);
-//                    }
                     RDH.getWritableDatabase().insertWithOnConflict(tempTableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 }
@@ -136,8 +119,6 @@ public class NoQueueDB {
 
     public static JsonTokenAndQueue getCurrentQueueObject(String codeQR) {
         JsonTokenAndQueue tokenAndQueue = null;
-        // Cursor cursor = db.query(true, TABLE_TOKENQUEUE, new String[]{CODE_QR}, codeQR, null, null, null, null, null);
-        ///  Cursor cursor = db.query(true,TABLE_TOKENQUEUE, null, "codeqr=?", new String[] { codeQR }, null, null,CREATE_DATE, null);
         Cursor cursor = RDH.getReadableDatabase().query(true, TokenQueue.TABLE_NAME, null, TokenQueue.CODE_QR + "=?", new String[]{codeQR}, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             try {
@@ -166,9 +147,6 @@ public class NoQueueDB {
     }
 
     public static List<JsonTokenAndQueue> getHistoryQueueList() {
-        String[] columns = new String[]{TokenQueue.BUSINESS_NAME, TokenQueue.CODE_QR, TokenQueue.STORE_ADDRESS, TokenQueue.STORE_PHONE, TokenQueue.TOKEN};
-        String whereClause = TokenQueue.CODE_QR + " = ? and " + TokenQueue.CREATE_DATE + " = ?";
-        //String [] selectionArgs = new String[] {codeQR,dateTime};
         String orderBy = TokenQueue.CREATE_DATE;
 
         List<JsonTokenAndQueue> listJsonQueue = new ArrayList<>();

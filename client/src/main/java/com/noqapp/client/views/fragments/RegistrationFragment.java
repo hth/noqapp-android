@@ -5,16 +5,22 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -71,6 +77,8 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     EditText tv_female;
     @BindView(R.id.ll_gender)
     LinearLayout ll_gender;
+    @BindView(R.id.btnRegistration)
+    Button btnRegistration;
 
 //color picker lib link -> https://github.com/madappstechnologies/country-picker-android
 
@@ -158,9 +166,13 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
 
     }
 
-    @OnClick(R.id.btnContinueRegistration)
+    @OnClick(R.id.btnRegistration)
     public void action_Registration() {
         if (validate()) {
+            btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
+            btnRegistration.setTextColor(Color.WHITE);
+            btnRegistration.setCompoundDrawablesWithIntrinsicBounds(
+                    0,0,R.drawable.arrow_white,0);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
                 callRegistrationAPI();
@@ -212,13 +224,33 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         } else if (v == tv_male) {
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-            tv_male.setBackgroundResource(R.drawable.square_redbg_drawable);
-            // ll_gender.setBackgroundDrawable(getResources().getDrawable(R.drawable.male_select));
+            tv_male.setBackgroundResource(R.drawable.gender_redbg);
+
+            SpannableString ss = new SpannableString("Male  ");
+            Drawable d = getResources().getDrawable(R.drawable.check_white);
+            d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+            ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
+            ss.setSpan(span, 5, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            tv_male.setText(ss);
+            tv_male.setTextColor(Color.WHITE);
+            tv_female.setTextColor(Color.BLACK);
+            tv_female.setCompoundDrawablesWithIntrinsicBounds(
+                    0,0,0,0);
         } else if (v == tv_female) {
             gender = "F";
-            tv_female.setBackgroundResource(R.drawable.square_redbg_drawable);
+            tv_female.setBackgroundResource(R.drawable.gender_redbg);
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
-            //ll_gender.setBackgroundDrawable(getResources().getDrawable(R.drawable.female_select));
+            tv_female.setCompoundDrawablePadding(0);
+            tv_male.setCompoundDrawablesWithIntrinsicBounds(
+                    0,0,0,0);
+            tv_male.setTextColor(Color.BLACK);
+            tv_female.setTextColor(Color.WHITE);
+            SpannableString ss = new SpannableString("Female  ");
+            Drawable d = getResources().getDrawable(R.drawable.check_white);
+            d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+            ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
+            ss.setSpan(span, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            tv_female.setText(ss);
         }
     }
 
@@ -231,6 +263,10 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     }
 
     private boolean validate() {
+        btnRegistration.setBackgroundResource(R.drawable.button_drawable);
+        btnRegistration.setTextColor(getResources().getColor(R.color.colorMobile));
+        btnRegistration.setCompoundDrawablesWithIntrinsicBounds(
+                0,0,R.drawable.arrow_small,0);
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);
@@ -273,4 +309,5 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         mePresenter.meView = this;
         mePresenter.callProfile(registration);
     }
+
 }
