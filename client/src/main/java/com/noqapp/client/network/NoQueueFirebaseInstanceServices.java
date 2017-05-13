@@ -18,7 +18,7 @@ import static com.noqapp.client.model.database.utils.KeyValueUtils.KEYS.XR_DID;
 public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
     private static final String TAG = NoQueueFirebaseInstanceServices.class.getSimpleName();
 
-    public static String deviceId;
+    public static String deviceId="";
 
     @Override
     public void onTokenRefresh() {
@@ -43,12 +43,17 @@ public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
     }
 
     public static String createOrFindDeviceId() {
-        if (DBUtils.countTables() > 0 && StringUtils.isNotBlank(KeyValueUtils.getValue(XR_DID))) {
+        try {
+            if (DBUtils.countTables() > 0 && StringUtils.isNotBlank(KeyValueUtils.getValue(XR_DID))) {
             /* Do not call UserUtils.getDeviceId() since it maps to this call. */
-            deviceId = KeyValueUtils.getValue(XR_DID);
-        } else {
-            deviceId = UUID.randomUUID().toString();
+                deviceId = KeyValueUtils.getValue(XR_DID);
+            } else {
+                deviceId = UUID.randomUUID().toString();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
 
         return deviceId;
     }

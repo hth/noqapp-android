@@ -66,7 +66,7 @@ public class KeyValueUtils {
 
     //http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/
     public static String getValue(String key) {
-        String value = null;
+        String value = "";
         Cursor cursor = null;
         try {
             cursor = RDH.getReadableDatabase().query(
