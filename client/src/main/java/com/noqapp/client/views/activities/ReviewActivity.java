@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.client.R;
-import com.noqapp.client.helper.ShowAlertInformation;
+import com.noqapp.client.utils.ShowAlertInformation;
 import com.noqapp.client.model.ReviewModel;
 import com.noqapp.client.presenter.ReviewPresenter;
 import com.noqapp.client.presenter.beans.JsonResponse;

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.client.R;
-import com.noqapp.client.helper.PhoneFormatterUtil;
+import com.noqapp.client.utils.PhoneFormatterUtil;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 
 import java.util.HashMap;
