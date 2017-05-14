@@ -9,20 +9,20 @@ import android.util.Log;
  * User: hitender
  * Date: 5/9/17 6:28 PM
  */
-public class DatabaseHandler extends SQLiteOpenHelper {
-    private final String TAG = DatabaseHandler.class.getSimpleName();
+public class DatabaseHelper extends SQLiteOpenHelper {
+    private final String TAG = DatabaseHelper.class.getSimpleName();
     private static final String DB_NAME = "noqueue.db";
     private static final int DB_VERSION = 1;
-    private static DatabaseHandler dbInstance;
+    private static DatabaseHelper dbInstance;
     private SQLiteDatabase db = null;
 
-    private DatabaseHandler(Context context) {
+    private DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-    public static DatabaseHandler getsInstance(Context context) {
+    public static DatabaseHelper getsInstance(Context context) {
         if (dbInstance == null) {
-            dbInstance = new DatabaseHandler(context);
+            dbInstance = new DatabaseHelper(context);
         }
         return dbInstance;
     }

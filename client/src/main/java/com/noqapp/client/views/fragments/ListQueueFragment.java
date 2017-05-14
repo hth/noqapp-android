@@ -252,15 +252,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
                 b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
                 b.putBoolean(KEY_FROM_LIST, true);
                 if (groupPosition == 0) {
-                    b.putString(KEY_DISPLAYNAME, jsonQueue.getBusinessName());
-                    b.putString(KEY_STOREPHONE, jsonQueue.getStorePhone());
-                    b.putString(KEY_QUEUENAME, jsonQueue.getDisplayName());
-                    b.putString(KEY_ADDRESS, jsonQueue.getStoreAddress());
-                    b.putString(KEY_TOPIC, jsonQueue.getTopic());
-                    b.putString(KEY_SERVING_NO, String.valueOf(jsonQueue.getServingNumber()));
-                    b.putString(KEY_TOKEN, String.valueOf(jsonQueue.getToken()));
-                    b.putString(KEY_HOW_LONG, String.valueOf(jsonQueue.afterHowLong()));
-                    b.putString(KEY_COUNTRY_SHORT_NAME, jsonQueue.getCountryShortName());
+                    b.putSerializable(KEY_JSON_TOKEN_QUEUE,jsonQueue);
                     AfterJoinFragment ajf = new AfterJoinFragment();
                     ajf.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, LaunchActivity.tabList);

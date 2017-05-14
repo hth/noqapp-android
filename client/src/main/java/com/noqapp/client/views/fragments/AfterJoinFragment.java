@@ -19,6 +19,7 @@ import com.noqapp.client.presenter.ResponsePresenter;
 import com.noqapp.client.presenter.TokenPresenter;
 import com.noqapp.client.presenter.beans.JsonResponse;
 import com.noqapp.client.presenter.beans.JsonToken;
+import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.utils.AppUtilities;
 import com.noqapp.client.utils.Formatter;
 import com.noqapp.client.utils.UserUtils;
@@ -51,6 +52,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     protected Button btn_cancel_queue;
 
     public JsonToken mJsonToken;
+    private JsonTokenAndQueue jsonQueue;
     private String codeQR;
     private String displayName;
     private String storePhone;
@@ -68,12 +70,14 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         ButterKnife.bind(this, view);
         Bundle bundle = getArguments();
         if (null != bundle) {
+            jsonQueue = (JsonTokenAndQueue) bundle.getSerializable(KEY_JSON_TOKEN_QUEUE);
             codeQR = bundle.getString(KEY_CODEQR);
-            displayName = bundle.getString(KEY_DISPLAYNAME);
-            storePhone = bundle.getString(KEY_STOREPHONE);
-            queueName = bundle.getString(KEY_QUEUENAME);
-            address = bundle.getString(KEY_ADDRESS);
-            String countryShortName = bundle.getString(KEY_COUNTRY_SHORT_NAME, "US");
+            displayName = jsonQueue.getBusinessName();
+            storePhone = jsonQueue.getStorePhone();
+            queueName = jsonQueue.getDisplayName();
+            address = jsonQueue.getStoreAddress();
+            topic = jsonQueue.getTopic();
+            String countryShortName = jsonQueue.getCountryShortName();
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
@@ -91,11 +95,11 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                     AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
                 }
             });
-            topic = bundle.getString(KEY_TOPIC);
+
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
-                tv_total_value.setText(bundle.getString(KEY_SERVING_NO));
-                tv_current_value.setText(bundle.getString(KEY_TOKEN));
-                tv_how_long.setText(bundle.getString(KEY_HOW_LONG));
+                tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
+                tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
+                tv_how_long.setText(String.valueOf(jsonQueue.afterHowLong()));
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
@@ -113,10 +117,16 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     public void tokenPresenterResponse(JsonToken token) {
         Log.d(TAG, token.toString());
         this.mJsonToken = token;
-        tv_total_value.setText(String.valueOf(String.valueOf(token.getServingNumber())));
-        tv_current_value.setText(String.valueOf(String.valueOf(token.getToken())));
+        tv_total_value.setText(String.valueOf(token.getServingNumber()));
+        tv_current_value.setText(String.valueOf(token.getToken()));
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
+
+
+        jsonQueue.setServingNumber(token.getServingNumber());
+        jsonQueue.setToken(token.getToken());
+        //save data to DB
+        NoQueueDB.saveJoinQueueObject(jsonQueue);
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
