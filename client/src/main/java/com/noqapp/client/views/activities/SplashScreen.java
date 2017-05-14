@@ -15,7 +15,7 @@ import io.fabric.sdk.android.Fabric;
 
 public class SplashScreen extends AppCompatActivity {
 
-    protected boolean isAactive = true;
+    protected boolean isActive = true;
     protected int splashTime = 2000;
     protected static boolean display = true;
     static SplashScreen splashScreen;
@@ -34,7 +34,6 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private static class SplashHandler extends Handler {
-
         // This method is used to handle received messages
         public void handleMessage(Message msg) {
             // switch to identify the message by its code
@@ -56,11 +55,10 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            isAactive = false;
+            isActive = false;
             display = false;
             return true;
         }
         return super.onKeyUp(keyCode, event);
     }
-
 }

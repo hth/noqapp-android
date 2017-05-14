@@ -21,11 +21,11 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_AUTOJOIN = "autojoin";
     public static final String PREKEY_INVITECODE = "invitecode";
     public static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
-    public static final String PREKEY_UUID= "uuid";
     public static final int ACCOUNTKIT_REQUEST_CODE = 99;
 
-    public static final String mypref="shared_pref";
-    public static String XR_DID ="X-R-DID";
+    /* Secured Shared Preference. */
+    public static final String SHARED_PREF_SEC = "shared_pref";
+    public static String XR_DID = "X-R-DID";
 
     public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();

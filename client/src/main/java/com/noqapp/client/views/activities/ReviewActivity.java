@@ -61,7 +61,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             tv_store_name.setText(jtk.getBusinessName());
             tv_queue_name.setText(jtk.getDisplayName());
             tv_address.setText(Formatter.getFormattedAddress(jtk.getStoreAddress()));
-            String datetime= DateFormat.getDateTimeInstance().format(new Date());
+            String datetime = DateFormat.getDateTimeInstance().format(new Date());
             tv_mobile.setText("Date of service : " + datetime);
         } else {
             //Do nothing as of now
