@@ -78,32 +78,33 @@ public final class QueueModel {
      *
      * @param did
      */
-    public static void getAllJoinedQueue(String did) {
+    public static void getCurrentQueueList(String did) {
         queueService.getAllJoinedQueue(did, DEVICE_TYPE).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(Call<JsonTokenAndQueueList> call, Response<JsonTokenAndQueueList> response) {
                 if (response.body() != null && response.body().getError() == null) {
-                    if (response.body().getTokenAndQueues().size() > 0) {
+                   /// if (response.body().getTokenAndQueues().size() > 0) {
                         Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
                         //// TODO: 4/16/17 just for testing : remove below line after testing done
                         //tokenAndQueuePresenter.noCurrentQueue();
                         //Todo : uncomment the queuresponse
                         List<JsonTokenAndQueue> jsonTokenAndQueues = response.body().getTokenAndQueues();
-                        tokenAndQueuePresenter.queueResponse(jsonTokenAndQueues);
-                    } else {
-                        NoQueueDB.deleteCurrentQueue();
-                        Log.d(TAG, "Empty currently joined history");
-                        tokenAndQueuePresenter.noCurrentQueue();
-                    }
+                        tokenAndQueuePresenter.currentQueueResponse(jsonTokenAndQueues);
+//                    } else {
+//                        NoQueueDB.deleteCurrentQueue();
+//                        Log.d(TAG, "Empty currently joined history");
+//                        tokenAndQueuePresenter.noCurrentQueue();
+//                    }
                 } else if (response.body() != null && response.body().getError() != null) {
                     Log.e(TAG, "Got error");
+                    tokenAndQueuePresenter.currentQueueError();
                 }
             }
 
             @Override
             public void onFailure(Call<JsonTokenAndQueueList> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                tokenAndQueuePresenter.queueError();
+                tokenAndQueuePresenter.currentQueueError();
             }
         });
     }
@@ -113,30 +114,31 @@ public final class QueueModel {
      *
      * @param did
      */
-    public static void getAllHistoricalJoinedQueue(String did, DeviceToken deviceToken) {
+    public static void getHistoryQueueList(String did, DeviceToken deviceToken) {
         queueService.getAllHistoricalJoinedQueue(did, DEVICE_TYPE, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(Call<JsonTokenAndQueueList> call, Response<JsonTokenAndQueueList> response) {
                 if (response.body() != null && response.body().getError() == null) {
-                    if (response.body().getTokenAndQueues().size() > 0) {
+                   // if (response.body().getTokenAndQueues().size() > 0) {
                         Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
                         //Todo: Remove below line after testing done and uncomment queue response
                         // tokenAndQueuePresenter.noHistoryQueue();
-                        tokenAndQueuePresenter.queueResponse(response.body().getTokenAndQueues());
-                    } else {
-                        //TODO something logical
-                        Log.d(TAG, "Empty historical history");
-                        tokenAndQueuePresenter.noHistoryQueue();
-                    }
+                        tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues());
+//                    } else {
+//                        //TODO something logical
+//                        Log.d(TAG, "Empty historical history");
+//                        tokenAndQueuePresenter.noHistoryQueue();
+//                    }
                 } else if (response.body() != null && response.body().getError() != null) {
                     Log.e(TAG, "Got error");
+                    tokenAndQueuePresenter.historyQueueError();
                 }
             }
 
             @Override
             public void onFailure(Call<JsonTokenAndQueueList> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                tokenAndQueuePresenter.queueError();
+                tokenAndQueuePresenter.historyQueueError();
             }
         });
     }

@@ -73,7 +73,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 TextView txtStoreName = (TextView) convertView.findViewById(R.id.txtStoreName);
                 TextView txtStorePhoneNumber = (TextView) convertView.findViewById(R.id.txtStorePhoneNo);
                 TextView txtToken = (TextView) convertView.findViewById(R.id.txtToken);
-                txtnumber.setText("#" + String.valueOf(childPosition));
+                txtnumber.setText("#" + String.valueOf(childPosition+1));
                 txtStoreName.setText(queue.getBusinessName());
                 // show only for current queue not for history
                 txtStorePhoneNumber.setText(PhoneFormatterUtil.formatNumber(queue.getCountryShortName(), queue.getStorePhone()));
@@ -86,10 +86,10 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 TextView txtStoreName1 = (TextView) convertView.findViewById(R.id.txtStoreName);
                 TextView txtStorePhoneNumber1 = (TextView) convertView.findViewById(R.id.txtStorePhoneNo);
                 TextView txtToken1 = (TextView) convertView.findViewById(R.id.txtToken);
-                txtnumber1.setText("#" + String.valueOf(childPosition));
+                txtnumber1.setText("#" + String.valueOf(childPosition+1));
                 txtStoreName1.setText(queue.getBusinessName());
                 // show only for current queue not for history
-                txtStorePhoneNumber1.setText(PhoneFormatterUtil.formatNumber(queue.getCountryShortName(), queue.getStorePhone()));
+                txtStorePhoneNumber1.setText(queue.getStorePhone());//PhoneFormatterUtil.formatNumber(queue.getCountryShortName(), queue.getStorePhone()));
                 txtToken1.setText(String.valueOf(queue.getToken()));
 
                 break;

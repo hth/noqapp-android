@@ -10,11 +10,13 @@ import java.util.List;
  */
 
 public interface TokenAndQueuePresenter {
-    void queueResponse(List<JsonTokenAndQueue> tokenAndQueues);
 
-    void queueError();
+    void currentQueueResponse(List<JsonTokenAndQueue> tokenAndQueues);
 
-    void noCurrentQueue();
+    void historyQueueResponse(List<JsonTokenAndQueue> tokenAndQueues);
 
-    void noHistoryQueue();
+    void historyQueueError();
+
+    void currentQueueError();
+
 }

@@ -168,8 +168,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             case R.id.rl_list:
                 setCurrentSelectedTabTag(tabList);
                 if (null == fragmentsStack.get(tabList)) {
-                    fragment = ListQueueFragment.getInstance();
-                    ListQueueFragment.isCurrentQueueCall = true;
+                    fragment = new ListQueueFragment();
                     createStackForTab(tabList);
                     addFragmentToStack(fragment);
                     replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
@@ -184,7 +183,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 setCurrentSelectedTabTag(tabMe);
                 if (null == fragmentsStack.get(tabMe)) {
                     fragment = MeFragment.getInstance();
-                    //fragment = new ReviewFragment();
                     createStackForTab(tabMe);
                     addFragmentToStack(fragment);
                     replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);

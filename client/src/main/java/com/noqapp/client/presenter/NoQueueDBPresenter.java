@@ -44,8 +44,11 @@ public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
     }
 
     @Override
-    public void dbSaved(int msg) {
-        tokenQueueViewInterface.dataSavedStatus(msg);
+    public void dbSaved(boolean msg) {
+        if(msg)
+            tokenQueueViewInterface.currentQueueSaved();
+        else
+            tokenQueueViewInterface.historyQueueSaved();
     }
 
     @Override
