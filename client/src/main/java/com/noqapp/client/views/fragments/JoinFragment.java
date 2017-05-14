@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.noqapp.client.R;
-import com.noqapp.client.helper.PhoneFormatterUtil;
-import com.noqapp.client.helper.ShowAlertInformation;
+import com.noqapp.client.utils.PhoneFormatterUtil;
+import com.noqapp.client.utils.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.QueuePresenter;
 import com.noqapp.client.presenter.beans.JsonQueue;

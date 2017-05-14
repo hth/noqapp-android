@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.noqapp.client.R;
-import com.noqapp.client.helper.PhoneFormatterUtil;
+import com.noqapp.client.utils.PhoneFormatterUtil;
 import com.noqapp.client.views.activities.LaunchActivity;
 import com.noqapp.client.views.activities.NoQueueBaseActivity;
 

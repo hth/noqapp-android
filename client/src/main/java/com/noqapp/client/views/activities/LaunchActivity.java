@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.client.R;
-import com.noqapp.client.helper.NetworkHelper;
+import com.noqapp.client.utils.NetworkHelper;
 import com.noqapp.client.model.database.DatabaseHelper;
 import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.model.types.FirebaseMessageTypeEnum;

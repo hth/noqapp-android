@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.client.R;
-import com.noqapp.client.helper.ShowAlertInformation;
+import com.noqapp.client.utils.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.presenter.NoQueueDBPresenter;
 import com.noqapp.client.presenter.TokenAndQueuePresenter;
