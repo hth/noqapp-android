@@ -128,19 +128,16 @@ public class NoQueueDB {
     }
 
     public static void deleteCurrentQueue() {
-        dbHandler.getWritableDb().execSQL("delete from "+ TokenQueue.TABLE_NAME);
+        dbHandler.getWritableDb().execSQL("delete from " + TokenQueue.TABLE_NAME);
     }
 
     public static void saveCurrentQueue(List<JsonTokenAndQueue> list) {
-        long msg = 0;
+
         for (JsonTokenAndQueue tokenAndQueue : list) {
             ContentValues values = createQueueContentValues(tokenAndQueue);
             try {
-                long succcesscount =dbHandler.getWritableDb().insertWithOnConflict(TokenQueue.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                long succcesscount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueue.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 Log.d(TAG, "Data Saved current queue " + String.valueOf(succcesscount));
-                if (msg > 0) {
-                    Log.d(TAG, "Data Saved " + String.valueOf(msg));
-                }
             } catch (SQLException e) {
                 Log.e(TAG, "Exception ::" + e.getMessage().toString());
             }
@@ -149,22 +146,19 @@ public class NoQueueDB {
     }
 
     public static void saveHistoryQueue(List<JsonTokenAndQueue> list) {
-        long msg = 0;
         for (JsonTokenAndQueue tokenAndQueue : list) {
             ContentValues values = createQueueContentValues(tokenAndQueue);
             try {
-                long succcesscount= dbHandler.getWritableDb().insertWithOnConflict(TokenQueueHistory.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                Log.d(TAG, "Data Saved hsitory queue " + String.valueOf(succcesscount));
-                if (msg > 0) {
-                    Log.d(TAG, "Data Saved " + String.valueOf(msg));
-                }
+                long succcesscount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueueHistory.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                Log.d(TAG, "Data Saved history queue " + String.valueOf(succcesscount));
             } catch (SQLException e) {
                 Log.e(TAG, "Exception ::" + e.getMessage().toString());
             }
         }
         queueDBPresenterInterface.dbSaved(false);
     }
-    private static ContentValues createQueueContentValues(JsonTokenAndQueue tokenAndQueue ){
+
+    private static ContentValues createQueueContentValues(JsonTokenAndQueue tokenAndQueue) {
         ContentValues cv = new ContentValues();
         try {
             cv.put(TokenQueue.CODE_QR, tokenAndQueue.getCodeQR());
@@ -183,16 +177,34 @@ public class NoQueueDB {
             if (null != tokenAndQueue.getQueueStatus()) {
                 cv.put(TokenQueue.QUEUE_STATUS, tokenAndQueue.getQueueStatus().getName());
             }
-
             cv.put(TokenQueue.SERVICED_TIME, tokenAndQueue.getServicedTime());
             cv.put(TokenQueue.CREATE_DATE, tokenAndQueue.getCreateDate());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
         return cv;
     }
 
+    public static void saveJoinQueueObject(JsonTokenAndQueue object) {
 
+            ContentValues values = createQueueContentValues(object);
+            try {
+                long succcesscount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueue.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                Log.d(TAG, "Data Saved in current queue " + String.valueOf(succcesscount));
+            } catch (SQLException e) {
+                Log.e(TAG, "Exception ::" + e.getMessage().toString());
+            }
+    }
 
+    public static void updateJoinQueueObject(String codeQR,String servingno,String token) {
+        try {
+            ContentValues con = new ContentValues();
+            con.put(TokenQueue.SERVING_NUMBER, servingno);
+            con.put(TokenQueue.TOKEN, token);
+            dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?" + codeQR, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

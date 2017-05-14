@@ -131,11 +131,11 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                     Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
                 } else if (lq.getRemaining() == 0 && lq.getServingNumber()== 0) {
                     Toast.makeText(context, context.getString(R.string.error_empty_wait), Toast.LENGTH_LONG).show();
-                } else {
+                } else if (status.equals("Done")) {
+                    Toast.makeText(context, context.getString(R.string.error_done_next), Toast.LENGTH_LONG).show();
+                }else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
-
-
                         Served served = new Served();
                         served.setCodeQR(lq.getCodeQR());
                         served.setQueueStatus(lq.getQueueStatus());

@@ -33,6 +33,7 @@
     <string name="error_done">No one in the queue. you can\'t skip</string>
     <string name="error_empty">No one in the queue </string>
     <string name="error_empty_wait">No one in the queue. Please wait </string>
+    <string name="error_done_next">Everyone in the queue has been served. Please wait for someone to join.</string>
     <!-- Screens-->
     <string name="screen_queue">Queues</string>
     <string name="screen_queue_detail">Queue Detail </string>
