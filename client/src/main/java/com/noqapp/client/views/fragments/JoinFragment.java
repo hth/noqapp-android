@@ -45,6 +45,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     protected Button btn_joinqueue;
 
     private String codeQR;
+    private String countryShortName;
     private JsonQueue jsonQueue;
     private String frtag;
     public JoinFragment() {
@@ -117,6 +118,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getLastNumber()));
         codeQR = jsonQueue.getCodeQR();
+        countryShortName = jsonQueue.getCountryShortName();
     }
 
     @OnClick(R.id.btn_joinqueue)

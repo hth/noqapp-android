@@ -187,14 +187,13 @@ public class NoQueueDB {
     }
 
     public static void saveJoinQueueObject(JsonTokenAndQueue object) {
-
-            ContentValues values = createQueueContentValues(object);
-            try {
-                long succcesscount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueue.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                Log.d(TAG, "Data Saved in current queue " + String.valueOf(succcesscount));
-            } catch (SQLException e) {
-                Log.e(TAG, "Exception ::" + e.getMessage().toString());
-            }
+        ContentValues values = createQueueContentValues(object);
+        try {
+            long rowInsertCount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueue.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            Log.d(TAG, "Data Saved in current queue " + String.valueOf(rowInsertCount));
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed reason=" + e.getLocalizedMessage(), e);
+        }
     }
 
     public static void updateJoinQueueObject(String codeQR,String servingno,String token) {
