@@ -1,11 +1,13 @@
 package com.noqapp.client.views.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,12 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     protected TextView tv_how_long;
     @BindView(R.id.btn_cancel_queue)
     protected Button btn_cancel_queue;
+
+    @BindView(R.id.tv_after)
+    TextView tv_after;
+
+    @BindView(R.id.ll_change_bg)
+    LinearLayout ll_change_bg;
 
     public JsonToken mJsonToken;
     private JsonTokenAndQueue jsonQueue;
@@ -100,6 +108,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
                 tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
                 tv_how_long.setText(String.valueOf(jsonQueue.afterHowLong()));
+                setBackGround(jsonQueue.afterHowLong());
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
@@ -120,6 +129,8 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         tv_total_value.setText(String.valueOf(token.getServingNumber()));
         tv_current_value.setText(String.valueOf(token.getToken()));
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
+
+        setBackGround(token.afterHowLong());
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
 
 
@@ -188,5 +199,35 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Details");
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
+    }
+
+    private void setBackGround(int pos ){
+        tv_after.setTextColor(Color.WHITE);
+        tv_how_long.setTextColor(Color.WHITE);
+        switch (pos){
+            case 1:
+                ll_change_bg.setBackgroundResource(R.drawable.turn_1);
+                break;
+            case 2:
+                ll_change_bg.setBackgroundResource(R.drawable.turn_2);
+                break;
+            case 3:
+                ll_change_bg.setBackgroundResource(R.drawable.turn_3);
+                break;
+            case 4:
+                ll_change_bg.setBackgroundResource(R.drawable.turn_4);
+                break;
+            case 5:
+                ll_change_bg.setBackgroundResource(R.drawable.turn_5);
+                break;
+            default:
+            {   tv_after.setTextColor(getResources().getColor(R.color.colorActionbar));
+                tv_how_long.setTextColor(getResources().getColor(R.color.colorActionbar));
+                ll_change_bg.setBackgroundResource(R.drawable.square_bg_drawable);
+            }
+                break;
+
+
+        }
     }
 }
