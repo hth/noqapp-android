@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -64,12 +63,6 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             //Do nothing as of now
         }
 
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                // Toast.makeText(getActivity(), String.valueOf(rating), Toast.LENGTH_LONG).show();
-            }
-        });
-
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,12 +74,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         JsonTokenAndQueue jtk = (JsonTokenAndQueue) extras.getSerializable("object");
                         rr.setCodeQR(jtk.getCodeQR());
                         rr.setToken(jtk.getToken());
-
                         rr.setHoursSaved(String.valueOf(radioSave.indexOfChild(findViewById(radioSave.getCheckedRadioButtonId()))));
-                                //radioSave.indexOfChild(radioSave.getCheckedRadioButtonId()));
-
                         rr.setRatingCount(String.valueOf(Math.round(ratingBar.getRating())));
-
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         ReviewModel.reviewPresenter = ReviewActivity.this;
                         ReviewModel.review(UserUtils.getDeviceId(), rr);

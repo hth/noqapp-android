@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface TokenQueueViewInterface {
 
-    void dataSavedStatus(int msg);
+    void currentQueueSaved();
+    void historyQueueSaved();
 
     void tokenQueueList(List<JsonTokenAndQueue> currentQueueList, List<JsonTokenAndQueue> historyQueueList);
 }

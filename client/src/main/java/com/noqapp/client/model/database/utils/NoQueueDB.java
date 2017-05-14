@@ -145,7 +145,7 @@ public class NoQueueDB {
                 Log.e(TAG, "Exception ::" + e.getMessage().toString());
             }
         }
-        queueDBPresenterInterface.dbSaved((int) msg);
+        queueDBPresenterInterface.dbSaved(true);
     }
 
     public static void saveHistoryQueue(List<JsonTokenAndQueue> list) {
@@ -162,7 +162,7 @@ public class NoQueueDB {
                 Log.e(TAG, "Exception ::" + e.getMessage().toString());
             }
         }
-        queueDBPresenterInterface.dbSaved((int) msg);
+        queueDBPresenterInterface.dbSaved(false);
     }
     private static ContentValues createQueueContentValues(JsonTokenAndQueue tokenAndQueue ){
         ContentValues cv = new ContentValues();
