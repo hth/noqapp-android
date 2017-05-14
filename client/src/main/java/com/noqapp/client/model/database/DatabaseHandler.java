@@ -10,14 +10,14 @@ import android.util.Log;
  * Date: 5/9/17 6:28 PM
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final String TAG = DatabaseHandler.class.getSimpleName();
-
+    private final String TAG = DatabaseHandler.class.getSimpleName();
+    private static final String DB_NAME = "noqueue.db";
     private static final int DB_VERSION = 1;
     private static DatabaseHandler dbInstance;
     private SQLiteDatabase db = null;
 
     private DatabaseHandler(Context context) {
-        super(context, DatabaseTable.DB_NAME, null, DB_VERSION);
+        super(context, DB_NAME, null, DB_VERSION);
     }
 
     public static DatabaseHandler getsInstance(Context context) {
@@ -37,11 +37,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.d(TAG, "DatabaseHandler onCreate");
         if (null != db) {
             this.db = db;
-            Log.d(TAG, "creating all tables");
         }
+        CreateTable.createAllTable(db);
     }
 
-    public SQLiteDatabase getDb() {
+    public SQLiteDatabase getWritableDb() {
         if (null == db) {
             Log.d(TAG, "db is NULL, re-initialized");
             db = dbInstance.getWritableDatabase();

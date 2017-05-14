@@ -19,22 +19,22 @@ public class CreateTable {
     public static void createTableTokenQueue(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableTokenQueue");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TokenQueue.TABLE_NAME + "("
-                + TokenQueue.CODE_QR + " TEXT ,"
+                + TokenQueue.CODE_QR + " TEXT , "
                 + TokenQueue.BUSINESS_NAME + " TEXT ,"
-                + TokenQueue.DISPLAY_NAME + " TEXT ,"
+                + TokenQueue.DISPLAY_NAME + " TEXT , "
                 + TokenQueue.STORE_ADDRESS + " TEXT ,"
-                + TokenQueue.COUNTRY_SHORT_NAME + " TEXT ,"
-                + TokenQueue.STORE_PHONE + " TEXT ,"
-                + TokenQueue.TOKEN_AVAILABLE_FROM + " TEXT ,"
-                + TokenQueue.START_HOUR + " TEXT ,"
-                + TokenQueue.END_HOUR + " TEXT ,"
-                + TokenQueue.TOPIC + " TEXT ,"
-                + TokenQueue.SERVING_NUMBER + " TEXT ,"
-                + TokenQueue.LAST_NUMBER + " TEXT ,"
-                + TokenQueue.TOKEN + " TEXT ,"
-                + TokenQueue.QUEUE_STATUS + " TEXT ,"
-                + TokenQueue.SERVICED_TIME + " TEXT ,"
-                + TokenQueue.CREATE_DATE + " TEXT ,"
+                + TokenQueue.COUNTRY_SHORT_NAME + " TEXT , "
+                + TokenQueue.STORE_PHONE + " TEXT , "
+                + TokenQueue.TOKEN_AVAILABLE_FROM + " TEXT , "
+                + TokenQueue.START_HOUR + " TEXT , "
+                + TokenQueue.END_HOUR + " TEXT , "
+                + TokenQueue.TOPIC + " TEXT , "
+                + TokenQueue.SERVING_NUMBER + " TEXT , "
+                + TokenQueue.LAST_NUMBER + " TEXT , "
+                + TokenQueue.TOKEN + " TEXT , "
+                + TokenQueue.QUEUE_STATUS + " TEXT , "
+                + TokenQueue.SERVICED_TIME + " TEXT , "
+                + TokenQueue.CREATE_DATE + " TEXT , "
                 + "PRIMARY KEY(`codeqr`,`createdate`)" +
 
                 ");");
@@ -43,24 +43,31 @@ public class CreateTable {
     public static void createTableTokenQueueHistory(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableTokenQueue");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TokenQueueHistory.TABLE_NAME + "("
-                + TokenQueue.CODE_QR + " TEXT ,"
-                + TokenQueue.BUSINESS_NAME + " TEXT ,"
-                + TokenQueue.DISPLAY_NAME + " TEXT ,"
-                + TokenQueue.STORE_ADDRESS + " TEXT ,"
-                + TokenQueue.COUNTRY_SHORT_NAME + " TEXT ,"
-                + TokenQueue.STORE_PHONE + " TEXT ,"
-                + TokenQueue.TOKEN_AVAILABLE_FROM + " TEXT ,"
-                + TokenQueue.START_HOUR + " TEXT ,"
-                + TokenQueue.END_HOUR + " TEXT ,"
-                + TokenQueue.TOPIC + " TEXT ,"
-                + TokenQueue.SERVING_NUMBER + " TEXT ,"
-                + TokenQueue.LAST_NUMBER + " TEXT ,"
-                + TokenQueue.TOKEN + " TEXT ,"
-                + TokenQueue.QUEUE_STATUS + " TEXT ,"
-                + TokenQueue.SERVICED_TIME + " TEXT ,"
-                + TokenQueue.CREATE_DATE + " TEXT ,"
+                + TokenQueue.CODE_QR + " TEXT , "
+                + TokenQueue.BUSINESS_NAME + " TEXT , "
+                + TokenQueue.DISPLAY_NAME + " TEXT , "
+                + TokenQueue.STORE_ADDRESS + " TEXT , "
+                + TokenQueue.COUNTRY_SHORT_NAME + " TEXT , "
+                + TokenQueue.STORE_PHONE + " TEXT , "
+                + TokenQueue.TOKEN_AVAILABLE_FROM + " TEXT , "
+                + TokenQueue.START_HOUR + " TEXT , "
+                + TokenQueue.END_HOUR + " TEXT , "
+                + TokenQueue.TOPIC + " TEXT , "
+                + TokenQueue.SERVING_NUMBER + " TEXT , "
+                + TokenQueue.LAST_NUMBER + " TEXT , "
+                + TokenQueue.TOKEN + " TEXT , "
+                + TokenQueue.QUEUE_STATUS + " TEXT , "
+                + TokenQueue.SERVICED_TIME + " TEXT , "
+                + TokenQueue.CREATE_DATE + " TEXT , "
                 + "PRIMARY KEY(`codeqr`,`createdate`)" +
 
                 ");");
+    }
+
+
+
+    public static void  createAllTable(SQLiteDatabase db){
+        createTableTokenQueue(db);
+        createTableTokenQueueHistory(db);
     }
 }
