@@ -48,6 +48,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     private String countryShortName;
     private JsonQueue jsonQueue;
     private String frtag;
+
     public JoinFragment() {
 
     }
@@ -92,7 +93,6 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     }
 
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -114,7 +114,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_store_name.setText(jsonQueue.getBusinessName());
         tv_queue_name.setText(jsonQueue.getDisplayName());
         tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
-        tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(),jsonQueue.getStorePhone()));
+        tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getLastNumber()));
         codeQR = jsonQueue.getCodeQR();
@@ -126,12 +126,11 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         Bundle b = new Bundle();
         b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
         b.putBoolean(KEY_FROM_LIST, false);
-        b.putSerializable(KEY_JSON_TOKEN_QUEUE,jsonQueue.getJsonTokenAndQueue());
+        b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         AfterJoinFragment ajf = new AfterJoinFragment();
         ajf.setArguments(b);
         replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, frtag);
     }
-
 
 
 }

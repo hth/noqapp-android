@@ -5,8 +5,6 @@ import com.noqapp.client.BuildConfig;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-import static com.noqapp.client.BuildConfig.NOQAPP_MOBILE;
-
 /**
  * User: omkar
  * Date: 3/26/17 11:52 PM

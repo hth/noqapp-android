@@ -26,7 +26,7 @@ public class InviteDetailFragment extends NoQueueBaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_invitedetail, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         Bundle bundle = getArguments();
         if (null != bundle) {
             String title = bundle.getString("title", "");
@@ -53,6 +53,7 @@ public class InviteDetailFragment extends NoQueueBaseFragment {
 
         return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();

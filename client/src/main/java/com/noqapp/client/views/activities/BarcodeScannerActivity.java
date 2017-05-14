@@ -14,9 +14,9 @@ public class BarcodeScannerActivity extends CaptureActivity {
     public void onCreate(Bundle bundle) {
         // TODO Auto-generated method stub
         super.onCreate(bundle);
-        Button btnAnnuler = (Button) findViewById(R.id.btnClose);
+        Button btnClose = (Button) findViewById(R.id.btnClose);
 
-        btnAnnuler.setOnClickListener(new View.OnClickListener() {
+        btnClose.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

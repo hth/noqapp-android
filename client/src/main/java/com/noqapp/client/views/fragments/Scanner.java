@@ -30,7 +30,6 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
     };
 
 
-
     public Scanner() {
 
     }
@@ -40,13 +39,9 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
                              Bundle savedInstanceState) {
 
         BarcodeScannerActivity.barcodeScannedResultCallback = this;
-        return super.onCreateView( inflater,  container,
-                 savedInstanceState);
+        return super.onCreateView(inflater, container,
+                savedInstanceState);
     }
-
-
-
-
 
 
     protected void startScanningBarcode() {
@@ -65,10 +60,10 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
             Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
         } else {
             if (rawData.startsWith("https://tp.receiptofi.com")) {
-                try{
+                try {
                     String[] codeQR = rawData.split("/");
                     barcodeResult(codeQR[3]);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -79,7 +74,9 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
             }
         }
     }
-protected abstract void barcodeResult(String codeqr);
+
+    protected abstract void barcodeResult(String codeqr);
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         //No call for super(). Bug on API Level > 11.

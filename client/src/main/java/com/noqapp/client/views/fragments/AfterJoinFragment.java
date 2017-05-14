@@ -199,10 +199,10 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 
-    private void setBackGround(int pos ){
+    private void setBackGround(int pos) {
         tv_after.setTextColor(Color.WHITE);
         tv_how_long.setTextColor(Color.WHITE);
-        switch (pos){
+        switch (pos) {
             case 1:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_1);
                 break;

@@ -111,13 +111,12 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 Date current = newDate.getTime();
-                int date_diff =new Date().compareTo(current);
+                int date_diff = new Date().compareTo(current);
 
-                if(date_diff<0){
-                    Toast.makeText(getActivity(), "Please select a valid date",  Toast.LENGTH_LONG).show();
+                if (date_diff < 0) {
+                    Toast.makeText(getActivity(), "Please select a valid date", Toast.LENGTH_LONG).show();
                     edt_birthday.setText("");
-                }
-                else{
+                } else {
                     edt_birthday.setText(dateFormatter.format(newDate.getTime()));
                 }
 
@@ -172,7 +171,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
             btnRegistration.setTextColor(Color.WHITE);
             btnRegistration.setCompoundDrawablesWithIntrinsicBounds(
-                    0,0,R.drawable.arrow_white,0);
+                    0, 0, R.drawable.arrow_white, 0);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
                 callRegistrationAPI();
@@ -235,14 +234,14 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             tv_male.setTextColor(Color.WHITE);
             tv_female.setTextColor(Color.BLACK);
             tv_female.setCompoundDrawablesWithIntrinsicBounds(
-                    0,0,0,0);
+                    0, 0, 0, 0);
         } else if (v == tv_female) {
             gender = "F";
             tv_female.setBackgroundResource(R.drawable.gender_redbg);
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
             tv_female.setCompoundDrawablePadding(0);
             tv_male.setCompoundDrawablesWithIntrinsicBounds(
-                    0,0,0,0);
+                    0, 0, 0, 0);
             tv_male.setTextColor(Color.BLACK);
             tv_female.setTextColor(Color.WHITE);
             SpannableString ss = new SpannableString("Female  ");
@@ -266,7 +265,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         btnRegistration.setBackgroundResource(R.drawable.button_drawable);
         btnRegistration.setTextColor(getResources().getColor(R.color.colorMobile));
         btnRegistration.setCompoundDrawablesWithIntrinsicBounds(
-                0,0,R.drawable.arrow_small,0);
+                0, 0, R.drawable.arrow_small, 0);
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);

@@ -15,8 +15,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.noqapp.client.network.NoQueueFirebaseInstanceServices;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -58,7 +56,6 @@ public class AppUtilities {
         return locale.getISO3Country();
     }
 
-
     public static void makeCall(Activity context, String mobileno) {
         if (!TextUtils.isEmpty(mobileno)) {
             int checkPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
@@ -78,7 +75,6 @@ public class AppUtilities {
                 }
             }
         }
-
     }
 
     public static void openAddressInMap(Activity context, String address) {

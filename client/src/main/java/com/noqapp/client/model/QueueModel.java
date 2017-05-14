@@ -2,7 +2,6 @@ package com.noqapp.client.model;
 
 import android.util.Log;
 
-import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.model.response.open.QueueService;
 import com.noqapp.client.network.RetrofitClient;
 import com.noqapp.client.presenter.QueuePresenter;
@@ -15,7 +14,6 @@ import com.noqapp.client.presenter.beans.JsonToken;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.client.presenter.beans.body.DeviceToken;
-import com.noqapp.client.utils.UserUtils;
 
 import java.util.List;
 
@@ -83,13 +81,13 @@ public final class QueueModel {
             @Override
             public void onResponse(Call<JsonTokenAndQueueList> call, Response<JsonTokenAndQueueList> response) {
                 if (response.body() != null && response.body().getError() == null) {
-                   /// if (response.body().getTokenAndQueues().size() > 0) {
-                        Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
-                        //// TODO: 4/16/17 just for testing : remove below line after testing done
-                        //tokenAndQueuePresenter.noCurrentQueue();
-                        //Todo : uncomment the queuresponse
-                        List<JsonTokenAndQueue> jsonTokenAndQueues = response.body().getTokenAndQueues();
-                        tokenAndQueuePresenter.currentQueueResponse(jsonTokenAndQueues);
+                    /// if (response.body().getTokenAndQueues().size() > 0) {
+                    Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
+                    //// TODO: 4/16/17 just for testing : remove below line after testing done
+                    //tokenAndQueuePresenter.noCurrentQueue();
+                    //Todo : uncomment the queuresponse
+                    List<JsonTokenAndQueue> jsonTokenAndQueues = response.body().getTokenAndQueues();
+                    tokenAndQueuePresenter.currentQueueResponse(jsonTokenAndQueues);
 //                    } else {
 //                        NoQueueDB.deleteCurrentQueue();
 //                        Log.d(TAG, "Empty currently joined history");
@@ -119,11 +117,11 @@ public final class QueueModel {
             @Override
             public void onResponse(Call<JsonTokenAndQueueList> call, Response<JsonTokenAndQueueList> response) {
                 if (response.body() != null && response.body().getError() == null) {
-                   // if (response.body().getTokenAndQueues().size() > 0) {
-                        Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
-                        //Todo: Remove below line after testing done and uncomment queue response
-                        // tokenAndQueuePresenter.noHistoryQueue();
-                        tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues());
+                    // if (response.body().getTokenAndQueues().size() > 0) {
+                    Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
+                    //Todo: Remove below line after testing done and uncomment queue response
+                    // tokenAndQueuePresenter.noHistoryQueue();
+                    tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues());
 //                    } else {
 //                        //TODO something logical
 //                        Log.d(TAG, "Empty historical history");
