@@ -25,21 +25,25 @@ import butterknife.OnClick;
 
 
 public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter {
-
     private final String TAG = JoinFragment.class.getSimpleName();
+
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
+
     @BindView(R.id.tv_queue_name)
     protected TextView tv_queue_name;
+
     @BindView(R.id.tv_address)
     protected TextView tv_address;
+
     @BindView(R.id.tv_mobile)
     protected TextView tv_mobile;
+
     @BindView(R.id.tv_total_value)
     protected TextView tv_total_value;
+
     @BindView(R.id.tv_current_value)
     protected TextView tv_current_value;
-
 
     @BindView(R.id.btn_joinqueue)
     protected Button btn_joinqueue;
@@ -49,13 +53,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     private JsonQueue jsonQueue;
     private String frtag;
 
-    public JoinFragment() {
-
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_join, container, false);
         ButterKnife.bind(this, view);
 
@@ -92,7 +91,6 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         return view;
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -102,14 +100,14 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
 
     @Override
     public void queueError() {
-        Log.d("Queue=", "Error");
+        Log.d(TAG, "Queue=Error");
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        Log.d("Queue=", jsonQueue.toString());
+        Log.d(TAG, "Queue=" + jsonQueue.toString());
         this.jsonQueue = jsonQueue;
         tv_store_name.setText(jsonQueue.getBusinessName());
         tv_queue_name.setText(jsonQueue.getDisplayName());
@@ -127,10 +125,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
         b.putBoolean(KEY_FROM_LIST, false);
         b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-        AfterJoinFragment ajf = new AfterJoinFragment();
-        ajf.setArguments(b);
-        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, frtag);
+        AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
+        afterJoinFragment.setArguments(b);
+        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
     }
-
-
 }

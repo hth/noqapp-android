@@ -180,6 +180,7 @@ public class JsonQueue implements Serializable {
                 .append("businessName", businessName)
                 .append("displayName", displayName)
                 .append("storeAddress", storeAddress)
+                .append("countryShortName", countryShortName)
                 .append("storePhone", storePhone)
                 .append("tokenAvailableFrom", tokenAvailableFrom)
                 .append("startHour", startHour)
@@ -189,6 +190,7 @@ public class JsonQueue implements Serializable {
                 .append("servingNumber", servingNumber)
                 .append("lastNumber", lastNumber)
                 .append("queueStatus", queueStatus)
+                .append("servicedTime", servicedTime)
                 .append("created", created)
                 .toString();
     }
