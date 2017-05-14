@@ -17,12 +17,12 @@ public class InviteDetailFragment extends NoQueueBaseFragment {
 
     @BindView(R.id.tv_title)
     protected TextView tv_title;
+
     @BindView(R.id.tv_details)
     protected TextView tv_details;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_invitedetail, container, false);
@@ -60,5 +60,4 @@ public class InviteDetailFragment extends NoQueueBaseFragment {
         LaunchActivity.getLaunchActivity().setActionBarTitle("Invite Details");
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
-
 }

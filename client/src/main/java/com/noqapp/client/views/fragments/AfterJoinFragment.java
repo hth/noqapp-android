@@ -38,18 +38,25 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
 
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
+
     @BindView(R.id.tv_queue_name)
     protected TextView tv_queue_name;
+
     @BindView(R.id.tv_address)
     protected TextView tv_address;
+
     @BindView(R.id.tv_mobile)
     protected TextView tv_mobile;
+
     @BindView(R.id.tv_total_value)
     protected TextView tv_total_value;
+
     @BindView(R.id.tv_current_value)
     protected TextView tv_current_value;
+
     @BindView(R.id.tv_how_long)
     protected TextView tv_how_long;
+
     @BindView(R.id.btn_cancel_queue)
     protected Button btn_cancel_queue;
 
@@ -68,10 +75,8 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private String address;
     private String topic;
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_after_join, container, false);
@@ -88,7 +93,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
-            tv_mobile.setText(storePhone);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), storePhone));
             tv_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
