@@ -85,12 +85,11 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             queueName = jsonQueue.getDisplayName();
             address = jsonQueue.getStoreAddress();
             topic = jsonQueue.getTopic();
-            String countryShortName = jsonQueue.getCountryShortName();
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
             tv_mobile.setText(storePhone);
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(countryShortName, storePhone));
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), storePhone));
             tv_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -179,7 +178,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
-
     }
 
     private void navigateToList() {
@@ -188,7 +186,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
 
     private void callQueue() {
         if (codeQR != null) {
-            Log.d("code qr ::", codeQR);
+            Log.d("CodeQR=", codeQR);
             QueueModel.tokenPresenter = this;
             QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
         }
@@ -221,13 +219,10 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 ll_change_bg.setBackgroundResource(R.drawable.turn_5);
                 break;
             default:
-            {   tv_after.setTextColor(getResources().getColor(R.color.colorActionbar));
+                tv_after.setTextColor(getResources().getColor(R.color.colorActionbar));
                 tv_how_long.setTextColor(getResources().getColor(R.color.colorActionbar));
                 ll_change_bg.setBackgroundResource(R.drawable.square_bg_drawable);
-            }
                 break;
-
-
         }
     }
 }

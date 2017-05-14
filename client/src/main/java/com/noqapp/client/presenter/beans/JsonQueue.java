@@ -160,6 +160,7 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setBusinessName(businessName);
         jsonTokenAndQueue.setDisplayName(displayName);
         jsonTokenAndQueue.setStoreAddress(storeAddress);
+        jsonTokenAndQueue.setCountryShortName(countryShortName);
         jsonTokenAndQueue.setStorePhone(storePhone);
         jsonTokenAndQueue.setTokenAvailableFrom(tokenAvailableFrom);
         jsonTokenAndQueue.setStartHour(startHour);
@@ -191,9 +192,5 @@ public class JsonQueue implements Serializable {
                 .append("queueStatus", queueStatus)
                 .append("created", created)
                 .toString();
-    }
-
-    public String getStorePhoneFormatted() {
-        return PhoneFormatterUtil.formatNumber("IN", storePhone);
     }
 }
