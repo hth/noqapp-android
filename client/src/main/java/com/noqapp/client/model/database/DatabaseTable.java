@@ -6,7 +6,7 @@ package com.noqapp.client.model.database;
  */
 public class DatabaseTable {
 
-    static final String DB_NAME = "noqueue.db";
+
 
     public static class TokenQueue {
         public static final String TABLE_NAME = "TOKEN_QUEUE";

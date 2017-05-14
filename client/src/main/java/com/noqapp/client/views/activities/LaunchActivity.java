@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.noqapp.client.R;
 import com.noqapp.client.helper.NetworkHelper;
-import com.noqapp.client.model.database.DBUtils;
 import com.noqapp.client.model.database.DatabaseHandler;
 import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.model.types.FirebaseMessageTypeEnum;
@@ -80,7 +79,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
 
-    public static DatabaseHandler RDH;
+    public static DatabaseHandler dbHandler;
     private long lastPress;
     private Toast backpressToast;
     public ProgressDialog progressDialog;
@@ -101,12 +100,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RDH = DatabaseHandler.getsInstance(this);
-        if (DBUtils.countTables() == 0 ) {
-            Log.d(TAG, "Found authId empty, re-set data");
-            DBUtils.dbReInitialize();
-        }
-
+        dbHandler = DatabaseHandler.getsInstance(this);
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
         launchActivity = this;

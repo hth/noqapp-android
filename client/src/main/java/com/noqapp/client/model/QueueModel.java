@@ -84,7 +84,7 @@ public final class QueueModel {
             public void onResponse(Call<JsonTokenAndQueueList> call, Response<JsonTokenAndQueueList> response) {
                 if (response.body() != null && response.body().getError() == null) {
                     if (response.body().getTokenAndQueues().size() > 0) {
-                        Log.d("Response", String.valueOf(response.body()));
+                        Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
                         //// TODO: 4/16/17 just for testing : remove below line after testing done
                         //tokenAndQueuePresenter.noCurrentQueue();
                         //Todo : uncomment the queuresponse
