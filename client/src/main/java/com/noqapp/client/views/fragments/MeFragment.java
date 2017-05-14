@@ -39,7 +39,7 @@ public class MeFragment extends NoQueueBaseFragment {
     TextView tv_scanCount;
 
     @BindView(R.id.toggleAutojoin)
-    ToggleButton toggelAutoJoin;
+    ToggleButton toggleAutoJoin;
 
     @BindView(R.id.btn_register_login_logout)
     Button btn_register_login_logout;
@@ -87,8 +87,8 @@ public class MeFragment extends NoQueueBaseFragment {
             tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(countryname, phone));
         }
         tv_scanCount.setText(String.valueOf(remoteScanCount));
-        toggelAutoJoin.setChecked(isAutoScanAvail);
-        toggelAutoJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        toggleAutoJoin.setChecked(isAutoScanAvail);
+        toggleAutoJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
                 SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedPreferencesEditor(getActivity());
@@ -103,7 +103,6 @@ public class MeFragment extends NoQueueBaseFragment {
             btn_register_login_logout.setText("Login / Register");
             tv_phoneNo.setVisibility(View.GONE);
         }
-
     }
 
     @OnClick({R.id.ll_invite})
