@@ -32,13 +32,12 @@ import java.util.List;
 
 /**
  * Created by chandra on 5/14/17.
- *
+ * <p>
  * Calls -
- *      Step 1- fetch the current & history queue data from local DB first
- *      Step 2- fetch the current & history queue data from server
- *      Step 3- update the DB
- *      Step 4- update the list
- *
+ * Step 1- fetch the current & history queue data from local DB first
+ * Step 2- fetch the current & history queue data from server
+ * Step 3- update the DB
+ * Step 4- update the list
  **/
 
 
@@ -51,20 +50,21 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     private List<String> listDataHeader;
     private HashMap<String, List<JsonTokenAndQueue>> listDataChild;
 
-    private ViewGroup header,footer;
+    private ViewGroup header, footer;
 
-    private static final int MSG_CURRENT_QUEUE=0;
-    private static final int MSG_HISTORY_QUEUE=1;
+    private static final int MSG_CURRENT_QUEUE = 0;
+    private static final int MSG_HISTORY_QUEUE = 1;
     private static Context context;
-    private static  QueueHandler mHandler;
+    private static QueueHandler mHandler;
     private static TokenQueueViewInterface tokenQueueViewInterface;
+
     public ListQueueFragment() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
         View view = inflater.inflate(R.layout.fragment_listqueue, container, false);
@@ -86,12 +86,11 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     }
 
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        context=getActivity();
-        tokenQueueViewInterface=this;
+        context = getActivity();
+        tokenQueueViewInterface = this;
         //fetch the
         fetchCurrentAndHistoryList();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -169,16 +168,17 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     }
 
     private static class QueueHandler extends Handler {
-        private boolean isCurrentExecute=false;
-        private boolean isHistoryExecute=false;
+        private boolean isCurrentExecute = false;
+        private boolean isHistoryExecute = false;
+
         // This method is used to handle received messages
         public void handleMessage(Message msg) {
             // switch to identify the message by its code
             switch (msg.what) {
                 case MSG_CURRENT_QUEUE:
                     //doSomething();
-                    isCurrentExecute=true;
-                    if(isHistoryExecute&&isCurrentExecute){
+                    isCurrentExecute = true;
+                    if (isHistoryExecute && isCurrentExecute) {
                         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
                         dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
                         dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
@@ -187,8 +187,8 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
 
                 case MSG_HISTORY_QUEUE:
                     //doMoreThings();
-                    isHistoryExecute=true;
-                    if(isHistoryExecute&&isCurrentExecute){
+                    isHistoryExecute = true;
+                    if (isHistoryExecute && isCurrentExecute) {
                         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
                         dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
                         dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
@@ -199,6 +199,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
             }
         }
     }
+
     public void fetchCurrentAndHistoryList() {
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
@@ -224,17 +225,17 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
 
         listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild);
 
-        if (currentlist.size() == 0 && expListView.getHeaderViewsCount()==0) {
+        if (currentlist.size() == 0 && expListView.getHeaderViewsCount() == 0) {
             //header.setVisibility(View.VISIBLE);
             expListView.addHeaderView(header, null, false);
-        } else if(currentlist.size()>0){
-           // header.setVisibility(View.GONE);
+        } else if (currentlist.size() > 0) {
+            // header.setVisibility(View.GONE);
             expListView.removeHeaderView(header);
         }
-        if (historylist.size() == 0 && expListView.getFooterViewsCount()==0) {
+        if (historylist.size() == 0 && expListView.getFooterViewsCount() == 0) {
             //footer.setVisibility(View.VISIBLE);
             expListView.addFooterView(footer, null, false);
-        } else  if(historylist.size()>0){
+        } else if (historylist.size() > 0) {
             expListView.removeFooterView(footer);
         }
         expListView.setAdapter(listAdapter);
@@ -252,7 +253,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
                 b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
                 b.putBoolean(KEY_FROM_LIST, true);
                 if (groupPosition == 0) {
-                    b.putSerializable(KEY_JSON_TOKEN_QUEUE,jsonQueue);
+                    b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue);
                     AfterJoinFragment ajf = new AfterJoinFragment();
                     ajf.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, LaunchActivity.tabList);
@@ -266,13 +267,13 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         });
     }
 
-    private void passMsgToHandler(boolean isCurrentQueue){
+    private void passMsgToHandler(boolean isCurrentQueue) {
         // pass msg to handler to load the data from DB
-        if(isCurrentQueue) {
+        if (isCurrentQueue) {
             Message msg = new Message();
             msg.what = MSG_CURRENT_QUEUE;
             mHandler.sendMessage(msg);
-        }else {
+        } else {
             Message msg = new Message();
             msg.what = MSG_HISTORY_QUEUE;
             mHandler.sendMessage(msg);

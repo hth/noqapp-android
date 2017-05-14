@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ScanQueueFragment extends Scanner  {
+public class ScanQueueFragment extends Scanner {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
 
@@ -36,7 +36,7 @@ public class ScanQueueFragment extends Scanner  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreateView(inflater,container,savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -73,9 +73,6 @@ public class ScanQueueFragment extends Scanner  {
     public void scanQR() {
         startScanningBarcode();
     }
-
-
-
 
 
     @Override

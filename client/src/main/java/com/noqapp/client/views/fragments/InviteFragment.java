@@ -47,13 +47,14 @@ public class InviteFragment extends NoQueueBaseFragment {
     public InviteFragment() {
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_invite, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         tv_how_it_works.setPaintFlags(tv_how_it_works.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tv_copy.setPaintFlags(tv_copy.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -77,7 +78,6 @@ public class InviteFragment extends NoQueueBaseFragment {
         selectedText = tv_invite_code.getText().toString();
         return view;
     }
-
 
 
     @OnClick(R.id.btn_send_invite)

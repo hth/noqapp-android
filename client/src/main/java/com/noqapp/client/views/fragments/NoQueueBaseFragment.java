@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.noqapp.client.R;
-import com.noqapp.client.helper.NetworkHelper;
 import com.noqapp.client.views.activities.LaunchActivity;
 
 /**
