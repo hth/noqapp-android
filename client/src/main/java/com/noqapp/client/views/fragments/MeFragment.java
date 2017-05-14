@@ -81,10 +81,11 @@ public class MeFragment extends NoQueueBaseFragment {
         int remoteScanCount = preferences.getInt(NoQueueBaseActivity.PREKEY_REMOTESCAN, 0);
         boolean isAutoScanAvail = preferences.getBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, false);
         inviteCode = preferences.getString(NoQueueBaseActivity.PREKEY_INVITECODE, "");
-        String countryname = preferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, "US");
         tv_firstName.setText(name);
         if (!phone.equals("")) {
-            tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(countryname, phone));
+            tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(
+                    preferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, "US"),
+                    phone));
         }
         tv_scanCount.setText(String.valueOf(remoteScanCount));
         toggleAutoJoin.setChecked(isAutoScanAvail);
@@ -96,6 +97,7 @@ public class MeFragment extends NoQueueBaseFragment {
                 editor.commit();
             }
         });
+
         if (!phone.equals("")) {
             btn_register_login_logout.setText("Logout");
             tv_phoneNo.setVisibility(View.VISIBLE);
