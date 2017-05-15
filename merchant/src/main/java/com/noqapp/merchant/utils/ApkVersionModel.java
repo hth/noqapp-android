@@ -1,4 +1,4 @@
-package com.noqapp.merchant.helper;
+package com.noqapp.merchant.utils;
 
 /**
  * User: hitender

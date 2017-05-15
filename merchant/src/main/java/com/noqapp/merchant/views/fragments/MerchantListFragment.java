@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.merchant.R;
-import com.noqapp.merchant.helper.ShowAlertInformation;
+import com.noqapp.merchant.utils.ShowAlertInformation;
 import com.noqapp.merchant.model.ManageQueueModel;
 import com.noqapp.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.merchant.presenter.beans.JsonTopic;

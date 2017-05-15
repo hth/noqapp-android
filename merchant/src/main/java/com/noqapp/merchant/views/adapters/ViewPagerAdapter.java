@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.merchant.R;
-import com.noqapp.merchant.helper.ShowAlertInformation;
+import com.noqapp.merchant.utils.ShowAlertInformation;
 import com.noqapp.merchant.model.ManageQueueModel;
 import com.noqapp.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.merchant.presenter.beans.JsonToken;
