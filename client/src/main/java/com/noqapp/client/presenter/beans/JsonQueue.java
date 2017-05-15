@@ -46,7 +46,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("sa")
     private String storeAddress;
 
-    @JsonProperty ("cs")
+    @JsonProperty("cs")
     private String countryShortName;
 
     @JsonProperty("p")
@@ -78,11 +78,14 @@ public class JsonQueue implements Serializable {
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
-    @JsonProperty ("st")
+    @JsonProperty("st")
     private String servicedTime;
 
     @JsonProperty("u")
     private String created;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public String getCodeQR() {
         return codeQR;
@@ -151,6 +154,14 @@ public class JsonQueue implements Serializable {
     public JsonQueue setCreated(Date created) {
         this.created = DateFormatUtils.format(created, Constants.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
     }
 
     public JsonTokenAndQueue getJsonTokenAndQueue() {
