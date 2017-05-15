@@ -36,7 +36,7 @@ import com.noqapp.merchant.views.fragments.MerchantListFragment;
 import java.util.UUID;
 
 public class LaunchActivity extends AppCompatActivity {
-    public static final String DID = UUID.randomUUID().toString();
+    public static final String DID = UUID.randomUUID().toString().toUpperCase();
     private static LaunchActivity launchActivity;
     protected TextView tv_toolbar_title;
     public NetworkHelper networkHelper;
