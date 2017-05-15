@@ -36,7 +36,7 @@ import com.noqapp.merchant.views.fragments.MerchantListFragment;
 import java.util.UUID;
 
 public class LaunchActivity extends AppCompatActivity {
-    public static final String DID = UUID.randomUUID().toString();
+    public static final String DID = UUID.randomUUID().toString().toUpperCase();
     private static LaunchActivity launchActivity;
     protected TextView tv_toolbar_title;
     public NetworkHelper networkHelper;
@@ -57,10 +57,11 @@ public class LaunchActivity extends AppCompatActivity {
     private ImageView actionbarBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!new AppUtils().isTablet(getApplicationContext()))
+        if (!new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        else
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         launchActivity = this;

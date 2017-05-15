@@ -31,7 +31,7 @@ public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
                 NoQueueBaseActivity.SHARED_PREF_SEC, Context.MODE_PRIVATE);
         deviceId = sharedpreferences.getString(NoQueueBaseActivity.XR_DID, "");
         if (deviceId.equals("")) {
-            deviceId = UUID.randomUUID().toString();
+            deviceId = UUID.randomUUID().toString().toUpperCase();
             setSharPreferanceDeviceID(sharedpreferences, deviceId);
             Log.v("device id_created", deviceId);
         } else {

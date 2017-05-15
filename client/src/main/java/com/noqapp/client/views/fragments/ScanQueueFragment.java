@@ -56,9 +56,9 @@ public class ScanQueueFragment extends Scanner {
                 startScanningBarcode();
             }
 
-        } else
+        } else {
             startScanningBarcode();
-
+        }
     }
 
     @Override
