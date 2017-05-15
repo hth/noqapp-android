@@ -23,10 +23,11 @@ public class SplashScreen extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (!new AppUtils().isTablet(getApplicationContext()))
+        if (!new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        else
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         //   getSupportActionBar().hide();

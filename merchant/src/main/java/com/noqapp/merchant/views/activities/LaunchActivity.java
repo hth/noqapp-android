@@ -57,10 +57,11 @@ public class LaunchActivity extends AppCompatActivity {
     private ImageView actionbarBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!new AppUtils().isTablet(getApplicationContext()))
+        if (!new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        else
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         launchActivity = this;
