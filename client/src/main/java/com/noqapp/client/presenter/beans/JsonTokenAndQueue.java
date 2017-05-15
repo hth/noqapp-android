@@ -31,7 +31,7 @@ import java.io.Serializable;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonTokenAndQueue implements Serializable{
+public class JsonTokenAndQueue implements Serializable {
 
     @JsonProperty("c")
     private String codeQR;
@@ -45,7 +45,7 @@ public class JsonTokenAndQueue implements Serializable{
     @JsonProperty("sa")
     private String storeAddress;
 
-    @JsonProperty ("cs")
+    @JsonProperty("cs")
     private String countryShortName;
 
     @JsonProperty("p")
@@ -77,7 +77,7 @@ public class JsonTokenAndQueue implements Serializable{
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
-    @JsonProperty ("st")
+    @JsonProperty("st")
     private String servicedTime;
 
     @JsonProperty("u")
