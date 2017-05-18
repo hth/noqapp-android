@@ -17,16 +17,16 @@ public class InviteDetailFragment extends NoQueueBaseFragment {
 
     @BindView(R.id.tv_title)
     protected TextView tv_title;
+
     @BindView(R.id.tv_details)
     protected TextView tv_details;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_invitedetail, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         Bundle bundle = getArguments();
         if (null != bundle) {
             String title = bundle.getString("title", "");
@@ -53,11 +53,11 @@ public class InviteDetailFragment extends NoQueueBaseFragment {
 
         return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Invite Details");
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
-
 }

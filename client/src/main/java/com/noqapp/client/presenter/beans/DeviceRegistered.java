@@ -25,12 +25,23 @@ public class DeviceRegistered {
     @JsonProperty("r")
     private int registered;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public int getRegistered() {
         return registered;
     }
 
     public void setRegistered(int registered) {
         this.registered = registered;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
     }
 
     @Override

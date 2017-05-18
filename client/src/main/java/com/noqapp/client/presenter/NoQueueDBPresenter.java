@@ -25,11 +25,11 @@ public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
     public void saveTokenQueue(List<JsonTokenAndQueue> tokenAndQueues, boolean isCurrentQueueCall) {
         NoQueueDB.queueDBPresenterInterface = this;
 
-        if(isCurrentQueueCall){
+        if (isCurrentQueueCall) {
             /* Delete before inserting as this is always a fresh data on every call. */
             NoQueueDB.deleteCurrentQueue();
             NoQueueDB.saveCurrentQueue(tokenAndQueues);
-        }else{
+        } else {
             NoQueueDB.saveHistoryQueue(tokenAndQueues);
         }
         //NoQueueDB.save(tokenAndQueues, isCurrentQueueCall);
@@ -45,10 +45,11 @@ public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
 
     @Override
     public void dbSaved(boolean msg) {
-        if(msg)
+        if (msg) {
             tokenQueueViewInterface.currentQueueSaved();
-        else
+        } else {
             tokenQueueViewInterface.historyQueueSaved();
+        }
     }
 
     @Override

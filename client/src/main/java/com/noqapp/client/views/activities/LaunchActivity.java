@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.client.R;
-import com.noqapp.client.helper.NetworkHelper;
+import com.noqapp.client.utils.NetworkHelper;
 import com.noqapp.client.model.database.DatabaseHelper;
 import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.model.types.FirebaseMessageTypeEnum;
@@ -46,7 +46,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener {
@@ -104,7 +103,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
         launchActivity = this;
-        Log.v("device id check",getDeviceID());
+        Log.v("device id check", getDeviceID());
 
         networkHelper = new NetworkHelper(this);
         rl_home.setOnClickListener(this);
@@ -118,7 +117,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
                     String message = intent.getStringExtra("message");
@@ -141,7 +139,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 }
             }
         };
-
     }
 
     @Override
@@ -197,7 +194,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 break;
             default:
                 break;
-
         }
     }
 
@@ -345,10 +341,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         actionbarBack.setVisibility(isShown ? View.VISIBLE : View.INVISIBLE);
     }
 
-    public String getDeviceID(){
+    public String getDeviceID() {
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
-                NoQueueBaseActivity.mypref, Context.MODE_PRIVATE);
+                NoQueueBaseActivity.SHARED_PREF_SEC, Context.MODE_PRIVATE);
         return sharedpreferences.getString(NoQueueBaseActivity.XR_DID, "");
-       // Log.v("device id check",sharedpreferences.getString(NoQueueBaseActivity.XR_DID, ""));
+        // Log.v("device id check",sharedpreferences.getString(NoQueueBaseActivity.XR_DID, ""));
     }
 }

@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.client.R;
-import com.noqapp.client.helper.PhoneFormatterUtil;
-import com.noqapp.client.helper.ShowAlertInformation;
+import com.noqapp.client.utils.PhoneFormatterUtil;
+import com.noqapp.client.utils.ShowAlertInformation;
 import com.noqapp.client.model.QueueModel;
 import com.noqapp.client.model.database.utils.NoQueueDB;
 import com.noqapp.client.presenter.ResponsePresenter;
@@ -38,18 +38,25 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
 
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
+
     @BindView(R.id.tv_queue_name)
     protected TextView tv_queue_name;
+
     @BindView(R.id.tv_address)
     protected TextView tv_address;
+
     @BindView(R.id.tv_mobile)
     protected TextView tv_mobile;
+
     @BindView(R.id.tv_total_value)
     protected TextView tv_total_value;
+
     @BindView(R.id.tv_current_value)
     protected TextView tv_current_value;
+
     @BindView(R.id.tv_how_long)
     protected TextView tv_how_long;
+
     @BindView(R.id.btn_cancel_queue)
     protected Button btn_cancel_queue;
 
@@ -68,10 +75,8 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private String address;
     private String topic;
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_after_join, container, false);
@@ -85,12 +90,10 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             queueName = jsonQueue.getDisplayName();
             address = jsonQueue.getStoreAddress();
             topic = jsonQueue.getTopic();
-            String countryShortName = jsonQueue.getCountryShortName();
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
-            tv_mobile.setText(storePhone);
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(countryShortName, storePhone));
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), storePhone));
             tv_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -179,7 +182,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
-
     }
 
     private void navigateToList() {
@@ -188,7 +190,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
 
     private void callQueue() {
         if (codeQR != null) {
-            Log.d("code qr ::", codeQR);
+            Log.d("CodeQR=", codeQR);
             QueueModel.tokenPresenter = this;
             QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
         }
@@ -201,10 +203,10 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 
-    private void setBackGround(int pos ){
+    private void setBackGround(int pos) {
         tv_after.setTextColor(Color.WHITE);
         tv_how_long.setTextColor(Color.WHITE);
-        switch (pos){
+        switch (pos) {
             case 1:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_1);
                 break;
@@ -221,13 +223,10 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 ll_change_bg.setBackgroundResource(R.drawable.turn_5);
                 break;
             default:
-            {   tv_after.setTextColor(getResources().getColor(R.color.colorActionbar));
+                tv_after.setTextColor(getResources().getColor(R.color.colorActionbar));
                 tv_how_long.setTextColor(getResources().getColor(R.color.colorActionbar));
                 ll_change_bg.setBackgroundResource(R.drawable.square_bg_drawable);
-            }
                 break;
-
-
         }
     }
 }

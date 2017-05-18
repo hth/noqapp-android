@@ -55,8 +55,6 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
 //                pushNotification.putExtra("current_serving", remoteMessage.getData().get("cs"));
 //                pushNotification.putExtra("lastno", remoteMessage.getData().get("ln"));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-
-
             } else {
                 // app is in background, show the notification in notification tray
                 sendNotification(title, remoteMessage.getNotification().getBody());
@@ -68,7 +66,6 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String title, String messageBody) {
-
         Intent intent = new Intent(this, LaunchActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -94,7 +91,6 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
     }
-
 
     /**
      * Method checks if the app is in background or not

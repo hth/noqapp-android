@@ -1,4 +1,4 @@
-package com.noqapp.client.helper;
+package com.noqapp.client.utils;
 
 import android.util.Log;
 

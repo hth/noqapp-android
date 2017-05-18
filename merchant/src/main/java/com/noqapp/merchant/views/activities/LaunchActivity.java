@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.merchant.R;
-import com.noqapp.merchant.helper.NetworkHelper;
+import com.noqapp.merchant.utils.NetworkHelper;
 import com.noqapp.merchant.model.types.QueueStatusEnum;
 import com.noqapp.merchant.network.NOQueueMessagingService;
 import com.noqapp.merchant.presenter.beans.JsonTopic;
@@ -58,10 +58,11 @@ public class LaunchActivity extends AppCompatActivity {
     private ImageView actionbarBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!new AppUtils().isTablet(getApplicationContext()))
+        if (!new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        else
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         launchActivity = this;

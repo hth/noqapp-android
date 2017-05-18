@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.client.helper.PhoneFormatterUtil;
 import com.noqapp.client.model.types.QueueStatusEnum;
 import com.noqapp.client.utils.Constants;
 
@@ -47,7 +46,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("sa")
     private String storeAddress;
 
-    @JsonProperty ("cs")
+    @JsonProperty("cs")
     private String countryShortName;
 
     @JsonProperty("p")
@@ -79,11 +78,14 @@ public class JsonQueue implements Serializable {
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
-    @JsonProperty ("st")
+    @JsonProperty("st")
     private String servicedTime;
 
     @JsonProperty("u")
     private String created;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public String getCodeQR() {
         return codeQR;
@@ -154,12 +156,21 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     public JsonTokenAndQueue getJsonTokenAndQueue() {
         JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
         jsonTokenAndQueue.setCodeQR(codeQR);
         jsonTokenAndQueue.setBusinessName(businessName);
         jsonTokenAndQueue.setDisplayName(displayName);
         jsonTokenAndQueue.setStoreAddress(storeAddress);
+        jsonTokenAndQueue.setCountryShortName(countryShortName);
         jsonTokenAndQueue.setStorePhone(storePhone);
         jsonTokenAndQueue.setTokenAvailableFrom(tokenAvailableFrom);
         jsonTokenAndQueue.setStartHour(startHour);
@@ -180,6 +191,7 @@ public class JsonQueue implements Serializable {
                 .append("businessName", businessName)
                 .append("displayName", displayName)
                 .append("storeAddress", storeAddress)
+                .append("countryShortName", countryShortName)
                 .append("storePhone", storePhone)
                 .append("tokenAvailableFrom", tokenAvailableFrom)
                 .append("startHour", startHour)
@@ -189,11 +201,8 @@ public class JsonQueue implements Serializable {
                 .append("servingNumber", servingNumber)
                 .append("lastNumber", lastNumber)
                 .append("queueStatus", queueStatus)
+                .append("servicedTime", servicedTime)
                 .append("created", created)
                 .toString();
-    }
-
-    public String getStorePhoneFormatted() {
-        return PhoneFormatterUtil.formatNumber("IN", storePhone);
     }
 }

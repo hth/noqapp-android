@@ -2,7 +2,6 @@ package com.noqapp.client.model;
 
 import android.util.Log;
 
-import com.noqapp.client.BuildConfig;
 import com.noqapp.client.model.response.open.DeviceService;
 import com.noqapp.client.network.RetrofitClient;
 import com.noqapp.client.presenter.beans.DeviceRegistered;

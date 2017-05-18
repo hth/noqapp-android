@@ -14,8 +14,7 @@ import java.util.UUID;
 
 public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
     private final String TAG = NoQueueFirebaseInstanceServices.class.getSimpleName();
-    private String deviceId="";
-
+    private String deviceId = "";
 
     @Override
     public void onTokenRefresh() {
@@ -29,14 +28,13 @@ public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
         DeviceToken deviceToken = new DeviceToken(refreshToken);
 
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
-                NoQueueBaseActivity.mypref, Context.MODE_PRIVATE);
-        deviceId =sharedpreferences.getString(NoQueueBaseActivity.XR_DID, "");
-        if(deviceId.equals("")){
-            deviceId = UUID.randomUUID().toString();
-            setSharPreferanceDeviceID(sharedpreferences,deviceId);
-            Log.v("device id_created",deviceId);
-
-        }else {
+                NoQueueBaseActivity.SHARED_PREF_SEC, Context.MODE_PRIVATE);
+        deviceId = sharedpreferences.getString(NoQueueBaseActivity.XR_DID, "");
+        if (deviceId.equals("")) {
+            deviceId = UUID.randomUUID().toString().toUpperCase();
+            setSharPreferanceDeviceID(sharedpreferences, deviceId);
+            Log.v("device id_created", deviceId);
+        } else {
             Log.v("device id exist", deviceId);
         }
         DeviceModel.register(deviceId, deviceToken);
@@ -48,6 +46,4 @@ public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
         editor.putString(NoQueueBaseActivity.XR_DID, deviceid);
         editor.commit();
     }
-
-
 }

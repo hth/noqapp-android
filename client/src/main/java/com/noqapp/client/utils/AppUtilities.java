@@ -15,8 +15,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.noqapp.client.network.NoQueueFirebaseInstanceServices;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -58,9 +56,8 @@ public class AppUtilities {
         return locale.getISO3Country();
     }
 
-
-    public static void makeCall(Activity context, String mobileno) {
-        if (!TextUtils.isEmpty(mobileno)) {
+    public static void makeCall(Activity context, String phoneNumber) {
+        if (!TextUtils.isEmpty(phoneNumber)) {
             int checkPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
             if (checkPermission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
@@ -70,15 +67,14 @@ public class AppUtilities {
             } else {
                 try {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:" + mobileno));
+                    callIntent.setData(Uri.parse("tel:" + phoneNumber));
                     context.startActivity(callIntent);
                 } catch (ActivityNotFoundException ex) {
-                    ex.printStackTrace();
+                    Log.w(TAG, "Failed calling reason=" + ex.getLocalizedMessage());
                     Toast.makeText(context, "Please install a calling application", Toast.LENGTH_LONG).show();
                 }
             }
         }
-
     }
 
     public static void openAddressInMap(Activity context, String address) {

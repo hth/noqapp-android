@@ -10,13 +10,13 @@ import static com.noqapp.client.model.database.DatabaseTable.*;
  * Date: 5/9/17 7:18 PM
  */
 
-public class CreateTable {
+class CreateTable {
     private static final String TAG = CreateTable.class.getSimpleName();
 
     private CreateTable() {
     }
 
-    public static void createTableTokenQueue(SQLiteDatabase db) {
+    private static void createTableTokenQueue(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableTokenQueue");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TokenQueue.TABLE_NAME + "("
                 + TokenQueue.CODE_QR + " TEXT , "
@@ -40,7 +40,7 @@ public class CreateTable {
                 ");");
     }
 
-    public static void createTableTokenQueueHistory(SQLiteDatabase db) {
+    private static void createTableTokenQueueHistory(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableTokenQueue");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TokenQueueHistory.TABLE_NAME + "("
                 + TokenQueue.CODE_QR + " TEXT , "
@@ -64,9 +64,7 @@ public class CreateTable {
                 ");");
     }
 
-
-
-    public static void  createAllTable(SQLiteDatabase db){
+    static void createAllTable(SQLiteDatabase db){
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);
     }

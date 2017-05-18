@@ -3,8 +3,6 @@ package com.noqapp.merchant.utils;
 import android.content.Context;
 import android.content.res.Configuration;
 
-import com.noqapp.merchant.helper.ApkVersionModel;
-
 /**
  * User: hitender
  * Date: 4/24/17 11:13 PM

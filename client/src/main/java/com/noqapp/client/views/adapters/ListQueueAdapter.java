@@ -7,12 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.noqapp.client.R;
-import com.noqapp.client.helper.PhoneFormatterUtil;
+import com.noqapp.client.utils.PhoneFormatterUtil;
 import com.noqapp.client.presenter.beans.JsonTokenAndQueue;
 
 import java.util.HashMap;
@@ -62,42 +60,33 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 //        }
 
 
-
-
-        switch (groupPosition){
-
-
-            case 0 :
+        switch (groupPosition) {
+            case 0:
                 convertView = inflater.inflate(R.layout.listitem_currentqueue, null);
                 TextView txtnumber = (TextView) convertView.findViewById(R.id.txtNumber);
                 TextView txtStoreName = (TextView) convertView.findViewById(R.id.txtStoreName);
                 TextView txtStorePhoneNumber = (TextView) convertView.findViewById(R.id.txtStorePhoneNo);
                 TextView txtToken = (TextView) convertView.findViewById(R.id.txtToken);
-                txtnumber.setText("#" + String.valueOf(childPosition+1));
+                txtnumber.setText("#" + String.valueOf(childPosition + 1));
                 txtStoreName.setText(queue.getBusinessName());
                 // show only for current queue not for history
                 txtStorePhoneNumber.setText(PhoneFormatterUtil.formatNumber(queue.getCountryShortName(), queue.getStorePhone()));
                 txtToken.setText(String.valueOf(queue.getToken()));
                 break;
 
-            case 1 :
+            case 1:
                 convertView = inflater.inflate(R.layout.listitem_historyqueue, null);
                 TextView txtnumber1 = (TextView) convertView.findViewById(R.id.txtNumber);
                 TextView txtStoreName1 = (TextView) convertView.findViewById(R.id.txtStoreName);
                 TextView txtStorePhoneNumber1 = (TextView) convertView.findViewById(R.id.txtStorePhoneNo);
                 TextView txtToken1 = (TextView) convertView.findViewById(R.id.txtToken);
-                txtnumber1.setText("#" + String.valueOf(childPosition+1));
+                txtnumber1.setText("#" + String.valueOf(childPosition + 1));
                 txtStoreName1.setText(queue.getBusinessName());
                 // show only for current queue not for history
                 txtStorePhoneNumber1.setText(queue.getStorePhone());//PhoneFormatterUtil.formatNumber(queue.getCountryShortName(), queue.getStorePhone()));
                 txtToken1.setText(String.valueOf(queue.getToken()));
-
                 break;
-
-
-
-
-    }
+        }
         return convertView;
     }
 
@@ -122,8 +111,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //        if (rowLayout == null) {
@@ -138,14 +126,14 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 //            rowLayout=(RelativeLayout)convertView;
 //        }
 
-        switch (groupPosition){
+        switch (groupPosition) {
 
 
-            case 0 :
+            case 0:
                 convertView = inflater.inflate(R.layout.list_group_blank, null);
                 break;
 
-            case 1 :
+            case 1:
                 convertView = inflater.inflate(R.layout.list_group, null);
                 TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
                 ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
@@ -153,13 +141,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 lblListHeader.setText(headerTitle);
                 ivGroupIndicator.setSelected(isExpanded);
                 break;
-
-
-
-
         }
-
-
         return convertView;
     }
 
@@ -172,5 +154,4 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
 }
