@@ -111,7 +111,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                         served.setQueueStatus(lq.getQueueStatus());
                         served.setQueueUserState(QueueUserStateEnum.N);
                         served.setServedNumber(lq.getServingNumber());
-                        ManageQueueModel.served(LaunchActivity.DID, LaunchActivity.getLaunchActivity().getEmail(),
+                        ManageQueueModel.served(LaunchActivity.getLaunchActivity().getDeviceID(), LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(), served);
                     } else {
                         ShowAlertInformation.showNetworkDialog(context);
@@ -141,7 +141,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                         served.setQueueStatus(lq.getQueueStatus());
                         served.setQueueUserState(QueueUserStateEnum.S);
                         served.setServedNumber(lq.getServingNumber());
-                        ManageQueueModel.served(LaunchActivity.DID, LaunchActivity.getLaunchActivity().getEmail(),
+                        ManageQueueModel.served(LaunchActivity.getLaunchActivity().getDeviceID(), LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(), served);
                     } else {
                         ShowAlertInformation.showNetworkDialog(context);

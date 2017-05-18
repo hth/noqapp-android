@@ -327,7 +327,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         } else {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastPress > 3000) {
-                backpressToast = Toast.makeText(launchActivity, "Press back again to exit", Toast.LENGTH_LONG);
+                backpressToast = Toast.makeText(launchActivity, getString(R.string.exit_app), Toast.LENGTH_LONG);
                 backpressToast.show();
                 lastPress = currentTime;
             } else {

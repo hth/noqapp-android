@@ -36,7 +36,8 @@ import com.noqapp.merchant.views.fragments.MerchantListFragment;
 import java.util.UUID;
 
 public class LaunchActivity extends AppCompatActivity {
-    public static final String DID = UUID.randomUUID().toString().toUpperCase();
+    public static final String mypref="shared_pref";
+    public static String XR_DID ="X-R-DID";
     private static LaunchActivity launchActivity;
     protected TextView tv_toolbar_title;
     public NetworkHelper networkHelper;
@@ -65,6 +66,7 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         launchActivity = this;
+        Log.v("device id check",getDeviceID());
         networkHelper = new NetworkHelper(this);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
@@ -297,5 +299,12 @@ public class LaunchActivity extends AppCompatActivity {
 
     public void enableDisableBack(boolean isShown){
         actionbarBack.setVisibility(isShown?View.VISIBLE:View.INVISIBLE);
+    }
+
+    public String getDeviceID(){
+        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
+                mypref, Context.MODE_PRIVATE);
+        return sharedpreferences.getString(XR_DID, "");
+
     }
 }

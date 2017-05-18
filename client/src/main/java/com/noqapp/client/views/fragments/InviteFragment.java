@@ -86,7 +86,7 @@ public class InviteFragment extends NoQueueBaseFragment {
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getActivity(), "No app to share invitation", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.app_missing), Toast.LENGTH_SHORT).show();
         }
     }
 
