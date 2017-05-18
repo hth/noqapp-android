@@ -97,10 +97,10 @@ public class MeFragment extends NoQueueBaseFragment {
             }
         });
         if (!phone.equals("")) {
-            btn_register_login_logout.setText("Logout");
+            btn_register_login_logout.setText(getString(R.string.logout));
             tv_phoneNo.setVisibility(View.VISIBLE);
         } else {
-            btn_register_login_logout.setText("Login / Register");
+            btn_register_login_logout.setText(getString(R.string.login_register));
             tv_phoneNo.setVisibility(View.GONE);
         }
 
@@ -117,11 +117,11 @@ public class MeFragment extends NoQueueBaseFragment {
 
     @OnClick(R.id.btn_register_login_logout)
     public void actionLogout() {
-        if (btn_register_login_logout.getText().equals("Logout")) {
+        if (btn_register_login_logout.getText().equals(getString(R.string.logout))) {
             new AlertDialog.Builder(getActivity())
-                    .setTitle("Logout")
-                    .setMessage("Would you like to logout?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    .setTitle(getString(R.string.logout))
+                    .setMessage(getString(R.string.logout_msg))
+                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // logout
                             SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -130,7 +130,7 @@ public class MeFragment extends NoQueueBaseFragment {
                             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // user doesn't want to logout
                         }

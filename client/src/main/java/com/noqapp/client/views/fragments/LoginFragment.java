@@ -98,7 +98,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         }
         Locale l = new Locale(Locale.getDefault().getLanguage(), countryCode);
         countryISO = AppUtilities.iso3CountryCodeToIso2CountryCode(l.getISO3Country());
-        CountryPicker picker = CountryPicker.newInstance("Select Country");
+        CountryPicker picker = CountryPicker.newInstance(getString(R.string.select_country));
         Country country = picker.getCountryByLocale(getActivity(), l);
         edt_country_code.setBackgroundResource(country.getFlag());
         countryDialCode = country.getDialCode();
@@ -158,7 +158,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     @Override
     public void onClick(View v) {
         if (v == edt_country_code) {
-            final CountryPicker picker = CountryPicker.newInstance("Select Country");
+            final CountryPicker picker = CountryPicker.newInstance(getString(R.string.select_country));
             picker.show(getActivity().getSupportFragmentManager(), "COUNTRY_PICKER");
             picker.setListener(new CountryPickerListener() {
 
@@ -183,7 +183,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         boolean isValid = true;
         edt_phoneNo.setError(null);
         if (TextUtils.isEmpty(edt_phoneNo.getText())) {
-            edt_phoneNo.setError("Please enter phone number");
+            edt_phoneNo.setError(getString(R.string.error_mobile_blank));
             isValid = false;
         }
 

@@ -114,7 +114,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
                 int date_diff =new Date().compareTo(current);
 
                 if(date_diff<0){
-                    Toast.makeText(getActivity(), "Please select a valid date",  Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_invalid_date),  Toast.LENGTH_LONG).show();
                     edt_birthday.setText("");
                 }
                 else{
@@ -132,7 +132,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             edt_phoneNo.setEnabled(false);
             Locale l1 = new Locale(Locale.getDefault().getLanguage(), bundle.getString("country_code", "US"));
             countryISO = AppUtilities.iso3CountryCodeToIso2CountryCode(l1.getISO3Country());
-            CountryPicker picker1 = CountryPicker.newInstance("Select Country");
+            CountryPicker picker1 = CountryPicker.newInstance(getString(R.string.select_country));
             Country country1 = picker1.getCountryByLocale(getActivity(), l1);
             edt_country_code.setBackgroundResource(country1.getFlag());
             edt_country_code.setError(null);
@@ -273,15 +273,15 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         new AppUtilities().hideKeyBoard(getActivity());
 
         if (TextUtils.isEmpty(edt_Name.getText())) {
-            edt_Name.setError("Please enter name");
+            edt_Name.setError(getString(R.string.error_name_blank));
             isValid = false;
         }
         if (!TextUtils.isEmpty(edt_Name.getText()) && edt_Name.getText().length() < 5) {
-            edt_Name.setError("Name length should be greater than 3");
+            edt_Name.setError(getString(R.string.error_name_length));
             isValid = false;
         }
         if (!TextUtils.isEmpty(edt_Mail.getText()) && !isValidEmail(edt_Mail.getText())) {
-            edt_Mail.setError("Please enter valid email");
+            edt_Mail.setError(getString(R.string.error_invalid_email));
             isValid = false;
         }
         return isValid;

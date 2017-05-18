@@ -146,12 +146,12 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         // To cancel
         if (null != response) {
             if (response.getResponse() == 1) {
-                Toast.makeText(getActivity(), "You successfully cancel the queue", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.cancel_queue), Toast.LENGTH_LONG).show();
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
                 NoQueueDB.deleteTokenQueue(codeQR);
                 navigateToList();
             } else {
-                Toast.makeText(getActivity(), "Failed to cancel the queue", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.fail_to_cancel), Toast.LENGTH_LONG).show();
             }
         } else {
             //Show error
