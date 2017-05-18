@@ -70,7 +70,7 @@ public class AppUtilities {
                     callIntent.setData(Uri.parse("tel:" + mobileno));
                     context.startActivity(callIntent);
                 } catch (ActivityNotFoundException ex) {
-                    ex.printStackTrace();
+                    Log.w(TAG, "Failed calling reason=" + ex.getLocalizedMessage());
                     Toast.makeText(context, "Please install a calling application", Toast.LENGTH_LONG).show();
                 }
             }
