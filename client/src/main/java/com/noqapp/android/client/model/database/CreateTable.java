@@ -3,6 +3,8 @@ package com.noqapp.android.client.model.database;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import static com.noqapp.android.client.model.database.DatabaseTable.*;
+
 /**
  * User: hitender
  * Date: 5/9/17 7:18 PM
