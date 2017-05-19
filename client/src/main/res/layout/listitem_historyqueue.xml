@@ -33,7 +33,7 @@
         android:layout_weight="0.50"
         android:orientation="vertical">
 
-        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
+        <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
             android:id="@+id/txtStoreName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             android:textSize="15sp" />
     </LinearLayout>
 
-    <com.noqapp.client.views.cutomviews.TextViewRobotoLight
+    <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
         android:id="@+id/txtToken"
         android:layout_width="0dp"
         android:layout_height="match_parent"

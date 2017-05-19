@@ -18,13 +18,13 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
+            <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
                 android:id="@+id/tv_title"
                 style="@style/style_invite_tv"
                 android:textColor="@color/colorActionbar"
                 android:textSize="48sp" />
 
-            <com.noqapp.client.views.cutomviews.TextViewRobotoLight
+            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_details"
                 style="@style/style_invite_tv"
                 android:textColor="@color/colorAddress"

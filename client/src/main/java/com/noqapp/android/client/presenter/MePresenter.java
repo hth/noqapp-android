@@ -1,0 +1,41 @@
+package com.noqapp.android.client.presenter;
+
+import android.content.Context;
+
+import com.noqapp.android.client.model.RegisterModel;
+import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.views.interfaces.MeView;
+import com.noqapp.android.client.presenter.beans.body.Registration;
+
+/**
+ * Created by omkar on 4/8/17.
+ */
+
+public class MePresenter implements ProfilePresenter {
+
+    public MeView meView;
+
+    public MePresenter(Context context) {
+
+    }
+
+    public void callProfile(Registration registration) {
+        RegisterModel registerModel = new RegisterModel();
+        registerModel.profilePresenter = this;
+        registerModel.register(registration);
+    }
+
+    @Override
+    public void queueResponse(JsonProfile profile) {
+        // if(profile.getError() == null) {
+        meView.queueResponse(profile);
+        // } else {
+        //TODO show error message
+        // }
+    }
+
+    @Override
+    public void queueError() {
+        meView.queueError();
+    }
+}

@@ -12,19 +12,19 @@
         android:padding="20dp">
 
 
-        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
+        <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
             android:id="@+id/tv_title"
             style="@style/style_invite_tv"
             android:textColor="@color/colorActionbar"
             android:textSize="24sp" />
 
-        <com.noqapp.client.views.cutomviews.TextViewRobotoLight
+        <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
             android:id="@+id/tv_details"
             style="@style/style_invite_tv"
             android:textColor="@color/colorAddress"
             android:textSize="15sp" />
 
-        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
+        <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
             android:id="@+id/tv_how_it_works"
             style="@style/style_invite_tv"
             android:text="@string/how_it_works"
@@ -39,7 +39,7 @@
             android:layout_marginTop="10dp"
             android:background="@mipmap/invite" />
 
-        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
+        <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
             style="@style/style_invite_tv"
             android:text="@string/your_invite_code"
             android:textColor="@color/color_total_val"
@@ -54,14 +54,14 @@
             android:background="@drawable/square_white_bg_drawable"
             android:padding="10dp">
 
-            <com.noqapp.client.views.cutomviews.TextViewRobotoLight
+            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_invite_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:textSize="18sp"/>
 
-            <com.noqapp.client.views.cutomviews.TextEditRalewayRegular
+            <com.noqapp.android.client.views.cutomviews.TextEditRalewayRegular
                 android:id="@+id/tv_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
         </RelativeLayout>
 
 
-        <com.noqapp.client.views.cutomviews.ButtonRalewayRegular
+        <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
             android:id="@+id/btn_send_invite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

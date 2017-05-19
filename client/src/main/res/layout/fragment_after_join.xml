@@ -27,13 +27,13 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
+                <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
                     android:id="@+id/tv_store_name"
                     style="@style/style_join_queue_tv"
                     android:textColor="@color/colorActionbar"
                     android:textSize="24sp" />
 
-                <com.noqapp.client.views.cutomviews.TextViewRobotoRegular
+                <com.noqapp.android.client.views.cutomviews.TextViewRobotoRegular
                     android:id="@+id/tv_queue_name"
                     style="@style/style_join_queue_tv"
                     android:layout_below="@+id/tv_store_name"
@@ -41,7 +41,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="15sp" />
 
-                <com.noqapp.client.views.cutomviews.TextViewRobotoLight
+                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                     android:id="@+id/tv_address"
                     style="@style/style_join_queue_tv"
                     android:layout_below="@+id/tv_queue_name"
@@ -52,7 +52,7 @@
                     android:textColor="@color/colorAddress"
                     android:textSize="18sp" />
 
-                <com.noqapp.client.views.cutomviews.TextViewRobotoLight
+                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                     android:id="@+id/tv_mobile"
                     style="@style/style_join_queue_tv"
                     android:layout_below="@+id/tv_address"
@@ -94,14 +94,14 @@
                             android:layout_alignRight="@id/strut"
                             android:gravity="center">
 
-                            <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
+                            <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
                                 android:id="@+id/tv_current"
                                 style="@style/style_join_queue_tv"
                                 android:text="@string/your_token"
                                 android:textColor="@color/colorAddress"
                                 android:textSize="15sp" />
 
-                            <com.noqapp.client.views.cutomviews.TextViewRobotoLight
+                            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                                 android:id="@+id/tv_current_value"
                                 style="@style/style_join_queue_tv"
                                 android:layout_below="@+id/tv_current"
@@ -116,14 +116,14 @@
                             android:layout_alignParentRight="true"
                             android:gravity="center">
 
-                            <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
+                            <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
                                 android:id="@+id/tv_total"
                                 style="@style/style_join_queue_tv"
                                 android:text="@string/serving_now"
                                 android:textColor="@color/colorAddress"
                                 android:textSize="15sp" />
 
-                            <com.noqapp.client.views.cutomviews.TextViewRobotoLight
+                            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                                 android:id="@+id/tv_total_value"
                                 style="@style/style_join_queue_tv"
                                 android:layout_below="@+id/tv_total"
@@ -157,7 +157,7 @@
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
-                        <com.noqapp.client.views.cutomviews.TextViewRobotoLight
+                        <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                             android:id="@+id/tv_after"
                             style="@style/style_join_queue_tv"
                             android:layout_marginTop="5dp"
@@ -165,7 +165,7 @@
                             android:textColor="@color/colorActionbar"
                             android:textSize="15sp" />
 
-                        <com.noqapp.client.views.cutomviews.TextViewRobotoLight
+                        <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                             android:id="@+id/tv_how_long"
                             style="@style/style_join_queue_tv"
                             android:textColor="@color/colorActionbar"
@@ -173,7 +173,7 @@
 
                     </LinearLayout>
 
-                    <com.noqapp.client.views.cutomviews.ButtonRalewayRegular
+                    <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
                         android:id="@+id/btn_cancel_queue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
