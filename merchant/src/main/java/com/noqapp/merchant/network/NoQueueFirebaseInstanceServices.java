@@ -13,35 +13,28 @@ import com.noqapp.merchant.views.activities.LaunchActivity;
 import java.util.UUID;
 
 public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
-
     private static final String TAG = NoQueueFirebaseInstanceServices.class.getSimpleName();
-    private String deviceId="";
+    private String deviceId = "";
+
     @Override
     public void onTokenRefresh() {
         super.onTokenRefresh();
-
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed Token ::: " + refreshedToken);
-        sendRegistrationToServer(refreshedToken);
+        String fcmToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "FCM Token=" + fcmToken);
+        sendRegistrationToServer(fcmToken);
     }
 
     private void sendRegistrationToServer(String refreshToken) {
-//        DeviceModel deviceModel = new DeviceModel();
-//        DeviceToken deviceToken = new DeviceToken();
-//        deviceToken.setFcmToken(refreshToken);
-//        deviceModel.register(LaunchActivity.DID, deviceToken);
-
         DeviceToken deviceToken = new DeviceToken(refreshToken);
 
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
                 LaunchActivity.mypref, Context.MODE_PRIVATE);
-        deviceId =sharedpreferences.getString(LaunchActivity.XR_DID, "");
-        if(deviceId.equals("")){
-            deviceId = UUID.randomUUID().toString();
-            setSharPreferanceDeviceID(sharedpreferences,deviceId);
-            Log.v("device id_created",deviceId);
-
-        }else {
+        deviceId = sharedpreferences.getString(LaunchActivity.XR_DID, "");
+        if (deviceId.equals("")) {
+            deviceId = UUID.randomUUID().toString().toUpperCase();
+            setSharPreferanceDeviceID(sharedpreferences, deviceId);
+            Log.v("device id_created", deviceId);
+        } else {
             Log.v("device id exist", deviceId);
         }
         DeviceModel.register(deviceId, deviceToken);
