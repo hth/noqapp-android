@@ -6,12 +6,14 @@ package com.noqapp.android.client.views.activities;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -51,8 +53,12 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     protected RatingBar ratingBar;
     @BindView(R.id.radioSave)
     protected RadioGroup radioSave;
+    @BindView(R.id.actionbarBack)
+    protected ImageView actionbarBack;
+    @BindView(R.id.tv_toolbar_title)
+    protected TextView tv_toolbar_title;
     private JsonTokenAndQueue jtk;
-
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +76,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         } else {
             //Do nothing as of now
         }
-
+        actionbarBack.setVisibility(View.INVISIBLE);
+        tv_toolbar_title.setText("Review");
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +90,11 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         rr.setToken(jtk.getToken());
                         rr.setHoursSaved(String.valueOf(radioSave.indexOfChild(findViewById(radioSave.getCheckedRadioButtonId()))));
                         rr.setRatingCount(String.valueOf(Math.round(ratingBar.getRating())));
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
+                        /* New instance of progressbar because it is a new activity. */
+                        progressDialog = new ProgressDialog(ReviewActivity.this);
+                        progressDialog.setIndeterminate(true);
+                        progressDialog.setMessage("Updating...");
+                        progressDialog.show();
                         ReviewModel.reviewPresenter = ReviewActivity.this;
                         ReviewModel.review(UserUtils.getDeviceId(), rr);
                     } else {
@@ -117,7 +128,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         }
         NoQueueDB.deleteTokenQueue(jtk.getCodeQR());
         finish();
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        progressDialog.dismiss();
     }
 
     @Override

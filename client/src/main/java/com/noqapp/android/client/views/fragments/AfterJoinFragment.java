@@ -221,7 +221,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 break;
             case 1:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_1);
-                tv_after.setText("It is your turn! You are :");
+                tv_after.setText("Next is your turn! You are :");
                 break;
             case 2:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_2);
