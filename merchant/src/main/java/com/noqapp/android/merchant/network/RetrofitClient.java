@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.network;
 
-import com.noqapp.merchant.BuildConfig;
+import com.noqapp.android.merchant.BuildConfig;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;

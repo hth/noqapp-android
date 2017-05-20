@@ -5,6 +5,8 @@ package com.noqapp.android.client.views.activities;
  */
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -48,6 +50,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     protected RatingBar ratingBar;
     @BindView(R.id.radioSave)
     protected RadioGroup radioSave;
+    private JsonTokenAndQueue jtk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         final Bundle extras = getIntent().getExtras();
 
         if (null != extras) {
-            JsonTokenAndQueue jtk = (JsonTokenAndQueue) extras.getSerializable("object");
+            jtk = (JsonTokenAndQueue) extras.getSerializable("object");
             tv_store_name.setText(jtk.getBusinessName());
             tv_queue_name.setText(jtk.getDisplayName());
             tv_address.setText(Formatter.getFormattedAddress(jtk.getStoreAddress()));
@@ -75,7 +78,6 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                 } else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         ReviewRating rr = new ReviewRating();
-                        JsonTokenAndQueue jtk = (JsonTokenAndQueue) extras.getSerializable("object");
                         rr.setCodeQR(jtk.getCodeQR());
                         rr.setToken(jtk.getToken());
                         rr.setHoursSaved(String.valueOf(radioSave.indexOfChild(findViewById(radioSave.getCheckedRadioButtonId()))));
@@ -99,15 +101,20 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
     @Override
     public void reviewResponse(JsonResponse jsonResponse) {
-        if (null != jsonResponse && jsonResponse.getResponse() == 1) {
+        if (null != jsonResponse) {
             //success
             Log.v("Review response", jsonResponse.toString());
             Toast.makeText(this, "Thanks for feedback.", Toast.LENGTH_LONG).show();
-            finish();
-        } else {
-            //fail
-            Toast.makeText(this, "Failed to submit the review", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent();
+            intent.putExtra("CODEQR", jtk.getCodeQR());
+            if (getParent() == null) {
+                setResult(Activity.RESULT_OK, intent);
+            } else {
+                getParent().setResult(Activity.RESULT_OK, intent);
+            }
+
         }
+        finish();
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 

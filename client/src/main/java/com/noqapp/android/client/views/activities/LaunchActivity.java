@@ -130,7 +130,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("object", jtk);
                         in.putExtras(bundle);
-                        startActivity(in);
+                        startActivityForResult(in,Constants.requestCodeJoinQActivity);
                         Log.v("object is :", jtk.toString());
                     } else {
                         Toast.makeText(launchActivity, "Notification : " + message, Toast.LENGTH_LONG).show();
@@ -217,6 +217,20 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.requestCodeJoinQActivity) {
             if (resultCode == RESULT_OK) {
+                String intent_qrCode = data.getExtras().getString("CODEQR");
+                //Remove the AfterJoinFragment screen if having same qr code
+                List<Fragment> currentTabFragments = fragmentsStack.get(tabList);
+                if (currentTabFragments.size() > 1) {
+                    int size = currentTabFragments.size();
+                    Fragment currentfrg = currentTabFragments.get(size - 1);
+                    if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
+                        String qcode= ((AfterJoinFragment)currentfrg).getCodeQR();
+                        if(intent_qrCode.equals(qcode)) {
+                            currentTabFragments.remove(currentTabFragments.size() - 1);
+                            currentTabFragments.remove(currentTabFragments.size() - 1);
+                        }
+                    }
+                }
                 dismissProgress();
                 onClick(rl_list);
             }
@@ -344,6 +358,5 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
                 SHARED_PREF_SEC, MODE_PRIVATE);
         return sharedpreferences.getString(XR_DID, "");
-        // Log.v("device id check",sharedpreferences.getString(NoQueueBaseActivity.XR_DID, ""));
     }
 }
