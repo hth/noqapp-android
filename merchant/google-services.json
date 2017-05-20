@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:129734883266:android:c6635a60fc87cbad",
+        "mobilesdk_app_id": "1:129734883266:android:4880bad349f1d5b8",
         "android_client_info": {
-          "package_name": "com.noqapp.client"
+          "package_name": "com.noqapp.android.client"
         }
       },
       "oauth_client": [
@@ -51,9 +51,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:129734883266:android:6ad42844d4b4b8a0",
+        "mobilesdk_app_id": "1:129734883266:android:88213b4d1ec31e2e",
         "android_client_info": {
-          "package_name": "com.noqapp.merchant"
+          "package_name": "com.noqapp.android.merchant"
         }
       },
       "oauth_client": [
