@@ -96,7 +96,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.noqapp.merchant"
+        applicationId "com.noqapp.android.merchant"
         minSdkVersion 15
         targetSdkVersion 25
         multiDexEnabled true
