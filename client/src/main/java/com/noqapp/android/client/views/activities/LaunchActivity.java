@@ -149,7 +149,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                             FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
                         }
                         NoQueueDB.updateJoinQueueObject(codeQR,current_serving,String.valueOf(jtk.getToken()));
-                        List<Fragment> currentTabFragments = fragmentsStack.get(tabList);
+                        List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
                         if (null!= currentTabFragments && currentTabFragments.size() > 1) {
                             int size = currentTabFragments.size();
                             Fragment currentfrg = currentTabFragments.get(size - 1);
