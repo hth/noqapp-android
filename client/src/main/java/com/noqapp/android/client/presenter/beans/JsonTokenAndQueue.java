@@ -216,6 +216,11 @@ public class JsonTokenAndQueue implements Serializable {
         return token - servingNumber;
     }
 
+    @JsonIgnoreProperties
+    public boolean isTokenExpired() {
+        return afterHowLong()<0;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)

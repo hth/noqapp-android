@@ -44,4 +44,12 @@ public class JsonTokenAndQueueList {
     public void setError(ErrorEncounteredJson error) {
         this.error = error;
     }
+
+    @Override
+    public String toString() {
+        return "JsonTokenAndQueueList{" +
+                "tokenAndQueues=" + tokenAndQueues +
+                ", error=" + error +
+                '}';
+    }
 }

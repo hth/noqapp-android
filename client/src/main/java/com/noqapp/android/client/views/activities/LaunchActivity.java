@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.utils.NoQueueDB;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -121,17 +122,48 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     String message = intent.getStringExtra("message");
                     String payload = intent.getStringExtra("f");
                     String codeQR = intent.getStringExtra("c");
+
+
+
                     Log.v("payload", payload);
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                        Toast.makeText(launchActivity, "Notification payload: " + payload, Toast.LENGTH_LONG).show();
+                        Toast.makeText(launchActivity, "Notification payload P: " + payload, Toast.LENGTH_LONG).show();
                         JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
                         Intent in = new Intent(launchActivity, ReviewActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("object", jtk);
                         in.putExtras(bundle);
                         startActivityForResult(in,Constants.requestCodeJoinQActivity);
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
                         Log.v("object is :", jtk.toString());
+                    } else if(StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())){
+                        Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
+                        String current_serving = intent.getStringExtra("cs");
+                        String lastno = intent.getStringExtra("ln");
+                        JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
+                        //update DB & after join screen
+                        jtk.setServingNumber(Integer.parseInt(current_serving));
+                        if(jtk.isTokenExpired()){
+                            //un subscribe the topic
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+                        }
+                        NoQueueDB.updateJoinQueueObject(codeQR,current_serving,String.valueOf(jtk.getToken()));
+                        List<Fragment> currentTabFragments = fragmentsStack.get(tabList);
+                        if (null!= currentTabFragments && currentTabFragments.size() > 1) {
+                            int size = currentTabFragments.size();
+                            Fragment currentfrg = currentTabFragments.get(size - 1);
+                            if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
+                                String qcode= ((AfterJoinFragment)currentfrg).getCodeQR();
+                                if(codeQR.equals(qcode)) {
+                                    //updating the serving status
+                                    ((AfterJoinFragment)currentfrg).setObject(jtk);
+                                    ((AfterJoinFragment)currentfrg).setBackGround(jtk.afterHowLong());
+                                }
+                            }
+                        }
+
+
                     } else {
                         Toast.makeText(launchActivity, "Notification : " + message, Toast.LENGTH_LONG).show();
                     }
@@ -220,7 +252,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 String intent_qrCode = data.getExtras().getString("CODEQR");
                 //Remove the AfterJoinFragment screen if having same qr code
                 List<Fragment> currentTabFragments = fragmentsStack.get(tabList);
-                if (currentTabFragments.size() > 1) {
+                if (null!= currentTabFragments && currentTabFragments.size() > 1) {
                     int size = currentTabFragments.size();
                     Fragment currentfrg = currentTabFragments.get(size - 1);
                     if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {

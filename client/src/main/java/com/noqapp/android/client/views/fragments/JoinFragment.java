@@ -114,7 +114,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
         tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
-        tv_current_value.setText(String.valueOf(jsonQueue.getLastNumber()));
+        tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
         codeQR = jsonQueue.getCodeQR();
         countryShortName = jsonQueue.getCountryShortName();
     }
