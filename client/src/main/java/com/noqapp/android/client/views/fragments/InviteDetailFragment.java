@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 
 import butterknife.BindView;

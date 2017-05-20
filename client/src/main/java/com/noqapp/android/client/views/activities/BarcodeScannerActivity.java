@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.zxing.client.android.CaptureActivity;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 
 
 public class BarcodeScannerActivity extends CaptureActivity {

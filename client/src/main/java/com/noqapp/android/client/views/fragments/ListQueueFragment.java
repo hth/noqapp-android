@@ -23,7 +23,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.ListQueueAdapter;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 
 import java.util.ArrayList;

@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 
 /**
  * Created by omkar on 4/8/17.

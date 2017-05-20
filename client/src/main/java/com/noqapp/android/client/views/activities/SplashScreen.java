@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.crashlytics.android.Crashlytics;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 
 import io.fabric.sdk.android.Fabric;
 

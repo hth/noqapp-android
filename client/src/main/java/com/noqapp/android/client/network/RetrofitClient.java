@@ -1,6 +1,8 @@
 package com.noqapp.android.client.network;
 
-import com.noqapp.client.BuildConfig;
+
+
+import com.noqapp.android.client.BuildConfig;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;

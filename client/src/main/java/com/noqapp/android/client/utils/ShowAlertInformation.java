@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 
 
 public class ShowAlertInformation {

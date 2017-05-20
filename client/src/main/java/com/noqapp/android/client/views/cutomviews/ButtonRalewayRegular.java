@@ -7,7 +7,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 
 /**
  * Created by chandra on 4/9/17.

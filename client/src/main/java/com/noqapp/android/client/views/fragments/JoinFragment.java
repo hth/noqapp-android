@@ -16,7 +16,7 @@ import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.Formatter;
 
 import butterknife.BindView;
