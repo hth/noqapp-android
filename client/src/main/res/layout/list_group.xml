@@ -14,7 +14,7 @@
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
+        <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
             android:id="@+id/lblListHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

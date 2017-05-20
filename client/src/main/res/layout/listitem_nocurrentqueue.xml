@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.noqapp.client.views.cutomviews.ButtonRalewayRegular
+    <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
         android:id="@+id/btnScanQRCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

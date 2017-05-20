@@ -54,7 +54,7 @@
         </LinearLayout>
 
 
-        <com.noqapp.client.views.cutomviews.ButtonRalewayRegular
+        <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
             android:id="@+id/btn_register_login_logout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

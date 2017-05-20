@@ -14,7 +14,7 @@
         android:textColor="@color/colorActionbar"
         android:textSize="20sp" />
 
-    <com.noqapp.client.views.cutomviews.TextViewRalewayRegular
+    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
         style="@style/style_register_tv"
         android:textSize="15sp"
         android:text="@string/phone" />
@@ -38,7 +38,7 @@
             android:padding="0dp"
             android:textColor="@android:color/transparent" />
 
-        <com.noqapp.client.views.cutomviews.TextEditRobotoLight
+        <com.noqapp.android.client.views.cutomviews.TextEditRobotoLight
             android:id="@+id/edt_phone"
             style="@style/style_register_edt"
             android:layout_width="0dp"
@@ -52,7 +52,7 @@
 
     <!--android:hint="@string/invitecode"-->
 
-    <com.noqapp.client.views.cutomviews.ButtonRalewayRegular
+    <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
