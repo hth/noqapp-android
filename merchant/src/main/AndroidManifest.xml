@@ -22,7 +22,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
         <activity
-            android:name=".views.activities.SplashScreen"
+            android:name="com.noqapp.android.merchant.views.activities.SplashScreen"
             android:label="@string/app_name"
             android:theme="@style/BaseTheme">
             <intent-filter>
@@ -30,17 +30,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.activities.LaunchActivity"
+        <activity android:name="com.noqapp.android.merchant.views.activities.LaunchActivity"
             android:theme="@style/BaseTheme">
         </activity>
-        <service android:name=".network.NoQueueFirebaseInstanceServices">
+        <service android:name="com.noqapp.android.merchant.network.NoQueueFirebaseInstanceServices">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
         <service
-            android:name=".network.NOQueueMessagingService">
+            android:name="com.noqapp.android.merchant.network.NOQueueMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
