@@ -38,7 +38,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.interfaces.MeView;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 
 import org.apache.commons.lang3.StringUtils;
 

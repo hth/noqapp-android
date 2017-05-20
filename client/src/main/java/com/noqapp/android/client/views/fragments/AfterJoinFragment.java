@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonToken;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.model.QueueModel;

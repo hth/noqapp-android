@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

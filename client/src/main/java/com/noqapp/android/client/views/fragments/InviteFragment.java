@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

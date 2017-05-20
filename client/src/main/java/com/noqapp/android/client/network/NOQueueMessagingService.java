@@ -17,7 +17,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 
 import java.util.List;
 

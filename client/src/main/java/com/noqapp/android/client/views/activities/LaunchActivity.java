@@ -28,7 +28,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.NetworkHelper;
 import com.noqapp.android.client.views.fragments.AfterJoinFragment;
 import com.noqapp.android.client.views.fragments.LoginFragment;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.network.NOQueueMessagingService;
 import com.noqapp.android.client.views.fragments.ListQueueFragment;

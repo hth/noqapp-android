@@ -20,7 +20,7 @@ import android.widget.ToggleButton;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
-import com.noqapp.client.R;
+import com.noqapp.android.client.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
