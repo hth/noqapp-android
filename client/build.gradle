@@ -98,7 +98,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.noqapp.client"
+        applicationId "com.noqapp.android.client"
         minSdkVersion 15
         targetSdkVersion 25
         multiDexEnabled true
