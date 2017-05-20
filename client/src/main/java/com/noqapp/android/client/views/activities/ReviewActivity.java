@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.model.ReviewModel;
+import com.noqapp.android.client.model.database.utils.NoQueueDB;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
@@ -114,6 +115,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             }
 
         }
+        NoQueueDB.deleteTokenQueue(jtk.getCodeQR());
         finish();
         LaunchActivity.getLaunchActivity().dismissProgress();
     }

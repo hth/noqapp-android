@@ -15,6 +15,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.R;
@@ -51,9 +52,10 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                 pushNotification.putExtra("message", remoteMessage.getNotification().getBody());
                 pushNotification.putExtra("f", remoteMessage.getData().get("f"));
                 pushNotification.putExtra("c", remoteMessage.getData().get("c"));
-//                pushNotification.putExtra("status", remoteMessage.getData().get("q"));
-//                pushNotification.putExtra("current_serving", remoteMessage.getData().get("cs"));
-//                pushNotification.putExtra("lastno", remoteMessage.getData().get("ln"));
+                if(remoteMessage.getData().get("f").equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
+                    pushNotification.putExtra("cs", remoteMessage.getData().get("cs"));
+                    pushNotification.putExtra("ln", remoteMessage.getData().get("ln"));
+                }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } else {
                 // app is in background, show the notification in notification tray

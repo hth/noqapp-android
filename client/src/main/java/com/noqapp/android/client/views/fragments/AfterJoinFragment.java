@@ -207,12 +207,21 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         return codeQR;
     }
 
-    private void setBackGround(int pos) {
+    public void setBackGround(int pos) {
         tv_after.setTextColor(Color.WHITE);
         tv_how_long.setTextColor(Color.WHITE);
+        tv_after.setText("Soon is your turn! You are :");
+        tv_after.setVisibility(View.VISIBLE);
         switch (pos) {
+            case 0:
+                ll_change_bg.setBackgroundResource(R.drawable.turn_1);
+                tv_how_long.setText("It's your turn!!!");
+                tv_after.setText("");
+                tv_after.setVisibility(View.GONE);
+                break;
             case 1:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_1);
+                tv_after.setText("It is your turn! You are :");
                 break;
             case 2:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_2);
@@ -227,10 +236,20 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 ll_change_bg.setBackgroundResource(R.drawable.turn_5);
                 break;
             default:
+                tv_after.setText("You are :");
                 tv_after.setTextColor(getResources().getColor(R.color.colorActionbar));
                 tv_how_long.setTextColor(getResources().getColor(R.color.colorActionbar));
                 ll_change_bg.setBackgroundResource(R.drawable.square_bg_drawable);
                 break;
         }
+    }
+
+    public void setObject(JsonTokenAndQueue jq){
+        jsonQueue=jq;
+        tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
+        tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
+        tv_how_long.setText(String.valueOf(jsonQueue.afterHowLong()));
+
+
     }
 }

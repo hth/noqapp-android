@@ -156,6 +156,10 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
+    public int getPeopleInQueue(){
+        return lastNumber-servingNumber;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }

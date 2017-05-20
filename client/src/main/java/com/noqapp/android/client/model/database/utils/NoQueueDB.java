@@ -201,7 +201,7 @@ public class NoQueueDB {
             ContentValues con = new ContentValues();
             con.put(TokenQueue.SERVING_NUMBER, servingno);
             con.put(TokenQueue.TOKEN, token);
-            dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?" + codeQR, null);
+            dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?", new String[]{codeQR});
         } catch (Exception e) {
             e.printStackTrace();
         }
