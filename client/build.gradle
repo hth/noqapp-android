@@ -31,7 +31,6 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-
 android {
     archivesBaseName = "client";
 
@@ -295,30 +294,35 @@ android {
 }
 
 dependencies {
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    compile project(':android-zxing')
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-jackson:2.2.0'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    compile 'org.apache.commons:commons-lang3:3.5'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
-    compile 'com.google.firebase:firebase-core:10.2.0'
-    compile 'com.google.firebase:firebase-messaging:10.2.0'
     compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.facebook.android:account-kit-sdk:4.21.1'
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    compile project(':android-zxing')
-    compile 'com.github.mukeshsolanki:country-picker-android:1.1.7'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
+    compile 'org.apache.commons:commons-lang3:3.5'
+    compile 'com.jakewharton:butterknife:8.6.0'
+    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
+    compile 'com.github.mukeshsolanki:country-picker-android:1.1.9'
+
+    compile 'com.google.firebase:firebase-core:10.2.6'
+    compile 'com.google.firebase:firebase-messaging:10.2.6'
+    compile 'com.facebook.android:account-kit-sdk:4.22.1'
+    compile 'com.googlecode.libphonenumber:libphonenumber:8.4.3'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
-    compile 'com.googlecode.libphonenumber:libphonenumber:8.4.2'
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
 }
 
 /** Gradle default task. */
