@@ -27,9 +27,9 @@ import com.facebook.accountkit.PhoneNumber;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
-import com.mukesh.countrypicker.fragments.CountryPicker;
-import com.mukesh.countrypicker.interfaces.CountryPickerListener;
-import com.mukesh.countrypicker.models.Country;
+import com.mukesh.countrypicker.CountryPicker;
+import com.mukesh.countrypicker.CountryPickerListener;
+import com.mukesh.countrypicker.Country;
 import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
@@ -99,7 +99,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         Locale l = new Locale(Locale.getDefault().getLanguage(), countryCode);
         countryISO = AppUtilities.iso3CountryCodeToIso2CountryCode(l.getISO3Country());
         CountryPicker picker = CountryPicker.newInstance(getString(R.string.select_country));
-        Country country = picker.getCountryByLocale(getActivity(), l);
+        Country country = null;
         edt_country_code.setBackgroundResource(country.getFlag());
         countryDialCode = country.getDialCode();
 

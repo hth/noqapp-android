@@ -26,8 +26,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.mukesh.countrypicker.fragments.CountryPicker;
-import com.mukesh.countrypicker.models.Country;
+import com.mukesh.countrypicker.CountryPicker;
+import com.mukesh.countrypicker.Country;
 import com.noqapp.android.client.presenter.MePresenter;
 import com.noqapp.android.client.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
@@ -130,7 +130,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             Locale l1 = new Locale(Locale.getDefault().getLanguage(), bundle.getString("country_code", "US"));
             countryISO = AppUtilities.iso3CountryCodeToIso2CountryCode(l1.getISO3Country());
             CountryPicker picker1 = CountryPicker.newInstance(getString(R.string.select_country));
-            Country country1 = picker1.getCountryByLocale(getActivity(), l1);
+            Country country1 = null;
             edt_country_code.setBackgroundResource(country1.getFlag());
             edt_country_code.setError(null);
             edt_country_code.setText(country1.getCode());
@@ -147,7 +147,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             Locale l = new Locale(Locale.getDefault().getLanguage(), countryCode);
             countryISO = AppUtilities.iso3CountryCodeToIso2CountryCode(l.getISO3Country());
             CountryPicker picker = CountryPicker.newInstance("Select Country");
-            Country country = picker.getCountryByLocale(getActivity(), l);
+            Country country = null;
             edt_country_code.setBackgroundResource(country.getFlag());
             edt_country_code.setText(country.getCode());
             countryDialCode = country.getDialCode();
