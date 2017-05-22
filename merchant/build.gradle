@@ -184,7 +184,7 @@ android {
             proguardFile '../library-proguard/proguard-square-retrofit2.pro'
 
             proguardFile 'merchant-debug-proguard.config'
-            proguardFile 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, TRUE
             buildConfigField BOOLEAN, REPORT_CRASHES, FALSE
@@ -215,7 +215,7 @@ android {
             proguardFile '../library-proguard/proguard-square-retrofit2.pro'
 
             proguardFile 'merchant-release-proguard.config'
-            proguardFile 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             signingConfig signingConfigs.release
 
