@@ -148,9 +148,6 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
-        exclude 'META-INF/jackson-annotations-2.7.0.jar'
-        exclude 'META-INF/jackson-core-2.7.2.jar'
-        exclude 'META-INF/jackson-databind-2.7.2.jar'
         exclude 'LICENSE.txt'
     }
 
@@ -188,7 +185,7 @@ android {
             proguardFile '../library-proguard/proguard-square-retrofit2.pro'
 
             proguardFile 'client-debug-proguard.config'
-            proguardFile 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, TRUE
             buildConfigField BOOLEAN, REPORT_CRASHES, FALSE
@@ -220,7 +217,7 @@ android {
             proguardFile '../library-proguard/proguard-square-retrofit2.pro'
 
             proguardFile 'client-release-proguard.config'
-            proguardFile 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             signingConfig signingConfigs.release
 
