@@ -37,8 +37,9 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
+
+        // Check if message contains a notification payload.
+        if (remoteMessage.getData() != null) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
 
@@ -49,20 +50,13 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: q-" + remoteMessage.getData().get("q"));
             Log.d(TAG, "Message data payload: cs-" + remoteMessage.getData().get("cs"));
             Log.d(TAG, "Message data payload: ln-" + remoteMessage.getData().get("ln"));
-
-
-        }
-
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            String title = remoteMessage.getNotification().getTitle();
-
+            String title = remoteMessage.getData().get("title");
+            String body =remoteMessage.getData().get("body");
             clearNotifications(this);
             if (!isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
-                pushNotification.putExtra("message", remoteMessage.getNotification().getBody());
+                pushNotification.putExtra("message", body);
                 pushNotification.putExtra("qrcode", remoteMessage.getData().get("c"));
                 pushNotification.putExtra("status", remoteMessage.getData().get("q"));
                 pushNotification.putExtra("current_serving", remoteMessage.getData().get("cs"));
@@ -72,7 +66,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
 
             } else {
                 // app is in background, show the notification in notification tray
-                sendNotification(title, remoteMessage.getNotification().getBody());
+                sendNotification(title, body);
             }
 
         }
@@ -82,10 +76,9 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String title, String messageBody) {
-
-        Intent intent = new Intent(this, LaunchActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, Constants.requestCodeNotification, intent, PendingIntent.FLAG_ONE_SHOT);
+        Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),Constants.requestCodeNotification,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notifications)
@@ -94,11 +87,10 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
-
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, notificationBuilder.build());
+        notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
     }
 
     // Clears notification tray messages
