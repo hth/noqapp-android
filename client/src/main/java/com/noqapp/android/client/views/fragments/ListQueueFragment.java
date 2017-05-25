@@ -222,11 +222,13 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         listDataHeader.add("History");
         listDataChild.put(listDataHeader.get(0), currentlist); // Header, Child data
         listDataChild.put(listDataHeader.get(1), historylist);
-
+        listAdapter=null;
+        expListView.setAdapter(listAdapter);
         listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild);
 
         if (currentlist.size() == 0 && expListView.getHeaderViewsCount() == 0) {
             //header.setVisibility(View.VISIBLE);
+
             expListView.addHeaderView(header, null, false);
         } else if (currentlist.size() > 0) {
             // header.setVisibility(View.GONE);
