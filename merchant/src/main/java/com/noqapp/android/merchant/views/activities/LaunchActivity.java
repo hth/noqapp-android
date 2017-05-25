@@ -135,10 +135,12 @@ public class LaunchActivity extends AppCompatActivity {
                             jt.setQueueStatus(QueueStatusEnum.valueOf(status));
                             jt.setToken(Integer.parseInt(lastno));
                             MerchantListFragment.topics.set(i, jt);
-                            if (null != merchantListFragment.adapter)
-                                merchantListFragment.adapter.notifyDataSetChanged();
-                            if (null != merchantListFragment.merchantViewPagerFragment)
-                                merchantListFragment.merchantViewPagerFragment.adapter.notifyDataSetChanged();
+                            if(null!=merchantListFragment) {
+                                if (null != merchantListFragment.adapter)
+                                    merchantListFragment.adapter.notifyDataSetChanged();
+                                if (null != merchantListFragment.merchantViewPagerFragment)
+                                    merchantListFragment.merchantViewPagerFragment.adapter.notifyDataSetChanged();
+                            }
                             break;
                         }
                     }
