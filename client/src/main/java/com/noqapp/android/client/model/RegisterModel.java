@@ -40,7 +40,8 @@ public final class RegisterModel {
                     profilePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Empty history");
+                    Log.e(TAG, "Empty history"+response.body().getError());
+                    profilePresenter.queueError();
                 }
             }
 
@@ -64,7 +65,7 @@ public final class RegisterModel {
                     profilePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Empty history");
+                    Log.e(TAG, "Empty history"+response.body().getError());
                 }
             }
 

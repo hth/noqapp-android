@@ -40,7 +40,7 @@ public class DeviceModel {
                     Log.d("Response", String.valueOf(response.body()));
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Empty history");
+                    Log.e(TAG, "Empty history"+response.body().getError());
                 }
             }
 

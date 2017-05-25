@@ -99,7 +99,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbHandler = DatabaseHelper.getsInstance(this);
+        dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
         launchActivity = this;
@@ -119,12 +119,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
-                    String message = intent.getStringExtra("message");
                     String payload = intent.getStringExtra("f");
                     String codeQR = intent.getStringExtra("c");
-
-
-
                     Log.v("payload", payload);
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
@@ -134,42 +130,58 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("object", jtk);
                         in.putExtras(bundle);
-                        startActivityForResult(in,Constants.requestCodeJoinQActivity);
+                        startActivityForResult(in, Constants.requestCodeJoinQActivity);
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
                         Log.v("object is :", jtk.toString());
-                    } else if(StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())){
+                    } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
                         String current_serving = intent.getStringExtra("cs");
-                        String lastno = intent.getStringExtra("ln");
                         JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
                         //update DB & after join screen
                         jtk.setServingNumber(Integer.parseInt(current_serving));
-                        if(jtk.isTokenExpired()){
+                        if (jtk.isTokenExpired()) {
                             //un subscribe the topic
                             FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
                         }
-                        NoQueueDB.updateJoinQueueObject(codeQR,current_serving,String.valueOf(jtk.getToken()));
+                        NoQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                         List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
-                        if (null!= currentTabFragments && currentTabFragments.size() > 1) {
+                        if (null != currentTabFragments && currentTabFragments.size() > 1) {
                             int size = currentTabFragments.size();
                             Fragment currentfrg = currentTabFragments.get(size - 1);
                             if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                                String qcode= ((AfterJoinFragment)currentfrg).getCodeQR();
-                                if(codeQR.equals(qcode)) {
+                                String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
+                                if (codeQR.equals(qcode)) {
                                     //updating the serving status
-                                    ((AfterJoinFragment)currentfrg).setObject(jtk);
-                                    ((AfterJoinFragment)currentfrg).setBackGround(jtk.afterHowLong());
+                                    ((AfterJoinFragment) currentfrg).setObject(jtk);
                                 }
                             }
                         }
 
-
                     } else {
-                        Toast.makeText(launchActivity, "Notification : " + message, Toast.LENGTH_LONG).show();
+                        Toast.makeText(launchActivity, "Notification : " + payload, Toast.LENGTH_LONG).show();
                     }
                 }
             }
         };
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (extras.containsKey("CODEQR")) {
+                String codeQR = extras.getString("CODEQR");
+                JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
+                Intent in = new Intent(launchActivity, ReviewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("object", jtk);
+                in.putExtras(bundle);
+                startActivityForResult(in, Constants.requestCodeJoinQActivity);
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+            }
+        }
+
+
     }
 
     @Override
@@ -252,12 +264,12 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 String intent_qrCode = data.getExtras().getString("CODEQR");
                 //Remove the AfterJoinFragment screen if having same qr code
                 List<Fragment> currentTabFragments = fragmentsStack.get(tabList);
-                if (null!= currentTabFragments && currentTabFragments.size() > 1) {
+                if (null != currentTabFragments && currentTabFragments.size() > 1) {
                     int size = currentTabFragments.size();
                     Fragment currentfrg = currentTabFragments.get(size - 1);
                     if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                        String qcode= ((AfterJoinFragment)currentfrg).getCodeQR();
-                        if(intent_qrCode.equals(qcode)) {
+                        String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
+                        if (intent_qrCode.equals(qcode)) {
                             currentTabFragments.remove(currentTabFragments.size() - 1);
                             currentTabFragments.remove(currentTabFragments.size() - 1);
                         }

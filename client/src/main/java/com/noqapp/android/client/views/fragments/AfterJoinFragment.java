@@ -75,6 +75,8 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private String address;
     private String topic;
 
+    private boolean isReumeFirst=true;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -201,6 +203,14 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Details");
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
+        /* Added to update the screen if app is in background & notification received */
+        if(!isReumeFirst){
+            JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
+            setObject(jtk);
+        }
+        if(isReumeFirst){
+            isReumeFirst=false;
+        }
     }
 
     public String getCodeQR() {
@@ -249,7 +259,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
         tv_how_long.setText(String.valueOf(jsonQueue.afterHowLong()));
-
-
+        setBackGround(jq.afterHowLong());
     }
 }
