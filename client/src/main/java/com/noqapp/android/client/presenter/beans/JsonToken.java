@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * User: hitender
  * Date: 4/1/17 12:13 PM
@@ -106,17 +108,6 @@ public class JsonToken {
         this.error = error;
     }
 
-    @Override
-    public String toString() {
-        return "JsonToken{" +
-                "codeQR='" + codeQR + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", queueStatus=" + queueStatus +
-                ", servingNumber=" + servingNumber +
-                ", token=" + token +
-                '}';
-    }
-
     @JsonIgnoreProperties
     public int afterHowLong() {
         return token - servingNumber;
@@ -131,5 +122,18 @@ public class JsonToken {
         jsonTokenAndQueue.setServingNumber(servingNumber);
         jsonTokenAndQueue.setToken(token);
         return jsonTokenAndQueue;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("codeQR", codeQR)
+                .append("displayName", displayName)
+                .append("queueStatus", queueStatus)
+                .append("servingNumber", servingNumber)
+                .append("token", token)
+                .append("customerName", customerName)
+                .append("error", error)
+                .toString();
     }
 }

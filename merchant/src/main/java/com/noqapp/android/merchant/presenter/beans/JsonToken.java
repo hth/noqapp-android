@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -102,5 +104,18 @@ public class JsonToken implements Serializable {
 
     public int getRemaining() {
         return token - servingNumber;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("codeQR", codeQR)
+                .append("displayName", displayName)
+                .append("queueStatus", queueStatus)
+                .append("servingNumber", servingNumber)
+                .append("token", token)
+                .append("customerName", customerName)
+                .append("error", error)
+                .toString();
     }
 }

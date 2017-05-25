@@ -43,12 +43,12 @@ public class ManageQueueModel {
         manageQueueService.getQueues(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
             public void onResponse(Call<JsonTopicList> call, Response<JsonTopicList> response) {
-                if (response.body() != null) {
-                    Log.d("Response", String.valueOf(response.body()));
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("Get all assigned queues", String.valueOf(response.body()));
                     topicPresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Empty history");
+                    Log.e(TAG, "Found error while getting all queues assigned");
                 }
             }
 
@@ -71,11 +71,11 @@ public class ManageQueueModel {
             public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
                 if (response.body() != null && response.body().getError() == null) {
                     if (StringUtils.isNotBlank(response.body().getCodeQR())) {
-                        Log.d("Response", String.valueOf(response.body()));
+                        Log.d(TAG, "After clicking Next, response jsonToken" + response.body().toString());
                         manageQueuePresenter.manageQueueResponse(response.body());
                     } else {
                         //TODO something logical
-                        Log.e(TAG, "Failed to get token");
+                        Log.e(TAG, "Failed to get response");
                     }
                 } else if (response.body() != null && response.body().getError() != null) {
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
