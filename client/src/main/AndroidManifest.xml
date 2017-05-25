@@ -54,13 +54,14 @@
         </activity>
         <activity
             android:name="com.noqapp.android.client.views.activities.LaunchActivity"
-            android:label="@string/title_activity_join_queue"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme">
+            <intent-filter>
+               <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.noqapp.android.client.views.activities.ReviewActivity"
-            android:label="@string/title_activity_join_queue"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme">
         </activity>

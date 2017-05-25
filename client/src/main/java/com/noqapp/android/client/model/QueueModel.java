@@ -155,7 +155,8 @@ public final class QueueModel {
                     tokenPresenter.tokenPresenterResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Failed to join queue");
+                    Log.e(TAG, "Failed to join queue"+response.body().getError());
+                    tokenPresenter.tokenPresenterError();
                 }
             }
 

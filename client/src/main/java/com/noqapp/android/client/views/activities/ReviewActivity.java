@@ -76,7 +76,13 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         } else {
             //Do nothing as of now
         }
-        actionbarBack.setVisibility(View.INVISIBLE);
+       // actionbarBack.setVisibility(View.INVISIBLE);
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         tv_toolbar_title.setText("Review");
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,11 +111,11 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        Toast.makeText(this, "Please review the service, It is valuable to us.", Toast.LENGTH_LONG).show();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        //super.onBackPressed();
+//        Toast.makeText(this, "Please review the service, It is valuable to us.", Toast.LENGTH_LONG).show();
+//    }
 
     @Override
     public void reviewResponse(JsonResponse jsonResponse) {
