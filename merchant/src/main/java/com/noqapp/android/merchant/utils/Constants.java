@@ -27,7 +27,7 @@ public class Constants {
      */
     public static String appVersion() {
         if (StringUtils.isBlank(VERSION_RELEASE)) {
-            String computedVersion = BuildConfig.VERSION_NAME.replaceAll(".", "");
+            String computedVersion = BuildConfig.VERSION_NAME.replace(".", "");
             VERSION_RELEASE = Integer.valueOf(computedVersion) > 100 ? computedVersion : "100";
             Log.i(TAG, "App version=" + VERSION_RELEASE);
         }
