@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.utils.NetworkHelper;
+import com.noqapp.android.merchant.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.network.NOQueueMessagingService;
@@ -38,7 +38,7 @@ public class LaunchActivity extends AppCompatActivity {
     public static String XR_DID ="X-R-DID";
     private static LaunchActivity launchActivity;
     protected TextView tv_toolbar_title;
-    public NetworkHelper networkHelper;
+    public NetworkUtil networkUtil;
     public static final String MyPREFERENCES = "AppPref";
     private static SharedPreferences sharedpreferences;
     private final String IS_LOGIN = "IsLoggedIn";
@@ -65,7 +65,7 @@ public class LaunchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         launchActivity = this;
         Log.v("device id check",getDeviceID());
-        networkHelper = new NetworkHelper(this);
+        networkUtil = new NetworkUtil(this);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         iv_logout = (ImageView) findViewById(R.id.iv_logout);
@@ -175,7 +175,7 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     public boolean isOnline() {
-        return networkHelper.isOnline();
+        return networkUtil.isOnline();
     }
 
     public static SharedPreferences getSharePreferance() {
