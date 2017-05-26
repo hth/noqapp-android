@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.noqapp.android.client.model.response.open.QueueService;
@@ -50,7 +51,7 @@ public final class QueueModel {
     public static void getQueueState(String did, String qrCode) {
         queueService.getQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonQueue>() {
             @Override
-            public void onResponse(Call<JsonQueue> call, Response<JsonQueue> response) {
+            public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                     queuePresenter.queueResponse(response.body());
@@ -61,7 +62,7 @@ public final class QueueModel {
             }
 
             @Override
-            public void onFailure(Call<JsonQueue> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonQueue> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
 
                 queuePresenter.queueError();
@@ -77,7 +78,7 @@ public final class QueueModel {
     public static void getCurrentQueueList(String did) {
         queueService.getAllJoinedQueue(did, Constants.DEVICE_TYPE).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
-            public void onResponse(Call<JsonTokenAndQueueList> call, Response<JsonTokenAndQueueList> response) {
+            public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
                 if (response.body() != null && response.body().getError() == null) {
                     /// if (response.body().getTokenAndQueues().size() > 0) {
                     Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
@@ -99,7 +100,7 @@ public final class QueueModel {
             }
 
             @Override
-            public void onFailure(Call<JsonTokenAndQueueList> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 tokenAndQueuePresenter.currentQueueError();
             }
@@ -114,7 +115,7 @@ public final class QueueModel {
     public static void getHistoryQueueList(String did, DeviceToken deviceToken) {
         queueService.getAllHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
-            public void onResponse(Call<JsonTokenAndQueueList> call, Response<JsonTokenAndQueueList> response) {
+            public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
                 if (response.body() != null && response.body().getError() == null) {
                     // if (response.body().getTokenAndQueues().size() > 0) {
                     Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
@@ -133,7 +134,7 @@ public final class QueueModel {
             }
 
             @Override
-            public void onFailure(Call<JsonTokenAndQueueList> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 tokenAndQueuePresenter.historyQueueError();
             }
@@ -149,7 +150,7 @@ public final class QueueModel {
     public static void joinQueue(String did, String codeQR) {
         queueService.joinQueue(did, Constants.DEVICE_TYPE, Constants.appVersion(), codeQR).enqueue(new Callback<JsonToken>() {
             @Override
-            public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
+            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.body() != null && response.body().getError() == null) {
                     Log.d("Response", response.body().toString());
                     tokenPresenter.tokenPresenterResponse(response.body());
@@ -161,7 +162,7 @@ public final class QueueModel {
             }
 
             @Override
-            public void onFailure(Call<JsonToken> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 tokenPresenter.tokenPresenterError();
             }
@@ -177,7 +178,7 @@ public final class QueueModel {
     public static void abortQueue(String did, String codeQR) {
         queueService.abortQueue(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
-            public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                     responsePresenter.responsePresenterResponse(response.body());
@@ -188,7 +189,7 @@ public final class QueueModel {
             }
 
             @Override
-            public void onFailure(Call<JsonResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 responsePresenter.responsePresenterError();
             }

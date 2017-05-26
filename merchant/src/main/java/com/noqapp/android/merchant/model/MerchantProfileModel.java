@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.noqapp.android.merchant.model.response.api.MerchantProfileService;
@@ -33,7 +34,7 @@ public class MerchantProfileModel {
     public static void fetch(String mail, String auth) {
         merchantProfileService.fetch(mail, auth).enqueue(new Callback<JsonMerchant>() {
             @Override
-            public void onResponse(Call<JsonMerchant> call, Response<JsonMerchant> response) {
+            public void onResponse(@NonNull Call<JsonMerchant> call, @NonNull Response<JsonMerchant> response) {
                 if (response.body() != null) {
                     merchantPresenter.merchantResponse(response.body());
                     Log.d("Response", String.valueOf(response.body()));
@@ -44,7 +45,7 @@ public class MerchantProfileModel {
             }
 
             @Override
-            public void onFailure(Call<JsonMerchant> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonMerchant> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });

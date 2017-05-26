@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.noqapp.android.merchant.model.response.api.ManageQueueService;
@@ -42,7 +43,7 @@ public class ManageQueueModel {
     public static void getQueues(String did, String mail, String auth) {
         manageQueueService.getQueues(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
-            public void onResponse(Call<JsonTopicList> call, Response<JsonTopicList> response) {
+            public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Get all assigned queues", String.valueOf(response.body()));
                     topicPresenter.queueResponse(response.body());
@@ -53,7 +54,7 @@ public class ManageQueueModel {
             }
 
             @Override
-            public void onFailure(Call<JsonTopicList> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonTopicList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 topicPresenter.queueError();
             }
@@ -68,7 +69,7 @@ public class ManageQueueModel {
     public static void served(String did, String mail, String auth, Served served) {
         manageQueueService.served(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
-            public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
+            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.body() != null && response.body().getError() == null) {
                     if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                         Log.d(TAG, "After clicking Next, response jsonToken" + response.body().toString());
@@ -84,7 +85,7 @@ public class ManageQueueModel {
             }
 
             @Override
-            public void onFailure(Call<JsonToken> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });
