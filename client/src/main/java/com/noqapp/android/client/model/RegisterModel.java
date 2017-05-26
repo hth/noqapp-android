@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.noqapp.android.client.presenter.beans.JsonProfile;
@@ -34,7 +35,7 @@ public final class RegisterModel {
     public static void register(Registration registration) {
         registerService.register(registration).enqueue(new Callback<JsonProfile>() {
             @Override
-            public void onResponse(Call<JsonProfile> call, Response<JsonProfile> response) {
+            public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.queueResponse(response.body());
@@ -46,7 +47,7 @@ public final class RegisterModel {
             }
 
             @Override
-            public void onFailure(Call<JsonProfile> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 profilePresenter.queueError();
             }
@@ -59,7 +60,7 @@ public final class RegisterModel {
     public static void login(Login login) {
         registerService.login(login).enqueue(new Callback<JsonProfile>() {
             @Override
-            public void onResponse(Call<JsonProfile> call, Response<JsonProfile> response) {
+            public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.queueResponse(response.body());
@@ -70,7 +71,7 @@ public final class RegisterModel {
             }
 
             @Override
-            public void onFailure(Call<JsonProfile> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 profilePresenter.queueError();
             }

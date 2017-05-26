@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 
@@ -39,7 +40,7 @@ public class DeviceModel {
     public static void register(String did, DeviceToken deviceToken) {
         deviceService.register(did, DEVICE_TYPE, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
-            public void onResponse(Call<DeviceRegistered> call, Response<DeviceRegistered> response) {
+            public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                 } else {
@@ -49,7 +50,7 @@ public class DeviceModel {
             }
 
             @Override
-            public void onFailure(Call<DeviceRegistered> call, Throwable t) {
+            public void onFailure(@NonNull Call<DeviceRegistered> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });

@@ -26,7 +26,7 @@ import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.utils.NoQueueDB;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.NetworkHelper;
+import com.noqapp.android.client.utils.NetworkUtil;
 import com.noqapp.android.client.views.fragments.AfterJoinFragment;
 import com.noqapp.android.client.views.fragments.LoginFragment;
 import com.noqapp.android.client.R;
@@ -52,7 +52,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     private static LaunchActivity launchActivity;
-    public NetworkHelper networkHelper;
+    public NetworkUtil networkUtil;
     @BindView(R.id.rl_list)
     protected RelativeLayout rl_list;
     @BindView(R.id.rl_home)
@@ -105,7 +105,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         launchActivity = this;
         Log.v("device id check", getDeviceID());
 
-        networkHelper = new NetworkHelper(this);
+        networkUtil = new NetworkUtil(this);
         rl_home.setOnClickListener(this);
         rl_list.setOnClickListener(this);
         rl_me.setOnClickListener(this);
@@ -308,7 +308,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
     public boolean isOnline() {
-        return networkHelper.isOnline();
+        return networkUtil.isOnline();
     }
 
     @Override

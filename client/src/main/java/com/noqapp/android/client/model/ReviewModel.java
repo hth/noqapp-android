@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.noqapp.android.client.presenter.beans.JsonResponse;
@@ -36,7 +37,7 @@ public class ReviewModel {
     public static void review(String did, ReviewRating reviewRating) {
         reviewService.review(did, DEVICE_TYPE, reviewRating).enqueue(new Callback<JsonResponse>() {
             @Override
-            public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.body() != null) {
                     Log.d("Response Review", String.valueOf(response.body()));
                     reviewPresenter.reviewResponse(response.body());
@@ -47,7 +48,7 @@ public class ReviewModel {
             }
 
             @Override
-            public void onFailure(Call<JsonResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 reviewPresenter.reviewError();
             }
@@ -61,7 +62,7 @@ public class ReviewModel {
     public static void reviewHistorical(String did, ReviewRating reviewRating) {
         reviewService.reviewHistorical(did, DEVICE_TYPE, reviewRating).enqueue(new Callback<JsonResponse>() {
             @Override
-            public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                 } else {
@@ -71,7 +72,7 @@ public class ReviewModel {
             }
 
             @Override
-            public void onFailure(Call<JsonResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });

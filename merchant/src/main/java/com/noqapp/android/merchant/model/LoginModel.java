@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.noqapp.android.merchant.model.response.api.LoginService;
@@ -32,17 +33,19 @@ public class LoginModel {
     public static void login(String mail, String password) {
         loginService.login(mail, password).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
 
-                loginPresenter.loginResponse(response.headers().get(APIConstant.key.XR_MAIL),
+                loginPresenter.loginResponse(
+                        response.headers().get(APIConstant.key.XR_MAIL),
                         response.headers().get(APIConstant.key.XR_AUTH));
+
                 Log.d("Response", String.valueOf(response.body()));
                 Log.d("Response Mail", String.valueOf(response.headers().get(APIConstant.key.XR_MAIL)));
                 Log.d("Response Auth", String.valueOf(response.headers().get(APIConstant.key.XR_AUTH)));
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
