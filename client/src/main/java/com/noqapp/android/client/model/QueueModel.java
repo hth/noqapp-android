@@ -151,7 +151,7 @@ public final class QueueModel {
             @Override
             public void onResponse(Call<JsonToken> call, Response<JsonToken> response) {
                 if (response.body() != null && response.body().getError() == null) {
-                    Log.d("Response", String.valueOf(response.body()));
+                    Log.d("Response", response.body().toString());
                     tokenPresenter.tokenPresenterResponse(response.body());
                 } else {
                     //TODO something logical
