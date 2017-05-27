@@ -110,7 +110,8 @@ public class JsonToken {
 
     @JsonIgnoreProperties
     public int afterHowLong() {
-        return token - servingNumber;
+        int position =token - servingNumber;
+        return position>0 ? position : 0;
     }
 
     @JsonIgnoreProperties

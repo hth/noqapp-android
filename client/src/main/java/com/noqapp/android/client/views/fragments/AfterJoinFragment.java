@@ -259,6 +259,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
         tv_how_long.setText(String.valueOf(jsonQueue.afterHowLong()));
-        setBackGround(jq.afterHowLong());
+        setBackGround(jq.afterHowLong()>0?jq.afterHowLong():0);
     }
 }
