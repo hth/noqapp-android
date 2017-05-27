@@ -1,7 +1,6 @@
 package com.noqapp.android.client.network;
 
 import android.app.ActivityManager;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -10,24 +9,19 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NoQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.activities.ReviewActivity;
-import com.noqapp.android.client.views.fragments.AfterJoinFragment;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -55,63 +49,59 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
         clearNotifications(this);
         // Check if message contains a notification payload.
         if (remoteMessage.getData() != null) {
-
             String title = remoteMessage.getData().get("title");
-            String body =remoteMessage.getData().get("body");
+            String body = remoteMessage.getData().get("body");
             if (!isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                 pushNotification.putExtra("f", remoteMessage.getData().get("f"));
                 pushNotification.putExtra("c", remoteMessage.getData().get("c"));
-                if(remoteMessage.getData().get("f").equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
+                if (remoteMessage.getData().get("f").equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                     pushNotification.putExtra("cs", remoteMessage.getData().get("cs"));
                     pushNotification.putExtra("ln", remoteMessage.getData().get("ln"));
                 }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } else {
                 // app is in background, show the notification in notification tray
-
                 //save data to database
-
                 String payload = remoteMessage.getData().get("f");
                 String codeQR = remoteMessage.getData().get("c");
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
 
                     JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
-                    // unsubscribe the topic
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
-                    sendNotification(title, body,codeQR);//pass codeQR
 
-                } else if(StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())){
+                    // un-subscribe from the topic
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+                    sendNotification(title, body, codeQR);//pass codeQR
+
+                } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
 
                     String current_serving = remoteMessage.getData().get("cs");
                     JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
                     //update DB & after join screen
                     jtk.setServingNumber(Integer.parseInt(current_serving));
-                    if(jtk.isTokenExpired()){
-                        //un subscribe the topic
+                    if (jtk.isTokenExpired()) {
+                        //un-subscribe from the topic
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
                     }
-                    NoQueueDB.updateJoinQueueObject(codeQR,current_serving,String.valueOf(jtk.getToken()));
-                    sendNotification(title, body,null);
+                    NoQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                    sendNotification(title, body, null);
                 }
             }
         }
-
     }
 
-    private void sendNotification(String title, String messageBody,String extra) {
-
+    private void sendNotification(String title, String messageBody, String extra) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
-        if(null!=extra) {
+        if (null != extra) {
             notificationIntent.putExtra("CODEQR", extra);
-            Log.v("notification","service done");
-        }else{
-            Log.v("notification","service null");
+            Log.v("notification", "service done");
+        } else {
+            Log.v("notification", "service null");
         }
 
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),Constants.requestCodeNotification,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notifications_none_black_24dp)
@@ -120,9 +110,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
     }
 

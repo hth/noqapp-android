@@ -41,8 +41,6 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getData() != null) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-
             Log.d(TAG, "Message data payload: c- " + remoteMessage.getData().get("c"));
             Log.d(TAG, "Message data payload: f- " + remoteMessage.getData().get("f"));
             FirebaseMessageTypeEnum firebaseMessageTypeEnum = FirebaseMessageTypeEnum.valueOf(remoteMessage.getData().get("f"));
@@ -50,6 +48,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: q-" + remoteMessage.getData().get("q"));
             Log.d(TAG, "Message data payload: cs-" + remoteMessage.getData().get("cs"));
             Log.d(TAG, "Message data payload: ln-" + remoteMessage.getData().get("ln"));
+            Log.d(TAG, "Message data payload: g-" + remoteMessage.getData().get("g"));
             String title = remoteMessage.getData().get("title");
             String body =remoteMessage.getData().get("body");
             clearNotifications(this);
