@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.adapters;
 /**
  * Created by chandra on 4/16/17.
  */
-
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -37,7 +36,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     private Context context;
     private List<JsonTopic> topics;
     private LayoutInflater inflater;
-    public static AdapterCallback mAdapterCallback;
+    private static AdapterCallback mAdapterCallback;
 
     public ViewPagerAdapter(Context context, List<JsonTopic> topics) {
         this.context = context;
@@ -64,13 +63,8 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-
-
-
-        inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = inflater.inflate(R.layout.viewpager_item, container,
-                false);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View itemView = inflater.inflate(R.layout.viewpager_item, container,false);
         ManageQueueModel.manageQueuePresenter = this;
         TextView tv_current_value = (TextView) itemView.findViewById(R.id.tv_current_value);
         TextView tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
@@ -101,7 +95,6 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 break;
         }
 
-
         btn_skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,8 +108,12 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                         served.setQueueStatus(lq.getQueueStatus());
                         served.setQueueUserState(QueueUserStateEnum.N);
                         served.setServedNumber(lq.getServingNumber());
-                        ManageQueueModel.served(LaunchActivity.getLaunchActivity().getDeviceID(), LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(), served);
+                        served.setGoTo("GoTo Name");
+                        ManageQueueModel.served(
+                                LaunchActivity.getLaunchActivity().getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                served);
                     } else {
                         ShowAlertInformation.showNetworkDialog(context);
                     }
@@ -145,8 +142,12 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                         served.setQueueStatus(lq.getQueueStatus());
                         served.setQueueUserState(QueueUserStateEnum.S);
                         served.setServedNumber(lq.getServingNumber());
-                        ManageQueueModel.served(LaunchActivity.getLaunchActivity().getDeviceID(), LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(), served);
+                        served.setGoTo("GoTo Name");
+                        ManageQueueModel.served(
+                                LaunchActivity.getLaunchActivity().getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                served);
                     } else {
                         ShowAlertInformation.showNetworkDialog(context);
                     }
@@ -154,9 +155,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             }
         });
 
-
         ((ViewPager) container).addView(itemView);
-
         return itemView;
     }
 
@@ -185,7 +184,6 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 //To update merchant list screen
                 mAdapterCallback.onMethodCallback(token);
             }
-
         }
     }
 

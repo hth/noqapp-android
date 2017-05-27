@@ -121,7 +121,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     // new push notification is received
                     String payload = intent.getStringExtra("f");
                     String codeQR = intent.getStringExtra("c");
-                    Log.d(TAG, "payload=" + payload);
+                    Log.d(TAG, "payload=" + payload + " codeQR=" + codeQR);
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         Toast.makeText(launchActivity, "Notification payload P: " + payload, Toast.LENGTH_LONG).show();
