@@ -2,6 +2,8 @@ package com.noqapp.android.client.utils;
 
 import com.noqapp.android.client.views.activities.LaunchActivity;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * User: hitender
  * Date: 5/9/17 6:49 PM
@@ -10,15 +12,15 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 public class UserUtils {
 
     public static boolean isLogin() {
-        return true;
+        return StringUtils.isNotBlank(getAuth());
     }
 
     public static String getEmail() {
-        return "ajinkya.5@mail.noqapp.com";
+        return "hdjjdjd.46@mail.noqapp.com";
     }
 
     public static String getAuth() {
-        return "$2a$15$T7GXB3ziRwHNNKp55uIYG.yfBlnlpqBZGnOBYKFhgLCzAfU/p0.Dm";
+        return "$2a$15$QFOPQgo5eRlAW8QRAhSzDOc.W3gFhfBxwhsLJt0qLb4WLEqZRQ/vm";
     }
 
     public static String getDeviceId() {
