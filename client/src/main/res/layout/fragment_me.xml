@@ -123,7 +123,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.75"
             android:gravity="center_vertical"
-            android:text="@string/remotescanavail"
+            android:text="@string/remoteJoinAvail"
             android:textColor="@color/color_total_val"
             android:textSize="20sp" />
 
@@ -174,7 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".5"
-                android:text="@string/freeremotescan"
+                android:text="@string/freeRemoteJoin"
                 android:textColor="@color/color_list_text"
                 android:textSize="18sp" />
         </LinearLayout>
