@@ -43,8 +43,8 @@ public class JsonProfile {
     @JsonProperty("ic")
     private String inviteCode;
 
-    @JsonProperty("rs")
-    private int remoteScanAvailable;
+    @JsonProperty("rj")
+    private int remoteJoin;
 
     @JsonProperty("bd")
     private String birthday;
@@ -103,12 +103,12 @@ public class JsonProfile {
         this.inviteCode = inviteCode;
     }
 
-    public int getRemoteScanAvailable() {
-        return remoteScanAvailable;
+    public int getRemoteJoin() {
+        return remoteJoin;
     }
 
-    public void setRemoteScanAvailable(int remoteScanAvailable) {
-        this.remoteScanAvailable = remoteScanAvailable;
+    public void setRemoteJoin(int remoteJoin) {
+        this.remoteJoin = remoteJoin;
     }
 
     public String getBirthday() {
@@ -144,12 +144,10 @@ public class JsonProfile {
                 ", phoneRaw='" + phoneRaw + '\'' +
                 ", timeZone='" + timeZone + '\'' +
                 ", inviteCode='" + inviteCode + '\'' +
-                ", remoteScanAvailable=" + remoteScanAvailable +
+                ", remoteJoin=" + remoteJoin +
                 ", birthday='" + birthday + '\'' +
                 ", gender='" + gender + '\'' +
                 ", error=" + error +
                 '}';
     }
-
-
 }

@@ -17,7 +17,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_NAME = "name";
     public static final String PREKEY_MAIL = "mail";
     public static final String PREKEY_GENDER = "gender";
-    public static final String PREKEY_REMOTESCAN = "remotescan";
+    public static final String PREKEY_REMOTE_JOIN = "remoteJoin";
     public static final String PREKEY_AUTOJOIN = "autojoin";
     public static final String PREKEY_INVITECODE = "invitecode";
     public static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";

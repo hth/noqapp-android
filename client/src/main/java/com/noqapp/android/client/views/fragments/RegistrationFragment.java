@@ -189,7 +189,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             editor.putString(NoQueueBaseActivity.PREKEY_NAME, profile.getName());
             editor.putString(NoQueueBaseActivity.PREKEY_GENDER, profile.getGender());
             editor.putString(NoQueueBaseActivity.PREKEY_MAIL, profile.getMail());
-            editor.putInt(NoQueueBaseActivity.PREKEY_REMOTESCAN, profile.getRemoteScanAvailable());
+            editor.putInt(NoQueueBaseActivity.PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
             editor.putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, true);
             editor.putString(NoQueueBaseActivity.PREKEY_INVITECODE, profile.getInviteCode());
             editor.putString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());

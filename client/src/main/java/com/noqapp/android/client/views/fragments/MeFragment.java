@@ -78,7 +78,7 @@ public class MeFragment extends NoQueueBaseFragment {
         String name = preferences.getString(NoQueueBaseActivity.PREKEY_NAME, "Guest User");
         String phone = preferences.getString(NoQueueBaseActivity.PREKEY_PHONE, "");
         String gender = preferences.getString(NoQueueBaseActivity.PREKEY_GENDER, "");
-        int remoteScanCount = preferences.getInt(NoQueueBaseActivity.PREKEY_REMOTESCAN, 0);
+        int remoteScanCount = preferences.getInt(NoQueueBaseActivity.PREKEY_REMOTE_JOIN, 0);
         boolean isAutoScanAvail = preferences.getBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, false);
         inviteCode = preferences.getString(NoQueueBaseActivity.PREKEY_INVITECODE, "");
         tv_firstName.setText(name);
