@@ -22,8 +22,8 @@ import retrofit2.Response;
  * Date: 5/27/17 5:38 PM
  */
 
-public class QueueModel {
-    private static final String TAG = QueueModel.class.getSimpleName();
+public class QueueApiModel {
+    private static final String TAG = QueueApiModel.class.getSimpleName();
 
     private final static QueueService queueService;
     public static QueuePresenter queuePresenter;
