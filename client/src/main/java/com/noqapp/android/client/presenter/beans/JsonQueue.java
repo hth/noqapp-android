@@ -81,7 +81,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("st")
     private String servicedTime;
 
-    @JsonProperty("r")
+    @JsonProperty("rj")
     private int remoteJoin;
 
     @JsonProperty("u")
