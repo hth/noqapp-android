@@ -81,6 +81,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("st")
     private String servicedTime;
 
+    @JsonProperty("r")
+    private int remoteJoin;
+
     @JsonProperty("u")
     private String created;
 
@@ -147,6 +150,11 @@ public class JsonQueue implements Serializable {
         return servicedTime;
     }
 
+    /* Used when joining remotely. */
+    public int getRemoteJoin() {
+        return remoteJoin;
+    }
+
     public String getCreated() {
         return created;
     }
@@ -156,8 +164,8 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
-    public int getPeopleInQueue(){
-        return lastNumber-servingNumber;
+    public int getPeopleInQueue() {
+        return lastNumber - servingNumber;
     }
 
     public ErrorEncounteredJson getError() {
