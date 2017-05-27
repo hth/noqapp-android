@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
@@ -32,6 +33,8 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class LaunchActivity extends AppCompatActivity {
     public static final String mypref="shared_pref";
@@ -121,27 +124,30 @@ public class LaunchActivity extends AppCompatActivity {
                     String status = intent.getStringExtra("status");
                     String current_serving = intent.getStringExtra("current_serving");
                     String lastno = intent.getStringExtra("lastno");
+                    String payload = intent.getStringExtra("f");
                     Log.v("notification response",
                             "Push notification: " + message + "\n" + "qrcode : " + qrcode
                                     + "\n" + "status : " + status
                                     + "\n" + "current_serving : " + current_serving
                                     + "\n" + "lastno : " + lastno
+                                    + "\n" + "payload : " + payload
                     );
-
-                    for (int i = 0; i < MerchantListFragment.topics.size(); i++) {
-                        JsonTopic jt = MerchantListFragment.topics.get(i);
-                        if (jt.getCodeQR().equalsIgnoreCase(qrcode)) {
-                            jt.setServingNumber(Integer.parseInt(current_serving));
-                            jt.setQueueStatus(QueueStatusEnum.valueOf(status));
-                            jt.setToken(Integer.parseInt(lastno));
-                            MerchantListFragment.topics.set(i, jt);
-                            if(null!=merchantListFragment) {
-                                if (null != merchantListFragment.adapter)
-                                    merchantListFragment.adapter.notifyDataSetChanged();
-                                if (null != merchantListFragment.merchantViewPagerFragment)
-                                    merchantListFragment.merchantViewPagerFragment.adapter.notifyDataSetChanged();
+                    if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
+                        for (int i = 0; i < MerchantListFragment.topics.size(); i++) {
+                            JsonTopic jt = MerchantListFragment.topics.get(i);
+                            if (jt.getCodeQR().equalsIgnoreCase(qrcode)) {
+                                jt.setServingNumber(Integer.parseInt(current_serving));
+                                jt.setQueueStatus(QueueStatusEnum.valueOf(status));
+                                jt.setToken(Integer.parseInt(lastno));
+                                MerchantListFragment.topics.set(i, jt);
+                                if (null != merchantListFragment) {
+                                    if (null != merchantListFragment.adapter)
+                                        merchantListFragment.adapter.notifyDataSetChanged();
+                                    if (null != merchantListFragment.merchantViewPagerFragment)
+                                        merchantListFragment.merchantViewPagerFragment.adapter.notifyDataSetChanged();
+                                }
+                                break;
                             }
-                            break;
                         }
                     }
                 }

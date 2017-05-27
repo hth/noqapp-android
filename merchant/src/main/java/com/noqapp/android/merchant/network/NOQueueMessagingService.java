@@ -61,6 +61,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                 pushNotification.putExtra("status", remoteMessage.getData().get("q"));
                 pushNotification.putExtra("current_serving", remoteMessage.getData().get("cs"));
                 pushNotification.putExtra("lastno", remoteMessage.getData().get("ln"));
+                pushNotification.putExtra("f", remoteMessage.getData().get("f"));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
 
