@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.ViewPagerAdapter;
 
+import java.util.ArrayList;
 
-public class MerchantViewPagerFragment extends Fragment {
+
+public class MerchantViewPagerFragment extends Fragment  {
 
 
     public ViewPagerAdapter adapter;
@@ -22,27 +25,28 @@ public class MerchantViewPagerFragment extends Fragment {
     private static int pos = 0;
     public static int pagercurrrentpos=0;
     private ImageView leftNav, rightNav;
+    private ArrayList<JsonTopic> topicsList;
 
-
-    public static MerchantViewPagerFragment merchantViewPagerFragment;
-
-    public static MerchantViewPagerFragment getInstance(int position) {
-        pos = position;
-        pagercurrrentpos=position;
-        return merchantViewPagerFragment = new MerchantViewPagerFragment();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantviewpager, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        adapter = new ViewPagerAdapter(getActivity());
+        Bundle bundle = getArguments();
+        if (null != bundle) {
+            topicsList = (ArrayList<JsonTopic>)bundle.getSerializable("jsonMerchant");
+            pagercurrrentpos = pos = bundle.getInt("position");
+
+        }
+        adapter = new ViewPagerAdapter(getActivity(),topicsList);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(pos);
         leftNav = (ImageView) view.findViewById(R.id.left_nav);
         rightNav = (ImageView) view.findViewById(R.id.right_nav);
-        if (MerchantListFragment.topics.size() > 1) {
+
+
+        if (topicsList.size() > 1) {
             leftNav.setVisibility(View.VISIBLE);
             rightNav.setVisibility(View.VISIBLE);
         } else {
@@ -77,20 +81,15 @@ public class MerchantViewPagerFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 pagercurrrentpos=position;
-                //Toast.makeText(getActivity(),"position is : "+pagercurrrentpos,Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onPageScrolled(int arg0, float arg1, int arg2) {
-                // TODO Auto-generated method stub
 
-                System.out.println("onPageScrolled");
             }
 
             @Override
             public void onPageScrollStateChanged(int num) {
-                // TODO Auto-generated method stub
-
 
             }
         });
@@ -106,4 +105,10 @@ public class MerchantViewPagerFragment extends Fragment {
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 
+
+    public void updateListData(ArrayList<JsonTopic> jsonTopics)
+    {
+        topicsList=jsonTopics;
+        adapter.notifyDataSetChanged();
+    }
 }

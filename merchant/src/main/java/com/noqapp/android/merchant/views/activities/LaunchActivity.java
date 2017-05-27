@@ -22,23 +22,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.types.QueueStatusEnum;
+import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.merchant.network.NOQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.NetworkUtil;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
+import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
 import org.apache.commons.lang3.StringUtils;
 
 public class LaunchActivity extends AppCompatActivity {
-    public static final String mypref="shared_pref";
-    public static String XR_DID ="X-R-DID";
+
+    public FragmentCommunicator fragmentCommunicator;
+    public static final String mypref = "shared_pref";
+    public static final String XR_DID = "X-R-DID";
     private static LaunchActivity launchActivity;
     protected TextView tv_toolbar_title;
     public NetworkUtil networkUtil;
@@ -57,6 +57,7 @@ public class LaunchActivity extends AppCompatActivity {
     private static MerchantListFragment merchantListFragment;
     public Toolbar toolbar;
     private ImageView actionbarBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!new AppUtils().isTablet(getApplicationContext())) {
@@ -67,12 +68,12 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         launchActivity = this;
-        Log.v("device id check",getDeviceID());
+        Log.v("device id check", getDeviceID());
         networkUtil = new NetworkUtil(this);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         iv_logout = (ImageView) findViewById(R.id.iv_logout);
-        actionbarBack=(ImageView) findViewById(R.id.actionbarBack);
+        actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         initProgress();
         iv_logout.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +85,8 @@ public class LaunchActivity extends AppCompatActivity {
                         .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //unsubscribe the topics
-                                unSubscribeTopics();
+                                if (null != merchantListFragment)
+                                    merchantListFragment.unSubscribeTopics();
                                 // logout
                                 sharedpreferences.edit().clear().commit();
                                 //navigate to signup/login
@@ -132,24 +134,15 @@ public class LaunchActivity extends AppCompatActivity {
                                     + "\n" + "lastno : " + lastno
                                     + "\n" + "payload : " + payload
                     );
+                    boolean isServiceNoUpdate = true;
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
-                        for (int i = 0; i < MerchantListFragment.topics.size(); i++) {
-                            JsonTopic jt = MerchantListFragment.topics.get(i);
-                            if (jt.getCodeQR().equalsIgnoreCase(qrcode)) {
-                                jt.setServingNumber(Integer.parseInt(current_serving));
-                                jt.setQueueStatus(QueueStatusEnum.valueOf(status));
-                                jt.setToken(Integer.parseInt(lastno));
-                                MerchantListFragment.topics.set(i, jt);
-                                if (null != merchantListFragment) {
-                                    if (null != merchantListFragment.adapter)
-                                        merchantListFragment.adapter.notifyDataSetChanged();
-                                    if (null != merchantListFragment.merchantViewPagerFragment)
-                                        merchantListFragment.merchantViewPagerFragment.adapter.notifyDataSetChanged();
-                                }
-                                break;
-                            }
-                        }
+                        isServiceNoUpdate = false;
                     }
+
+                    if (fragmentCommunicator != null)
+                        fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, isServiceNoUpdate);
+
+
                 }
             }
         };
@@ -232,14 +225,6 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
 
-    private void restartApp() {
-        Intent i = getBaseContext().getPackageManager()
-                .getLaunchIntentForPackage(getBaseContext().getPackageName());
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(i);
-        finish();
-    }
-
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
@@ -275,14 +260,6 @@ public class LaunchActivity extends AppCompatActivity {
 
     }
 
-    private void unSubscribeTopics() {
-        if (null != MerchantListFragment.topics && MerchantListFragment.topics.size() > 0) {
-            for (int i = 0; i < MerchantListFragment.topics.size(); i++) {
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(MerchantListFragment.topics.get(i).getTopic());
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(MerchantListFragment.topics.get(i).getTopic() + "_M");
-            }
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -303,11 +280,11 @@ public class LaunchActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    public void enableDisableBack(boolean isShown){
-        actionbarBack.setVisibility(isShown?View.VISIBLE:View.INVISIBLE);
+    public void enableDisableBack(boolean isShown) {
+        actionbarBack.setVisibility(isShown ? View.VISIBLE : View.INVISIBLE);
     }
 
-    public String getDeviceID(){
+    public String getDeviceID() {
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
                 mypref, Context.MODE_PRIVATE);
         return sharedpreferences.getString(XR_DID, "");
