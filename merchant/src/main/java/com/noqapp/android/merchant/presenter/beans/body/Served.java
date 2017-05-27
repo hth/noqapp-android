@@ -38,6 +38,9 @@ public class Served {
     @JsonProperty("s")
     private QueueStatusEnum queueStatus;
 
+    @JsonProperty("g")
+    private String goTo;
+
     public String getCodeQR() {
         return codeQR;
     }
@@ -68,6 +71,14 @@ public class Served {
 
     public void setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+    }
+
+    public String getGoTo() {
+        return goTo;
+    }
+
+    public void setGoTo(String goTo) {
+        this.goTo = goTo;
     }
 }
 
