@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.noqapp.android.client.model.api.QueueApiModel;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.R;
@@ -76,7 +77,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private String topic;
 
     private boolean isReumeFirst=true;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -134,7 +134,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         tv_total_value.setText(String.valueOf(token.getServingNumber()));
         tv_current_value.setText(String.valueOf(token.getToken()));
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
-
         setBackGround(token.afterHowLong());
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
 
@@ -193,8 +192,13 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private void callQueue() {
         if (codeQR != null) {
             Log.d("CodeQR=", codeQR);
-            QueueModel.tokenPresenter = this;
-            QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
+            if(UserUtils.isLogin()) {
+                QueueApiModel.tokenPresenter=this;
+                QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(), codeQR);
+            }else{
+                QueueModel.tokenPresenter = this;
+                QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
+            }
         }
     }
 

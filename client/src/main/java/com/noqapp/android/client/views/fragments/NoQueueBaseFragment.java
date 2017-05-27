@@ -20,6 +20,7 @@ import com.noqapp.android.client.R;
 public class NoQueueBaseFragment extends Fragment {
     protected final String KEY_CODEQR = "codeqr";
     protected final String KEY_FROM_LIST = "fromlist";
+    protected final String KEY_IS_HISTORY= "isHistory";
     protected final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
 
     @Override

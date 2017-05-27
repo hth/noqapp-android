@@ -123,6 +123,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         Bundle b = new Bundle();
         b.putString(KEY_CODEQR, codeqr);
         b.putBoolean(KEY_FROM_LIST, true);
+        b.putBoolean(KEY_IS_HISTORY, false);
         JoinFragment jf = new JoinFragment();
         jf.setArguments(b);
         replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
@@ -261,6 +262,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, LaunchActivity.tabList);
                 } else {
                     JoinFragment jf = new JoinFragment();
+                    b.putBoolean(KEY_IS_HISTORY, true);
                     jf.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
                 }

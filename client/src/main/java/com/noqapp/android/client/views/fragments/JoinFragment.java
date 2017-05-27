@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.model.api.QueueApiModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -18,6 +22,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.Formatter;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +58,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     private JsonQueue jsonQueue;
     private String frtag;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_join, container, false);
@@ -77,13 +83,22 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             codeQR = bundle.getString(KEY_CODEQR);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
-                QueueModel.queuePresenter = this;
-                QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
+
+                if(UserUtils.isLogin()) {
+                    QueueApiModel.queuePresenter = this;
+                    QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(), codeQR);
+                }else{
+                    QueueModel.queuePresenter = this;
+                    QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
+                }
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 frtag = LaunchActivity.tabList;
+                if(bundle.getBoolean(KEY_IS_HISTORY, false)){
+                    btn_joinqueue.setText(getString(R.string.remotejoin));
+                }
             } else {
                 frtag = LaunchActivity.tabHome;
             }
@@ -117,16 +132,43 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
         codeQR = jsonQueue.getCodeQR();
         countryShortName = jsonQueue.getCountryShortName();
+        //Update the remote join count
+        SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedPreferencesEditor(getActivity());
+        editor.putInt(NoQueueBaseActivity.PREKEY_REMOTE_JOIN, jsonQueue.getRemoteJoin());
+        editor.commit();
     }
 
     @OnClick(R.id.btn_joinqueue)
     public void joinQueue() {
-        Bundle b = new Bundle();
-        b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
-        b.putBoolean(KEY_FROM_LIST, false);
-        b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-        AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
-        afterJoinFragment.setArguments(b);
-        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
+        if(getArguments().getBoolean(KEY_IS_HISTORY, false)){
+            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+
+            String phone = preferences.getString(NoQueueBaseActivity.PREKEY_PHONE, "");
+           // if (!phone.equals("")) {
+//                if(jsonQueue.getRemoteJoin()==0){
+//                    Toast.makeText(getActivity(),getString(R.string.error_remote_join_available),Toast.LENGTH_LONG).show();
+//                }else{
+            Bundle b = new Bundle();
+            b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
+            b.putBoolean(KEY_FROM_LIST, false);
+            b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+            AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
+            afterJoinFragment.setArguments(b);
+            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
+
+           // QueueModel.remoteJoinQueue
+                //}
+//            } else {
+//                Toast.makeText(getActivity(),getString(R.string.error_login),Toast.LENGTH_LONG).show();
+//            }
+        }else {
+            Bundle b = new Bundle();
+            b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
+            b.putBoolean(KEY_FROM_LIST, false);
+            b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+            AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
+            afterJoinFragment.setArguments(b);
+            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
+        }
     }
 }
