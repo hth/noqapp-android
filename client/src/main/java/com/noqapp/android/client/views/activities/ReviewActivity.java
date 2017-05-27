@@ -80,7 +80,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                returnResultBack();
+                finish();
             }
         });
         tv_toolbar_title.setText("Review");
@@ -123,13 +124,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             //success
             Log.v("Review response", jsonResponse.toString());
             Toast.makeText(this, "Thanks for feedback.", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent();
-            intent.putExtra("CODEQR", jtk.getCodeQR());
-            if (getParent() == null) {
-                setResult(Activity.RESULT_OK, intent);
-            } else {
-                getParent().setResult(Activity.RESULT_OK, intent);
-            }
+            returnResultBack();
 
         }
         NoQueueDB.deleteTokenQueue(jtk.getCodeQR());
@@ -140,5 +135,16 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     @Override
     public void reviewError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
+    }
+
+
+    private void returnResultBack(){
+        Intent intent = new Intent();
+        intent.putExtra("CODEQR", jtk.getCodeQR());
+        if (getParent() == null) {
+            setResult(Activity.RESULT_OK, intent);
+        } else {
+            getParent().setResult(Activity.RESULT_OK, intent);
+        }
     }
 }
