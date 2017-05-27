@@ -80,6 +80,7 @@ public class ScanQueueFragment extends Scanner {
         Bundle b = new Bundle();
         b.putString(KEY_CODEQR, codeqr);
         b.putBoolean(KEY_FROM_LIST, fromList);
+        b.putBoolean(KEY_IS_HISTORY, false);
         JoinFragment jf = new JoinFragment();
         jf.setArguments(b);
         replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, currentTab);

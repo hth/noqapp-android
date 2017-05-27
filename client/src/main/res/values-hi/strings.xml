@@ -56,7 +56,7 @@
     <string name="you_are_after">You are after</string>
     <string name="serving_now">Serving now</string>
     <string name="your_token">Your Token</string>
-
+    <string name="remotejoin">Remote Join</string>
 
     <!--- Scan Screen -->
     <string name="currently_serving">Currently serving</string>
@@ -103,4 +103,7 @@
     <string name="no">नहीं</string>
     <string name="logout_msg">क्या आप लॉगआउट करना चाहेंगे?</string>
     <string name="error_mobile_blank">Please enter phone number</string>
+    <string name="error_login">Please login to remote join</string>
+    <string name="error_remote_join_available">Yoy don\'t have enough remote join available.</string>
+
 </resources>

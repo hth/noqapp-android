@@ -9,12 +9,16 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 
 public class UserUtils {
 
+    public static boolean isLogin() {
+        return true;
+    }
+
     public static String getEmail() {
-        return null;
+        return "ajinkya.5@mail.noqapp.com";
     }
 
     public static String getAuth() {
-        return null;
+        return "$2a$15$T7GXB3ziRwHNNKp55uIYG.yfBlnlpqBZGnOBYKFhgLCzAfU/p0.Dm";
     }
 
     public static String getDeviceId() {

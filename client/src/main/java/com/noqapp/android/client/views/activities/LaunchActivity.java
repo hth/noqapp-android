@@ -49,7 +49,7 @@ import butterknife.ButterKnife;
 
 
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener {
-    private static final String TAG = LaunchActivity.class.getSimpleName();
+
 
     private static LaunchActivity launchActivity;
     public NetworkUtil networkUtil;
