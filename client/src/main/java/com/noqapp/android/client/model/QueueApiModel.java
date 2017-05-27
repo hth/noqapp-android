@@ -21,7 +21,6 @@ import retrofit2.Response;
  * User: hitender
  * Date: 5/27/17 5:38 PM
  */
-
 public class QueueApiModel {
     private static final String TAG = QueueApiModel.class.getSimpleName();
 
@@ -39,7 +38,7 @@ public class QueueApiModel {
         queueService.remoteScanQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
-                if (response.body() != null) {
+                if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
                     queuePresenter.queueResponse(response.body());
                 } else {
@@ -61,7 +60,7 @@ public class QueueApiModel {
         queueService.remoteJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.body() != null && response.body().getError() == null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", response.body().toString());
                     tokenPresenter.tokenPresenterResponse(response.body());
                 } else {
