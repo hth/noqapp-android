@@ -1,4 +1,4 @@
-package com.noqapp.android.client.model.api;
+package com.noqapp.android.client.model;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
