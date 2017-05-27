@@ -126,7 +126,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         return view;
     }
 
-
     @Override
     public void tokenPresenterResponse(JsonToken token) {
         Log.d(TAG, token.toString());
@@ -136,8 +135,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
         setBackGround(token.afterHowLong());
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
-
-
         jsonQueue.setServingNumber(token.getServingNumber());
         jsonQueue.setToken(token.getToken());
         //save data to DB

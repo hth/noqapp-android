@@ -47,6 +47,6 @@ public interface ManageQueueService {
             String auth,
 
             @Body
-                    Served served
+            Served served
     );
 }
