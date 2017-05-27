@@ -15,37 +15,41 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
-import com.noqapp.android.merchant.views.fragments.MerchantViewPagerFragment;
-import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
-import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
+import com.noqapp.android.merchant.views.fragments.MerchantViewPagerFragment;
+import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
+import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
+
 public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresenter {
-    private static final String TAG = ViewPagerAdapter.class.getSimpleName();
+    private final String TAG = ViewPagerAdapter.class.getSimpleName();
 
     private Context context;
-
+    private List<JsonTopic> topics;
     private LayoutInflater inflater;
+    public static AdapterCallback mAdapterCallback;
 
-
-    public ViewPagerAdapter(Context context) {
+    public ViewPagerAdapter(Context context, List<JsonTopic> topics) {
         this.context = context;
-
-
+        this.topics=topics;
     }
 
+    public static void setAdapterCallBack(AdapterCallback adapterCallback){
+        mAdapterCallback=adapterCallback;
+    }
     @Override
     public int getCount() {
-        return MerchantListFragment.topics.size();
+        return topics.size();
     }
 
     @Override
@@ -73,7 +77,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         TextView tv_title = (TextView) itemView.findViewById(R.id.tv_title);
         Button btn_skip = (Button) itemView.findViewById(R.id.btn_skip);
         Button btn_next = (Button) itemView.findViewById(R.id.btn_next);
-        final JsonTopic lq = MerchantListFragment.topics.get(position);
+        final JsonTopic lq = topics.get(position);
         tv_current_value.setText(String.valueOf(lq.getServingNumber()));
         tv_total_value.setText(String.valueOf(lq.getToken()));
         tv_title.setText(lq.getDisplayName());
@@ -168,7 +172,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     public void manageQueueResponse(JsonToken token) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         if (null != token) {
-            JsonTopic jt = MerchantListFragment.topics.get(MerchantViewPagerFragment.pagercurrrentpos);
+            JsonTopic jt = topics.get(MerchantViewPagerFragment.pagercurrrentpos);
             if (token.getCodeQR().equalsIgnoreCase(jt.getCodeQR())) {
                 if (StringUtils.isNotBlank(jt.getCustomerName())) {
                     Log.i(TAG, "Show customer name=" + jt.getCustomerName());
@@ -176,8 +180,10 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 jt.setToken(token.getToken());
                 jt.setQueueStatus(token.getQueueStatus());
                 jt.setServingNumber(token.getServingNumber());
-                MerchantListFragment.topics.set(MerchantViewPagerFragment.pagercurrrentpos, jt);
+                topics.set(MerchantViewPagerFragment.pagercurrrentpos, jt);
                 notifyDataSetChanged();
+                //To update merchant list screen
+                mAdapterCallback.onMethodCallback(token);
             }
 
         }
