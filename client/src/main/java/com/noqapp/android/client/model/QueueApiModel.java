@@ -10,6 +10,7 @@ import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
@@ -94,7 +95,7 @@ public class QueueApiModel {
     }
 
     public static void allHistoricalJoinedQueues(String did, String mail, String auth, DeviceToken deviceToken) {
-        queueService.getAllHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
+        queueService.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
                 if (response.body() != null && response.body().getError() == null) {
@@ -118,6 +119,49 @@ public class QueueApiModel {
             public void onFailure(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 tokenAndQueuePresenter.historyQueueError();
+            }
+        });
+    }
+
+    public static void joinQueue(String did, String mail, String auth, String codeQR) {
+        queueService.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
+                if (response.body() != null && response.body().getError() == null) {
+                    Log.d("Response", response.body().toString());
+                    tokenPresenter.tokenPresenterResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Failed to join queue"+response.body().getError());
+                    tokenPresenter.tokenPresenterError();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                tokenPresenter.tokenPresenterError();
+            }
+        });
+    }
+
+    public static void abortQueue(String did, String mail, String auth, String codeQR) {
+        queueService.abortQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    responsePresenter.responsePresenterResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Failed abort queue");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                responsePresenter.responsePresenterError();
             }
         });
     }
