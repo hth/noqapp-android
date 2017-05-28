@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
@@ -96,14 +97,23 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             mHandler = new QueueHandler();
 
-            //Call the current queue
-            //LaunchActivity.getLaunchActivity().progressDialog.show();
-            QueueModel.tokenAndQueuePresenter = this;
-            QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
+            if(UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
+                //Call the current queue
+                QueueApiModel.tokenAndQueuePresenter = this;
+                QueueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth());
 
-            //Call the history queue
-            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-            QueueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
+                //Call the history queue
+                DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
+                QueueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(), deviceToken);
+            }else{
+                //Call the current queue
+                QueueModel.tokenAndQueuePresenter = this;
+                QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
+
+                //Call the history queue
+                DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
+                QueueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
+            }
 
 
         } else {
