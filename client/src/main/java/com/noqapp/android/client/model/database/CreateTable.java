@@ -67,10 +67,9 @@ class CreateTable {
     private static void createTableReview(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableReview");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Review.TABLE_NAME + "("
+                + Review.KEY + " TEXT, "
                 + Review.CODE_QR + " TEXT, "
-                + Review.GOTO + " TEXT, "
-                + TokenQueue.CREATE_DATE + " TEXT"
-                + "PRIMARY KEY(`codeqr`,`createdate`)" +
+                + Review.VALUE + " TEXT" +
 
                 ");");
     }
