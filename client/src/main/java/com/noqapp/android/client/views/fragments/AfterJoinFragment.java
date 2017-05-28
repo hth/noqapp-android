@@ -76,8 +76,9 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private String queueName;
     private String address;
     private String topic;
-    private boolean isReumeFirst=true;
-    private String gotoPerson="";
+    private boolean isReumeFirst = true;
+    private String gotoPerson = "";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -87,7 +88,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         Bundle bundle = getArguments();
         if (null != bundle) {
             jsonQueue = (JsonTokenAndQueue) bundle.getSerializable(KEY_JSON_TOKEN_QUEUE);
-            Log.d("AfterJoin bundle",jsonQueue.toString());
+            Log.d("AfterJoin bundle", jsonQueue.toString());
             codeQR = bundle.getString(KEY_CODEQR);
             displayName = jsonQueue.getBusinessName();
             storePhone = jsonQueue.getStorePhone();
@@ -110,7 +111,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                     AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
                 }
             });
-            gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO,codeQR);
+            gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR);
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
                 tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
@@ -118,7 +119,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 setBackGround(jsonQueue.afterHowLong());
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    if(isReumeFirst) {
+                    if (isReumeFirst) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         callQueue();
                     }
@@ -193,10 +194,10 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private void callQueue() {
         if (codeQR != null) {
             Log.d("CodeQR=", codeQR);
-            if(UserUtils.isLogin()) {
-                QueueApiModel.tokenPresenter=this;
-                QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(), codeQR);
-            }else{
+            if (UserUtils.isLogin()) {
+                QueueApiModel.tokenPresenter = this;
+                QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            } else {
                 QueueModel.tokenPresenter = this;
                 QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
             }
@@ -209,12 +210,12 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         LaunchActivity.getLaunchActivity().setActionBarTitle("Details");
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
         /* Added to update the screen if app is in background & notification received */
-        if(!isReumeFirst){
+        if (!isReumeFirst) {
             JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-            setObject(jtk,gotoPerson);
+            setObject(jtk, gotoPerson);
         }
-        if(isReumeFirst){
-            isReumeFirst=false;
+        if (isReumeFirst) {
+            isReumeFirst = false;
         }
     }
 
@@ -232,7 +233,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 ll_change_bg.setBackgroundResource(R.drawable.turn_1);
                 tv_after.setText("It's your turn!!!");
                 tv_how_long.setText(gotoPerson);
-               // tv_after.setVisibility(View.GONE);
+                // tv_after.setVisibility(View.GONE);
                 break;
             case 1:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_1);
@@ -259,12 +260,12 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         }
     }
 
-    public void setObject(JsonTokenAndQueue jq, String go_to){
-        gotoPerson=go_to;
-        jsonQueue=jq;
+    public void setObject(JsonTokenAndQueue jq, String go_to) {
+        gotoPerson = go_to;
+        jsonQueue = jq;
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
         tv_how_long.setText(String.valueOf(jsonQueue.afterHowLong()));
-        setBackGround(jq.afterHowLong()>0?jq.afterHowLong():0);
+        setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);
     }
 }

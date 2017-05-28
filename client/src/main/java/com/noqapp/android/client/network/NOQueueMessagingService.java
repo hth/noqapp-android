@@ -17,7 +17,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
@@ -61,7 +60,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                 if (remoteMessage.getData().get("f").equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                     pushNotification.putExtra("cs", remoteMessage.getData().get("cs"));
                     pushNotification.putExtra("ln", remoteMessage.getData().get("ln"));
-                    pushNotification.putExtra("g",remoteMessage.getData().get("g"));
+                    pushNotification.putExtra("g", remoteMessage.getData().get("g"));
                 }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } else {
@@ -83,13 +82,13 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                      * Save codeQR of review & show the review screen on app
                      * resume if there is any record in Review DB for review key
                      * **/
-                    ReviewDB.insert(ReviewDB.KEY_REVEIW,codeQR,codeQR);
+                    ReviewDB.insert(ReviewDB.KEY_REVEIW, codeQR, codeQR);
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
 
                     String current_serving = remoteMessage.getData().get("cs");
                     JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
                     String go_to = remoteMessage.getData().get("g");
-                    ReviewDB.insert(ReviewDB.KEY_GOTO,codeQR,go_to);
+                    ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
                     //update DB & after join screen
                     jtk.setServingNumber(Integer.parseInt(current_serving));
                     if (jtk.isTokenExpired()) {
@@ -103,7 +102,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void sendNotification(String title, String messageBody, String codeqr ) {
+    private void sendNotification(String title, String messageBody, String codeqr) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         if (null != codeqr) {
             notificationIntent.putExtra("CODEQR", codeqr);

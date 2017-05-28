@@ -263,7 +263,7 @@ public class TokenAndQueueDB {
             con.put(TokenQueue.TOKEN, token);
             int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?", new String[]{codeQR});
             Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + String.valueOf(successCount));
-            //AppUtilities.exportDatabse(LaunchActivity.getLaunchActivity());
+            //AppUtilities.exportDatabase(LaunchActivity.getLaunchActivity());
         } catch (Exception e) {
             Log.e(TAG, "Error updateJoinQueueObject reason=" + e.getLocalizedMessage(), e);
         }

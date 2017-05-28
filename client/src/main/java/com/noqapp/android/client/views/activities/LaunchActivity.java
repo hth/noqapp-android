@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.DatabaseHelper;
-import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
@@ -107,7 +106,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         ButterKnife.bind(this);
         launchActivity = this;
         Log.v("device id check", getDeviceID());
-AppUtilities.exportDatabse(this);
+        //AppUtilities.exportDatabase(this);
         networkUtil = new NetworkUtil(this);
         rl_home.setOnClickListener(this);
         rl_list.setOnClickListener(this);
