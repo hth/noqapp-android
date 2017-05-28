@@ -149,8 +149,8 @@ public class TokenAndQueueDB {
         for (JsonTokenAndQueue tokenAndQueue : list) {
             ContentValues values = createQueueContentValues(tokenAndQueue);
             try {
-                long succcesscount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueueHistory.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                Log.d(TAG, "Data Saved history queue " + String.valueOf(succcesscount));
+                long successCount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueueHistory.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                Log.d(TAG, "Data Saved history queue " + String.valueOf(successCount));
             } catch (SQLException e) {
                 Log.e(TAG, "Error saveHistoryQueue reason=" + e.getLocalizedMessage(), e);
             }

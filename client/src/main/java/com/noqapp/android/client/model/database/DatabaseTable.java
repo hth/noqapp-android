@@ -38,8 +38,9 @@ public class DatabaseTable {
 
     public static class Review {
         public static final String TABLE_NAME = "REVIEW";
+        public static final String KEY = "key";
         public static final String CODE_QR = "codeQR";
-        public static final String GOTO = "goTo";
+        public static final String VALUE = "value";
 
         private Review() {
         }
