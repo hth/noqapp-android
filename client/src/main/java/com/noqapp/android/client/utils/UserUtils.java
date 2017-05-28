@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 public class UserUtils {
 
     public static boolean isLogin() {
-        return StringUtils.isNotBlank(getAuth());
+        return !StringUtils.isNotBlank(getAuth());
     }
 
     public static String getEmail() {

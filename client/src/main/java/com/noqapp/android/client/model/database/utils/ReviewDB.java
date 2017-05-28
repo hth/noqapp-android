@@ -41,7 +41,8 @@ public class ReviewDB {
     }
 
     public static String getValue(String key, String codeQR) {
-        Cursor cursor = dbHandler.getReadableDatabase().query(true, DatabaseTable.Review.TABLE_NAME, null, null, null, null, null, null, null);
+        Cursor cursor = dbHandler.getReadableDatabase().query(true, DatabaseTable.Review.TABLE_NAME, null,
+                DatabaseTable.Review.KEY + "=? and "+ DatabaseTable.Review.CODE_QR + "=?", new String[]{key,codeQR}, null, null, null, null);
 
         String value = null;
         if (cursor != null) {
@@ -49,7 +50,25 @@ public class ReviewDB {
 
                 try {
                     cursor.moveToNext();
-                    value = cursor.getString(3);
+                    value = cursor.getString(2);
+                } finally {
+                    cursor.close();
+                }
+            }
+        }
+
+        return value;
+    }
+
+    public static String getValue(String key) {
+        Cursor cursor = dbHandler.getReadableDatabase().query(true, DatabaseTable.Review.TABLE_NAME, null, DatabaseTable.Review.KEY + "=?", new String[]{key}, null, null, null, null);
+        String value = null;
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+
+                try {
+                    cursor.moveToNext();
+                    value = cursor.getString(1);
                 } finally {
                     cursor.close();
                 }

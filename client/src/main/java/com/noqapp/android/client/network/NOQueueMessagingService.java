@@ -17,6 +17,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.DatabaseTable;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -77,6 +79,11 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
                     sendNotification(title, body, codeQR);//pass codeQR to open review screen
 
+                    /**
+                     * Save codeQR of review & show the review screen on app
+                     * resume if there is any record in Review DB for review key
+                     * **/
+                    ReviewDB.insert(ReviewDB.KEY_REVEIW,codeQR,codeQR);
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
 
                     String current_serving = remoteMessage.getData().get("cs");

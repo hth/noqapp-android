@@ -96,7 +96,34 @@ public class TokenAndQueueDB {
         }
         return tokenAndQueue;
     }
+    public static JsonTokenAndQueue getHistoryQueueObject(String codeQR) {
+        JsonTokenAndQueue tokenAndQueue = null;
+        Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueueHistory.TABLE_NAME, null, TokenQueue.CODE_QR + "=?", new String[]{codeQR}, null, null, TokenQueue.CREATE_DATE, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            try {
+                while (cursor.moveToNext()) {
+                    tokenAndQueue = new JsonTokenAndQueue();
+                    tokenAndQueue.setCodeQR(cursor.getString(0));
+                    tokenAndQueue.setBusinessName(cursor.getString(1));
+                    tokenAndQueue.setDisplayName(cursor.getString(2));
+                    tokenAndQueue.setStoreAddress(cursor.getString(3));
+                    tokenAndQueue.setCountryShortName(cursor.getString(4));
+                    tokenAndQueue.setStorePhone(cursor.getString(5));
+                    tokenAndQueue.setTopic(cursor.getString(9));
+                    tokenAndQueue.setToken(cursor.getInt(12));
+                    tokenAndQueue.setServicedTime(cursor.getString(14));
 
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
+            } finally {
+                if (!cursor.isClosed()) {
+                    cursor.close();
+                }
+            }
+        }
+        return tokenAndQueue;
+    }
     public static List<JsonTokenAndQueue> getHistoryQueueList() {
         String orderBy = TokenQueue.CREATE_DATE;
 
