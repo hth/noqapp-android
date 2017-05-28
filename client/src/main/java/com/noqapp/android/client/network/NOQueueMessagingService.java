@@ -89,6 +89,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                     String current_serving = remoteMessage.getData().get("cs");
                     JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
                     String go_to = remoteMessage.getData().get("g");
+                    ReviewDB.insert(ReviewDB.KEY_GOTO,codeQR,go_to);
                     //update DB & after join screen
                     jtk.setServingNumber(Integer.parseInt(current_serving));
                     if (jtk.isTokenExpired()) {

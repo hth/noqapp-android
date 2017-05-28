@@ -15,6 +15,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
@@ -86,6 +87,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         Bundle bundle = getArguments();
         if (null != bundle) {
             jsonQueue = (JsonTokenAndQueue) bundle.getSerializable(KEY_JSON_TOKEN_QUEUE);
+            Log.d("AfterJoin bundle",jsonQueue.toString());
             codeQR = bundle.getString(KEY_CODEQR);
             displayName = jsonQueue.getBusinessName();
             storePhone = jsonQueue.getStorePhone();
@@ -108,7 +110,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                     AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
                 }
             });
-
+            gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO,codeQR);
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
                 tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
