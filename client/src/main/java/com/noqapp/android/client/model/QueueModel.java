@@ -89,7 +89,7 @@ public final class QueueModel {
                     List<JsonTokenAndQueue> jsonTokenAndQueues = response.body().getTokenAndQueues();
                     tokenAndQueuePresenter.currentQueueResponse(jsonTokenAndQueues);
 //                    } else {
-//                        NoQueueDB.deleteCurrentQueue();
+//                        TokenAndQueueDB.deleteCurrentQueue();
 //                        Log.d(TAG, "Empty currently joined history");
 //                        tokenAndQueuePresenter.noCurrentQueue();
 //                    }

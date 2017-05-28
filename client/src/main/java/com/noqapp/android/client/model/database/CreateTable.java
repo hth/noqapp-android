@@ -64,8 +64,20 @@ class CreateTable {
                 ");");
     }
 
+    private static void createTableReview(SQLiteDatabase db) {
+        Log.d(TAG, "executing createTableReview");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + Review.TABLE_NAME + "("
+                + Review.CODE_QR + " TEXT, "
+                + Review.GOTO + " TEXT, "
+                + TokenQueue.CREATE_DATE + " TEXT"
+                + "PRIMARY KEY(`codeqr`,`createdate`)" +
+
+                ");");
+    }
+
     static void createAllTable(SQLiteDatabase db){
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);
+        createTableReview(db);
     }
 }
