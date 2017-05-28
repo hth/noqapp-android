@@ -11,7 +11,12 @@ import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonToken;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
+import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 import com.noqapp.android.client.utils.Constants;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,6 +37,89 @@ public class QueueApiModel {
 
     static {
         queueService = RetrofitClient.getClient().create(QueueService.class);
+    }
+
+    public static void getQueueState(String did, String mail, String auth, String codeQR) {
+        queueService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    queuePresenter.queueResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Get state of queue upon scan");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonQueue> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+
+                queuePresenter.queueError();
+            }
+        });
+    }
+
+    public static void getAllJoinedQueues(String did, String mail, String auth) {
+        queueService.getAllJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTokenAndQueueList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
+                if (response.body() != null && response.body().getError() == null) {
+                    /// if (response.body().getTokenAndQueues().size() > 0) {
+                    Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
+                    Log.d("Response joinqueuevalue", response.body().getTokenAndQueues().toString());
+                    //// TODO: 4/16/17 just for testing : remove below line after testing done
+                    //tokenAndQueuePresenter.noCurrentQueue();
+                    //Todo : uncomment the queuresponse
+                    List<JsonTokenAndQueue> jsonTokenAndQueues = response.body().getTokenAndQueues();
+                    tokenAndQueuePresenter.currentQueueResponse(jsonTokenAndQueues);
+//                    } else {
+//                        NoQueueDB.deleteCurrentQueue();
+//                        Log.d(TAG, "Empty currently joined history");
+//                        tokenAndQueuePresenter.noCurrentQueue();
+//                    }
+                } else if (response.body() != null && response.body().getError() != null) {
+                    Log.e(TAG, "Got error");
+                    tokenAndQueuePresenter.currentQueueError();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                tokenAndQueuePresenter.currentQueueError();
+            }
+        });
+    }
+
+    public static void allHistoricalJoinedQueues(String did, String mail, String auth, DeviceToken deviceToken) {
+        queueService.getAllHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
+                if (response.body() != null && response.body().getError() == null) {
+                    // if (response.body().getTokenAndQueues().size() > 0) {
+                    Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
+                    //Todo: Remove below line after testing done and uncomment queue response
+                    // tokenAndQueuePresenter.noHistoryQueue();
+                    tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues());
+//                    } else {
+//                        //TODO something logical
+//                        Log.d(TAG, "Empty historical history");
+//                        tokenAndQueuePresenter.noHistoryQueue();
+//                    }
+                } else if (response.body() != null && response.body().getError() != null) {
+                    Log.e(TAG, "Got error");
+                    tokenAndQueuePresenter.historyQueueError();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                tokenAndQueuePresenter.historyQueueError();
+            }
+        });
     }
 
     public static void remoteScanQueueState(String did, String mail, String auth, String codeQR) {

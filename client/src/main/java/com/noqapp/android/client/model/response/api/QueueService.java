@@ -2,8 +2,11 @@ package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonToken;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
+import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -18,7 +21,6 @@ import retrofit2.http.Path;
  */
 public interface QueueService {
 
-    //TODO need to work on this
     @GET("api/c/token/{codeQR}.json")
     Call<JsonQueue> getQueueState(
             @Header("X-R-DID")
@@ -35,6 +37,39 @@ public interface QueueService {
 
             @Path("codeQR")
             String codeQR
+    );
+
+    @GET("api/c/token/queues.json")
+    Call<JsonTokenAndQueueList> getAllJoinedQueue(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth
+    );
+
+    @POST("api/c/token/historical.json")
+    Call<JsonTokenAndQueueList> getAllHistoricalJoinedQueue(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            DeviceToken deviceToken
     );
 
     @POST("api/c/token/remote/{codeQR}.json")
