@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.DatabaseHelper;
+import com.noqapp.android.client.model.database.DatabaseTable;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.network.NOQueueMessagingService;
@@ -172,13 +174,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         if (extras != null) {
             if (extras.containsKey("CODEQR")) {
                 String codeQR = extras.getString("CODEQR");
-                JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-                Intent in = new Intent(launchActivity, ReviewActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("object", jtk);
-                in.putExtras(bundle);
-                startActivityForResult(in, Constants.requestCodeJoinQActivity);
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+                callReviewActivity(codeQR);
             }
         }
     }
@@ -321,6 +317,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
         // clear the notification area when the app is opened
         NOQueueMessagingService.clearNotifications(getApplicationContext());
+
+        String codeQR = ReviewDB.getValue(ReviewDB.KEY_REVEIW);
+        if(StringUtils.isNotBlank(codeQR))
+            callReviewActivity(codeQR);
     }
 
     @Override
@@ -403,5 +403,18 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
                 APP_PREF, MODE_PRIVATE);
         return sharedpreferences.getString(XR_DID, "");
+    }
+
+
+    private void callReviewActivity(String codeQR){
+        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
+        if(null==jtk)
+            jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR);
+        Intent in = new Intent(launchActivity, ReviewActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("object", jtk);
+        in.putExtras(bundle);
+        startActivityForResult(in, Constants.requestCodeJoinQActivity);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
     }
 }

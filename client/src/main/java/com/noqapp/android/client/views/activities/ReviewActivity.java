@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.model.ReviewModel;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -127,6 +128,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             returnResultBack();
 
         }
+        //Reset the value in ReviewDB
+        ReviewDB.insert(ReviewDB.KEY_REVEIW,"","");
         TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR());
         finish();
         progressDialog.dismiss();

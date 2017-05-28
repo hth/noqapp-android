@@ -69,7 +69,8 @@ class CreateTable {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Review.TABLE_NAME + "("
                 + Review.KEY + " TEXT, "
                 + Review.CODE_QR + " TEXT, "
-                + Review.VALUE + " TEXT" +
+                + Review.VALUE + " TEXT, "
+                + "PRIMARY KEY(`key`)" +
 
                 ");");
     }
