@@ -75,7 +75,7 @@ public final class QueueModel {
      *
      * @param did
      */
-    public static void getCurrentQueueList(String did) {
+    public static void getAllJoinedQueue(String did) {
         queueService.getAllJoinedQueue(did, Constants.DEVICE_TYPE).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
