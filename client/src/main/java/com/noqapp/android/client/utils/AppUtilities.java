@@ -102,14 +102,14 @@ public class AppUtilities {
     }
 
 
-    public static  void exportDatabse(Context context) {
+    public static void exportDatabase(Context context) {
         try {
             File sd = Environment.getExternalStorageDirectory();
             File data = Environment.getDataDirectory();
 
             if (sd.canWrite()) {
-                String currentDBPath = "//data//"+context.getPackageName()+"//databases//"+"noqueue.db"+"";
-                String backupDBPath = System.currentTimeMillis()+"noQueue.db";
+                String currentDBPath = "//data//" + context.getPackageName() + "//databases//" + "noqueue.db" + "";
+                String backupDBPath = System.currentTimeMillis() + "-noQueue.db";
                 File currentDB = new File(data, currentDBPath);
                 File backupDB = new File(sd, backupDBPath);
 

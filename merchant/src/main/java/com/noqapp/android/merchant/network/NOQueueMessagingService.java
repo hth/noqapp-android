@@ -15,13 +15,12 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.List;
-
 
 public class NOQueueMessagingService extends FirebaseMessagingService {
 
@@ -50,7 +49,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: ln-" + remoteMessage.getData().get("ln"));
             Log.d(TAG, "Message data payload: g-" + remoteMessage.getData().get("g"));
             String title = remoteMessage.getData().get("title");
-            String body =remoteMessage.getData().get("body");
+            String body = remoteMessage.getData().get("body");
             clearNotifications(this);
             if (!isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
@@ -78,7 +77,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
     private void sendNotification(String title, String messageBody) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),Constants.requestCodeNotification,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notifications)
