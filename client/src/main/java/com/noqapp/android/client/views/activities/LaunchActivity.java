@@ -112,6 +112,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         actionbarBack.setOnClickListener(this);
         iv_home.setBackgroundResource(R.mipmap.home_select);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
+        Intent in =new Intent(this,SkipActivity.class);
+        startActivity(in);
         initProgress();
         onClick(rl_me);
         broadcastReceiver = new BroadcastReceiver() {
@@ -136,6 +138,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
                         String current_serving = intent.getStringExtra("cs");
+                        String go_to = intent.getStringExtra("g");
                         JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
                         //update DB & after join screen
                         jtk.setServingNumber(Integer.parseInt(current_serving));
@@ -152,7 +155,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                                 String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
                                 if (codeQR.equals(qcode)) {
                                     //updating the serving status
-                                    ((AfterJoinFragment) currentfrg).setObject(jtk);
+                                    ((AfterJoinFragment) currentfrg).setObject(jtk,go_to);
                                 }
                             }
                         }
@@ -180,8 +183,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
             }
         }
-
-
     }
 
     @Override

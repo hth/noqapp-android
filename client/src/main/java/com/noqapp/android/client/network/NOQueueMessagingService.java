@@ -59,6 +59,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                 if (remoteMessage.getData().get("f").equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                     pushNotification.putExtra("cs", remoteMessage.getData().get("cs"));
                     pushNotification.putExtra("ln", remoteMessage.getData().get("ln"));
+                    pushNotification.putExtra("g",remoteMessage.getData().get("g"));
                 }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } else {
@@ -66,17 +67,20 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                 //save data to database
                 String payload = remoteMessage.getData().get("f");
                 String codeQR = remoteMessage.getData().get("c");
+
+
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
 
                     JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
 
                     // un-subscribe from the topic
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
-                    sendNotification(title, body, codeQR);//pass codeQR
+                    sendNotification(title, body, codeQR);//pass codeQR to open review screen
 
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
 
                     String current_serving = remoteMessage.getData().get("cs");
+                    String go_to = remoteMessage.getData().get("g");
                     JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
                     //update DB & after join screen
                     jtk.setServingNumber(Integer.parseInt(current_serving));
@@ -85,21 +89,18 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
                     }
                     NoQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-                    sendNotification(title, body, null);
+                    sendNotification(title, body, null); // pass null to show only notification with no action
                 }
             }
         }
     }
 
-    private void sendNotification(String title, String messageBody, String extra) {
+    private void sendNotification(String title, String messageBody, String codeqr ) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
-        if (null != extra) {
-            notificationIntent.putExtra("CODEQR", extra);
-            Log.v("notification", "service done");
-        } else {
-            Log.v("notification", "service null");
-        }
+        if (null != codeqr) {
+            notificationIntent.putExtra("CODEQR", codeqr);
 
+        }
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

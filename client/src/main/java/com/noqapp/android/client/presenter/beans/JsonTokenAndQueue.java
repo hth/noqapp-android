@@ -218,7 +218,7 @@ public class JsonTokenAndQueue implements Serializable {
 
     @JsonIgnoreProperties
     public boolean isTokenExpired() {
-        return afterHowLong()<0;
+        return afterHowLong()<=0;
     }
 
     @Override

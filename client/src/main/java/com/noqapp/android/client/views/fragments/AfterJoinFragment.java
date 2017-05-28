@@ -76,6 +76,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private String address;
     private String topic;
     private boolean isReumeFirst=true;
+    private String gotoPerson="";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -208,7 +209,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         /* Added to update the screen if app is in background & notification received */
         if(!isReumeFirst){
             JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
-            setObject(jtk);
+            setObject(jtk,gotoPerson);
         }
         if(isReumeFirst){
             isReumeFirst=false;
@@ -223,13 +224,13 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         tv_after.setTextColor(Color.WHITE);
         tv_how_long.setTextColor(Color.WHITE);
         tv_after.setText("Soon is your turn! You are :");
-        tv_after.setVisibility(View.VISIBLE);
+        //tv_after.setVisibility(View.VISIBLE);
         switch (pos) {
             case 0:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_1);
-                tv_how_long.setText("It's your turn!!!");
-                tv_after.setText("");
-                tv_after.setVisibility(View.GONE);
+                tv_after.setText("It's your turn!!!");
+                tv_how_long.setText(gotoPerson);
+               // tv_after.setVisibility(View.GONE);
                 break;
             case 1:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_1);
@@ -256,7 +257,8 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         }
     }
 
-    public void setObject(JsonTokenAndQueue jq){
+    public void setObject(JsonTokenAndQueue jq, String go_to){
+        gotoPerson=go_to;
         jsonQueue=jq;
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
