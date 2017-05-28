@@ -20,8 +20,8 @@ import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandle
 /**
  * Created by omkar on 4/1/17.
  */
-public class NoQueueDB {
-    private static final String TAG = NoQueueDB.class.getSimpleName();
+public class TokenAndQueueDB {
+    private static final String TAG = TokenAndQueueDB.class.getSimpleName();
 
     public static NOQueueDBPresenterInterface queueDBPresenterInterface;
 

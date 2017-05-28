@@ -17,7 +17,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NoQueueDB;
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;
@@ -68,7 +68,7 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                 String codeQR = remoteMessage.getData().get("c");
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
 
-                    JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
+                    JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
 
                     // un-subscribe from the topic
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
@@ -77,14 +77,14 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
 
                     String current_serving = remoteMessage.getData().get("cs");
-                    JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
+                    JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
                     //update DB & after join screen
                     jtk.setServingNumber(Integer.parseInt(current_serving));
                     if (jtk.isTokenExpired()) {
                         //un-subscribe from the topic
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
                     }
-                    NoQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                    TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                     sendNotification(title, body, null);
                 }
             }

@@ -2,7 +2,7 @@ package com.noqapp.android.client.presenter;
 
 import android.content.Context;
 
-import com.noqapp.android.client.model.database.utils.NoQueueDB;
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.interfaces.NOQueueDBPresenterInterface;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
@@ -23,22 +23,22 @@ public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
     }
 
     public void saveTokenQueue(List<JsonTokenAndQueue> tokenAndQueues, boolean isCurrentQueueCall) {
-        NoQueueDB.queueDBPresenterInterface = this;
+        TokenAndQueueDB.queueDBPresenterInterface = this;
 
         if (isCurrentQueueCall) {
             /* Delete before inserting as this is always a fresh data on every call. */
-            NoQueueDB.deleteCurrentQueue();
-            NoQueueDB.saveCurrentQueue(tokenAndQueues);
+            TokenAndQueueDB.deleteCurrentQueue();
+            TokenAndQueueDB.saveCurrentQueue(tokenAndQueues);
         } else {
-            NoQueueDB.saveHistoryQueue(tokenAndQueues);
+            TokenAndQueueDB.saveHistoryQueue(tokenAndQueues);
         }
-        //NoQueueDB.save(tokenAndQueues, isCurrentQueueCall);
+        //TokenAndQueueDB.save(tokenAndQueues, isCurrentQueueCall);
     }
 
     public void getCurrentAndHistoryTokenQueueListFromDB() {
-        NoQueueDB.queueDBPresenterInterface = this;
-        List<JsonTokenAndQueue> currentQueueList = NoQueueDB.getCurrentQueueList();
-        List<JsonTokenAndQueue> historyQueueList = NoQueueDB.getHistoryQueueList();
+        TokenAndQueueDB.queueDBPresenterInterface = this;
+        List<JsonTokenAndQueue> currentQueueList = TokenAndQueueDB.getCurrentQueueList();
+        List<JsonTokenAndQueue> historyQueueList = TokenAndQueueDB.getHistoryQueueList();
 
         this.token_QueueList(currentQueueList, historyQueueList);
     }

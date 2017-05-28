@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.DatabaseHelper;
-import com.noqapp.android.client.model.database.utils.NoQueueDB;
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.network.NOQueueMessagingService;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -125,7 +125,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         Toast.makeText(launchActivity, "Notification payload P: " + payload, Toast.LENGTH_LONG).show();
-                        JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
+                        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
                         Intent in = new Intent(launchActivity, ReviewActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("object", jtk);
@@ -136,14 +136,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
                         String current_serving = intent.getStringExtra("cs");
-                        JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
+                        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
                         //update DB & after join screen
                         jtk.setServingNumber(Integer.parseInt(current_serving));
                         if (jtk.isTokenExpired()) {
                             //un subscribe the topic
                             FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
                         }
-                        NoQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                        TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                         List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
                         if (null != currentTabFragments && currentTabFragments.size() > 1) {
                             int size = currentTabFragments.size();
@@ -171,7 +171,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         if (extras != null) {
             if (extras.containsKey("CODEQR")) {
                 String codeQR = extras.getString("CODEQR");
-                JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
+                JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
                 Intent in = new Intent(launchActivity, ReviewActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("object", jtk);

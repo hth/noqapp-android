@@ -6,8 +6,6 @@ package com.noqapp.android.client.model.database;
  */
 public class DatabaseTable {
 
-
-
     public static class TokenQueue {
         public static final String TABLE_NAME = "TOKEN_QUEUE";
         public static final String CODE_QR = "codeQR";
@@ -27,14 +25,23 @@ public class DatabaseTable {
         public static final String SERVICED_TIME = "servicedTime";
         public static final String CREATE_DATE = "createDate";
 
-        private TokenQueue () {
+        private TokenQueue() {
         }
     }
 
     public static class TokenQueueHistory {
         public static final String TABLE_NAME = "TOKEN_QUEUE_H";
 
-        private TokenQueueHistory () {
+        private TokenQueueHistory() {
+        }
+    }
+
+    public static class Review {
+        public static final String TABLE_NAME = "REVIEW";
+        public static final String CODE_QR = "codeQR";
+        public static final String GOTO = "goTo";
+
+        private Review() {
         }
     }
 }

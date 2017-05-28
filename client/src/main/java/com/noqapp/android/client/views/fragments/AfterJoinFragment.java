@@ -15,7 +15,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
-import com.noqapp.android.client.model.database.utils.NoQueueDB;
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
@@ -139,7 +139,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         jsonQueue.setServingNumber(token.getServingNumber());
         jsonQueue.setToken(token.getToken());
         //save data to DB
-        NoQueueDB.saveJoinQueueObject(jsonQueue);
+        TokenAndQueueDB.saveJoinQueueObject(jsonQueue);
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
@@ -150,7 +150,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             if (response.getResponse() == 1) {
                 Toast.makeText(getActivity(), getString(R.string.cancel_queue), Toast.LENGTH_LONG).show();
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
-                NoQueueDB.deleteTokenQueue(codeQR);
+                TokenAndQueueDB.deleteTokenQueue(codeQR);
                 navigateToList();
             } else {
                 Toast.makeText(getActivity(), getString(R.string.fail_to_cancel), Toast.LENGTH_LONG).show();
@@ -207,7 +207,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
         /* Added to update the screen if app is in background & notification received */
         if(!isReumeFirst){
-            JsonTokenAndQueue jtk = NoQueueDB.getCurrentQueueObject(codeQR);
+            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
             setObject(jtk);
         }
         if(isReumeFirst){
