@@ -5,7 +5,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -27,18 +26,18 @@ import com.facebook.accountkit.PhoneNumber;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
+import com.mukesh.countrypicker.Country;
 import com.mukesh.countrypicker.CountryPicker;
 import com.mukesh.countrypicker.CountryPickerListener;
-import com.mukesh.countrypicker.Country;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.presenter.beans.JsonProfile;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.PhoneFormatterUtil;
-import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.presenter.beans.ErrorEncounteredJson;
+import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.PhoneFormatterUtil;
+import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 
@@ -243,16 +242,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     public void queueResponse(JsonProfile profile) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedPreferencesEditor(getActivity());
-            editor.putString(NoQueueBaseActivity.PREKEY_PHONE, profile.getPhoneRaw());
-            editor.putString(NoQueueBaseActivity.PREKEY_NAME, profile.getName());
-            editor.putString(NoQueueBaseActivity.PREKEY_GENDER, profile.getGender());
-            editor.putString(NoQueueBaseActivity.PREKEY_MAIL, profile.getMail());
-            editor.putInt(NoQueueBaseActivity.PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
-            editor.putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, true);
-            editor.putString(NoQueueBaseActivity.PREKEY_INVITECODE, profile.getInviteCode());
-            editor.putString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
-            editor.commit();
+            NoQueueBaseActivity.commitProfile(profile);
             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
             LaunchActivity.getLaunchActivity().dismissProgress();
         } else {

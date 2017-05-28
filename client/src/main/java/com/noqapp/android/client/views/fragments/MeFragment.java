@@ -2,10 +2,8 @@ package com.noqapp.android.client.views.fragments;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,10 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
-import com.noqapp.android.client.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,17 +72,17 @@ public class MeFragment extends NoQueueBaseFragment {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle("Me");
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
-        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        String name = preferences.getString(NoQueueBaseActivity.PREKEY_NAME, "Guest User");
-        String phone = preferences.getString(NoQueueBaseActivity.PREKEY_PHONE, "");
-        String gender = preferences.getString(NoQueueBaseActivity.PREKEY_GENDER, "");
-        int remoteScanCount = preferences.getInt(NoQueueBaseActivity.PREKEY_REMOTE_JOIN, 0);
-        boolean isAutoScanAvail = preferences.getBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, false);
-        inviteCode = preferences.getString(NoQueueBaseActivity.PREKEY_INVITECODE, "");
+
+        String name = NoQueueBaseActivity.getUserName();
+        String phone = NoQueueBaseActivity.getPhoneNo();
+        String gender = NoQueueBaseActivity.getGender();
+        int remoteScanCount = NoQueueBaseActivity.getRemoteJoinCount();
+        boolean isAutoScanAvail = NoQueueBaseActivity.getAutoJoinStatus();
+        inviteCode = NoQueueBaseActivity.getInviteCode();
         tv_firstName.setText(name);
         if (!phone.equals("")) {
             tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(
-                    preferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, "US"),
+                    NoQueueBaseActivity.getCountryShortName(),
                     phone));
         }
         tv_scanCount.setText(String.valueOf(remoteScanCount));
@@ -92,9 +90,7 @@ public class MeFragment extends NoQueueBaseFragment {
         toggleAutoJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
-                SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedPreferencesEditor(getActivity());
-                editor.putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, isChecked);
-                editor.commit();
+                NoQueueBaseActivity.setAutoJoinStatus(isChecked);
             }
         });
 
@@ -125,8 +121,7 @@ public class MeFragment extends NoQueueBaseFragment {
                     .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // logout
-                            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-                            preferences.edit().clear().commit();
+                            NoQueueBaseActivity.clearPreferences();
                             //navigate to signup/login
                             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
                         }

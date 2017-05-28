@@ -12,19 +12,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.noqapp.android.client.model.QueueApiModel;
-import com.noqapp.android.client.presenter.beans.JsonResponse;
-import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.PhoneFormatterUtil;
-import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.database.utils.NoQueueDB;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
+import com.noqapp.android.client.presenter.beans.JsonResponse;
+import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Formatter;
+import com.noqapp.android.client.utils.PhoneFormatterUtil;
+import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 
@@ -75,7 +75,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private String queueName;
     private String address;
     private String topic;
-
     private boolean isReumeFirst=true;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -116,8 +115,10 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 setBackGround(jsonQueue.afterHowLong());
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
-                    callQueue();
+                    if(isReumeFirst) {
+                        LaunchActivity.getLaunchActivity().progressDialog.show();
+                        callQueue();
+                    }
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());
                 }

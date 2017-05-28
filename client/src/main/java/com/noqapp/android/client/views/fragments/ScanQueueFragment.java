@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

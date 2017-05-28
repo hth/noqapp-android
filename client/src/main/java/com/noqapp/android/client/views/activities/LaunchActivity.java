@@ -22,17 +22,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.utils.NoQueueDB;
+import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.client.network.NOQueueMessagingService;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.NetworkUtil;
 import com.noqapp.android.client.views.fragments.AfterJoinFragment;
-import com.noqapp.android.client.views.fragments.LoginFragment;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.client.network.NOQueueMessagingService;
 import com.noqapp.android.client.views.fragments.ListQueueFragment;
+import com.noqapp.android.client.views.fragments.LoginFragment;
 import com.noqapp.android.client.views.fragments.MeFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
@@ -373,13 +373,15 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             Fragment currentfrg = currentTabFragments.get(size - 1);
             currentTabFragments.remove(size - 1);
 
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_layout, fragment);
-            fragmentTransaction.commit();
+
             if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
                 currentTabFragments.remove(currentTabFragments.size() - 1);
                 fragmentsStack.put(tabList, null);
                 onClick(rl_list);
+            }else{
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, fragment);
+                fragmentTransaction.commit();
             }
         } else {
             long currentTime = System.currentTimeMillis();
@@ -400,7 +402,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     public String getDeviceID() {
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
-                SHARED_PREF_SEC, MODE_PRIVATE);
+                APP_PREF, MODE_PRIVATE);
         return sharedpreferences.getString(XR_DID, "");
     }
 }
