@@ -35,7 +35,7 @@ public class NoQueueDB {
 
     public static void deleteTokenQueue(String codeQR) {
         boolean resultStatus = dbHandler.getReadableDatabase().delete(TokenQueue.TABLE_NAME, "codeqr=?", new String[]{codeQR}) > 0;
-        Log.v("deleted", String.valueOf(resultStatus));
+        Log.i(TAG, "Deleted deleteTokenQueue status=" + String.valueOf(resultStatus));
     }
 
     public static List<JsonTokenAndQueue> getCurrentQueueList() {
@@ -58,7 +58,7 @@ public class NoQueueDB {
                     listJsonQueue.add(tokenAndQueue);
                 }
             } catch (Exception e) {
-                Log.e(TAG, "Parsing error reason=" + e.getLocalizedMessage(), e);
+                Log.e(TAG, "Error getCurrentQueueList reason=" + e.getLocalizedMessage(), e);
             } finally {
                 if (!cursor.isClosed()) {
                     cursor.close();
@@ -87,7 +87,7 @@ public class NoQueueDB {
 
                 }
             } catch (Exception e) {
-                Log.e(TAG, "Parsing error reason=" + e.getLocalizedMessage(), e);
+                Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
             } finally {
                 if (!cursor.isClosed()) {
                     cursor.close();
@@ -136,10 +136,10 @@ public class NoQueueDB {
         for (JsonTokenAndQueue tokenAndQueue : list) {
             ContentValues values = createQueueContentValues(tokenAndQueue);
             try {
-                long succcesscount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueue.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                Log.d(TAG, "Data Saved current queue " + String.valueOf(succcesscount));
+                long successCount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueue.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                Log.d(TAG, "Data Saved current queue " + String.valueOf(successCount));
             } catch (SQLException e) {
-                Log.e(TAG, "Exception ::" + e.getMessage().toString());
+                Log.e(TAG, "Error saveCurrentQueue reason=" + e.getLocalizedMessage(), e);
             }
         }
         queueDBPresenterInterface.dbSaved(true);
@@ -152,7 +152,7 @@ public class NoQueueDB {
                 long succcesscount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueueHistory.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 Log.d(TAG, "Data Saved history queue " + String.valueOf(succcesscount));
             } catch (SQLException e) {
-                Log.e(TAG, "Exception ::" + e.getMessage().toString());
+                Log.e(TAG, "Error saveHistoryQueue reason=" + e.getLocalizedMessage(), e);
             }
         }
         queueDBPresenterInterface.dbSaved(false);
@@ -180,8 +180,7 @@ public class NoQueueDB {
             cv.put(TokenQueue.SERVICED_TIME, tokenAndQueue.getServicedTime());
             cv.put(TokenQueue.CREATE_DATE, tokenAndQueue.getCreateDate());
         } catch (Exception e) {
-            e.printStackTrace();
-
+            Log.e(TAG, "Error createQueueContentValue reason=" + e.getLocalizedMessage(), e);
         }
         return cv;
     }
@@ -192,7 +191,7 @@ public class NoQueueDB {
             long rowInsertCount = dbHandler.getWritableDb().insertWithOnConflict(TokenQueue.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             Log.d(TAG, "Data Saved in current queue " + String.valueOf(rowInsertCount));
         } catch (SQLException e) {
-            Log.e(TAG, "Failed reason=" + e.getLocalizedMessage(), e);
+            Log.e(TAG, "Error saveJoinQueueObject reason=" + e.getLocalizedMessage(), e);
         }
     }
 
@@ -203,7 +202,7 @@ public class NoQueueDB {
             con.put(TokenQueue.TOKEN, token);
             dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?", new String[]{codeQR});
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error updateJoinQueueObject reason=" + e.getLocalizedMessage(), e);
         }
     }
 }
