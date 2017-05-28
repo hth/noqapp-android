@@ -30,6 +30,7 @@ import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.network.NOQueueMessagingService;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.NetworkUtil;
 import com.noqapp.android.client.views.fragments.AfterJoinFragment;
@@ -106,7 +107,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         ButterKnife.bind(this);
         launchActivity = this;
         Log.v("device id check", getDeviceID());
-
+AppUtilities.exportDatabse(this);
         networkUtil = new NetworkUtil(this);
         rl_home.setOnClickListener(this);
         rl_list.setOnClickListener(this);
@@ -142,6 +143,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
                         //update DB & after join screen
                         jtk.setServingNumber(Integer.parseInt(current_serving));
+                        /**
+                         * Save codeQR of review & show the review screen on app
+                         * resume if there is any record in Review DB for review key
+                         * **/
+                        ReviewDB.insert(ReviewDB.KEY_GOTO,codeQR,go_to);
                         if (jtk.isTokenExpired()) {
                             //un subscribe the topic
                             FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());

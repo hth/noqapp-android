@@ -7,9 +7,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.interfaces.NOQueueDBPresenterInterface;
 import com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +55,16 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setStoreAddress(cursor.getString(3));
                     tokenAndQueue.setCountryShortName(cursor.getString(4));
                     tokenAndQueue.setStorePhone(cursor.getString(5));
+                    tokenAndQueue.setTokenAvailableFrom(cursor.getInt(6));
+                    tokenAndQueue.setStartHour(cursor.getInt(7));
+                    tokenAndQueue.setEndHour(cursor.getInt(8));
                     tokenAndQueue.setTopic(cursor.getString(9));
+                    tokenAndQueue.setServingNumber(cursor.getInt(10));
+                    tokenAndQueue.setLastNumber(cursor.getInt(11));
                     tokenAndQueue.setToken(cursor.getInt(12));
-                    tokenAndQueue.setServicedTime(cursor.getString(14));
+                    tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
+                //    tokenAndQueue.setServicedTime(cursor.getString(14));
+                    tokenAndQueue.setCreateDate(cursor.getString(15));
                     listJsonQueue.add(tokenAndQueue);
                 }
             } catch (Exception e) {
@@ -81,9 +91,16 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setStoreAddress(cursor.getString(3));
                     tokenAndQueue.setCountryShortName(cursor.getString(4));
                     tokenAndQueue.setStorePhone(cursor.getString(5));
+                    tokenAndQueue.setTokenAvailableFrom(cursor.getInt(6));
+                    tokenAndQueue.setStartHour(cursor.getInt(7));
+                    tokenAndQueue.setEndHour(cursor.getInt(8));
                     tokenAndQueue.setTopic(cursor.getString(9));
+                    tokenAndQueue.setServingNumber(cursor.getInt(10));
+                    tokenAndQueue.setLastNumber(cursor.getInt(11));
                     tokenAndQueue.setToken(cursor.getInt(12));
-                    tokenAndQueue.setServicedTime(cursor.getString(14));
+                    tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
+                  //  tokenAndQueue.setServicedTime(cursor.getString(14));
+                    tokenAndQueue.setCreateDate(cursor.getString(15));
 
                 }
             } catch (Exception e) {
@@ -96,6 +113,7 @@ public class TokenAndQueueDB {
         }
         return tokenAndQueue;
     }
+
     public static JsonTokenAndQueue getHistoryQueueObject(String codeQR) {
         JsonTokenAndQueue tokenAndQueue = null;
         Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueueHistory.TABLE_NAME, null, TokenQueue.CODE_QR + "=?", new String[]{codeQR}, null, null, TokenQueue.CREATE_DATE, null);
@@ -109,9 +127,16 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setStoreAddress(cursor.getString(3));
                     tokenAndQueue.setCountryShortName(cursor.getString(4));
                     tokenAndQueue.setStorePhone(cursor.getString(5));
+                    tokenAndQueue.setTokenAvailableFrom(cursor.getInt(6));
+                    tokenAndQueue.setStartHour(cursor.getInt(7));
+                    tokenAndQueue.setEndHour(cursor.getInt(8));
                     tokenAndQueue.setTopic(cursor.getString(9));
+                    tokenAndQueue.setServingNumber(cursor.getInt(10));
+                    tokenAndQueue.setLastNumber(cursor.getInt(11));
                     tokenAndQueue.setToken(cursor.getInt(12));
+                 //   tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
                     tokenAndQueue.setServicedTime(cursor.getString(14));
+                    tokenAndQueue.setCreateDate(cursor.getString(15));
 
                 }
             } catch (Exception e) {
@@ -124,6 +149,7 @@ public class TokenAndQueueDB {
         }
         return tokenAndQueue;
     }
+
     public static List<JsonTokenAndQueue> getHistoryQueueList() {
         String orderBy = TokenQueue.CREATE_DATE;
 
@@ -140,10 +166,18 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setBusinessName(cursor.getString(1));
                         tokenAndQueue.setDisplayName(cursor.getString(2));
                         tokenAndQueue.setStoreAddress(cursor.getString(3));
+                        tokenAndQueue.setCountryShortName(cursor.getString(4));
                         tokenAndQueue.setStorePhone(cursor.getString(5));
+                        tokenAndQueue.setTokenAvailableFrom(cursor.getInt(6));
+                        tokenAndQueue.setStartHour(cursor.getInt(7));
+                        tokenAndQueue.setEndHour(cursor.getInt(8));
                         tokenAndQueue.setTopic(cursor.getString(9));
+                        tokenAndQueue.setServingNumber(cursor.getInt(10));
+                        tokenAndQueue.setLastNumber(cursor.getInt(11));
                         tokenAndQueue.setToken(cursor.getInt(12));
+                       // tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
                         tokenAndQueue.setServicedTime(cursor.getString(14));
+                        tokenAndQueue.setCreateDate(cursor.getString(15));
                         listJsonQueue.add(tokenAndQueue);
                     }
                 } finally {
@@ -222,12 +256,14 @@ public class TokenAndQueueDB {
         }
     }
 
-    public static void updateJoinQueueObject(String codeQR,String servingno,String token) {
+    public static void updateJoinQueueObject(String codeQR, String servingno, String token) {
         try {
             ContentValues con = new ContentValues();
             con.put(TokenQueue.SERVING_NUMBER, servingno);
             con.put(TokenQueue.TOKEN, token);
-            dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?", new String[]{codeQR});
+            int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?", new String[]{codeQR});
+            Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + String.valueOf(successCount));
+            //AppUtilities.exportDatabse(LaunchActivity.getLaunchActivity());
         } catch (Exception e) {
             Log.e(TAG, "Error updateJoinQueueObject reason=" + e.getLocalizedMessage(), e);
         }
