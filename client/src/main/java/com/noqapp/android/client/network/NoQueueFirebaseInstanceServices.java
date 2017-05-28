@@ -30,7 +30,7 @@ public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
         DeviceToken deviceToken = new DeviceToken(refreshToken);
 
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
-                NoQueueBaseActivity.SHARED_PREF_SEC, Context.MODE_PRIVATE);
+                NoQueueBaseActivity.APP_PREF, Context.MODE_PRIVATE);
         deviceId = sharedpreferences.getString(NoQueueBaseActivity.XR_DID, "");
         if (StringUtils.isBlank(deviceId)) {
             deviceId = UUID.randomUUID().toString().toUpperCase();

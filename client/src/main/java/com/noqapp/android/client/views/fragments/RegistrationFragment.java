@@ -4,7 +4,6 @@ package com.noqapp.android.client.views.fragments;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -26,8 +25,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.mukesh.countrypicker.CountryPicker;
 import com.mukesh.countrypicker.Country;
+import com.mukesh.countrypicker.CountryPicker;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.MePresenter;
 import com.noqapp.android.client.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
@@ -38,7 +38,6 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.interfaces.MeView;
-import com.noqapp.android.client.R;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -184,16 +183,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     public void queueResponse(JsonProfile profile) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedPreferencesEditor(getActivity());
-            editor.putString(NoQueueBaseActivity.PREKEY_PHONE, profile.getPhoneRaw());
-            editor.putString(NoQueueBaseActivity.PREKEY_NAME, profile.getName());
-            editor.putString(NoQueueBaseActivity.PREKEY_GENDER, profile.getGender());
-            editor.putString(NoQueueBaseActivity.PREKEY_MAIL, profile.getMail());
-            editor.putInt(NoQueueBaseActivity.PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
-            editor.putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, true);
-            editor.putString(NoQueueBaseActivity.PREKEY_INVITECODE, profile.getInviteCode());
-            editor.putString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
-            editor.commit();
+            NoQueueBaseActivity.commitProfile(profile);
             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
             //remove the login and register fragment from stack
             LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).clear();

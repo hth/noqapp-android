@@ -14,17 +14,17 @@ import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.ListQueueAdapter;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;

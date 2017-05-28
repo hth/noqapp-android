@@ -198,7 +198,7 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     public void setUserName(String name) {
-        sharedpreferences.edit().putString(KEY_USER_NAME, name);
+        sharedpreferences.edit().putString(KEY_USER_NAME, name).commit();
     }
 
     public boolean isLoggedIn() {

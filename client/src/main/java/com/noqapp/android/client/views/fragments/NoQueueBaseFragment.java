@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 
 /**
  * Created by omkar on 4/8/17.

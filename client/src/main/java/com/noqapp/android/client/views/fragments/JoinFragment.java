@@ -1,7 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,17 +8,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
+import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 
 import butterknife.BindView;
@@ -131,18 +129,20 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
         codeQR = jsonQueue.getCodeQR();
         countryShortName = jsonQueue.getCountryShortName();
-        //Update the remote join count
-        SharedPreferences.Editor editor = ((NoQueueBaseActivity) getActivity()).getSharedPreferencesEditor(getActivity());
-        editor.putInt(NoQueueBaseActivity.PREKEY_REMOTE_JOIN, jsonQueue.getRemoteJoin());
-        editor.commit();
+        /* Update the remote join count */
+        NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoin());
+        /* Auto join after scan if autojoin status is true in me screen */
+        if (!getArguments().getBoolean(KEY_FROM_LIST, false) && NoQueueBaseActivity.getAutoJoinStatus()) {
+            joinQueue();
+        }
     }
 
     @OnClick(R.id.btn_joinqueue)
     public void joinQueue() {
         if(getArguments().getBoolean(KEY_IS_HISTORY, false)){
-            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
 
-            String phone = preferences.getString(NoQueueBaseActivity.PREKEY_PHONE, "");
+
+            String phone = NoQueueBaseActivity.getPhoneNo();
            // if (!phone.equals("")) {
 //                if(jsonQueue.getRemoteJoin()==0){
 //                    Toast.makeText(getActivity(),getString(R.string.error_remote_join_available),Toast.LENGTH_LONG).show();
