@@ -1,6 +1,7 @@
 package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.body.DeviceToken;
@@ -55,7 +56,7 @@ public interface QueueService {
     );
 
     @POST("api/c/token/historical.json")
-    Call<JsonTokenAndQueueList> getAllHistoricalJoinedQueue(
+    Call<JsonTokenAndQueueList> allHistoricalJoinedQueue(
             @Header("X-R-DID")
             String did,
 
@@ -70,6 +71,42 @@ public interface QueueService {
 
             @Body
             DeviceToken deviceToken
+    );
+
+    @POST("api/c/token/queue/{codeQR}.json")
+    Call<JsonToken> joinQueue(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR
+    );
+
+    @POST("api/c/token/abort/{codeQR}.json")
+    Call<JsonResponse> abortQueue(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR
     );
 
     @POST("api/c/token/remote/{codeQR}.json")
