@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.merchant.network.NOQueueMessagingService;
+import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.NetworkUtil;
@@ -271,7 +271,7 @@ public class LaunchActivity extends AppCompatActivity {
                 new IntentFilter(Constants.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
-        NOQueueMessagingService.clearNotifications(getApplicationContext());
+        NoQueueMessagingService.clearNotifications(getApplicationContext());
     }
 
     @Override
