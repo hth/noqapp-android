@@ -136,7 +136,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         bundle.putSerializable("object", jtk);
                         in.putExtras(bundle);
                         startActivityForResult(in, Constants.requestCodeJoinQActivity);
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+                        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                         /**
                          * Save codeQR of review & show the review screen on app
                          * resume if there is any record in Review DB for review key
@@ -157,7 +157,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
                         if (jtk.isTokenExpired()) {
                             //un subscribe the topic
-                            FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+                            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                         }
                         TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                         List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
@@ -424,7 +424,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         bundle.putSerializable("object", jtk);
         in.putExtras(bundle);
         startActivityForResult(in, Constants.requestCodeJoinQActivity);
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
     }
 
 

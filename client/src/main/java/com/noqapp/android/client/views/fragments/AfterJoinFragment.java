@@ -17,6 +17,7 @@ import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
@@ -128,7 +129,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         tv_current_value.setText(String.valueOf(token.getToken()));
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
         setBackGround(token.afterHowLong());
-        FirebaseMessaging.getInstance().subscribeToTopic(topic);
+        NoQueueMessagingService.subscribeTopics(topic);
         jsonQueue.setServingNumber(token.getServingNumber());
         jsonQueue.setToken(token.getToken());
         //save data to DB
@@ -142,7 +143,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         if (null != response) {
             if (response.getResponse() == 1) {
                 Toast.makeText(getActivity(), getString(R.string.cancel_queue), Toast.LENGTH_LONG).show();
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+                NoQueueMessagingService.unSubscribeTopics(topic);
                 TokenAndQueueDB.deleteTokenQueue(codeQR);
                 navigateToList();
             } else {

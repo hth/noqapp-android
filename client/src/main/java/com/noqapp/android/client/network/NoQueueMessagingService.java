@@ -80,7 +80,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
 
                     // un-subscribe from the topic
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                     sendNotification(title, body, codeQR);//pass codeQR to open review screen
 
                     /**
@@ -98,7 +98,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     jtk.setServingNumber(Integer.parseInt(current_serving));
                     if (jtk.isTokenExpired()) {
                         //un-subscribe from the topic
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+                        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                     }
                     TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                     sendNotification(title, body, null); // pass null to show only notification with no action
@@ -152,5 +152,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             }
         }
         return isInBackground;
+    }
+
+
+    public static void subscribeTopics(String topic){
+        FirebaseMessaging.getInstance().subscribeToTopic(topic+"_A");
+    }
+
+    public static void unSubscribeTopics(String topic){
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic+"_A");
     }
 }

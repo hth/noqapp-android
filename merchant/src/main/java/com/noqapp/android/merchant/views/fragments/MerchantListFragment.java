@@ -119,15 +119,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
 
-    private void subscribeTopics() {
-        if (null != topics && topics.size() > 0) {
-            for (int i = 0; i < topics.size(); i++) {
-                FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic());
-                FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic() + "_M");
-            }
-        }
-    }
-
     private void initListView() {
         rl_empty_screen.setVisibility(View.GONE);
         listview.setVisibility(View.VISIBLE);
@@ -155,11 +146,20 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         });
     }
 
+    private void subscribeTopics() {
+        if (null != topics && topics.size() > 0) {
+            for (int i = 0; i < topics.size(); i++) {
+                FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic()+ "_A");
+                FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic() + "_MA");
+            }
+        }
+    }
+
     public void unSubscribeTopics() {
         if (null != topics && topics.size() > 0) {
             for (int i = 0; i < topics.size(); i++) {
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(topics.get(i).getTopic());
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(topics.get(i).getTopic() + "_M");
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topics.get(i).getTopic()+"_A");
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topics.get(i).getTopic() + "_MA");
             }
         }
     }
