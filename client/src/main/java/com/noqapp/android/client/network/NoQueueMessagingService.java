@@ -20,6 +20,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -67,42 +68,52 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     pushNotification.putExtra("ln", remoteMessage.getData().get("ln"));
                     pushNotification.putExtra("g", remoteMessage.getData().get("g"));
                 }
+                if (remoteMessage.getData().get("f").equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                    pushNotification.putExtra("u", remoteMessage.getData().get("u"));
+                }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } else {
                 // app is in background, show the notification in notification tray
                 //save data to database
                 String payload = remoteMessage.getData().get("f");
                 String codeQR = remoteMessage.getData().get("c");
-                //String
-/***
- *
- * When u==S then it is re-view
- *      u==N then it is skip(Rejoin) Pending task
- *
- *
- *
- *
- * */
+                /***
+                 * When u==S then it is re-view
+                 *      u==N then it is skip(Rejoin) Pending task
+                 * */
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
 
                     JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-
+                    String userStatus = remoteMessage.getData().get("u");
                     // un-subscribe from the topic
                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-                    sendNotification(title, body, codeQR);//pass codeQR to open review screen
+
 
                     /**
                      * Save codeQR of review & show the review screen on app
                      * resume if there is any record in Review DB for review key
                      * **/
-                    ReviewDB.insert(ReviewDB.KEY_REVEIW, codeQR, codeQR);
+                    if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                        ReviewDB.insert(ReviewDB.KEY_REVEIW, codeQR, codeQR);
+                        sendNotification(title, body, codeQR,true);//pass codeQR to open review screen
+                    }
+                    else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
+                        ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
+                        sendNotification(title, body, codeQR,false);//pass codeQR to open skip screen
+                    }
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
 
                     String current_serving = remoteMessage.getData().get("cs");
                     JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
                     String go_to = remoteMessage.getData().get("g");
-                    ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
+
+                    /**
+                     * Save codeQR of goto & show it in after join screen on app
+                     *  Review DB for review key && current serving == token no.
+                     * **/
+                    if (Integer.parseInt(current_serving) == jtk.getToken())
+                        ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
                     //update DB & after join screen
                     jtk.setServingNumber(Integer.parseInt(current_serving));
                     if (jtk.isTokenExpired()) {
@@ -110,16 +121,17 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                     }
                     TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-                    sendNotification(title, body, null); // pass null to show only notification with no action
+                    sendNotification(title, body); // pass null to show only notification with no action
                 }
             }
         }
     }
 
-    private void sendNotification(String title, String messageBody, String codeqr) {
+    private void sendNotification(String title, String messageBody, String codeqr,boolean isReview) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         if (null != codeqr) {
             notificationIntent.putExtra("CODEQR", codeqr);
+            notificationIntent.putExtra("ISREVIEW",isReview);
 
         }
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -135,7 +147,21 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
     }
-
+    private void sendNotification(String title, String messageBody) {
+        Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_notifications_none_black_24dp)
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
+    }
     /**
      * Method checks if the app is in background or not
      */
@@ -164,11 +190,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     }
 
 
-    public static void subscribeTopics(String topic){
-        FirebaseMessaging.getInstance().subscribeToTopic(topic+"_A");
+    public static void subscribeTopics(String topic) {
+        FirebaseMessaging.getInstance().subscribeToTopic(topic + "_A");
     }
 
-    public static void unSubscribeTopics(String topic){
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic+"_A");
+    public static void unSubscribeTopics(String topic) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic + "_A");
     }
 }
