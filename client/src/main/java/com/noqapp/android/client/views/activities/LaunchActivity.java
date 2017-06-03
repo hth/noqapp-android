@@ -21,12 +21,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;
@@ -117,7 +117,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
         initProgress();
         onClick(rl_me);
-        Intent in =new Intent(this,ReviewActivity.class);
+        Intent in = new Intent(this, ReviewActivity.class);
         //startActivity(in);
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -130,18 +130,25 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         Toast.makeText(launchActivity, "Notification payload P: " + payload, Toast.LENGTH_LONG).show();
-                        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-                        Intent in = new Intent(launchActivity, ReviewActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("object", jtk);
-                        in.putExtras(bundle);
-                        startActivityForResult(in, Constants.requestCodeJoinQActivity);
-                        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                        String userStatus = intent.getStringExtra("u");
                         /**
                          * Save codeQR of review & show the review screen on app
                          * resume if there is any record in Review DB for review key
                          * **/
-                        ReviewDB.insert(ReviewDB.KEY_REVEIW, codeQR, codeQR);
+                        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
+                        if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                            ReviewDB.insert(ReviewDB.KEY_REVEIW, codeQR, codeQR);
+
+                            Intent in = new Intent(launchActivity, ReviewActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("object", jtk);
+                            in.putExtras(bundle);
+                            startActivityForResult(in, Constants.requestCodeJoinQActivity);
+                            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                        } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
+                            ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
+                            Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
+                        }
                         Log.v("object is :", jtk.toString());
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
@@ -154,7 +161,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                          * Save codeQR of goto & show it in after join screen on app
                          *  Review DB for review key && current serving == token no.
                          * **/
-                        if(Integer.parseInt(current_serving)==jtk.getToken())
+                        if (Integer.parseInt(current_serving) == jtk.getToken())
                             ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
                         if (jtk.isTokenExpired()) {
                             //un subscribe the topic
@@ -186,9 +193,16 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public void onNewIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            if (extras.containsKey("CODEQR")) {
+            if (extras.containsKey("CODEQR") && extras.containsKey("ISREVIEW")) {
                 String codeQR = extras.getString("CODEQR");
-                callReviewActivity(codeQR);
+                boolean isReview = extras.getBoolean("ISREVIEW", false);
+                if (isReview) {
+                    callReviewActivity(codeQR);
+                } else {
+                    ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
+                    Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
+
+                }
             }
         }
     }
@@ -329,8 +343,15 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         NoQueueMessagingService.clearNotifications(getApplicationContext());
 
         String codeQR = ReviewDB.getValue(ReviewDB.KEY_REVEIW);
-        if (StringUtils.isNotBlank(codeQR)&& !isReviewShown())// shown only one time if the review is canceled
+        if (StringUtils.isNotBlank(codeQR) && !isReviewShown())// shown only one time if the review is canceled
             callReviewActivity(codeQR);
+
+        String codeQRskip = ReviewDB.getValue(ReviewDB.KEY_SKIP);
+        if (StringUtils.isNotBlank(codeQRskip))// shown only one time if it is skipped
+        {
+            ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
+            Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
