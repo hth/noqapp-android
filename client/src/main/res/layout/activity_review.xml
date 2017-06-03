@@ -54,28 +54,34 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
                 android:text="Date of service : Today"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
-                android:id="@+id/tv_service"
-                style="@style/style_join_queue_tv"
-                android:layout_below="@+id/tv_address"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:text="How was your service?"
                 android:textColor="@color/colorMobile"
                 android:textSize="20sp" />
 
-            <RatingBar
-                android:id="@+id/ratingBar"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:numStars="5"
-                android:progressDrawable="@drawable/ratingbar_selector"
-                android:stepSize="1.0" />
+                android:orientation="vertical">
+
+                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                    android:id="@+id/tv_service"
+                    style="@style/style_join_queue_tv"
+                    android:layout_below="@+id/tv_address"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:text="How was your service?"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:numStars="5"
+                    android:progressDrawable="@drawable/ratingbar_selector"
+                    android:stepSize="1.0" />
+            </LinearLayout>
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
 
@@ -88,57 +94,49 @@
                 android:textColor="@color/colorAddress"
                 android:textSize="18sp" />
 
-            <RadioGroup
-                android:id="@+id/radioSave"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:weightSum="1">
 
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp">
-
-                <RadioButton
-                    android:id="@+id/radio0min"
-                    android:layout_width="wrap_content"
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:drawableRight="@drawable/radio_selector"
-                    android:text="@string/radio_save_30min" />
+                    android:layout_centerVertical="true"
+                    android:layout_weight=".7"
+                    android:max="100"
+                    android:maxHeight="10dp"
+                    android:maxWidth="15dp"
+                    android:minHeight="10dp"
+                    android:minWidth="15dp"
+                    android:paddingBottom="10px"
+                    android:paddingLeft="30px"
+                    android:paddingRight="30px"
+                    android:paddingTop="10px"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/custom_seekbar_progress"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/circle_seekbar"
 
-                <RadioButton
-                    android:id="@+id/radio1hr"
-                    android:layout_width="wrap_content"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_seekbar_value"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:drawableRight="@drawable/radio_selector"
-                    android:text="@string/radio_save_1hr" />
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_horizontal"
+                    android:layout_weight=".3"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
 
-                <RadioButton
-                    android:id="@+id/radio2hr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:drawableRight="@drawable/radio_selector"
-                    android:text="@string/radio_save_2hr" />
+            </LinearLayout>
 
-                <RadioButton
-                    android:id="@+id/radio3hr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:drawableRight="@drawable/radio_selector"
-                    android:text="@string/radio_save_3hr" />
-
-                <RadioButton
-                    android:id="@+id/radio4hr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:checked="true"
-                    android:drawableRight="@drawable/radio_selector"
-                    android:text="@string/radio_save_4hr" />
-
-
-            </RadioGroup>
 
             <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
                 android:id="@+id/btn_submit"

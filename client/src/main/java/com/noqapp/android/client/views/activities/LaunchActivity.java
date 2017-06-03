@@ -106,6 +106,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         ButterKnife.bind(this);
         launchActivity = this;
         Log.v("device id check", getDeviceID());
+        setReviewShown(false);//Reset the flag when app is killed
         //AppUtilities.exportDatabase(this);
         networkUtil = new NetworkUtil(this);
         rl_home.setOnClickListener(this);
@@ -116,6 +117,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
         initProgress();
         onClick(rl_me);
+        Intent in =new Intent(this,ReviewActivity.class);
+        //startActivity(in);
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -134,6 +137,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         in.putExtras(bundle);
                         startActivityForResult(in, Constants.requestCodeJoinQActivity);
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+                        /**
+                         * Save codeQR of review & show the review screen on app
+                         * resume if there is any record in Review DB for review key
+                         * **/
+                        ReviewDB.insert(ReviewDB.KEY_REVEIW, codeQR, codeQR);
                         Log.v("object is :", jtk.toString());
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
@@ -320,7 +328,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         NoQueueMessagingService.clearNotifications(getApplicationContext());
 
         String codeQR = ReviewDB.getValue(ReviewDB.KEY_REVEIW);
-        if (StringUtils.isNotBlank(codeQR))
+        if (StringUtils.isNotBlank(codeQR)&& !isReviewShown())// shown only one time if the review is canceled
             callReviewActivity(codeQR);
     }
 
@@ -418,4 +426,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         startActivityForResult(in, Constants.requestCodeJoinQActivity);
         FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
     }
+
+
 }

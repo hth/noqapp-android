@@ -105,5 +105,8 @@
     <string name="error_mobile_blank">Please enter phone number</string>
     <string name="error_login">Please login to remote join</string>
     <string name="error_remote_join_available">Yoy don\'t have enough remote join available.</string>
+    <string name="error_rateservice">Please rate the service</string>
+    <string name="review_thanks">Thanks for feedback.</string>
+    <string name="error_timesaved">Please provide how many no. of hour you saved.</string>
 
 </resources>
