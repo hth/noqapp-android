@@ -17,13 +17,13 @@ import com.noqapp.android.merchant.views.adapters.ViewPagerAdapter;
 import java.util.ArrayList;
 
 
-public class MerchantViewPagerFragment extends Fragment  {
+public class MerchantViewPagerFragment extends Fragment {
 
 
+    public static int pagercurrrentpos = 0;
+    private static int pos = 0;
     public ViewPagerAdapter adapter;
     private ViewPager viewPager;
-    private static int pos = 0;
-    public static int pagercurrrentpos=0;
     private ImageView leftNav, rightNav;
     private ArrayList<JsonTopic> topicsList;
 
@@ -35,11 +35,11 @@ public class MerchantViewPagerFragment extends Fragment  {
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         Bundle bundle = getArguments();
         if (null != bundle) {
-            topicsList = (ArrayList<JsonTopic>)bundle.getSerializable("jsonMerchant");
+            topicsList = (ArrayList<JsonTopic>) bundle.getSerializable("jsonMerchant");
             pagercurrrentpos = pos = bundle.getInt("position");
 
         }
-        adapter = new ViewPagerAdapter(getActivity(),topicsList);
+        adapter = new ViewPagerAdapter(getActivity(), topicsList);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(pos);
         leftNav = (ImageView) view.findViewById(R.id.left_nav);
@@ -80,7 +80,7 @@ public class MerchantViewPagerFragment extends Fragment  {
 
             @Override
             public void onPageSelected(int position) {
-                pagercurrrentpos=position;
+                pagercurrrentpos = position;
             }
 
             @Override
@@ -106,9 +106,8 @@ public class MerchantViewPagerFragment extends Fragment  {
     }
 
 
-    public void updateListData(ArrayList<JsonTopic> jsonTopics)
-    {
-        topicsList=jsonTopics;
+    public void updateListData(ArrayList<JsonTopic> jsonTopics) {
+        topicsList = jsonTopics;
         adapter.notifyDataSetChanged();
     }
 }

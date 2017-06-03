@@ -3,17 +3,14 @@ package com.noqapp.android.merchant.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-
 import com.noqapp.android.merchant.model.response.api.DeviceService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.DeviceRegistered;
 import com.noqapp.android.merchant.presenter.beans.body.DeviceToken;
 
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 
 import static com.noqapp.android.merchant.utils.Constants.DEVICE_TYPE;
 

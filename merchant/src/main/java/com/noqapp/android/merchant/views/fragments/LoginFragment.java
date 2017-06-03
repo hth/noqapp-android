@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.LoginModel;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
@@ -22,7 +23,6 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
-import com.noqapp.android.merchant.R;
 
 import org.apache.commons.lang3.StringUtils;
 

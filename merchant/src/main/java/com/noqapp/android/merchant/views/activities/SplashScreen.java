@@ -9,17 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.crashlytics.android.Crashlytics;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 
 import io.fabric.sdk.android.Fabric;
 
 public class SplashScreen extends AppCompatActivity {
 
-    protected boolean isAactive = true;
-    protected int splashTime = 2000;
     protected static boolean display = true;
     static SplashScreen splashScreen;
+    protected boolean isAactive = true;
+    protected int splashTime = 2000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,16 @@ public class SplashScreen extends AppCompatActivity {
         Message msg = new Message();
         msg.what = 0;
         mHandler.sendMessageDelayed(msg, splashTime); // 2 sec delay
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            isAactive = false;
+            display = false;
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
     private static class SplashHandler extends Handler {
@@ -57,16 +67,6 @@ public class SplashScreen extends AppCompatActivity {
                     }
             }
         }
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            isAactive = false;
-            display = false;
-            return true;
-        }
-        return super.onKeyUp(keyCode, event);
     }
 
 }
