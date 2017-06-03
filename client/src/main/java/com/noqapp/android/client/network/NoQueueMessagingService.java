@@ -73,7 +73,16 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 //save data to database
                 String payload = remoteMessage.getData().get("f");
                 String codeQR = remoteMessage.getData().get("c");
-
+                //String
+/***
+ *
+ * When u==S then it is re-view
+ *      u==N then it is skip(Rejoin) Pending task
+ *
+ *
+ *
+ *
+ * */
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
 

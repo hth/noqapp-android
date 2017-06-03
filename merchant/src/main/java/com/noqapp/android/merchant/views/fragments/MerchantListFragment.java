@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
+import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
@@ -29,6 +30,8 @@ import com.noqapp.android.merchant.views.adapters.ViewPagerAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,7 +153,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         if (null != topics && topics.size() > 0) {
             for (int i = 0; i < topics.size(); i++) {
                 FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic()+ "_A");
-                FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic() + "_MA");
+                FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic() + "_M_A");
             }
         }
     }
@@ -159,21 +162,32 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         if (null != topics && topics.size() > 0) {
             for (int i = 0; i < topics.size(); i++) {
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topics.get(i).getTopic()+"_A");
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(topics.get(i).getTopic() + "_MA");
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topics.get(i).getTopic() + "_M_A");
             }
         }
     }
 
     @Override
-    public void passDataToFragment(String qrcodeValue, String current_serving, String status, String lastno, boolean isServiceNoUpdate) {
+    public void passDataToFragment(String qrcodeValue, String current_serving, String status, String lastno, String payload) {
         for (int i = 0; i < topics.size(); i++) {
             JsonTopic jt = topics.get(i);
             if (jt.getCodeQR().equalsIgnoreCase(qrcodeValue)) {
-                if (isServiceNoUpdate) {//Don't update this for merchant notification
-                    jt.setServingNumber(Integer.parseInt(current_serving));
+
+                if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
+                    if(QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S)){
+                        jt.setToken(Integer.parseInt(lastno));
+                    }else{
+                        if(Integer.parseInt(lastno)>=jt.getToken()){
+                            jt.setToken(Integer.parseInt(lastno));
+                        }
+                    }
+                }else{
+                    if(Integer.parseInt(lastno)>=jt.getToken()){
+                        jt.setToken(Integer.parseInt(lastno));
+                    }
                 }
                 jt.setQueueStatus(QueueStatusEnum.valueOf(status));
-                jt.setToken(Integer.parseInt(lastno));
+                //jt.setToken(Integer.parseInt(lastno));
                 topics.set(i, jt);
                 adapter.notifyDataSetChanged();
                 if (null != merchantViewPagerFragment) {

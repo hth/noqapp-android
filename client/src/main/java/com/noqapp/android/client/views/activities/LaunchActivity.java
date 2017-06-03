@@ -151,10 +151,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         //update DB & after join screen
                         jtk.setServingNumber(Integer.parseInt(current_serving));
                         /**
-                         * Save codeQR of review & show the review screen on app
-                         * resume if there is any record in Review DB for review key
+                         * Save codeQR of goto & show it in after join screen on app
+                         *  Review DB for review key && current serving == token no.
                          * **/
-                        ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
+                        if(Integer.parseInt(current_serving)==jtk.getToken())
+                            ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
                         if (jtk.isTokenExpired()) {
                             //un subscribe the topic
                             NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
