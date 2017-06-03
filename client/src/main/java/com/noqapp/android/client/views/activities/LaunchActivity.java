@@ -27,7 +27,7 @@ import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.client.network.NOQueueMessagingService;
+import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.NetworkUtil;
@@ -317,7 +317,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 new IntentFilter(Constants.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
-        NOQueueMessagingService.clearNotifications(getApplicationContext());
+        NoQueueMessagingService.clearNotifications(getApplicationContext());
 
         String codeQR = ReviewDB.getValue(ReviewDB.KEY_REVEIW);
         if (StringUtils.isNotBlank(codeQR))

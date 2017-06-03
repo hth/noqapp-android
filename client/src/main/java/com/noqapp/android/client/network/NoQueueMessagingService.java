@@ -28,11 +28,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-public class NOQueueMessagingService extends FirebaseMessagingService {
+public class NoQueueMessagingService extends FirebaseMessagingService {
 
-    private final static String TAG = NOQueueMessagingService.class.getSimpleName();
+    private final static String TAG = NoQueueMessagingService.class.getSimpleName();
 
-    public NOQueueMessagingService() {
+    public NoQueueMessagingService() {
     }
 
     // Clears notification tray messages
