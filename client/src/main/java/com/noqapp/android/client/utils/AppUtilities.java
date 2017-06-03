@@ -93,15 +93,6 @@ public class AppUtilities {
         }
     }
 
-    public void hideKeyBoard(Activity activity) {
-        View view = activity.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-
     public static void exportDatabase(Context context) {
         try {
             File sd = Environment.getExternalStorageDirectory();
@@ -123,6 +114,14 @@ public class AppUtilities {
             }
         } catch (Exception e) {
 
+        }
+    }
+
+    public void hideKeyBoard(Activity activity) {
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

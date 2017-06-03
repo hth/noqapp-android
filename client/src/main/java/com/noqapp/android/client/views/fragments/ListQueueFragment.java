@@ -44,20 +44,18 @@ import java.util.List;
 
 public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter, TokenQueueViewInterface {
 
+    private static final int MSG_CURRENT_QUEUE = 0;
+    private static final int MSG_HISTORY_QUEUE = 1;
+    private static Context context;
+    private static QueueHandler mHandler;
+    private static TokenQueueViewInterface tokenQueueViewInterface;
     private RelativeLayout rl_empty_screen;
     private String TAG = ListQueueFragment.class.getSimpleName();
     private ListQueueAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<JsonTokenAndQueue>> listDataChild;
-
     private ViewGroup header, footer;
-
-    private static final int MSG_CURRENT_QUEUE = 0;
-    private static final int MSG_HISTORY_QUEUE = 1;
-    private static Context context;
-    private static QueueHandler mHandler;
-    private static TokenQueueViewInterface tokenQueueViewInterface;
 
     public ListQueueFragment() {
 
@@ -97,15 +95,15 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             mHandler = new QueueHandler();
 
-            if(UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
+            if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
                 //Call the current queue
                 QueueApiModel.tokenAndQueuePresenter = this;
-                QueueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth());
+                QueueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
 
                 //Call the history queue
                 DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-                QueueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(), deviceToken);
-            }else{
+                QueueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+            } else {
                 //Call the current queue
                 QueueModel.tokenAndQueuePresenter = this;
                 QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
@@ -178,39 +176,6 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         passMsgToHandler(false);
     }
 
-    private static class QueueHandler extends Handler {
-        private boolean isCurrentExecute = false;
-        private boolean isHistoryExecute = false;
-
-        // This method is used to handle received messages
-        public void handleMessage(Message msg) {
-            // switch to identify the message by its code
-            switch (msg.what) {
-                case MSG_CURRENT_QUEUE:
-                    //doSomething();
-                    isCurrentExecute = true;
-                    if (isHistoryExecute && isCurrentExecute) {
-                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
-                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
-                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
-                    }
-                    break;
-
-                case MSG_HISTORY_QUEUE:
-                    //doMoreThings();
-                    isHistoryExecute = true;
-                    if (isHistoryExecute && isCurrentExecute) {
-                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
-                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
-                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
     public void fetchCurrentAndHistoryList() {
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
@@ -233,7 +198,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         listDataHeader.add("History");
         listDataChild.put(listDataHeader.get(0), currentlist); // Header, Child data
         listDataChild.put(listDataHeader.get(1), historylist);
-        listAdapter=null;
+        listAdapter = null;
         expListView.setAdapter(listAdapter);
         listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild);
 
@@ -291,6 +256,39 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
             Message msg = new Message();
             msg.what = MSG_HISTORY_QUEUE;
             mHandler.sendMessage(msg);
+        }
+    }
+
+    private static class QueueHandler extends Handler {
+        private boolean isCurrentExecute = false;
+        private boolean isHistoryExecute = false;
+
+        // This method is used to handle received messages
+        public void handleMessage(Message msg) {
+            // switch to identify the message by its code
+            switch (msg.what) {
+                case MSG_CURRENT_QUEUE:
+                    //doSomething();
+                    isCurrentExecute = true;
+                    if (isHistoryExecute && isCurrentExecute) {
+                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
+                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
+                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
+                    }
+                    break;
+
+                case MSG_HISTORY_QUEUE:
+                    //doMoreThings();
+                    isHistoryExecute = true;
+                    if (isHistoryExecute && isCurrentExecute) {
+                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
+                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
+                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

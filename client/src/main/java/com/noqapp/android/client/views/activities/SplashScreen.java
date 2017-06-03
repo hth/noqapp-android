@@ -15,10 +15,10 @@ import io.fabric.sdk.android.Fabric;
 
 public class SplashScreen extends AppCompatActivity {
 
-    protected boolean isActive = true;
-    protected int splashTime = 2000;
     protected static boolean display = true;
     static SplashScreen splashScreen;
+    protected boolean isActive = true;
+    protected int splashTime = 2000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +31,16 @@ public class SplashScreen extends AppCompatActivity {
         Message msg = new Message();
         msg.what = 0;
         mHandler.sendMessageDelayed(msg, splashTime); // 2 sec delay
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            isActive = false;
+            display = false;
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
     private static class SplashHandler extends Handler {
@@ -50,15 +60,5 @@ public class SplashScreen extends AppCompatActivity {
                     }
             }
         }
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            isActive = false;
-            display = false;
-            return true;
-        }
-        return super.onKeyUp(keyCode, event);
     }
 }

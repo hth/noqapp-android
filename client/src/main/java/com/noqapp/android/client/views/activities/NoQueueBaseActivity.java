@@ -31,44 +31,26 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static String XR_DID = "X-R-DID";
     public static NoQueueBaseActivity noQueueBaseActivity;
     private static SharedPreferences sharedpreferences;
-    public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(container, fragment).commit();
-    }
 
     public static SharedPreferences.Editor getSharedPreferencesEditor() {
         return sharedpreferences.edit();
     }
 
-    protected Context getContext() {
-        return this;
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        noQueueBaseActivity=this;
-        sharedpreferences = noQueueBaseActivity.getPreferences(Context.MODE_PRIVATE);
-    }
-
-
-
-    public static void setRemoteJoinCount(int remoteJoinCount) {
-        sharedpreferences.edit().putInt(PREKEY_REMOTE_JOIN, remoteJoinCount).commit();
-    }
-
     public static int getRemoteJoinCount() {
         return sharedpreferences.getInt(PREKEY_REMOTE_JOIN, 0);
     }
-    public static void setAutoJoinStatus( boolean autoJoinStatus) {
-        sharedpreferences.edit().putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, autoJoinStatus).commit();
+
+    public static void setRemoteJoinCount(int remoteJoinCount) {
+        sharedpreferences.edit().putInt(PREKEY_REMOTE_JOIN, remoteJoinCount).commit();
     }
 
     public static boolean getAutoJoinStatus() {
         return sharedpreferences.getBoolean(PREKEY_AUTOJOIN, true);
     }
 
+    public static void setAutoJoinStatus(boolean autoJoinStatus) {
+        sharedpreferences.edit().putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, autoJoinStatus).commit();
+    }
 
     public static String getUserName() {
         return sharedpreferences.getString(NoQueueBaseActivity.PREKEY_NAME, "Guest User");
@@ -86,12 +68,11 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedpreferences.getString(PREKEY_INVITECODE, "");
     }
 
-
     public static String getCountryShortName() {
         return sharedpreferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, "US");
     }
 
-    public static void commitProfile(JsonProfile profile){
+    public static void commitProfile(JsonProfile profile) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(PREKEY_PHONE, profile.getPhoneRaw());
         editor.putString(PREKEY_NAME, profile.getName());
@@ -105,7 +86,24 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     }
 
-    public static void clearPreferences(){
+    public static void clearPreferences() {
         getSharedPreferencesEditor().clear().commit();
+    }
+
+    public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(container, fragment).commit();
+    }
+
+    protected Context getContext() {
+        return this;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        noQueueBaseActivity = this;
+        sharedpreferences = noQueueBaseActivity.getPreferences(Context.MODE_PRIVATE);
     }
 }

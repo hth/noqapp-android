@@ -10,10 +10,11 @@ import android.util.Log;
  * Date: 5/9/17 6:28 PM
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private final String TAG = DatabaseHelper.class.getSimpleName();
     private static final String DB_NAME = "noqueue.db";
     private static final int DB_VERSION = 1;
+    private static final Patch[] PATCHES = new Patch[]{};
     private static DatabaseHelper dbInstance;
+    private final String TAG = DatabaseHelper.class.getSimpleName();
     private SQLiteDatabase db = null;
 
     private DatabaseHelper(Context context) {
@@ -56,7 +57,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             patch.apply(db);
         }
     }
-
-    private static final Patch[] PATCHES = new Patch[]{};
 
 }

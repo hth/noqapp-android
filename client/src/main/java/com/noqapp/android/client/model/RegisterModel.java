@@ -3,10 +3,10 @@ package com.noqapp.android.client.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.model.response.open.RegisterService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 
@@ -41,7 +41,7 @@ public final class RegisterModel {
                     profilePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Empty history"+response.body().getError());
+                    Log.e(TAG, "Empty history" + response.body().getError());
                     profilePresenter.queueError();
                 }
             }
@@ -66,7 +66,7 @@ public final class RegisterModel {
                     profilePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Empty history"+response.body().getError());
+                    Log.e(TAG, "Empty history" + response.body().getError());
                 }
             }
 

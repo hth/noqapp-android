@@ -1,7 +1,6 @@
 package com.noqapp.android.client.network;
 
 
-
 import com.noqapp.android.client.BuildConfig;
 
 import retrofit2.Retrofit;

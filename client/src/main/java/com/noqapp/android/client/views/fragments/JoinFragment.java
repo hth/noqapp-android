@@ -81,10 +81,10 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
 
-                if(UserUtils.isLogin()) {
+                if (UserUtils.isLogin()) {
                     QueueApiModel.queuePresenter = this;
-                    QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(), codeQR);
-                }else{
+                    QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                } else {
                     QueueModel.queuePresenter = this;
                     QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
                 }
@@ -93,7 +93,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             }
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 frtag = LaunchActivity.tabList;
-                if(bundle.getBoolean(KEY_IS_HISTORY, false)){
+                if (bundle.getBoolean(KEY_IS_HISTORY, false)) {
                     btn_joinqueue.setText(getString(R.string.remotejoin));
                 }
             } else {
@@ -139,11 +139,11 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
 
     @OnClick(R.id.btn_joinqueue)
     public void joinQueue() {
-        if(getArguments().getBoolean(KEY_IS_HISTORY, false)){
+        if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
 
 
             String phone = NoQueueBaseActivity.getPhoneNo();
-           // if (!phone.equals("")) {
+            // if (!phone.equals("")) {
 //                if(jsonQueue.getRemoteJoin()==0){
 //                    Toast.makeText(getActivity(),getString(R.string.error_remote_join_available),Toast.LENGTH_LONG).show();
 //                }else{
@@ -155,12 +155,12 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             afterJoinFragment.setArguments(b);
             replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
 
-           // QueueModel.remoteJoinQueue
-                //}
+            // QueueModel.remoteJoinQueue
+            //}
 //            } else {
 //                Toast.makeText(getActivity(),getString(R.string.error_login),Toast.LENGTH_LONG).show();
 //            }
-        }else {
+        } else {
             Bundle b = new Bundle();
             b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
             b.putBoolean(KEY_FROM_LIST, false);

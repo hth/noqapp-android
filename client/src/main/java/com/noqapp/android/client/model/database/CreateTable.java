@@ -3,7 +3,9 @@ package com.noqapp.android.client.model.database;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import static com.noqapp.android.client.model.database.DatabaseTable.*;
+import static com.noqapp.android.client.model.database.DatabaseTable.Review;
+import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueue;
+import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
 
 /**
  * User: hitender
@@ -75,7 +77,7 @@ class CreateTable {
                 ");");
     }
 
-    static void createAllTable(SQLiteDatabase db){
+    static void createAllTable(SQLiteDatabase db) {
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);
         createTableReview(db);
