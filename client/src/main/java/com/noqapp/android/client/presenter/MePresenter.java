@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
-import com.noqapp.android.client.views.interfaces.MeView;
 import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.views.interfaces.MeView;
 
 /**
  * Created by omkar on 4/8/17.

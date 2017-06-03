@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.model.response.api;
 
 
-
 import com.noqapp.android.merchant.presenter.beans.DeviceRegistered;
 import com.noqapp.android.merchant.presenter.beans.body.DeviceToken;
 

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
+import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 
 /**
  * User: hitender

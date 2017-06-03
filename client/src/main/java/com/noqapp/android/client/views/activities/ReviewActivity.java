@@ -19,16 +19,16 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewModel;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.utils.Formatter;
+import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 
 import java.text.DateFormat;
@@ -60,6 +60,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     protected TextView tv_toolbar_title;
     private JsonTokenAndQueue jtk;
     private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +78,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         } else {
             //Do nothing as of now
         }
-       // actionbarBack.setVisibility(View.INVISIBLE);
+        // actionbarBack.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +130,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
         }
         //Reset the value in ReviewDB
-        ReviewDB.insert(ReviewDB.KEY_REVEIW,"","");
+        ReviewDB.insert(ReviewDB.KEY_REVEIW, "", "");
         TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR());
         finish();
         progressDialog.dismiss();
@@ -141,7 +142,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     }
 
 
-    private void returnResultBack(){
+    private void returnResultBack() {
         Intent intent = new Intent();
         intent.putExtra("CODEQR", jtk.getCodeQR());
         if (getParent() == null) {

@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.adapters;
 /**
  * Created by chandra on 4/16/17.
  */
+
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -31,21 +32,21 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresenter {
+    private static AdapterCallback mAdapterCallback;
     private final String TAG = ViewPagerAdapter.class.getSimpleName();
-
     private Context context;
     private List<JsonTopic> topics;
     private LayoutInflater inflater;
-    private static AdapterCallback mAdapterCallback;
 
     public ViewPagerAdapter(Context context, List<JsonTopic> topics) {
         this.context = context;
-        this.topics=topics;
+        this.topics = topics;
     }
 
-    public static void setAdapterCallBack(AdapterCallback adapterCallback){
-        mAdapterCallback=adapterCallback;
+    public static void setAdapterCallBack(AdapterCallback adapterCallback) {
+        mAdapterCallback = adapterCallback;
     }
+
     @Override
     public int getCount() {
         return topics.size();
@@ -64,7 +65,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = inflater.inflate(R.layout.viewpager_item, container,false);
+        View itemView = inflater.inflate(R.layout.viewpager_item, container, false);
         ManageQueueModel.manageQueuePresenter = this;
         TextView tv_current_value = (TextView) itemView.findViewById(R.id.tv_current_value);
         TextView tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
@@ -130,7 +131,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             public void onClick(View v) {
                 if (lq.getToken() == 0) {
                     Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
-                } else if (lq.getRemaining() == 0 && lq.getServingNumber()== 0) {
+                } else if (lq.getRemaining() == 0 && lq.getServingNumber() == 0) {
                     Toast.makeText(context, context.getString(R.string.error_empty_wait), Toast.LENGTH_LONG).show();
                 } else if (status.equals("Done")) {
                     Toast.makeText(context, context.getString(R.string.error_done_next), Toast.LENGTH_LONG).show();

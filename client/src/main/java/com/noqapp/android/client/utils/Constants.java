@@ -12,14 +12,12 @@ import org.apache.commons.lang3.StringUtils;
  */
 
 public class Constants {
-    private static final String TAG = Constants.class.getName();
-
     public static final String DEVICE_TYPE = "A";
     public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final int requestCodeJoinQActivity = 11;
     public static final int requestCodeNotification = 2;
     public static final String PUSH_NOTIFICATION = "pushNotification";
-
+    private static final String TAG = Constants.class.getName();
     private static String VERSION_RELEASE;
 
     /**

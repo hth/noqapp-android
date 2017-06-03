@@ -1,8 +1,8 @@
 package com.noqapp.android.merchant.model.response.api;
 
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
-import com.noqapp.android.merchant.presenter.beans.body.Served;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
+import com.noqapp.android.merchant.presenter.beans.body.Served;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

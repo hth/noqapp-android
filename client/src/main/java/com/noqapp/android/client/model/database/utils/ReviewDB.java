@@ -15,11 +15,10 @@ import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandle
  * Date: 5/28/17 2:28 PM
  */
 public class ReviewDB {
-    private static final String TAG = ReviewDB.class.getSimpleName();
-
     public static final String KEY_REVEIW = "KY_RE";
     public static final String KEY_SKIP = "KY_SK";
     public static final String KEY_GOTO = "KY_GT";
+    private static final String TAG = ReviewDB.class.getSimpleName();
 
     public static void insert(String key, String codeQR, String value) {
         ContentValues cv = new ContentValues();
@@ -42,7 +41,7 @@ public class ReviewDB {
 
     public static String getValue(String key, String codeQR) {
         Cursor cursor = dbHandler.getReadableDatabase().query(true, DatabaseTable.Review.TABLE_NAME, null,
-                DatabaseTable.Review.KEY + "=? and "+ DatabaseTable.Review.CODE_QR + "=?", new String[]{key,codeQR}, null, null, null, null);
+                DatabaseTable.Review.KEY + "=? and " + DatabaseTable.Review.CODE_QR + "=?", new String[]{key, codeQR}, null, null, null, null);
 
         String value = null;
         if (cursor != null) {

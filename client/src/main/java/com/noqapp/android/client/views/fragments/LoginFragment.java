@@ -55,32 +55,51 @@ import butterknife.OnClick;
  */
 public class LoginFragment extends NoQueueBaseFragment implements ProfilePresenter, OnClickListener {
     private final String TAG = LoginFragment.class.getSimpleName();
-
-    @BindView(R.id.edt_phone)
-    EditText edt_phoneNo;
-
-    @BindView(R.id.edt_country_code)
-    EditText edt_country_code;
-
-    @BindView(R.id.btn_login)
-    Button btn_login;
-
-
     private final int READ_AND_RECIEVE_SMS__PERMISSION_CODE = 101;
     private final String[] READ_AND_RECIEVE_SMS__PERMISSION_PERMS = {
             Manifest.permission.RECEIVE_SMS,
             Manifest.permission.READ_SMS
     };
-
-
+    @BindView(R.id.edt_phone)
+    EditText edt_phoneNo;
+    @BindView(R.id.edt_country_code)
+    EditText edt_country_code;
+    @BindView(R.id.btn_login)
+    Button btn_login;
     private String countryISO;
+    TextWatcher tw = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(
+                CharSequence s,
+                int start,
+                int count,
+                int after) {
+        }
+
+        @Override
+        public void onTextChanged(
+                CharSequence s,
+                int start,
+                int before,
+                int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (!s.equals("")) {
+                edt_phoneNo.removeTextChangedListener(tw);
+                edt_phoneNo.setText(PhoneFormatterUtil.formatAsYouType(countryISO, s.toString()));
+                edt_phoneNo.setSelection(edt_phoneNo.getText().length());//added to put the cursor at end
+                edt_phoneNo.addTextChangedListener(tw);
+            }
+        }
+    };
     private String countryDialCode;
 
 
     public LoginFragment() {
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -176,7 +195,6 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         }
     }
 
-
     private boolean validate() {
         new AppUtilities().hideKeyBoard(getActivity());
         boolean isValid = true;
@@ -264,32 +282,4 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     public void queueError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
-
-    TextWatcher tw = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(
-                CharSequence s,
-                int start,
-                int count,
-                int after) {
-        }
-
-        @Override
-        public void onTextChanged(
-                CharSequence s,
-                int start,
-                int before,
-                int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            if (!s.equals("")) {
-                edt_phoneNo.removeTextChangedListener(tw);
-                edt_phoneNo.setText(PhoneFormatterUtil.formatAsYouType(countryISO, s.toString()));
-                edt_phoneNo.setSelection(edt_phoneNo.getText().length());//added to put the cursor at end
-                edt_phoneNo.addTextChangedListener(tw);
-            }
-        }
-    };
 }

@@ -36,27 +36,35 @@ import org.apache.commons.lang3.StringUtils;
 
 public class LaunchActivity extends AppCompatActivity {
 
-    public FragmentCommunicator fragmentCommunicator;
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
-    private static LaunchActivity launchActivity;
-    protected TextView tv_toolbar_title;
-    public NetworkUtil networkUtil;
     public static final String MyPREFERENCES = "AppPref";
+    private static LaunchActivity launchActivity;
     private static SharedPreferences sharedpreferences;
+    private static MerchantListFragment merchantListFragment;
     private final String IS_LOGIN = "IsLoggedIn";
     private final String KEY_USER_EMAIL = "userEmail";
     private final String KEY_USER_NAME = "userName";
     private final String KEY_USER_ID = "userID";
     private final String KEY_USER_AUTH = "auth";
+    public FragmentCommunicator fragmentCommunicator;
+    public NetworkUtil networkUtil;
+    public ProgressDialog progressDialog;
+    public Toolbar toolbar;
+    protected TextView tv_toolbar_title;
     private ImageView iv_logout;
     private long lastPress;
     private Toast backpressToast;
-    public ProgressDialog progressDialog;
     private BroadcastReceiver broadcastReceiver;
-    private static MerchantListFragment merchantListFragment;
-    public Toolbar toolbar;
     private ImageView actionbarBack;
+
+    public static LaunchActivity getLaunchActivity() {
+        return launchActivity;
+    }
+
+    public static SharedPreferences getSharePreferance() {
+        return sharedpreferences;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +157,6 @@ public class LaunchActivity extends AppCompatActivity {
 
     }
 
-
     public void setActionBarTitle(String title) {
         tv_toolbar_title.setText(title);
     }
@@ -161,7 +168,6 @@ public class LaunchActivity extends AppCompatActivity {
         enableLogout();
     }
 
-
     public void replaceFragmentWithBackStack(int container, Fragment fragment, String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -169,20 +175,16 @@ public class LaunchActivity extends AppCompatActivity {
 
     }
 
-    public static LaunchActivity getLaunchActivity() {
-        return launchActivity;
-    }
-
     public boolean isOnline() {
         return networkUtil.isOnline();
     }
 
-    public static SharedPreferences getSharePreferance() {
-        return sharedpreferences;
-    }
-
     public String getUserName() {
         return sharedpreferences.getString(KEY_USER_NAME, "");
+    }
+
+    public void setUserName(String name) {
+        sharedpreferences.edit().putString(KEY_USER_NAME, name).commit();
     }
 
     public String getUSerID() {
@@ -195,10 +197,6 @@ public class LaunchActivity extends AppCompatActivity {
 
     public String getEmail() {
         return sharedpreferences.getString(KEY_USER_EMAIL, "");
-    }
-
-    public void setUserName(String name) {
-        sharedpreferences.edit().putString(KEY_USER_NAME, name).commit();
     }
 
     public boolean isLoggedIn() {

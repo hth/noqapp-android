@@ -11,6 +11,7 @@ import java.util.List;
 public interface TokenQueueViewInterface {
 
     void currentQueueSaved();
+
     void historyQueueSaved();
 
     void tokenQueueList(List<JsonTokenAndQueue> currentQueueList, List<JsonTokenAndQueue> historyQueueList);

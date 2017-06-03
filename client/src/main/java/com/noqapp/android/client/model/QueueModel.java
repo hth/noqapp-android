@@ -4,18 +4,18 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.noqapp.android.client.model.response.open.QueueService;
+import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
+import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
+import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
-import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.body.DeviceToken;
+import com.noqapp.android.client.utils.Constants;
 
 import java.util.List;
 
@@ -156,7 +156,7 @@ public final class QueueModel {
                     tokenPresenter.tokenPresenterResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Failed to join queue"+response.body().getError());
+                    Log.e(TAG, "Failed to join queue" + response.body().getError());
                     tokenPresenter.tokenPresenterError();
                 }
             }

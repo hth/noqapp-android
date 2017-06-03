@@ -57,7 +57,7 @@ import butterknife.OnClick;
  */
 public class RegistrationFragment extends NoQueueBaseFragment implements MeView, OnClickListener {
     private final String TAG = RegistrationFragment.class.getSimpleName();
-
+    public String gender = "";
     @BindView(R.id.edt_phone)
     EditText edt_phoneNo;
     @BindView(R.id.edt_name)
@@ -74,12 +74,10 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     EditText tv_female;
     @BindView(R.id.ll_gender)
     LinearLayout ll_gender;
-    @BindView(R.id.btnRegistration)
-    Button btnRegistration;
 
 //color picker lib link -> https://github.com/madappstechnologies/country-picker-android
-
-    public String gender = "";
+    @BindView(R.id.btnRegistration)
+    Button btnRegistration;
     private DatePickerDialog fromDatePickerDialog;
     private String countryDialCode;
     private String countryISO;
@@ -111,7 +109,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
                 int date_diff = new Date().compareTo(current);
 
                 if (date_diff < 0) {
-                    Toast.makeText(getActivity(), getString(R.string.error_invalid_date),  Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                     edt_birthday.setText("");
                 } else {
                     edt_birthday.setText(dateFormatter.format(newDate.getTime()));

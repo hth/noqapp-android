@@ -34,15 +34,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MerchantListFragment extends Fragment implements TopicPresenter,FragmentCommunicator,AdapterCallback {
+public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback {
 
 
+    public static int selected_pos = -1;
     private MerchantListAdapter adapter;
     private ArrayList<JsonTopic> topics;
     private ListView listview;
     private RelativeLayout rl_empty_screen;
     private MerchantViewPagerFragment merchantViewPagerFragment;
-    public static int selected_pos = -1;
     private Context context;
 
     public MerchantListFragment() {
@@ -51,10 +51,10 @@ public class MerchantListFragment extends Fragment implements TopicPresenter,Fra
 
 
     @Override
-    public void onAttach(Activity activity){
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
         context = getActivity();
-        ((LaunchActivity)context).fragmentCommunicator = this;
+        ((LaunchActivity) context).fragmentCommunicator = this;
     }
 
 
@@ -137,10 +137,10 @@ public class MerchantListFragment extends Fragment implements TopicPresenter,Fra
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                merchantViewPagerFragment =new MerchantViewPagerFragment();
-                Bundle b =new Bundle();
-                b.putSerializable("jsonMerchant",topics);
-                b.putInt("position",position);
+                merchantViewPagerFragment = new MerchantViewPagerFragment();
+                Bundle b = new Bundle();
+                b.putSerializable("jsonMerchant", topics);
+                b.putInt("position", position);
                 merchantViewPagerFragment.setArguments(b);
                 LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout,
                         merchantViewPagerFragment, "MerchantViewPagerFragment");
@@ -201,8 +201,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter,Fra
         }
     }
 
-    public void updateListData(List<JsonTopic> jsonTopics){
-        topics=new ArrayList<JsonTopic>();
-        topics.addAll( jsonTopics);
+    public void updateListData(List<JsonTopic> jsonTopics) {
+        topics = new ArrayList<JsonTopic>();
+        topics.addAll(jsonTopics);
     }
 }

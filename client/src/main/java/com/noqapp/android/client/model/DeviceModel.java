@@ -3,11 +3,11 @@ package com.noqapp.android.client.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.model.response.open.DeviceService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.beans.DeviceRegistered;
 import com.noqapp.android.client.presenter.beans.body.DeviceToken;
+import com.noqapp.android.client.utils.Constants;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,7 +41,7 @@ public class DeviceModel {
                     Log.d("Response", String.valueOf(response.body()));
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Empty history"+response.body().getError());
+                    Log.e(TAG, "Empty history" + response.body().getError());
                 }
             }
 

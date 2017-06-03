@@ -37,38 +37,27 @@ import butterknife.OnClick;
 public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPresenter, ResponsePresenter {
 
     private static final String TAG = AfterJoinFragment.class.getSimpleName();
-
+    public JsonToken mJsonToken;
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
-
     @BindView(R.id.tv_queue_name)
     protected TextView tv_queue_name;
-
     @BindView(R.id.tv_address)
     protected TextView tv_address;
-
     @BindView(R.id.tv_mobile)
     protected TextView tv_mobile;
-
     @BindView(R.id.tv_total_value)
     protected TextView tv_total_value;
-
     @BindView(R.id.tv_current_value)
     protected TextView tv_current_value;
-
     @BindView(R.id.tv_how_long)
     protected TextView tv_how_long;
-
     @BindView(R.id.btn_cancel_queue)
     protected Button btn_cancel_queue;
-
     @BindView(R.id.tv_after)
     TextView tv_after;
-
     @BindView(R.id.ll_change_bg)
     LinearLayout ll_change_bg;
-
-    public JsonToken mJsonToken;
     private JsonTokenAndQueue jsonQueue;
     private String codeQR;
     private String displayName;

@@ -28,13 +28,18 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-public class NOQueueMessagingService extends FirebaseMessagingService {
+public class NoQueueMessagingService extends FirebaseMessagingService {
 
-    private final static String TAG = NOQueueMessagingService.class.getSimpleName();
+    private final static String TAG = NoQueueMessagingService.class.getSimpleName();
 
-    public NOQueueMessagingService() {
+    public NoQueueMessagingService() {
     }
 
+    // Clears notification tray messages
+    public static void clearNotifications(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -120,12 +125,6 @@ public class NOQueueMessagingService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
-    }
-
-    // Clears notification tray messages
-    public static void clearNotifications(Context context) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
     }
 
     /**

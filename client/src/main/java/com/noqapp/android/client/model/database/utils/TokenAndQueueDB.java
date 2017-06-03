@@ -7,12 +7,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.interfaces.NOQueueDBPresenterInterface;
-import com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +25,6 @@ public class TokenAndQueueDB {
     private static final String TAG = TokenAndQueueDB.class.getSimpleName();
 
     public static NOQueueDBPresenterInterface queueDBPresenterInterface;
-
-    public boolean isTokenExist(String table_name, String qrcode, String date) {
-        String whereClause = TokenQueue.CODE_QR + " = ?" + " AND " + TokenQueue.CREATE_DATE + " = ?";
-        return DatabaseUtils.longForQuery(
-                dbHandler.getWritableDb(),
-                "SELECT COUNT(*) FROM " + table_name + " WHERE " + whereClause,
-                new String[]{qrcode, date}) > 0;
-    }
 
     public static void deleteTokenQueue(String codeQR) {
         boolean resultStatus = dbHandler.getReadableDatabase().delete(TokenQueue.TABLE_NAME, "codeqr=?", new String[]{codeQR}) > 0;
@@ -63,7 +53,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setLastNumber(cursor.getInt(11));
                     tokenAndQueue.setToken(cursor.getInt(12));
                     tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
-                //    tokenAndQueue.setServicedTime(cursor.getString(14));
+                    //    tokenAndQueue.setServicedTime(cursor.getString(14));
                     tokenAndQueue.setCreateDate(cursor.getString(15));
                     listJsonQueue.add(tokenAndQueue);
                 }
@@ -99,7 +89,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setLastNumber(cursor.getInt(11));
                     tokenAndQueue.setToken(cursor.getInt(12));
                     tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
-                  //  tokenAndQueue.setServicedTime(cursor.getString(14));
+                    //  tokenAndQueue.setServicedTime(cursor.getString(14));
                     tokenAndQueue.setCreateDate(cursor.getString(15));
 
                 }
@@ -134,7 +124,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setServingNumber(cursor.getInt(10));
                     tokenAndQueue.setLastNumber(cursor.getInt(11));
                     tokenAndQueue.setToken(cursor.getInt(12));
-                 //   tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
+                    //   tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
                     tokenAndQueue.setServicedTime(cursor.getString(14));
                     tokenAndQueue.setCreateDate(cursor.getString(15));
 
@@ -175,7 +165,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setServingNumber(cursor.getInt(10));
                         tokenAndQueue.setLastNumber(cursor.getInt(11));
                         tokenAndQueue.setToken(cursor.getInt(12));
-                       // tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
+                        // tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
                         tokenAndQueue.setServicedTime(cursor.getString(14));
                         tokenAndQueue.setCreateDate(cursor.getString(15));
                         listJsonQueue.add(tokenAndQueue);
@@ -267,5 +257,13 @@ public class TokenAndQueueDB {
         } catch (Exception e) {
             Log.e(TAG, "Error updateJoinQueueObject reason=" + e.getLocalizedMessage(), e);
         }
+    }
+
+    public boolean isTokenExist(String table_name, String qrcode, String date) {
+        String whereClause = TokenQueue.CODE_QR + " = ?" + " AND " + TokenQueue.CREATE_DATE + " = ?";
+        return DatabaseUtils.longForQuery(
+                dbHandler.getWritableDb(),
+                "SELECT COUNT(*) FROM " + table_name + " WHERE " + whereClause,
+                new String[]{qrcode, date}) > 0;
     }
 }

@@ -29,6 +29,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     public NoQueueMessagingService() {
     }
 
+    // Clears notification tray messages
+    public static void clearNotifications(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+    }
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -91,13 +97,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
         notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
     }
-
-    // Clears notification tray messages
-    public static void clearNotifications(Context context) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
-    }
-
 
     /**
      * Method checks if the app is in background or not

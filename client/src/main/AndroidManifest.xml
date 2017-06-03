@@ -84,7 +84,7 @@
         </service>
 
         <service
-            android:name="com.noqapp.android.client.network.NOQueueMessagingService">
+            android:name="com.noqapp.android.client.network.NoQueueMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

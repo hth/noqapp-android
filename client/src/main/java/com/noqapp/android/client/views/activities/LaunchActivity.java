@@ -27,9 +27,8 @@ import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.client.network.NOQueueMessagingService;
+import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.NetworkUtil;
 import com.noqapp.android.client.views.fragments.AfterJoinFragment;
@@ -52,9 +51,15 @@ import butterknife.ButterKnife;
 
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
-
+    public static DatabaseHelper dbHandler;
+    public static String tabHome = "ScanQ";
+    public static String tabList = "Queues";
+    public static String tabMe = "Me";
     private static LaunchActivity launchActivity;
     public NetworkUtil networkUtil;
+    public ProgressDialog progressDialog;
+    // Tabs associated with list of fragments
+    public Map<String, List<Fragment>> fragmentsStack = new HashMap<String, List<Fragment>>();
     @BindView(R.id.rl_list)
     protected RelativeLayout rl_list;
     @BindView(R.id.rl_home)
@@ -79,19 +84,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     protected TextView tv_toolbar_title;
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
-
-    public static DatabaseHelper dbHandler;
     private long lastPress;
     private Toast backpressToast;
-    public ProgressDialog progressDialog;
     private BroadcastReceiver broadcastReceiver;
-    // Tabs associated with list of fragments
-    public Map<String, List<Fragment>> fragmentsStack = new HashMap<String, List<Fragment>>();
     private String currentSelectedTabTag = "";
 
-    public static String tabHome = "ScanQ";
-    public static String tabList = "Queues";
-    public static String tabMe = "Me";
+    public static LaunchActivity getLaunchActivity() {
+        return launchActivity;
+    }
 
     // Used in TabListener to keep currentSelectedTabTag actual.
     public void setCurrentSelectedTabTag(String currentSelectedTabTag) {
@@ -146,7 +146,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                          * Save codeQR of review & show the review screen on app
                          * resume if there is any record in Review DB for review key
                          * **/
-                        ReviewDB.insert(ReviewDB.KEY_GOTO,codeQR,go_to);
+                        ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
                         if (jtk.isTokenExpired()) {
                             //un subscribe the topic
                             FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
@@ -160,7 +160,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                                 String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
                                 if (codeQR.equals(qcode)) {
                                     //updating the serving status
-                                    ((AfterJoinFragment) currentfrg).setObject(jtk,go_to);
+                                    ((AfterJoinFragment) currentfrg).setObject(jtk, go_to);
                                 }
                             }
                         }
@@ -240,10 +240,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         }
     }
 
-    public static LaunchActivity getLaunchActivity() {
-        return launchActivity;
-    }
-
     public void setActionBarTitle(String title) {
         tv_toolbar_title.setText(title);
     }
@@ -321,10 +317,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 new IntentFilter(Constants.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
-        NOQueueMessagingService.clearNotifications(getApplicationContext());
+        NoQueueMessagingService.clearNotifications(getApplicationContext());
 
         String codeQR = ReviewDB.getValue(ReviewDB.KEY_REVEIW);
-        if(StringUtils.isNotBlank(codeQR))
+        if (StringUtils.isNotBlank(codeQR))
             callReviewActivity(codeQR);
     }
 
@@ -382,7 +378,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 currentTabFragments.remove(currentTabFragments.size() - 1);
                 fragmentsStack.put(tabList, null);
                 onClick(rl_list);
-            }else{
+            } else {
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout, fragment);
                 fragmentTransaction.commit();
@@ -411,9 +407,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
 
-    private void callReviewActivity(String codeQR){
+    private void callReviewActivity(String codeQR) {
         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-        if(null==jtk)
+        if (null == jtk)
             jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR);
         Intent in = new Intent(launchActivity, ReviewActivity.class);
         Bundle bundle = new Bundle();

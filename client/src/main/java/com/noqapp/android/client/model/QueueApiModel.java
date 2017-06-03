@@ -132,7 +132,7 @@ public class QueueApiModel {
                     tokenPresenter.tokenPresenterResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Failed to join queue"+response.body().getError());
+                    Log.e(TAG, "Failed to join queue" + response.body().getError());
                     tokenPresenter.tokenPresenterError();
                 }
             }
