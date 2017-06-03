@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,10 +51,14 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     protected TextView tv_mobile;
     @BindView(R.id.btn_submit)
     protected Button btn_submit;
+    @BindView(R.id.seekBar)
+    protected SeekBar seekBar;
     @BindView(R.id.ratingBar)
     protected RatingBar ratingBar;
-    @BindView(R.id.radioSave)
-    protected RadioGroup radioSave;
+
+    @BindView(R.id.tv_seekbar_value)
+    protected TextView tv_seekbar_value;
+
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
     @BindView(R.id.tv_toolbar_title)
@@ -74,7 +79,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             tv_queue_name.setText(jtk.getDisplayName());
             tv_address.setText(Formatter.getFormattedAddress(jtk.getStoreAddress()));
             String datetime = DateFormat.getDateTimeInstance().format(new Date());
-            tv_mobile.setText("Date of service : " + datetime);
+            tv_mobile.setText(datetime);
         } else {
             //Do nothing as of now
         }
@@ -86,18 +91,47 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                 finish();
             }
         });
+
+
+        seekBar.incrementProgressBy(20);
+        seekBar.setProgress(80);
+        tv_seekbar_value.setText(getSeekbarLebel(4 ));
+
+
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress = progress / 20;
+                //progress = progress * 20;
+                tv_seekbar_value.setText(getSeekbarLebel(progress ));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         tv_toolbar_title.setText("Review");
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ratingBar.getRating() == 0) {
-                    Toast.makeText(ReviewActivity.this, "Please rate the service", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ReviewActivity.this, getString(R.string.error_rateservice), Toast.LENGTH_LONG).show();
+                } else  if (seekBar.getProgress()/20 == 0) {
+                    Toast.makeText(ReviewActivity.this, getString(R.string.error_timesaved), Toast.LENGTH_LONG).show();
                 } else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         ReviewRating rr = new ReviewRating();
                         rr.setCodeQR(jtk.getCodeQR());
                         rr.setToken(jtk.getToken());
-                        rr.setHoursSaved(String.valueOf(radioSave.indexOfChild(findViewById(radioSave.getCheckedRadioButtonId()))));
+                        rr.setHoursSaved(String.valueOf(seekBar.getProgress()/20));
                         rr.setRatingCount(String.valueOf(Math.round(ratingBar.getRating())));
                         /* New instance of progressbar because it is a new activity. */
                         progressDialog = new ProgressDialog(ReviewActivity.this);
@@ -125,9 +159,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         if (null != jsonResponse) {
             //success
             Log.v("Review response", jsonResponse.toString());
-            Toast.makeText(this, "Thanks for feedback.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.review_thanks), Toast.LENGTH_LONG).show();
             returnResultBack();
-
         }
         //Reset the value in ReviewDB
         ReviewDB.insert(ReviewDB.KEY_REVEIW, "", "");
@@ -143,6 +176,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
 
     private void returnResultBack() {
+        NoQueueBaseActivity.setReviewShown(true);
         Intent intent = new Intent();
         intent.putExtra("CODEQR", jtk.getCodeQR());
         if (getParent() == null) {
@@ -150,5 +184,25 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         } else {
             getParent().setResult(Activity.RESULT_OK, intent);
         }
+    }
+
+    private String getSeekbarLebel(int pos){
+        switch (pos){
+
+            case 1:
+                return getString(R.string.radio_save_30min);
+            case 2:
+                return getString(R.string.radio_save_1hr);
+            case 3:
+                return getString(R.string.radio_save_2hr);
+            case 4:
+                return getString(R.string.radio_save_3hr);
+            case 5:
+                return getString(R.string.radio_save_4hr);
+            default:
+                return "";
+
+        }
+
     }
 }

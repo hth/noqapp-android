@@ -25,6 +25,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_INVITECODE = "invitecode";
     public static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
     public static final int ACCOUNTKIT_REQUEST_CODE = 99;
+    public static final String PREKEY_IS_REVIEW_SHOWN = "reviewScreen";
 
     /* Secured Shared Preference. */
     public static final String APP_PREF = "shared_pref";
@@ -70,6 +71,14 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static String getCountryShortName() {
         return sharedpreferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, "US");
+    }
+
+    public static boolean isReviewShown() {
+        return sharedpreferences.getBoolean(NoQueueBaseActivity.PREKEY_IS_REVIEW_SHOWN, false);
+    }
+
+    public static void setReviewShown(boolean isReviewShown) {
+        sharedpreferences.edit().putBoolean(PREKEY_IS_REVIEW_SHOWN, isReviewShown).commit();
     }
 
     public static void commitProfile(JsonProfile profile) {
