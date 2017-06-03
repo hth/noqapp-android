@@ -73,14 +73,23 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 //save data to database
                 String payload = remoteMessage.getData().get("f");
                 String codeQR = remoteMessage.getData().get("c");
-
+                //String
+/***
+ *
+ * When u==S then it is re-view
+ *      u==N then it is skip(Rejoin) Pending task
+ *
+ *
+ *
+ *
+ * */
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
 
                     JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
 
                     // un-subscribe from the topic
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                     sendNotification(title, body, codeQR);//pass codeQR to open review screen
 
                     /**
@@ -98,7 +107,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     jtk.setServingNumber(Integer.parseInt(current_serving));
                     if (jtk.isTokenExpired()) {
                         //un-subscribe from the topic
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic(jtk.getTopic());
+                        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                     }
                     TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                     sendNotification(title, body, null); // pass null to show only notification with no action
@@ -152,5 +161,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             }
         }
         return isInBackground;
+    }
+
+
+    public static void subscribeTopics(String topic){
+        FirebaseMessaging.getInstance().subscribeToTopic(topic+"_A");
+    }
+
+    public static void unSubscribeTopics(String topic){
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic+"_A");
     }
 }

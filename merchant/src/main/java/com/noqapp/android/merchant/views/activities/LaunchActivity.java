@@ -45,6 +45,7 @@ public class LaunchActivity extends AppCompatActivity {
     private final String IS_LOGIN = "IsLoggedIn";
     private final String KEY_USER_EMAIL = "userEmail";
     private final String KEY_USER_NAME = "userName";
+    private final String KEY_MERCHANT_COUNTER_NAME = "counterName";
     private final String KEY_USER_ID = "userID";
     private final String KEY_USER_AUTH = "auth";
     public FragmentCommunicator fragmentCommunicator;
@@ -142,13 +143,8 @@ public class LaunchActivity extends AppCompatActivity {
                                     + "\n" + "lastno : " + lastno
                                     + "\n" + "payload : " + payload
                     );
-                    boolean isServiceNoUpdate = true;
-                    if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
-                        isServiceNoUpdate = false;
-                    }
-
                     if (fragmentCommunicator != null)
-                        fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, isServiceNoUpdate);
+                        fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
 
 
                 }
@@ -187,6 +183,12 @@ public class LaunchActivity extends AppCompatActivity {
         sharedpreferences.edit().putString(KEY_USER_NAME, name).commit();
     }
 
+    public void setCounterName(String countername) {
+        sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, countername).commit();
+    }
+    public String getCounterName() {
+        return sharedpreferences.getString(KEY_MERCHANT_COUNTER_NAME, "");
+    }
     public String getUSerID() {
         return sharedpreferences.getString(KEY_USER_ID, "");
     }

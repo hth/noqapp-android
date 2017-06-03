@@ -46,5 +46,7 @@
     <string name="no">नहीं</string>
     <string name="title_logout">लॉग आउट</string>
     <string name="msg_logout">क्या आप लॉगआउट करना चाहेंगे?</string>
+    <string name="counter_name">Enter counter name</string>
+    <string name="error_counter_empty">Please enter counter name</string>
 
 </resources>

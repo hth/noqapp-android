@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,8 +71,13 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         TextView tv_current_value = (TextView) itemView.findViewById(R.id.tv_current_value);
         TextView tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
         TextView tv_title = (TextView) itemView.findViewById(R.id.tv_title);
+
+        final EditText edt_counter_name = (EditText) itemView.findViewById(R.id.edt_counter_name);
+        edt_counter_name.setText(LaunchActivity.getLaunchActivity().getCounterName());
         Button btn_skip = (Button) itemView.findViewById(R.id.btn_skip);
         Button btn_next = (Button) itemView.findViewById(R.id.btn_next);
+        Button btn_start = (Button) itemView.findViewById(R.id.btn_start);
+
         final JsonTopic lq = topics.get(position);
         tv_current_value.setText(String.valueOf(lq.getServingNumber()));
         tv_total_value.setText(String.valueOf(lq.getToken()));
@@ -95,28 +101,36 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 btn_next.setText(context.getString(R.string.closed));
                 break;
         }
-
+        btn_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "you clicked", Toast.LENGTH_LONG).show();
+            }
+        });
         btn_skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LaunchActivity.getLaunchActivity().setCounterName(edt_counter_name.getText().toString().trim());
                 if (!status.equals("Start") && !status.equals("Done")) {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
-
-
-                        Served served = new Served();
-                        served.setCodeQR(lq.getCodeQR());
-                        served.setQueueStatus(lq.getQueueStatus());
-                        served.setQueueUserState(QueueUserStateEnum.N);
-                        served.setServedNumber(lq.getServingNumber());
-                        served.setGoTo("GoTo Name");
-                        ManageQueueModel.served(
-                                LaunchActivity.getLaunchActivity().getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                served);
-                    } else {
-                        ShowAlertInformation.showNetworkDialog(context);
+                    if(edt_counter_name.getText().toString().trim().equals("")){
+                        Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+                    }else {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            LaunchActivity.getLaunchActivity().progressDialog.show();
+                            Served served = new Served();
+                            served.setCodeQR(lq.getCodeQR());
+                            served.setQueueStatus(lq.getQueueStatus());
+                            served.setQueueUserState(QueueUserStateEnum.N);
+                            served.setServedNumber(lq.getServingNumber());
+                            served.setGoTo(edt_counter_name.getText().toString());
+                            ManageQueueModel.served(
+                                    LaunchActivity.getLaunchActivity().getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    served);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(context);
+                        }
                     }
                 } else if (status.equals("Start")) {
                     Toast.makeText(context, context.getString(R.string.error_start), Toast.LENGTH_LONG).show();
@@ -129,6 +143,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LaunchActivity.getLaunchActivity().setCounterName(edt_counter_name.getText().toString().trim());
                 if (lq.getToken() == 0) {
                     Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
                 } else if (lq.getRemaining() == 0 && lq.getServingNumber() == 0) {
@@ -136,21 +151,26 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 } else if (status.equals("Done")) {
                     Toast.makeText(context, context.getString(R.string.error_done_next), Toast.LENGTH_LONG).show();
                 } else {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
-                        Served served = new Served();
-                        served.setCodeQR(lq.getCodeQR());
-                        served.setQueueStatus(lq.getQueueStatus());
-                        served.setQueueUserState(QueueUserStateEnum.S);
-                        served.setServedNumber(lq.getServingNumber());
-                        served.setGoTo("GoTo Name");
-                        ManageQueueModel.served(
-                                LaunchActivity.getLaunchActivity().getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                served);
-                    } else {
-                        ShowAlertInformation.showNetworkDialog(context);
+                    if(edt_counter_name.getText().toString().trim().equals("")){
+                        Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+                    }else {
+
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            LaunchActivity.getLaunchActivity().progressDialog.show();
+                            Served served = new Served();
+                            served.setCodeQR(lq.getCodeQR());
+                            served.setQueueStatus(lq.getQueueStatus());
+                            served.setQueueUserState(QueueUserStateEnum.S);
+                            served.setServedNumber(lq.getServingNumber());
+                            served.setGoTo(edt_counter_name.getText().toString());
+                            ManageQueueModel.served(
+                                    LaunchActivity.getLaunchActivity().getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    served);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(context);
+                        }
                     }
                 }
             }

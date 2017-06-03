@@ -5,5 +5,5 @@ package com.noqapp.android.merchant.views.interfaces;
  */
 
 public interface FragmentCommunicator {
-    public void passDataToFragment(String qrcodeValue, String current_serving, String status, String lastno, boolean isServiceNoUpdate);
+    public void passDataToFragment(String qrcodeValue, String current_serving, String status, String lastno, String payload);
 }
