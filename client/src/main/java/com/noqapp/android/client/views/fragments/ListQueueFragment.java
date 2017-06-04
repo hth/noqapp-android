@@ -122,7 +122,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity().setActionBarTitle("Queues");
+        LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_list));
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
     }
 
@@ -195,7 +195,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<JsonTokenAndQueue>>();
         listDataHeader.add("Current Queue");
-        listDataHeader.add("History");
+        listDataHeader.add("QHistory");
         listDataChild.put(listDataHeader.get(0), currentlist); // Header, Child data
         listDataChild.put(listDataHeader.get(1), historylist);
         listAdapter = null;

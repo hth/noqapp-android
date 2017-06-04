@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.zxing.client.android.CaptureActivity;
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.BarcodeScannerActivity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -66,10 +67,8 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             } else {
-                Toast toast = Toast.makeText(getActivity(), "QR Code is not a NoQueue Code", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getActivity(), getString(R.string.error_qrcode_scan), Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
