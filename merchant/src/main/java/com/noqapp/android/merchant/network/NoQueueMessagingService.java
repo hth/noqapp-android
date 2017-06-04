@@ -71,7 +71,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
             } else {
                 // app is in background, show the notification in notification tray
-                sendNotification(title, body);
+                sendNotification(title, body,remoteMessage);
             }
 
         }
@@ -80,8 +80,18 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
-    private void sendNotification(String title, String messageBody) {
+    private void sendNotification(String title, String messageBody,RemoteMessage remoteMessage) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
+        if (null != remoteMessage) {
+            notificationIntent.putExtra("message", messageBody);
+            notificationIntent.putExtra("qrcode", remoteMessage.getData().get("c"));
+            notificationIntent.putExtra("status", remoteMessage.getData().get("q"));
+            notificationIntent.putExtra("current_serving", remoteMessage.getData().get("cs"));
+            notificationIntent.putExtra("lastno", remoteMessage.getData().get("ln"));
+            notificationIntent.putExtra("f", remoteMessage.getData().get("f"));
+            LaunchActivity.getLaunchActivity().updateListByNotification(notificationIntent);
+        }
+
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

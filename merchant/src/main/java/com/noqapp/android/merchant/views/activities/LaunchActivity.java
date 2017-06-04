@@ -32,6 +32,8 @@ import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class LaunchActivity extends AppCompatActivity {
 
     public static final String mypref = "shared_pref";
@@ -57,6 +59,7 @@ public class LaunchActivity extends AppCompatActivity {
     private Toast backpressToast;
     private BroadcastReceiver broadcastReceiver;
     private ImageView actionbarBack;
+    private TextView tv_name;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -83,6 +86,7 @@ public class LaunchActivity extends AppCompatActivity {
         iv_logout = (ImageView) findViewById(R.id.iv_logout);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tv_name =(TextView)findViewById(R.id.tv_name);
         initProgress();
         iv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +123,7 @@ public class LaunchActivity extends AppCompatActivity {
         if (isLoggedIn()) {
             merchantListFragment = new MerchantListFragment();
             replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
+            tv_name.setText(getUserName().toUpperCase());
         } else {
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
         }
@@ -129,23 +134,7 @@ public class LaunchActivity extends AppCompatActivity {
 
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
-                    String message = intent.getStringExtra("message");
-                    String qrcode = intent.getStringExtra("qrcode");
-                    String status = intent.getStringExtra("status");
-                    String current_serving = intent.getStringExtra("current_serving");
-                    String lastno = intent.getStringExtra("lastno");
-                    String payload = intent.getStringExtra("f");
-                    Log.v("notification response",
-                            "Push notification: " + message + "\n" + "qrcode : " + qrcode
-                                    + "\n" + "status : " + status
-                                    + "\n" + "current_serving : " + current_serving
-                                    + "\n" + "lastno : " + lastno
-                                    + "\n" + "payload : " + payload
-                    );
-                    if (fragmentCommunicator != null)
-                        fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
-
-
+                   updateListByNotification(intent);
                 }
             }
         };
@@ -294,5 +283,27 @@ public class LaunchActivity extends AppCompatActivity {
                 mypref, Context.MODE_PRIVATE);
         return sharedpreferences.getString(XR_DID, "");
 
+    }
+
+
+    public void updateListByNotification(Intent intent){
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            String message = intent.getStringExtra("message");
+            String qrcode = intent.getStringExtra("qrcode");
+            String status = intent.getStringExtra("status");
+            String current_serving = intent.getStringExtra("current_serving");
+            String lastno = intent.getStringExtra("lastno");
+            String payload = intent.getStringExtra("f");
+            Log.v("notifi msg background",
+                    "Push notification: " + message + "\n" + "qrcode : " + qrcode
+                            + "\n" + "status : " + status
+                            + "\n" + "current_serving : " + current_serving
+                            + "\n" + "lastno : " + lastno
+                            + "\n" + "payload : " + payload
+            );
+            if (fragmentCommunicator != null)
+                fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
+        }
     }
 }

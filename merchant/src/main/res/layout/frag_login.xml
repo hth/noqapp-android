@@ -12,6 +12,13 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="125dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@mipmap/login_logo_3"
+            />
+
         <EditText
             android:id="@+id/edt_email"
             android:layout_width="match_parent"
@@ -44,7 +51,7 @@
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@mipmap/send_invite_small"
+            android:background="@drawable/button_drawable_red"
             android:text="@string/sign_in"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
