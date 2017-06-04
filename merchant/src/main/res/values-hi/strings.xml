@@ -46,8 +46,8 @@
     <string name="no">नहीं</string>
     <string name="title_logout">लॉग आउट</string>
     <string name="msg_logout">क्या आप लॉगआउट करना चाहेंगे?</string>
-    <string name="counter_name">Enter counter name</string>
-    <string name="error_counter_empty">Please enter counter name</string>
-    <string name="last_update">Last update :</string>
+    <string name="counter_name">काउंटर नाम दर्ज करें</string>
+    <string name="error_counter_empty">कृपया काउंटर नाम दर्ज करें</string>
+    <string name="last_update">आखिरी अपडेट :</string>
 
 </resources>
