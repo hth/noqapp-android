@@ -56,7 +56,7 @@
                     android:id="@+id/tv_home"
                     style="@style/style_home"
                     android:layout_below="@+id/iv_home"
-                    android:text="ScanQ" />
+                    android:text="@string/tab_scan" />
 
             </RelativeLayout>
 
@@ -73,7 +73,7 @@
                     android:id="@+id/tv_list"
                     style="@style/style_home"
                     android:layout_below="@+id/iv_list"
-                    android:text="Queues" />
+                    android:text="@string/tab_list" />
 
             </RelativeLayout>
 
@@ -90,7 +90,7 @@
                     android:id="@+id/tv_me"
                     style="@style/style_home"
                     android:layout_below="@+id/iv_me"
-                    android:text="Me" />
+                    android:text="@string/tab_me" />
 
             </RelativeLayout>
 

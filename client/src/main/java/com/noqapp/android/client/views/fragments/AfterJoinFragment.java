@@ -196,7 +196,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity().setActionBarTitle("Details");
+        LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_qdetails));
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
         /* Added to update the screen if app is in background & notification received */
         if (!isReumeFirst) {

@@ -89,7 +89,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             notificationIntent.putExtra("current_serving", remoteMessage.getData().get("cs"));
             notificationIntent.putExtra("lastno", remoteMessage.getData().get("ln"));
             notificationIntent.putExtra("f", remoteMessage.getData().get("f"));
-            LaunchActivity.getLaunchActivity().updateListByNotification(notificationIntent);
+            if(null!=LaunchActivity.getLaunchActivity())
+             LaunchActivity.getLaunchActivity().updateListByNotification(notificationIntent);
         }
 
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
