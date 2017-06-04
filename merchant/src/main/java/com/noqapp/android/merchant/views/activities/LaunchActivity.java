@@ -31,6 +31,8 @@ import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 public class LaunchActivity extends AppCompatActivity {
 
     public static final String mypref = "shared_pref";
@@ -83,7 +85,7 @@ public class LaunchActivity extends AppCompatActivity {
         iv_logout = (ImageView) findViewById(R.id.iv_logout);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        tv_name =(TextView)findViewById(R.id.tv_name);
+        tv_name = (TextView) findViewById(R.id.tv_name);
         initProgress();
         iv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +122,7 @@ public class LaunchActivity extends AppCompatActivity {
         if (isLoggedIn()) {
             merchantListFragment = new MerchantListFragment();
             replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
-            tv_name.setText(getUserName().toUpperCase());
+            tv_name.setText(WordUtils.initials(getUserName()));
         } else {
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
         }
@@ -131,11 +133,10 @@ public class LaunchActivity extends AppCompatActivity {
 
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
-                   updateListByNotification(intent);
+                    updateListByNotification(intent);
                 }
             }
         };
-
     }
 
     public void setActionBarTitle(String title) {
@@ -153,7 +154,6 @@ public class LaunchActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(container, fragment, tag).addToBackStack(tag).commit();
-
     }
 
     public boolean isOnline() {
@@ -171,9 +171,11 @@ public class LaunchActivity extends AppCompatActivity {
     public void setCounterName(String countername) {
         sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, countername).commit();
     }
+
     public String getCounterName() {
         return sharedpreferences.getString(KEY_MERCHANT_COUNTER_NAME, "");
     }
+
     public String getUSerID() {
         return sharedpreferences.getString(KEY_USER_ID, "");
     }
@@ -187,27 +189,28 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     public long getLastUpdateTime() {
-        return sharedpreferences.getLong(KEY_LAST_UPDATE,System.currentTimeMillis());
+        return sharedpreferences.getLong(KEY_LAST_UPDATE, System.currentTimeMillis());
     }
+
     public void setLastUpdateTime(long lastUpdateTime) {
         sharedpreferences.edit().putLong(KEY_LAST_UPDATE, lastUpdateTime).commit();
     }
+
     public boolean isLoggedIn() {
         return sharedpreferences.getBoolean(IS_LOGIN, false);
     }
 
-    public void setSharPreferancename(String userName, String userID, String emailno, String auth, boolean isLogin) {
+    public void setSharPreferancename(String userName, String userId, String email, String auth, boolean isLogin) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(KEY_USER_NAME, userName);
-        editor.putString(KEY_USER_ID, userID);
-        editor.putString(KEY_USER_EMAIL, emailno);
+        editor.putString(KEY_USER_ID, userId);
+        editor.putString(KEY_USER_EMAIL, email);
         editor.putString(KEY_USER_AUTH, auth);
         editor.putBoolean(IS_LOGIN, isLogin);
-        editor.commit();
+        editor.apply();
     }
 
     private void enableLogout() {
-
         if (isLoggedIn()) {
             iv_logout.setVisibility(View.VISIBLE);
         } else {
@@ -238,19 +241,17 @@ public class LaunchActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading...");
-
     }
 
     public void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
+        if (null != progressDialog && progressDialog.isShowing()) {
             progressDialog.dismiss();
+        }
     }
 
     public void setProgressTitle(String msg) {
         progressDialog.setMessage(msg);
-
     }
-
 
     @Override
     protected void onResume() {
@@ -276,14 +277,11 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     public String getDeviceID() {
-        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
-                mypref, Context.MODE_PRIVATE);
+        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(mypref, Context.MODE_PRIVATE);
         return sharedpreferences.getString(XR_DID, "");
-
     }
 
-
-    public void updateListByNotification(Intent intent){
+    public void updateListByNotification(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             String message = intent.getStringExtra("message");
@@ -292,15 +290,17 @@ public class LaunchActivity extends AppCompatActivity {
             String current_serving = intent.getStringExtra("current_serving");
             String lastno = intent.getStringExtra("lastno");
             String payload = intent.getStringExtra("f");
-            Log.v("notifi msg background",
+            Log.v("Notify msg background",
                     "Push notification: " + message + "\n" + "qrcode : " + qrcode
                             + "\n" + "status : " + status
                             + "\n" + "current_serving : " + current_serving
                             + "\n" + "lastno : " + lastno
                             + "\n" + "payload : " + payload
             );
-            if (fragmentCommunicator != null)
+
+            if (fragmentCommunicator != null) {
                 fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
+            }
         }
     }
 }
