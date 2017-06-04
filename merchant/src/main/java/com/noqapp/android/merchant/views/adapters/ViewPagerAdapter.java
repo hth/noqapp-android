@@ -119,8 +119,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 break;
 
             case "Pause":
-
-
+                btn_start.setText(context.getString(R.string.pause));
+                btn_next.setVisibility(View.GONE);
+                btn_skip.setVisibility(View.GONE);
                 break;
         }
         btn_next.setOnClickListener(new View.OnClickListener() {
