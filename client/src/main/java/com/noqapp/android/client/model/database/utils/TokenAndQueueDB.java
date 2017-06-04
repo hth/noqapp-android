@@ -102,8 +102,8 @@ public class TokenAndQueueDB {
                     }
                 }
             }
-        }catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception e) {
+            Log.e(TAG, "Error dbHandler currentQueue reason=" + e.getLocalizedMessage(), e);
         }
         return tokenAndQueue;
     }
