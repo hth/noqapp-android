@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -31,8 +31,6 @@ import com.noqapp.android.merchant.utils.NetworkUtil;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -48,6 +46,7 @@ public class LaunchActivity extends AppCompatActivity {
     private final String KEY_MERCHANT_COUNTER_NAME = "counterName";
     private final String KEY_USER_ID = "userID";
     private final String KEY_USER_AUTH = "auth";
+    private final String KEY_LAST_UPDATE = "last_update";
     public FragmentCommunicator fragmentCommunicator;
     public NetworkUtil networkUtil;
     public ProgressDialog progressDialog;
@@ -201,6 +200,12 @@ public class LaunchActivity extends AppCompatActivity {
         return sharedpreferences.getString(KEY_USER_EMAIL, "");
     }
 
+    public long getLastUpdateTime() {
+        return sharedpreferences.getLong(KEY_LAST_UPDATE,System.currentTimeMillis());
+    }
+    public void setLastUpdateTime(long lastUpdateTime) {
+        sharedpreferences.edit().putLong(KEY_LAST_UPDATE, lastUpdateTime).commit();
+    }
     public boolean isLoggedIn() {
         return sharedpreferences.getBoolean(IS_LOGIN, false);
     }

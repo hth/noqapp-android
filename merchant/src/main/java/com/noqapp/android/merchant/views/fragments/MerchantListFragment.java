@@ -5,14 +5,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.merchant.R;
@@ -23,6 +28,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
+import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.MerchantListAdapter;
@@ -37,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback {
+public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback ,SwipeRefreshLayout.OnRefreshListener{
 
 
     public static int selected_pos = -1;
@@ -47,11 +53,14 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private RelativeLayout rl_empty_screen;
     private MerchantViewPagerFragment merchantViewPagerFragment;
     private Context context;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Runnable updater;
+    Handler timerHandler;
     public MerchantListFragment() {
 
     }
 
+    private Snackbar snackbar;
 
     @Override
     public void onAttach(Activity activity) {
@@ -67,8 +76,30 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         View view = inflater.inflate(R.layout.fragment_merchantlist, container, false);
         listview = (ListView) view.findViewById(R.id.listview);
         rl_empty_screen = (RelativeLayout) view.findViewById(R.id.rl_empty_screen);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
         Bundle bundle = getArguments();
         ViewPagerAdapter.setAdapterCallBack(this);
+
+        snackbar= Snackbar.make(listview,"", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setCallback(new Snackbar.Callback() {
+                    @Override public void onDismissed(Snackbar snackbar, int event) {
+                        // recursively call this method again when the snackbar was dismissed through a swipe
+                        if (event == DISMISS_EVENT_SWIPE){
+                        }
+                    }
+                });
+
+        timerHandler = new Handler();
+
+        updater = new Runnable() {
+            @Override
+            public void run() {
+                updateSnackbarTxt();// update the snakebar after every minute
+                timerHandler.postDelayed(updater,60000);
+            }
+        };
+        timerHandler.post(updater);
         if (null != bundle) {
             JsonMerchant jsonMerchant = (JsonMerchant) bundle.getSerializable("jsonMerchant");
             updateListData(jsonMerchant.getTopics());
@@ -98,7 +129,14 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue));
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
+        updateSnackbarTxt();
 
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        timerHandler.removeCallbacks(updater);
     }
 
     @Override
@@ -114,11 +152,13 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             rl_empty_screen.setVisibility(View.VISIBLE);
             listview.setVisibility(View.GONE);
         }
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void queueError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
 
@@ -144,10 +184,14 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                 view.setBackgroundColor(ContextCompat.getColor(
                         getActivity(), R.color.pressed_color));
                 selected_pos = position;
-
             }
         });
+        LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
+        updateSnackbarTxt();
+        snackbar.show();
     }
+
+
 
     private void subscribeTopics() {
         if (null != topics && topics.size() > 0) {
@@ -219,5 +263,25 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     public void updateListData(List<JsonTopic> jsonTopics) {
         topics = new ArrayList<JsonTopic>();
         topics.addAll(jsonTopics);
+    }
+
+    @Override
+    public void onRefresh() {
+        //Refresh the ListView after pull
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            swipeRefreshLayout.setRefreshing(true);
+            ManageQueueModel.topicPresenter = this;
+            ManageQueueModel.getQueues(
+                    LaunchActivity.getLaunchActivity().getDeviceID(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth());
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.networkerror), Toast.LENGTH_LONG).show();
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    private void updateSnackbarTxt() {
+        snackbar.setText(getString(R.string.last_update)+GetTimeAgoUtils.getTimeAgo(LaunchActivity.getLaunchActivity().getLastUpdateTime()));
     }
 }
