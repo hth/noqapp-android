@@ -13,6 +13,9 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,26 +67,28 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
             case 0:
                 convertView = inflater.inflate(R.layout.listitem_currentqueue, null);
                 TextView txtnumber = (TextView) convertView.findViewById(R.id.txtNumber);
-                TextView txtStoreName = (TextView) convertView.findViewById(R.id.txtStoreName);
-                TextView txtStorePhoneNumber = (TextView) convertView.findViewById(R.id.txtStorePhoneNo);
+                TextView tv_queue_name = (TextView) convertView.findViewById(R.id.tv_queue_name);
+                TextView tv_store_name = (TextView) convertView.findViewById(R.id.tv_store_name);
+                TextView tv_date_of_service = (TextView) convertView.findViewById(R.id.tv_date_of_service);
                 TextView txtToken = (TextView) convertView.findViewById(R.id.txtToken);
                 txtnumber.setText("#" + String.valueOf(childPosition + 1));
-                txtStoreName.setText(queue.getBusinessName());
-                // show only for current queue not for history
-                txtStorePhoneNumber.setText(PhoneFormatterUtil.formatNumber(queue.getCountryShortName(), queue.getStorePhone()));
+                tv_queue_name.setText(queue.getDisplayName());
+                tv_store_name.setText(queue.getBusinessName());
+                tv_date_of_service.setText(queue.getServicedTime());
                 txtToken.setText(String.valueOf(queue.getToken()));
                 break;
 
             case 1:
                 convertView = inflater.inflate(R.layout.listitem_historyqueue, null);
                 TextView txtnumber1 = (TextView) convertView.findViewById(R.id.txtNumber);
-                TextView txtStoreName1 = (TextView) convertView.findViewById(R.id.txtStoreName);
-                TextView txtStorePhoneNumber1 = (TextView) convertView.findViewById(R.id.txtStorePhoneNo);
+                TextView tv_queue_name1 = (TextView) convertView.findViewById(R.id.tv_queue_name);
+                TextView tv_store_name1 = (TextView) convertView.findViewById(R.id.tv_store_name);
+                TextView tv_date_of_service1 = (TextView) convertView.findViewById(R.id.tv_date_of_service);
                 TextView txtToken1 = (TextView) convertView.findViewById(R.id.txtToken);
                 txtnumber1.setText("#" + String.valueOf(childPosition + 1));
-                txtStoreName1.setText(queue.getBusinessName());
-                // show only for current queue not for history
-                txtStorePhoneNumber1.setText(queue.getStorePhone());//PhoneFormatterUtil.formatNumber(queue.getCountryShortName(), queue.getStorePhone()));
+                tv_queue_name1.setText(queue.getDisplayName());
+                tv_store_name1.setText(queue.getBusinessName());
+                tv_date_of_service1.setText(queue.getServicedTime());
                 txtToken1.setText(String.valueOf(queue.getToken()));
                 break;
         }

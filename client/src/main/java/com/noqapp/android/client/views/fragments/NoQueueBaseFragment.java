@@ -18,10 +18,11 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
  */
 
 public class NoQueueBaseFragment extends Fragment {
-    protected final String KEY_CODEQR = "codeqr";
-    protected final String KEY_FROM_LIST = "fromlist";
-    protected final String KEY_IS_HISTORY = "isHistory";
-    protected final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
+    public static final String KEY_CODEQR = "codeqr";
+    public static final String KEY_FROM_LIST = "fromlist";
+    public static final String KEY_IS_HISTORY = "isHistory";
+    public static final String KEY_IS_REJOIN = "isRejoin";
+    public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class NoQueueBaseFragment extends Fragment {
 
     }
 
-    public void replaceFragmentWithBackStack(FragmentActivity activity, int container, Fragment fragment, String tag, String selectedTab) {
+    public static  void replaceFragmentWithBackStack(FragmentActivity activity, int container, Fragment fragment, String tag, String selectedTab) {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
