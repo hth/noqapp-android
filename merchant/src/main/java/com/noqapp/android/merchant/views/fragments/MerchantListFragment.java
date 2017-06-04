@@ -226,12 +226,13 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                                 jt.setToken(Integer.parseInt(lastno));
                             }
                         }
+                        /* Update only from merchant msg. */
+                        jt.setQueueStatus(QueueStatusEnum.valueOf(status));
                     } else {
                         if (Integer.parseInt(lastno) >= jt.getToken()) {
                             jt.setToken(Integer.parseInt(lastno));
                         }
                     }
-                    jt.setQueueStatus(QueueStatusEnum.valueOf(status));
                     //jt.setToken(Integer.parseInt(lastno));
                     topics.set(i, jt);
                     adapter.notifyDataSetChanged();
