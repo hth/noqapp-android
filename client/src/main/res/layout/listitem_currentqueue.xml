@@ -34,16 +34,23 @@
         android:orientation="vertical">
 
         <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
-            android:id="@+id/txtStoreName"
+            android:id="@+id/tv_queue_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorActionbar"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/txtStorePhoneNo"
+            android:id="@+id/tv_store_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/tv_date_of_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_list_text"
+            android:visibility="gone"
             android:textSize="15sp" />
     </LinearLayout>
 

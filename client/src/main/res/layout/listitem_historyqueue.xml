@@ -32,20 +32,27 @@
         android:layout_height="match_parent"
         android:layout_weight="0.50"
         android:orientation="vertical">
-
         <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
-            android:id="@+id/txtStoreName"
+            android:id="@+id/tv_queue_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/color_list_text"
             android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/txtStorePhoneNo"
+        <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+            android:id="@+id/tv_store_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/color_list_text"
             android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_date_of_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_list_text"
+            android:textSize="15sp" />
+
+
     </LinearLayout>
 
     <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight

@@ -96,8 +96,13 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                 if (bundle.getBoolean(KEY_IS_HISTORY, false)) {
                     btn_joinqueue.setText(getString(R.string.remotejoin));
                 }
+
             } else {
                 frtag = LaunchActivity.tabHome;
+            }
+            if (bundle.getBoolean(KEY_IS_REJOIN, false)) {
+                btn_joinqueue.setText(getString(R.string.re_join));
+                frtag=LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
             }
         }
         return view;

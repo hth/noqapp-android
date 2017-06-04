@@ -32,9 +32,11 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.NetworkUtil;
 import com.noqapp.android.client.views.fragments.AfterJoinFragment;
+import com.noqapp.android.client.views.fragments.JoinFragment;
 import com.noqapp.android.client.views.fragments.ListQueueFragment;
 import com.noqapp.android.client.views.fragments.LoginFragment;
 import com.noqapp.android.client.views.fragments.MeFragment;
+import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 
@@ -93,6 +95,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         return launchActivity;
     }
 
+    public String getCurrentSelectedTabTag() {
+        return currentSelectedTabTag;
+    }
+
     // Used in TabListener to keep currentSelectedTabTag actual.
     public void setCurrentSelectedTabTag(String currentSelectedTabTag) {
         this.currentSelectedTabTag = currentSelectedTabTag;
@@ -135,21 +141,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                          * Save codeQR of review & show the review screen on app
                          * resume if there is any record in Review DB for review key
                          * **/
-                        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
                         if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                             ReviewDB.insert(ReviewDB.KEY_REVEIW, codeQR, codeQR);
+                            callReviewActivity(codeQR);
 
-                            Intent in = new Intent(launchActivity, ReviewActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("object", jtk);
-                            in.putExtras(bundle);
-                            startActivityForResult(in, Constants.requestCodeJoinQActivity);
-                            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                             ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
-                            Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
+                            callSkipScreen(codeQR);
                         }
-                        Log.v("object is :", jtk.toString());
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
                         String current_serving = intent.getStringExtra("cs");
@@ -199,9 +198,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 if (isReview) {
                     callReviewActivity(codeQR);
                 } else {
-                    ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
-                    Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
-
+                    callSkipScreen(codeQR);
                 }
             }
         }
@@ -449,5 +446,17 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
     }
 
+    private void callSkipScreen(String codeQR){
+        ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
+        Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
+        Bundle b = new Bundle();
+        b.putString(NoQueueBaseFragment.KEY_CODEQR, codeQR);
+        b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
+        b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
+        b.putBoolean(NoQueueBaseFragment.KEY_IS_REJOIN,true);
+        JoinFragment jf = new JoinFragment();
+        jf.setArguments(b);
+        NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
+    }
 
 }

@@ -69,6 +69,7 @@
     <string name="serving_now">Serving now</string>
     <string name="your_token">Your Token</string>
     <string name="remotejoin">Remote Join</string>
+    <string name="re_join">Re-Join</string>
 
     <!--- Scan Screen -->
     <string name="currently_serving">Currently serving</string>
