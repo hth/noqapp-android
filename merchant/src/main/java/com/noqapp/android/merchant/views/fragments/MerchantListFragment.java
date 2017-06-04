@@ -176,6 +176,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
                     if(QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S)){
                         jt.setToken(Integer.parseInt(lastno));
+                        jt.setServingNumber(Integer.parseInt(current_serving));
                     }else{
                         if(Integer.parseInt(lastno)>=jt.getToken()){
                             jt.setToken(Integer.parseInt(lastno));
