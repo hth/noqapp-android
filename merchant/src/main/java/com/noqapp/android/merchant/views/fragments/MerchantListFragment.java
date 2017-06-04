@@ -282,6 +282,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
     private void updateSnackbarTxt() {
-        snackbar.setText(getString(R.string.last_update)+GetTimeAgoUtils.getTimeAgo(LaunchActivity.getLaunchActivity().getLastUpdateTime()));
+        snackbar.setText(getString(R.string.last_update)+ " " + GetTimeAgoUtils.getTimeAgo(LaunchActivity.getLaunchActivity().getLastUpdateTime()));
     }
 }
