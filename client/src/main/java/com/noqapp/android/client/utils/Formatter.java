@@ -1,10 +1,18 @@
 package com.noqapp.android.client.utils;
 
-/**
- * Created by chandra on 5/1/17.
- */
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
+import java.text.DateFormat;
+import java.util.Date;
+
+/**
+ * User: chandra
+ * Date: 5/1/17 7:11 PM
+ */
 public class Formatter {
+    private static final DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
 
     public static String getFormattedAddress(String address) {
         if (address.contains(",")) {
@@ -17,5 +25,17 @@ public class Formatter {
         } else {
             return address;
         }
+    }
+
+    public static DateTime getDateTimeFromString(String dateTimeString) {
+        return parser2.parseDateTime(dateTimeString);
+    }
+
+    public static Date getDateFromString(String dateTimeString) {
+        return getDateTimeFromString(dateTimeString).toDate();
+    }
+
+    public static String getDateAsString(Date date) {
+        return DateFormat.getDateInstance().format(date);
     }
 }
