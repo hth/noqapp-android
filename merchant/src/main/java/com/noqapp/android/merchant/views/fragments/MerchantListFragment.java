@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -136,7 +135,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     @Override
     public void onDetach() {
         super.onDetach();
-        timerHandler.removeCallbacks(updater);
+       // timerHandler.removeCallbacks(updater);
     }
 
     @Override
@@ -213,33 +212,37 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
 
     @Override
     public void passDataToFragment(String qrcodeValue, String current_serving, String status, String lastno, String payload) {
-        for (int i = 0; i < topics.size(); i++) {
-            JsonTopic jt = topics.get(i);
-            if (jt.getCodeQR().equalsIgnoreCase(qrcodeValue)) {
+        try {
+            for (int i = 0; i < topics.size(); i++) {
+                JsonTopic jt = topics.get(i);
+                if (jt.getCodeQR().equalsIgnoreCase(qrcodeValue)) {
 
-                if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
-                    if(QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S)){
-                        jt.setToken(Integer.parseInt(lastno));
-                        jt.setServingNumber(Integer.parseInt(current_serving));
-                    }else{
-                        if(Integer.parseInt(lastno)>=jt.getToken()){
+                    if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
+                        if (QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S)) {
+                            jt.setToken(Integer.parseInt(lastno));
+                            jt.setServingNumber(Integer.parseInt(current_serving));
+                        } else {
+                            if (Integer.parseInt(lastno) >= jt.getToken()) {
+                                jt.setToken(Integer.parseInt(lastno));
+                            }
+                        }
+                    } else {
+                        if (Integer.parseInt(lastno) >= jt.getToken()) {
                             jt.setToken(Integer.parseInt(lastno));
                         }
                     }
-                }else{
-                    if(Integer.parseInt(lastno)>=jt.getToken()){
-                        jt.setToken(Integer.parseInt(lastno));
+                    jt.setQueueStatus(QueueStatusEnum.valueOf(status));
+                    //jt.setToken(Integer.parseInt(lastno));
+                    topics.set(i, jt);
+                    adapter.notifyDataSetChanged();
+                    if (null != merchantViewPagerFragment) {
+                        merchantViewPagerFragment.updateListData(topics);
                     }
+                    break;
                 }
-                jt.setQueueStatus(QueueStatusEnum.valueOf(status));
-                //jt.setToken(Integer.parseInt(lastno));
-                topics.set(i, jt);
-                adapter.notifyDataSetChanged();
-                if (null != merchantViewPagerFragment) {
-                    merchantViewPagerFragment.updateListData(topics);
-                }
-                break;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

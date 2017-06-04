@@ -53,4 +53,5 @@
     <string name="counter_name">Enter counter name</string>
     <string name="error_counter_empty">Please enter counter name</string>
     <string name="last_update">Last update :</string>
+    <string name="pause">Pause</string>
 </resources>
