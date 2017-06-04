@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 
 import java.text.DateFormat;
@@ -88,7 +89,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 txtnumber1.setText("#" + String.valueOf(childPosition + 1));
                 tv_queue_name1.setText(queue.getDisplayName());
                 tv_store_name1.setText(queue.getBusinessName());
-                tv_date_of_service1.setText(queue.getServicedTime());
+                tv_date_of_service1.setText(Formatter.getDateAsString(Formatter.getDateFromString(queue.getServicedTime())));
                 txtToken1.setText(String.valueOf(queue.getToken()));
                 break;
         }
