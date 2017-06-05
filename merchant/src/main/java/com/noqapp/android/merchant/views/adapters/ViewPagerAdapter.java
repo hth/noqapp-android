@@ -85,7 +85,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         tv_current_value.setText(String.valueOf(lq.getServingNumber()));
         tv_total_value.setText(String.valueOf(lq.getToken()));
         tv_title.setText(lq.getDisplayName());
-        tv_serving_customer.setText("Currenlty Serving: " + (StringUtils.isNotBlank(lq.getCustomerName()) ? lq.getCustomerName() : "Name unavailable"));
+        tv_serving_customer.setText("Serving: " + (StringUtils.isNotBlank(lq.getCustomerName()) ? lq.getCustomerName() : "Name unavailable"));
         final String status = lq.getQueueStatus().getDescription();
         btn_start.setText(context.getString(R.string.start));
         switch (status) {
@@ -248,6 +248,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 jt.setToken(token.getToken());
                 jt.setQueueStatus(token.getQueueStatus());
                 jt.setServingNumber(token.getServingNumber());
+                jt.setCustomerName(token.getCustomerName());
                 topics.set(MerchantViewPagerFragment.pagercurrrentpos, jt);
                 notifyDataSetChanged();
                 //To update merchant list screen
