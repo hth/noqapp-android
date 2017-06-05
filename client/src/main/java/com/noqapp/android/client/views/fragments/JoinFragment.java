@@ -102,7 +102,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             }
             if (bundle.getBoolean(KEY_IS_REJOIN, false)) {
                 btn_joinqueue.setText(getString(R.string.re_join));
-                frtag=LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
+                frtag = LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
             }
         }
         return view;
