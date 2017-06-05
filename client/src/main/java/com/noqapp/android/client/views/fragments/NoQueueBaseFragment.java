@@ -13,16 +13,31 @@ import android.view.ViewGroup;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 
-/**
- * Created by omkar on 4/8/17.
- */
+import org.apache.commons.lang3.StringUtils;
 
+/**
+ * User: omkar
+ * Date: 4/8/17 11:31 AM
+ */
 public class NoQueueBaseFragment extends Fragment {
-    public static final String KEY_CODEQR = "codeqr";
-    public static final String KEY_FROM_LIST = "fromlist";
+    public static final String KEY_CODEQR = "codeQR";
+    public static final String KEY_FROM_LIST = "fromList";
     public static final String KEY_IS_HISTORY = "isHistory";
     public static final String KEY_IS_REJOIN = "isRejoin";
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
+
+    public static void replaceFragmentWithBackStack(FragmentActivity activity, int container, Fragment fragment, String tag, String selectedTab) {
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+        // transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+        transaction.replace(container, fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
+        // Added to maintaining the stack
+        if (StringUtils.isNotBlank(selectedTab)) {
+            LaunchActivity.getLaunchActivity().setCurrentSelectedTabTag(selectedTab);
+            LaunchActivity.getLaunchActivity().addFragmentToStack(fragment);
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,25 +57,10 @@ public class NoQueueBaseFragment extends Fragment {
 
     }
 
-    public static  void replaceFragmentWithBackStack(FragmentActivity activity, int container, Fragment fragment, String tag, String selectedTab) {
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-        // transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-        transaction.replace(container, fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
-        //Added to maintaing the stack
-        if (!selectedTab.equals("")) {
-            LaunchActivity.getLaunchActivity().setCurrentSelectedTabTag(selectedTab);
-            LaunchActivity.getLaunchActivity().addFragmentToStack(fragment);
-        }
-    }
-
     public void addFragment(FragmentActivity activity, int container, Fragment fragment, String tag) {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(container, fragment, tag).commit();
 
     }
-
-
 }

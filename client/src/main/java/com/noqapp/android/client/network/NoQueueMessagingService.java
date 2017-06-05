@@ -134,10 +134,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void sendNotification(String title, String messageBody, String codeqr, boolean isReview) {
+    private void sendNotification(String title, String messageBody, String codeQR, boolean isReview) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
-        if (null != codeqr) {
-            notificationIntent.putExtra("CODEQR", codeqr);
+        if (null != codeQR) {
+            notificationIntent.putExtra("CODEQR", codeQR);
             notificationIntent.putExtra("ISREVIEW", isReview);
 
         }

@@ -19,7 +19,8 @@ import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueue;
 import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
 
 /**
- * Created by omkar on 4/1/17.
+ * User: omkar
+ * Date: 4/1/17 11:40 AM
  */
 public class TokenAndQueueDB {
     private static final String TAG = TokenAndQueueDB.class.getSimpleName();
@@ -27,7 +28,7 @@ public class TokenAndQueueDB {
     public static NOQueueDBPresenterInterface queueDBPresenterInterface;
 
     public static void deleteTokenQueue(String codeQR) {
-        boolean resultStatus = dbHandler.getReadableDatabase().delete(TokenQueue.TABLE_NAME, "codeqr=?", new String[]{codeQR}) > 0;
+        boolean resultStatus = dbHandler.getReadableDatabase().delete(TokenQueue.TABLE_NAME, "codeQR=?", new String[]{codeQR}) > 0;
         Log.i(TAG, "Deleted deleteTokenQueue status=" + String.valueOf(resultStatus));
     }
 
@@ -272,3 +273,4 @@ public class TokenAndQueueDB {
                 new String[]{qrcode, date}) > 0;
     }
 }
+

@@ -37,7 +37,7 @@ class CreateTable {
                 + TokenQueue.QUEUE_STATUS + " TEXT , "
                 + TokenQueue.SERVICED_TIME + " TEXT , "
                 + TokenQueue.CREATE_DATE + " TEXT , "
-                + "PRIMARY KEY(`codeqr`,`createdate`)" +
+                + "PRIMARY KEY(`codeQR`,`createDate`)" +
 
                 ");");
     }
@@ -61,7 +61,7 @@ class CreateTable {
                 + TokenQueue.QUEUE_STATUS + " TEXT , "
                 + TokenQueue.SERVICED_TIME + " TEXT , "
                 + TokenQueue.CREATE_DATE + " TEXT , "
-                + "PRIMARY KEY(`codeqr`,`createdate`)" +
+                + "PRIMARY KEY(`codeQR`,`createDate`)" +
 
                 ");");
     }
