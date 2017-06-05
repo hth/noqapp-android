@@ -168,12 +168,12 @@ public class LaunchActivity extends AppCompatActivity {
         sharedpreferences.edit().putString(KEY_USER_NAME, name).commit();
     }
 
-    public void setCounterName(String countername) {
-        sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, countername).commit();
-    }
-
     public String getCounterName() {
         return sharedpreferences.getString(KEY_MERCHANT_COUNTER_NAME, "");
+    }
+
+    public void setCounterName(String countername) {
+        sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, countername).commit();
     }
 
     public String getUSerID() {
@@ -217,7 +217,6 @@ public class LaunchActivity extends AppCompatActivity {
             iv_logout.setVisibility(View.INVISIBLE);
         }
     }
-
 
     @Override
     public void onBackPressed() {

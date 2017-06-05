@@ -1,9 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-/**
- * Created by chandra on 4/16/17.
- */
-
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -33,6 +29,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
+/**
+ * User: chandra
+ * Date: 4/16/17 4:02 PM
+ */
 public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresenter {
     private static AdapterCallback mAdapterCallback;
     private final String TAG = ViewPagerAdapter.class.getSimpleName();
@@ -74,7 +74,6 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         TextView tv_title = (TextView) itemView.findViewById(R.id.tv_title);
         TextView tv_serving_customer = (TextView) itemView.findViewById(R.id.tv_serving_customer);
 
-
         final EditText edt_counter_name = (EditText) itemView.findViewById(R.id.edt_counter_name);
         edt_counter_name.setText(LaunchActivity.getLaunchActivity().getCounterName());
         Button btn_skip = (Button) itemView.findViewById(R.id.btn_skip);
@@ -85,7 +84,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         tv_current_value.setText(String.valueOf(lq.getServingNumber()));
         tv_total_value.setText(String.valueOf(lq.getToken()));
         tv_title.setText(lq.getDisplayName());
-        tv_serving_customer.setText("Currenlty Serving: " +(StringUtils.isNotBlank(lq.getCustomerName())?lq.getCustomerName():"Name unavailable"));
+        tv_serving_customer.setText("Serving: " + (StringUtils.isNotBlank(lq.getCustomerName()) ? lq.getCustomerName() : "Name unavailable"));
         final String status = lq.getQueueStatus().getDescription();
         btn_start.setText(context.getString(R.string.start));
         switch (status) {
@@ -128,9 +127,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             @Override
             public void onClick(View v) {
                 LaunchActivity.getLaunchActivity().setCounterName(edt_counter_name.getText().toString().trim());
-                if(edt_counter_name.getText().toString().trim().equals("")){
+                if (edt_counter_name.getText().toString().trim().equals("")) {
                     Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
-                }else {
+                } else {
 
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
@@ -156,9 +155,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             public void onClick(View v) {
                 LaunchActivity.getLaunchActivity().setCounterName(edt_counter_name.getText().toString().trim());
                 if (!status.equals("Start") && !status.equals("Done")) {
-                    if(edt_counter_name.getText().toString().trim().equals("")){
+                    if (edt_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
-                    }else {
+                    } else {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             LaunchActivity.getLaunchActivity().progressDialog.show();
                             Served served = new Served();
@@ -195,18 +194,18 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 } else if (status.equals("Done")) {
                     Toast.makeText(context, context.getString(R.string.error_done_next), Toast.LENGTH_LONG).show();
                 } else {
-                    if(edt_counter_name.getText().toString().trim().equals("")){
+                    if (edt_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
-                    }else {
+                    } else {
 
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             LaunchActivity.getLaunchActivity().progressDialog.show();
                             Served served = new Served();
                             served.setCodeQR(lq.getCodeQR());
                             served.setQueueUserState(QueueUserStateEnum.S);
-                            if(btn_start.getText().equals(context.getString(R.string.pause))){
+                            if (btn_start.getText().equals(context.getString(R.string.pause))) {
                                 served.setQueueStatus(QueueStatusEnum.P);
-                            }else{
+                            } else {
                                 served.setQueueStatus(lq.getQueueStatus());
                             }
                             served.setServedNumber(lq.getServingNumber());
@@ -232,9 +231,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     public void destroyItem(ViewGroup container, int position, Object object) {
         // Remove viewpager_item.xml from ViewPager
         ((ViewPager) container).removeView((View) object);
-
     }
-
 
     @Override
     public void manageQueueResponse(JsonToken token) {
@@ -248,6 +245,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 jt.setToken(token.getToken());
                 jt.setQueueStatus(token.getQueueStatus());
                 jt.setServingNumber(token.getServingNumber());
+                jt.setCustomerName(token.getCustomerName());
                 topics.set(MerchantViewPagerFragment.pagercurrrentpos, jt);
                 notifyDataSetChanged();
                 //To update merchant list screen

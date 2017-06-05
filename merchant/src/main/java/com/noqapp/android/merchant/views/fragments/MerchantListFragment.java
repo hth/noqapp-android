@@ -42,10 +42,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback ,SwipeRefreshLayout.OnRefreshListener{
+public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener {
 
 
     public static int selected_pos = -1;
+    Handler timerHandler;
     private MerchantListAdapter adapter;
     private ArrayList<JsonTopic> topics;
     private ListView listview;
@@ -54,12 +55,11 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Runnable updater;
-    Handler timerHandler;
+    private Snackbar snackbar;
+
     public MerchantListFragment() {
 
     }
-
-    private Snackbar snackbar;
 
     @Override
     public void onAttach(Activity activity) {
@@ -80,14 +80,15 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         Bundle bundle = getArguments();
         ViewPagerAdapter.setAdapterCallBack(this);
 
-        snackbar= Snackbar.make(listview,"", Snackbar.LENGTH_INDEFINITE);
+        snackbar = Snackbar.make(listview, "", Snackbar.LENGTH_INDEFINITE);
         snackbar.setCallback(new Snackbar.Callback() {
-                    @Override public void onDismissed(Snackbar snackbar, int event) {
-                        // recursively call this method again when the snackbar was dismissed through a swipe
-                        if (event == DISMISS_EVENT_SWIPE){
-                        }
-                    }
-                });
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                // recursively call this method again when the snackbar was dismissed through a swipe
+                if (event == DISMISS_EVENT_SWIPE) {
+                }
+            }
+        });
 
         timerHandler = new Handler();
 
@@ -95,7 +96,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             @Override
             public void run() {
                 updateSnackbarTxt();// update the snakebar after every minute
-                timerHandler.postDelayed(updater,60000);
+                timerHandler.postDelayed(updater, 60000);
             }
         };
         timerHandler.post(updater);
@@ -135,7 +136,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     @Override
     public void onDetach() {
         super.onDetach();
-       // timerHandler.removeCallbacks(updater);
+        // timerHandler.removeCallbacks(updater);
     }
 
     @Override
@@ -191,11 +192,10 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
 
-
     private void subscribeTopics() {
         if (null != topics && topics.size() > 0) {
             for (int i = 0; i < topics.size(); i++) {
-                FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic()+ "_A");
+                FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic() + "_A");
                 FirebaseMessaging.getInstance().subscribeToTopic(topics.get(i).getTopic() + "_M_A");
             }
         }
@@ -204,7 +204,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     public void unSubscribeTopics() {
         if (null != topics && topics.size() > 0) {
             for (int i = 0; i < topics.size(); i++) {
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(topics.get(i).getTopic()+"_A");
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topics.get(i).getTopic() + "_A");
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topics.get(i).getTopic() + "_M_A");
             }
         }
@@ -286,6 +286,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
     private void updateSnackbarTxt() {
-        snackbar.setText(getString(R.string.last_update)+ " " + GetTimeAgoUtils.getTimeAgo(LaunchActivity.getLaunchActivity().getLastUpdateTime()));
+        snackbar.setText(getString(R.string.last_update) + " " + GetTimeAgoUtils.getTimeAgo(LaunchActivity.getLaunchActivity().getLastUpdateTime()));
     }
 }
