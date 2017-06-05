@@ -37,7 +37,7 @@ class CreateTable {
                 + TokenQueue.QUEUE_STATUS + " TEXT , "
                 + TokenQueue.SERVICED_TIME + " TEXT , "
                 + TokenQueue.CREATE_DATE + " TEXT , "
-                + "PRIMARY KEY(`codeQR`,`createDate`)" +
+                + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                 ");");
     }
@@ -61,7 +61,7 @@ class CreateTable {
                 + TokenQueue.QUEUE_STATUS + " TEXT , "
                 + TokenQueue.SERVICED_TIME + " TEXT , "
                 + TokenQueue.CREATE_DATE + " TEXT , "
-                + "PRIMARY KEY(`codeQR`,`createDate`)" +
+                + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                 ");");
     }
@@ -72,7 +72,7 @@ class CreateTable {
                 + Review.KEY + " TEXT, "
                 + Review.CODE_QR + " TEXT, "
                 + Review.VALUE + " TEXT, "
-                + "PRIMARY KEY(`key`)" +
+                + "PRIMARY KEY(`" + Review.KEY + "`)" +
 
                 ");");
     }
