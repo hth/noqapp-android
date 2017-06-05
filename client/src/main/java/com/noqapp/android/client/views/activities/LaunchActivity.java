@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -49,7 +48,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
@@ -446,14 +444,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
     }
 
-    private void callSkipScreen(String codeQR){
+    private void callSkipScreen(String codeQR) {
         ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
         Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
         Bundle b = new Bundle();
         b.putString(NoQueueBaseFragment.KEY_CODEQR, codeQR);
         b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
-        b.putBoolean(NoQueueBaseFragment.KEY_IS_REJOIN,true);
+        b.putBoolean(NoQueueBaseFragment.KEY_IS_REJOIN, true);
         JoinFragment jf = new JoinFragment();
         jf.setArguments(b);
         NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);

@@ -1,18 +1,30 @@
 package com.noqapp.android.client.utils;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
+import android.util.Log;
+
+import com.noqapp.android.client.views.activities.LaunchActivity;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * User: chandra
  * Date: 5/1/17 7:11 PM
  */
 public class Formatter {
-    private static final DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+    private static final String TAG = Formatter.class.getSimpleName();
+    private static final DateFormat formatRFC822 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
+
+    private static final DateFormat df = DateFormat.getDateInstance();
+    private static final TimeZone tz = TimeZone.getTimeZone("UTC");
+
+    private Formatter() {
+        formatRFC822.setTimeZone(tz);
+    }
 
     public static String getFormattedAddress(String address) {
         if (address.contains(",")) {
@@ -27,15 +39,21 @@ public class Formatter {
         }
     }
 
-    public static DateTime getDateTimeFromString(String dateTimeString) {
-        return parser2.parseDateTime(dateTimeString);
-    }
-
     public static Date getDateFromString(String dateTimeString) {
-        return getDateTimeFromString(dateTimeString).toDate();
+        try {
+            return formatRFC822.parse(dateTimeString);
+        } catch (ParseException e) {
+            Log.e(TAG, "Date parsing error reason" + e.getLocalizedMessage());
+        }
+
+        return null;
     }
 
-    public static String getDateAsString(Date date) {
-        return DateFormat.getDateInstance().format(date);
+    public static String getDateTimeAsString(Date date) {
+        if (null != date) {
+            return DateFormat.getDateTimeInstance().format(date);
+        }
+
+        return "";
     }
 }
