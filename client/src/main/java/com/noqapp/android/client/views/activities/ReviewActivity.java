@@ -162,7 +162,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             returnResultBack();
         }
         //Reset the value in ReviewDB
-        ReviewDB.insert(ReviewDB.KEY_REVEIW, "", "");
+        ReviewDB.insert(ReviewDB.KEY_REVIEW, "", "");
         TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR());
         finish();
         progressDialog.dismiss();

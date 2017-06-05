@@ -15,7 +15,7 @@ import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandle
  * Date: 5/28/17 2:28 PM
  */
 public class ReviewDB {
-    public static final String KEY_REVEIW = "KY_RE";
+    public static final String KEY_REVIEW = "KY_RE";
     public static final String KEY_SKIP = "KY_SK";
     public static final String KEY_GOTO = "KY_GT";
     private static final String TAG = ReviewDB.class.getSimpleName();

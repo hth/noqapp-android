@@ -2,8 +2,6 @@ package com.noqapp.android.client.utils;
 
 import android.util.Log;
 
-import com.noqapp.android.client.views.activities.LaunchActivity;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

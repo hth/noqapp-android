@@ -95,7 +95,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                      * resume if there is any record in Review DB for review key
                      * **/
                     if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                        ReviewDB.insert(ReviewDB.KEY_REVEIW, codeQR, codeQR);
+                        ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                         sendNotification(title, body, codeQR,true);//pass codeQR to open review screen
                     }
                     else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
