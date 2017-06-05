@@ -15,7 +15,6 @@ import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 
 import java.util.List;
 
-
 public class MerchantListAdapter extends BaseAdapter {
     private Context context;
     private List<JsonTopic> items;
@@ -44,13 +43,9 @@ public class MerchantListAdapter extends BaseAdapter {
             recordHolder = new RecordHolder();
             view = layoutInflater.inflate(R.layout.listitem_currentqueue, null);
             recordHolder.tv_number = (TextView) view.findViewById(R.id.tv_number);
-            recordHolder.tv_queue_name = (TextView) view
-                    .findViewById(R.id.tv_queue_name);
-            recordHolder.tv_serving_no = (TextView) view
-                    .findViewById(R.id.tv_serving_no);
-            recordHolder.tv_inqueue = (TextView) view
-                    .findViewById(R.id.tv_inqueue);
-
+            recordHolder.tv_queue_name = (TextView) view.findViewById(R.id.tv_queue_name);
+            recordHolder.tv_serving_no = (TextView) view.findViewById(R.id.tv_serving_no);
+            recordHolder.tv_inqueue = (TextView) view.findViewById(R.id.tv_inqueue);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
@@ -67,7 +62,6 @@ public class MerchantListAdapter extends BaseAdapter {
             recordHolder.tv_queue_name.setTextColor(Color.WHITE);
             recordHolder.tv_serving_no.setTextColor(Color.WHITE);
             recordHolder.tv_inqueue.setTextColor(Color.WHITE);
-
         } else {
             view.setBackgroundColor(Color.TRANSPARENT);
             recordHolder.tv_queue_name.setTextColor(ContextCompat.getColor(context, R.color.color_action_bar));
@@ -86,5 +80,4 @@ public class MerchantListAdapter extends BaseAdapter {
         RecordHolder() {
         }
     }
-
 }

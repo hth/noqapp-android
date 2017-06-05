@@ -1,9 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-/**
- * Created by chandra on 4/16/17.
- */
-
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -33,6 +29,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
+/**
+ * User: chandra
+ * Date: 4/16/17 4:02 PM
+ */
 public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresenter {
     private static AdapterCallback mAdapterCallback;
     private final String TAG = ViewPagerAdapter.class.getSimpleName();
@@ -73,7 +73,6 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         TextView tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
         TextView tv_title = (TextView) itemView.findViewById(R.id.tv_title);
         TextView tv_serving_customer = (TextView) itemView.findViewById(R.id.tv_serving_customer);
-
 
         final EditText edt_counter_name = (EditText) itemView.findViewById(R.id.edt_counter_name);
         edt_counter_name.setText(LaunchActivity.getLaunchActivity().getCounterName());
@@ -232,9 +231,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     public void destroyItem(ViewGroup container, int position, Object object) {
         // Remove viewpager_item.xml from ViewPager
         ((ViewPager) container).removeView((View) object);
-
     }
-
 
     @Override
     public void manageQueueResponse(JsonToken token) {

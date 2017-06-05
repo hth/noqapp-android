@@ -218,7 +218,6 @@ public class LaunchActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();

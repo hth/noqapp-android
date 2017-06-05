@@ -16,7 +16,6 @@ import retrofit2.Response;
  * User: hitender
  * Date: 4/22/17 11:53 AM
  */
-
 public class MerchantProfileModel {
     private static final String TAG = MerchantProfileModel.class.getSimpleName();
 
