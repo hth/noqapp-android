@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
  * Date: 4/8/17 11:31 AM
  */
 public class NoQueueBaseFragment extends Fragment {
-    public static final String KEY_CODEQR = "codeQR";
+    public static final String KEY_CODE_QR = DatabaseTable.TokenQueue.CODE_QR;
     public static final String KEY_FROM_LIST = "fromList";
     public static final String KEY_IS_HISTORY = "isHistory";
     public static final String KEY_IS_REJOIN = "isRejoin";

@@ -448,7 +448,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
         Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
         Bundle b = new Bundle();
-        b.putString(NoQueueBaseFragment.KEY_CODEQR, codeQR);
+        b.putString(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
         b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_REJOIN, true);

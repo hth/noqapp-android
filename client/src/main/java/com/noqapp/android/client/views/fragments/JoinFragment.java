@@ -77,7 +77,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
 
         Bundle bundle = getArguments();
         if (null != bundle) {
-            codeQR = bundle.getString(KEY_CODEQR);
+            codeQR = bundle.getString(KEY_CODE_QR);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
 
@@ -153,7 +153,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
 //                    Toast.makeText(getActivity(),getString(R.string.error_remote_join_available),Toast.LENGTH_LONG).show();
 //                }else{
             Bundle b = new Bundle();
-            b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
+            b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
             b.putBoolean(KEY_FROM_LIST, false);
             b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
@@ -167,7 +167,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
 //            }
         } else {
             Bundle b = new Bundle();
-            b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
+            b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
             b.putBoolean(KEY_FROM_LIST, false);
             b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             AfterJoinFragment afterJoinFragment = new AfterJoinFragment();

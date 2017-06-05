@@ -129,7 +129,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     @Override
     protected void barcodeResult(String codeQR) {
         Bundle b = new Bundle();
-        b.putString(KEY_CODEQR, codeQR);
+        b.putString(KEY_CODE_QR, codeQR);
         b.putBoolean(KEY_FROM_LIST, true);
         b.putBoolean(KEY_IS_HISTORY, false);
         JoinFragment jf = new JoinFragment();
@@ -228,7 +228,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
                                         int groupPosition, int childPosition, long id) {
                 JsonTokenAndQueue jsonQueue = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
                 Bundle b = new Bundle();
-                b.putString(KEY_CODEQR, jsonQueue.getCodeQR());
+                b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
                 b.putBoolean(KEY_FROM_LIST, true);
                 if (groupPosition == 0) {
                     b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue);

@@ -26,22 +26,29 @@ import butterknife.OnClick;
 
 
 public class MeFragment extends NoQueueBaseFragment {
-
     private final String TAG = MeFragment.class.getSimpleName();
+
     @BindView(R.id.tv_firstLastName)
     TextView tv_firstName;
+
     @BindView(R.id.tv_phoneno)
     TextView tv_phoneNo;
+
     @BindView(R.id.tv_RemoteScanCount)
     TextView tv_scanCount;
+
     @BindView(R.id.toggleAutojoin)
     ToggleButton toggleAutoJoin;
+
     @BindView(R.id.btn_register_login_logout)
     Button btn_register_login_logout;
+
     @BindView(R.id.ll_rate_app)
     LinearLayout ll_rate_app;
+
     @BindView(R.id.ll_invite)
     LinearLayout ll_invite;
+
     private String inviteCode;
 
     public static MeFragment getInstance() {
