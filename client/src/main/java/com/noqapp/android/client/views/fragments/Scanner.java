@@ -20,7 +20,6 @@ import com.noqapp.android.client.views.activities.BarcodeScannerActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
-
 public abstract class Scanner extends NoQueueBaseFragment implements CaptureActivity.BarcodeScannedResultCallback {
 
     private final String TAG = Scanner.class.getSimpleName();
@@ -30,20 +29,15 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
             Manifest.permission.CAMERA
     };
 
-
     public Scanner() {
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         BarcodeScannerActivity.barcodeScannedResultCallback = this;
-        return super.onCreateView(inflater, container,
-                savedInstanceState);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
-
 
     protected void startScanningBarcode() {
         if (isCameraAndStoragePermissionAllowed()) {
@@ -86,7 +80,7 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
         DisplayMetrics dm = new DisplayMetrics();
         display.getMetrics(dm);
         int width = dm.widthPixels * 2 / 3;
-        int height = dm.heightPixels * 1 / 2;
+        int height = dm.heightPixels / 2;
         Intent intent = new Intent(getActivity(), BarcodeScannerActivity.class);
         intent.setAction("com.google.zxing.client.android.SCAN");
         intent.putExtra("SCAN_WIDTH", width);

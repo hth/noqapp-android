@@ -49,6 +49,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.facebook.accountkit.ui.AccountKitConfiguration.*;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,13 +62,19 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
             Manifest.permission.RECEIVE_SMS,
             Manifest.permission.READ_SMS
     };
+
     @BindView(R.id.edt_phone)
     EditText edt_phoneNo;
+
     @BindView(R.id.edt_country_code)
     EditText edt_country_code;
+
     @BindView(R.id.btn_login)
     Button btn_login;
+
     private String countryISO;
+    private String countryDialCode;
+
     TextWatcher tw = new TextWatcher() {
         @Override
         public void beforeTextChanged(
@@ -86,6 +94,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
 
         @Override
         public void afterTextChanged(Editable s) {
+            //TODO chandra?
             if (!s.equals("")) {
                 edt_phoneNo.removeTextChangedListener(tw);
                 edt_phoneNo.setText(PhoneFormatterUtil.formatAsYouType(countryISO, s.toString()));
@@ -94,16 +103,13 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
             }
         }
     };
-    private String countryDialCode;
-
 
     public LoginFragment() {
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
         edt_country_code.setOnClickListener(this);
@@ -209,10 +215,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
 
     private void callFacebookAccountKit() {
         final Intent intent = new Intent(getActivity(), AccountKitActivity.class);
-        AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
-                new AccountKitConfiguration.AccountKitConfigurationBuilder(
-                        LoginType.PHONE,
-                        AccountKitActivity.ResponseType.CODE); // or .ResponseType.TOKEN
+        AccountKitConfigurationBuilder configurationBuilder = new AccountKitConfigurationBuilder(LoginType.PHONE, AccountKitActivity.ResponseType.CODE); // or .ResponseType.TOKEN
         PhoneNumber pn = new PhoneNumber(countryDialCode, edt_phoneNo.getText().toString(), countryISO);
         configurationBuilder.setInitialPhoneNumber(pn);
         configurationBuilder.setReceiveSMS(true);

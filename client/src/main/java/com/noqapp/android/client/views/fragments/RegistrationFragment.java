@@ -58,20 +58,28 @@ import butterknife.OnClick;
 public class RegistrationFragment extends NoQueueBaseFragment implements MeView, OnClickListener {
     private final String TAG = RegistrationFragment.class.getSimpleName();
     public String gender = "";
+
     @BindView(R.id.edt_phone)
     EditText edt_phoneNo;
+
     @BindView(R.id.edt_name)
     EditText edt_Name;
+
     @BindView(R.id.edt_email)
     EditText edt_Mail;
+
     @BindView(R.id.edt_birthday)
     EditText edt_birthday;
+
     @BindView(R.id.edt_country_code)
     EditText edt_country_code;
+
     @BindView(R.id.tv_male)
     EditText tv_male;
+
     @BindView(R.id.tv_female)
     EditText tv_female;
+
     @BindView(R.id.ll_gender)
     LinearLayout ll_gender;
 
@@ -250,8 +258,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     private boolean validate() {
         btnRegistration.setBackgroundResource(R.drawable.button_drawable);
         btnRegistration.setTextColor(getResources().getColor(R.color.colorMobile));
-        btnRegistration.setCompoundDrawablesWithIntrinsicBounds(
-                0, 0, R.drawable.arrow_small, 0);
+        btnRegistration.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);
@@ -294,5 +301,4 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         mePresenter.meView = this;
         mePresenter.callProfile(registration);
     }
-
 }

@@ -77,7 +77,7 @@ public class ScanQueueFragment extends Scanner {
     @Override
     protected void barcodeResult(String codeQR) {
         Bundle b = new Bundle();
-        b.putString(KEY_CODEQR, codeQR);
+        b.putString(KEY_CODE_QR, codeQR);
         b.putBoolean(KEY_FROM_LIST, fromList);
         b.putBoolean(KEY_IS_HISTORY, false);
         JoinFragment jf = new JoinFragment();

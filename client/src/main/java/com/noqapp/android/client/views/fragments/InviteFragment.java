@@ -27,18 +27,25 @@ import butterknife.OnClick;
 public class InviteFragment extends NoQueueBaseFragment {
 
     private final String TAG = InviteFragment.class.getSimpleName();
+
     @BindView(R.id.tv_how_it_works)
     protected TextView tv_how_it_works;
+
     @BindView(R.id.tv_copy)
     protected TextView tv_copy;
+
     @BindView(R.id.tv_title)
     protected TextView tv_title;
+
     @BindView(R.id.tv_details)
     protected TextView tv_details;
+
     @BindView(R.id.tv_invite_code)
     protected TextView tv_invite_code;
+
     @BindView(R.id.btn_send_invite)
     protected Button btn_send_invite;
+
     private String selectedText;
 
     @Override
