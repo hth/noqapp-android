@@ -145,7 +145,7 @@ public class TokenAndQueueDB {
     }
 
     public static List<JsonTokenAndQueue> getHistoryQueueList() {
-        String orderBy = TokenQueue.CREATE_DATE;
+        String orderBy = TokenQueue.CREATE_DATE + " DESC";
 
         List<JsonTokenAndQueue> listJsonQueue = new ArrayList<>();
         Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueueHistory.TABLE_NAME, null, null, null, null, null, orderBy, null);
@@ -172,6 +172,7 @@ public class TokenAndQueueDB {
                         // tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
                         tokenAndQueue.setServicedTime(cursor.getString(14));
                         tokenAndQueue.setCreateDate(cursor.getString(15));
+
                         listJsonQueue.add(tokenAndQueue);
                     }
                 } finally {

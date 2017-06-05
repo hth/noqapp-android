@@ -140,7 +140,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                          * resume if there is any record in Review DB for review key
                          * **/
                         if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                            ReviewDB.insert(ReviewDB.KEY_REVEIW, codeQR, codeQR);
+                            ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                             callReviewActivity(codeQR);
 
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
@@ -337,7 +337,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
 
-        String codeQR = ReviewDB.getValue(ReviewDB.KEY_REVEIW);
+        String codeQR = ReviewDB.getValue(ReviewDB.KEY_REVIEW);
         if (StringUtils.isNotBlank(codeQR) && !isReviewShown())// shown only one time if the review is canceled
             callReviewActivity(codeQR);
 
