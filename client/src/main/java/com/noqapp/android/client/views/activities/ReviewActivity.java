@@ -94,17 +94,16 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
         seekBar.incrementProgressBy(20);
         seekBar.setProgress(80);
-        tv_seekbar_value.setText(getSeekbarLebel(4 ));
+        tv_seekbar_value.setText(getSeekbarLebel(4));
 
 
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress = progress / 20;
                 //progress = progress * 20;
-                tv_seekbar_value.setText(getSeekbarLebel(progress ));
+                tv_seekbar_value.setText(getSeekbarLebel(progress));
             }
 
             @Override
@@ -123,14 +122,14 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             public void onClick(View v) {
                 if (ratingBar.getRating() == 0) {
                     Toast.makeText(ReviewActivity.this, getString(R.string.error_rateservice), Toast.LENGTH_LONG).show();
-                } else  if (seekBar.getProgress()/20 == 0) {
+                } else if (seekBar.getProgress() / 20 == 0) {
                     Toast.makeText(ReviewActivity.this, getString(R.string.error_timesaved), Toast.LENGTH_LONG).show();
                 } else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         ReviewRating rr = new ReviewRating();
                         rr.setCodeQR(jtk.getCodeQR());
                         rr.setToken(jtk.getToken());
-                        rr.setHoursSaved(String.valueOf(seekBar.getProgress()/20));
+                        rr.setHoursSaved(String.valueOf(seekBar.getProgress() / 20));
                         rr.setRatingCount(String.valueOf(Math.round(ratingBar.getRating())));
                         /* New instance of progressbar because it is a new activity. */
                         progressDialog = new ProgressDialog(ReviewActivity.this);
@@ -185,8 +184,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         }
     }
 
-    private String getSeekbarLebel(int pos){
-        switch (pos){
+    private String getSeekbarLebel(int pos) {
+        switch (pos) {
 
             case 1:
                 return getString(R.string.radio_save_30min);

@@ -15,7 +15,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public class ScanQueueFragment extends Scanner {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
@@ -76,9 +75,9 @@ public class ScanQueueFragment extends Scanner {
 
 
     @Override
-    protected void barcodeResult(String codeqr) {
+    protected void barcodeResult(String codeQR) {
         Bundle b = new Bundle();
-        b.putString(KEY_CODEQR, codeqr);
+        b.putString(KEY_CODEQR, codeQR);
         b.putBoolean(KEY_FROM_LIST, fromList);
         b.putBoolean(KEY_IS_HISTORY, false);
         JoinFragment jf = new JoinFragment();
@@ -90,5 +89,4 @@ public class ScanQueueFragment extends Scanner {
     public void onSaveInstanceState(Bundle outState) {
         //No call for super(). Bug on API Level > 11.
     }
-
 }

@@ -42,6 +42,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         notificationManager.cancelAll();
     }
 
+    public static void subscribeTopics(String topic) {
+        FirebaseMessaging.getInstance().subscribeToTopic(topic + "_A");
+    }
+
+    public static void unSubscribeTopics(String topic) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic + "_A");
+    }
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -96,11 +104,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                      * **/
                     if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                         ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
-                        sendNotification(title, body, codeQR,true);//pass codeQR to open review screen
-                    }
-                    else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
+                        sendNotification(title, body, codeQR, true);//pass codeQR to open review screen
+                    } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                         ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
-                        sendNotification(title, body, codeQR,false);//pass codeQR to open skip screen
+                        sendNotification(title, body, codeQR, false);//pass codeQR to open skip screen
                     }
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
 
@@ -127,11 +134,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void sendNotification(String title, String messageBody, String codeqr,boolean isReview) {
+    private void sendNotification(String title, String messageBody, String codeQR, boolean isReview) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
-        if (null != codeqr) {
-            notificationIntent.putExtra("CODEQR", codeqr);
-            notificationIntent.putExtra("ISREVIEW",isReview);
+        if (null != codeQR) {
+            notificationIntent.putExtra("CODEQR", codeQR);
+            notificationIntent.putExtra("ISREVIEW", isReview);
 
         }
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -147,6 +154,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
     }
+
     private void sendNotification(String title, String messageBody) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -162,6 +170,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
     }
+
     /**
      * Method checks if the app is in background or not
      */
@@ -187,14 +196,5 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             }
         }
         return isInBackground;
-    }
-
-
-    public static void subscribeTopics(String topic) {
-        FirebaseMessaging.getInstance().subscribeToTopic(topic + "_A");
-    }
-
-    public static void unSubscribeTopics(String topic) {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic + "_A");
     }
 }

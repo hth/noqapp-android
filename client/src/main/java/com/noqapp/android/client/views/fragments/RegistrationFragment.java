@@ -75,7 +75,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     @BindView(R.id.ll_gender)
     LinearLayout ll_gender;
 
-//color picker lib link -> https://github.com/madappstechnologies/country-picker-android
+    //color picker lib link -> https://github.com/madappstechnologies/country-picker-android
     @BindView(R.id.btnRegistration)
     Button btnRegistration;
     private DatePickerDialog fromDatePickerDialog;

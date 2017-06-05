@@ -127,9 +127,9 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     }
 
     @Override
-    protected void barcodeResult(String codeqr) {
+    protected void barcodeResult(String codeQR) {
         Bundle b = new Bundle();
-        b.putString(KEY_CODEQR, codeqr);
+        b.putString(KEY_CODEQR, codeQR);
         b.putBoolean(KEY_FROM_LIST, true);
         b.putBoolean(KEY_IS_HISTORY, false);
         JoinFragment jf = new JoinFragment();

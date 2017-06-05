@@ -74,7 +74,7 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
         }
     }
 
-    protected abstract void barcodeResult(String codeqr);
+    protected abstract void barcodeResult(String codeQR);
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -87,8 +87,7 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
         display.getMetrics(dm);
         int width = dm.widthPixels * 2 / 3;
         int height = dm.heightPixels * 1 / 2;
-        Intent intent = new Intent(getActivity(),
-                BarcodeScannerActivity.class);
+        Intent intent = new Intent(getActivity(), BarcodeScannerActivity.class);
         intent.setAction("com.google.zxing.client.android.SCAN");
         intent.putExtra("SCAN_WIDTH", width);
         intent.putExtra("SCAN_HEIGHT", height);
