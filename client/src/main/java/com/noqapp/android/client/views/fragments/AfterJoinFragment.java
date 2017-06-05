@@ -215,7 +215,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     public void setBackGround(int pos) {
         tv_after.setTextColor(Color.WHITE);
         tv_how_long.setTextColor(Color.WHITE);
-        tv_after.setText("Soon is your turn! You are :");
+        tv_after.setText("Soon is your turn! You are:");
         //tv_after.setVisibility(View.VISIBLE);
         switch (pos) {
             case 0:
@@ -226,7 +226,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 break;
             case 1:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_1);
-                tv_after.setText("Next is your turn! You are :");
+                tv_after.setText("Next is your turn! You are:");
                 break;
             case 2:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_2);
@@ -241,7 +241,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 ll_change_bg.setBackgroundResource(R.drawable.turn_5);
                 break;
             default:
-                tv_after.setText("You are :");
+                tv_after.setText("You are:");
                 tv_after.setTextColor(getResources().getColor(R.color.colorActionbar));
                 tv_how_long.setTextColor(getResources().getColor(R.color.colorActionbar));
                 ll_change_bg.setBackgroundResource(R.drawable.square_bg_drawable);
