@@ -191,7 +191,7 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setServingNumber(servingNumber);
         jsonTokenAndQueue.setLastNumber(lastNumber);
         jsonTokenAndQueue.setQueueStatus(queueStatus);
-        jsonTokenAndQueue.setServicedEndTime(servicedEndTime);
+        jsonTokenAndQueue.setServiceEndTime(servicedEndTime);
         jsonTokenAndQueue.setCreateDate(created);
         return jsonTokenAndQueue;
     }
