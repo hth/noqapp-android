@@ -36,6 +36,9 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("c")
     private String codeQR;
 
+    @JsonProperty ("cor")
+    private double[] coordinate;
+
     @JsonProperty("n")
     private String businessName;
 
@@ -78,7 +81,7 @@ public class JsonTokenAndQueue implements Serializable {
     private QueueStatusEnum queueStatus;
 
     @JsonProperty("se")
-    private String servicedEndTime;
+    private String serviceEndTime;
 
     @JsonProperty("u")
     private String createDate;
@@ -89,6 +92,14 @@ public class JsonTokenAndQueue implements Serializable {
 
     public void setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+    }
+
+    public double[] getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(double[] coordinate) {
+        this.coordinate = coordinate;
     }
 
     public String getBusinessName() {
@@ -195,12 +206,12 @@ public class JsonTokenAndQueue implements Serializable {
         this.queueStatus = queueStatus;
     }
 
-    public String getServicedEndTime() {
-        return servicedEndTime;
+    public String getServiceEndTime() {
+        return serviceEndTime;
     }
 
-    public void setServicedEndTime(String servicedEndTime) {
-        this.servicedEndTime = servicedEndTime;
+    public void setServiceEndTime(String serviceEndTime) {
+        this.serviceEndTime = serviceEndTime;
     }
 
     public String getCreateDate() {
@@ -238,7 +249,7 @@ public class JsonTokenAndQueue implements Serializable {
                 .append("lastNumber", lastNumber)
                 .append("token", token)
                 .append("queueStatus", queueStatus)
-                .append("servicedEndTime", servicedEndTime)
+                .append("serviceEndTime", serviceEndTime)
                 .append("createDate", createDate)
                 .toString();
     }
