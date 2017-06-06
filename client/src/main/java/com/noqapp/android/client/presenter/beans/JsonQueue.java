@@ -78,8 +78,8 @@ public class JsonQueue implements Serializable {
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
-    @JsonProperty("st")
-    private String servicedTime;
+    @JsonProperty("se")
+    private String servicedEndTime;
 
     @JsonProperty("rj")
     private int remoteJoin;
@@ -146,8 +146,8 @@ public class JsonQueue implements Serializable {
         return queueStatus;
     }
 
-    public String getServicedTime() {
-        return servicedTime;
+    public String getServicedEndTime() {
+        return servicedEndTime;
     }
 
     /* Used when joining remotely. */
@@ -191,7 +191,7 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setServingNumber(servingNumber);
         jsonTokenAndQueue.setLastNumber(lastNumber);
         jsonTokenAndQueue.setQueueStatus(queueStatus);
-        jsonTokenAndQueue.setServicedTime(servicedTime);
+        jsonTokenAndQueue.setServicedEndTime(servicedEndTime);
         jsonTokenAndQueue.setCreateDate(created);
         return jsonTokenAndQueue;
     }
@@ -213,7 +213,7 @@ public class JsonQueue implements Serializable {
                 .append("servingNumber", servingNumber)
                 .append("lastNumber", lastNumber)
                 .append("queueStatus", queueStatus)
-                .append("servicedTime", servicedTime)
+                .append("servicedEndTime", servicedEndTime)
                 .append("created", created)
                 .toString();
     }

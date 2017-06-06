@@ -22,7 +22,7 @@ public class DatabaseTable {
         public static final String LAST_NUMBER = "lastNumber";
         public static final String TOKEN = "token";
         public static final String QUEUE_STATUS = "queueStatus";
-        public static final String SERVICED_TIME = "servicedTime";
+        public static final String SERVICED_END_TIME = "servicedEndTime";
         public static final String CREATE_DATE = "createDate";
 
         private TokenQueue() {

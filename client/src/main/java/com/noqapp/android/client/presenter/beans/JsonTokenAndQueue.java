@@ -77,8 +77,8 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
-    @JsonProperty("st")
-    private String servicedTime;
+    @JsonProperty("se")
+    private String servicedEndTime;
 
     @JsonProperty("u")
     private String createDate;
@@ -195,12 +195,12 @@ public class JsonTokenAndQueue implements Serializable {
         this.queueStatus = queueStatus;
     }
 
-    public String getServicedTime() {
-        return servicedTime;
+    public String getServicedEndTime() {
+        return servicedEndTime;
     }
 
-    public void setServicedTime(String servicedTime) {
-        this.servicedTime = servicedTime;
+    public void setServicedEndTime(String servicedEndTime) {
+        this.servicedEndTime = servicedEndTime;
     }
 
     public String getCreateDate() {
@@ -238,7 +238,7 @@ public class JsonTokenAndQueue implements Serializable {
                 .append("lastNumber", lastNumber)
                 .append("token", token)
                 .append("queueStatus", queueStatus)
-                .append("servicedTime", servicedTime)
+                .append("servicedEndTime", servicedEndTime)
                 .append("createDate", createDate)
                 .toString();
     }

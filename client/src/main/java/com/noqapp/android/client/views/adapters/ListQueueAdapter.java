@@ -71,7 +71,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 txtnumber.setText("#" + String.valueOf(childPosition + 1));
                 tv_queue_name.setText(queue.getDisplayName());
                 tv_store_name.setText(queue.getBusinessName());
-                tv_date_of_service.setText(queue.getServicedTime());
+                tv_date_of_service.setText(queue.getServicedEndTime());
                 txtToken.setText(String.valueOf(queue.getToken()));
                 break;
 
@@ -85,7 +85,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 txtnumber1.setText("#" + String.valueOf(childPosition + 1));
                 tv_queue_name1.setText(queue.getDisplayName());
                 tv_store_name1.setText(queue.getBusinessName());
-                tv_date_of_service1.setText(Formatter.getDateTimeAsString(Formatter.getDateFromString(queue.getServicedTime())));
+                tv_date_of_service1.setText(Formatter.getDateTimeAsString(Formatter.getDateFromString(queue.getServicedEndTime())));
                 txtToken1.setText(String.valueOf(queue.getToken()));
                 break;
         }
