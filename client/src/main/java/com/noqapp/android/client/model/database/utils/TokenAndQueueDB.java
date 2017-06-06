@@ -54,7 +54,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setLastNumber(cursor.getInt(11));
                     tokenAndQueue.setToken(cursor.getInt(12));
                     tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
-                    //    tokenAndQueue.setServicedTime(cursor.getString(14));
+                    //    tokenAndQueue.setServicedEndTime(cursor.getString(14));
                     tokenAndQueue.setCreateDate(cursor.getString(15));
                     listJsonQueue.add(tokenAndQueue);
                 }
@@ -91,7 +91,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setLastNumber(cursor.getInt(11));
                         tokenAndQueue.setToken(cursor.getInt(12));
                         tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
-                        //  tokenAndQueue.setServicedTime(cursor.getString(14));
+                        //  tokenAndQueue.setServicedEndTime(cursor.getString(14));
                         tokenAndQueue.setCreateDate(cursor.getString(15));
 
                     }
@@ -130,7 +130,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setLastNumber(cursor.getInt(11));
                     tokenAndQueue.setToken(cursor.getInt(12));
                     //   tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
-                    tokenAndQueue.setServicedTime(cursor.getString(14));
+                    tokenAndQueue.setServicedEndTime(cursor.getString(14));
                     tokenAndQueue.setCreateDate(cursor.getString(15));
 
                 }
@@ -171,7 +171,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setLastNumber(cursor.getInt(11));
                         tokenAndQueue.setToken(cursor.getInt(12));
                         // tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
-                        tokenAndQueue.setServicedTime(cursor.getString(14));
+                        tokenAndQueue.setServicedEndTime(cursor.getString(14));
                         tokenAndQueue.setCreateDate(cursor.getString(15));
 
                         listJsonQueue.add(tokenAndQueue);
@@ -234,7 +234,7 @@ public class TokenAndQueueDB {
             if (null != tokenAndQueue.getQueueStatus()) {
                 cv.put(TokenQueue.QUEUE_STATUS, tokenAndQueue.getQueueStatus().getName());
             }
-            cv.put(TokenQueue.SERVICED_TIME, tokenAndQueue.getServicedTime());
+            cv.put(TokenQueue.SERVICED_END_TIME, tokenAndQueue.getServicedEndTime());
             cv.put(TokenQueue.CREATE_DATE, tokenAndQueue.getCreateDate());
         } catch (Exception e) {
             Log.e(TAG, "Error createQueueContentValue reason=" + e.getLocalizedMessage(), e);

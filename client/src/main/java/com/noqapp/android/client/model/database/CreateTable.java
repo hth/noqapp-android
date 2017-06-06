@@ -35,7 +35,7 @@ class CreateTable {
                 + TokenQueue.LAST_NUMBER + " TEXT , "
                 + TokenQueue.TOKEN + " TEXT , "
                 + TokenQueue.QUEUE_STATUS + " TEXT , "
-                + TokenQueue.SERVICED_TIME + " TEXT , "
+                + TokenQueue.SERVICED_END_TIME + " TEXT , "
                 + TokenQueue.CREATE_DATE + " TEXT , "
                 + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
@@ -59,7 +59,7 @@ class CreateTable {
                 + TokenQueue.LAST_NUMBER + " TEXT , "
                 + TokenQueue.TOKEN + " TEXT , "
                 + TokenQueue.QUEUE_STATUS + " TEXT , "
-                + TokenQueue.SERVICED_TIME + " TEXT , "
+                + TokenQueue.SERVICED_END_TIME + " TEXT , "
                 + TokenQueue.CREATE_DATE + " TEXT , "
                 + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
