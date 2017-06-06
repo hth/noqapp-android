@@ -37,6 +37,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("c")
     private String codeQR;
 
+    @JsonProperty ("cor")
+    private double[] coordinate;
+
     @JsonProperty("n")
     private String businessName;
 
@@ -92,6 +95,10 @@ public class JsonQueue implements Serializable {
 
     public String getCodeQR() {
         return codeQR;
+    }
+
+    public double[] getCoordinate() {
+        return coordinate;
     }
 
     public String getBusinessName() {
@@ -179,6 +186,7 @@ public class JsonQueue implements Serializable {
     public JsonTokenAndQueue getJsonTokenAndQueue() {
         JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
         jsonTokenAndQueue.setCodeQR(codeQR);
+        jsonTokenAndQueue.setCoordinate(coordinate);
         jsonTokenAndQueue.setBusinessName(businessName);
         jsonTokenAndQueue.setDisplayName(displayName);
         jsonTokenAndQueue.setStoreAddress(storeAddress);

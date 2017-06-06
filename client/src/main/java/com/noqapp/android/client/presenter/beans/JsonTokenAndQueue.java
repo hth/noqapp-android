@@ -36,6 +36,9 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("c")
     private String codeQR;
 
+    @JsonProperty ("cor")
+    private double[] coordinate;
+
     @JsonProperty("n")
     private String businessName;
 
@@ -89,6 +92,14 @@ public class JsonTokenAndQueue implements Serializable {
 
     public void setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+    }
+
+    public double[] getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(double[] coordinate) {
+        this.coordinate = coordinate;
     }
 
     public String getBusinessName() {
