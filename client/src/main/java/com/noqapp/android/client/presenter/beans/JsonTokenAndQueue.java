@@ -236,6 +236,7 @@ public class JsonTokenAndQueue implements Serializable {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("codeQR", codeQR)
+                .append("coordinate", coordinate)
                 .append("businessName", businessName)
                 .append("displayName", displayName)
                 .append("storeAddress", storeAddress)
