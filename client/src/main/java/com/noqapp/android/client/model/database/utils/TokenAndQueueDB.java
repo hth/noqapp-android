@@ -92,7 +92,9 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setToken(cursor.getInt(12));
                         tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
                         //  tokenAndQueue.setServiceEndTime(cursor.getString(14));
-                        tokenAndQueue.setCreateDate(cursor.getString(15));
+                        //  tokenAndQueue.setRatingCount(cursor.getInt(15));
+                        //  tokenAndQueue.setHoursSaved(cursor.getInt(16));
+                        tokenAndQueue.setCreateDate(cursor.getString(17));
 
                     }
                 } catch (Exception e) {
@@ -131,7 +133,9 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setToken(cursor.getInt(12));
                     //   tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
                     tokenAndQueue.setServiceEndTime(cursor.getString(14));
-                    tokenAndQueue.setCreateDate(cursor.getString(15));
+                    tokenAndQueue.setRatingCount(cursor.getInt(15));
+                    tokenAndQueue.setHoursSaved(cursor.getInt(16));
+                    tokenAndQueue.setCreateDate(cursor.getString(17));
 
                 }
             } catch (Exception e) {
@@ -172,7 +176,9 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setToken(cursor.getInt(12));
                         // tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
                         tokenAndQueue.setServiceEndTime(cursor.getString(14));
-                        tokenAndQueue.setCreateDate(cursor.getString(15));
+                        tokenAndQueue.setRatingCount(cursor.getInt(15));
+                        tokenAndQueue.setHoursSaved(cursor.getInt(16));
+                        tokenAndQueue.setCreateDate(cursor.getString(17));
 
                         listJsonQueue.add(tokenAndQueue);
                     }
@@ -235,6 +241,8 @@ public class TokenAndQueueDB {
                 cv.put(TokenQueue.QUEUE_STATUS, tokenAndQueue.getQueueStatus().getName());
             }
             cv.put(TokenQueue.SERVICE_END_TIME, tokenAndQueue.getServiceEndTime());
+            cv.put(TokenQueue.RATING_COUNT, tokenAndQueue.getRatingCount());
+            cv.put(TokenQueue.HOURS_SAVED, tokenAndQueue.getHoursSaved());
             cv.put(TokenQueue.CREATE_DATE, tokenAndQueue.getCreateDate());
         } catch (Exception e) {
             Log.e(TAG, "Error createQueueContentValue reason=" + e.getLocalizedMessage(), e);
