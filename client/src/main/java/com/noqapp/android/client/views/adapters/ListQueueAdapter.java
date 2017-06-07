@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
@@ -82,11 +83,15 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 TextView tv_store_name1 = (TextView) convertView.findViewById(R.id.tv_store_name);
                 TextView tv_date_of_service1 = (TextView) convertView.findViewById(R.id.tv_date_of_service);
                 TextView txtToken1 = (TextView) convertView.findViewById(R.id.txtToken);
+                TextView tv_hour_saved = (TextView) convertView.findViewById(R.id.tv_hour_saved);
+                RatingBar ratingBar =  (RatingBar)convertView.findViewById(R.id.ratingBar);
                 txtnumber1.setText("#" + String.valueOf(childPosition + 1));
                 tv_queue_name1.setText(queue.getDisplayName());
                 tv_store_name1.setText(queue.getBusinessName());
                 tv_date_of_service1.setText(Formatter.getDateTimeAsString(Formatter.getDateFromString(queue.getServiceEndTime())));
                 txtToken1.setText(String.valueOf(queue.getToken()));
+                tv_hour_saved.setText("20 min");
+                ratingBar.setRating(3.5f);
                 break;
         }
         return convertView;

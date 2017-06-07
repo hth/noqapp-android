@@ -4,14 +4,14 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/list_item_margin"
     android:layout_marginTop="@dimen/list_item_margin"
-    android:paddingTop="5dp"
+    android:orientation="horizontal"
     android:paddingBottom="5dp"
-    android:orientation="horizontal">
+    android:paddingTop="5dp">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.25"
+        android:layout_weight="0.20"
         android:gravity="center">
 
         <TextView
@@ -32,12 +32,14 @@
         android:layout_height="match_parent"
         android:layout_weight="0.50"
         android:orientation="vertical">
+
         <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
             android:id="@+id/tv_queue_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/color_list_text"
             android:textSize="20sp" />
+
         <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
             android:id="@+id/tv_store_name"
             android:layout_width="match_parent"
@@ -55,12 +57,32 @@
 
     </LinearLayout>
 
-    <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
-        android:id="@+id/txtToken"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.25"
-        android:gravity="center"
-        android:textColor="@color/color_list_text"
-        android:textSize="24sp" />
+        android:layout_weight="0.30"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_hour_saved"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+            android:id="@+id/txtToken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/color_list_text"
+            android:textSize="24sp" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@android:style/Widget.DeviceDefault.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="4.5"
+            android:stepSize=".5" />
+    </LinearLayout>
 </LinearLayout>
