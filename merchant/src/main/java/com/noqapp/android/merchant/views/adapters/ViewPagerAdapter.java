@@ -1,8 +1,11 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,45 +85,72 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
 
         final JsonTopic lq = topics.get(position);
         tv_current_value.setText(String.valueOf(lq.getServingNumber()));
-        tv_total_value.setText(String.valueOf(lq.getToken()));
+        /* Add to show only remaining people in queue */
+        tv_total_value.setText(String.valueOf(lq.getToken()-lq.getServingNumber()));
         tv_title.setText(lq.getDisplayName());
-        tv_serving_customer.setText("Serving: " + (StringUtils.isNotBlank(lq.getCustomerName()) ? lq.getCustomerName() : "Name unavailable"));
+        tv_serving_customer.setText(Html.fromHtml("Serving: " +(StringUtils.isNotBlank(lq.getCustomerName()) ? "<b>"+lq.getCustomerName() + "</b> ": "NA")));
         final String status = lq.getQueueStatus().getDescription();
         btn_start.setText(context.getString(R.string.start));
         switch (status) {
 
             case "Start":
                 btn_start.setText(context.getString(R.string.start));
-                btn_next.setVisibility(View.GONE);
-                btn_skip.setVisibility(View.GONE);
+                btn_next.setEnabled(false);
+                btn_next.setBackgroundResource(R.mipmap.next_inactive);
+                btn_skip.setEnabled(false);
+                btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 break;
             case "Re-Start":
                 btn_start.setText(context.getString(R.string.continues));
-                btn_next.setVisibility(View.GONE);
-                btn_skip.setVisibility(View.GONE);
+                btn_next.setEnabled(false);
+                btn_next.setBackgroundResource(R.mipmap.next_inactive);
+                btn_skip.setEnabled(false);
+                btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 break;
             case "Next":
                 btn_next.setText(context.getString(R.string.next));
-                btn_next.setVisibility(View.VISIBLE);
-                btn_skip.setVisibility(View.VISIBLE);
+//                btn_next.setVisibility(View.VISIBLE);
+//                btn_skip.setVisibility(View.VISIBLE);
+                btn_next.setEnabled(true);
+                btn_next.setBackgroundResource(R.mipmap.next);
+                btn_skip.setEnabled(true);
+                btn_skip.setBackgroundResource(R.mipmap.skip);
                 btn_start.setText(context.getString(R.string.pause));
+                btn_start.setBackgroundResource(R.mipmap.pause);
                 break;
             case "Done":
                 btn_start.setText(context.getString(R.string.done));
-                btn_next.setVisibility(View.GONE);
-                btn_skip.setVisibility(View.GONE);
+                tv_total_value.setText("0");
+                btn_start.setBackgroundResource(R.mipmap.stop);
+               // btn_next.setVisibility(View.GONE);
+               // btn_skip.setVisibility(View.GONE);
+                btn_next.setEnabled(false);
+                btn_next.setBackgroundResource(R.mipmap.next_inactive);
+                btn_skip.setEnabled(false);
+                btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 break;
             case "Closed":
                 btn_start.setText(context.getString(R.string.closed));
-                btn_next.setVisibility(View.GONE);
-                btn_skip.setVisibility(View.GONE);
-                btn_start.setVisibility(View.GONE);
+//                btn_next.setVisibility(View.GONE);
+//                btn_skip.setVisibility(View.GONE);
+//                btn_start.setVisibility(View.GONE);
+                btn_start.setEnabled(false);
+                btn_start.setBackgroundResource(R.mipmap.stop_inactive);
+                btn_next.setEnabled(false);
+                btn_next.setBackgroundResource(R.mipmap.next_inactive);
+                btn_skip.setEnabled(false);
+                btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 break;
 
             case "Pause":
                 btn_start.setText(context.getString(R.string.pause));
-                btn_next.setVisibility(View.GONE);
-                btn_skip.setVisibility(View.GONE);
+               // btn_next.setVisibility(View.GONE);
+               // btn_skip.setVisibility(View.GONE);
+                btn_next.setEnabled(false);
+                btn_next.setBackgroundResource(R.mipmap.next_inactive);
+                btn_skip.setEnabled(false);
+                btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
+                btn_start.setBackgroundResource(R.mipmap.pause);
                 break;
         }
         btn_next.setOnClickListener(new View.OnClickListener() {
@@ -197,26 +227,62 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                     if (edt_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
+                        if (btn_start.getText().equals(context.getString(R.string.pause))) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            LaunchActivity.getLaunchActivity().progressDialog.show();
-                            Served served = new Served();
-                            served.setCodeQR(lq.getCodeQR());
-                            served.setQueueUserState(QueueUserStateEnum.S);
-                            if (btn_start.getText().equals(context.getString(R.string.pause))) {
-                                served.setQueueStatus(QueueStatusEnum.P);
-                            } else {
+                            builder.setTitle("Confirm");
+                            builder.setMessage("Have you completed serving "+String.valueOf(lq.getServingNumber()));
+                            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                        LaunchActivity.getLaunchActivity().progressDialog.show();
+                                        Served served = new Served();
+                                        served.setCodeQR(lq.getCodeQR());
+                                        served.setQueueUserState(QueueUserStateEnum.S);
+                                        /*  send   QueueStatusEnum P for pause state */
+                                        served.setQueueStatus(QueueStatusEnum.P);
+                                        served.setServedNumber(lq.getServingNumber());
+                                        served.setGoTo(edt_counter_name.getText().toString());
+                                        ManageQueueModel.served(
+                                                LaunchActivity.getLaunchActivity().getDeviceID(),
+                                                LaunchActivity.getLaunchActivity().getEmail(),
+                                                LaunchActivity.getLaunchActivity().getAuth(),
+                                                served);
+                                    } else {
+                                        ShowAlertInformation.showNetworkDialog(context);
+                                    }
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }else {
+                            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                LaunchActivity.getLaunchActivity().progressDialog.show();
+                                Served served = new Served();
+                                served.setCodeQR(lq.getCodeQR());
+                                served.setQueueUserState(QueueUserStateEnum.S);
+                                  /*  send   QueueStatusEnum as it is for other than pause state */
                                 served.setQueueStatus(lq.getQueueStatus());
+                                served.setServedNumber(lq.getServingNumber());
+                                served.setGoTo(edt_counter_name.getText().toString());
+                                ManageQueueModel.served(
+                                        LaunchActivity.getLaunchActivity().getDeviceID(),
+                                        LaunchActivity.getLaunchActivity().getEmail(),
+                                        LaunchActivity.getLaunchActivity().getAuth(),
+                                        served);
+                            } else {
+                                ShowAlertInformation.showNetworkDialog(context);
                             }
-                            served.setServedNumber(lq.getServingNumber());
-                            served.setGoTo(edt_counter_name.getText().toString());
-                            ManageQueueModel.served(
-                                    LaunchActivity.getLaunchActivity().getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(),
-                                    served);
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(context);
                         }
                     }
                 }
