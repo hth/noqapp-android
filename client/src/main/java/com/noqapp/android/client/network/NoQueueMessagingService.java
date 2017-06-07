@@ -113,6 +113,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
                     String current_serving = remoteMessage.getData().get("cs");
                     JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
+                    if (null == jtk)
+                        jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR);
                     String go_to = remoteMessage.getData().get("g");
 
                     /**

@@ -23,6 +23,7 @@
                 android:id="@+id/tv_title"
                 android:layout_height="0dp"
                 android:layout_weight=".2"
+                android:background="@color/pager_top_bg"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:textColor="@color/color_action_bar"
@@ -32,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@drawable/square_white_bg_drawable"
-                android:layout_weight=".3"
+                android:layout_weight=".25"
                 >
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -93,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="0dp"
-                android:layout_weight=".5"
+                android:layout_weight=".55"
                 android:gravity="center_vertical"
                 android:weightSum="1"
                 >
@@ -101,29 +102,32 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".33"
+                    android:layout_weight=".30"
                     android:gravity="center"
                     android:weightSum="1">
 
-                    <TextView
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                         android:id="@+id/tv_serving_customer"
                         android:layout_width="match_parent"
-                        android:text="Customer"
-                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/colorAddress"
+                        android:layout_marginBottom="10dp"
                         android:gravity="center_horizontal"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"/>
+                        android:textSize="18sp"/>
 
                     <EditText
                         android:id="@+id/edt_counter_name"
                         android:layout_below="@+id/tv_serving_customer"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginLeft="30dp"
                         android:layout_gravity="center"
                         android:background="@drawable/square_white_bg_drawable"
                         android:gravity="center_horizontal"
                         android:layout_centerHorizontal="true"
                         android:padding="5dp"
+                        android:maxLength="20"
                         android:hint="@string/counter_name"
                         android:textSize="18sp" />
                 </RelativeLayout>
@@ -131,7 +135,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".66"
+                    android:layout_weight=".70"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
                     android:weightSum="1">
@@ -146,14 +150,13 @@
                         <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
 
                             android:id="@+id/btn_start"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/pager_btn_margin"
-                            android:layout_marginRight="@dimen/pager_btn_margin"
-                            android:background="@mipmap/send_invite_small"
+                            android:layout_width="@dimen/play_btn_size"
+                            android:layout_height="@dimen/play_btn_size"
+
+                            android:background="@mipmap/start"
                             android:text="@string/start"
                             android:textAllCaps="false"
-                            android:textColor="@android:color/white"
+                            android:textColor="@android:color/transparent"
                             android:textSize="15sp" />
 
                     </LinearLayout>
@@ -166,33 +169,39 @@
                         android:gravity="center"
                         android:weightSum="1">
 
-                        <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
-
-                            android:id="@+id/btn_skip"
+                        <RelativeLayout
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/pager_btn_margin"
-                            android:layout_marginRight="@dimen/pager_btn_margin"
-                            android:layout_weight=".33"
-                            android:background="@mipmap/send_invite_small"
-                            android:text="@string/skip"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textSize="15sp" />
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:layout_weight=".5">
+                            <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+
+                                android:id="@+id/btn_skip"
+                                android:layout_width="@dimen/play_btn_size"
+                                android:layout_height="@dimen/play_btn_size"
+                                android:background="@mipmap/skip"
+                                android:text="@string/skip"
+                                android:textAllCaps="false"
+                                android:textColor="@android:color/transparent"
+                                android:textSize="15sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:layout_weight=".5">
 
                         <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
-
                             android:id="@+id/btn_next"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/pager_btn_margin"
-                            android:layout_marginRight="@dimen/pager_btn_margin"
-                            android:layout_weight=".33"
-                            android:background="@mipmap/send_invite_small"
+                            android:layout_width="@dimen/play_btn_size"
+                            android:layout_height="@dimen/play_btn_size"
+                            android:background="@mipmap/next"
                             android:text="@string/next"
                             android:textAllCaps="false"
-                            android:textColor="@android:color/white"
+                            android:textColor="@android:color/transparent"
                             android:textSize="15sp" />
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

@@ -127,6 +127,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             b.putSerializable("jsonMerchant", jsonMerchant);
             mlf.setArguments(b);
             LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, mlf);
+            LaunchActivity.getLaunchActivity().setUserName();
         }
         LaunchActivity.getLaunchActivity().dismissProgress();
     }

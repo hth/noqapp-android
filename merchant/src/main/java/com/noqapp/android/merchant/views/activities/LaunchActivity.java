@@ -122,7 +122,7 @@ public class LaunchActivity extends AppCompatActivity {
         if (isLoggedIn()) {
             merchantListFragment = new MerchantListFragment();
             replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
-            tv_name.setText(WordUtils.initials(getUserName()));
+            setUserName();
         } else {
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
         }
@@ -251,7 +251,9 @@ public class LaunchActivity extends AppCompatActivity {
     public void setProgressTitle(String msg) {
         progressDialog.setMessage(msg);
     }
-
+    public void setUserName() {
+        tv_name.setText(WordUtils.initials(getUserName()));
+    }
     @Override
     protected void onResume() {
         super.onResume();
