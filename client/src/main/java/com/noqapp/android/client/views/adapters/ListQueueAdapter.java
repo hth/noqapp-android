@@ -90,8 +90,26 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 tv_store_name1.setText(queue.getBusinessName());
                 tv_date_of_service1.setText(Formatter.getDateTimeAsString(Formatter.getDateFromString(queue.getServiceEndTime())));
                 txtToken1.setText(String.valueOf(queue.getToken()));
-                tv_hour_saved.setText("20 min");
-                ratingBar.setRating(3.5f);
+                switch (queue.getHoursSaved()) {
+                    case 1:
+                        tv_hour_saved.setText("30 min");
+                        break;
+                    case 2:
+                        tv_hour_saved.setText("1 hour");
+                        break;
+                    case 3:
+                        tv_hour_saved.setText("2 hour");
+                        break;
+                    case 4:
+                        tv_hour_saved.setText("3 hours");
+                        break;
+                    case 5:
+                        tv_hour_saved.setText("4 hours");
+                        break;
+                    default:
+                        tv_hour_saved.setText("");
+                }
+                ratingBar.setRating(queue.getRatingCount());
                 break;
         }
         return convertView;

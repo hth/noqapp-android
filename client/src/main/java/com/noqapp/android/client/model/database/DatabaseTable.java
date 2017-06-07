@@ -23,6 +23,8 @@ public class DatabaseTable {
         public static final String TOKEN = "token";
         public static final String QUEUE_STATUS = "queueStatus";
         public static final String SERVICE_END_TIME = "serviceEndTime";
+        public static final String RATING_COUNT = "ratingCount";
+        public static final String HOURS_SAVED = "hoursSaved";
         public static final String CREATE_DATE = "createDate";
 
         private TokenQueue() {
