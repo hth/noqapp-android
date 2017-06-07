@@ -83,6 +83,12 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("se")
     private String serviceEndTime;
 
+    @JsonProperty ("ra")
+    private int ratingCount;
+
+    @JsonProperty ("hr")
+    private int hoursSaved;
+
     @JsonProperty("u")
     private String createDate;
 
@@ -212,6 +218,22 @@ public class JsonTokenAndQueue implements Serializable {
 
     public void setServiceEndTime(String serviceEndTime) {
         this.serviceEndTime = serviceEndTime;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
+    public int getHoursSaved() {
+        return hoursSaved;
+    }
+
+    public void setHoursSaved(int hoursSaved) {
+        this.hoursSaved = hoursSaved;
     }
 
     public String getCreateDate() {
