@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -62,30 +63,42 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public Map<String, List<Fragment>> fragmentsStack = new HashMap<String, List<Fragment>>();
     @BindView(R.id.rl_list)
     protected RelativeLayout rl_list;
+
     @BindView(R.id.rl_home)
     protected RelativeLayout rl_home;
+
     @BindView(R.id.rl_me)
     protected RelativeLayout rl_me;
+
     @BindView(R.id.tv_home)
     protected TextView tv_home;
+
     @BindView(R.id.tv_list)
     protected TextView tv_list;
+
     @BindView(R.id.tv_me)
     protected TextView tv_me;
+
     @BindView(R.id.iv_home)
     protected ImageView iv_home;
+
     @BindView(R.id.iv_list)
     protected ImageView iv_list;
+
     @BindView(R.id.iv_me)
     protected ImageView iv_me;
+
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
+
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
+
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
+
     private long lastPress;
-    private Toast backpressToast;
+    private Toast backPressToast;
     private BroadcastReceiver broadcastReceiver;
     private String currentSelectedTabTag = "";
 
@@ -138,11 +151,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         /**
                          * Save codeQR of review & show the review screen on app
                          * resume if there is any record in Review DB for review key
-                         * **/
+                         */
                         if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                             ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                             callReviewActivity(codeQR);
-
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                             ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
                             callSkipScreen(codeQR);
@@ -156,8 +168,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         jtk.setServingNumber(Integer.parseInt(current_serving));
                         /**
                          * Save codeQR of goto & show it in after join screen on app
-                         *  Review DB for review key && current serving == token no.
-                         * **/
+                         * Review DB for review key && current serving == token no.
+                         */
                         if (Integer.parseInt(current_serving) == jtk.getToken())
                             ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
                         if (jtk.isTokenExpired()) {
@@ -218,11 +230,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 } else {
                     replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
                 }
-
                 iv_home.setBackgroundResource(R.mipmap.home_select);
                 tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
-
             case R.id.rl_list:
                 setCurrentSelectedTabTag(tabList);
                 if (null == fragmentsStack.get(tabList)) {
@@ -236,7 +246,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 iv_list.setBackgroundResource(R.mipmap.list_select);
                 tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
-
             case R.id.rl_me:
                 setCurrentSelectedTabTag(tabMe);
                 if (null == fragmentsStack.get(tabMe)) {
@@ -280,10 +289,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 List<Fragment> currentTabFragments = fragmentsStack.get(tabList);
                 if (null != currentTabFragments && currentTabFragments.size() > 1) {
                     int size = currentTabFragments.size();
-                    Fragment currentfrg = currentTabFragments.get(size - 1);
-                    if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                        String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
-                        if (intent_qrCode.equals(qcode)) {
+                    Fragment currentFragment = currentTabFragments.get(size - 1);
+                    if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
+                        String codeQR = ((AfterJoinFragment) currentFragment).getCodeQR();
+                        if (intent_qrCode.equals(codeQR)) {
                             currentTabFragments.remove(currentTabFragments.size() - 1);
                             currentTabFragments.remove(currentTabFragments.size() - 1);
                         }
@@ -296,7 +305,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
@@ -331,19 +340,20 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
-                new IntentFilter(Constants.PUSH_NOTIFICATION));
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
 
         String codeQR = ReviewDB.getValue(ReviewDB.KEY_REVIEW);
-        if (StringUtils.isNotBlank(codeQR) && !isReviewShown())// shown only one time if the review is canceled
+        // shown only one time if the review is canceled
+        if (StringUtils.isNotBlank(codeQR) && !isReviewShown()) {
             callReviewActivity(codeQR);
+        }
 
-        String codeQRskip = ReviewDB.getValue(ReviewDB.KEY_SKIP);
-        if (StringUtils.isNotBlank(codeQRskip))// shown only one time if it is skipped
-        {
+        String codeQRSkip = ReviewDB.getValue(ReviewDB.KEY_SKIP);
+        // shown only one time if it is skipped
+        if (StringUtils.isNotBlank(codeQRSkip)) {
             ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
             Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
         }
@@ -395,11 +405,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             // current screen is closed and removed from Back Stack and shown the previous one
             int size = currentTabFragments.size();
             Fragment fragment = currentTabFragments.get(size - 2);
-            Fragment currentfrg = currentTabFragments.get(size - 1);
+            Fragment currentFragment = currentTabFragments.get(size - 1);
             currentTabFragments.remove(size - 1);
 
 
-            if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
+            if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
                 currentTabFragments.remove(currentTabFragments.size() - 1);
                 fragmentsStack.put(tabList, null);
                 onClick(rl_list);
@@ -411,11 +421,13 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         } else {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastPress > 3000) {
-                backpressToast = Toast.makeText(launchActivity, getString(R.string.exit_app), Toast.LENGTH_LONG);
-                backpressToast.show();
+                backPressToast = Toast.makeText(launchActivity, getString(R.string.exit_app), Toast.LENGTH_LONG);
+                backPressToast.show();
                 lastPress = currentTime;
             } else {
-                if (backpressToast != null) backpressToast.cancel();
+                if (backPressToast != null) {
+                    backPressToast.cancel();
+                }
                 super.onBackPressed();
             }
         }
@@ -426,11 +438,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
     public String getDeviceID() {
-        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
-                APP_PREF, MODE_PRIVATE);
+        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, MODE_PRIVATE);
         return sharedpreferences.getString(XR_DID, "");
     }
-
 
     private void callReviewActivity(String codeQR) {
         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
@@ -456,5 +466,4 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         jf.setArguments(b);
         NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
     }
-
 }
