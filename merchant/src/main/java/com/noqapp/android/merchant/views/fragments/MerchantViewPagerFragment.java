@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -16,9 +15,7 @@ import com.noqapp.android.merchant.views.adapters.ViewPagerAdapter;
 
 import java.util.ArrayList;
 
-
 public class MerchantViewPagerFragment extends Fragment {
-
 
     public static int pagercurrrentpos = 0;
     private static int pos = 0;
@@ -29,22 +26,19 @@ public class MerchantViewPagerFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantviewpager, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         Bundle bundle = getArguments();
         if (null != bundle) {
             topicsList = (ArrayList<JsonTopic>) bundle.getSerializable("jsonMerchant");
             pagercurrrentpos = pos = bundle.getInt("position");
-
         }
         adapter = new ViewPagerAdapter(getActivity(), topicsList);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(pos);
         leftNav = (ImageView) view.findViewById(R.id.left_nav);
         rightNav = (ImageView) view.findViewById(R.id.right_nav);
-
 
         if (topicsList.size() > 1) {
             leftNav.setVisibility(View.VISIBLE);
@@ -77,7 +71,6 @@ public class MerchantViewPagerFragment extends Fragment {
             }
         });
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
             @Override
             public void onPageSelected(int position) {
                 pagercurrrentpos = position;
@@ -98,13 +91,11 @@ public class MerchantViewPagerFragment extends Fragment {
 
     @Override
     public void onResume() {
-
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue_detail));
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
-
 
     public void updateListData(ArrayList<JsonTopic> jsonTopics) {
         topicsList = jsonTopics;

@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -41,9 +40,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener {
-
 
     public static int selected_pos = -1;
     Handler timerHandler;
@@ -68,10 +65,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         ((LaunchActivity) context).fragmentCommunicator = this;
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantlist, container, false);
         listview = (ListView) view.findViewById(R.id.listview);
         rl_empty_screen = (RelativeLayout) view.findViewById(R.id.rl_empty_screen);
@@ -117,11 +112,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
         }
-
-
         return view;
     }
-
 
     @Override
     public void onResume() {
@@ -130,7 +122,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
         updateSnackbarTxt();
-
     }
 
     @Override
@@ -161,7 +152,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         swipeRefreshLayout.setRefreshing(false);
     }
 
-
     private void initListView() {
         rl_empty_screen.setVisibility(View.GONE);
         listview.setVisibility(View.VISIBLE);
@@ -176,13 +166,12 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                 b.putSerializable("jsonMerchant", topics);
                 b.putInt("position", position);
                 merchantViewPagerFragment.setArguments(b);
-                LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout,
-                        merchantViewPagerFragment, "MerchantViewPagerFragment");
-                for (int j = 0; j < parent.getChildCount(); j++)
+                LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, merchantViewPagerFragment, "MerchantViewPagerFragment");
+                for (int j = 0; j < parent.getChildCount(); j++) {
                     parent.getChildAt(j).setBackgroundColor(Color.TRANSPARENT);
+                }
                 // change the background color of the selected element
-                view.setBackgroundColor(ContextCompat.getColor(
-                        getActivity(), R.color.pressed_color));
+                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.pressed_color));
                 selected_pos = position;
             }
         });
@@ -190,7 +179,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         updateSnackbarTxt();
         snackbar.show();
     }
-
 
     private void subscribeTopics() {
         if (null != topics && topics.size() > 0) {
@@ -211,26 +199,26 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
     @Override
-    public void passDataToFragment(String qrcodeValue, String current_serving, String status, String lastno, String payload) {
+    public void passDataToFragment(String codeQR, String current_serving, String status, String lastNumber, String payload) {
         try {
             for (int i = 0; i < topics.size(); i++) {
                 JsonTopic jt = topics.get(i);
-                if (jt.getCodeQR().equalsIgnoreCase(qrcodeValue)) {
+                if (jt.getCodeQR().equalsIgnoreCase(codeQR)) {
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
                         if (QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S)) {
-                            jt.setToken(Integer.parseInt(lastno));
+                            jt.setToken(Integer.parseInt(lastNumber));
                             jt.setServingNumber(Integer.parseInt(current_serving));
                         } else {
-                            if (Integer.parseInt(lastno) >= jt.getToken()) {
-                                jt.setToken(Integer.parseInt(lastno));
+                            if (Integer.parseInt(lastNumber) >= jt.getToken()) {
+                                jt.setToken(Integer.parseInt(lastNumber));
                             }
                         }
                         /* Update only from merchant msg. */
                         jt.setQueueStatus(QueueStatusEnum.valueOf(status));
                     } else {
-                        if (Integer.parseInt(lastno) >= jt.getToken()) {
-                            jt.setToken(Integer.parseInt(lastno));
+                        if (Integer.parseInt(lastNumber) >= jt.getToken()) {
+                            jt.setToken(Integer.parseInt(lastNumber));
                         }
                     }
                     //jt.setToken(Integer.parseInt(lastno));

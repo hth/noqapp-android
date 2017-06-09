@@ -1,9 +1,14 @@
 package com.noqapp.android.merchant.views.interfaces;
 
 /**
- * Created by chandra on 5/27/17.
+ * User: chandra
+ * Date: 5/27/17 10:00 AM
  */
-
 public interface FragmentCommunicator {
-    public void passDataToFragment(String qrcodeValue, String current_serving, String status, String lastno, String payload);
+    void passDataToFragment(
+            String codeQR,
+            String current_serving,
+            String status,
+            String lastNumber,
+            String payload);
 }
