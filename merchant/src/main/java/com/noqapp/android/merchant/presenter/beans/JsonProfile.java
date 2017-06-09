@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.merchant.model.types.UserLevelEnum;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -51,9 +53,6 @@ public class JsonProfile implements Serializable {
 
     @JsonProperty("ul")
     private UserLevelEnum userLevel;
-
-    @JsonProperty("error")
-    private ErrorEncounteredJson error;
 
     public String getName() {
         return name;
@@ -135,11 +134,19 @@ public class JsonProfile implements Serializable {
         this.userLevel = userLevel;
     }
 
-    public ErrorEncounteredJson getError() {
-        return error;
-    }
-
-    public void setError(ErrorEncounteredJson error) {
-        this.error = error;
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("name", name)
+                .append("mail", mail)
+                .append("countryShortName", countryShortName)
+                .append("phoneRaw", phoneRaw)
+                .append("timeZone", timeZone)
+                .append("inviteCode", inviteCode)
+                .append("remoteScanAvailable", remoteScanAvailable)
+                .append("birthday", birthday)
+                .append("gender", gender)
+                .append("userLevel", userLevel)
+                .toString();
     }
 }
