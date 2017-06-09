@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.client.model.types.UserLevelEnum;
 
 /**
  * User: hitender
@@ -51,6 +52,9 @@ public class JsonProfile {
 
     @JsonProperty("ge")
     private String gender;
+
+    @JsonProperty("ul")
+    private UserLevelEnum userLevel;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -125,6 +129,14 @@ public class JsonProfile {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public UserLevelEnum getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(UserLevelEnum userLevel) {
+        this.userLevel = userLevel;
     }
 
     public ErrorEncounteredJson getError() {

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.merchant.model.types.UserLevelEnum;
 
 import java.io.Serializable;
 
@@ -47,6 +48,12 @@ public class JsonProfile implements Serializable {
 
     @JsonProperty("ge")
     private String gender;
+
+    @JsonProperty("ul")
+    private UserLevelEnum userLevel;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public String getName() {
         return name;
@@ -118,5 +125,21 @@ public class JsonProfile implements Serializable {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public UserLevelEnum getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(UserLevelEnum userLevel) {
+        this.userLevel = userLevel;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
     }
 }
