@@ -273,12 +273,12 @@ public class TokenAndQueueDB {
         }
     }
 
-    public boolean isTokenExist(String table_name, String qrcode, String date) {
+    public boolean isTokenExist(String table_name, String codeQR, String date) {
         String whereClause = TokenQueue.CODE_QR + " = ?" + " AND " + TokenQueue.CREATE_DATE + " = ?";
         return DatabaseUtils.longForQuery(
                 dbHandler.getWritableDb(),
                 "SELECT COUNT(*) FROM " + table_name + " WHERE " + whereClause,
-                new String[]{qrcode, date}) > 0;
+                new String[]{codeQR, date}) > 0;
     }
 }
 
