@@ -156,7 +156,7 @@
                     android:layout_weight=".65">
 
                     <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
-                        android:id="@+id/btn_joinqueue"
+                        android:id="@+id/btn_joinQueue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"

@@ -25,7 +25,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter {
     private final String TAG = JoinFragment.class.getSimpleName();
 
@@ -50,9 +49,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     @BindView(R.id.tv_hour_saved)
     protected TextView tv_hour_saved;
 
-
-    @BindView(R.id.btn_joinqueue)
-    protected Button btn_joinqueue;
+    @BindView(R.id.btn_joinQueue)
+    protected Button btn_joinQueue;
 
     private String codeQR;
     private String countryShortName;
@@ -98,14 +96,14 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 frtag = LaunchActivity.tabList;
                 if (bundle.getBoolean(KEY_IS_HISTORY, false)) {
-                    btn_joinqueue.setText(getString(R.string.remotejoin));
+                    btn_joinQueue.setText(getString(R.string.remotejoin));
                 }
 
             } else {
                 frtag = LaunchActivity.tabHome;
             }
             if (bundle.getBoolean(KEY_IS_REJOIN, false)) {
-                btn_joinqueue.setText(getString(R.string.re_join));
+                btn_joinQueue.setText(getString(R.string.re_join));
                 frtag = LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
             }
         }
@@ -136,7 +134,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
-        tv_hour_saved.setText(getString(R.string.bussiness_hour)+jsonQueue.getStartHour()+"-"+jsonQueue.getEndHour());
+        tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
         codeQR = jsonQueue.getCodeQR();
         countryShortName = jsonQueue.getCountryShortName();
         /* Update the remote join count */
@@ -147,7 +145,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         }
     }
 
-    @OnClick(R.id.btn_joinqueue)
+    @OnClick(R.id.btn_joinQueue)
     public void joinQueue() {
         if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
 
