@@ -19,6 +19,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
+import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
@@ -83,6 +84,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         Button btn_next = (Button) itemView.findViewById(R.id.btn_next);
         final Button btn_start = (Button) itemView.findViewById(R.id.btn_start);
 
+        TextView tv_skip = (TextView) itemView.findViewById(R.id.tv_skip);
+        TextView tv_next = (TextView) itemView.findViewById(R.id.tv_next);
+        TextView tv_start = (TextView) itemView.findViewById(R.id.tv_start);
         final JsonTopic lq = topics.get(position);
         tv_current_value.setText(String.valueOf(lq.getServingNumber()));
         /* Add to show only remaining people in queue */
@@ -91,35 +95,39 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         tv_serving_customer.setText(Html.fromHtml("Serving: " +(StringUtils.isNotBlank(lq.getCustomerName()) ? "<b>"+lq.getCustomerName() + "</b> ": "NA")));
         final String status = lq.getQueueStatus().getDescription();
         btn_start.setText(context.getString(R.string.start));
+
+        if(LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.MER_ADMIN || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.MER_MANAGER) {
+            // TODO(hth) Implement further settings for merchant topic
+        }
         switch (status) {
 
             case "Start":
-                btn_start.setText(context.getString(R.string.start));
+                tv_start.setText(context.getString(R.string.start));
                 btn_next.setEnabled(false);
                 btn_next.setBackgroundResource(R.mipmap.next_inactive);
                 btn_skip.setEnabled(false);
                 btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 break;
             case "Re-Start":
-                btn_start.setText(context.getString(R.string.continues));
+                tv_start.setText(context.getString(R.string.continues));
                 btn_next.setEnabled(false);
                 btn_next.setBackgroundResource(R.mipmap.next_inactive);
                 btn_skip.setEnabled(false);
                 btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 break;
             case "Next":
-                btn_next.setText(context.getString(R.string.next));
+                tv_next.setText(context.getString(R.string.next));
 //                btn_next.setVisibility(View.VISIBLE);
 //                btn_skip.setVisibility(View.VISIBLE);
                 btn_next.setEnabled(true);
                 btn_next.setBackgroundResource(R.mipmap.next);
                 btn_skip.setEnabled(true);
                 btn_skip.setBackgroundResource(R.mipmap.skip);
-                btn_start.setText(context.getString(R.string.pause));
+                tv_start.setText(context.getString(R.string.pause));
                 btn_start.setBackgroundResource(R.mipmap.pause);
                 break;
             case "Done":
-                btn_start.setText(context.getString(R.string.done));
+                tv_start.setText(context.getString(R.string.done));
                 tv_total_value.setText("0");
                 btn_start.setBackgroundResource(R.mipmap.stop);
                // btn_next.setVisibility(View.GONE);
@@ -130,7 +138,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 break;
             case "Closed":
-                btn_start.setText(context.getString(R.string.closed));
+                tv_start.setText(context.getString(R.string.closed));
 //                btn_next.setVisibility(View.GONE);
 //                btn_skip.setVisibility(View.GONE);
 //                btn_start.setVisibility(View.GONE);
@@ -143,7 +151,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 break;
 
             case "Pause":
-                btn_start.setText(context.getString(R.string.pause));
+                tv_start.setText(context.getString(R.string.pause));
                // btn_next.setVisibility(View.GONE);
                // btn_skip.setVisibility(View.GONE);
                 btn_next.setEnabled(false);

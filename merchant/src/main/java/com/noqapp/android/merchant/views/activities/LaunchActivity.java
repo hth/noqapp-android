@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -44,6 +45,7 @@ public class LaunchActivity extends AppCompatActivity {
     private final String IS_LOGIN = "IsLoggedIn";
     private final String KEY_USER_EMAIL = "userEmail";
     private final String KEY_USER_NAME = "userName";
+    private final String KEY_USER_LEVEL = "userLevel";
     private final String KEY_MERCHANT_COUNTER_NAME = "counterName";
     private final String KEY_USER_ID = "userID";
     private final String KEY_USER_AUTH = "auth";
@@ -175,7 +177,17 @@ public class LaunchActivity extends AppCompatActivity {
     public void setCounterName(String countername) {
         sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, countername).commit();
     }
+    public void setUserLevel(String userLevel) {
+        sharedpreferences.edit().putString(KEY_USER_LEVEL, userLevel).commit();
+    }
 
+    public UserLevelEnum getUserLevel() {
+        try {
+            return UserLevelEnum.valueOf(sharedpreferences.getString(KEY_USER_LEVEL, ""));
+        } catch (Exception e) {
+            return UserLevelEnum.MER_MANAGER;
+        }
+    }
     public String getUSerID() {
         return sharedpreferences.getString(KEY_USER_ID, "");
     }
