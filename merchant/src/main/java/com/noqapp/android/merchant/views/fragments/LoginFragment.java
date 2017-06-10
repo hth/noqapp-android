@@ -111,6 +111,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     public void merchantResponse(JsonMerchant jsonMerchant) {
         if (null != jsonMerchant) {
             LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
+            LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
             MerchantListFragment mlf = new MerchantListFragment();
             Bundle b = new Bundle();
             b.putSerializable("jsonMerchant", jsonMerchant);

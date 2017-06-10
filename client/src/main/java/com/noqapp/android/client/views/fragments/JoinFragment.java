@@ -47,6 +47,10 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     @BindView(R.id.tv_current_value)
     protected TextView tv_current_value;
 
+    @BindView(R.id.tv_hour_saved)
+    protected TextView tv_hour_saved;
+
+
     @BindView(R.id.btn_joinqueue)
     protected Button btn_joinqueue;
 
@@ -132,6 +136,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
+        tv_hour_saved.setText(getString(R.string.bussiness_hour)+jsonQueue.getStartHour()+"-"+jsonQueue.getEndHour());
         codeQR = jsonQueue.getCodeQR();
         countryShortName = jsonQueue.getCountryShortName();
         /* Update the remote join count */
