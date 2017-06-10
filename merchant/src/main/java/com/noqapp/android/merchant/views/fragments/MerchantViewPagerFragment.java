@@ -12,6 +12,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.ViewPagerAdapter;
+import com.noqapp.android.merchant.views.customsviews.CustomViewPager;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class MerchantViewPagerFragment extends Fragment {
     public static int pagercurrrentpos = 0;
     private static int pos = 0;
     public ViewPagerAdapter adapter;
-    private ViewPager viewPager;
+    private CustomViewPager viewPager;
     private ImageView leftNav, rightNav;
     private ArrayList<JsonTopic> topicsList;
 
@@ -28,7 +29,8 @@ public class MerchantViewPagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantviewpager, container, false);
-        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        viewPager = (CustomViewPager) view.findViewById(R.id.viewpager);
+        viewPager.setPagingEnabled(false);
         Bundle bundle = getArguments();
         if (null != bundle) {
             topicsList = (ArrayList<JsonTopic>) bundle.getSerializable("jsonMerchant");
@@ -43,6 +45,11 @@ public class MerchantViewPagerFragment extends Fragment {
         if (topicsList.size() > 1) {
             leftNav.setVisibility(View.VISIBLE);
             rightNav.setVisibility(View.VISIBLE);
+            if(pos==0){
+                leftNav.setVisibility(View.INVISIBLE);
+            }else if(pos==topicsList.size()-1){
+                rightNav.setVisibility(View.INVISIBLE);
+            }
         } else {
             leftNav.setVisibility(View.INVISIBLE);
             rightNav.setVisibility(View.INVISIBLE);
@@ -53,10 +60,15 @@ public class MerchantViewPagerFragment extends Fragment {
                 int tab = viewPager.getCurrentItem();
                 if (tab > 0) {
                     tab--;
-                    viewPager.setCurrentItem(tab);
-                } else if (tab == 0) {
-                    viewPager.setCurrentItem(tab);
                 }
+                if (tab > 0) {
+                    leftNav.setVisibility(View.VISIBLE);
+                }else if (tab == 0) {
+                    leftNav.setVisibility(View.INVISIBLE);
+                }
+                if(viewPager.getAdapter().getCount()>1)
+                    rightNav.setVisibility(View.VISIBLE);
+                viewPager.setCurrentItem(tab);
             }
         });
 
@@ -64,10 +76,17 @@ public class MerchantViewPagerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int tab = viewPager.getCurrentItem();
-                if (tab < viewPager.getAdapter().getCount()) {
+                if (tab < viewPager.getAdapter().getCount()-1) {
                     tab++;
-                    viewPager.setCurrentItem(tab);
                 }
+                if(tab < viewPager.getAdapter().getCount()-1){
+                    rightNav.setVisibility(View.VISIBLE);
+                }else if (tab ==viewPager.getAdapter().getCount()-1){
+                    rightNav.setVisibility(View.INVISIBLE);
+                }
+                if(viewPager.getAdapter().getCount()>1)
+                    leftNav.setVisibility(View.VISIBLE);
+                viewPager.setCurrentItem(tab);
             }
         });
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

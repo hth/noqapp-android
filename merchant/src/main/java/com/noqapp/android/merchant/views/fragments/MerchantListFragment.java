@@ -53,6 +53,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private SwipeRefreshLayout swipeRefreshLayout;
     private Runnable updater;
     private Snackbar snackbar;
+    private boolean isFragmentVisible = false;
 
     public MerchantListFragment() {
 
@@ -121,7 +122,14 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue));
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
+        isFragmentVisible = true;
         updateSnackbarTxt();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isFragmentVisible = false;
     }
 
     @Override
@@ -274,6 +282,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
     private void updateSnackbarTxt() {
-        snackbar.setText(getString(R.string.last_update) + " " + GetTimeAgoUtils.getTimeAgo(LaunchActivity.getLaunchActivity().getLastUpdateTime()));
+        if(isFragmentVisible)
+            snackbar.setText(getString(R.string.last_update) + " " + GetTimeAgoUtils.getTimeAgo(LaunchActivity.getLaunchActivity().getLastUpdateTime()));
     }
+
 }
