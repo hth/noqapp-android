@@ -1,7 +1,10 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,6 +113,8 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                         tv_hour_saved.setText("");
                 }
                 ratingBar.setRating(queue.getRatingCount());
+                Drawable drawable = ratingBar.getProgressDrawable();
+                drawable.setColorFilter(Color.parseColor("#e92270"), PorterDuff.Mode.SRC_ATOP);
                 break;
         }
         return convertView;
