@@ -190,24 +190,25 @@
                             android:orientation="vertical">
 
                             <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
-                                android:id="@+id/btn_set"
+
+                                android:id="@+id/btn_start"
                                 android:layout_width="@dimen/play_btn_size"
                                 android:layout_height="@dimen/play_btn_size"
-                                android:background="@mipmap/next"
-                                android:text="@string/next"
+                                android:background="@mipmap/start"
+                                android:text="@string/start"
                                 android:textAllCaps="false"
                                 android:textColor="@android:color/transparent"
                                 android:textSize="15sp" />
 
                             <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                                android:id="@+id/tv_set"
+                                android:id="@+id/tv_start"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginTop="5dp"
-                                android:text="@string/next"
+                                android:text="@string/start"
                                 android:textColor="@color/colorAddress"
                                 android:textSize="16sp" />
-                        </LinearLayout>
 
+                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -218,7 +219,7 @@
 
                             <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
 
-                                android:id="@+id/btn_start"
+                                android:id="@+id/btn_post"
                                 android:layout_width="@dimen/play_btn_size"
                                 android:layout_height="@dimen/play_btn_size"
                                 android:background="@mipmap/me_select"
@@ -228,7 +229,7 @@
                                 android:textSize="15sp" />
 
                             <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                                android:id="@+id/tv_start"
+                                android:id="@+id/tv_post"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginTop="5dp"
                                 android:text="No more token"
