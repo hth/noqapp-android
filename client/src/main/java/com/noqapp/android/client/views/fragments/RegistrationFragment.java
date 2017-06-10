@@ -3,12 +3,9 @@ package com.noqapp.android.client.views.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -25,21 +22,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.mukesh.countrypicker.Country;
-import com.mukesh.countrypicker.CountryPicker;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.MePresenter;
 import com.noqapp.android.client.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.interfaces.MeView;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -52,9 +44,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class RegistrationFragment extends NoQueueBaseFragment implements MeView, OnClickListener {
     private final String TAG = RegistrationFragment.class.getSimpleName();
     public String gender = "";
@@ -71,9 +60,6 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     @BindView(R.id.edt_birthday)
     EditText edt_birthday;
 
-    @BindView(R.id.edt_country_code)
-    EditText edt_country_code;
-
     @BindView(R.id.tv_male)
     EditText tv_male;
 
@@ -83,12 +69,10 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     @BindView(R.id.ll_gender)
     LinearLayout ll_gender;
 
-    //color picker lib link -> https://github.com/madappstechnologies/country-picker-android
+
     @BindView(R.id.btnRegistration)
     Button btnRegistration;
     private DatePickerDialog fromDatePickerDialog;
-    private String countryDialCode;
-    private String countryISO;
     private SimpleDateFormat dateFormatter;
 
 
@@ -130,34 +114,9 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         onClick(tv_male);
         Bundle bundle = getArguments();
         if (null != bundle) {
-            // edt_phoneNo.setText(bundle.getString("mobile_no", ""));
             edt_phoneNo.setEnabled(false);
-            Locale l1 = new Locale(Locale.getDefault().getLanguage(), bundle.getString("country_code", "US"));
-            countryISO = AppUtilities.iso3CountryCodeToIso2CountryCode(l1.getISO3Country());
-            CountryPicker picker1 = CountryPicker.newInstance(getString(R.string.select_country));
-            Country country1 = null;
-            edt_country_code.setBackgroundResource(country1.getFlag());
-            edt_country_code.setError(null);
-            edt_country_code.setText(country1.getCode());
-            countryDialCode = country1.getDialCode();
-            edt_country_code.setOnClickListener(null);
-            edt_phoneNo.setText(PhoneFormatterUtil.formatAsYouType(countryISO, bundle.getString("mobile_no", "0000000000")));
-        } else {
-            TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-            String countryCode = tm.getSimCountryIso();
-            if (StringUtils.isBlank(countryCode)) {
-                countryCode = "US";
-                Log.i(TAG, "Default country code=" + countryCode);
-            }
-            Locale l = new Locale(Locale.getDefault().getLanguage(), countryCode);
-            countryISO = AppUtilities.iso3CountryCodeToIso2CountryCode(l.getISO3Country());
-            CountryPicker picker = CountryPicker.newInstance("Select Country");
-            Country country = null;
-            edt_country_code.setBackgroundResource(country.getFlag());
-            edt_country_code.setText(country.getCode());
-            countryDialCode = country.getDialCode();
+            edt_phoneNo.setText(bundle.getString("mobile_no", "0000000000"));
         }
-
         return view;
     }
 
@@ -294,7 +253,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         registration.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
         registration.setGender(gender);
         registration.setTimeZoneId(tz.getID());
-        registration.setCountryShortName(countryISO);
+        registration.setCountryShortName("");
         registration.setInviteCode("");
 
         MePresenter mePresenter = new MePresenter(getContext());

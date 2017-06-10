@@ -16,41 +16,26 @@
 
     <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
         style="@style/style_register_tv"
-        android:textSize="15sp"
-        android:text="@string/phone" />
+        android:text="@string/phone"
+        android:textSize="15sp" />
 
-
-    <LinearLayout
+    <com.noqapp.android.client.views.cutomviews.TextEditRobotoLight
+        android:id="@+id/edt_phone"
+        style="@style/style_register_edt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:inputType="phone"
+        android:maxLength="15"
+        android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/edt_country_code"
-            style="@style/style_register_edt"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginRight="5dp"
-            android:layout_weight=".20"
-            android:focusable="false"
-            android:padding="0dp"
-            android:textColor="@android:color/transparent" />
+    <com.noqapp.android.client.views.cutomviews.TextEditRobotoLight
+        android:id="@+id/edt_verification_code"
+        style="@style/style_register_edt"
+        android:layout_width="match_parent"
+        android:hint="@string/hint_verification_code"
+        android:inputType="phone"
+        android:maxLength="15"
+        android:textSize="18sp" />
 
-        <com.noqapp.android.client.views.cutomviews.TextEditRobotoLight
-            android:id="@+id/edt_phone"
-            style="@style/style_register_edt"
-            android:layout_width="0dp"
-            android:layout_weight=".80"
-            android:inputType="phone"
-            android:textSize="18sp"
-            android:maxLength="15" />
-
-    </LinearLayout>
-
-
-    <!--android:hint="@string/invitecode"-->
 
     <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
         android:id="@+id/btn_login"
@@ -67,4 +52,28 @@
         android:textSize="15sp"
 
         />
+
+    <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
+        android:id="@+id/btn_verify_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_drawable"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:text="@string/verify_phone_auth"
+        android:textAllCaps="false"
+        android:textColor="@color/colorMobile"
+        android:textSize="15sp"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="HEllo" />
 </LinearLayout>
