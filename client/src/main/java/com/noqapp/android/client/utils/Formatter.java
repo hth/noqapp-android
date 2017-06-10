@@ -1,6 +1,5 @@
 package com.noqapp.android.client.utils;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.text.DateFormat;
