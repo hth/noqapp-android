@@ -285,7 +285,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         if (requestCode == Constants.requestCodeJoinQActivity) {
             if (resultCode == RESULT_OK) {
                 String intent_qrCode = data.getExtras().getString("CODEQR");
-                //Remove the AfterJoinFragment screen if having same qr code
+                //Remove the AfterJoinFragment screen if having same qr code from tablist
                 List<Fragment> currentTabFragments = fragmentsStack.get(tabList);
                 if (null != currentTabFragments && currentTabFragments.size() > 1) {
                     int size = currentTabFragments.size();
@@ -295,6 +295,19 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         if (intent_qrCode.equals(codeQR)) {
                             currentTabFragments.remove(currentTabFragments.size() - 1);
                             currentTabFragments.remove(currentTabFragments.size() - 1);
+                        }
+                    }
+                }
+                //Remove the AfterJoinFragment screen if having same qr code from Homelist
+                List<Fragment> currentTabFragmentsQ = fragmentsStack.get(tabHome);
+                if (null != currentTabFragmentsQ && currentTabFragmentsQ.size() > 1) {
+                    int size = currentTabFragmentsQ.size();
+                    Fragment currentFragment = currentTabFragmentsQ.get(size - 1);
+                    if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
+                        String codeQR = ((AfterJoinFragment) currentFragment).getCodeQR();
+                        if (intent_qrCode.equals(codeQR)) {
+                            currentTabFragmentsQ.remove(currentTabFragmentsQ.size() - 1);
+                            currentTabFragmentsQ.remove(currentTabFragmentsQ.size() - 1);
                         }
                     }
                 }
