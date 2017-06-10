@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "129734883266-dn50cqhm92r5c4k5kk9jtb2ekm6tsdck.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.client",
+            "certificate_hash": "22690afe1814c2127903485f23920df0cb2741a3"
+          }
+        },
+        {
           "client_id": "129734883266-e8lqvhhcs89buhe7jltc0n94s3m0dc1l.apps.googleusercontent.com",
           "client_type": 3
         },
@@ -41,8 +49,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129734883266-e8lqvhhcs89buhe7jltc0n94s3m0dc1l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "129734883266-qa3vhq314cugofkds3k2c854usuigid3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.noqapp.ios.merchant"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2
