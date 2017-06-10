@@ -101,7 +101,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
-            tv_hour_saved.setText(getString(R.string.bussiness_hour)+jsonQueue.getStartHour()+"-"+jsonQueue.getEndHour());
+            tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), storePhone));
             tv_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -216,8 +216,8 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         /* Added to update the screen if app is in background & notification received */
         if (!isResumeFirst) {
             JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-            if(null!=jtk)
-             setObject(jtk, gotoPerson);
+            if (null != jtk)
+                setObject(jtk, gotoPerson);
         }
         if (isResumeFirst) {
             isResumeFirst = false;

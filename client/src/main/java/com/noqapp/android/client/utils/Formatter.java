@@ -2,6 +2,10 @@ package com.noqapp.android.client.utils;
 
 import android.util.Log;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +23,9 @@ public class Formatter {
 
     private static final DateFormat df = DateFormat.getDateInstance();
     private static final TimeZone tz = TimeZone.getTimeZone("UTC");
+
+    private static DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HHmm");
+    private static DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("hh:mma");
 
     private Formatter() {
         formatRFC822.setTimeZone(tz);
@@ -53,5 +60,14 @@ public class Formatter {
         }
 
         return "";
+    }
+
+    private static String convertMilitaryTo12HourFormat(String rawTimestamp) {
+        DateTime dateTime = inputFormatter.parseDateTime(rawTimestamp);
+        return outputFormatter.print(dateTime.getMillis());
+    }
+
+    public static String convertMilitaryTo12HourFormat(int rawTimestamp) {
+        return convertMilitaryTo12HourFormat(String.format(Locale.US, "%04d", rawTimestamp));
     }
 }

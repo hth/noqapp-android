@@ -40,6 +40,8 @@ import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -118,6 +120,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        JodaTimeAndroid.init(this);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);

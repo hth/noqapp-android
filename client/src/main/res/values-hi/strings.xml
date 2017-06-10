@@ -108,7 +108,7 @@
     <string name="error_rateservice">Please rate the service</string>
     <string name="review_thanks">Thanks for feedback.</string>
     <string name="error_timesaved">Please provide how many no. of hour you saved.</string>
-    <string name="bussiness_hour">Bussiness Hours:</string>
+    <string name="store_hour">Bussiness Hours:</string>
 
 
 </resources>
