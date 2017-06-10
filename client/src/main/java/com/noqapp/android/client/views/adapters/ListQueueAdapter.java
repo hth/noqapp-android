@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,9 +113,11 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                     default:
                         tv_hour_saved.setText("");
                 }
-                ratingBar.setRating(queue.getRatingCount());
+
+                Log.v("rating ",""+queue.getRatingCount());
                 Drawable drawable = ratingBar.getProgressDrawable();
-                drawable.setColorFilter(Color.parseColor("#e92270"), PorterDuff.Mode.SRC_ATOP);
+               // drawable.setColorFilter(Color.parseColor("#e92270"), PorterDuff.Mode.SRC_ATOP);
+                ratingBar.setRating(queue.getRatingCount());
                 break;
         }
         return convertView;
