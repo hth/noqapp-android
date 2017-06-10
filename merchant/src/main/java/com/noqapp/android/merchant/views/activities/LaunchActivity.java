@@ -251,9 +251,11 @@ public class LaunchActivity extends AppCompatActivity {
     public void setProgressTitle(String msg) {
         progressDialog.setMessage(msg);
     }
+
     public void setUserName() {
         tv_name.setText(WordUtils.initials(getUserName()));
     }
+
     @Override
     protected void onResume() {
         super.onResume();

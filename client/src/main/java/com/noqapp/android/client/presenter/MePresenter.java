@@ -8,9 +8,9 @@ import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.views.interfaces.MeView;
 
 /**
- * Created by omkar on 4/8/17.
+ * User: omkar
+ * Date: 4/8/17 11:07 AM
  */
-
 public class MePresenter implements ProfilePresenter {
 
     public MeView meView;

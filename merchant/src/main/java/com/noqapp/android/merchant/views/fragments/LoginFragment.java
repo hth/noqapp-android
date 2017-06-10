@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,7 +32,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
     public LoginFragment() {
         super();
-
     }
 
     @Override
@@ -71,7 +69,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                         ShowAlertInformation.showNetworkDialog(getActivity());
                     }
                 }
-
             }
         });
         return view;
@@ -87,29 +84,21 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-
         super.onActivityCreated(savedInstanceState);
     }
 
     private boolean isValidEmail(CharSequence target) {
-        if (TextUtils.isEmpty(target)) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-        }
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
-
     @Override
-    public void loginResponse(String email, String outh) {
-        if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(outh)) {
-            LaunchActivity.getLaunchActivity().setSharPreferancename("", "",
-                    email, outh, true);
-            MerchantProfileModel.fetch(email, outh);
+    public void loginResponse(String email, String auth) {
+        if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(auth)) {
+            LaunchActivity.getLaunchActivity().setSharPreferancename("", "", email, auth, true);
+            MerchantProfileModel.fetch(email, auth);
         } else {
             LaunchActivity.getLaunchActivity().dismissProgress();
             Toast.makeText(getActivity(), getString(R.string.error_login), Toast.LENGTH_LONG).show();
-
         }
     }
 
@@ -136,7 +125,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     public void merchantError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
-
 
     private void hideKeyBoard() {
         View view = getActivity().getCurrentFocus();
