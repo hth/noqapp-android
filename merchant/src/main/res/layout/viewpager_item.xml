@@ -128,6 +128,8 @@
                         android:layout_centerHorizontal="true"
                         android:padding="5dp"
                         android:maxLength="20"
+                        android:inputType="text"
+                        android:maxLines="1"
                         android:hint="@string/counter_name"
                         android:textSize="18sp" />
                 </RelativeLayout>
