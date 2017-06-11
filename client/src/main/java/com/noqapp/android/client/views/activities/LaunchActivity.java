@@ -417,9 +417,15 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
 
         if (currentTabFragments.size() > 1) {
+
+            int size = currentTabFragments.size();
+            if(size==4 &&(currentSelectedTabTag.equals(tabHome)||currentSelectedTabTag.equals(tabList))){
+                /* This condition is added for the skip screen */
+                currentTabFragments.remove(size - 1);
+                size = currentTabFragments.size();
+            }
             // if it is not first screen then
             // current screen is closed and removed from Back Stack and shown the previous one
-            int size = currentTabFragments.size();
             Fragment fragment = currentTabFragments.get(size - 2);
             Fragment currentFragment = currentTabFragments.get(size - 1);
             currentTabFragments.remove(size - 1);
@@ -472,7 +478,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     private void callSkipScreen(String codeQR) {
         ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
-        Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
         Bundle b = new Bundle();
         b.putString(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
         b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);

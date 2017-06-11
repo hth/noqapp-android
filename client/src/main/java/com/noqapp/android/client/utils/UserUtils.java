@@ -17,10 +17,12 @@ public class UserUtils {
 
     public static String getEmail() {
         return "hdjjdjd.46@mail.noqapp.com";
+        //TODO (hth) remove this hardcoded value
     }
 
     public static String getAuth() {
         return "$2a$15$QFOPQgo5eRlAW8QRAhSzDOc.W3gFhfBxwhsLJt0qLb4WLEqZRQ/vm";
+        //TODO (hth) remove this hardcoded value
     }
 
     public static String getDeviceId() {

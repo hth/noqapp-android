@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -206,24 +207,26 @@ public class JsonQueue implements Serializable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("codeQR", codeQR)
-                .append("coordinate", coordinate)
-                .append("businessName", businessName)
-                .append("displayName", displayName)
-                .append("storeAddress", storeAddress)
-                .append("countryShortName", countryShortName)
-                .append("storePhone", storePhone)
-                .append("tokenAvailableFrom", tokenAvailableFrom)
-                .append("startHour", startHour)
-                .append("tokenNotAvailableFrom", tokenNotAvailableFrom)
-                .append("endHour", endHour)
-                .append("topic", topic)
-                .append("servingNumber", servingNumber)
-                .append("lastNumber", lastNumber)
-                .append("queueStatus", queueStatus)
-                .append("servicedEndTime", servicedEndTime)
-                .append("created", created)
-                .toString();
+        return "JsonQueue{" +
+                "codeQR='" + codeQR + '\'' +
+                ", coordinate=" + Arrays.toString(coordinate) +
+                ", businessName='" + businessName + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", storeAddress='" + storeAddress + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
+                ", storePhone='" + storePhone + '\'' +
+                ", tokenAvailableFrom=" + tokenAvailableFrom +
+                ", startHour=" + startHour +
+                ", tokenNotAvailableFrom=" + tokenNotAvailableFrom +
+                ", endHour=" + endHour +
+                ", topic='" + topic + '\'' +
+                ", servingNumber=" + servingNumber +
+                ", lastNumber=" + lastNumber +
+                ", queueStatus=" + queueStatus +
+                ", servicedEndTime='" + servicedEndTime + '\'' +
+                ", remoteJoin=" + remoteJoin +
+                ", created='" + created + '\'' +
+                ", error=" + error +
+                '}';
     }
 }
