@@ -26,9 +26,9 @@ public class MePresenter implements ProfilePresenter {
     }
 
     @Override
-    public void queueResponse(JsonProfile profile) {
+    public void queueResponse(JsonProfile profile,String email,String auth) {
         // if(profile.getError() == null) {
-        meView.queueResponse(profile);
+        meView.queueResponse(profile,email,auth);
         // } else {
         //TODO show error message
         // }

@@ -54,7 +54,6 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     protected TextView tv_skip_msg;
 
 
-
     @BindView(R.id.btn_joinQueue)
     protected Button btn_joinQueue;
 
@@ -159,11 +158,11 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     @OnClick(R.id.btn_joinQueue)
     public void joinQueue() {
         if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
-            String phone = NoQueueBaseActivity.getPhoneNo();
-            if (!phone.equals("")) {
-//                if (jsonQueue.getRemoteJoin() == 0) {
-//                    Toast.makeText(getActivity(), getString(R.string.error_remote_join_available), Toast.LENGTH_LONG).show();
-//                } else {
+
+            if (UserUtils.isLogin()) {
+                if (jsonQueue.getRemoteJoin() == 0) {
+                    Toast.makeText(getActivity(), getString(R.string.error_remote_join_available), Toast.LENGTH_LONG).show();
+                } else {
                     Bundle b = new Bundle();
                     b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
                     b.putBoolean(KEY_FROM_LIST, false);
@@ -171,7 +170,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                     AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
                     afterJoinFragment.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
-              //  }
+                }
             } else {
                 Toast.makeText(getActivity(), getString(R.string.error_login), Toast.LENGTH_LONG).show();
             }
@@ -187,7 +186,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     }
 
     @OnClick(R.id.btn_no)
-    public void click(){
+    public void click() {
         LaunchActivity.getLaunchActivity().onBackPressed();
     }
 }

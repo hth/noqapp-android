@@ -28,6 +28,7 @@ import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -147,6 +148,8 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         jsonQueue.setToken(token.getToken());
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonQueue);
+             /* Update the remote join count */
+        NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount()-1);
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 

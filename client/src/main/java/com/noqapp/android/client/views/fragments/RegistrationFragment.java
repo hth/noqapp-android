@@ -6,6 +6,7 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -36,6 +37,7 @@ import com.noqapp.android.client.views.interfaces.MeView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -141,13 +143,18 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     }
 
     @Override
-    public void queueResponse(JsonProfile profile) {
+    public void queueResponse(JsonProfile profile,String email,String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            NoQueueBaseActivity.commitProfile(profile);
+            NoQueueBaseActivity.commitProfile(profile, email, auth);
             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
             //remove the login and register fragment from stack
-            LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).clear();
+            List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe);
+            if(currentTabFragments.size()==3){
+                LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
+                LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
+            }
+
         } else {
             //Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
