@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
 
 /**
@@ -81,7 +82,13 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         sharedpreferences.edit().putBoolean(PREKEY_IS_REVIEW_SHOWN, isReviewShown).commit();
     }
 
-    public static void commitProfile(JsonProfile profile) {
+    public static String getXRemail() {
+        return sharedpreferences.getString(APIConstant.key.XR_MAIL, "");
+    }
+    public static String getXRauth() {
+        return sharedpreferences.getString(APIConstant.key.XR_AUTH, "");
+    }
+    public static void commitProfile(JsonProfile profile,String email,String auth) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(PREKEY_PHONE, profile.getPhoneRaw());
         editor.putString(PREKEY_NAME, profile.getName());
@@ -91,6 +98,8 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putBoolean(PREKEY_AUTOJOIN, true);
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
+        editor.putString(APIConstant.key.XR_MAIL,email);
+        editor.putString(APIConstant.key.XR_AUTH,auth);
         editor.commit();
 
     }

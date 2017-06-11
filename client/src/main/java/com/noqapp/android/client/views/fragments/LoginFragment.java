@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,6 +37,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -259,11 +261,17 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     }
 
     @Override
-    public void queueResponse(JsonProfile profile) {
+    public void queueResponse(JsonProfile profile,String email,String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            NoQueueBaseActivity.commitProfile(profile);
+            NoQueueBaseActivity.commitProfile(profile,email,auth);
             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
+
+            //remove the login fragment from stack
+            List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe);
+            if(currentTabFragments.size()==2){
+                LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
+            }
             LaunchActivity.getLaunchActivity().dismissProgress();
         } else {
             // Rejected from  server

@@ -38,7 +38,8 @@ public final class RegisterModel {
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.queueResponse(response.body());
+                    profilePresenter.queueResponse(response.body() ,response.headers().get(APIConstant.key.XR_MAIL),
+                            response.headers().get(APIConstant.key.XR_AUTH));
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history" + response.body().getError());
@@ -63,7 +64,8 @@ public final class RegisterModel {
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.queueResponse(response.body());
+                    profilePresenter.queueResponse(response.body() ,response.headers().get(APIConstant.key.XR_MAIL),
+                            response.headers().get(APIConstant.key.XR_AUTH));
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history" + response.body().getError());
