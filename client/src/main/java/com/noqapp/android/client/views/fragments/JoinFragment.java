@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
@@ -49,8 +50,17 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     @BindView(R.id.tv_hour_saved)
     protected TextView tv_hour_saved;
 
+    @BindView(R.id.tv_skip_msg)
+    protected TextView tv_skip_msg;
+
+
+
     @BindView(R.id.btn_joinQueue)
     protected Button btn_joinQueue;
+
+    @BindView(R.id.btn_no)
+    protected Button btn_no;
+
 
     private String codeQR;
     private String countryShortName;
@@ -102,7 +112,9 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                 frtag = LaunchActivity.tabHome;
             }
             if (bundle.getBoolean(KEY_IS_REJOIN, false)) {
-                btn_joinQueue.setText(getString(R.string.re_join));
+                btn_joinQueue.setText(getString(R.string.yes));
+                tv_skip_msg.setVisibility(View.VISIBLE);
+                btn_no.setVisibility(View.VISIBLE);
                 frtag = LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
             }
         }
@@ -139,7 +151,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         /* Update the remote join count */
         NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoin());
         /* Auto join after scan if autojoin status is true in me screen */
-        if (!getArguments().getBoolean(KEY_FROM_LIST, false) && NoQueueBaseActivity.getAutoJoinStatus()) {
+        if (!getArguments().getBoolean(KEY_FROM_LIST, false) && NoQueueBaseActivity.getAutoJoinStatus() && !getArguments().getBoolean(KEY_IS_REJOIN, false)) {
             joinQueue();
         }
     }
@@ -147,26 +159,22 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     @OnClick(R.id.btn_joinQueue)
     public void joinQueue() {
         if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
-
-
             String phone = NoQueueBaseActivity.getPhoneNo();
-            // if (!phone.equals("")) {
-//                if(jsonQueue.getRemoteJoin()==0){
-//                    Toast.makeText(getActivity(),getString(R.string.error_remote_join_available),Toast.LENGTH_LONG).show();
-//                }else{
-            Bundle b = new Bundle();
-            b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
-            b.putBoolean(KEY_FROM_LIST, false);
-            b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-            AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
-            afterJoinFragment.setArguments(b);
-            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
-
-            // QueueModel.remoteJoinQueue
-            //}
-//            } else {
-//                Toast.makeText(getActivity(),getString(R.string.error_login),Toast.LENGTH_LONG).show();
-//            }
+            if (!phone.equals("")) {
+//                if (jsonQueue.getRemoteJoin() == 0) {
+//                    Toast.makeText(getActivity(), getString(R.string.error_remote_join_available), Toast.LENGTH_LONG).show();
+//                } else {
+                    Bundle b = new Bundle();
+                    b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
+                    b.putBoolean(KEY_FROM_LIST, false);
+                    b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+                    AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
+                    afterJoinFragment.setArguments(b);
+                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
+              //  }
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.error_login), Toast.LENGTH_LONG).show();
+            }
         } else {
             Bundle b = new Bundle();
             b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
@@ -176,5 +184,10 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             afterJoinFragment.setArguments(b);
             replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
         }
+    }
+
+    @OnClick(R.id.btn_no)
+    public void click(){
+        LaunchActivity.getLaunchActivity().onBackPressed();
     }
 }
