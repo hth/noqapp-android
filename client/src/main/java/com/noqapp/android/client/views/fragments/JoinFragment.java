@@ -178,6 +178,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             Bundle b = new Bundle();
             b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
             b.putBoolean(KEY_FROM_LIST, false);
+            b.putBoolean(KEY_IS_HISTORY,getArguments().getBoolean(KEY_IS_HISTORY, false));
             b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
             afterJoinFragment.setArguments(b);
