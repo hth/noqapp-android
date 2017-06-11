@@ -25,7 +25,6 @@ import butterknife.OnClick;
  * Created by chandra on 4/9/17.
  */
 public class InviteFragment extends NoQueueBaseFragment {
-
     private final String TAG = InviteFragment.class.getSimpleName();
 
     @BindView(R.id.tv_how_it_works)

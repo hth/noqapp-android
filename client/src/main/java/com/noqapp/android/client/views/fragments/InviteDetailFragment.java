@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

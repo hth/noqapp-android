@@ -49,40 +49,38 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     public String gender = "";
 
     @BindView(R.id.edt_phone)
-    EditText edt_phoneNo;
+    protected EditText edt_phoneNo;
 
     @BindView(R.id.edt_name)
-    EditText edt_Name;
+    protected EditText edt_Name;
 
     @BindView(R.id.edt_email)
-    EditText edt_Mail;
+    protected EditText edt_Mail;
 
     @BindView(R.id.edt_birthday)
-    EditText edt_birthday;
+    protected EditText edt_birthday;
 
     @BindView(R.id.tv_male)
-    EditText tv_male;
+    protected EditText tv_male;
 
     @BindView(R.id.tv_female)
-    EditText tv_female;
+    protected EditText tv_female;
 
     @BindView(R.id.ll_gender)
-    LinearLayout ll_gender;
-
+    protected LinearLayout ll_gender;
 
     @BindView(R.id.btnRegistration)
-    Button btnRegistration;
+    protected Button btnRegistration;
+
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
-
 
     public RegistrationFragment() {
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_registration, container, false);
         ButterKnife.bind(this, view);
         dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
@@ -124,7 +122,6 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
-
     }
 
     @OnClick(R.id.btnRegistration)
@@ -142,7 +139,6 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             }
         }
     }
-
 
     @Override
     public void queueResponse(JsonProfile profile) {
@@ -168,7 +164,6 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
-
     @Override
     public void onClick(View v) {
         if (v == edt_birthday) {
@@ -177,7 +172,6 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
             tv_male.setBackgroundResource(R.drawable.gender_redbg);
-
             SpannableString ss = new SpannableString("Male  ");
             Drawable d = getResources().getDrawable(R.drawable.check_white);
             d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
@@ -186,15 +180,13 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             tv_male.setText(ss);
             tv_male.setTextColor(Color.WHITE);
             tv_female.setTextColor(Color.BLACK);
-            tv_female.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0, 0, 0);
+            tv_female.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         } else if (v == tv_female) {
             gender = "F";
             tv_female.setBackgroundResource(R.drawable.gender_redbg);
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
             tv_female.setCompoundDrawablePadding(0);
-            tv_male.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0, 0, 0);
+            tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             tv_male.setTextColor(Color.BLACK);
             tv_female.setTextColor(Color.WHITE);
             SpannableString ss = new SpannableString("Female  ");
