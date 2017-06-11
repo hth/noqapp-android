@@ -1,5 +1,7 @@
 package com.noqapp.android.client.network;
 
+import static com.noqapp.android.client.utils.Constants.*;
+
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -69,22 +71,22 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             if (!isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
-                pushNotification.putExtra("f", remoteMessage.getData().get("f"));
-                pushNotification.putExtra("c", remoteMessage.getData().get("c"));
-                if (remoteMessage.getData().get("f").equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                    pushNotification.putExtra("cs", remoteMessage.getData().get("cs"));
-                    pushNotification.putExtra("ln", remoteMessage.getData().get("ln"));
-                    pushNotification.putExtra("g", remoteMessage.getData().get("g"));
+                pushNotification.putExtra(MSG_TYPE_F, remoteMessage.getData().get(MSG_TYPE_F));
+                pushNotification.putExtra(MSG_TYPE_C, remoteMessage.getData().get(MSG_TYPE_C));
+                if (remoteMessage.getData().get(MSG_TYPE_F).equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
+                    pushNotification.putExtra(MSG_TYPE_CS, remoteMessage.getData().get(MSG_TYPE_CS));
+                    pushNotification.putExtra(MSG_TYPE_LN, remoteMessage.getData().get(MSG_TYPE_LN));
+                    pushNotification.putExtra(MSG_TYPE_G, remoteMessage.getData().get(MSG_TYPE_G));
                 }
-                if (remoteMessage.getData().get("f").equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                    pushNotification.putExtra("u", remoteMessage.getData().get("u"));
+                if (remoteMessage.getData().get(MSG_TYPE_F).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                    pushNotification.putExtra(MSG_TYPE_U, remoteMessage.getData().get(MSG_TYPE_U));
                 }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } else {
                 // app is in background, show the notification in notification tray
                 //save data to database
-                String payload = remoteMessage.getData().get("f");
-                String codeQR = remoteMessage.getData().get("c");
+                String payload = remoteMessage.getData().get(MSG_TYPE_F);
+                String codeQR = remoteMessage.getData().get(MSG_TYPE_C);
                 /***
                  * When u==S then it is re-view
                  *      u==N then it is skip(Rejoin) Pending task
@@ -93,7 +95,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
 
                     JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-                    String userStatus = remoteMessage.getData().get("u");
+                    String userStatus = remoteMessage.getData().get(Constants.MSG_TYPE_U);
                     // un-subscribe from the topic
                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
 
@@ -111,11 +113,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     }
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
 
-                    String current_serving = remoteMessage.getData().get("cs");
+                    String current_serving = remoteMessage.getData().get(MSG_TYPE_CS);
                     JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
                     if (null == jtk)
                         jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR);
-                    String go_to = remoteMessage.getData().get("g");
+                    String go_to = remoteMessage.getData().get(MSG_TYPE_G);
 
                     /**
                      * Save codeQR of goto & show it in after join screen on app
@@ -139,8 +141,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     private void sendNotification(String title, String messageBody, String codeQR, boolean isReview) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         if (null != codeQR) {
-            notificationIntent.putExtra("CODEQR", codeQR);
-            notificationIntent.putExtra("ISREVIEW", isReview);
+            notificationIntent.putExtra(QRCODE, codeQR);
+            notificationIntent.putExtra(ISREVIEW, isReview);
 
         }
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -116,8 +116,14 @@ public class MerchantViewPagerFragment extends Fragment {
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 
-    public void updateListData(ArrayList<JsonTopic> jsonTopics) {
-        topicsList = jsonTopics;
-        adapter.notifyDataSetChanged();
+    public void updateListData(final ArrayList<JsonTopic> jsonTopics) {
+
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                topicsList = jsonTopics;
+                adapter.notifyDataSetChanged();
+            }
+        });
+
     }
 }
