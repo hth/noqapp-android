@@ -27,6 +27,7 @@ import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -176,7 +177,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     private void returnResultBack() {
         NoQueueBaseActivity.setReviewShown(true);
         Intent intent = new Intent();
-        intent.putExtra("CODEQR", jtk.getCodeQR());
+        intent.putExtra(Constants.QRCODE, jtk.getCodeQR());
         if (getParent() == null) {
             setResult(Activity.RESULT_OK, intent);
         } else {
