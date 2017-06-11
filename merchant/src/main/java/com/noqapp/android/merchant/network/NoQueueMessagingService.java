@@ -46,26 +46,26 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getData() != null) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            Log.d(TAG, "Message data payload: c- " + remoteMessage.getData().get("c"));
-            Log.d(TAG, "Message data payload: f- " + remoteMessage.getData().get("f"));
-            FirebaseMessageTypeEnum firebaseMessageTypeEnum = FirebaseMessageTypeEnum.valueOf(remoteMessage.getData().get("f"));
+            Log.d(TAG, "Message data payload: c- " + remoteMessage.getData().get(Constants.MSG_TYPE_C));
+            Log.d(TAG, "Message data payload: f- " + remoteMessage.getData().get(Constants.MSG_TYPE_F));
+            FirebaseMessageTypeEnum firebaseMessageTypeEnum = FirebaseMessageTypeEnum.valueOf(remoteMessage.getData().get(Constants.MSG_TYPE_F));
 
-            Log.d(TAG, "Message data payload: q-" + remoteMessage.getData().get("q"));
-            Log.d(TAG, "Message data payload: cs-" + remoteMessage.getData().get("cs"));
-            Log.d(TAG, "Message data payload: ln-" + remoteMessage.getData().get("ln"));
-            Log.d(TAG, "Message data payload: g-" + remoteMessage.getData().get("g"));
+            Log.d(TAG, "Message data payload: q-" + remoteMessage.getData().get(Constants.MSG_TYPE_Q));
+            Log.d(TAG, "Message data payload: cs-" + remoteMessage.getData().get(Constants.MSG_TYPE_CS));
+            Log.d(TAG, "Message data payload: ln-" + remoteMessage.getData().get(Constants.MSG_TYPE_LN));
+            Log.d(TAG, "Message data payload: g-" + remoteMessage.getData().get(Constants.MSG_TYPE_G));
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");
             clearNotifications(this);
             if (!isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
-                pushNotification.putExtra("message", body);
-                pushNotification.putExtra("qrcode", remoteMessage.getData().get("c"));
-                pushNotification.putExtra("status", remoteMessage.getData().get("q"));
-                pushNotification.putExtra("current_serving", remoteMessage.getData().get("cs"));
-                pushNotification.putExtra("lastno", remoteMessage.getData().get("ln"));
-                pushNotification.putExtra("f", remoteMessage.getData().get("f"));
+                pushNotification.putExtra(Constants.MESSAGE, body);
+                pushNotification.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.MSG_TYPE_C));
+                pushNotification.putExtra(Constants.STATUS, remoteMessage.getData().get(Constants.MSG_TYPE_Q));
+                pushNotification.putExtra(Constants.CURRENT_SERVING, remoteMessage.getData().get(Constants.MSG_TYPE_CS));
+                pushNotification.putExtra(Constants.LASTNO, remoteMessage.getData().get(Constants.MSG_TYPE_LN));
+                pushNotification.putExtra(Constants.MSG_TYPE_F, remoteMessage.getData().get(Constants.MSG_TYPE_F));
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
 
@@ -83,12 +83,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     private void sendNotification(String title, String messageBody, RemoteMessage remoteMessage) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         if (null != remoteMessage) {
-            notificationIntent.putExtra("message", messageBody);
-            notificationIntent.putExtra("qrcode", remoteMessage.getData().get("c"));
-            notificationIntent.putExtra("status", remoteMessage.getData().get("q"));
-            notificationIntent.putExtra("current_serving", remoteMessage.getData().get("cs"));
-            notificationIntent.putExtra("lastno", remoteMessage.getData().get("ln"));
-            notificationIntent.putExtra("f", remoteMessage.getData().get("f"));
+            notificationIntent.putExtra(Constants.MESSAGE, messageBody);
+            notificationIntent.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.MSG_TYPE_C));
+            notificationIntent.putExtra(Constants.STATUS, remoteMessage.getData().get(Constants.MSG_TYPE_Q));
+            notificationIntent.putExtra(Constants.CURRENT_SERVING, remoteMessage.getData().get(Constants.MSG_TYPE_CS));
+            notificationIntent.putExtra(Constants.LASTNO, remoteMessage.getData().get(Constants.MSG_TYPE_LN));
+            notificationIntent.putExtra(Constants.MSG_TYPE_F, remoteMessage.getData().get(Constants.MSG_TYPE_F));
             if (null != LaunchActivity.getLaunchActivity())
                 LaunchActivity.getLaunchActivity().updateListByNotification(notificationIntent);
         }

@@ -144,8 +144,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
-                    String payload = intent.getStringExtra("f");
-                    String codeQR = intent.getStringExtra("c");
+                    String payload = intent.getStringExtra(Constants.MSG_TYPE_F);
+                    String codeQR = intent.getStringExtra(Constants.MSG_TYPE_C);
                     Log.d(TAG, "payload=" + payload + " codeQR=" + codeQR);
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
@@ -164,8 +164,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
-                        String current_serving = intent.getStringExtra("cs");
-                        String go_to = intent.getStringExtra("g");
+                        String current_serving = intent.getStringExtra(Constants.MSG_TYPE_CS);
+                        String go_to = intent.getStringExtra(Constants.MSG_TYPE_G);
                         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
                         //update DB & after join screen
                         jtk.setServingNumber(Integer.parseInt(current_serving));
@@ -205,9 +205,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public void onNewIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            if (extras.containsKey("CODEQR") && extras.containsKey("ISREVIEW")) {
-                String codeQR = extras.getString("CODEQR");
-                boolean isReview = extras.getBoolean("ISREVIEW", false);
+            if (extras.containsKey(Constants.QRCODE) && extras.containsKey(Constants.ISREVIEW)) {
+                String codeQR = extras.getString(Constants.QRCODE);
+                boolean isReview = extras.getBoolean(Constants.ISREVIEW, false);
                 if (isReview) {
                     callReviewActivity(codeQR);
                 } else {
@@ -287,7 +287,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.requestCodeJoinQActivity) {
             if (resultCode == RESULT_OK) {
-                String intent_qrCode = data.getExtras().getString("CODEQR");
+                String intent_qrCode = data.getExtras().getString(Constants.QRCODE);
                 //Remove the AfterJoinFragment screen if having same qr code from tablist
                 List<Fragment> currentTabFragments = fragmentsStack.get(tabList);
                 if (null != currentTabFragments && currentTabFragments.size() > 1) {

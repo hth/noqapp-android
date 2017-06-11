@@ -299,12 +299,12 @@ public class LaunchActivity extends AppCompatActivity {
     public void updateListByNotification(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            String message = intent.getStringExtra("message");
-            String qrcode = intent.getStringExtra("qrcode");
-            String status = intent.getStringExtra("status");
-            String current_serving = intent.getStringExtra("current_serving");
-            String lastno = intent.getStringExtra("lastno");
-            String payload = intent.getStringExtra("f");
+            String message = intent.getStringExtra(Constants.MESSAGE);
+            String qrcode = intent.getStringExtra(Constants.QRCODE);
+            String status = intent.getStringExtra(Constants.STATUS);
+            String current_serving = intent.getStringExtra(Constants.CURRENT_SERVING);
+            String lastno = intent.getStringExtra(Constants.LASTNO);
+            String payload = intent.getStringExtra(Constants.MSG_TYPE_F);
             Log.v("Notify msg background",
                     "Push notification: " + message + "\n" + "qrcode : " + qrcode
                             + "\n" + "status : " + status
@@ -315,6 +315,17 @@ public class LaunchActivity extends AppCompatActivity {
 
             if (fragmentCommunicator != null) {
                 fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
+            }
+        }
+    }
+
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (extras.containsKey(Constants.MESSAGE) && extras.containsKey(Constants.QRCODE)) {
+                updateListByNotification(intent);
             }
         }
     }
