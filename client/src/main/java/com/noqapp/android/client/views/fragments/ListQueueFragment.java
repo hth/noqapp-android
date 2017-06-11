@@ -40,8 +40,6 @@ import java.util.List;
  * Step 3- update the DB
  * Step 4- update the list
  **/
-
-
 public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter, TokenQueueViewInterface {
 
     private static final int MSG_CURRENT_QUEUE = 0;

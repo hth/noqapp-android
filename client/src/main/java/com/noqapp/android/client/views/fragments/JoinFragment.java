@@ -57,7 +57,6 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     private JsonQueue jsonQueue;
     private String frtag;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_join, container, false);

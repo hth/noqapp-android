@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -43,43 +42,41 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
-
 public class LoginFragment extends NoQueueBaseFragment implements ProfilePresenter, View.OnClickListener {
     private final String TAG = LoginFragment.class.getSimpleName();
-    private final int READ_AND_RECIEVE_SMS__PERMISSION_CODE = 101;
-    private final String[] READ_AND_RECIEVE_SMS__PERMISSION_PERMS = {
+    private final int READ_AND_RECEIVE_SMS_PERMISSION_CODE = 101;
+    private final String[] READ_AND_RECEIVE_SMS_PERMISSION_PERMS = {
             Manifest.permission.RECEIVE_SMS,
             Manifest.permission.READ_SMS
     };
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+
     @BindView(R.id.edt_phone)
-    EditText edt_phoneNo;
+    protected EditText edt_phoneNo;
 
     @BindView(R.id.btn_login)
-    Button btn_login;
+    protected Button btn_login;
+
     @BindView(R.id.btn_verify_phone)
-    Button btn_verify_phone;
+    protected Button btn_verify_phone;
 
     @BindView(R.id.edt_verification_code)
-    EditText edt_verification_code;
+    protected EditText edt_verification_code;
 
     @BindView(R.id.tv_detail)
-    TextView tv_detail;
+    protected TextView tv_detail;
+
     private String mVerificationId;
     private String verifiedMobileNo;
     private final int STATE_INITIALIZED = 1;
     private final int STATE_CODE_SENT = 2;
     private final int STATE_VERIFY_FAILED = 3;
     private final int STATE_VERIFY_SUCCESS = 4;
-    private final int STATE_SIGNIN_FAILED = 5;
-    private final int STATE_SIGNIN_SUCCESS = 6;
+    private final int STATE_SIGN_IN_FAILED = 5;
+    private final int STATE_SIGN_IN_SUCCESS = 6;
     private FirebaseAuth mAuth;
 
-
     public LoginFragment() {
-
-
     }
 
     @Override
@@ -158,7 +155,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     @OnClick(R.id.btn_login)
     public void action_Login() {
         if (validate()) {
-            if (isReadAndRecieveSMSPermissionAllowed()) {
+            if (isReadAndReceiveSMSPermissionAllowed()) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
                     startPhoneNumberVerification(edt_phoneNo.getText().toString());
@@ -166,7 +163,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                     ShowAlertInformation.showNetworkDialog(getActivity());
                 }
             } else {
-                requestReadAndRecieveSMSPermissionAllowed();
+                requestReadAndReceiveSMSPermissionAllowed();
             }
         }
     }
@@ -214,7 +211,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                             FirebaseUser user = task.getResult().getUser();
                             Log.v(TAG, user.toString() + "mobile :" + user.getPhoneNumber());
                             verifiedMobileNo = user.getPhoneNumber();
-                            updateUI(STATE_SIGNIN_SUCCESS, user);
+                            updateUI(STATE_SIGN_IN_SUCCESS, user);
                         } else {
                             // Sign in failed, display a message and update the UI
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -223,13 +220,13 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                                  edt_verification_code.setError("Invalid code.");
                             }
                             // Update UI
-                             updateUI(STATE_SIGNIN_FAILED);
+                             updateUI(STATE_SIGN_IN_FAILED);
                         }
                     }
                 });
     }
 
-    private boolean isReadAndRecieveSMSPermissionAllowed() {
+    private boolean isReadAndReceiveSMSPermissionAllowed() {
         //Getting the permission status
         int result_read = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECEIVE_SMS);
         int result_write = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS);
@@ -240,17 +237,17 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         return false;
     }
 
-    private void requestReadAndRecieveSMSPermissionAllowed() {
+    private void requestReadAndReceiveSMSPermissionAllowed() {
         ActivityCompat.requestPermissions(
                 getActivity(),
-                READ_AND_RECIEVE_SMS__PERMISSION_PERMS,
-                READ_AND_RECIEVE_SMS__PERMISSION_CODE
+                READ_AND_RECEIVE_SMS_PERMISSION_PERMS,
+                READ_AND_RECEIVE_SMS_PERMISSION_CODE
         );
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == READ_AND_RECIEVE_SMS__PERMISSION_CODE) {
+        if (requestCode == READ_AND_RECEIVE_SMS_PERMISSION_CODE) {
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startPhoneNumberVerification(edt_phoneNo.getText().toString());
@@ -314,7 +311,6 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
                 signInWithPhoneAuthCredential(credential);
                 break;
-
         }
     }
 
@@ -364,13 +360,12 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                         disableViews(edt_verification_code );
                     }
                 }
-
                 break;
-            case STATE_SIGNIN_FAILED:
+            case STATE_SIGN_IN_FAILED:
                 // No-op, handled by sign-in check
                 tv_detail.setText(R.string.status_sign_in_failed);
                 break;
-            case STATE_SIGNIN_SUCCESS:
+            case STATE_SIGN_IN_SUCCESS:
                 // Np-op, handled by sign-in check
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -381,7 +376,5 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                 }
                 break;
         }
-
-
     }
 }

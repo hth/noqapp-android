@@ -33,7 +33,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPresenter, ResponsePresenter {
 
     private static final String TAG = AfterJoinFragment.class.getSimpleName();
@@ -64,13 +63,13 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     protected Button btn_cancel_queue;
 
     @BindView(R.id.tv_after)
-    TextView tv_after;
+    protected TextView tv_after;
 
     @BindView(R.id.tv_hour_saved)
     protected TextView tv_hour_saved;
 
     @BindView(R.id.ll_change_bg)
-    LinearLayout ll_change_bg;
+    protected LinearLayout ll_change_bg;
 
     private JsonTokenAndQueue jsonQueue;
     private String codeQR;

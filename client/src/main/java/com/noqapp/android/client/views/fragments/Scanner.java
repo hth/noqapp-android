@@ -49,7 +49,7 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
 
     @Override
     public void barcodeScannedResult(String rawData) {
-        Log.v("Scanned CodeQR=", rawData);
+        Log.v(TAG, "Scanned CodeQR=" + rawData);
         if (StringUtils.isBlank(rawData)) {
             Log.d("MainActivity", "Cancelled scan");
             Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
@@ -59,7 +59,7 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
                     String[] codeQR = rawData.split("/");
                     barcodeResult(codeQR[3]);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "Failed parsing codeQR reason=" + e.getLocalizedMessage(), e);
                 }
             } else {
                 Toast toast = Toast.makeText(getActivity(), getString(R.string.error_qrcode_scan), Toast.LENGTH_SHORT);
@@ -113,9 +113,10 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
         return (isCameraPermissionAllowed() && isExternalStoragePermissionAllowed());
     }
 
-
     private void requestCameraAndStoragePermission() {
-        ActivityCompat.requestPermissions(getActivity(), CAMERA_AND_STORAGE_PERMISSION_PERMS,
+        ActivityCompat.requestPermissions(
+                getActivity(),
+                CAMERA_AND_STORAGE_PERMISSION_PERMS,
                 CAMERA_AND_STORAGE_PERMISSION_CODE);
     }
 
