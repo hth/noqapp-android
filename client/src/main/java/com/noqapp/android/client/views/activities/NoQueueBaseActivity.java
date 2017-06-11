@@ -43,7 +43,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static void setRemoteJoinCount(int remoteJoinCount) {
-        sharedpreferences.edit().putInt(PREKEY_REMOTE_JOIN, remoteJoinCount).commit();
+        sharedpreferences.edit().putInt(PREKEY_REMOTE_JOIN, remoteJoinCount<0?0:remoteJoinCount).commit();
     }
 
     public static boolean getAutoJoinStatus() {

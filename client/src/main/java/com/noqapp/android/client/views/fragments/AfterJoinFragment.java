@@ -200,7 +200,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private void callQueue() {
         if (codeQR != null) {
             Log.d("CodeQR=", codeQR);
-            if (UserUtils.isLogin()) {
+            if (UserUtils.isLogin() && getArguments().getBoolean(KEY_IS_HISTORY, false)) {
                 QueueApiModel.tokenPresenter = this;
                 QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
             } else {
