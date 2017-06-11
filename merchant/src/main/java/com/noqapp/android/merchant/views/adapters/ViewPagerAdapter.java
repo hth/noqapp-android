@@ -90,32 +90,32 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         final JsonTopic lq = topics.get(position);
         tv_current_value.setText(String.valueOf(lq.getServingNumber()));
         /* Add to show only remaining people in queue */
-        tv_total_value.setText(String.valueOf(lq.getToken()-lq.getServingNumber()));
+        tv_total_value.setText(String.valueOf(lq.getToken() - lq.getServingNumber()));
         tv_title.setText(lq.getDisplayName());
-        tv_serving_customer.setText(Html.fromHtml("Serving: " +(StringUtils.isNotBlank(lq.getCustomerName()) ? "<b>"+lq.getCustomerName() + "</b> ": "NA")));
-        final String status = lq.getQueueStatus().getDescription();
+        tv_serving_customer.setText(Html.fromHtml("Serving: " + (StringUtils.isNotBlank(lq.getCustomerName()) ? "<b>" + lq.getCustomerName() + "</b> " : "NA")));
+        final QueueStatusEnum queueStatus = lq.getQueueStatus();
         btn_start.setText(context.getString(R.string.start));
 
-        if(LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.MER_ADMIN || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.MER_MANAGER) {
+        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.MER_ADMIN || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.MER_MANAGER) {
             // TODO(hth) Implement further settings for merchant topic
         }
-        switch (status) {
 
-            case "Start":
+        switch (queueStatus) {
+            case S:
                 tv_start.setText(context.getString(R.string.start));
                 btn_next.setEnabled(false);
                 btn_next.setBackgroundResource(R.mipmap.next_inactive);
                 btn_skip.setEnabled(false);
                 btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 break;
-            case "Re-Start":
+            case R:
                 tv_start.setText(context.getString(R.string.continues));
                 btn_next.setEnabled(false);
                 btn_next.setBackgroundResource(R.mipmap.next_inactive);
                 btn_skip.setEnabled(false);
                 btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 break;
-            case "Next":
+            case N:
                 tv_next.setText(context.getString(R.string.next));
 //                btn_next.setVisibility(View.VISIBLE);
 //                btn_skip.setVisibility(View.VISIBLE);
@@ -126,18 +126,18 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 tv_start.setText(context.getString(R.string.pause));
                 btn_start.setBackgroundResource(R.mipmap.pause);
                 break;
-            case "Done":
+            case D:
                 tv_start.setText(context.getString(R.string.done));
                 tv_total_value.setText("0");
                 btn_start.setBackgroundResource(R.mipmap.stop);
-               // btn_next.setVisibility(View.GONE);
-               // btn_skip.setVisibility(View.GONE);
+                // btn_next.setVisibility(View.GONE);
+                // btn_skip.setVisibility(View.GONE);
                 btn_next.setEnabled(false);
                 btn_next.setBackgroundResource(R.mipmap.next_inactive);
                 btn_skip.setEnabled(false);
                 btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 break;
-            case "Closed":
+            case C:
                 tv_start.setText(context.getString(R.string.closed));
 //                btn_next.setVisibility(View.GONE);
 //                btn_skip.setVisibility(View.GONE);
@@ -149,18 +149,20 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 btn_skip.setEnabled(false);
                 btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 break;
-
-            case "Pause":
+            case P:
                 tv_start.setText(context.getString(R.string.pause));
-               // btn_next.setVisibility(View.GONE);
-               // btn_skip.setVisibility(View.GONE);
+                // btn_next.setVisibility(View.GONE);
+                // btn_skip.setVisibility(View.GONE);
                 btn_next.setEnabled(false);
                 btn_next.setBackgroundResource(R.mipmap.next_inactive);
                 btn_skip.setEnabled(false);
                 btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
                 btn_start.setBackgroundResource(R.mipmap.pause);
                 break;
+            default:
+                Log.e(TAG, "Reached un-supported condition");
         }
+
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,7 +194,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             @Override
             public void onClick(View v) {
                 LaunchActivity.getLaunchActivity().setCounterName(edt_counter_name.getText().toString().trim());
-                if (!status.equals("Start") && !status.equals("Done")) {
+                if (queueStatus != QueueStatusEnum.S && queueStatus != QueueStatusEnum.D) {
                     if (edt_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
@@ -213,9 +215,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                             ShowAlertInformation.showNetworkDialog(context);
                         }
                     }
-                } else if (status.equals("Start")) {
+                } else if (queueStatus == QueueStatusEnum.S) {
                     Toast.makeText(context, context.getString(R.string.error_start), Toast.LENGTH_LONG).show();
-                } else if (status.equals("Done")) {
+                } else if (queueStatus == QueueStatusEnum.D) {
                     Toast.makeText(context, context.getString(R.string.error_done), Toast.LENGTH_LONG).show();
                 }
             }
@@ -229,7 +231,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                     Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
                 } else if (lq.getRemaining() == 0 && lq.getServingNumber() == 0) {
                     Toast.makeText(context, context.getString(R.string.error_empty_wait), Toast.LENGTH_LONG).show();
-                } else if (status.equals("Done")) {
+                } else if (queueStatus == QueueStatusEnum.D) {
                     Toast.makeText(context, context.getString(R.string.error_done_next), Toast.LENGTH_LONG).show();
                 } else {
                     if (edt_counter_name.getText().toString().trim().equals("")) {
@@ -239,7 +241,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                             builder.setTitle("Confirm");
-                            builder.setMessage("Have you completed serving "+String.valueOf(lq.getServingNumber()));
+                            builder.setMessage("Have you completed serving " + String.valueOf(lq.getServingNumber()));
                             builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -273,7 +275,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
 
                             AlertDialog alert = builder.create();
                             alert.show();
-                        }else {
+                        } else {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 LaunchActivity.getLaunchActivity().progressDialog.show();
                                 Served served = new Served();
