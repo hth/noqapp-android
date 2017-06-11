@@ -483,6 +483,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_REJOIN, true);
+        b.putBoolean(NoQueueBaseFragment.KEY_IS_AUTOJOIN_ELIGIBLE,false);
         JoinFragment jf = new JoinFragment();
         jf.setArguments(b);
         NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);

@@ -236,6 +236,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
                 } else {
                     JoinFragment jf = new JoinFragment();
                     b.putBoolean(KEY_IS_HISTORY, true);
+                    b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,false);
                     jf.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
                 }

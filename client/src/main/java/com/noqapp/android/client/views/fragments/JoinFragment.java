@@ -149,8 +149,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         countryShortName = jsonQueue.getCountryShortName();
         /* Update the remote join count */
         NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoin());
-        /* Auto join after scan if autojoin status is true in me screen */
-        if (!getArguments().getBoolean(KEY_FROM_LIST, false) && NoQueueBaseActivity.getAutoJoinStatus() && !getArguments().getBoolean(KEY_IS_REJOIN, false)) {
+        /* Auto join after scan if autojoin status is true in me screen && it is not coming from skip notification as well as history queue */
+        if(getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,true) && NoQueueBaseActivity.getAutoJoinStatus()){
             joinQueue();
         }
     }
@@ -167,6 +167,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                     b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
                     b.putBoolean(KEY_FROM_LIST, false);
                     b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+                    b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,true));
+                    b.putBoolean(KEY_IS_HISTORY,getArguments().getBoolean(KEY_IS_HISTORY, false));
                     AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
                     afterJoinFragment.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
@@ -178,6 +180,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             Bundle b = new Bundle();
             b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
             b.putBoolean(KEY_FROM_LIST, false);
+            b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,true));
             b.putBoolean(KEY_IS_HISTORY,getArguments().getBoolean(KEY_IS_HISTORY, false));
             b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
