@@ -70,6 +70,12 @@ public class JsonQueue implements Serializable {
     @JsonProperty("e")
     private int endHour;
 
+    @JsonProperty ("pj")
+    private boolean preventJoining;
+
+    @JsonProperty ("dc")
+    private boolean dayClosed = false;
+
     @JsonProperty("o")
     private String topic;
 
@@ -136,6 +142,14 @@ public class JsonQueue implements Serializable {
 
     public int getEndHour() {
         return endHour;
+    }
+
+    public boolean isPreventJoining() {
+        return preventJoining;
+    }
+
+    public boolean isDayClosed() {
+        return dayClosed;
     }
 
     public String getTopic() {
