@@ -18,12 +18,12 @@ public interface DeviceService {
     @POST("open/device/register.json")
     Call<DeviceRegistered> register(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Body
-                    DeviceToken deviceToken
+            DeviceToken deviceToken
     );
 }

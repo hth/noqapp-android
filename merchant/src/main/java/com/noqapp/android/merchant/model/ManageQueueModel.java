@@ -36,6 +36,34 @@ public class ManageQueueModel {
     }
 
     /**
+     * Get details for a specific queue.
+     *
+     * @param did
+     * @param mail
+     * @param auth
+     */
+    public static void getQueue(String did, String mail, String auth, String codeQR) {
+        manageQueueService.getQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonTopicList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("Get all assigned queues", String.valueOf(response.body()));
+                    topicPresenter.queueResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Found error while getting all queues assigned");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonTopicList> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                topicPresenter.queueError();
+            }
+        });
+    }
+
+    /**
      * @param did
      * @param mail
      * @param auth

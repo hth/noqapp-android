@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * User: hitender
@@ -16,6 +17,24 @@ import retrofit2.http.POST;
  */
 
 public interface ManageQueueService {
+
+    @GET("api/m/mq/queue/{codeQR}.json")
+    Call<JsonTopicList> getQueue(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR
+    );
 
     @GET("api/m/mq/queues.json")
     Call<JsonTopicList> getQueues(
