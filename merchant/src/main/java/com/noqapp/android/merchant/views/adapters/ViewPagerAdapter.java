@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
@@ -32,6 +34,8 @@ import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+
+
 
 /**
  * User: chandra
@@ -78,8 +82,8 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         TextView tv_title = (TextView) itemView.findViewById(R.id.tv_title);
         TextView tv_serving_customer = (TextView) itemView.findViewById(R.id.tv_serving_customer);
 
-        final EditText edt_counter_name = (EditText) itemView.findViewById(R.id.edt_counter_name);
-        edt_counter_name.setText(LaunchActivity.getLaunchActivity().getCounterName());
+        final TextView tv_counter_name = (TextView) itemView.findViewById(R.id.tv_counter_name);
+        tv_counter_name.setText(LaunchActivity.getLaunchActivity().getCounterName());
         Button btn_skip = (Button) itemView.findViewById(R.id.btn_skip);
         Button btn_next = (Button) itemView.findViewById(R.id.btn_next);
         final Button btn_start = (Button) itemView.findViewById(R.id.btn_start);
@@ -87,6 +91,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         TextView tv_skip = (TextView) itemView.findViewById(R.id.tv_skip);
         TextView tv_next = (TextView) itemView.findViewById(R.id.tv_next);
         TextView tv_start = (TextView) itemView.findViewById(R.id.tv_start);
+        ImageView iv_edit = (ImageView) itemView.findViewById(R.id.iv_edit);
         final JsonTopic lq = topics.get(position);
         tv_current_value.setText(String.valueOf(lq.getServingNumber()));
         /* Add to show only remaining people in queue */
@@ -166,8 +171,8 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LaunchActivity.getLaunchActivity().setCounterName(edt_counter_name.getText().toString().trim());
-                if (edt_counter_name.getText().toString().trim().equals("")) {
+                LaunchActivity.getLaunchActivity().setCounterName(tv_counter_name.getText().toString().trim());
+                if (tv_counter_name.getText().toString().trim().equals("")) {
                     Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                 } else {
 
@@ -178,7 +183,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                         served.setQueueStatus(lq.getQueueStatus());
                         served.setQueueUserState(QueueUserStateEnum.S);
                         served.setServedNumber(lq.getServingNumber());
-                        served.setGoTo(edt_counter_name.getText().toString());
+                        served.setGoTo(tv_counter_name.getText().toString());
                         ManageQueueModel.served(
                                 LaunchActivity.getLaunchActivity().getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
@@ -193,9 +198,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         btn_skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LaunchActivity.getLaunchActivity().setCounterName(edt_counter_name.getText().toString().trim());
+                LaunchActivity.getLaunchActivity().setCounterName(tv_counter_name.getText().toString().trim());
                 if (queueStatus != QueueStatusEnum.S && queueStatus != QueueStatusEnum.D) {
-                    if (edt_counter_name.getText().toString().trim().equals("")) {
+                    if (tv_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -205,7 +210,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                             served.setQueueStatus(lq.getQueueStatus());
                             served.setQueueUserState(QueueUserStateEnum.N);
                             served.setServedNumber(lq.getServingNumber());
-                            served.setGoTo(edt_counter_name.getText().toString());
+                            served.setGoTo(tv_counter_name.getText().toString());
                             ManageQueueModel.served(
                                     LaunchActivity.getLaunchActivity().getDeviceID(),
                                     LaunchActivity.getLaunchActivity().getEmail(),
@@ -222,11 +227,22 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 }
             }
         });
-
+        iv_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDia(context,tv_counter_name);
+            }
+        });
+        tv_counter_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDia(context,tv_counter_name);
+            }
+        });
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LaunchActivity.getLaunchActivity().setCounterName(edt_counter_name.getText().toString().trim());
+                LaunchActivity.getLaunchActivity().setCounterName(tv_counter_name.getText().toString().trim());
                 if (lq.getToken() == 0) {
                     Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
                 } else if (lq.getRemaining() == 0 && lq.getServingNumber() == 0) {
@@ -234,7 +250,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 } else if (queueStatus == QueueStatusEnum.D) {
                     Toast.makeText(context, context.getString(R.string.error_done_next), Toast.LENGTH_LONG).show();
                 } else {
-                    if (edt_counter_name.getText().toString().trim().equals("")) {
+                    if (tv_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
                         if (btn_start.getText().equals(context.getString(R.string.pause))) {
@@ -252,7 +268,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                                         /*  send   QueueStatusEnum P for pause state */
                                         served.setQueueStatus(QueueStatusEnum.P);
                                         served.setServedNumber(lq.getServingNumber());
-                                        served.setGoTo(edt_counter_name.getText().toString());
+                                        served.setGoTo(tv_counter_name.getText().toString());
                                         ManageQueueModel.served(
                                                 LaunchActivity.getLaunchActivity().getDeviceID(),
                                                 LaunchActivity.getLaunchActivity().getEmail(),
@@ -284,7 +300,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                                   /*  send   QueueStatusEnum as it is for other than pause state */
                                 served.setQueueStatus(lq.getQueueStatus());
                                 served.setServedNumber(lq.getServingNumber());
-                                served.setGoTo(edt_counter_name.getText().toString());
+                                served.setGoTo(tv_counter_name.getText().toString());
                                 ManageQueueModel.served(
                                         LaunchActivity.getLaunchActivity().getDeviceID(),
                                         LaunchActivity.getLaunchActivity().getEmail(),
@@ -334,4 +350,41 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     public void manageQueueError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
+
+    private void showDia(final Context mContext, final TextView textView){
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_edit_counter, null, false);
+        final EditText edt_counter = (EditText) customDialogView.findViewById(R.id.edt_counter);
+
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        Button btn_update = (Button) customDialogView.findViewById(R.id.btn_update);
+        Button btn_cancel = (Button) customDialogView.findViewById(R.id.btn_cancel);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertDialog.dismiss();
+            }
+        });
+        btn_update.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                edt_counter.setError(null);
+                if(edt_counter.getText().toString().equals("")){
+                    edt_counter.setError(mContext.getString(R.string.empty_counter));
+                }else {
+                    textView.setText(edt_counter.getText().toString());
+                    mAlertDialog.dismiss();
+                }
+            }
+        });
+
+        mAlertDialog.show();
+    }
+
+
 }
