@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -48,13 +50,12 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private ArrayList<JsonTopic> topics;
     private ListView listview;
     private RelativeLayout rl_empty_screen;
-    private MerchantViewPagerFragment merchantViewPagerFragment;
+    public MerchantViewPagerFragment merchantViewPagerFragment;
     private Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Runnable updater;
     private Snackbar snackbar;
     private boolean isFragmentVisible = false;
-
     public MerchantListFragment() {
 
     }
@@ -169,12 +170,16 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                merchantViewPagerFragment = new MerchantViewPagerFragment();
-                Bundle b = new Bundle();
-                b.putSerializable("jsonMerchant", topics);
-                b.putInt("position", position);
-                merchantViewPagerFragment.setArguments(b);
-                LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, merchantViewPagerFragment, "MerchantViewPagerFragment");
+                if(!new AppUtils().isTablet(getActivity())) {
+                    merchantViewPagerFragment = new MerchantViewPagerFragment();
+                    Bundle b = new Bundle();
+                    b.putSerializable("jsonMerchant", topics);
+                    b.putInt("position", position);
+                    merchantViewPagerFragment.setArguments(b);
+                    LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, merchantViewPagerFragment, "MerchantViewPagerFragment");
+                }else{
+                    merchantViewPagerFragment.setPage(position);
+                }
                 for (int j = 0; j < parent.getChildCount(); j++) {
                     parent.getChildAt(j).setBackgroundColor(Color.TRANSPARENT);
                 }
@@ -186,6 +191,19 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
         updateSnackbarTxt();
         snackbar.show();
+
+
+        if(new AppUtils().isTablet(getActivity())) {
+            merchantViewPagerFragment = new MerchantViewPagerFragment();
+            Bundle b = new Bundle();
+            b.putSerializable("jsonMerchant", topics);
+            b.putInt("position", 0);
+            merchantViewPagerFragment.setArguments(b);
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.list_detail_fragment, merchantViewPagerFragment);
+            //  fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
     }
 
     private void subscribeTopics() {

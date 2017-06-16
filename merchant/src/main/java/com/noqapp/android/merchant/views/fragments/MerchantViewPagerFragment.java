@@ -108,6 +108,7 @@ public class MerchantViewPagerFragment extends Fragment {
         return view;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -119,5 +120,8 @@ public class MerchantViewPagerFragment extends Fragment {
     public void updateListData(final ArrayList<JsonTopic> jsonTopics) {
         topicsList = jsonTopics;
         adapter.notifyDataSetChanged();
+    }
+    public void setPage(int pos){
+        viewPager.setCurrentItem(pos);
     }
 }

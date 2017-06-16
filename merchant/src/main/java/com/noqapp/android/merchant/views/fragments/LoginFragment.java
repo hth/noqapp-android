@@ -12,12 +12,14 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.LoginModel;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
@@ -116,6 +118,12 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             Bundle b = new Bundle();
             b.putSerializable("jsonMerchant", jsonMerchant);
             mlf.setArguments(b);
+            if(new AppUtils().isTablet(getActivity())){
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
+                LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
+                LaunchActivity.getLaunchActivity().list_fragment.setLayoutParams(lp1);
+                LaunchActivity.getLaunchActivity().list_detail_fragment.setLayoutParams(lp2);
+            }
             LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, mlf);
             LaunchActivity.getLaunchActivity().setUserName();
         }

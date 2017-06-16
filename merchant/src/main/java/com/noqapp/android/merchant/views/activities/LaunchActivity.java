@@ -18,7 +18,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +36,7 @@ import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-public class LaunchActivity extends AppCompatActivity {
+public class LaunchActivity extends AppCompatActivity  {
 
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
@@ -61,7 +63,7 @@ public class LaunchActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
     private ImageView actionbarBack;
     private TextView tv_name;
-
+    public FrameLayout list_fragment,list_detail_fragment;
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
@@ -88,6 +90,10 @@ public class LaunchActivity extends AppCompatActivity {
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tv_name = (TextView) findViewById(R.id.tv_name);
+       if(new AppUtils().isTablet(this)){
+           list_fragment=(FrameLayout)findViewById(R.id.frame_layout);
+           list_detail_fragment=(FrameLayout)findViewById(R.id.list_detail_fragment);
+       }
         initProgress();
         iv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,10 +128,30 @@ public class LaunchActivity extends AppCompatActivity {
             }
         });
         if (isLoggedIn()) {
-            merchantListFragment = new MerchantListFragment();
-            replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
+            if (!new AppUtils().isTablet(getApplicationContext())) {
+                merchantListFragment = new MerchantListFragment();
+                replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
+               // setUserName();
+            }else {
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
+                LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
+                list_fragment.setLayoutParams(lp1);
+                list_detail_fragment.setLayoutParams(lp2);
+                merchantListFragment = new MerchantListFragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, merchantListFragment);
+                //  fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
             setUserName();
         } else {
+            if (new AppUtils().isTablet(getApplicationContext())) {
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
+                LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
+                list_fragment.setLayoutParams(lp1);
+                list_detail_fragment.setLayoutParams(lp0);
+            }
+
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
         }
 
@@ -329,4 +355,6 @@ public class LaunchActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }
