@@ -148,7 +148,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         codeQR = jsonQueue.getCodeQR();
         countryShortName = jsonQueue.getCountryShortName();
         /* Update the remote join count */
-        NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoin());
+        NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
         /* Auto join after scan if autojoin status is true in me screen && it is not coming from skip notification as well as history queue */
         if(getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,true) && NoQueueBaseActivity.getAutoJoinStatus()){
             joinQueue();
@@ -160,7 +160,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
 
             if (UserUtils.isLogin()) {
-                if (jsonQueue.getRemoteJoin() == 0) {
+                if (jsonQueue.getRemoteJoinCount() == 0) {
                     Toast.makeText(getActivity(), getString(R.string.error_remote_join_available), Toast.LENGTH_LONG).show();
                 } else {
                     Bundle b = new Bundle();
