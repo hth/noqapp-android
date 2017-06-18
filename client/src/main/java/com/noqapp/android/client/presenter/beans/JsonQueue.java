@@ -11,7 +11,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -38,7 +37,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("c")
     private String codeQR;
 
-    @JsonProperty ("cor")
+    @JsonProperty("cor")
     private double[] coordinate;
 
     @JsonProperty("n")
@@ -70,10 +69,10 @@ public class JsonQueue implements Serializable {
     @JsonProperty("e")
     private int endHour;
 
-    @JsonProperty ("pj")
+    @JsonProperty("pj")
     private boolean preventJoining;
 
-    @JsonProperty ("dc")
+    @JsonProperty("dc")
     private boolean dayClosed = false;
 
     @JsonProperty("o")
@@ -89,13 +88,19 @@ public class JsonQueue implements Serializable {
     private QueueStatusEnum queueStatus;
 
     @JsonProperty("se")
-    private String servicedEndTime;
+    private String serviceEndTime;
 
     @JsonProperty("rj")
-    private int remoteJoin;
+    private int remoteJoinCount;
 
     @JsonProperty("u")
     private String created;
+
+    @JsonProperty("ra")
+    private float rating;
+
+    @JsonProperty("rc")
+    private int ratingCount;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -168,13 +173,13 @@ public class JsonQueue implements Serializable {
         return queueStatus;
     }
 
-    public String getServicedEndTime() {
-        return servicedEndTime;
+    public String getServiceEndTime() {
+        return serviceEndTime;
     }
 
     /* Used when joining remotely. */
-    public int getRemoteJoin() {
-        return remoteJoin;
+    public int getRemoteJoinCount() {
+        return remoteJoinCount;
     }
 
     public String getCreated() {
@@ -184,6 +189,14 @@ public class JsonQueue implements Serializable {
     public JsonQueue setCreated(Date created) {
         this.created = DateFormatUtils.format(created, Constants.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         return this;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
     }
 
     public int getPeopleInQueue() {
@@ -214,7 +227,7 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setServingNumber(servingNumber);
         jsonTokenAndQueue.setLastNumber(lastNumber);
         jsonTokenAndQueue.setQueueStatus(queueStatus);
-        jsonTokenAndQueue.setServiceEndTime(servicedEndTime);
+        jsonTokenAndQueue.setServiceEndTime(serviceEndTime);
         jsonTokenAndQueue.setCreateDate(created);
         return jsonTokenAndQueue;
     }
@@ -239,9 +252,11 @@ public class JsonQueue implements Serializable {
                 .append("servingNumber", servingNumber)
                 .append("lastNumber", lastNumber)
                 .append("queueStatus", queueStatus)
-                .append("servicedEndTime", servicedEndTime)
-                .append("remoteJoin", remoteJoin)
+                .append("serviceEndTime", serviceEndTime)
+                .append("remoteJoinCount", remoteJoinCount)
                 .append("created", created)
+                .append("rating", rating)
+                .append("ratingCount", ratingCount)
                 .append("error", error)
                 .toString();
     }
