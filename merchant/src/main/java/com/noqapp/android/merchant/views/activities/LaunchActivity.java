@@ -248,7 +248,7 @@ public class LaunchActivity extends AppCompatActivity  {
         editor.apply();
     }
 
-    private void enableLogout() {
+    public void enableLogout() {
         if (isLoggedIn()) {
             iv_logout.setVisibility(View.VISIBLE);
         } else {

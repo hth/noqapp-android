@@ -36,7 +36,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 
-
 /**
  * User: chandra
  * Date: 4/16/17 4:02 PM
@@ -230,13 +229,13 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         iv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDia(context,tv_counter_name);
+                showCounterEditDialog(context, tv_counter_name);
             }
         });
         tv_counter_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDia(context,tv_counter_name);
+                showCounterEditDialog(context, tv_counter_name);
             }
         });
         btn_start.setOnClickListener(new View.OnClickListener() {
@@ -351,13 +350,13 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
-    private void showDia(final Context mContext, final TextView textView){
+    private void showCounterEditDialog(final Context mContext, final TextView textView) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_edit_counter, null, false);
         final EditText edt_counter = (EditText) customDialogView.findViewById(R.id.edt_counter);
-
+        edt_counter.setText(textView.getText().toString().trim());
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -374,17 +373,15 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             @Override
             public void onClick(View v) {
                 edt_counter.setError(null);
-                if(edt_counter.getText().toString().equals("")){
+                if (edt_counter.getText().toString().equals("")) {
                     edt_counter.setError(mContext.getString(R.string.empty_counter));
-                }else {
+                } else {
                     textView.setText(edt_counter.getText().toString());
                     mAlertDialog.dismiss();
                 }
             }
         });
-
         mAlertDialog.show();
     }
-
 
 }

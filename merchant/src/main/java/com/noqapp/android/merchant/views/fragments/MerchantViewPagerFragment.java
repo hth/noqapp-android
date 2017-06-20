@@ -115,6 +115,7 @@ public class MerchantViewPagerFragment extends Fragment {
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue_detail));
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
+        LaunchActivity.getLaunchActivity().enableLogout();
     }
 
     public void updateListData(final ArrayList<JsonTopic> jsonTopics) {
