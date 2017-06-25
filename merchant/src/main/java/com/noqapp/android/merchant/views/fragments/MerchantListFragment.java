@@ -78,6 +78,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         ViewPagerAdapter.setAdapterCallBack(this);
 
         snackbar = Snackbar.make(listview, "", Snackbar.LENGTH_INDEFINITE);
+        snackbar.getView().setBackgroundResource(R.drawable.red_gredient);
+
         snackbar.setCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
@@ -254,6 +256,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                     if (null != merchantViewPagerFragment) {
                         merchantViewPagerFragment.updateListData(topics);
                     }
+                    LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
+                    updateSnackbarTxt();
                     break;
                 }
             }

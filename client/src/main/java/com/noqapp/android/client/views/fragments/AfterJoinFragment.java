@@ -69,6 +69,9 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     @BindView(R.id.tv_hour_saved)
     protected TextView tv_hour_saved;
 
+    @BindView(R.id.tv_rating_review)
+    protected TextView tv_rating_review;
+
     @BindView(R.id.ll_change_bg)
     protected LinearLayout ll_change_bg;
 
@@ -102,6 +105,9 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
             tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
+           // tv_rating_review.setText(String.valueOf(Math.round(jsonQueue.getRating()))+" out of "+String.valueOf(jsonQueue.getRatingCount())+" review");
+            tv_rating_review.setText(String.valueOf(Math.round(4.3))+" out of "+String.valueOf(jsonQueue.getRatingCount())+" review");
+
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), storePhone));
             tv_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override

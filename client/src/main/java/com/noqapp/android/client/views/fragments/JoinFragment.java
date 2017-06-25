@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.StringBuilderPrinter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,9 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
 
     @BindView(R.id.tv_skip_msg)
     protected TextView tv_skip_msg;
+
+    @BindView(R.id.tv_rating_review)
+    protected TextView tv_rating_review;
 
 
     @BindView(R.id.btn_joinQueue)
@@ -145,6 +149,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
         tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
+        tv_rating_review.setText(String.valueOf(Math.round(jsonQueue.getRating()))+" out of "+String.valueOf(jsonQueue.getRatingCount())+" review");
         codeQR = jsonQueue.getCodeQR();
         countryShortName = jsonQueue.getCountryShortName();
         /* Update the remote join count */

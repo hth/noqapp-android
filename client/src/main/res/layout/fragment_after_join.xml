@@ -65,8 +65,17 @@
                     android:id="@+id/tv_mobile"
                     style="@style/style_join_queue_tv"
                     android:layout_below="@+id/tv_hour_saved"
+                    android:layout_marginBottom="10dp"
                     android:textColor="@color/colorMobile"
                     android:textSize="20sp" />
+
+                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                    android:id="@+id/tv_rating_review"
+                    style="@style/style_join_queue_tv"
+                    android:layout_below="@+id/tv_mobile"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorAddress"
+                    android:textSize="18sp" />
 
 
             </RelativeLayout>
