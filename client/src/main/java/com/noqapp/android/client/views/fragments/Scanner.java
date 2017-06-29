@@ -54,7 +54,7 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
             Log.d("MainActivity", "Cancelled scan");
             Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
         } else {
-            if (rawData.startsWith("https://tp.receiptofi.com")) {
+            if (rawData.startsWith("https://q.noqapp.com")) {
                 try {
                     String[] codeQR = rawData.split("/");
                     barcodeResult(codeQR[3]);
