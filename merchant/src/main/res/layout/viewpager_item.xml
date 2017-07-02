@@ -20,15 +20,29 @@
             android:orientation="vertical"
             android:weightSum="1">
 
-            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                android:id="@+id/tv_title"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".2"
                 android:background="@color/pager_top_bg"
-                android:gravity="center"
-                android:textColor="@color/color_action_bar"
-                android:textSize="24sp" />
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/iv_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@mipmap/settings" />
+
+                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:textColor="@color/color_action_bar"
+                    android:textSize="24sp" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -118,23 +132,24 @@
                         android:gravity="center_horizontal"
                         android:textColor="@color/colorAddress"
                         android:textSize="18sp" />
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginLeft="20dp"
                         android:layout_below="@+id/tv_serving_customer"
-                        >
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
                         <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                             android:id="@+id/tv_counter_name"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
+                            android:layout_alignParentLeft="true"
                             android:layout_marginBottom="10dp"
+                            android:layout_toLeftOf="@+id/iv_edit"
                             android:gravity="center"
                             android:hint="@string/counter_name"
-                            android:layout_alignParentLeft="true"
                             android:textColor="@color/colorAddress"
-                            android:layout_toLeftOf="@+id/iv_edit"
                             android:textSize="18sp" />
 
                         <ImageView
@@ -142,24 +157,7 @@
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:layout_alignParentRight="true"
-                            android:background="@mipmap/edit_text"/>
-                    <!--<EditText-->
-                        <!--android:id="@+id/edt_counter_name"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                       <!---->
-                        <!--android:layout_centerHorizontal="true"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:layout_marginLeft="30dp"-->
-                        <!--android:layout_marginRight="30dp"-->
-                        <!--android:background="@drawable/square_white_bg_drawable"-->
-                        <!--android:gravity="center_horizontal"-->
-                        <!--android:hint="@string/counter_name"-->
-                        <!--android:inputType="text"-->
-                        <!--android:maxLength="20"-->
-                        <!--android:maxLines="1"-->
-                        <!--android:padding="5dp"-->
-                        <!--android:textSize="18sp" />-->
+                            android:background="@mipmap/edit_text" />
                     </RelativeLayout>
                 </RelativeLayout>
 
@@ -183,9 +181,9 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight=".33"
-                            android:visibility="gone"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
 
@@ -234,13 +232,14 @@
                                 android:textSize="16sp" />
 
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight=".33"
-                            android:visibility="gone"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
 

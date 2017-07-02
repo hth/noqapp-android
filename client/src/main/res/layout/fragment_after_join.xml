@@ -67,7 +67,7 @@
                     android:layout_below="@+id/tv_hour_saved"
                     android:textColor="@color/colorMobile"
                     android:textSize="20sp" />
-                
+
             </RelativeLayout>
 
             <LinearLayout

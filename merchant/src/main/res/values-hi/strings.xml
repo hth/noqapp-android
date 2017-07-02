@@ -51,5 +51,8 @@
     <string name="last_update">अपडेट:</string>
     <string name="pause">Pause</string>
     <string name="empty_counter">Please enter counter name</string>
+    <string name="dayclosed">Day Closed</string>
+    <string name="preventjoining">Prevent Joining</string>
+    <string name="screen_settings">Settings</string>
 
 </resources>

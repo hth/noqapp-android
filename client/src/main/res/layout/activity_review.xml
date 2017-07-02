@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -134,7 +135,29 @@
                     android:layout_weight=".3"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
+                <RelativeLayout
+                    android:id="@+id/tick_mark_labels_rl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="12dp"/>
 
+                <com.noqapp.android.client.views.cutomviews.DiscreteSlider
+                    android:id="@+id/discrete_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="4dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:background="@android:color/transparent"
+                    app:backdropFillColor="@color/color_btn_select"
+                    app:backdropStrokeColor="@color/color_btn_select"
+                    app:backdropStrokeWidth="1dp"
+                    app:horizontalBarThickness="4dp"
+                    app:tickMarkCount="5"
+                    app:tickMarkRadius="8dp"
+                    app:position="1"
+                    app:thumb="@drawable/thumb"
+                    app:progressDrawable="@drawable/transparent_progress_drawable"/>
             </LinearLayout>
 
 

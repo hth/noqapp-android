@@ -11,10 +11,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,15 +31,19 @@ import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.DisplayUtility;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.cutomviews.DiscreteSlider;
 
 import java.text.DateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static java.security.AccessController.getContext;
 
 public class ReviewActivity extends AppCompatActivity implements ReviewPresenter {
     private final String TAG = ReviewActivity.class.getSimpleName();
@@ -63,6 +70,13 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     protected ImageView actionbarBack;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
+
+    @BindView(R.id.discrete_slider)
+    DiscreteSlider discreteSlider;
+
+    @BindView(R.id.tick_mark_labels_rl)
+    RelativeLayout tickMarkLabelsRelativeLayout;
+
     private JsonTokenAndQueue jtk;
     private ProgressDialog progressDialog;
 
@@ -96,7 +110,27 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         seekBar.incrementProgressBy(20);
         seekBar.setProgress(80);
         tv_seekbar_value.setText(getSeekbarLebel(4));
+        discreteSlider.setOnDiscreteSliderChangeListener(new DiscreteSlider.OnDiscreteSliderChangeListener() {
+            @Override
+            public void onPositionChanged(int position) {
+                int childCount = tickMarkLabelsRelativeLayout.getChildCount();
+                for(int i= 0; i<childCount; i++){
+                    TextView tv = (TextView) tickMarkLabelsRelativeLayout.getChildAt(i);
+                    if(i == position)
+                        tv.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    else
+                        tv.setTextColor(getResources().getColor(R.color.color_btn_select));
+                }
+            }
+        });
+        tickMarkLabelsRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                tickMarkLabelsRelativeLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 
+                addTickMarkTextLabels();
+            }
+        });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -203,5 +237,47 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
         }
 
+    }
+
+    private void addTickMarkTextLabels(){
+        int tickMarkCount = discreteSlider.getTickMarkCount();
+        float tickMarkRadius = discreteSlider.getTickMarkRadius();
+        int width = tickMarkLabelsRelativeLayout.getMeasuredWidth();
+
+        int discreteSliderBackdropLeftMargin = DisplayUtility.dp2px(this, 32);
+        int discreteSliderBackdropRightMargin = DisplayUtility.dp2px(this, 32);
+        float firstTickMarkRadius = tickMarkRadius;
+        float lastTickMarkRadius = tickMarkRadius;
+        int interval = (width - (discreteSliderBackdropLeftMargin+discreteSliderBackdropRightMargin) - ((int)(firstTickMarkRadius+lastTickMarkRadius)) )
+                / (tickMarkCount-1);
+
+        String[] tickMarkLabels = {getSeekbarLebel(1), getSeekbarLebel(2), getSeekbarLebel(3), getSeekbarLebel(4), getSeekbarLebel(5)};
+        int tickMarkLabelWidth = DisplayUtility.dp2px(this, 40);
+
+        for(int i=0; i<tickMarkCount; i++) {
+            TextView tv = new TextView(this);
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    tickMarkLabelWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+            tv.setText(tickMarkLabels[i]);
+            tv.setGravity(Gravity.CENTER);
+            if(i==discreteSlider.getPosition())
+                tv.setTextColor(getResources().getColor(R.color.colorPrimary));
+            else
+                tv.setTextColor(getResources().getColor(R.color.color_btn_select));
+
+//                    tv.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+
+            int left = discreteSliderBackdropLeftMargin + (int)firstTickMarkRadius + (i * interval) - (tickMarkLabelWidth/2);
+
+            layoutParams.setMargins(left,
+                    0,
+                    0,
+                    0);
+            tv.setLayoutParams(layoutParams);
+
+            tickMarkLabelsRelativeLayout.addView(tv);
+        }
     }
 }

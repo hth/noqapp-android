@@ -2,6 +2,8 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -25,9 +27,11 @@ import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.fragments.MerchantViewPagerFragment;
+import com.noqapp.android.merchant.views.fragments.SettingsFragment;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 
@@ -72,10 +76,11 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(final ViewGroup container, int position) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.viewpager_item, container, false);
         ManageQueueModel.manageQueuePresenter = this;
+        final JsonTopic lq = topics.get(position);
         TextView tv_current_value = (TextView) itemView.findViewById(R.id.tv_current_value);
         TextView tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
         TextView tv_title = (TextView) itemView.findViewById(R.id.tv_title);
@@ -86,12 +91,31 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         Button btn_skip = (Button) itemView.findViewById(R.id.btn_skip);
         Button btn_next = (Button) itemView.findViewById(R.id.btn_next);
         final Button btn_start = (Button) itemView.findViewById(R.id.btn_start);
+        ImageView iv_settings = (ImageView) itemView.findViewById(R.id.iv_settings);
+        iv_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingsFragment settingsFragment = new SettingsFragment();
+                Bundle b = new Bundle();
+                b.putString("title", lq.getDisplayName());
+                settingsFragment.setArguments(b);
+                if(new AppUtils().isTablet(context)) {
+                    FragmentTransaction fragmentTransaction = LaunchActivity.getLaunchActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.list_detail_fragment, settingsFragment);
+                    //  fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }else{
+                    LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, settingsFragment, "SettingsFragment");
+
+                }
+            }
+        });
 
         TextView tv_skip = (TextView) itemView.findViewById(R.id.tv_skip);
         TextView tv_next = (TextView) itemView.findViewById(R.id.tv_next);
         TextView tv_start = (TextView) itemView.findViewById(R.id.tv_start);
         ImageView iv_edit = (ImageView) itemView.findViewById(R.id.iv_edit);
-        final JsonTopic lq = topics.get(position);
+
         tv_current_value.setText(String.valueOf(lq.getServingNumber()));
         /* Add to show only remaining people in queue */
         tv_total_value.setText(String.valueOf(lq.getToken() - lq.getServingNumber()));
