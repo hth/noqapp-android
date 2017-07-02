@@ -36,12 +36,12 @@ public class LoginModel {
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
 
                 loginPresenter.loginResponse(
-                        response.headers().get(APIConstant.key.XR_MAIL),
-                        response.headers().get(APIConstant.key.XR_AUTH));
+                        response.headers().get(APIConstant.Key.XR_MAIL),
+                        response.headers().get(APIConstant.Key.XR_AUTH));
 
                 Log.d("Response", String.valueOf(response.body()));
-                Log.d("Response Mail", String.valueOf(response.headers().get(APIConstant.key.XR_MAIL)));
-                Log.d("Response Auth", String.valueOf(response.headers().get(APIConstant.key.XR_AUTH)));
+                Log.d("Response Mail", String.valueOf(response.headers().get(APIConstant.Key.XR_MAIL)));
+                Log.d("Response Auth", String.valueOf(response.headers().get(APIConstant.Key.XR_AUTH)));
             }
 
             @Override

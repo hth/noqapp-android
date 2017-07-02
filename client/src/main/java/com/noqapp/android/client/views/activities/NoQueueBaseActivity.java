@@ -83,10 +83,10 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static String getXRemail() {
-        return sharedpreferences.getString(APIConstant.key.XR_MAIL, "");
+        return sharedpreferences.getString(APIConstant.Key.XR_MAIL, "");
     }
     public static String getXRauth() {
-        return sharedpreferences.getString(APIConstant.key.XR_AUTH, "");
+        return sharedpreferences.getString(APIConstant.Key.XR_AUTH, "");
     }
     public static void commitProfile(JsonProfile profile,String email,String auth) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
@@ -98,8 +98,8 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putBoolean(PREKEY_AUTOJOIN, true);
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
-        editor.putString(APIConstant.key.XR_MAIL,email);
-        editor.putString(APIConstant.key.XR_AUTH,auth);
+        editor.putString(APIConstant.Key.XR_MAIL,email);
+        editor.putString(APIConstant.Key.XR_AUTH,auth);
         editor.commit();
 
     }

@@ -7,7 +7,7 @@ package com.noqapp.android.merchant.model;
 
 public class APIConstant {
 
-    public static class key {
+    public static class Key {
         // Header
         public static final String XR_MAIL = "X-R-MAIL";
         public static final String XR_AUTH = "X-R-AUTH";
