@@ -115,7 +115,7 @@
     <string name="logout_msg">Would you like to logout?</string>
     <string name="error_mobile_blank">Please enter phone number</string>
     <string name="error_login">Please login to remote join</string>
-    <string name="error_remote_join_available">Yoy don\'t have enough remote join available.</string>
+    <string name="error_remote_join_available">You don\'t have enough remote join available.</string>
     <string name="error_rateservice">Please rate the service</string>
     <string name="review_thanks">Thanks for feedback.</string>
     <string name="error_timesaved">Please provide how many no. of hour you saved.</string>
@@ -131,6 +131,11 @@
     <string name="status_sign_in_failed">Sign-in failed</string>
     <string name="instant_validation">Enter OTP</string>
     <string name="store_hour">Hours:</string>
+    <string name="error_prevent_joining">Business(Business Name) is no longer accepting new token for the day</string>
+    <string name="error_day_closed">Business(Business Name) is closed for the day.</string>
+    <string name="error_token_available_from">Business(Business Name) will start issuing new token after time 10:00 AM. Please try at after 10:00 AM.</string>
+    <string name="error_token_not_available_from">Business(Business Name) is closing for the day soon. Hence no new tokens would be available.</string>
+    <string name="error_business_closed_permanent">Business(Business Name) is closed permanetly</string>
 
 
 </resources>

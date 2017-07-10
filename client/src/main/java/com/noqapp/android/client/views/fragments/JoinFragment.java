@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -69,6 +70,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     private String countryShortName;
     private JsonQueue jsonQueue;
     private String frtag;
+    private boolean isJoinNotPossible = false;
+    private String joinErrorMsg = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -149,48 +152,83 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
         tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
-        tv_rating_review.setText(String.valueOf(Math.round(jsonQueue.getRating()))+" out of "+String.valueOf(jsonQueue.getRatingCount())+" review");
+        tv_rating_review.setText(String.valueOf(Math.round(jsonQueue.getRating())) + " out of " + String.valueOf(jsonQueue.getRatingCount()) + " review");
         codeQR = jsonQueue.getCodeQR();
         countryShortName = jsonQueue.getCountryShortName();
+        /* Check weather join is possible or not today due to some reason */
+        if (jsonQueue.isPreventJoining() || jsonQueue.isDayClosed() ||
+                jsonQueue.getTokenAvailableFrom() > 0 || jsonQueue.getTokenNotAvailableFrom() > 0
+                || jsonQueue.getQueueStatus().getName().equalsIgnoreCase(QueueStatusEnum.C.getName())) {
+            isJoinNotPossible = true;
+            joinErrorMsg = getJoinNotPossibleMsg(jsonQueue);
+        }
         /* Update the remote join count */
         NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
+        if (isJoinNotPossible) {
+            Toast.makeText(getActivity(),joinErrorMsg,Toast.LENGTH_LONG).show();
+        } else {
         /* Auto join after scan if autojoin status is true in me screen && it is not coming from skip notification as well as history queue */
-        if(getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,true) && NoQueueBaseActivity.getAutoJoinStatus()){
-            joinQueue();
+            if (getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, true) && NoQueueBaseActivity.getAutoJoinStatus()) {
+                joinQueue();
+            }
         }
+    }
+
+    private String getJoinNotPossibleMsg(JsonQueue jsonQueue) {
+
+        if(jsonQueue.isPreventJoining()){
+            return setErrorMsgBusinessName(getActivity().getString(R.string.error_prevent_joining));
+        }else  if(jsonQueue.isDayClosed()){
+            return setErrorMsgBusinessName(getActivity().getString(R.string.error_day_closed));
+        }else if(jsonQueue.getTokenAvailableFrom() > 0){
+            return setErrorMsgBusinessName(getActivity().getString(R.string.error_token_available_from));
+        }else if(jsonQueue.getTokenNotAvailableFrom() > 0){
+            return setErrorMsgBusinessName(getActivity().getString(R.string.error_token_not_available_from));
+        }else if(jsonQueue.getQueueStatus().getName().equalsIgnoreCase(QueueStatusEnum.C.getName())){
+            return setErrorMsgBusinessName(getActivity().getString(R.string.error_business_closed_permanent));
+        }
+        return "";
+    }
+
+    private String setErrorMsgBusinessName(String msg){
+        return msg.replace("Business Name",jsonQueue.getBusinessName());
     }
 
     @OnClick(R.id.btn_joinQueue)
     public void joinQueue() {
-        if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
+        if (isJoinNotPossible) {
+            Toast.makeText(getActivity(),joinErrorMsg,Toast.LENGTH_LONG).show();
+        }else {
+            if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
 
-            if (UserUtils.isLogin()) {
-                if (jsonQueue.getRemoteJoinCount() == 0) {
-                    Toast.makeText(getActivity(), getString(R.string.error_remote_join_available), Toast.LENGTH_LONG).show();
+                if (UserUtils.isLogin()) {
+                    if (jsonQueue.getRemoteJoinCount() == 0) {
+                        Toast.makeText(getActivity(), getString(R.string.error_remote_join_available), Toast.LENGTH_LONG).show();
+                    } else {
+                        Bundle b = new Bundle();
+                        b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
+                        b.putBoolean(KEY_FROM_LIST, false);
+                        b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+                        b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, true));
+                        b.putBoolean(KEY_IS_HISTORY, getArguments().getBoolean(KEY_IS_HISTORY, false));
+                        AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
+                        afterJoinFragment.setArguments(b);
+                        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
+                    }
                 } else {
-                    Bundle b = new Bundle();
-                    b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
-                    b.putBoolean(KEY_FROM_LIST, false);
-                    b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-                    b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,true));
-                    b.putBoolean(KEY_IS_HISTORY,getArguments().getBoolean(KEY_IS_HISTORY, false));
-                    AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
-                    afterJoinFragment.setArguments(b);
-                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
+                    Toast.makeText(getActivity(), getString(R.string.error_login), Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(getActivity(), getString(R.string.error_login), Toast.LENGTH_LONG).show();
+                Bundle b = new Bundle();
+                b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
+                b.putBoolean(KEY_FROM_LIST, false);
+                b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, true));
+                b.putBoolean(KEY_IS_HISTORY, getArguments().getBoolean(KEY_IS_HISTORY, false));
+                b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+                AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
+                afterJoinFragment.setArguments(b);
+                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
             }
-        } else {
-            Bundle b = new Bundle();
-            b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
-            b.putBoolean(KEY_FROM_LIST, false);
-            b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE,true));
-            b.putBoolean(KEY_IS_HISTORY,getArguments().getBoolean(KEY_IS_HISTORY, false));
-            b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-            AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
-            afterJoinFragment.setArguments(b);
-            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
         }
     }
 
