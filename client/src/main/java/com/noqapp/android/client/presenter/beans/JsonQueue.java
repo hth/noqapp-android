@@ -102,6 +102,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("rc")
     private int ratingCount;
 
+    @JsonProperty ("lu")
+    private boolean allowLoggedInUser = false;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -203,6 +206,10 @@ public class JsonQueue implements Serializable {
         return lastNumber - servingNumber;
     }
 
+    public boolean isAllowLoggedInUser() {
+        return allowLoggedInUser;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -257,6 +264,7 @@ public class JsonQueue implements Serializable {
                 .append("created", created)
                 .append("rating", rating)
                 .append("ratingCount", ratingCount)
+                .append("allowLoggedInUser", allowLoggedInUser)
                 .append("error", error)
                 .toString();
     }
