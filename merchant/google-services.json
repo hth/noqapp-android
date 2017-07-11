@@ -49,7 +49,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB3Nwy5P7WuzuG1l6Thr_jrekfE0ak4k5M"
+          "current_key": "AIzaSyAE2akMGxWPJY08av-f_XGyYJrxmYhwdyQ"
         }
       ],
       "services": {
@@ -60,15 +60,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "129734883266-e8lqvhhcs89buhe7jltc0n94s3m0dc1l.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
               "client_id": "129734883266-qa3vhq314cugofkds3k2c854usuigid3.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.noqapp.ios.merchant"
               }
+            },
+            {
+              "client_id": "129734883266-e8lqvhhcs89buhe7jltc0n94s3m0dc1l.apps.googleusercontent.com",
+              "client_type": 3
             }
           ]
         },
@@ -104,7 +104,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB3Nwy5P7WuzuG1l6Thr_jrekfE0ak4k5M"
+          "current_key": "AIzaSyAE2akMGxWPJY08av-f_XGyYJrxmYhwdyQ"
         }
       ],
       "services": {
