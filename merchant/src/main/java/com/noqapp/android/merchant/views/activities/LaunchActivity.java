@@ -36,8 +36,7 @@ import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-public class LaunchActivity extends AppCompatActivity  {
-
+public class LaunchActivity extends AppCompatActivity {
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
     public static final String MyPREFERENCES = "AppPref";
@@ -63,7 +62,8 @@ public class LaunchActivity extends AppCompatActivity  {
     private BroadcastReceiver broadcastReceiver;
     private ImageView actionbarBack;
     private TextView tv_name;
-    public FrameLayout list_fragment,list_detail_fragment;
+    public FrameLayout list_fragment, list_detail_fragment;
+
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
@@ -90,10 +90,10 @@ public class LaunchActivity extends AppCompatActivity  {
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tv_name = (TextView) findViewById(R.id.tv_name);
-       if(new AppUtils().isTablet(this)){
-           list_fragment=(FrameLayout)findViewById(R.id.frame_layout);
-           list_detail_fragment=(FrameLayout)findViewById(R.id.list_detail_fragment);
-       }
+        if (new AppUtils().isTablet(this)) {
+            list_fragment = (FrameLayout) findViewById(R.id.frame_layout);
+            list_detail_fragment = (FrameLayout) findViewById(R.id.list_detail_fragment);
+        }
         initProgress();
         iv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,8 +131,8 @@ public class LaunchActivity extends AppCompatActivity  {
             if (!new AppUtils().isTablet(getApplicationContext())) {
                 merchantListFragment = new MerchantListFragment();
                 replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
-               // setUserName();
-            }else {
+                // setUserName();
+            } else {
                 LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
                 LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
                 list_fragment.setLayoutParams(lp1);
@@ -158,7 +158,6 @@ public class LaunchActivity extends AppCompatActivity  {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
                     updateListByNotification(intent);
@@ -193,18 +192,19 @@ public class LaunchActivity extends AppCompatActivity  {
     }
 
     public void setUserName(String name) {
-        sharedpreferences.edit().putString(KEY_USER_NAME, name).commit();
+        sharedpreferences.edit().putString(KEY_USER_NAME, name).apply();
     }
 
     public String getCounterName() {
         return sharedpreferences.getString(KEY_MERCHANT_COUNTER_NAME, "");
     }
 
-    public void setCounterName(String countername) {
-        sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, countername).commit();
+    public void setCounterName(String counterName) {
+        sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, counterName).apply();
     }
+
     public void setUserLevel(String userLevel) {
-        sharedpreferences.edit().putString(KEY_USER_LEVEL, userLevel).commit();
+        sharedpreferences.edit().putString(KEY_USER_LEVEL, userLevel).apply();
     }
 
     public UserLevelEnum getUserLevel() {
@@ -214,6 +214,7 @@ public class LaunchActivity extends AppCompatActivity  {
             return UserLevelEnum.MER_MANAGER;
         }
     }
+
     public String getUSerID() {
         return sharedpreferences.getString(KEY_USER_ID, "");
     }
@@ -231,14 +232,14 @@ public class LaunchActivity extends AppCompatActivity  {
     }
 
     public void setLastUpdateTime(long lastUpdateTime) {
-        sharedpreferences.edit().putLong(KEY_LAST_UPDATE, lastUpdateTime).commit();
+        sharedpreferences.edit().putLong(KEY_LAST_UPDATE, lastUpdateTime).apply();
     }
 
     public boolean isLoggedIn() {
         return sharedpreferences.getBoolean(IS_LOGIN, false);
     }
 
-    public void setSharedPreferance(String userName, String userId, String email, String auth, boolean isLogin) {
+    public void setUserInformation(String userName, String userId, String email, String auth, boolean isLogin) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(KEY_USER_NAME, userName);
         editor.putString(KEY_USER_ID, userId);
@@ -355,6 +356,4 @@ public class LaunchActivity extends AppCompatActivity  {
             }
         }
     }
-
-
 }

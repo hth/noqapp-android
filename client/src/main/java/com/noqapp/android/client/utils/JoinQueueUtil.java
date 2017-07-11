@@ -78,6 +78,16 @@ public class JoinQueueUtil {
             joinQueueState.setJoinNotPossible(true)
                     .setJoinErrorMsg(msg);
         }
+
+        /* This should prevent unregistered client from joining. This condition should enforce client has to be logged in. */
+        if (jsonQueue.isAllowLoggedInUser()) {
+            if (!UserUtils.isLogin()) {
+                Log.d(TAG, "Queue can be joined by logged in user");
+                String msg = String.format(context.getString(R.string.error_user_needs_to_be_logged_in), jsonQueue.getBusinessName(), jsonQueue.getDisplayName());
+                joinQueueState.setJoinNotPossible(true)
+                        .setJoinErrorMsg(msg);
+            }
+        }
         return joinQueueState;
     }
 
@@ -114,16 +124,5 @@ public class JoinQueueUtil {
 
     private static void doGPS() {
 
-    }
-
-    /**
-     * This should prevent unregistered client from joining. This condition should enforce client has
-     * to be logged in.
-     *
-     * @param jsonQueue
-     * @return
-     */
-    private static boolean isAllowLoggedInUser(JsonQueue jsonQueue) {
-        return jsonQueue.isAllowLoggedInUser();
     }
 }
