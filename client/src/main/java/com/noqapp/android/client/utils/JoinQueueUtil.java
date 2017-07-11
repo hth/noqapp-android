@@ -109,7 +109,7 @@ public class JoinQueueUtil {
         DateTime tokenAvailableFrom = Formatter.parseDateTime(Formatter.formatMilitaryTime(jsonQueue.getTokenAvailableFrom()));
         DateTime tokenNotAvailableFrom = Formatter.parseDateTime(Formatter.formatMilitaryTime(jsonQueue.getTokenNotAvailableFrom()));
 
-        return tokenAvailableFrom.isBeforeNow() && tokenNotAvailableFrom.isAfterNow();
+        return tokenAvailableFrom.isBeforeNow() || tokenNotAvailableFrom.isAfterNow();
     }
 
     /**
