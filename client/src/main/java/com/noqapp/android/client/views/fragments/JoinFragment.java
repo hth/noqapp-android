@@ -162,7 +162,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, getContext());
         if (joinQueueState.isJoinNotPossible()) {
             isJoinNotPossible = joinQueueState.isJoinNotPossible();
-            joinErrorMsg = setErrorMsgBusinessName(joinQueueState.getJoinErrorMsg());
+            joinErrorMsg = joinQueueState.getJoinErrorMsg();
         }
         /* Update the remote join count */
         NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
@@ -174,10 +174,6 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                 joinQueue();
             }
         }
-    }
-
-    private String setErrorMsgBusinessName(String msg) {
-        return msg.replace("Business Name", jsonQueue.getBusinessName());
     }
 
     @OnClick(R.id.btn_joinQueue)
