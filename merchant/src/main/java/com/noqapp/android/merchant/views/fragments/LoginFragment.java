@@ -96,7 +96,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     @Override
     public void loginResponse(String email, String auth) {
         if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(auth)) {
-            LaunchActivity.getLaunchActivity().setSharPreferancename("", "", email, auth, true);
+            LaunchActivity.getLaunchActivity().setUserInformation("", "", email, auth, true);
             MerchantProfileModel.fetch(email, auth);
         } else {
             LaunchActivity.getLaunchActivity().dismissProgress();

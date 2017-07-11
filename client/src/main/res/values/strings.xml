@@ -136,6 +136,7 @@
     <string name="error_token_available_from">%1$s %2$s will start issuing new token after %3$s. Please try again after %3$s.</string>
     <string name="error_token_not_available_from">%1$s %2$s is closing for the day soon. Hence no new tokens would be available.</string>
     <string name="error_business_closed_permanent">%1$s %2$s is closed permanently</string>
+    <string name="error_user_needs_to_be_logged_in">Please login to join %1$s %2$s</string>
 
 
 </resources>
