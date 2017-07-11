@@ -16,7 +16,6 @@ import com.noqapp.android.client.presenter.beans.JsonProfile;
  * Created by omkar on 4/8/17.
  */
 public class NoQueueBaseActivity extends AppCompatActivity {
-
     public static final String PREKEY_PHONE = "phone";
     public static final String PREKEY_NAME = "name";
     public static final String PREKEY_MAIL = "mail";
@@ -32,63 +31,65 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String APP_PREF = "shared_pref";
     public static String XR_DID = "X-R-DID";
     public static NoQueueBaseActivity noQueueBaseActivity;
-    private static SharedPreferences sharedpreferences;
+    private static SharedPreferences sharedPreferences;
 
     public static SharedPreferences.Editor getSharedPreferencesEditor() {
-        return sharedpreferences.edit();
+        return sharedPreferences.edit();
     }
 
     public static int getRemoteJoinCount() {
-        return sharedpreferences.getInt(PREKEY_REMOTE_JOIN, 0);
+        return sharedPreferences.getInt(PREKEY_REMOTE_JOIN, 0);
     }
 
     public static void setRemoteJoinCount(int remoteJoinCount) {
-        sharedpreferences.edit().putInt(PREKEY_REMOTE_JOIN, remoteJoinCount<0?0:remoteJoinCount).commit();
+        sharedPreferences.edit().putInt(PREKEY_REMOTE_JOIN, remoteJoinCount < 0 ? 0 : remoteJoinCount).commit();
     }
 
     public static boolean getAutoJoinStatus() {
-        return sharedpreferences.getBoolean(PREKEY_AUTOJOIN, true);
+        return sharedPreferences.getBoolean(PREKEY_AUTOJOIN, true);
     }
 
     public static void setAutoJoinStatus(boolean autoJoinStatus) {
-        sharedpreferences.edit().putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, autoJoinStatus).commit();
+        sharedPreferences.edit().putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, autoJoinStatus).commit();
     }
 
     public static String getUserName() {
-        return sharedpreferences.getString(NoQueueBaseActivity.PREKEY_NAME, "Guest User");
+        return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_NAME, "Guest User");
     }
 
     public static String getPhoneNo() {
-        return sharedpreferences.getString(PREKEY_PHONE, "");
+        return sharedPreferences.getString(PREKEY_PHONE, "");
     }
 
     public static String getGender() {
-        return sharedpreferences.getString(PREKEY_GENDER, "");
+        return sharedPreferences.getString(PREKEY_GENDER, "");
     }
 
     public static String getInviteCode() {
-        return sharedpreferences.getString(PREKEY_INVITECODE, "");
+        return sharedPreferences.getString(PREKEY_INVITECODE, "");
     }
 
     public static String getCountryShortName() {
-        return sharedpreferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, "US");
+        return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, "US");
     }
 
     public static boolean isReviewShown() {
-        return sharedpreferences.getBoolean(NoQueueBaseActivity.PREKEY_IS_REVIEW_SHOWN, false);
+        return sharedPreferences.getBoolean(NoQueueBaseActivity.PREKEY_IS_REVIEW_SHOWN, false);
     }
 
     public static void setReviewShown(boolean isReviewShown) {
-        sharedpreferences.edit().putBoolean(PREKEY_IS_REVIEW_SHOWN, isReviewShown).commit();
+        sharedPreferences.edit().putBoolean(PREKEY_IS_REVIEW_SHOWN, isReviewShown).apply();
     }
 
-    public static String getXRemail() {
-        return sharedpreferences.getString(APIConstant.Key.XR_MAIL, "");
+    public static String getMail() {
+        return sharedPreferences.getString(APIConstant.Key.XR_MAIL, "");
     }
-    public static String getXRauth() {
-        return sharedpreferences.getString(APIConstant.Key.XR_AUTH, "");
+
+    public static String getAuth() {
+        return sharedPreferences.getString(APIConstant.Key.XR_AUTH, "");
     }
-    public static void commitProfile(JsonProfile profile,String email,String auth) {
+
+    public static void commitProfile(JsonProfile profile, String email, String auth) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(PREKEY_PHONE, profile.getPhoneRaw());
         editor.putString(PREKEY_NAME, profile.getName());
@@ -98,10 +99,9 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putBoolean(PREKEY_AUTOJOIN, true);
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
-        editor.putString(APIConstant.Key.XR_MAIL,email);
-        editor.putString(APIConstant.Key.XR_AUTH,auth);
+        editor.putString(APIConstant.Key.XR_MAIL, email);
+        editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();
-
     }
 
     public static void clearPreferences() {
@@ -122,6 +122,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         noQueueBaseActivity = this;
-        sharedpreferences = noQueueBaseActivity.getPreferences(Context.MODE_PRIVATE);
+        sharedPreferences = noQueueBaseActivity.getPreferences(Context.MODE_PRIVATE);
     }
 }

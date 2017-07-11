@@ -107,7 +107,7 @@ public class LaunchActivity extends AppCompatActivity  {
                                 if (null != merchantListFragment)
                                     merchantListFragment.unSubscribeTopics();
                                 // logout
-                                sharedpreferences.edit().clear().commit();
+                                sharedpreferences.edit().clear().apply();
                                 //navigate to signup/login
                                 replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
                             }
@@ -238,7 +238,7 @@ public class LaunchActivity extends AppCompatActivity  {
         return sharedpreferences.getBoolean(IS_LOGIN, false);
     }
 
-    public void setSharPreferancename(String userName, String userId, String email, String auth, boolean isLogin) {
+    public void setSharedPreferance(String userName, String userId, String email, String auth, boolean isLogin) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(KEY_USER_NAME, userName);
         editor.putString(KEY_USER_ID, userId);
