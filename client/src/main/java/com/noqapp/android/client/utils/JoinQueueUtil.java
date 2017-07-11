@@ -1,9 +1,12 @@
 package com.noqapp.android.client.utils;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 
 import org.joda.time.DateTime;
 
@@ -14,16 +17,30 @@ import org.joda.time.DateTime;
 public class JoinQueueUtil {
     private static final String TAG = JoinQueueUtil.class.getSimpleName();
 
-    public static boolean canJoinQueue(JsonQueue jsonQueue) {
-        boolean allowedToJoinQueue = true;
+    public static JoinQueueState canJoinQueue(JsonQueue jsonQueue, Context context) {
+        JoinQueueState joinQueueState = new JoinQueueState();
+        joinQueueState.setJoinNotPossible(false);
+
         if (isPreventJoining(jsonQueue)) {
             Log.d(TAG, "Prevent Joining found");
-            return false;
+            String msg = String.format(
+                    context.getString(R.string.error_prevent_joining),
+                    jsonQueue.getBusinessName(),
+                    jsonQueue.getDisplayName());
+
+            joinQueueState.setJoinNotPossible(true)
+                    .setJoinErrorMsg(msg);
         }
 
         if (isDayClosed(jsonQueue)) {
             Log.d(TAG, "Closed for Day found");
-            return false;
+            String msg = String.format(
+                    context.getString(R.string.error_day_closed),
+                    jsonQueue.getBusinessName(),
+                    jsonQueue.getDisplayName());
+
+            joinQueueState.setJoinNotPossible(true)
+                    .setJoinErrorMsg(msg);
         }
 
         if (isTokenNotAvailable(jsonQueue)) {
@@ -31,15 +48,37 @@ public class JoinQueueUtil {
                     + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom())
                     + " and after "
                     + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenNotAvailableFrom()));
-            return false;
+            joinQueueState.setJoinNotPossible(true);
+
+            DateTime tokenAvailableFrom = Formatter.parseDateTime(Formatter.formatMilitaryTime(jsonQueue.getTokenAvailableFrom()));
+            DateTime tokenNotAvailableFrom = Formatter.parseDateTime(Formatter.formatMilitaryTime(jsonQueue.getTokenNotAvailableFrom()));
+
+            if (tokenAvailableFrom.isBeforeNow()) {
+                String startTime = Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom());
+                String msg = String.format(
+                        context.getString(R.string.error_token_available_from),
+                        jsonQueue.getBusinessName(),
+                        jsonQueue.getDisplayName(),
+                        startTime);
+
+                joinQueueState.setJoinErrorMsg(msg);
+            } else if (tokenNotAvailableFrom.isAfterNow()) {
+                String msg = String.format(context.getString(R.string.error_token_not_available_from), jsonQueue.getBusinessName(), jsonQueue.getDisplayName());
+                joinQueueState.setJoinErrorMsg(msg);
+            }
         }
 
         if (isQueueClosedPermanently(jsonQueue)) {
             Log.d(TAG, "Queue closed permanently found");
-            return false;
-        }
+            String msg = String.format(
+                    context.getString(R.string.error_business_closed_permanent),
+                    jsonQueue.getBusinessName(),
+                    jsonQueue.getDisplayName());
 
-        return allowedToJoinQueue;
+            joinQueueState.setJoinNotPossible(true)
+                    .setJoinErrorMsg(msg);
+        }
+        return joinQueueState;
     }
 
     private static boolean isPreventJoining(JsonQueue jsonQueue) {
