@@ -58,7 +58,7 @@
     <string name="error_invalid_date">Please select a valid date</string>
 
     <!--- Queue List -->
-    <string name="history">Hisory</string>
+    <string name="history">History</string>
 
     <!--Error and message-->
     <string name="networkerror">Network Error</string>
@@ -131,11 +131,11 @@
     <string name="status_sign_in_failed">Sign-in failed</string>
     <string name="instant_validation">Enter OTP</string>
     <string name="store_hour">Hours:</string>
-    <string name="error_prevent_joining">Business(Business Name) is no longer accepting new token for the day</string>
-    <string name="error_day_closed">Business(Business Name) is closed for the day.</string>
-    <string name="error_token_available_from">Business(Business Name) will start issuing new token after time 10:00 AM. Please try at after 10:00 AM.</string>
-    <string name="error_token_not_available_from">Business(Business Name) is closing for the day soon. Hence no new tokens would be available.</string>
-    <string name="error_business_closed_permanent">Business(Business Name) is closed permanetly</string>
+    <string name="error_prevent_joining">%1$s %2$s is no longer accepting new token for the day</string>
+    <string name="error_day_closed">%1$s %2$s is closed for the day</string>
+    <string name="error_token_available_from">%1$s %2$s will start issuing new token after %3$s. Please try again after %3$s.</string>
+    <string name="error_token_not_available_from">%1$s %2$s is closing for the day soon. Hence no new tokens would be available.</string>
+    <string name="error_business_closed_permanent">%1$s %2$s is closed permanently</string>
 
 
 </resources>

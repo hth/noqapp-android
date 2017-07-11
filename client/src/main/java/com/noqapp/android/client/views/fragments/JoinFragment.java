@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.util.StringBuilderPrinter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,10 @@ import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Formatter;
+import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -58,13 +59,11 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     @BindView(R.id.tv_rating_review)
     protected TextView tv_rating_review;
 
-
     @BindView(R.id.btn_joinQueue)
     protected Button btn_joinQueue;
 
     @BindView(R.id.btn_no)
     protected Button btn_no;
-
 
     private String codeQR;
     private String countryShortName;
@@ -152,53 +151,40 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
         tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
-        tv_rating_review.setText(String.valueOf(Math.round(jsonQueue.getRating())) + " out of " + String.valueOf(jsonQueue.getRatingCount()) + " review");
+        tv_rating_review.setText(String.valueOf(Math.round(jsonQueue.getRating()))
+                + " show stars "
+                + String.valueOf(jsonQueue.getRatingCount())
+                + " NoQueue reviews");
+
         codeQR = jsonQueue.getCodeQR();
         countryShortName = jsonQueue.getCountryShortName();
         /* Check weather join is possible or not today due to some reason */
-        if (jsonQueue.isPreventJoining() || jsonQueue.isDayClosed() ||
-                jsonQueue.getTokenAvailableFrom() > 0 || jsonQueue.getTokenNotAvailableFrom() > 0
-                || jsonQueue.getQueueStatus().getName().equalsIgnoreCase(QueueStatusEnum.C.getName())) {
-            isJoinNotPossible = true;
-            joinErrorMsg = getJoinNotPossibleMsg(jsonQueue);
+        JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, getContext());
+        if (joinQueueState.isJoinNotPossible()) {
+            isJoinNotPossible = joinQueueState.isJoinNotPossible();
+            joinErrorMsg = setErrorMsgBusinessName(joinQueueState.getJoinErrorMsg());
         }
         /* Update the remote join count */
         NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
         if (isJoinNotPossible) {
-            Toast.makeText(getActivity(),joinErrorMsg,Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), joinErrorMsg, Toast.LENGTH_LONG).show();
         } else {
-        /* Auto join after scan if autojoin status is true in me screen && it is not coming from skip notification as well as history queue */
+            /* Auto join after scan if auto-join status is true in me screen && it is not coming from skip notification as well as history queue. */
             if (getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, true) && NoQueueBaseActivity.getAutoJoinStatus()) {
                 joinQueue();
             }
         }
     }
 
-    private String getJoinNotPossibleMsg(JsonQueue jsonQueue) {
-
-        if(jsonQueue.isPreventJoining()){
-            return setErrorMsgBusinessName(getActivity().getString(R.string.error_prevent_joining));
-        }else  if(jsonQueue.isDayClosed()){
-            return setErrorMsgBusinessName(getActivity().getString(R.string.error_day_closed));
-        }else if(jsonQueue.getTokenAvailableFrom() > 0){
-            return setErrorMsgBusinessName(getActivity().getString(R.string.error_token_available_from));
-        }else if(jsonQueue.getTokenNotAvailableFrom() > 0){
-            return setErrorMsgBusinessName(getActivity().getString(R.string.error_token_not_available_from));
-        }else if(jsonQueue.getQueueStatus().getName().equalsIgnoreCase(QueueStatusEnum.C.getName())){
-            return setErrorMsgBusinessName(getActivity().getString(R.string.error_business_closed_permanent));
-        }
-        return "";
-    }
-
-    private String setErrorMsgBusinessName(String msg){
-        return msg.replace("Business Name",jsonQueue.getBusinessName());
+    private String setErrorMsgBusinessName(String msg) {
+        return msg.replace("Business Name", jsonQueue.getBusinessName());
     }
 
     @OnClick(R.id.btn_joinQueue)
     public void joinQueue() {
         if (isJoinNotPossible) {
-            Toast.makeText(getActivity(),joinErrorMsg,Toast.LENGTH_LONG).show();
-        }else {
+            Toast.makeText(getActivity(), joinErrorMsg, Toast.LENGTH_LONG).show();
+        } else {
             if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
 
                 if (UserUtils.isLogin()) {

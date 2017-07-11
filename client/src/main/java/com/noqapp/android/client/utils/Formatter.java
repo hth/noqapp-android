@@ -62,12 +62,19 @@ public class Formatter {
         return "";
     }
 
+    static DateTime parseDateTime(String rawTimestamp) {
+        return inputFormatter.parseDateTime(rawTimestamp);
+    }
+
     private static String convertMilitaryTo12HourFormat(String rawTimestamp) {
-        DateTime dateTime = inputFormatter.parseDateTime(rawTimestamp);
-        return outputFormatter.print(dateTime.getMillis());
+        return outputFormatter.print(parseDateTime(rawTimestamp).getMillis());
+    }
+
+    static String formatMilitaryTime(int rawTimestamp) {
+        return String.format(Locale.US, "%04d", rawTimestamp);
     }
 
     public static String convertMilitaryTo12HourFormat(int rawTimestamp) {
-        return convertMilitaryTo12HourFormat(String.format(Locale.US, "%04d", rawTimestamp));
+        return convertMilitaryTo12HourFormat(formatMilitaryTime(rawTimestamp));
     }
 }
