@@ -15,19 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "129734883266-b42m2h701h83jb93udagq4gtneji11li.apps.googleusercontent.com",
+          "client_id": "129734883266-m4csvq0oeujl6kutsk0t2kk751cm1dsa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.noqapp.android.client",
-            "certificate_hash": "36f8177140b9408123fcfb1612e4725a0026ce27"
-          }
-        },
-        {
-          "client_id": "129734883266-dn50cqhm92r5c4k5kk9jtb2ekm6tsdck.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.noqapp.android.client",
-            "certificate_hash": "22690afe1814c2127903485f23920df0cb2741a3"
+            "certificate_hash": "de5ba786e602bc467dc0b54ac90019b15064c523"
           }
         },
         {
@@ -49,7 +41,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAE2akMGxWPJY08av-f_XGyYJrxmYhwdyQ"
+          "current_key": "AIzaSyAbgo3xoKHY4f7K4_z-MQ5fLhXZhFswhYA"
         }
       ],
       "services": {
@@ -86,6 +78,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "129734883266-3nnqmtc1l6ko2ou9a729ibda4o5rto75.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant",
+            "certificate_hash": "0e137f697b9c1958b3403d05b9097bcbb46d92de"
+          }
+        },
+        {
           "client_id": "129734883266-e8lqvhhcs89buhe7jltc0n94s3m0dc1l.apps.googleusercontent.com",
           "client_type": 3
         },
@@ -104,7 +104,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAE2akMGxWPJY08av-f_XGyYJrxmYhwdyQ"
+          "current_key": "AIzaSyAbgo3xoKHY4f7K4_z-MQ5fLhXZhFswhYA"
         }
       ],
       "services": {
@@ -112,8 +112,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129734883266-qa3vhq314cugofkds3k2c854usuigid3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.noqapp.ios.merchant"
+              }
+            },
+            {
+              "client_id": "129734883266-e8lqvhhcs89buhe7jltc0n94s3m0dc1l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
