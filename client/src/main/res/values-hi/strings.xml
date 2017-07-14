@@ -42,7 +42,7 @@
     <string name="invitecode">Invite code</string>
     <string name="btnregister">Continue Register</string>
     <string name="error_name_blank">Please enter name</string>
-    <string name="error_name_length">Name length should be greater than 3</string>
+    <string name="error_name_length">Name length should be at least 4 or higher</string>
     <string name="error_invalid_email">Please enter valid email</string>
     <string name="error_invalid_date">Please select a valid date</string>
 

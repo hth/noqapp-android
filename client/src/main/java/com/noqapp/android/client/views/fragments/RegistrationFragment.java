@@ -226,7 +226,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             edt_Name.setError(getString(R.string.error_name_blank));
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Name.getText()) && edt_Name.getText().length() < 5) {
+        if (!TextUtils.isEmpty(edt_Name.getText()) && edt_Name.getText().length() < 4) {
             edt_Name.setError(getString(R.string.error_name_length));
             isValid = false;
         }
