@@ -46,4 +46,14 @@ public class PhoneFormatterUtil {
             return "";
         }
     }
+
+    /**
+     * From country short code like "US" returns country dial code like "1".
+     *
+     * @param countryShortCode
+     * @return
+     */
+    public static int findCountryCodeFromCountryShortCode(String countryShortCode) {
+        return phoneUtil.getCountryCodeForRegion(countryShortCode.toUpperCase());
+    }
 }
