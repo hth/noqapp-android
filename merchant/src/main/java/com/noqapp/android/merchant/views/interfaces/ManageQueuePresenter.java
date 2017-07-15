@@ -8,4 +8,6 @@ public interface ManageQueuePresenter {
     void manageQueueResponse(JsonToken token);
 
     void manageQueueError();
+
+    void authenticationFailure(int errorcode);
 }

@@ -36,6 +36,8 @@ import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.util.List;
+
 public class LaunchActivity extends AppCompatActivity {
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
@@ -358,17 +360,33 @@ public class LaunchActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                //unsubscribe the topics
-                if (null != merchantListFragment)
-                    merchantListFragment.unSubscribeTopics();
-                // logout
-                sharedpreferences.edit().clear().apply();
-                //navigate to signup/login
-                replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
+                clearLoginData();
                 mAlertDialog.dismiss();
             }
         });
         mAlertDialog.show();
+    }
+
+    public void clearLoginData() {
+        //unsubscribe the topics
+        if (null != merchantListFragment)
+            merchantListFragment.unSubscribeTopics();
+        // logout
+        sharedpreferences.edit().clear().apply();
+        //navigate to signup/login
+        replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.RESULT_SETTING) {
+            if (resultCode == RESULT_OK) {
+                boolean isDataClear = data.getExtras().getBoolean(Constants.CLEAR_DATA,false);
+                if(isDataClear)
+                    clearLoginData();
+            }
+        }
     }
 
 }

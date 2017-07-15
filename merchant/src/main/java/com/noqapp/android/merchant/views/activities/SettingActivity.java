@@ -1,6 +1,9 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.QueueSettingModel;
 import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
@@ -123,6 +127,22 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     @Override
     public void queueSettingError() {
         dismissProgress();
+    }
+
+    @Override
+    public void authenticationFailure(int errorcode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        if(errorcode == Constants.INVALID_CREDENTIAL){
+           // LaunchActivity.getLaunchActivity().clearLoginData();
+            Intent intent = new Intent();
+            intent.putExtra(Constants.CLEAR_DATA, true);
+            if (getParent() == null) {
+                setResult(Activity.RESULT_OK, intent);
+            } else {
+                getParent().setResult(Activity.RESULT_OK, intent);
+            }
+            finish();
+        }
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.SettingActivity;
@@ -102,7 +103,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                    // LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, settingsFragment, "SettingsFragment");
                     Intent in = new Intent(context, SettingActivity.class);
                     in.putExtra("codeQR",lq.getCodeQR());
-                    context.startActivity(in);
+                    ((Activity)context).startActivityForResult(in, Constants.RESULT_SETTING);
                     ((Activity)context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
 
                 //}
@@ -370,6 +371,14 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     @Override
     public void manageQueueError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
+    }
+
+    @Override
+    public void authenticationFailure(int errorcode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        if(errorcode == Constants.INVALID_CREDENTIAL){
+            LaunchActivity.getLaunchActivity().clearLoginData();
+        }
     }
 
     private void showCounterEditDialog(final Context mContext, final TextView textView) {

@@ -49,15 +49,15 @@
     <string name="counter_name">काउंटर नाम दर्ज करें</string>
     <string name="error_counter_empty">कृपया काउंटर नाम दर्ज करें</string>
     <string name="last_update">अपडेट:</string>
-    <string name="pause">Pause</string>
-    <string name="empty_counter">Please enter counter name</string>
-    <string name="dayclosed">Day Closed</string>
-    <string name="preventjoining">Prevent Joining</string>
-    <string name="screen_settings">Settings</string>
-    <string name="name_unavailable">Name Unavailable</string>
-    <string name="cancel">Cancel</string>
+    <string name="pause">विराम</string>
+    <string name="empty_counter">कृपया काउंटर नाम दर्ज करें</string>
+    <string name="dayclosed">दिन बंद</string>
+    <string name="preventjoining">शामिल होने से रोकें</string>
+    <string name="screen_settings">सेटिंग्स</string>
+    <string name="name_unavailable">नाम अनुपलब्ध</string>
+    <string name="cancel">रद्द करना</string>
     <string name="update">Update</string>
     <string name="setting">Change Settings</string>
-    <string name="error_pwd_length">Password length should be greater than 5</string>
+    <string name="error_pwd_length">पासवर्ड की लंबाई 5 से अधिक होनी चाहिए</string>
 
 </resources>
