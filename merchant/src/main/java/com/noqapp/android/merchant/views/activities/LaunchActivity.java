@@ -1,10 +1,8 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -17,7 +15,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -98,26 +98,7 @@ public class LaunchActivity extends AppCompatActivity {
         iv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(launchActivity)
-                        .setTitle(getString(R.string.title_logout))
-                        .setMessage(getString(R.string.msg_logout))
-                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //unsubscribe the topics
-                                if (null != merchantListFragment)
-                                    merchantListFragment.unSubscribeTopics();
-                                // logout
-                                sharedpreferences.edit().clear().apply();
-                                //navigate to signup/login
-                                replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // user doesn't want to logout
-                            }
-                        })
-                        .show();
+                showLogoutEditDialog();
             }
         });
 
@@ -356,4 +337,38 @@ public class LaunchActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void showLogoutEditDialog( ) {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(launchActivity);
+        LayoutInflater inflater = LayoutInflater.from(launchActivity);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
+        builder.setView(customDialogView);
+        final android.support.v7.app.AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        Button btn_yes = (Button) customDialogView.findViewById(R.id.btn_yes);
+        Button btn_no = (Button) customDialogView.findViewById(R.id.btn_no);
+        btn_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertDialog.dismiss();
+            }
+        });
+        btn_yes.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //unsubscribe the topics
+                if (null != merchantListFragment)
+                    merchantListFragment.unSubscribeTopics();
+                // logout
+                sharedpreferences.edit().clear().apply();
+                //navigate to signup/login
+                replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
+                mAlertDialog.dismiss();
+            }
+        });
+        mAlertDialog.show();
+    }
+
 }

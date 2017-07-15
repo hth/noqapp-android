@@ -45,7 +45,7 @@ import java.util.List;
 public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener {
 
     public static int selected_pos = -1;
-    Handler timerHandler;
+    private Handler timerHandler;
     private MerchantListAdapter adapter;
     private ArrayList<JsonTopic> topics;
     private ListView listview;
