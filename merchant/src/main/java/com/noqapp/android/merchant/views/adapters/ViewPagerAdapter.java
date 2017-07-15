@@ -101,6 +101,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
 //                }else{
                    // LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, settingsFragment, "SettingsFragment");
                     Intent in = new Intent(context, SettingActivity.class);
+                    in.putExtra("codeQR",lq.getCodeQR());
                     context.startActivity(in);
                     ((Activity)context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
 

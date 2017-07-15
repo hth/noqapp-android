@@ -6,17 +6,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.QueueSettingModel;
+import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter,View.OnClickListener{
 
 
     public ProgressDialog progressDialog;
@@ -27,6 +32,7 @@ public class SettingActivity extends AppCompatActivity {
     private TextView tv_name;
     private TextView tv_title;
     private ToggleButton toggleDayClosed,togglePreventJoin;
+    private String codeQR;
 
 
     @Override
@@ -37,6 +43,7 @@ public class SettingActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         super.onCreate(savedInstanceState);
+        QueueSettingModel.queueSettingPresenter = this;
         setContentView(R.layout.activity_setting);
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         iv_logout = (ImageView) findViewById(R.id.iv_logout);
@@ -48,25 +55,12 @@ public class SettingActivity extends AppCompatActivity {
         toggleDayClosed = (ToggleButton) findViewById(R.id.toggleDayClosed);
         togglePreventJoin = (ToggleButton) findViewById(R.id.togglePreventJoin);
         String title =getIntent().getStringExtra("title");
+        codeQR = getIntent().getStringExtra("codeQR");
         if(null != title){
             tv_title.setText(title);
         }
-//        LoginModel.loginPresenter = this;
-//        MerchantProfileModel.merchantPresenter = this;
-
-        toggleDayClosed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
-                // NoQueueBaseActivity.setAutoJoinStatus(isChecked);
-            }
-        });
-
-        togglePreventJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
-                //  NoQueueBaseActivity.setAutoJoinStatus(isChecked);
-            }
-        });
+        toggleDayClosed.setOnClickListener(this);
+        togglePreventJoin.setOnClickListener(this);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +69,12 @@ public class SettingActivity extends AppCompatActivity {
         });
         iv_logout.setVisibility(View.INVISIBLE);
         setActionBarTitle(getString(R.string.screen_settings));
-
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+           QueueSettingModel.getQueueState(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(),codeQR);
+        } else {
+            ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+        }
 
     }
 
@@ -109,5 +108,39 @@ public class SettingActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.stay, R.anim.slide_down);
+    }
+
+    @Override
+    public void queueSettingResponse(QueueSetting queueSetting) {
+        if(null != queueSetting){
+            toggleDayClosed.setChecked(queueSetting.isDayClosed());
+            togglePreventJoin.setChecked(queueSetting.isPreventJoining());
+        }
+        dismissProgress();
+
+    }
+
+    @Override
+    public void queueSettingError() {
+        dismissProgress();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            QueueSetting queueSetting = new QueueSetting();
+            queueSetting.setCodeQR(codeQR);
+            queueSetting.setDayClosed(toggleDayClosed.isChecked());
+            queueSetting.setPreventJoining(togglePreventJoin.isChecked());
+            QueueSettingModel.modify(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(),queueSetting);
+        } else {
+            ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+            if(v.getId() == R.id.toggleDayClosed){
+                toggleDayClosed.setChecked(!toggleDayClosed.isChecked());
+            }else{
+                togglePreventJoin.setChecked(!togglePreventJoin.isChecked());
+            }
+        }
     }
 }

@@ -51,10 +51,11 @@
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_drawable_red"
+            android:background="@drawable/button_drawable"
             android:text="@string/sign_in"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/colorMobile"
             android:textSize="18sp" />
 
     </LinearLayout>

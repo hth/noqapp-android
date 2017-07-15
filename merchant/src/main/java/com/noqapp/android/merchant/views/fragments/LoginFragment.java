@@ -1,8 +1,10 @@
 package com.noqapp.android.merchant.views.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
     private Button btn_login;
     private EditText edt_email, edt_pwd;
+    private String email, pwd;
 
     public LoginFragment() {
         super();
@@ -52,18 +55,9 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             @Override
             public void onClick(View v) {
                 hideKeyBoard();
-                String email = edt_email.getText().toString().trim();
-                String pwd = edt_pwd.getText().toString().trim();
-                edt_email.setError(null);
-                edt_pwd.setError(null);
-                if (TextUtils.isEmpty(email)) {
-                    edt_email.setError(getString(R.string.error_email_blank));
-                }
-                if (!TextUtils.isEmpty(email) && !isValidEmail(email)) {
-                    edt_email.setError(getString(R.string.error_email_invalid));
-                } else if (pwd.equals("")) {
-                    edt_pwd.setError(getString(R.string.error_pwd_blank));
-                } else {
+               if(isValidInput()) {
+                    btn_login.setBackgroundResource(R.drawable.button_drawable_red);
+                    btn_login.setTextColor(Color.WHITE);
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         LoginModel.login(email, pwd);
@@ -101,6 +95,8 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         } else {
             LaunchActivity.getLaunchActivity().dismissProgress();
             Toast.makeText(getActivity(), getString(R.string.error_login), Toast.LENGTH_LONG).show();
+            btn_login.setBackgroundResource(R.drawable.button_drawable);
+            btn_login.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
         }
     }
 
@@ -141,5 +137,32 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    private boolean isValidInput() {
+        boolean isValid = true;
+        email = edt_email.getText().toString().trim();
+        pwd = edt_pwd.getText().toString().trim();
+        edt_email.setError(null);
+        edt_pwd.setError(null);
+        btn_login.setBackgroundResource(R.drawable.button_drawable);
+        btn_login.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
+        if (TextUtils.isEmpty(email)) {
+            edt_email.setError(getString(R.string.error_email_blank));
+            isValid = false;
+        }
+        if (!TextUtils.isEmpty(email) && !isValidEmail(email)) {
+            edt_email.setError(getString(R.string.error_email_invalid));
+            isValid = false;
+        }
+        if (pwd.equals("")) {
+            edt_pwd.setError(getString(R.string.error_pwd_blank));
+            isValid = false;
+        }
+        if (!pwd.equals("") && pwd.length() < 6) {
+            edt_pwd.setError(getString(R.string.error_pwd_length));
+            isValid = false;
+        }
+        return isValid;
     }
 }
