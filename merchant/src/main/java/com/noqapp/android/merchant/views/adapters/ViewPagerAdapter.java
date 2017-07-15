@@ -1,9 +1,9 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
@@ -27,11 +26,10 @@ import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.SettingActivity;
 import com.noqapp.android.merchant.views.fragments.MerchantViewPagerFragment;
-import com.noqapp.android.merchant.views.fragments.SettingsFragment;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 
@@ -95,19 +93,18 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         iv_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingsFragment settingsFragment = new SettingsFragment();
-                Bundle b = new Bundle();
-                b.putString("title", lq.getDisplayName());
-                settingsFragment.setArguments(b);
-                if(new AppUtils().isTablet(context)) {
-                    FragmentTransaction fragmentTransaction = LaunchActivity.getLaunchActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.list_detail_fragment, settingsFragment);
-                    //  fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                }else{
-                    LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, settingsFragment, "SettingsFragment");
+//                if(new AppUtils().isTablet(context)) {
+//                    FragmentTransaction fragmentTransaction = LaunchActivity.getLaunchActivity().getSupportFragmentManager().beginTransaction();
+//                    fragmentTransaction.replace(R.id.list_detail_fragment, settingsFragment);
+//                    //  fragmentTransaction.addToBackStack(null);
+//                    fragmentTransaction.commit();
+//                }else{
+                   // LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, settingsFragment, "SettingsFragment");
+                    Intent in = new Intent(context, SettingActivity.class);
+                    context.startActivity(in);
+                    ((Activity)context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
 
-                }
+                //}
             }
         });
 
@@ -120,7 +117,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         /* Add to show only remaining people in queue */
         tv_total_value.setText(String.valueOf(lq.getToken() - lq.getServingNumber()));
         tv_title.setText(lq.getDisplayName());
-        tv_serving_customer.setText(Html.fromHtml("Serving: " + (StringUtils.isNotBlank(lq.getCustomerName()) ? "<b>" + lq.getCustomerName() + "</b> " : "NA")));
+        tv_serving_customer.setText(Html.fromHtml("Serving: " + (StringUtils.isNotBlank(lq.getCustomerName()) ? "<b>" + lq.getCustomerName() + "</b> " : context.getString(R.string.name_unavailable))));
         final QueueStatusEnum queueStatus = lq.getQueueStatus();
         btn_start.setText(context.getString(R.string.start));
 

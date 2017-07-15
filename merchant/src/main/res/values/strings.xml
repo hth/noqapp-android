@@ -58,4 +58,8 @@
     <string name="dayclosed">Day Closed</string>
     <string name="preventjoining">Prevent Joining</string>
     <string name="screen_settings">Settings</string>
+    <string name="name_unavailable">Name Unavailable</string>
+    <string name="cancel">Cancel</string>
+    <string name="update">Update</string>
+    <string name="setting">Queue Settings</string>
 </resources>

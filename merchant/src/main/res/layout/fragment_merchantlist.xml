@@ -3,23 +3,25 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#aa22ee"
     android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:background="@android:color/white"
+        android:layout_height="wrap_content">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:background="@android:color/white"
+            android:layout_height="wrap_content">
 
             <ListView
                 android:clipToPadding="true"
                 android:id="@+id/listview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="100dp"
                 android:paddingBottom="50dp">
 
             </ListView>

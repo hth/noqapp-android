@@ -27,12 +27,6 @@
                 android:background="@color/pager_top_bg"
                 android:padding="5dp">
 
-                <ImageView
-                    android:id="@+id/iv_settings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:background="@mipmap/settings" />
 
                 <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                     android:id="@+id/tv_title"
@@ -42,7 +36,41 @@
                     android:gravity="center"
                     android:textColor="@color/color_action_bar"
                     android:textSize="24sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_title"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:gravity="center">
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_toLeftOf="@+id/iv_settings"
+                        android:gravity="center"
+                        android:hint="@string/setting"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="5dp"
+                        android:background="@mipmap/settings_48"
+                        android:gravity="center_vertical"
+                        android:scaleType="centerInside" />
+                </RelativeLayout>
             </RelativeLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -129,6 +157,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
                         android:gravity="center_horizontal"
                         android:textColor="@color/colorAddress"
                         android:textSize="18sp" />
@@ -137,27 +166,34 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_serving_customer"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp">
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:gravity="center">
 
                         <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                             android:id="@+id/tv_counter_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_alignParentLeft="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
                             android:layout_marginBottom="10dp"
                             android:layout_toLeftOf="@+id/iv_edit"
                             android:gravity="center"
                             android:hint="@string/counter_name"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
                             android:textColor="@color/colorAddress"
                             android:textSize="18sp" />
 
                         <ImageView
                             android:id="@+id/iv_edit"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:background="@mipmap/edit_text" />
+                            android:layout_centerVertical="true"
+                            android:layout_margin="5dp"
+                            android:background="@mipmap/edit"
+                            android:gravity="center_vertical"
+                            android:scaleType="centerInside" />
                     </RelativeLayout>
                 </RelativeLayout>
 

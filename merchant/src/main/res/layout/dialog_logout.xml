@@ -19,21 +19,18 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
-            android:text="Enter counter name"
+            android:text="@string/title_logout"
             android:textColor="@color/color_action_bar"
             android:textSize="24sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/edt_counter"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@+id/tvtitle"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/edt_roun_rect"
+            android:text="@string/msg_logout"
             android:gravity="center"
-            android:maxLength="20"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -52,14 +49,14 @@
             android:weightSum="1">
 
             <Button
-                android:id="@+id/btn_cancel"
+                android:id="@+id/btn_no"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginRight="10dp"
                 android:layout_weight="0.5"
                 android:background="@android:color/transparent"
-                android:text="@string/cancel"
+                android:text="@string/no"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
                 android:textSize="18sp" />
@@ -70,7 +67,7 @@
                 android:background="@color/color_grey_bg" />
 
             <Button
-                android:id="@+id/btn_update"
+                android:id="@+id/btn_yes"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_below="@+id/llotp"
@@ -78,7 +75,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="0.5"
                 android:background="@android:color/transparent"
-                android:text="@string/update"
+
+                android:text="@string/yes"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
                 android:textSize="18sp" />
