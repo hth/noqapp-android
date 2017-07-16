@@ -23,7 +23,6 @@ import retrofit2.Response;
  * User: hitender
  * Date: 4/16/17 5:59 PM
  */
-
 public class ManageQueueModel {
     private static final String TAG = ManageQueueModel.class.getSimpleName();
 
@@ -80,7 +79,7 @@ public class ManageQueueModel {
                     return;
                 }
 
-                if (response.body() != null && response.body().getError() == null) {
+                if (null != response.body() && null == response.body().getError()) {
                     if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                         Log.d(TAG, "After clicking Next, response jsonToken" + response.body().toString());
                         manageQueuePresenter.manageQueueResponse(response.body());

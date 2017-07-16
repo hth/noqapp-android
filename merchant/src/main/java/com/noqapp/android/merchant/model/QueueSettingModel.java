@@ -17,18 +17,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by chandra on 7/15/17.
+ * User: chandra
+ * Date: 7/15/17 10:27 AM
  */
 public class QueueSettingModel {
-
     private static final String TAG = QueueSettingModel.class.getSimpleName();
+
     private static final QueueSettingService queueSettingService;
     public static QueueSettingPresenter queueSettingPresenter;
 
     static {
         queueSettingService = RetrofitClient.getClient().create(QueueSettingService.class);
     }
-
 
     /**
      * Get setting for a specific queue.
@@ -77,7 +77,7 @@ public class QueueSettingModel {
                     return;
                 }
 
-                if (response.body() != null && response.body().getError() == null) {
+                if (null != response.body() && null == response.body().getError()) {
                     if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                         Log.d(TAG, "Modify setting, response jsonToken" + response.body().toString());
                         queueSettingPresenter.queueSettingResponse(response.body());

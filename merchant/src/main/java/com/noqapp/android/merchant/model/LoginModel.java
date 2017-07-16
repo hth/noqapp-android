@@ -15,7 +15,6 @@ import retrofit2.Response;
  * User: hitender
  * Date: 4/22/17 1:09 PM
  */
-
 public class LoginModel {
     private static final String TAG = LoginModel.class.getSimpleName();
 
@@ -46,7 +45,6 @@ public class LoginModel {
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-
                 Log.e("Response", t.getLocalizedMessage(), t);
             }
         });
