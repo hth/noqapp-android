@@ -9,5 +9,5 @@ public interface TopicPresenter {
 
     void queueError();
 
-    void authenticationFailure(int errorcode);
+    void authenticationFailure(int errorCode);
 }
