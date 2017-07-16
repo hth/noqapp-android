@@ -122,7 +122,8 @@ public class MerchantViewPagerFragment extends Fragment {
         topicsList = jsonTopics;
         adapter.notifyDataSetChanged();
     }
-    public void setPage(int pos){
+
+    public void setPage(int pos) {
         viewPager.setCurrentItem(pos);
     }
 }

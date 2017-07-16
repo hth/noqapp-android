@@ -36,8 +36,6 @@ import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.util.List;
-
 public class LaunchActivity extends AppCompatActivity {
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
@@ -57,6 +55,7 @@ public class LaunchActivity extends AppCompatActivity {
     public NetworkUtil networkUtil;
     public ProgressDialog progressDialog;
     public Toolbar toolbar;
+    public FrameLayout list_fragment, list_detail_fragment;
     protected TextView tv_toolbar_title;
     private ImageView iv_logout;
     private long lastPress;
@@ -64,7 +63,6 @@ public class LaunchActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
     private ImageView actionbarBack;
     private TextView tv_name;
-    public FrameLayout list_fragment, list_detail_fragment;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -186,16 +184,16 @@ public class LaunchActivity extends AppCompatActivity {
         sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, counterName).apply();
     }
 
-    public void setUserLevel(String userLevel) {
-        sharedpreferences.edit().putString(KEY_USER_LEVEL, userLevel).apply();
-    }
-
     public UserLevelEnum getUserLevel() {
         try {
             return UserLevelEnum.valueOf(sharedpreferences.getString(KEY_USER_LEVEL, ""));
         } catch (Exception e) {
             return UserLevelEnum.MER_MANAGER;
         }
+    }
+
+    public void setUserLevel(String userLevel) {
+        sharedpreferences.edit().putString(KEY_USER_LEVEL, userLevel).apply();
     }
 
     public String getUSerID() {
@@ -340,7 +338,7 @@ public class LaunchActivity extends AppCompatActivity {
         }
     }
 
-    private void showLogoutEditDialog( ) {
+    private void showLogoutEditDialog() {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(launchActivity);
         LayoutInflater inflater = LayoutInflater.from(launchActivity);
         builder.setTitle(null);
@@ -382,8 +380,8 @@ public class LaunchActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.RESULT_SETTING) {
             if (resultCode == RESULT_OK) {
-                boolean isDataClear = data.getExtras().getBoolean(Constants.CLEAR_DATA,false);
-                if(isDataClear)
+                boolean isDataClear = data.getExtras().getBoolean(Constants.CLEAR_DATA, false);
+                if (isDataClear)
                     clearLoginData();
             }
         }

@@ -23,7 +23,6 @@ import retrofit2.Response;
  * User: hitender
  * Date: 4/16/17 5:59 PM
  */
-
 public class ManageQueueModel {
     private static final String TAG = ManageQueueModel.class.getSimpleName();
 
@@ -44,7 +43,7 @@ public class ManageQueueModel {
         manageQueueService.getQueues(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
-                if(response.code() == 401) {
+                if (response.code() == 401) {
                     topicPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -75,12 +74,12 @@ public class ManageQueueModel {
         manageQueueService.served(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if(response.code() == 401) {
+                if (response.code() == 401) {
                     manageQueuePresenter.authenticationFailure(response.code());
                     return;
                 }
 
-                if (response.body() != null && response.body().getError() == null) {
+                if (null != response.body() && null == response.body().getError()) {
                     if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                         Log.d(TAG, "After clicking Next, response jsonToken" + response.body().toString());
                         manageQueuePresenter.manageQueueResponse(response.body());

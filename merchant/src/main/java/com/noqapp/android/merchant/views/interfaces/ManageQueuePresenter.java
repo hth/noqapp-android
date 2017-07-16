@@ -9,5 +9,5 @@ public interface ManageQueuePresenter {
 
     void manageQueueError();
 
-    void authenticationFailure(int errorcode);
+    void authenticationFailure(int errorCode);
 }

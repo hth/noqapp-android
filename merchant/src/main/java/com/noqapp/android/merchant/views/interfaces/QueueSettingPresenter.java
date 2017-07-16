@@ -9,6 +9,5 @@ public interface QueueSettingPresenter {
 
     void queueSettingError();
 
-    void authenticationFailure(int errorcode);
-
+    void authenticationFailure(int errorCode);
 }
