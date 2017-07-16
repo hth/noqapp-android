@@ -28,6 +28,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -163,6 +164,16 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().dismissProgress();
         swipeRefreshLayout.setRefreshing(false);
     }
+
+    @Override
+    public void authenticationFailure(int errorcode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        swipeRefreshLayout.setRefreshing(false);
+        if(errorcode == Constants.INVALID_CREDENTIAL){
+            LaunchActivity.getLaunchActivity().clearLoginData();
+        }
+    }
+
 
     private void initListView() {
         rl_empty_screen.setVisibility(View.GONE);

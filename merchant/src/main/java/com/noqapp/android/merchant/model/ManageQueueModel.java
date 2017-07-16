@@ -36,34 +36,6 @@ public class ManageQueueModel {
     }
 
     /**
-     * Get details for a specific queue.
-     *
-     * @param did
-     * @param mail
-     * @param auth
-     */
-    public static void getQueue(String did, String mail, String auth, String codeQR) {
-        manageQueueService.getQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonTopicList>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get all assigned queues", String.valueOf(response.body()));
-                    topicPresenter.queueResponse(response.body());
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while getting all queues assigned");
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonTopicList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
-                topicPresenter.queueError();
-            }
-        });
-    }
-
-    /**
      * @param did
      * @param mail
      * @param auth
@@ -72,6 +44,11 @@ public class ManageQueueModel {
         manageQueueService.getQueues(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
+                if(response.code() == 401) {
+                    topicPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Get all assigned queues", String.valueOf(response.body()));
                     topicPresenter.queueResponse(response.body());
@@ -98,6 +75,11 @@ public class ManageQueueModel {
         manageQueueService.served(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
+                if(response.code() == 401) {
+                    manageQueuePresenter.authenticationFailure(response.code());
+                    return;
+                }
+
                 if (response.body() != null && response.body().getError() == null) {
                     if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                         Log.d(TAG, "After clicking Next, response jsonToken" + response.body().toString());

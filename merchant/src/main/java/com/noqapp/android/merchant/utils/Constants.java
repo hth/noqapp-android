@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.utils;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.noqapp.android.merchant.BuildConfig;
@@ -29,6 +30,12 @@ public class Constants {
     public static final String MSG_TYPE_Q = "q";
     public static final String MSG_TYPE_C = "c";
     private static String VERSION_RELEASE;
+
+    public static final int RESULT_SETTING = 123;
+    public static final String CLEAR_DATA = "clearData";
+
+    //error codes
+    public static final int INVALID_CREDENTIAL = 401;
 
     /**
      * Computes App version.

@@ -19,7 +19,6 @@ import retrofit2.Response;
 /**
  * Created by chandra on 7/15/17.
  */
-
 public class QueueSettingModel {
 
     private static final String TAG = QueueSettingModel.class.getSimpleName();
@@ -42,6 +41,11 @@ public class QueueSettingModel {
         queueSettingService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
+                if(response.code() == 401) {
+                    queueSettingPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Get queue setting", String.valueOf(response.body()));
                     queueSettingPresenter.queueSettingResponse(response.body());
@@ -68,6 +72,11 @@ public class QueueSettingModel {
         queueSettingService.modify(did, Constants.DEVICE_TYPE, mail, auth, queueSetting).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
+                if(response.code() == 401) {
+                    queueSettingPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
                 if (response.body() != null && response.body().getError() == null) {
                     if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                         Log.d(TAG, "Modify setting, response jsonToken" + response.body().toString());

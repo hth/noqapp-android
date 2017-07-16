@@ -8,4 +8,6 @@ public interface TopicPresenter {
     void queueResponse(JsonTopicList token);
 
     void queueError();
+
+    void authenticationFailure(int errorcode);
 }
