@@ -1,7 +1,5 @@
 package com.noqapp.android.client.network;
 
-import static com.noqapp.android.client.utils.Constants.*;
-
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -30,6 +28,15 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+
+import static com.noqapp.android.client.utils.Constants.ISREVIEW;
+import static com.noqapp.android.client.utils.Constants.MSG_TYPE_C;
+import static com.noqapp.android.client.utils.Constants.MSG_TYPE_CS;
+import static com.noqapp.android.client.utils.Constants.MSG_TYPE_F;
+import static com.noqapp.android.client.utils.Constants.MSG_TYPE_G;
+import static com.noqapp.android.client.utils.Constants.MSG_TYPE_LN;
+import static com.noqapp.android.client.utils.Constants.MSG_TYPE_U;
+import static com.noqapp.android.client.utils.Constants.QRCODE;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 

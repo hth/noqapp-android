@@ -36,7 +36,7 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("c")
     private String codeQR;
 
-    @JsonProperty ("cor")
+    @JsonProperty("cor")
     private double[] coordinate;
 
     @JsonProperty("n")
@@ -83,10 +83,10 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("se")
     private String serviceEndTime;
 
-    @JsonProperty ("ra")
+    @JsonProperty("ra")
     private int ratingCount;
 
-    @JsonProperty ("hr")
+    @JsonProperty("hr")
     private int hoursSaved;
 
     @JsonProperty("u")

@@ -43,8 +43,6 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static java.security.AccessController.getContext;
-
 public class ReviewActivity extends AppCompatActivity implements ReviewPresenter {
     private final String TAG = ReviewActivity.class.getSimpleName();
 
@@ -114,9 +112,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             @Override
             public void onPositionChanged(int position) {
                 int childCount = tickMarkLabelsRelativeLayout.getChildCount();
-                for(int i= 0; i<childCount; i++){
+                for (int i = 0; i < childCount; i++) {
                     TextView tv = (TextView) tickMarkLabelsRelativeLayout.getChildAt(i);
-                    if(i == position)
+                    if (i == position)
                         tv.setTextColor(getResources().getColor(R.color.colorPrimary));
                     else
                         tv.setTextColor(getResources().getColor(R.color.color_btn_select));
@@ -239,7 +237,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
     }
 
-    private void addTickMarkTextLabels(){
+    private void addTickMarkTextLabels() {
         int tickMarkCount = discreteSlider.getTickMarkCount();
         float tickMarkRadius = discreteSlider.getTickMarkRadius();
         int width = tickMarkLabelsRelativeLayout.getMeasuredWidth();
@@ -248,13 +246,13 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         int discreteSliderBackdropRightMargin = DisplayUtility.dp2px(this, 32);
         float firstTickMarkRadius = tickMarkRadius;
         float lastTickMarkRadius = tickMarkRadius;
-        int interval = (width - (discreteSliderBackdropLeftMargin+discreteSliderBackdropRightMargin) - ((int)(firstTickMarkRadius+lastTickMarkRadius)) )
-                / (tickMarkCount-1);
+        int interval = (width - (discreteSliderBackdropLeftMargin + discreteSliderBackdropRightMargin) - ((int) (firstTickMarkRadius + lastTickMarkRadius)))
+                / (tickMarkCount - 1);
 
         String[] tickMarkLabels = {getSeekbarLebel(1), getSeekbarLebel(2), getSeekbarLebel(3), getSeekbarLebel(4), getSeekbarLebel(5)};
         int tickMarkLabelWidth = DisplayUtility.dp2px(this, 40);
 
-        for(int i=0; i<tickMarkCount; i++) {
+        for (int i = 0; i < tickMarkCount; i++) {
             TextView tv = new TextView(this);
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -262,14 +260,14 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
             tv.setText(tickMarkLabels[i]);
             tv.setGravity(Gravity.CENTER);
-            if(i==discreteSlider.getPosition())
+            if (i == discreteSlider.getPosition())
                 tv.setTextColor(getResources().getColor(R.color.colorPrimary));
             else
                 tv.setTextColor(getResources().getColor(R.color.color_btn_select));
 
 //                    tv.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
 
-            int left = discreteSliderBackdropLeftMargin + (int)firstTickMarkRadius + (i * interval) - (tickMarkLabelWidth/2);
+            int left = discreteSliderBackdropLeftMargin + (int) firstTickMarkRadius + (i * interval) - (tickMarkLabelWidth / 2);
 
             layoutParams.setMargins(left,
                     0,

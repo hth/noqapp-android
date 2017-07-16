@@ -102,7 +102,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("rc")
     private int ratingCount;
 
-    @JsonProperty ("lu")
+    @JsonProperty("lu")
     private boolean allowLoggedInUser = false;
 
     @JsonProperty("error")

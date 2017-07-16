@@ -1,8 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -88,7 +86,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 TextView tv_date_of_service1 = (TextView) convertView.findViewById(R.id.tv_date_of_service);
                 TextView txtToken1 = (TextView) convertView.findViewById(R.id.txtToken);
                 TextView tv_hour_saved = (TextView) convertView.findViewById(R.id.tv_hour_saved);
-                RatingBar ratingBar =  (RatingBar)convertView.findViewById(R.id.ratingBar);
+                RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
                 txtnumber1.setText("#" + String.valueOf(childPosition + 1));
                 tv_queue_name1.setText(queue.getDisplayName());
                 tv_store_name1.setText(queue.getBusinessName());
@@ -114,9 +112,9 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                         tv_hour_saved.setText("");
                 }
 
-                Log.v("rating ",""+queue.getRatingCount());
+                Log.v("rating ", "" + queue.getRatingCount());
                 Drawable drawable = ratingBar.getProgressDrawable();
-               // drawable.setColorFilter(Color.parseColor("#e92270"), PorterDuff.Mode.SRC_ATOP);
+                // drawable.setColorFilter(Color.parseColor("#e92270"), PorterDuff.Mode.SRC_ATOP);
                 ratingBar.setRating(queue.getRatingCount());
                 break;
         }

@@ -35,17 +35,12 @@ public class DiscreteSlider extends FrameLayout {
 
     // endregion
 
-    // region Interfaces
-    public interface OnDiscreteSliderChangeListener {
-        void onPositionChanged(int position);
-    }
-    // endregion
-
     // region Constructors
     public DiscreteSlider(Context context) {
         super(context);
         init(context, null);
     }
+    // endregion
 
     public DiscreteSlider(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -56,10 +51,9 @@ public class DiscreteSlider extends FrameLayout {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
-    // endregion
 
     // region Helper Methods
-    private void init(Context context, AttributeSet attrs){
+    private void init(Context context, AttributeSet attrs) {
         TypedArray attributeArray = context.obtainStyledAttributes(
                 attrs,
                 R.styleable.DiscreteSlider);
@@ -79,8 +73,8 @@ public class DiscreteSlider extends FrameLayout {
         }
 
         View view = inflate(context, R.layout.discrete_slider, this);
-        discreteSliderBackdrop = (DiscreteSliderBackdrop)view.findViewById(R.id.discrete_slider_backdrop);
-        discreteSeekBar = (DiscreteSeekBar)view.findViewById(R.id.discrete_seek_bar);
+        discreteSliderBackdrop = (DiscreteSliderBackdrop) view.findViewById(R.id.discrete_slider_backdrop);
+        discreteSeekBar = (DiscreteSeekBar) view.findViewById(R.id.discrete_seek_bar);
 
         setTickMarkCount(tickMarkCount);
         setTickMarkRadius(tickMarkRadius);
@@ -92,73 +86,49 @@ public class DiscreteSlider extends FrameLayout {
         setThumb(thumb);
         setProgressDrawable(progressDrawable);
 
-        discreteSeekBar.setPadding(discreteSeekBarLeftPadding,0,discreteSeekBarRightPadding,0);
+        discreteSeekBar.setPadding(discreteSeekBarLeftPadding, 0, discreteSeekBarRightPadding, 0);
 
         discreteSeekBar.setOnDiscreteSeekBarChangeListener(new DiscreteSeekBar.OnDiscreteSeekBarChangeListener() {
             @Override
             public void onPositionChanged(int position) {
-                if(onDiscreteSliderChangeListener != null){
+                if (onDiscreteSliderChangeListener != null) {
                     onDiscreteSliderChangeListener.onPositionChanged(position);
                     setPosition(position);
                 }
             }
         });
     }
+    // endregion
 
-    public void setTickMarkCount(int tickMarkCount){
-        this.tickMarkCount = tickMarkCount;
-        discreteSliderBackdrop.setTickMarkCount(tickMarkCount);
-        discreteSliderBackdrop.invalidate();
-        discreteSeekBar.setTickMarkCount(tickMarkCount);
-        discreteSeekBar.invalidate();
-    }
-
-    public void setTickMarkRadius(float tickMarkRadius){
-        this.tickMarkRadius = tickMarkRadius;
-        discreteSliderBackdrop.setTickMarkRadius(tickMarkRadius);
-        discreteSliderBackdrop.invalidate();
-    }
-
-    public void setPosition(int position) {
-        if(position<0){
-            this.position = 0;
-        } else if(position>tickMarkCount-1){
-            this.position = tickMarkCount-1;
-        } else {
-            this.position = position;
-        }
-        discreteSeekBar.setPosition(this.position);
-    }
-
-    public void setHorizontalBarThickness(float horizontalBarThickness){
+    public void setHorizontalBarThickness(float horizontalBarThickness) {
         discreteSliderBackdrop.setHorizontalBarThickness(horizontalBarThickness);
         discreteSliderBackdrop.invalidate();
     }
 
-    public void setBackdropFillColor(int backdropFillColor){
+    public void setBackdropFillColor(int backdropFillColor) {
         discreteSliderBackdrop.setBackdropFillColor(backdropFillColor);
         discreteSliderBackdrop.invalidate();
     }
 
-    public void setBackdropStrokeColor(int backdropStrokeColor){
+    public void setBackdropStrokeColor(int backdropStrokeColor) {
         discreteSliderBackdrop.setBackdropStrokeColor(backdropStrokeColor);
         discreteSliderBackdrop.invalidate();
     }
 
-    public void setBackdropStrokeWidth(float backdropStrokeWidth){
+    public void setBackdropStrokeWidth(float backdropStrokeWidth) {
         discreteSliderBackdrop.setBackdropStrokeWidth(backdropStrokeWidth);
         discreteSliderBackdrop.invalidate();
     }
 
-    public void setThumb(Drawable thumb){
-        if(thumb != null) {
+    public void setThumb(Drawable thumb) {
+        if (thumb != null) {
             discreteSeekBar.setThumb(thumb);
             discreteSeekBar.invalidate();
         }
     }
 
-    public void setProgressDrawable(Drawable progressDrawable){
-        if(progressDrawable != null) {
+    public void setProgressDrawable(Drawable progressDrawable) {
+        if (progressDrawable != null) {
             discreteSeekBar.setProgressDrawable(progressDrawable);
             discreteSeekBar.invalidate();
         }
@@ -172,12 +142,42 @@ public class DiscreteSlider extends FrameLayout {
         return tickMarkCount;
     }
 
+    public void setTickMarkCount(int tickMarkCount) {
+        this.tickMarkCount = tickMarkCount;
+        discreteSliderBackdrop.setTickMarkCount(tickMarkCount);
+        discreteSliderBackdrop.invalidate();
+        discreteSeekBar.setTickMarkCount(tickMarkCount);
+        discreteSeekBar.invalidate();
+    }
+
     public float getTickMarkRadius() {
         return tickMarkRadius;
     }
 
+    public void setTickMarkRadius(float tickMarkRadius) {
+        this.tickMarkRadius = tickMarkRadius;
+        discreteSliderBackdrop.setTickMarkRadius(tickMarkRadius);
+        discreteSliderBackdrop.invalidate();
+    }
+
     public int getPosition() {
         return position;
+    }
+
+    public void setPosition(int position) {
+        if (position < 0) {
+            this.position = 0;
+        } else if (position > tickMarkCount - 1) {
+            this.position = tickMarkCount - 1;
+        } else {
+            this.position = position;
+        }
+        discreteSeekBar.setPosition(this.position);
+    }
+
+    // region Interfaces
+    public interface OnDiscreteSliderChangeListener {
+        void onPositionChanged(int position);
     }
 
     // endregion

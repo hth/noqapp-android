@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.cutomviews;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -12,7 +11,7 @@ import com.noqapp.android.client.utils.DisplayUtility;
 
 
 public class DiscreteSliderBackdrop extends FrameLayout {
-    
+
     // region Member Variables
     private Paint fillPaint = new Paint();
     private Paint strokePaint = new Paint();
@@ -64,55 +63,55 @@ public class DiscreteSliderBackdrop extends FrameLayout {
         int width = getWidth();
         int height = getHeight();
 
-        int interval = (width - (discreteSliderBackdropLeftMargin+discreteSliderBackdropRightMargin)) / (tickMarkCount-1);
+        int interval = (width - (discreteSliderBackdropLeftMargin + discreteSliderBackdropRightMargin)) / (tickMarkCount - 1);
 
         setUpFillPaint();
         setUpStrokePaint();
 
         canvas.drawRoundRect(new RectF(discreteSliderBackdropLeftMargin,
-                        (height/2) - (horizontalBarThickness/2),
+                        (height / 2) - (horizontalBarThickness / 2),
                         width - discreteSliderBackdropRightMargin,
-                        (height/2) + (horizontalBarThickness/2)),
-                        xRadius,
-                        yRadius,
-                        fillPaint);
+                        (height / 2) + (horizontalBarThickness / 2)),
+                xRadius,
+                yRadius,
+                fillPaint);
 
         canvas.drawRoundRect(new RectF(discreteSliderBackdropLeftMargin,
-                        (height/2) - (horizontalBarThickness/2),
+                        (height / 2) - (horizontalBarThickness / 2),
                         width - discreteSliderBackdropRightMargin,
-                        (height/2) + (horizontalBarThickness/2)),
-                        xRadius,
-                        yRadius,
-                        strokePaint);
+                        (height / 2) + (horizontalBarThickness / 2)),
+                xRadius,
+                yRadius,
+                strokePaint);
 
-        for(int i=0; i<tickMarkCount; i++){
-            canvas.drawCircle(discreteSliderBackdropLeftMargin + (i * interval), height/2, tickMarkRadius, fillPaint);
-            canvas.drawCircle(discreteSliderBackdropLeftMargin + (i * interval), height/2, tickMarkRadius, strokePaint);
+        for (int i = 0; i < tickMarkCount; i++) {
+            canvas.drawCircle(discreteSliderBackdropLeftMargin + (i * interval), height / 2, tickMarkRadius, fillPaint);
+            canvas.drawCircle(discreteSliderBackdropLeftMargin + (i * interval), height / 2, tickMarkRadius, strokePaint);
             //canvas.drawLine(new Float(height/2.0), new Float(height/2.0), tickMarkRadius, fillPaint);
-           // canvas.drawLine();
-          //  canvas.drawLine(discreteSliderBackdropLeftMargin + (i * interval), height/2, tickMarkRadius, fillPaint);
+            // canvas.drawLine();
+            //  canvas.drawLine(discreteSliderBackdropLeftMargin + (i * interval), height/2, tickMarkRadius, fillPaint);
         }
 
         canvas.drawRoundRect(new RectF(discreteSliderBackdropLeftMargin,
-                        (height/2) - ((horizontalBarThickness/2)-DisplayUtility.dp2px(getContext(), 1)),
+                        (height / 2) - ((horizontalBarThickness / 2) - DisplayUtility.dp2px(getContext(), 1)),
                         width - discreteSliderBackdropRightMargin,
-                        (height/2) + ((horizontalBarThickness/2)-DisplayUtility.dp2px(getContext(), 1))),
-                        xRadius,
-                        yRadius,
-                        fillPaint);
+                        (height / 2) + ((horizontalBarThickness / 2) - DisplayUtility.dp2px(getContext(), 1))),
+                xRadius,
+                yRadius,
+                fillPaint);
     }
 
     // region Helper Methods
-    private void init(Context context, AttributeSet attrs){
+    private void init(Context context, AttributeSet attrs) {
     }
 
-    private void setUpFillPaint(){
+    private void setUpFillPaint() {
         fillPaint.setColor(backdropFillColor);
         fillPaint.setStyle(Paint.Style.FILL);
         fillPaint.setAntiAlias(true);
     }
 
-    private void setUpStrokePaint(){
+    private void setUpStrokePaint() {
         strokePaint.setColor(backdropStrokeColor);
         strokePaint.setStyle(Paint.Style.STROKE);
         strokePaint.setAntiAlias(true);

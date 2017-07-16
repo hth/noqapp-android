@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
-import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;

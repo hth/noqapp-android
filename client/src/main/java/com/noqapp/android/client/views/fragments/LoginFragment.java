@@ -51,31 +51,25 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
             Manifest.permission.RECEIVE_SMS,
             Manifest.permission.READ_SMS
     };
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-
-    @BindView(R.id.edt_phone)
-    protected EditText edt_phoneNo;
-
-    @BindView(R.id.btn_login)
-    protected Button btn_login;
-
-    @BindView(R.id.btn_verify_phone)
-    protected Button btn_verify_phone;
-
-    @BindView(R.id.edt_verification_code)
-    protected EditText edt_verification_code;
-
-    @BindView(R.id.tv_detail)
-    protected TextView tv_detail;
-
-    private String mVerificationId;
-    private String verifiedMobileNo;
     private final int STATE_INITIALIZED = 1;
     private final int STATE_CODE_SENT = 2;
     private final int STATE_VERIFY_FAILED = 3;
     private final int STATE_VERIFY_SUCCESS = 4;
     private final int STATE_SIGN_IN_FAILED = 5;
     private final int STATE_SIGN_IN_SUCCESS = 6;
+    @BindView(R.id.edt_phone)
+    protected EditText edt_phoneNo;
+    @BindView(R.id.btn_login)
+    protected Button btn_login;
+    @BindView(R.id.btn_verify_phone)
+    protected Button btn_verify_phone;
+    @BindView(R.id.edt_verification_code)
+    protected EditText edt_verification_code;
+    @BindView(R.id.tv_detail)
+    protected TextView tv_detail;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private String mVerificationId;
+    private String verifiedMobileNo;
     private FirebaseAuth mAuth;
 
     public LoginFragment() {
@@ -190,6 +184,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
 
         return isValid;
     }
+
     private void startPhoneNumberVerification(String phoneNumber) {
         // [START start_phone_auth]
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -219,10 +214,10 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
-                                 edt_verification_code.setError("Invalid code.");
+                                edt_verification_code.setError("Invalid code.");
                             }
                             // Update UI
-                             updateUI(STATE_SIGN_IN_FAILED);
+                            updateUI(STATE_SIGN_IN_FAILED);
                         }
                     }
                 });
@@ -261,21 +256,21 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     }
 
     @Override
-    public void queueResponse(JsonProfile profile,String email,String auth) {
+    public void queueResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            NoQueueBaseActivity.commitProfile(profile,email,auth);
+            NoQueueBaseActivity.commitProfile(profile, email, auth);
             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
 
             //remove the login fragment from stack
             List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe);
-            if(currentTabFragments.size()==2){
+            if (currentTabFragments.size() == 2) {
                 LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
             }
             LaunchActivity.getLaunchActivity().dismissProgress();
         } else {
             // Rejected from  server
-                ErrorEncounteredJson eej = profile.getError();
+            ErrorEncounteredJson eej = profile.getError();
             if (null != eej && eej.getSystemErrorCode().equals("412")) {
                 Bundle b = new Bundle();
                 b.putString("mobile_no", verifiedMobileNo);
@@ -355,8 +350,8 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                 break;
             case STATE_VERIFY_SUCCESS:
                 // Verification has succeeded, proceed to firebase sign in
-                enableViews( edt_phoneNo, btn_verify_phone, edt_verification_code);
-                disableViews(btn_login );
+                enableViews(edt_phoneNo, btn_verify_phone, edt_verification_code);
+                disableViews(btn_login);
                 tv_detail.setText(R.string.status_verification_succeeded);
 
                 // Set the verification text based on the credential
@@ -365,7 +360,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                         edt_verification_code.setText(cred.getSmsCode());
                     } else {
                         edt_verification_code.setText(R.string.instant_validation);
-                        disableViews(edt_verification_code );
+                        disableViews(edt_verification_code);
                     }
                 }
                 break;
