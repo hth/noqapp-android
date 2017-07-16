@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.utils;
 
-import android.app.Activity;
 import android.util.Log;
 
 import com.noqapp.android.merchant.BuildConfig;
@@ -17,7 +16,6 @@ public class Constants {
     public static final int requestCodeNotification = 2;
     // broadcast receiver intent filters
     public static final String PUSH_NOTIFICATION = "pushNotification";
-    private static final String TAG = Constants.class.getName();
     public static final String QRCODE = "qrcode";
     public static final String MESSAGE = "message";
     public static final String STATUS = "status";
@@ -29,13 +27,12 @@ public class Constants {
     public static final String MSG_TYPE_CS = "cs";
     public static final String MSG_TYPE_Q = "q";
     public static final String MSG_TYPE_C = "c";
-    private static String VERSION_RELEASE;
-
     public static final int RESULT_SETTING = 123;
     public static final String CLEAR_DATA = "clearData";
-
     //error codes
     public static final int INVALID_CREDENTIAL = 401;
+    private static final String TAG = Constants.class.getName();
+    private static String VERSION_RELEASE;
 
     /**
      * Computes App version.

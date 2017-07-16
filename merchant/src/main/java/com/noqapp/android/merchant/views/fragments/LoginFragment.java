@@ -55,7 +55,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             @Override
             public void onClick(View v) {
                 hideKeyBoard();
-               if(isValidInput()) {
+                if (isValidInput()) {
                     btn_login.setBackgroundResource(R.drawable.button_drawable_red);
                     btn_login.setTextColor(Color.WHITE);
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -114,7 +114,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             Bundle b = new Bundle();
             b.putSerializable("jsonMerchant", jsonMerchant);
             mlf.setArguments(b);
-            if(new AppUtils().isTablet(getActivity())){
+            if (new AppUtils().isTablet(getActivity())) {
                 LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
                 LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
                 LaunchActivity.getLaunchActivity().list_fragment.setLayoutParams(lp1);

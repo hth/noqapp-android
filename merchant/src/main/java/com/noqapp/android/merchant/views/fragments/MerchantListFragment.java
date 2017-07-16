@@ -46,17 +46,18 @@ import java.util.List;
 public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener {
 
     public static int selected_pos = -1;
+    public MerchantViewPagerFragment merchantViewPagerFragment;
     private Handler timerHandler;
     private MerchantListAdapter adapter;
     private ArrayList<JsonTopic> topics;
     private ListView listview;
     private RelativeLayout rl_empty_screen;
-    public MerchantViewPagerFragment merchantViewPagerFragment;
     private Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Runnable updater;
     private Snackbar snackbar;
     private boolean isFragmentVisible = false;
+
     public MerchantListFragment() {
 
     }
@@ -169,7 +170,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     public void authenticationFailure(int errorcode) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         swipeRefreshLayout.setRefreshing(false);
-        if(errorcode == Constants.INVALID_CREDENTIAL){
+        if (errorcode == Constants.INVALID_CREDENTIAL) {
             LaunchActivity.getLaunchActivity().clearLoginData();
         }
     }
@@ -184,14 +185,14 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(!new AppUtils().isTablet(getActivity())) {
+                if (!new AppUtils().isTablet(getActivity())) {
                     merchantViewPagerFragment = new MerchantViewPagerFragment();
                     Bundle b = new Bundle();
                     b.putSerializable("jsonMerchant", topics);
                     b.putInt("position", position);
                     merchantViewPagerFragment.setArguments(b);
                     LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, merchantViewPagerFragment, "MerchantViewPagerFragment");
-                }else{
+                } else {
                     merchantViewPagerFragment.setPage(position);
                 }
                 for (int j = 0; j < parent.getChildCount(); j++) {
@@ -207,7 +208,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         snackbar.show();
 
 
-        if(new AppUtils().isTablet(getActivity())) {
+        if (new AppUtils().isTablet(getActivity())) {
             merchantViewPagerFragment = new MerchantViewPagerFragment();
             Bundle b = new Bundle();
             b.putSerializable("jsonMerchant", topics);
@@ -316,7 +317,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
     private void updateSnackbarTxt() {
-        if(isFragmentVisible)
+        if (isFragmentVisible)
             snackbar.setText(getString(R.string.last_update) + " " + GetTimeAgoUtils.getTimeAgo(LaunchActivity.getLaunchActivity().getLastUpdateTime()));
     }
 

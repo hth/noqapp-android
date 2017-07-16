@@ -17,9 +17,8 @@ public enum UserLevelEnum {
     private final int value;
 
     /**
-     *
      * @param description
-     * @param value - used for comparing specific access
+     * @param value       - used for comparing specific access
      */
     UserLevelEnum(String description, int value) {
         this.description = description;

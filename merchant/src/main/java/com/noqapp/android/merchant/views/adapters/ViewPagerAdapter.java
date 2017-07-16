@@ -100,11 +100,11 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
 //                    //  fragmentTransaction.addToBackStack(null);
 //                    fragmentTransaction.commit();
 //                }else{
-                   // LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, settingsFragment, "SettingsFragment");
-                    Intent in = new Intent(context, SettingActivity.class);
-                    in.putExtra("codeQR",lq.getCodeQR());
-                    ((Activity)context).startActivityForResult(in, Constants.RESULT_SETTING);
-                    ((Activity)context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
+                // LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, settingsFragment, "SettingsFragment");
+                Intent in = new Intent(context, SettingActivity.class);
+                in.putExtra("codeQR", lq.getCodeQR());
+                ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
+                ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
 
                 //}
             }
@@ -376,7 +376,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     @Override
     public void authenticationFailure(int errorcode) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        if(errorcode == Constants.INVALID_CREDENTIAL){
+        if (errorcode == Constants.INVALID_CREDENTIAL) {
             LaunchActivity.getLaunchActivity().clearLoginData();
         }
     }

@@ -41,7 +41,7 @@ public class QueueSettingModel {
         queueSettingService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
-                if(response.code() == 401) {
+                if (response.code() == 401) {
                     queueSettingPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -72,7 +72,7 @@ public class QueueSettingModel {
         queueSettingService.modify(did, Constants.DEVICE_TYPE, mail, auth, queueSetting).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
-                if(response.code() == 401) {
+                if (response.code() == 401) {
                     queueSettingPresenter.authenticationFailure(response.code());
                     return;
                 }

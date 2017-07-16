@@ -44,7 +44,7 @@ public class ManageQueueModel {
         manageQueueService.getQueues(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
-                if(response.code() == 401) {
+                if (response.code() == 401) {
                     topicPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -75,7 +75,7 @@ public class ManageQueueModel {
         manageQueueService.served(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if(response.code() == 401) {
+                if (response.code() == 401) {
                     manageQueuePresenter.authenticationFailure(response.code());
                     return;
                 }
