@@ -419,7 +419,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         if (currentTabFragments.size() > 1) {
 
             int size = currentTabFragments.size();
-            if(size==4 &&(currentSelectedTabTag.equals(tabHome)||currentSelectedTabTag.equals(tabList))){
+            if (size == 4 && (currentSelectedTabTag.equals(tabHome) || currentSelectedTabTag.equals(tabList))) {
                 /* This condition is added for the skip screen */
                 currentTabFragments.remove(size - 1);
                 size = currentTabFragments.size();
@@ -483,7 +483,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_REJOIN, true);
-        b.putBoolean(NoQueueBaseFragment.KEY_IS_AUTOJOIN_ELIGIBLE,false);
+        b.putBoolean(NoQueueBaseFragment.KEY_IS_AUTOJOIN_ELIGIBLE, false);
         JoinFragment jf = new JoinFragment();
         jf.setArguments(b);
         NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);

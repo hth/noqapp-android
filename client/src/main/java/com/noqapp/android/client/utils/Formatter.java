@@ -2,7 +2,6 @@ package com.noqapp.android.client.utils;
 
 import android.util.Log;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;

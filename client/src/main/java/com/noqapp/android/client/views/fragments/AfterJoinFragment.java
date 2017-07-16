@@ -149,7 +149,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonQueue);
              /* Update the remote join count */
-        NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount()-1);
+        NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount() - 1);
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 

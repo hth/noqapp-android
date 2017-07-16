@@ -143,14 +143,14 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     }
 
     @Override
-    public void queueResponse(JsonProfile profile,String email,String auth) {
+    public void queueResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
             //remove the login and register fragment from stack
             List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe);
-            if(currentTabFragments.size()==3){
+            if (currentTabFragments.size() == 3) {
                 LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
                 LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
             }

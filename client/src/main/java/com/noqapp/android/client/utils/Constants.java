@@ -17,10 +17,6 @@ public class Constants {
     public static final int requestCodeJoinQActivity = 11;
     public static final int requestCodeNotification = 2;
     public static final String PUSH_NOTIFICATION = "pushNotification";
-    private static final String TAG = Constants.class.getName();
-    private static String VERSION_RELEASE;
-
-
     public static final String QRCODE = "qrcode";
     public static final String MESSAGE = "message";
     public static final String STATUS = "status";
@@ -33,7 +29,9 @@ public class Constants {
     public static final String MSG_TYPE_CS = "cs";
     public static final String MSG_TYPE_Q = "q";
     public static final String MSG_TYPE_C = "c";
-    public static final String MSG_TYPE_U= "u";
+    public static final String MSG_TYPE_U = "u";
+    private static final String TAG = Constants.class.getName();
+    private static String VERSION_RELEASE;
 
     /**
      * Computes App version.
