@@ -9,6 +9,8 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 
 /**
  * User: hitender
@@ -32,7 +34,7 @@ public class JoinQueueUtil {
                     .setJoinErrorMsg(msg);
         }
 
-        if (isDayClosed(jsonQueue)) {
+        if (!joinQueueState.isJoinNotPossible() && isDayClosed(jsonQueue)) {
             Log.d(TAG, "Closed for Day found");
             String msg = String.format(
                     context.getString(R.string.error_day_closed),
@@ -43,17 +45,21 @@ public class JoinQueueUtil {
                     .setJoinErrorMsg(msg);
         }
 
-        if (isTokenNotAvailable(jsonQueue)) {
-            Log.d(TAG, "Token not available found as now is before "
-                    + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom())
-                    + " and after "
-                    + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenNotAvailableFrom()));
+        if (!joinQueueState.isJoinNotPossible() && isTokenNotAvailable(jsonQueue)) {
+            LocalTime tokenAvailableFrom = Formatter.parseLocalTime(Formatter.formatMilitaryTime(jsonQueue.getTokenAvailableFrom()));
+            LocalTime tokenNotAvailableFrom = Formatter.parseLocalTime(Formatter.formatMilitaryTime(jsonQueue.getTokenNotAvailableFrom()));
+
+            DateTime now = DateTime.now();
+            LocalDate today = LocalDate.now();
+            DateTime todayTokenAvailableFrom = today.toDateTime(tokenAvailableFrom);
+            DateTime todayTokenNotAvailableFrom = today.toDateTime(tokenNotAvailableFrom);
+
+            Log.d(TAG, "Token not available found as now " + now
+                    + " is before " + todayTokenAvailableFrom
+                    + " or after " + todayTokenNotAvailableFrom);
             joinQueueState.setJoinNotPossible(true);
 
-            DateTime tokenAvailableFrom = Formatter.parseDateTime(Formatter.formatMilitaryTime(jsonQueue.getTokenAvailableFrom()));
-            DateTime tokenNotAvailableFrom = Formatter.parseDateTime(Formatter.formatMilitaryTime(jsonQueue.getTokenNotAvailableFrom()));
-
-            if (tokenAvailableFrom.isBeforeNow()) {
+            if (now.isBefore(todayTokenAvailableFrom)) {
                 String startTime = Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom());
                 String msg = String.format(
                         context.getString(R.string.error_token_available_from),
@@ -62,13 +68,13 @@ public class JoinQueueUtil {
                         startTime);
 
                 joinQueueState.setJoinErrorMsg(msg);
-            } else if (tokenNotAvailableFrom.isAfterNow()) {
+            } else if (now.isAfter(todayTokenNotAvailableFrom)) {
                 String msg = String.format(context.getString(R.string.error_token_not_available_from), jsonQueue.getBusinessName(), jsonQueue.getDisplayName());
                 joinQueueState.setJoinErrorMsg(msg);
             }
         }
 
-        if (isQueueClosedPermanently(jsonQueue)) {
+        if (!joinQueueState.isJoinNotPossible() && isQueueClosedPermanently(jsonQueue)) {
             Log.d(TAG, "Queue closed permanently found");
             String msg = String.format(
                     context.getString(R.string.error_business_closed_permanent),
@@ -80,7 +86,7 @@ public class JoinQueueUtil {
         }
 
         /* This should prevent unregistered client from joining. This condition should enforce client has to be logged in. */
-        if (jsonQueue.isAllowLoggedInUser()) {
+        if (!joinQueueState.isJoinNotPossible() && jsonQueue.isAllowLoggedInUser()) {
             if (!UserUtils.isLogin()) {
                 Log.d(TAG, "Queue can be joined by logged in user");
                 String msg = String.format(context.getString(R.string.error_user_needs_to_be_logged_in), jsonQueue.getBusinessName(), jsonQueue.getDisplayName());
@@ -88,6 +94,7 @@ public class JoinQueueUtil {
                         .setJoinErrorMsg(msg);
             }
         }
+
         return joinQueueState;
     }
 
@@ -106,10 +113,15 @@ public class JoinQueueUtil {
      * @return
      */
     private static boolean isTokenNotAvailable(JsonQueue jsonQueue) {
-        DateTime tokenAvailableFrom = Formatter.parseDateTime(Formatter.formatMilitaryTime(jsonQueue.getTokenAvailableFrom()));
-        DateTime tokenNotAvailableFrom = Formatter.parseDateTime(Formatter.formatMilitaryTime(jsonQueue.getTokenNotAvailableFrom()));
+        LocalTime tokenAvailableFrom = Formatter.parseLocalTime(Formatter.formatMilitaryTime(jsonQueue.getTokenAvailableFrom()));
+        LocalTime tokenNotAvailableFrom = Formatter.parseLocalTime(Formatter.formatMilitaryTime(jsonQueue.getTokenNotAvailableFrom()));
 
-        return tokenAvailableFrom.isBeforeNow() || tokenNotAvailableFrom.isAfterNow();
+        DateTime now = DateTime.now();
+        LocalDate today = LocalDate.now();
+        DateTime todayTokenAvailableFrom = today.toDateTime(tokenAvailableFrom);
+        DateTime todayTokenNotAvailableFrom = today.toDateTime(tokenNotAvailableFrom);
+
+        return now.isBefore(todayTokenAvailableFrom) || now.isAfter(todayTokenNotAvailableFrom);
     }
 
     /**

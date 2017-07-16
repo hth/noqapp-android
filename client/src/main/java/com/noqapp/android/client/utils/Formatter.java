@@ -3,6 +3,7 @@ package com.noqapp.android.client.utils;
 import android.util.Log;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -62,12 +63,12 @@ public class Formatter {
         return "";
     }
 
-    static DateTime parseDateTime(String rawTimestamp) {
-        return inputFormatter.parseDateTime(rawTimestamp);
+    static LocalTime parseLocalTime(String rawTimestamp) {
+        return inputFormatter.parseLocalTime(rawTimestamp);
     }
 
     private static String convertMilitaryTo12HourFormat(String rawTimestamp) {
-        return outputFormatter.print(parseDateTime(rawTimestamp).getMillis());
+        return outputFormatter.print(parseLocalTime(rawTimestamp));
     }
 
     static String formatMilitaryTime(int rawTimestamp) {
