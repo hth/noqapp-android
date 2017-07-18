@@ -194,7 +194,6 @@ android {
 
             buildConfigField STRING, "NOQAPP_MOBILE", endpointStaging
             buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityStaging
-            resValue "string", "FACEBOOK_APP_ID", facebookAppIdStaging
         }
 
         release {
@@ -227,7 +226,6 @@ android {
 
             buildConfigField STRING, "NOQAPP_MOBILE", endpointLive
             buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityLive
-            resValue "string", "FACEBOOK_APP_ID", facebookAppIdLive
         }
     }
 
