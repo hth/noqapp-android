@@ -30,6 +30,7 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.NetworkUtil;
+import com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
@@ -37,6 +38,8 @@ import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 import org.apache.commons.lang3.text.WordUtils;
 
 public class LaunchActivity extends AppCompatActivity {
+    private static final String TAG = LaunchActivity.class.getName();
+
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
     public static final String MyPREFERENCES = "AppPref";
@@ -185,11 +188,7 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     public UserLevelEnum getUserLevel() {
-        try {
-            return UserLevelEnum.valueOf(sharedpreferences.getString(KEY_USER_LEVEL, ""));
-        } catch (Exception e) {
-            return UserLevelEnum.MER_MANAGER;
-        }
+        return UserLevelEnum.valueOf(sharedpreferences.getString(KEY_USER_LEVEL, ""));
     }
 
     public void setUserLevel(String userLevel) {

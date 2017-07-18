@@ -123,7 +123,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         final QueueStatusEnum queueStatus = lq.getQueueStatus();
         btn_start.setText(context.getString(R.string.start));
 
-        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.MER_ADMIN || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.MER_MANAGER) {
+        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
+                || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
+                || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
             // TODO(hth) Implement further settings for merchant topic
         }
 

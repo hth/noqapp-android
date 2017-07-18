@@ -24,7 +24,7 @@ import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
 import org.apache.commons.lang3.text.WordUtils;
 
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
-
+    private static final String TAG = SettingActivity.class.getName();
 
     public ProgressDialog progressDialog;
     public Toolbar toolbar;
@@ -35,7 +35,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private TextView tv_title;
     private ToggleButton toggleDayClosed, togglePreventJoin;
     private String codeQR;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +76,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
-
     }
 
     public void setActionBarTitle(String title) {
@@ -119,7 +117,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             togglePreventJoin.setChecked(queueSetting.isPreventJoining());
         }
         dismissProgress();
-
     }
 
     @Override
