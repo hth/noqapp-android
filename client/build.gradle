@@ -188,8 +188,6 @@ android {
             proguardFile 'client-debug-proguard.config'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            signingConfig signingConfigs.release
-
             buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, TRUE
             buildConfigField BOOLEAN, REPORT_CRASHES, FALSE
             buildConfigField BOOLEAN, ENABLE_VIEW_SERVER, TRUE
