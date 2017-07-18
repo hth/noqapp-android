@@ -23,6 +23,6 @@ public interface DeviceService {
             String dt,
 
             @Body
-                    DeviceToken deviceToken
+            DeviceToken deviceToken
     );
 }

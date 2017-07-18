@@ -9,6 +9,7 @@ import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.utils.Constants;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,8 +33,8 @@ public final class RegisterModel {
     /**
      * @param registration
      */
-    public static void register(Registration registration) {
-        registerService.register(registration).enqueue(new Callback<JsonProfile>() {
+    public static void register(String did, Registration registration) {
+        registerService.register(did, Constants.DEVICE_TYPE, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.body() != null) {
@@ -58,8 +59,8 @@ public final class RegisterModel {
     /**
      * @param login
      */
-    public static void login(Login login) {
-        registerService.login(login).enqueue(new Callback<JsonProfile>() {
+    public static void login(String did, Login login) {
+        registerService.login(did, Constants.DEVICE_TYPE, login).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.body() != null) {

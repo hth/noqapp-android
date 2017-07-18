@@ -22,7 +22,7 @@ public interface ReviewService {
             String dt,
 
             @Body
-                    ReviewRating reviewRating
+            ReviewRating reviewRating
     );
 
     @POST("open/review/historical/service.json")
