@@ -42,7 +42,7 @@ android {
     def versionPatch = 0;
 
     if (versionPropsFile.canRead()) {
-        if (env == "release" || env == 'debug') {
+        if (env == "release") {
             def Properties versionProps = new Properties()
             versionProps.load(new FileInputStream(versionPropsFile))
             versionMajor = versionProps['VERSION_MAJOR'].toInteger()
@@ -56,7 +56,7 @@ android {
     def versionBuildPropsFile = file('version.properties')
     def versionBuild = 0;
 
-    if (env == "release" || env == 'debug') {
+    if (env == "release") {
         if (versionBuildPropsFile.canRead()) {
             def Properties versionBuildProps = new Properties()
             versionBuildProps.load(new FileInputStream(versionBuildPropsFile))
@@ -194,6 +194,7 @@ android {
 
             buildConfigField STRING, "NOQAPP_MOBILE", endpointStaging
             buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityStaging
+            resValue "string", "FACEBOOK_APP_ID", facebookAppIdStaging
         }
 
         release {
@@ -226,6 +227,7 @@ android {
 
             buildConfigField STRING, "NOQAPP_MOBILE", endpointLive
             buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityLive
+            resValue "string", "FACEBOOK_APP_ID", facebookAppIdLive
         }
     }
 
