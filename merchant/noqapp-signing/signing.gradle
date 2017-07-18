@@ -1,5 +1,5 @@
 def Properties props = new Properties()
-if (env == 'release' || env == 'debug') {
+if (env == 'release') {
     def propFile = new File(signingFileLocation + receiptAppProperties)
 
     if (propFile.canRead()) {
@@ -23,6 +23,8 @@ if (env == 'release' || env == 'debug') {
         println 'signing.properties not found'
         android.buildTypes.release.signingConfig = null
     }
+} else if (env == 'debug') {
+    println 'Found debug environment'
 } else {
     println 'No such environment condition reached'
 }

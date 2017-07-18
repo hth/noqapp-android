@@ -43,7 +43,7 @@ android {
     def versionPatch = 0;
 
     if (versionPropsFile.canRead()) {
-        if (env == "release" || env == "debug") {
+        if (env == "release") {
             def Properties versionProps = new Properties()
             versionProps.load(new FileInputStream(versionPropsFile))
             versionMajor = versionProps['VERSION_MAJOR'].toInteger()
@@ -57,7 +57,7 @@ android {
     def versionBuildPropsFile = file('version.properties')
     def versionBuild = 0;
 
-    if (env == "release" || env == "debug") {
+    if (env == "release") {
         if (versionBuildPropsFile.canRead()) {
             def Properties versionBuildProps = new Properties()
             versionBuildProps.load(new FileInputStream(versionBuildPropsFile))
@@ -153,7 +153,6 @@ android {
 
     signingConfigs {
         release
-        debug
     }
     apply from: 'noqapp-signing/signing.gradle'
 
@@ -187,8 +186,6 @@ android {
 
             proguardFile 'client-debug-proguard.config'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            signingConfig signingConfigs.release
 
             buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, TRUE
             buildConfigField BOOLEAN, REPORT_CRASHES, FALSE
