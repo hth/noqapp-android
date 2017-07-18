@@ -37,7 +37,7 @@ public final class RegisterModel {
         registerService.register(did, Constants.DEVICE_TYPE, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.body() != null) {
+                if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.queueResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
                             response.headers().get(APIConstant.Key.XR_AUTH));
@@ -63,7 +63,7 @@ public final class RegisterModel {
         registerService.login(did, Constants.DEVICE_TYPE, login).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.body() != null) {
+                if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.queueResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
                             response.headers().get(APIConstant.Key.XR_AUTH));

@@ -34,6 +34,7 @@ import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 
@@ -169,7 +170,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         Login login = new Login();
         login.setPhone(phoneNumber);
         login.setCountryShortName("");
-        RegisterModel.login(login);
+        RegisterModel.login(UserUtils.getDeviceId(), login);
     }
 
 
