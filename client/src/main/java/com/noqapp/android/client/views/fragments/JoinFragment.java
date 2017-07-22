@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,12 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
 
     @BindView(R.id.btn_joinQueue)
     protected Button btn_joinQueue;
+
+    @BindView(R.id.ratingBar)
+    protected RatingBar ratingBar;
+
+    @BindView(R.id.tv_rating)
+    protected TextView tv_rating;
 
     @BindView(R.id.btn_no)
     protected Button btn_no;
@@ -150,9 +157,9 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
         tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
-        tv_rating_review.setText(String.valueOf(Math.round(jsonQueue.getRating()))
-                + " show stars "
-                + String.valueOf(jsonQueue.getRatingCount())
+        ratingBar.setRating(jsonQueue.getRating());
+        tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
+        tv_rating_review.setText("Rating " +String.valueOf(Math.round(jsonQueue.getRating()))+" - "+String.valueOf(jsonQueue.getRatingCount())
                 + " NoQueue reviews");
 
         codeQR = jsonQueue.getCodeQR();

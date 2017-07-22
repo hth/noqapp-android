@@ -20,7 +20,7 @@
     <application
         android:name="com.noqapp.android.client.views.activities.MyApplication"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher"
         tools:replace="android:allowBackup,android:icon"
         android:label="@string/app_name"
         android:supportsRtl="true"

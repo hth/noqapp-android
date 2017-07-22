@@ -111,7 +111,7 @@ public class InviteFragment extends NoQueueBaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity().setActionBarTitle("Invite");
+        LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_invite));
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 }
