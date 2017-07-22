@@ -13,7 +13,7 @@ public class ShowAlertInformation {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setTitle(Title);
         alertDialog.setMessage(Message);
-        alertDialog.setIcon(R.mipmap.ic_launcher);
+        alertDialog.setIcon(R.mipmap.launcher);
         alertDialog.setNegativeButton(context.getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

@@ -133,7 +133,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         rl_list.setOnClickListener(this);
         rl_me.setOnClickListener(this);
         actionbarBack.setOnClickListener(this);
-        iv_home.setBackgroundResource(R.mipmap.home_select);
+        iv_home.setBackgroundResource(R.mipmap.home_active);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
         initProgress();
         onClick(rl_me);
@@ -233,7 +233,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 } else {
                     replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
                 }
-                iv_home.setBackgroundResource(R.mipmap.home_select);
+                iv_home.setBackgroundResource(R.mipmap.home_active);
                 tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
             case R.id.rl_list:
@@ -246,7 +246,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 } else {
                     replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
                 }
-                iv_list.setBackgroundResource(R.mipmap.list_select);
+                iv_list.setBackgroundResource(R.mipmap.list_active);
                 tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
             case R.id.rl_me:
@@ -259,7 +259,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 } else {
                     replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
                 }
-                iv_me.setBackgroundResource(R.mipmap.me_select);
+                iv_me.setBackgroundResource(R.mipmap.me_active);
                 tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
                 break;
             case R.id.actionbarBack:

@@ -38,4 +38,7 @@
     <color name="fifty_percent_transparency_primary">#8003A9F4</color>
     <color name="fifty_percent_transparency_darker_primary_dark">#80028bca</color>
 
+    <color name="rating_select">#e92270</color>
+    <color name="rating_unselect">#80e92270</color>
+
 </resources>

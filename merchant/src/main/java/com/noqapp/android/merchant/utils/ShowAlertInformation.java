@@ -18,7 +18,7 @@ public class ShowAlertInformation {
 
         alertDialog.setMessage(Message);
 
-        alertDialog.setIcon(R.mipmap.launch_lgo);
+        alertDialog.setIcon(R.drawable.launcher);
 
         alertDialog.setNegativeButton("OK",
                 new DialogInterface.OnClickListener() {
