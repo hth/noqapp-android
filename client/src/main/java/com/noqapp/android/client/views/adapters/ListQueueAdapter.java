@@ -113,8 +113,6 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 }
 
                 Log.v("rating ", "" + queue.getRatingCount());
-                Drawable drawable = ratingBar.getProgressDrawable();
-                // drawable.setColorFilter(Color.parseColor("#e92270"), PorterDuff.Mode.SRC_ATOP);
                 ratingBar.setRating(queue.getRatingCount());
                 break;
         }

@@ -12,9 +12,8 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:padding="8dp"
-        android:src="@mipmap/ic_action_back"
-         />
+        android:padding="12dp"
+        android:background="@mipmap/back" />
 
     <TextView
         android:id="@+id/tv_toolbar_title"

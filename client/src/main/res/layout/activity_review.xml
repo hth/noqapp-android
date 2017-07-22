@@ -73,15 +73,21 @@
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
+
                 <RatingBar
                     android:id="@+id/ratingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="10dp"
-                    android:numStars="5"
-                    android:progressDrawable="@drawable/ratingbar_selector"
-                    android:stepSize="1.0" />
+                    android:layout_marginLeft="-15dp"
+                    android:layout_marginRight="-15dp"
+                    android:isIndicator="false"
+                    android:max="5"
+                    android:scaleX=".75"
+                    android:scaleY=".75"
+                    android:stepSize="1"
+                    android:theme="@style/RatingBar" />
             </LinearLayout>
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
@@ -131,33 +137,34 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:gravity="center_horizontal"
                     android:layout_weight=".3"
+                    android:gravity="center_horizontal"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
+
                 <RelativeLayout
                     android:id="@+id/tick_mark_labels_rl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="12dp"/>
+                    android:paddingTop="12dp" />
 
                 <com.noqapp.android.client.views.cutomviews.DiscreteSlider
                     android:id="@+id/discrete_slider"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginBottom="4dp"
+                    android:background="@android:color/transparent"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:background="@android:color/transparent"
                     app:backdropFillColor="@color/color_btn_select"
                     app:backdropStrokeColor="@color/color_btn_select"
                     app:backdropStrokeWidth="1dp"
                     app:horizontalBarThickness="4dp"
-                    app:tickMarkCount="5"
-                    app:tickMarkRadius="8dp"
                     app:position="1"
+                    app:progressDrawable="@drawable/transparent_progress_drawable"
                     app:thumb="@drawable/thumb"
-                    app:progressDrawable="@drawable/transparent_progress_drawable"/>
+                    app:tickMarkCount="5"
+                    app:tickMarkRadius="8dp" />
             </LinearLayout>
 
 

@@ -9,6 +9,8 @@
     <string name="tab_list">QList</string>
     <string name="tab_me">Me</string>
     <string name="screen_qdetails">QDetails</string>
+    <string name="screen_invite">Invite</string>
+    <string name="screen_review">Review</string>
 
 
 
@@ -131,6 +133,9 @@
     <string name="status_sign_in_failed">Sign-in failed</string>
     <string name="instant_validation">Enter OTP</string>
     <string name="store_hour">Hours:</string>
+
+
+    <!--Error  messages-->
     <string name="error_prevent_joining">%1$s %2$s is no longer accepting new token for the day</string>
     <string name="error_day_closed">%1$s %2$s is closed for the day</string>
     <string name="error_token_available_from">%1$s %2$s will start issuing new token after %3$s. Please try again after %3$s.</string>

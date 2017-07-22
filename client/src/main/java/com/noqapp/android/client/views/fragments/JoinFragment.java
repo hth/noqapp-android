@@ -157,7 +157,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
         tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
-        ratingBar.setRating(4.2f);//......jsonQueue.getRating());
+        ratingBar.setRating(jsonQueue.getRating());
         tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
         tv_rating_review.setText("Rating " +String.valueOf(Math.round(jsonQueue.getRating()))+" - "+String.valueOf(jsonQueue.getRatingCount())
                 + " NoQueue reviews");

@@ -149,7 +149,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
             }
         });
-        tv_toolbar_title.setText("Review");
+        tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
