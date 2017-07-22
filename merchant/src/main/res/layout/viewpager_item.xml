@@ -65,7 +65,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_margin="5dp"
-                        android:background="@mipmap/settings_48"
+                        android:background="@mipmap/setting"
                         android:gravity="center_vertical"
                         android:scaleType="centerInside" />
                 </RelativeLayout>
@@ -193,7 +193,7 @@
                             android:layout_margin="5dp"
                             android:background="@mipmap/edit"
                             android:gravity="center_vertical"
-                            android:scaleType="centerInside" />
+                            android:padding="10dp" />
                     </RelativeLayout>
                 </RelativeLayout>
 
