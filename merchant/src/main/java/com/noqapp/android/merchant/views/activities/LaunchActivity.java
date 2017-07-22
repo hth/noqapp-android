@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -36,6 +37,8 @@ import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
 import org.apache.commons.lang3.text.WordUtils;
+
+import java.util.List;
 
 public class LaunchActivity extends AppCompatActivity {
     private static final String TAG = LaunchActivity.class.getName();
@@ -337,13 +340,13 @@ public class LaunchActivity extends AppCompatActivity {
         }
     }
 
-    private void showLogoutEditDialog() {
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(launchActivity);
+    private void showLogoutEditDialog( ) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(launchActivity);
         LayoutInflater inflater = LayoutInflater.from(launchActivity);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
         builder.setView(customDialogView);
-        final android.support.v7.app.AlertDialog mAlertDialog = builder.create();
+        final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         Button btn_yes = (Button) customDialogView.findViewById(R.id.btn_yes);
         Button btn_no = (Button) customDialogView.findViewById(R.id.btn_no);
