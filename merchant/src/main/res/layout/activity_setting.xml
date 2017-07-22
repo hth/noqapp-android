@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -24,80 +24,89 @@
             android:textColor="@color/color_action_bar"
             android:textSize="24sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_separator" />
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:minHeight="@dimen/cell_size"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/screen_padding"
-            android:paddingRight="@dimen/screen_padding">
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="4dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.75"
-                android:gravity="center_vertical"
-                android:text="@string/dayclosed"
-                android:textColor="@color/color_total_val"
-                android:textSize="20sp" />
 
-            <ToggleButton
-                android:id="@+id/toggleDayClosed"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.25"
-                android:background="@null"
-                android:drawableRight="@drawable/toggle_selector"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:textOff=""
-                android:textOn="" />
-        </LinearLayout>
+                android:background="@android:color/white"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/screen_padding"
+                android:paddingRight="@dimen/screen_padding">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_separator" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:gravity="center_vertical"
+                    android:text="@string/dayclosed"
+                    android:textColor="@color/color_total_val"
+                    android:textSize="20sp" />
 
-        <LinearLayout
+                <ToggleButton
+                    android:id="@+id/toggleDayClosed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.25"
+                    android:background="@null"
+                    android:drawableRight="@drawable/toggle_selector"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:textOff=""
+                    android:textOn="" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:minHeight="@dimen/cell_size"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/screen_padding"
-            android:paddingRight="@dimen/screen_padding">
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="4dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.75"
-                android:gravity="center_vertical"
-                android:text="@string/preventjoining"
-                android:textColor="@color/color_total_val"
-                android:textSize="20sp" />
-
-            <ToggleButton
-                android:id="@+id/togglePreventJoin"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.25"
-                android:background="@null"
-                android:drawableRight="@drawable/toggle_selector"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:textOff=""
-                android:textOn="" />
-        </LinearLayout>
+                android:background="@android:color/white"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/screen_padding"
+                android:paddingRight="@dimen/screen_padding">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:gravity="center_vertical"
+                    android:text="@string/preventjoining"
+                    android:textColor="@color/color_total_val"
+                    android:textSize="20sp" />
+
+                <ToggleButton
+                    android:id="@+id/togglePreventJoin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.25"
+                    android:background="@null"
+                    android:drawableRight="@drawable/toggle_selector"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:textOff=""
+                    android:textOn="" />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
 
     </LinearLayout>
 </LinearLayout>

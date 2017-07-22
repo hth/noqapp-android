@@ -31,17 +31,13 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.NetworkUtil;
-import com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.util.List;
-
 public class LaunchActivity extends AppCompatActivity {
-    private static final String TAG = LaunchActivity.class.getName();
 
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
@@ -373,6 +369,7 @@ public class LaunchActivity extends AppCompatActivity {
             merchantListFragment.unSubscribeTopics();
         // logout
         sharedpreferences.edit().clear().apply();
+        MerchantListFragment.selected_pos = -1;
         //navigate to signup/login
         replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
     }

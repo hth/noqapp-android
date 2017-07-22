@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class MerchantListAdapter extends BaseAdapter {
             recordHolder.tv_queue_name = (TextView) view.findViewById(R.id.tv_queue_name);
             recordHolder.tv_serving_no = (TextView) view.findViewById(R.id.tv_serving_no);
             recordHolder.tv_inqueue = (TextView) view.findViewById(R.id.tv_inqueue);
+            recordHolder.cardview = (CardView) view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
@@ -64,13 +66,15 @@ public class MerchantListAdapter extends BaseAdapter {
         recordHolder.tv_inqueue.setText(String.valueOf(jsonTopic.getRemaining()));
 
         if (position == MerchantListFragment.selected_pos) {
-            view.setBackgroundColor(ContextCompat.getColor(
+           // view.setBackgroundColor(ContextCompat.getColor(
+            //        context, R.color.pressed_color));
+            recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
                     context, R.color.pressed_color));
             recordHolder.tv_queue_name.setTextColor(Color.WHITE);
             recordHolder.tv_serving_no.setTextColor(Color.WHITE);
             recordHolder.tv_inqueue.setTextColor(Color.WHITE);
         } else {
-            view.setBackgroundColor(Color.TRANSPARENT);
+            recordHolder.cardview.setCardBackgroundColor(Color.TRANSPARENT);
             recordHolder.tv_queue_name.setTextColor(ContextCompat.getColor(context, R.color.color_action_bar));
             recordHolder.tv_serving_no.setTextColor(ContextCompat.getColor(context, R.color.color_list_subtitle));
             recordHolder.tv_inqueue.setTextColor(ContextCompat.getColor(context, R.color.color_list_subtitle));
@@ -83,6 +87,7 @@ public class MerchantListAdapter extends BaseAdapter {
         TextView tv_queue_name;
         TextView tv_serving_no;
         TextView tv_inqueue;
+        CardView cardview;
 
         RecordHolder() {
         }

@@ -2,22 +2,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/colorAccent"
-    android:padding="10dp" >
+    android:background="@drawable/red_gredient"
+    android:padding="10dp">
 
-    <!--<ImageView-->
-        <!--android:layout_width="250dp"-->
-        <!--android:layout_height="200dp"-->
-        <!--android:background="@mipmap/ic_launcher"-->
-        <!--android:layout_centerInParent="true" />-->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/header_logo" />
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/app_name"
-    android:layout_centerInParent="true"
-    android:textColor="@android:color/white"
-    android:textStyle="bold"
-    android:textSize="30sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/app_name_splash"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>
