@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,19 +20,14 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
 
-import org.apache.commons.lang3.text.WordUtils;
-
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
-    private static final String TAG = SettingActivity.class.getName();
 
-    public ProgressDialog progressDialog;
-    public Toolbar toolbar;
-    protected TextView tv_toolbar_title;
+    private ProgressDialog progressDialog;
+    private TextView tv_toolbar_title;
     private ImageView iv_logout;
     private ImageView actionbarBack;
-    private TextView tv_name;
     private TextView tv_title;
-    private ToggleButton toggleDayClosed, togglePreventJoin;
+    private ToggleButton toggleDayClosed,togglePreventJoin;
     private String codeQR;
 
     @Override
@@ -49,15 +43,13 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         iv_logout = (ImageView) findViewById(R.id.iv_logout);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        tv_name = (TextView) findViewById(R.id.tv_name);
         initProgress();
         tv_title = (TextView) findViewById(R.id.tv_title);
         toggleDayClosed = (ToggleButton) findViewById(R.id.toggleDayClosed);
         togglePreventJoin = (ToggleButton) findViewById(R.id.togglePreventJoin);
         String title = getIntent().getStringExtra("title");
         codeQR = getIntent().getStringExtra("codeQR");
-        if (null != title) {
+        if(null != title){
             tv_title.setText(title);
         }
         toggleDayClosed.setOnClickListener(this);
@@ -69,22 +61,16 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             }
         });
         iv_logout.setVisibility(View.INVISIBLE);
-        setActionBarTitle(getString(R.string.screen_settings));
+        tv_toolbar_title.setText(getString(R.string.screen_settings));
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            QueueSettingModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+           QueueSettingModel.getQueueState(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(),codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
+
     }
 
-    public void setActionBarTitle(String title) {
-        tv_toolbar_title.setText(title);
-    }
-
-    public void setUserName() {
-        tv_name.setText(WordUtils.initials(LaunchActivity.getLaunchActivity().getUserName()));
-    }
 
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
@@ -92,15 +78,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         progressDialog.setMessage("Loading...");
     }
 
-    public void dismissProgress() {
+    private void dismissProgress() {
         if (null != progressDialog && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }
 
-    public void setProgressTitle(String msg) {
-        progressDialog.setMessage(msg);
-    }
 
 
     @Override
@@ -112,7 +95,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
     @Override
     public void queueSettingResponse(QueueSetting queueSetting) {
-        if (null != queueSetting) {
+        if(null != queueSetting){
             toggleDayClosed.setChecked(queueSetting.isDayClosed());
             togglePreventJoin.setChecked(queueSetting.isPreventJoining());
         }
@@ -125,10 +108,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure(int errorcode) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            // LaunchActivity.getLaunchActivity().clearLoginData();
+        if(errorcode == Constants.INVALID_CREDENTIAL){
             Intent intent = new Intent();
             intent.putExtra(Constants.CLEAR_DATA, true);
             if (getParent() == null) {
@@ -148,12 +130,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             queueSetting.setCodeQR(codeQR);
             queueSetting.setDayClosed(toggleDayClosed.isChecked());
             queueSetting.setPreventJoining(togglePreventJoin.isChecked());
-            QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
+            QueueSettingModel.modify(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(),queueSetting);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
-            if (v.getId() == R.id.toggleDayClosed) {
+            if(v.getId() == R.id.toggleDayClosed){
                 toggleDayClosed.setChecked(!toggleDayClosed.isChecked());
-            } else {
+            }else{
                 togglePreventJoin.setChecked(!togglePreventJoin.isChecked());
             }
         }

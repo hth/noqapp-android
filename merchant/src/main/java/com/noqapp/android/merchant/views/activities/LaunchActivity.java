@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,7 +31,6 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.NetworkUtil;
-import com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
@@ -38,7 +38,6 @@ import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 import org.apache.commons.lang3.text.WordUtils;
 
 public class LaunchActivity extends AppCompatActivity {
-    private static final String TAG = LaunchActivity.class.getName();
 
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
@@ -337,13 +336,13 @@ public class LaunchActivity extends AppCompatActivity {
         }
     }
 
-    private void showLogoutEditDialog() {
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(launchActivity);
+    private void showLogoutEditDialog( ) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(launchActivity);
         LayoutInflater inflater = LayoutInflater.from(launchActivity);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
         builder.setView(customDialogView);
-        final android.support.v7.app.AlertDialog mAlertDialog = builder.create();
+        final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         Button btn_yes = (Button) customDialogView.findViewById(R.id.btn_yes);
         Button btn_no = (Button) customDialogView.findViewById(R.id.btn_no);
@@ -370,6 +369,7 @@ public class LaunchActivity extends AppCompatActivity {
             merchantListFragment.unSubscribeTopics();
         // logout
         sharedpreferences.edit().clear().apply();
+        MerchantListFragment.selected_pos = -1;
         //navigate to signup/login
         replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
     }

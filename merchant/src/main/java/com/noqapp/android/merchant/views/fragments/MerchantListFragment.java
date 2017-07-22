@@ -82,7 +82,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         snackbar = Snackbar.make(listview, "", Snackbar.LENGTH_INDEFINITE);
         snackbar.getView().setBackgroundResource(R.drawable.red_gredient);
 
-        snackbar.setCallback(new Snackbar.Callback() {
+        snackbar.addCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 // recursively call this method again when the snackbar was dismissed through a swipe

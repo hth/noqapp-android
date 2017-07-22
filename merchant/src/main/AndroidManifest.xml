@@ -43,6 +43,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name="com.noqapp.android.merchant.views.activities.SettingDialogActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.AppCompat.Dialog">
+        </activity>
         <service android:name="com.noqapp.android.merchant.network.NoQueueFirebaseInstanceServices">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
