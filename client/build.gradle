@@ -75,7 +75,7 @@ android {
                 versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
                 versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
             } else {
-                println "versionBuild: " + versionBuildProps['VERSION_BUILD'] +
+                println "versionPatch: " + versionBuildProps['VERSION_PATCH'] +
                         " versionBuild: " + versionBuildProps['VERSION_BUILD']
                 versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
                 versionPatch = versionBuildProps['VERSION_PATCH'].toInteger() + 1
