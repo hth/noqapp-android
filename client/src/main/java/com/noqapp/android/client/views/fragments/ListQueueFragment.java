@@ -190,8 +190,8 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     }
 
     private void initListView(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<JsonTokenAndQueue>>();
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
         listDataHeader.add("Current Queue");
         listDataHeader.add("QHistory");
         listDataChild.put(listDataHeader.get(0), currentlist); // Header, Child data

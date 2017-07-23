@@ -6,9 +6,9 @@
   >
 
 <View
-    android:id="@+id/view_seprator"
+    android:id="@+id/view_separator"
     android:layout_width="match_parent"
-    android:background="@color/color_seprator"
+    android:background="@color/color_separator"
     android:layout_alignParentTop="true"
     android:layout_height="1dp"/>
 <ImageView
@@ -16,11 +16,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
-    android:layout_below="@+id/view_seprator"
+    android:layout_below="@+id/view_separator"
     android:layout_marginBottom="10dp"
     android:background="@drawable/history" />
 
-<TextView
+<com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@+id/iv_history"
