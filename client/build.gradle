@@ -77,13 +77,6 @@ android {
             } else {
                 println "versionBuild: " + versionBuildProps['VERSION_BUILD'] +
                         " versionBuild: " + versionBuildProps['VERSION_BUILD']
-
-                println "versionBuild: " + versionBuildProps['VERSION_BUILD'] +
-                        " versionBuild: " + versionBuildProps['VERSION_BUILD'].toInteger() + 1
-
-                println "versionPatch: " + versionBuildProps['VERSION_PATCH'] +
-                        " versionPatch: " + versionBuildProps['VERSION_PATCH'].toInteger() + 1
-
                 versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
                 versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
 
