@@ -68,23 +68,22 @@ android {
                 println "versionPatch: " + 0.toString() +
                         " versionBuild: " + versionBuildProps['VERSION_BUILD']
                 versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
-                versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
 
                 versionBuildProps['VERSION_MAJOR'] = versionMajor.toString()
                 versionBuildProps['VERSION_MINOR'] = versionMinor.toString()
                 versionBuildProps['VERSION_PATCH'] = versionPatch.toString()
+                versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
                 versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
             } else {
                 println "versionBuild: " + versionBuildProps['VERSION_BUILD'] +
                         " versionBuild: " + versionBuildProps['VERSION_BUILD']
                 versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
-                versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
-
+                versionPatch = versionBuildProps['VERSION_PATCH'].toInteger() + 1
+                
                 versionBuildProps['VERSION_MAJOR'] = versionMajor.toString()
                 versionBuildProps['VERSION_MINOR'] = versionMinor.toString()
-
-                versionPatch = versionBuildProps['VERSION_PATCH'].toInteger() + 1
                 versionBuildProps['VERSION_PATCH'] = versionPatch.toString()
+                versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
                 versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
             }
         } else {
