@@ -54,7 +54,7 @@ android {
         throw new GradleException("Could not read version.properties!")
     }
 
-    def versionBuildPropsFile = file('version.properties')
+    def versionBuildPropsFile = file('version.build.properties')
     def versionBuild = 0;
 
     if (env == "release") {
@@ -79,7 +79,7 @@ android {
                         " versionBuild: " + versionBuildProps['VERSION_BUILD']
                 versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
                 versionPatch = versionBuildProps['VERSION_PATCH'].toInteger() + 1
-                
+
                 versionBuildProps['VERSION_MAJOR'] = versionMajor.toString()
                 versionBuildProps['VERSION_MINOR'] = versionMinor.toString()
                 versionBuildProps['VERSION_PATCH'] = versionPatch.toString()
