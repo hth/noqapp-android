@@ -220,6 +220,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);
+        edt_birthday.setError(null);
         new AppUtilities().hideKeyBoard(getActivity());
 
         if (TextUtils.isEmpty(edt_Name.getText())) {
@@ -232,6 +233,10 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         }
         if (!TextUtils.isEmpty(edt_Mail.getText()) && !isValidEmail(edt_Mail.getText())) {
             edt_Mail.setError(getString(R.string.error_invalid_email));
+            isValid = false;
+        }
+        if (!TextUtils.isEmpty(edt_birthday.getText())) {
+            edt_birthday.setError(getString(R.string.error_dob_blank));
             isValid = false;
         }
         return isValid;
