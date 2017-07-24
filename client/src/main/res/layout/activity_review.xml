@@ -97,7 +97,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
-                android:text="How much time did you saved ? "
+                android:text="@string/text_time_saved"
                 android:textColor="@color/colorAddress"
                 android:textSize="18sp" />
 
@@ -109,62 +109,23 @@
                 android:orientation="vertical"
                 android:weightSum="1">
 
-                <SeekBar
-                    android:id="@+id/seekBar"
+                <com.noqapp.android.client.views.cutomviews.SeekbarWithIntervals
+                    android:id="@+id/seekbarWithIntervals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_weight=".7"
-                    android:max="100"
-                    android:maxHeight="10dp"
-                    android:maxWidth="15dp"
-                    android:minHeight="10dp"
-                    android:minWidth="15dp"
-                    android:paddingBottom="10px"
-                    android:paddingLeft="30px"
-                    android:paddingRight="30px"
-                    android:paddingTop="10px"
-                    android:progress="0"
-                    android:progressDrawable="@drawable/custom_seekbar_progress"
-                    android:splitTrack="false"
-                    android:thumb="@drawable/circle_seekbar"
+                    android:layout_centerInParent="true"/>
 
-                    />
+                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
 
-                <TextView
-                    android:id="@+id/tv_seekbar_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight=".3"
+                    style="@style/style_join_queue_tv"
+                    android:id="@+id/tv_hr_saved"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
                     android:gravity="center_horizontal"
-                    android:textColor="@android:color/black"
+                    android:text=""
+                    android:textColor="@color/colorAddress"
                     android:textSize="18sp" />
 
-                <RelativeLayout
-                    android:id="@+id/tick_mark_labels_rl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="12dp" />
-
-                <com.noqapp.android.client.views.cutomviews.DiscreteSlider
-                    android:id="@+id/discrete_slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@android:color/transparent"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    app:backdropFillColor="@color/color_btn_select"
-                    app:backdropStrokeColor="@color/color_btn_select"
-                    app:backdropStrokeWidth="1dp"
-                    app:horizontalBarThickness="4dp"
-                    app:position="1"
-                    app:progressDrawable="@drawable/transparent_progress_drawable"
-                    app:thumb="@drawable/thumb"
-                    app:tickMarkCount="5"
-                    app:tickMarkRadius="8dp" />
             </LinearLayout>
 
 

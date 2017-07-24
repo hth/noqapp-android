@@ -31,6 +31,9 @@ public class Constants {
     public static final String MSG_TYPE_C = "c";
     public static final String MSG_TYPE_U = "u";
     private static final String TAG = Constants.class.getName();
+
+
+    public static final int DEFAULT_REVIEW_TIME_SAVED = 1;
     private static String VERSION_RELEASE;
 
     /**
