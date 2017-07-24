@@ -6,4 +6,7 @@
     <dimen name="list_item_margin">5dp</dimen>
     <dimen name="cell_size">55dp</dimen>
     <dimen name="screen_padding">20dp</dimen>
+    <dimen name="seekbar_thumb_width">25dp</dimen>
+    <dimen name="seekbar_height">8dp</dimen>
+    <dimen name="seekbar_thumb_height">25dp</dimen>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent">
 
     <LinearLayout
         android:id="@+id/ll_top"
@@ -24,7 +24,7 @@
                 android:id="@+id/tv_store_name"
                 style="@style/style_join_queue_tv"
                 android:textColor="@color/colorActionbar"
-                android:textSize="24sp" />
+                android:textSize="24sp"/>
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoRegular
                 android:id="@+id/tv_queue_name"
@@ -32,7 +32,7 @@
                 android:layout_below="@+id/tv_store_name"
                 android:layout_marginBottom="5dp"
                 android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_address"
@@ -43,7 +43,7 @@
                 android:gravity="center_horizontal"
                 android:maxLines="2"
                 android:textColor="@color/colorAddress"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_hour_saved"
@@ -52,7 +52,7 @@
                 android:layout_marginBottom="5dp"
                 android:gravity="center_horizontal"
                 android:textColor="@color/colorAddress"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_mobile"
@@ -60,7 +60,7 @@
                 android:layout_below="@+id/tv_hour_saved"
                 android:layout_marginBottom="5dp"
                 android:textColor="@color/colorMobile"
-                android:textSize="20sp" />
+                android:textSize="20sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -78,26 +78,26 @@
                     <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                         android:id="@+id/tv_rating"
                         android:layout_width="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignLeft="@+id/ratingBar"
                         android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/ratingBar"
+                        android:layout_centerVertical="true"
                         android:textColor="@color/colorAddress"
-                        android:visibility="gone"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp"
+                        android:visibility="gone"/>
 
                     <RatingBar
                         android:id="@+id/ratingBar"
                         style="?android:attr/ratingBarStyleIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="-25dp"
+                        android:layout_marginRight="-25dp"
                         android:isIndicator="true"
                         android:max="5"
                         android:scaleX=".5"
                         android:scaleY=".5"
                         android:stepSize=".1"
-                        android:layout_marginLeft="-25dp"
-                        android:layout_marginRight="-25dp"
-                        android:theme="@style/RatingBar" />
+                        android:theme="@style/RatingBar"/>
                 </LinearLayout>
 
                 <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
@@ -108,7 +108,7 @@
                     android:layout_weight=".6"
                     android:gravity="center"
                     android:textColor="@color/colorAddress"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
             </LinearLayout>
         </RelativeLayout>
 
@@ -136,7 +136,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
-                        android:background="@color/color_separator" />
+                        android:background="@color/color_separator"/>
                     />
 
                     <RelativeLayout
@@ -151,14 +151,14 @@
                             style="@style/style_join_queue_tv"
                             android:text="@string/people_in_queue"
                             android:textColor="@color/colorAddress"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"/>
 
                         <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                             android:id="@+id/tv_current_value"
                             style="@style/style_join_queue_tv"
                             android:layout_below="@+id/tv_current"
                             android:textColor="@color/colorMobile"
-                            android:textSize="36sp" />
+                            android:textSize="36sp"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -173,14 +173,14 @@
                             style="@style/style_join_queue_tv"
                             android:text="@string/currently_serving"
                             android:textColor="@color/colorAddress"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"/>
 
                         <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                             android:id="@+id/tv_total_value"
                             style="@style/style_join_queue_tv"
                             android:layout_below="@+id/tv_total"
                             android:textColor="@color/color_total_val"
-                            android:textSize="36sp" />
+                            android:textSize="36sp"/>
                     </RelativeLayout>
                 </RelativeLayout>
 
@@ -190,7 +190,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/color_separator" />
+                    android:background="@color/color_separator"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -207,7 +207,7 @@
                     android:text="You were skiped. \nPress yes to join the queue again."
                     android:textColor="@color/colorAddress"
                     android:textSize="18sp"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -233,7 +233,7 @@
                         android:text="@string/no"
                         android:textColor="@color/colorMobile"
                         android:textSize="15sp"
-                        android:visibility="gone" />
+                        android:visibility="gone"/>
 
                     <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
                         android:id="@+id/btn_joinQueue"
@@ -250,11 +250,9 @@
                         android:paddingRight="50dp"
                         android:text="@string/join"
                         android:textColor="@color/colorMobile"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"/>
 
                 </LinearLayout>
-
-
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

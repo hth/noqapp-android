@@ -11,13 +11,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,14 +28,15 @@ import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.DisplayUtility;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.cutomviews.DiscreteSlider;
+import com.noqapp.android.client.views.cutomviews.SeekbarWithIntervals;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,24 +54,21 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     protected TextView tv_mobile;
     @BindView(R.id.btn_submit)
     protected Button btn_submit;
-    @BindView(R.id.seekBar)
-    protected SeekBar seekBar;
+
     @BindView(R.id.ratingBar)
     protected RatingBar ratingBar;
 
-    @BindView(R.id.tv_seekbar_value)
-    protected TextView tv_seekbar_value;
+    @BindView(R.id.tv_hr_saved)
+    protected TextView tv_hr_saved;
 
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
 
-    @BindView(R.id.discrete_slider)
-    DiscreteSlider discreteSlider;
+    @BindView(R.id.seekbarWithIntervals)
+    SeekbarWithIntervals seekbarWithIntervals;
 
-    @BindView(R.id.tick_mark_labels_rl)
-    RelativeLayout tickMarkLabelsRelativeLayout;
 
     private JsonTokenAndQueue jtk;
     private ProgressDialog progressDialog;
@@ -105,38 +100,12 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         });
 
 
-        seekBar.incrementProgressBy(20);
-        seekBar.setProgress(80);
-        tv_seekbar_value.setText(getSeekbarLebel(4));
-        discreteSlider.setOnDiscreteSliderChangeListener(new DiscreteSlider.OnDiscreteSliderChangeListener() {
-            @Override
-            public void onPositionChanged(int position) {
-                int childCount = tickMarkLabelsRelativeLayout.getChildCount();
-                for (int i = 0; i < childCount; i++) {
-                    TextView tv = (TextView) tickMarkLabelsRelativeLayout.getChildAt(i);
-                    if (i == position)
-                        tv.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    else
-                        tv.setTextColor(getResources().getColor(R.color.color_btn_select));
-                }
-            }
-        });
-        tickMarkLabelsRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                tickMarkLabelsRelativeLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+        seekbarWithIntervals.setIntervals(getIntervals());
 
-                addTickMarkTextLabels();
-            }
-        });
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
+        seekbarWithIntervals.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress = progress / 20;
-                //progress = progress * 20;
-                tv_seekbar_value.setText(getSeekbarLebel(progress));
+
             }
 
             @Override
@@ -146,23 +115,29 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                //Toast.makeText(ReviewActivity.this, "onStopTrackingTouch", Toast.LENGTH_SHORT).show();
+                tv_hr_saved.setText(getSeekbarLabel(seekBar.getProgress()+1));
             }
         });
+        seekbarWithIntervals.setProgress(Constants.DEFAULT_REVIEW_TIME_SAVED);
+        tv_hr_saved.setText(getSeekbarLabel(1));
+
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ratingBar.getRating() == 0) {
                     Toast.makeText(ReviewActivity.this, getString(R.string.error_rateservice), Toast.LENGTH_LONG).show();
-                } else if (seekBar.getProgress() / 20 == 0) {
-                    Toast.makeText(ReviewActivity.this, getString(R.string.error_timesaved), Toast.LENGTH_LONG).show();
-                } else {
+                }
+//                else if (seekBar.getProgress() / 20 == 0) {
+//                    Toast.makeText(ReviewActivity.this, getString(R.string.error_timesaved), Toast.LENGTH_LONG).show();
+//                }
+                else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         ReviewRating rr = new ReviewRating();
                         rr.setCodeQR(jtk.getCodeQR());
                         rr.setToken(jtk.getToken());
-                        rr.setHoursSaved(String.valueOf(seekBar.getProgress() / 20));
+                        rr.setHoursSaved(String.valueOf(seekbarWithIntervals.getProgress() + 1));
                         rr.setRatingCount(String.valueOf(Math.round(ratingBar.getRating())));
                         /* New instance of progressbar because it is a new activity. */
                         progressDialog = new ProgressDialog(ReviewActivity.this);
@@ -217,65 +192,32 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         }
     }
 
-    private String getSeekbarLebel(int pos) {
+    private List<String> getIntervals() {
+        return new ArrayList<String>() {{
+            add(getString(R.string.radio_save_30min));
+            add(getString(R.string.radio_save_1hr));
+            add(getString(R.string.radio_save_2hr));
+            add(getString(R.string.radio_save_3hr));
+            add(getString(R.string.radio_save_4hr));
+        }};
+    }
+
+    private String getSeekbarLabel(int pos) {
         switch (pos) {
 
             case 1:
-                return getString(R.string.radio_save_30min);
+                return getString(R.string.time_saved) + getString(R.string.radio_save_30min_f);
             case 2:
-                return getString(R.string.radio_save_1hr);
+                return getString(R.string.time_saved) + getString(R.string.radio_save_1hr_f);
             case 3:
-                return getString(R.string.radio_save_2hr);
+                return getString(R.string.time_saved) + getString(R.string.radio_save_2hr_f);
             case 4:
-                return getString(R.string.radio_save_3hr);
+                return getString(R.string.time_saved) + getString(R.string.radio_save_3hr_f);
             case 5:
-                return getString(R.string.radio_save_4hr);
+                return getString(R.string.time_saved) + getString(R.string.radio_save_4hr_f);
             default:
                 return "";
 
-        }
-
-    }
-
-    private void addTickMarkTextLabels() {
-        int tickMarkCount = discreteSlider.getTickMarkCount();
-        float tickMarkRadius = discreteSlider.getTickMarkRadius();
-        int width = tickMarkLabelsRelativeLayout.getMeasuredWidth();
-
-        int discreteSliderBackdropLeftMargin = DisplayUtility.dp2px(this, 32);
-        int discreteSliderBackdropRightMargin = DisplayUtility.dp2px(this, 32);
-        float firstTickMarkRadius = tickMarkRadius;
-        float lastTickMarkRadius = tickMarkRadius;
-        int interval = (width - (discreteSliderBackdropLeftMargin + discreteSliderBackdropRightMargin) - ((int) (firstTickMarkRadius + lastTickMarkRadius)))
-                / (tickMarkCount - 1);
-
-        String[] tickMarkLabels = {getSeekbarLebel(1), getSeekbarLebel(2), getSeekbarLebel(3), getSeekbarLebel(4), getSeekbarLebel(5)};
-        int tickMarkLabelWidth = DisplayUtility.dp2px(this, 40);
-
-        for (int i = 0; i < tickMarkCount; i++) {
-            TextView tv = new TextView(this);
-
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    tickMarkLabelWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-            tv.setText(tickMarkLabels[i]);
-            tv.setGravity(Gravity.CENTER);
-            if (i == discreteSlider.getPosition())
-                tv.setTextColor(getResources().getColor(R.color.colorPrimary));
-            else
-                tv.setTextColor(getResources().getColor(R.color.color_btn_select));
-
-//                    tv.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
-
-            int left = discreteSliderBackdropLeftMargin + (int) firstTickMarkRadius + (i * interval) - (tickMarkLabelWidth / 2);
-
-            layoutParams.setMargins(left,
-                    0,
-                    0,
-                    0);
-            tv.setLayoutParams(layoutParams);
-
-            tickMarkLabelsRelativeLayout.addView(tv);
         }
     }
 }
