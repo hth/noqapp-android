@@ -235,7 +235,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             edt_Mail.setError(getString(R.string.error_invalid_email));
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_birthday.getText())) {
+        if (TextUtils.isEmpty(edt_birthday.getText())) {
             edt_birthday.setError(getString(R.string.error_dob_blank));
             isValid = false;
         }

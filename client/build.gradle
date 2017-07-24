@@ -197,9 +197,9 @@ android {
         }
 
         release {
-            debuggable true
-            minifyEnabled false
-            zipAlignEnabled false
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
 
             proguardFile '../library-proguard/proguard-butterknife-7.pro'
             proguardFile '../library-proguard/proguard-crashlytics.pro'

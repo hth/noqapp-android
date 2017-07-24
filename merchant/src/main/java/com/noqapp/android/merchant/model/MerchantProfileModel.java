@@ -34,6 +34,11 @@ public class MerchantProfileModel {
         merchantProfileService.fetch(mail, auth).enqueue(new Callback<JsonMerchant>() {
             @Override
             public void onResponse(@NonNull Call<JsonMerchant> call, @NonNull Response<JsonMerchant> response) {
+                if (response.code() == 401) {
+                    merchantPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
                 if (response.body() != null) {
                     merchantPresenter.merchantResponse(response.body());
                     Log.d("Response", String.valueOf(response.body()));
