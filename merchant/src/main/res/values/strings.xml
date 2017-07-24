@@ -63,4 +63,6 @@
     <string name="update">Update</string>
     <string name="setting">Queue Settings</string>
     <string name="error_pwd_length">Password length should be greater than 5</string>
+    <string name="authentication_fail">Authentication failure</string>
+    <string name="authentication_fail_msg">Please login again.</string>
 </resources>

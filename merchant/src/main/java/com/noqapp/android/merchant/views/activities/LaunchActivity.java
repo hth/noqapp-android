@@ -31,6 +31,7 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.NetworkUtil;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
@@ -356,14 +357,14 @@ public class LaunchActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                clearLoginData();
+                clearLoginData(false);
                 mAlertDialog.dismiss();
             }
         });
         mAlertDialog.show();
     }
 
-    public void clearLoginData() {
+    public void clearLoginData(boolean showAlert) {
         //unsubscribe the topics
         if (null != merchantListFragment)
             merchantListFragment.unSubscribeTopics();
@@ -372,6 +373,8 @@ public class LaunchActivity extends AppCompatActivity {
         MerchantListFragment.selected_pos = -1;
         //navigate to signup/login
         replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
+        if(showAlert)
+            ShowAlertInformation.showDialog(this,getString(R.string.authentication_fail),getString(R.string.authentication_fail_msg));
     }
 
 
@@ -381,7 +384,7 @@ public class LaunchActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 boolean isDataClear = data.getExtras().getBoolean(Constants.CLEAR_DATA, false);
                 if (isDataClear)
-                    clearLoginData();
+                    clearLoginData(true);
             }
         }
     }

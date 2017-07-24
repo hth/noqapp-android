@@ -8,4 +8,6 @@ public interface MerchantPresenter {
     void merchantResponse(JsonMerchant jsonMerchant);
 
     void merchantError();
+
+    void authenticationFailure(int errorCode);
 }

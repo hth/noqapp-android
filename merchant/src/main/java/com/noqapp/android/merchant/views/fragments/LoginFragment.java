@@ -22,6 +22,7 @@ import com.noqapp.android.merchant.model.LoginModel;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
@@ -129,6 +130,14 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     @Override
     public void merchantError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        if (errorCode == Constants.INVALID_CREDENTIAL) {
+            LaunchActivity.getLaunchActivity().clearLoginData(true);
+        }
     }
 
     private void hideKeyBoard() {

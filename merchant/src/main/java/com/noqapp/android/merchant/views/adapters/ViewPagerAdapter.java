@@ -379,7 +379,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     public void authenticationFailure(int errorCode) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         if (errorCode == Constants.INVALID_CREDENTIAL) {
-            LaunchActivity.getLaunchActivity().clearLoginData();
+            LaunchActivity.getLaunchActivity().clearLoginData(true);
         }
     }
 
