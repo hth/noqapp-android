@@ -51,16 +51,11 @@ public class MeFragment extends NoQueueBaseFragment {
     private String inviteCode;
 
     public static MeFragment getInstance() {
-        MeFragment fragment = new MeFragment();
-        return fragment;
+        return new MeFragment();
     }
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater,
-            ViewGroup container,
-            Bundle savedInstanceState
-    ) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -80,9 +75,7 @@ public class MeFragment extends NoQueueBaseFragment {
         inviteCode = NoQueueBaseActivity.getInviteCode();
         tv_firstName.setText(name);
         if (!phone.equals("")) {
-            tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(
-                    NoQueueBaseActivity.getCountryShortName(),
-                    phone));
+            tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(NoQueueBaseActivity.getCountryShortName(), phone));
         }
         tv_scanCount.setText(String.valueOf(remoteScanCount));
         toggleAutoJoin.setChecked(isAutoScanAvail);
@@ -138,8 +131,7 @@ public class MeFragment extends NoQueueBaseFragment {
 
     @OnClick({R.id.ll_rate_app})
     public void action_RateApp() {
-        Uri uri = Uri.parse("market://details?id=" + "com.google.android.youtube");
-        //getActivity().getPackageName());
+        Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
