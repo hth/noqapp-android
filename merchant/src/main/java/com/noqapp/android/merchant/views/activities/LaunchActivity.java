@@ -326,7 +326,6 @@ public class LaunchActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onNewIntent(Intent intent) {
         Bundle extras = intent.getExtras();
@@ -337,7 +336,7 @@ public class LaunchActivity extends AppCompatActivity {
         }
     }
 
-    private void showLogoutEditDialog( ) {
+    private void showLogoutEditDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(launchActivity);
         LayoutInflater inflater = LayoutInflater.from(launchActivity);
         builder.setTitle(null);
@@ -365,18 +364,19 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     public void clearLoginData(boolean showAlert) {
-        //unsubscribe the topics
-        if (null != merchantListFragment)
+        //un-subscribe the topics
+        if (null != merchantListFragment) {
             merchantListFragment.unSubscribeTopics();
+        }
         // logout
         sharedpreferences.edit().clear().apply();
         MerchantListFragment.selected_pos = -1;
         //navigate to signup/login
         replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
-        if(showAlert)
-            ShowAlertInformation.showDialog(this,getString(R.string.authentication_fail),getString(R.string.authentication_fail_msg));
+        if (showAlert) {
+            ShowAlertInformation.showDialog(this, getString(R.string.authentication_fail), getString(R.string.authentication_fail_msg));
+        }
     }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
