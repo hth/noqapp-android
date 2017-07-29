@@ -27,7 +27,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private ImageView iv_logout;
     private ImageView actionbarBack;
     private TextView tv_title;
-    private ToggleButton toggleDayClosed,togglePreventJoin;
+    private ToggleButton toggleDayClosed, togglePreventJoin;
     private String codeQR;
 
     @Override
@@ -49,7 +49,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         togglePreventJoin = (ToggleButton) findViewById(R.id.togglePreventJoin);
         String title = getIntent().getStringExtra("title");
         codeQR = getIntent().getStringExtra("codeQR");
-        if(null != title){
+        if (null != title) {
             tv_title.setText(title);
         }
         toggleDayClosed.setOnClickListener(this);
@@ -64,7 +64,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         tv_toolbar_title.setText(getString(R.string.screen_settings));
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-           QueueSettingModel.getQueueState(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(),codeQR);
+            QueueSettingModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
@@ -85,7 +85,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     }
 
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -95,7 +94,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
     @Override
     public void queueSettingResponse(QueueSetting queueSetting) {
-        if(null != queueSetting){
+        if (null != queueSetting) {
             toggleDayClosed.setChecked(queueSetting.isDayClosed());
             togglePreventJoin.setChecked(queueSetting.isPreventJoining());
         }
@@ -110,7 +109,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     @Override
     public void authenticationFailure(int errorcode) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        if(errorcode == Constants.INVALID_CREDENTIAL){
+        if (errorcode == Constants.INVALID_CREDENTIAL) {
             Intent intent = new Intent();
             intent.putExtra(Constants.CLEAR_DATA, true);
             if (getParent() == null) {
@@ -130,12 +129,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             queueSetting.setCodeQR(codeQR);
             queueSetting.setDayClosed(toggleDayClosed.isChecked());
             queueSetting.setPreventJoining(togglePreventJoin.isChecked());
-            QueueSettingModel.modify(UserUtils.getDeviceId(),UserUtils.getEmail(),UserUtils.getAuth(),queueSetting);
+            QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
-            if(v.getId() == R.id.toggleDayClosed){
+            if (v.getId() == R.id.toggleDayClosed) {
                 toggleDayClosed.setChecked(!toggleDayClosed.isChecked());
-            }else{
+            } else {
                 togglePreventJoin.setChecked(!togglePreventJoin.isChecked());
             }
         }
