@@ -52,6 +52,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     protected TextView tv_address;
     @BindView(R.id.tv_mobile)
     protected TextView tv_mobile;
+    @BindView(R.id.tv_rating_value)
+    protected TextView tv_rating_value;
+
     @BindView(R.id.btn_submit)
     protected Button btn_submit;
 
@@ -99,7 +102,15 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             }
         });
 
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        boolean fromUser) {
+                    tv_rating_value.setText(rating+"");
+
+            }
+        });
         seekbarWithIntervals.setIntervals(getIntervals());
 
         seekbarWithIntervals.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
