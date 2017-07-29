@@ -17,45 +17,46 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/login_logo"
-            />
+            android:background="@drawable/login_logo" />
 
-        <EditText
+        <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
             android:id="@+id/edt_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/square_white_bg_drawable"
             android:hint="@string/prompt_email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:singleLine="true"
             android:textColor="@android:color/black"
             android:textColorHint="@color/color_login_hint"
-            android:padding="10dp"
-            android:layout_marginBottom="10dp"
-            android:inputType="textEmailAddress"
-            android:background="@drawable/square_white_bg_drawable"
-            android:maxLines="1"
-            android:singleLine="true" />
+            android:textSize="18sp" />
 
-        <EditText
+        <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
             android:id="@+id/edt_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/prompt_pwd"
-            android:padding="10dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="@color/color_login_hint"
-            android:background="@drawable/square_white_bg_drawable"
             android:layout_marginBottom="10dp"
+            android:background="@drawable/square_white_bg_drawable"
+            android:hint="@string/prompt_pwd"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:singleLine="true" />
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/color_login_hint"
+            android:textSize="18sp" />
 
         <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/button_drawable"
             android:text="@string/sign_in"
             android:textAllCaps="false"
-            android:layout_marginBottom="10dp"
             android:textColor="@color/colorMobile"
             android:textSize="18sp" />
 

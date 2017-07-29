@@ -51,11 +51,11 @@
                 android:layout_below="@+id/tv_queue_name"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
+                android:ellipsize="end"
                 android:gravity="center_horizontal"
+                android:maxLines="2"
                 android:text="Location: Address is Station \n Railway station"
                 android:textColor="@color/colorAddress"
-                android:maxLines="2"
-                android:ellipsize="end"
                 android:textSize="18sp" />
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
@@ -123,8 +123,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".40"
-            android:gravity="center_vertical"
             android:background="@android:color/transparent"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
@@ -174,10 +174,10 @@
                 android:background="@drawable/backgroundbtn"
                 android:drawableLeft="@mipmap/plus"
                 android:gravity="center"
-                android:textAllCaps="false"
                 android:paddingLeft="130dp"
                 android:paddingRight="110dp"
                 android:text="@string/submit"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>

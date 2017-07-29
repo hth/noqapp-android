@@ -56,7 +56,7 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:textColor="@color/colorAddress"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/iv_settings"
@@ -102,7 +102,7 @@
                             style="@style/style_join_queue_tv"
                             android:text="@string/serving"
                             android:textColor="@color/colorAddress"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                             android:id="@+id/tv_current_value"
@@ -124,7 +124,7 @@
                             style="@style/style_join_queue_tv"
                             android:text="@string/in_Queue"
                             android:textColor="@color/colorAddress"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                             android:id="@+id/tv_total_value"

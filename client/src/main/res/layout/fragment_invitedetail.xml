@@ -22,7 +22,7 @@
                 android:id="@+id/tv_title"
                 style="@style/style_invite_tv"
                 android:textColor="@color/colorActionbar"
-                android:textSize="48sp" />
+                android:textSize="24sp" />
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_details"

@@ -16,20 +16,20 @@
             android:id="@+id/tv_title"
             style="@style/style_invite_tv"
             android:textColor="@color/colorActionbar"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
             android:id="@+id/tv_details"
             style="@style/style_invite_tv"
             android:textColor="@color/colorAddress"
-            android:textSize="15sp" />
+            android:textSize="16sp" />
 
         <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
             android:id="@+id/tv_how_it_works"
             style="@style/style_invite_tv"
             android:text="@string/how_it_works"
             android:textColor="@color/colorActionbar"
-            android:textSize="15sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -43,7 +43,9 @@
             style="@style/style_invite_tv"
             android:text="@string/your_invite_code"
             android:textColor="@color/color_total_val"
-            android:textSize="17sp" />
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:textSize="18sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -52,7 +54,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/square_white_bg_drawable"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_invite_code"
@@ -76,6 +78,7 @@
             android:id="@+id/btn_send_invite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:background="@mipmap/send_invite"
             android:text="@string/send_invite"
             android:textAllCaps="false"
