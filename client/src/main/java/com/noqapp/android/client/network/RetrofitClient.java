@@ -3,6 +3,9 @@ package com.noqapp.android.client.network;
 
 import com.noqapp.android.client.BuildConfig;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -13,12 +16,18 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
+    private static long TIME_OUT = 60;
 
     public static Retrofit getClient() {
         if (retrofit == null) {
+            final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+                    .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+                    .build();
             retrofit = new Retrofit.Builder()
                     .baseUrl(BuildConfig.NOQAPP_MOBILE)
                     .addConverterFactory(JacksonConverterFactory.create())
+                    .client(okHttpClient)
                     .build();
         }
         return retrofit;

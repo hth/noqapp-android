@@ -91,11 +91,11 @@
     <string name="radio_save_4hr">4</string>
     <string name="submit">Add Review</string>
 
-    <string name="radio_save_30min_f">30 min </string>
+    <string name="radio_save_30min_f">30 minutes </string>
     <string name="radio_save_1hr_f">1 hour </string>
-    <string name="radio_save_2hr_f">2 hour </string>
-    <string name="radio_save_3hr_f">3 hour </string>
-    <string name="radio_save_4hr_f">4 hour </string>
+    <string name="radio_save_2hr_f">2 hours </string>
+    <string name="radio_save_3hr_f">3 hours </string>
+    <string name="radio_save_4hr_f">4 hours </string>
 
     <string name="time_saved">Time saved:&#160;</string>
 
@@ -149,7 +149,7 @@
     <string name="error_token_not_available_from">%1$s %2$s is closing for the day soon. Hence no new tokens would be available.</string>
     <string name="error_business_closed_permanent">%1$s %2$s is closed permanently</string>
     <string name="error_user_needs_to_be_logged_in">Please login to join %1$s %2$s</string>
-    <string name="text_time_saved">How much time did you save ?</string>
+    <string name="text_time_saved">How much time did you save?</string>
 
 
 </resources>
