@@ -203,9 +203,11 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
         listDataHeader.add("Current Queue");
-        listDataHeader.add("QHistory");
         listDataChild.put(listDataHeader.get(0), currentlist); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), historylist);
+        if(historylist.size()>0) {
+            listDataHeader.add("QHistory");
+            listDataChild.put(listDataHeader.get(1), historylist);
+        }
         listAdapter = null;
         expListView.setAdapter(listAdapter);
         listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild);
@@ -226,7 +228,8 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         }
         expListView.setAdapter(listAdapter);
         expListView.expandGroup(0);//By default expand the list first group
-        expListView.expandGroup(1);
+        if(historylist.size()>0)
+          expListView.expandGroup(1);
 
         // Listview on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
