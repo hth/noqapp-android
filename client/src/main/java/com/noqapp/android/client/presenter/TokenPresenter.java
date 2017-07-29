@@ -11,4 +11,6 @@ public interface TokenPresenter {
     void tokenPresenterResponse(JsonToken token);
 
     void tokenPresenterError();
+
+    void authenticationFailure(int errorCode);
 }

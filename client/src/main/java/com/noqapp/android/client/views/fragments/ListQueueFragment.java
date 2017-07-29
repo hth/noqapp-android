@@ -21,9 +21,11 @@ import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.DeviceToken;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.adapters.ListQueueAdapter;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 
@@ -163,6 +165,14 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         passMsgToHandler(true);
     }
 
+    @Override
+    public void authenticationFailure(int errorCode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        if (errorCode == Constants.INVALID_CREDENTIAL) {
+            NoQueueBaseActivity.clearPreferences();
+            ShowAlertInformation.showAuthenticErrorDialog(getActivity());
+        }
+    }
 
     @Override
     public void currentQueueSaved() {

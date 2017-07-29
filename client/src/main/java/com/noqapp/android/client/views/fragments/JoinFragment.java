@@ -17,6 +17,7 @@ import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
@@ -143,6 +144,19 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     public void queueError() {
         Log.d(TAG, "Queue=Error");
         LaunchActivity.getLaunchActivity().dismissProgress();
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        if (errorCode == Constants.INVALID_CREDENTIAL) {
+            NoQueueBaseActivity.clearPreferences();
+            ShowAlertInformation.showAuthenticErrorDialog(getActivity());
+        }
+        if (errorCode == Constants.INVALID_BAR_CODE) {
+            ShowAlertInformation.showBarcodeErrorDialog(LaunchActivity.getLaunchActivity());
+
+        }
     }
 
     @Override

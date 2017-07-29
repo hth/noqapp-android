@@ -159,7 +159,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             //Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
             if (null != eej) {
-                ShowAlertInformation.showDialog(getActivity(), eej.getSystemError(), eej.getReason());
+                ShowAlertInformation.showThemeDialog(getActivity(), eej.getSystemError(), eej.getReason());
             }
         }
         LaunchActivity.getLaunchActivity().dismissProgress();
