@@ -221,7 +221,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             if(UserUtils.isLogin()) {
                 boolean callingFromHistory = getArguments().getBoolean(KEY_IS_HISTORY, false);
                 if(!callingFromHistory && getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false)){
-                    QueueModel.tokenPresenter = this;
+                    QueueApiModel.tokenPresenter = this;
                     QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                 } else if (callingFromHistory) {
                     if(getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
