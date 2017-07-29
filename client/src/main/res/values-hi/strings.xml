@@ -118,6 +118,6 @@
     <string name="text_time_saved">How much time did you save ?</string>
     <string name="barcode_error">Queue not found</string>
     <string name="barcode_error_msg">No merchant is associated with this NoQueue code</string>
-    <string name="copy_right">US Patent Pending \n 2017 \u00a9 NoQApp &#174; is registered trademark of NoQueue &#174; Inc.</string>
+    <string name="copy_right">US Patent Pending \n NoQApp &#174; is a trademark of NoQueue Inc.\n 2017 \u00a9 NoQueue &#174; Inc</string>
 
 </resources>
