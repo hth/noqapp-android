@@ -202,7 +202,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             if (UserUtils.isLogin()) {
                 QueueApiModel.responsePresenter = this;
                 QueueApiModel.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-            }else {
+            } else {
                 QueueModel.responsePresenter = this;
                 QueueModel.abortQueue(UserUtils.getDeviceId(), codeQR);
             }
@@ -218,13 +218,13 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private void callQueue() {
         if (codeQR != null) {
             Log.d("CodeQR=", codeQR);
-            if(UserUtils.isLogin()) {
+            if (UserUtils.isLogin()) {
                 boolean callingFromHistory = getArguments().getBoolean(KEY_IS_HISTORY, false);
-                if(!callingFromHistory && getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false)){
+                if (!callingFromHistory && getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
                     QueueApiModel.tokenPresenter = this;
                     QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                 } else if (callingFromHistory) {
-                    if(getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
+                    if (getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
                         QueueApiModel.tokenPresenter = this;
                         QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                     } else {
@@ -233,7 +233,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                     }
                 }
 
-            }else {
+            } else {
                 QueueModel.tokenPresenter = this;
                 QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
             }
