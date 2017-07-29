@@ -16,7 +16,7 @@
     <string name="empty_list">You are not assign \n to any queue.</string>
     <string name="networkerror">Network Error</string>
     <string name="offline">Network unavailable. Please connect your device to network.</string>
-
+    <string name="ok">OK</string>
 
     <!-- ViewPager Screen -->
     <string name="in_Queue">In Queue</string>
