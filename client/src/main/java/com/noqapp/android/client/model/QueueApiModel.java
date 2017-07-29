@@ -140,7 +140,7 @@ public class QueueApiModel {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    responsePresenter.authenticationFailure(response.code());
+                    tokenPresenter.authenticationFailure(response.code());
                     return;
                 }
                 if (response.body() != null && response.body().getError() == null) {
