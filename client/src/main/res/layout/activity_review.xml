@@ -128,7 +128,6 @@
             android:orientation="vertical">
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
-
                 style="@style/style_join_queue_tv"
                 android:layout_below="@+id/tv_queue_name"
                 android:layout_gravity="center_horizontal"
@@ -141,7 +140,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-               android:layout_marginBottom="10dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical"
                 android:weightSum="1">
 
@@ -152,7 +151,6 @@
                     android:layout_centerInParent="true" />
 
                 <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
-
                     android:id="@+id/tv_hr_saved"
                     style="@style/style_join_queue_tv"
                     android:layout_gravity="center_horizontal"
@@ -163,7 +161,6 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
-
 
             <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
                 android:id="@+id/btn_submit"
