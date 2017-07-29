@@ -52,6 +52,10 @@ public final class QueueModel {
         queueService.getQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
+                if (response.code() == Constants.INVALID_BAR_CODE) {
+                    queuePresenter.authenticationFailure(response.code());
+                    return;
+                }
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                     queuePresenter.queueResponse(response.body());
@@ -151,6 +155,10 @@ public final class QueueModel {
         queueService.joinQueue(did, Constants.DEVICE_TYPE, Constants.appVersion(), codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
+                if (response.code() == Constants.INVALID_BAR_CODE) {
+                    tokenPresenter.authenticationFailure(response.code());
+                    return;
+                }
                 if (response.body() != null && response.body().getError() == null) {
                     Log.d("Response", response.body().toString());
                     tokenPresenter.tokenPresenterResponse(response.body());

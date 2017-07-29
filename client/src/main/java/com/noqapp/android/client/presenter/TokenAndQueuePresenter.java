@@ -19,4 +19,6 @@ public interface TokenAndQueuePresenter {
 
     void currentQueueError();
 
+    void authenticationFailure(int errorCode);
+
 }

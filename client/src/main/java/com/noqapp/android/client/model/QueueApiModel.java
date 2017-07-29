@@ -66,6 +66,10 @@ public class QueueApiModel {
         queueService.getAllJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    tokenAndQueuePresenter.authenticationFailure(response.code());
+                    return;
+                }
                 if (response.body() != null && response.body().getError() == null) {
                     /// if (response.body().getTokenAndQueues().size() > 0) {
                     Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
@@ -98,6 +102,10 @@ public class QueueApiModel {
         queueService.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    tokenAndQueuePresenter.authenticationFailure(response.code());
+                    return;
+                }
                 if (response.body() != null && response.body().getError() == null) {
                     // if (response.body().getTokenAndQueues().size() > 0) {
                     Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
@@ -170,6 +178,11 @@ public class QueueApiModel {
         queueService.remoteScanQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
+
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    queuePresenter.authenticationFailure(response.code());
+                    return;
+                }
                 if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
                     queuePresenter.queueResponse(response.body());
@@ -192,6 +205,10 @@ public class QueueApiModel {
         queueService.remoteJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    tokenPresenter.authenticationFailure(response.code());
+                    return;
+                }
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", response.body().toString());
                     tokenPresenter.tokenPresenterResponse(response.body());

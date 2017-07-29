@@ -23,6 +23,7 @@ import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -180,6 +181,18 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     @Override
     public void tokenPresenterError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        if (errorCode == Constants.INVALID_CREDENTIAL) {
+            NoQueueBaseActivity.clearPreferences();
+            ShowAlertInformation.showAuthenticErrorDialog(getActivity());
+        }
+        if (errorCode == Constants.INVALID_BAR_CODE) {
+            ShowAlertInformation.showBarcodeErrorDialog(LaunchActivity.getLaunchActivity());
+        }
     }
 
     @OnClick(R.id.btn_cancel_queue)
