@@ -60,6 +60,6 @@
     <string name="error_pwd_length">पासवर्ड की लंबाई 5 से अधिक होनी चाहिए</string>
     <string name="authentication_fail">प्रमाणीकरण विफलता</string>
     <string name="authentication_fail_msg">कृपया फिर से लॉग इन करे </string>
-    <string name="copy_right">US Patent Pending \n 2017 \u00a9 NoQApp &#174; is registered trademark of NoQueue &#174; Inc.</string>
+    <string name="copy_right">US Patent Pending \n NoQApp &#174; is a trademark of NoQueue Inc.\n 2017 \u00a9 NoQueue &#174; Inc</string>
 
 </resources>
