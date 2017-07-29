@@ -17,9 +17,10 @@ public class ShowAlertInformation {
         showThemeDialog(context, context.getString(R.string.networkerror), context.getString(R.string.offline));
     }
 
-    public static void showAuthenticErrorDialog(Context context){
-        ShowAlertInformation.showThemeDialog(context,context.getString(R.string.authentication_fail_title), context.getString(R.string.authentication_fail_msg));
+    public static void showAuthenticErrorDialog(Context context) {
+        ShowAlertInformation.showThemeDialog(context, context.getString(R.string.authentication_fail_title), context.getString(R.string.authentication_fail_msg));
     }
+
     public static void showThemeDialog(Context context, String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);

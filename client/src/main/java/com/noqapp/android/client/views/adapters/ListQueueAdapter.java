@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -163,11 +162,11 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 
             case 1:
 
-                    convertView = inflater.inflate(R.layout.list_group, null);
-                    TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
-                    ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
-                    lblListHeader.setText(headerTitle);
-                    ivGroupIndicator.setSelected(isExpanded);
+                convertView = inflater.inflate(R.layout.list_group, null);
+                TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
+                ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
+                lblListHeader.setText(headerTitle);
+                ivGroupIndicator.setSelected(isExpanded);
 
                 break;
         }

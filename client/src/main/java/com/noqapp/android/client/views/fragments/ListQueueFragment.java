@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.RelativeLayout;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.R;
@@ -200,7 +199,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         listDataChild = new HashMap<>();
         listDataHeader.add("Current Queue");
         listDataChild.put(listDataHeader.get(0), currentlist); // Header, Child data
-        if(historylist.size()>0) {
+        if (historylist.size() > 0) {
             listDataHeader.add("QHistory");
             listDataChild.put(listDataHeader.get(1), historylist);
         }
@@ -224,8 +223,8 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         }
         expListView.setAdapter(listAdapter);
         expListView.expandGroup(0);//By default expand the list first group
-        if(historylist.size()>0)
-          expListView.expandGroup(1);
+        if (historylist.size() > 0)
+            expListView.expandGroup(1);
 
         // Listview on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {

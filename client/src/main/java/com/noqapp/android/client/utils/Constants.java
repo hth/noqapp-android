@@ -30,12 +30,11 @@ public class Constants {
     public static final String MSG_TYPE_Q = "q";
     public static final String MSG_TYPE_C = "c";
     public static final String MSG_TYPE_U = "u";
-    private static final String TAG = Constants.class.getName();
     //error codes
     public static final int INVALID_CREDENTIAL = 401;
     public static final int INVALID_BAR_CODE = 404;
-
     public static final int DEFAULT_REVIEW_TIME_SAVED = 1;
+    private static final String TAG = Constants.class.getName();
     private static String VERSION_RELEASE;
 
     /**

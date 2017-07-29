@@ -107,7 +107,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating,
                                         boolean fromUser) {
-                    tv_rating_value.setText(rating+"");
+                tv_rating_value.setText(rating + "");
 
             }
         });
@@ -127,7 +127,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //Toast.makeText(ReviewActivity.this, "onStopTrackingTouch", Toast.LENGTH_SHORT).show();
-                tv_hr_saved.setText(getSeekbarLabel(seekBar.getProgress()+1));
+                tv_hr_saved.setText(getSeekbarLabel(seekBar.getProgress() + 1));
             }
         });
         seekbarWithIntervals.setProgress(Constants.DEFAULT_REVIEW_TIME_SAVED);

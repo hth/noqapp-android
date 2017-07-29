@@ -20,15 +20,13 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-
 public class SeekbarWithIntervals extends LinearLayout {
+    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
     private RelativeLayout RelativeLayout = null;
     private SeekBar Seekbar = null;
-
     private int WidthMeasureSpec = 0;
     private int HeightMeasureSpec = 0;
     private boolean isAlignmentResetOnLayoutChange;
-
 
     public SeekbarWithIntervals(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -40,6 +38,24 @@ public class SeekbarWithIntervals extends LinearLayout {
     public static float dpToPx(Context context, float valueInDp) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
+    }
+
+    /**
+     * Generate a value suitable for use in {@link #setId(int)}.
+     * This value will not collide with ID values generated at build time by aapt for R.id.
+     *
+     * @return a generated ID value
+     */
+    public static int generateViewId() {
+        for (; ; ) {
+            final int result = sNextGeneratedId.get();
+            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
+            int newValue = result + 1;
+            if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
+            if (sNextGeneratedId.compareAndSet(result, newValue)) {
+                return result;
+            }
+        }
     }
 
     @Override
@@ -68,7 +84,6 @@ public class SeekbarWithIntervals extends LinearLayout {
             }
         }
     }
-
 
     private void alignIntervals() {
 
@@ -136,13 +151,13 @@ public class SeekbarWithIntervals extends LinearLayout {
         return getSeekbar().getProgress();
     }
 
+    public void setProgress(int progress) {
+        getSeekbar().setProgress(progress);
+    }
+
     public void setIntervals(List<String> intervals) {
         displayIntervals(intervals);
         getSeekbar().setMax(intervals.size() - 1);
-    }
-
-    public void setProgress(int progress) {
-        getSeekbar().setProgress(progress);
     }
 
     private void displayIntervals(List<String> intervals) {
@@ -176,27 +191,7 @@ public class SeekbarWithIntervals extends LinearLayout {
         return textView;
     }
 
-    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
-
-    /**
-     * Generate a value suitable for use in {@link #setId(int)}.
-     * This value will not collide with ID values generated at build time by aapt for R.id.
-     *
-     * @return a generated ID value
-     */
-    public static int generateViewId() {
-        for (; ; ) {
-            final int result = sNextGeneratedId.get();
-            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
-            int newValue = result + 1;
-            if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
-            if (sNextGeneratedId.compareAndSet(result, newValue)) {
-                return result;
-            }
-        }
-    }
-
-    public void setAlignmentResetOnLayoutChange(){
+    public void setAlignmentResetOnLayoutChange() {
         alignIntervals();
 
         // We've changed the intervals layout, we need to refresh.
