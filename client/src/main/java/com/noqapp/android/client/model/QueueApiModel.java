@@ -44,6 +44,10 @@ public class QueueApiModel {
         queueService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
+                if (response.code() == Constants.INVALID_BAR_CODE) {
+                    queuePresenter.authenticationFailure(response.code());
+                    return;
+                }
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                     queuePresenter.queueResponse(response.body());
@@ -157,6 +161,10 @@ public class QueueApiModel {
         queueService.abortQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    responsePresenter.authenticationFailure(response.code());
+                    return;
+                }
                 if (response.body() != null) {
                     Log.d("Response", String.valueOf(response.body()));
                     responsePresenter.responsePresenterResponse(response.body());

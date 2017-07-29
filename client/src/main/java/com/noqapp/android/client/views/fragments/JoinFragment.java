@@ -106,7 +106,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
 
                 if (UserUtils.isLogin()) {
                     QueueApiModel.queuePresenter = this;
-                    QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                    QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                 } else {
                     QueueModel.queuePresenter = this;
                     QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);

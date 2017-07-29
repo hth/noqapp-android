@@ -11,4 +11,6 @@ public interface ResponsePresenter {
     void responsePresenterResponse(JsonResponse response);
 
     void responsePresenterError();
+
+    void authenticationFailure(int errorCode);
 }

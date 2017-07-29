@@ -199,8 +199,13 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     public void cancelQueue() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             LaunchActivity.getLaunchActivity().progressDialog.show();
-            QueueModel.responsePresenter = this;
-            QueueModel.abortQueue(UserUtils.getDeviceId(), codeQR);
+            if (UserUtils.isLogin()) {
+                QueueApiModel.responsePresenter = this;
+                QueueApiModel.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            }else {
+                QueueModel.responsePresenter = this;
+                QueueModel.abortQueue(UserUtils.getDeviceId(), codeQR);
+            }
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
