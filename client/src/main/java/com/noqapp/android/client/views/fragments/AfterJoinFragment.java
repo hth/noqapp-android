@@ -199,8 +199,13 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     public void cancelQueue() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             LaunchActivity.getLaunchActivity().progressDialog.show();
-            QueueModel.responsePresenter = this;
-            QueueModel.abortQueue(UserUtils.getDeviceId(), codeQR);
+            if (UserUtils.isLogin()) {
+                QueueApiModel.responsePresenter = this;
+                QueueApiModel.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            }else {
+                QueueModel.responsePresenter = this;
+                QueueModel.abortQueue(UserUtils.getDeviceId(), codeQR);
+            }
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -213,10 +218,22 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private void callQueue() {
         if (codeQR != null) {
             Log.d("CodeQR=", codeQR);
-            if (UserUtils.isLogin() && getArguments().getBoolean(KEY_IS_HISTORY, false)) {
-                QueueApiModel.tokenPresenter = this;
-                QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-            } else {
+            if(UserUtils.isLogin()) {
+                boolean callingFromHistory = getArguments().getBoolean(KEY_IS_HISTORY, false);
+                if(!callingFromHistory && getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false)){
+                    QueueModel.tokenPresenter = this;
+                    QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                } else if (callingFromHistory) {
+                    if(getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
+                        QueueApiModel.tokenPresenter = this;
+                        QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                    } else {
+                        //Failure
+                        Toast.makeText(getActivity(), getString(R.string.error_remote_join_available), Toast.LENGTH_LONG).show();
+                    }
+                }
+
+            }else {
                 QueueModel.tokenPresenter = this;
                 QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
             }

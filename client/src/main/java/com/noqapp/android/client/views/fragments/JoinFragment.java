@@ -101,12 +101,16 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         Bundle bundle = getArguments();
         if (null != bundle) {
             codeQR = bundle.getString(KEY_CODE_QR);
+            boolean callingFromHistory = getArguments().getBoolean(KEY_IS_HISTORY, false);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
-
                 if (UserUtils.isLogin()) {
                     QueueApiModel.queuePresenter = this;
-                    QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                    if(callingFromHistory) {
+                        QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                    }else{
+                        QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                    }
                 } else {
                     QueueModel.queuePresenter = this;
                     QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
@@ -116,7 +120,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             }
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 frtag = LaunchActivity.tabList;
-                if (bundle.getBoolean(KEY_IS_HISTORY, false)) {
+                if (callingFromHistory) {
                     btn_joinQueue.setText(getString(R.string.remotejoin));
                 }
 
