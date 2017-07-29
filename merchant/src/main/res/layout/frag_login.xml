@@ -1,5 +1,4 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
@@ -9,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:orientation="vertical">
 
         <ImageView
@@ -61,4 +60,13 @@
             android:textSize="18sp" />
 
     </LinearLayout>
-</ScrollView>
+
+    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:text="@string/copy_right"
+        android:textColor="@android:color/black" />
+</RelativeLayout>

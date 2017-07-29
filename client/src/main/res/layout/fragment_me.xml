@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,160 +10,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/screen_padding"
-        android:paddingRight="@dimen/screen_padding">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.60"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
-                android:id="@+id/tv_firstLastName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:paddingRight="@dimen/screen_padding"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
-
-            <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
-                android:id="@+id/tv_phoneno"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_weight=".5"
-                android:paddingRight="@dimen/screen_padding"
-                android:text=""
-                android:textColor="@color/colorAccent"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-
-        <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
-            android:id="@+id/btn_register_login_logout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.40"
-            android:background="@drawable/button_drawable_red"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:text="Login/Register"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="15sp" />
-    </LinearLayout>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        card_view:cardCornerRadius="4dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:minHeight="@dimen/cell_size"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/screen_padding"
-            android:paddingRight="@dimen/screen_padding">
-
-            <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.75"
-                android:gravity="center_vertical"
-                android:text="@string/autojoinon"
-                android:textColor="@color/color_total_val"
-                android:textSize="18sp" />
-
-            <ToggleButton
-                android:id="@+id/toggleAutojoin"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.25"
-                android:background="@null"
-                android:drawableRight="@drawable/toggle_selector"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:textOff=""
-                android:textOn="" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/transparent"
-            android:visibility="gone" />
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        card_view:cardCornerRadius="4dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:minHeight="@dimen/cell_size"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/screen_padding"
-            android:paddingRight="@dimen/screen_padding">
-
-            <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.75"
-                android:gravity="center_vertical"
-                android:text="@string/remoteJoinAvail"
-                android:textColor="@color/color_total_val"
-                android:textSize="18sp" />
-
-            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
-                android:id="@+id/tv_RemoteScanCount"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.25"
-                android:gravity="center_vertical|right"
-                android:text="0"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/transparent"
-            android:visibility="gone" />
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        card_view:cardCornerRadius="4dp">
-
-        <LinearLayout
-            android:id="@+id/ll_invite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:minHeight="@dimen/cell_size"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/screen_padding"
             android:paddingRight="@dimen/screen_padding">
@@ -172,77 +25,242 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.75"
-                android:orientation="vertical"
-                android:weightSum="1">
+                android:layout_weight="0.60"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
-
+                    android:id="@+id/tv_firstLastName"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:paddingRight="@dimen/screen_padding"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    android:id="@+id/tv_phoneno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:layout_weight=".5"
+                    android:paddingRight="@dimen/screen_padding"
+                    android:text=""
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+
+            <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
+                android:id="@+id/btn_register_login_logout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.40"
+                android:background="@drawable/button_drawable_red"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:text="Login/Register"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/screen_padding"
+                android:paddingRight="@dimen/screen_padding">
+
+                <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
                     android:gravity="center_vertical"
-                    android:text="@string/invite"
+                    android:text="@string/autojoinon"
+                    android:textColor="@color/color_total_val"
+                    android:textSize="18sp" />
+
+                <ToggleButton
+                    android:id="@+id/toggleAutojoin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.25"
+                    android:background="@null"
+                    android:drawableRight="@drawable/toggle_selector"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:textOff=""
+                    android:textOn="" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/transparent"
+                android:visibility="gone" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/screen_padding"
+                android:paddingRight="@dimen/screen_padding">
+
+                <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:gravity="center_vertical"
+                    android:text="@string/remoteJoinAvail"
                     android:textColor="@color/color_total_val"
                     android:textSize="18sp" />
 
                 <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".5"
-                    android:text="@string/freeRemoteJoin"
-                    android:textColor="@color/color_list_text"
-                    android:textSize="16sp" />
+                    android:id="@+id/tv_RemoteScanCount"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25"
+                    android:gravity="center_vertical|right"
+                    android:text="0"
+                    android:textSize="18sp" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/iv_invite"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center_vertical"
-                android:src="@mipmap/invite_arrow" />
-        </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/transparent"
+                android:visibility="gone" />
+        </android.support.v7.widget.CardView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/transparent"
-            android:visibility="gone" />
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        card_view:cardCornerRadius="4dp">
-
-        <LinearLayout
-            android:id="@+id/ll_rate_app"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:minHeight="@dimen/cell_size"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/screen_padding"
-            android:paddingRight="@dimen/screen_padding">
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="4dp">
 
-            <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
-                android:id="@+id/textView"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.75"
-                android:gravity="center_vertical"
-                android:text="@string/ratetheapp"
-                android:textColor="@color/color_total_val"
-                android:textSize="18sp" />
+            <LinearLayout
+                android:id="@+id/ll_invite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/screen_padding"
+                android:paddingRight="@dimen/screen_padding">
 
-            <ImageView
-                android:id="@+id/iv_rate"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_vertical"
-                android:src="@mipmap/rate" />
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.75"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".5"
+                        android:gravity="center_vertical"
+                        android:text="@string/invite"
+                        android:textColor="@color/color_total_val"
+                        android:textSize="18sp" />
+
+                    <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".5"
+                        android:text="@string/freeRemoteJoin"
+                        android:textColor="@color/color_list_text"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_invite"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/invite_arrow" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/transparent"
+                android:visibility="gone" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="4dp">
+
+            <LinearLayout
+                android:id="@+id/ll_rate_app"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/screen_padding"
+                android:paddingRight="@dimen/screen_padding">
+
+                <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    android:id="@+id/textView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:gravity="center_vertical"
+                    android:text="@string/ratetheapp"
+                    android:textColor="@color/color_total_val"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/iv_rate"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/rate" />
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:text="@string/copy_right"
+        android:textColor="@android:color/black" />
+</RelativeLayout>
