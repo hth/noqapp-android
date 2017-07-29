@@ -14,17 +14,16 @@
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+        <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
             android:id="@+id/lblListHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:text=""
             android:textAllCaps="false"
             android:textColor="@color/colorMobile"
-            android:textSize="24sp"
+            android:textSize="20sp"
 
             />
 

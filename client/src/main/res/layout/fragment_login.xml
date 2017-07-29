@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-    <TextView
+    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -16,7 +16,7 @@
     <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
         style="@style/style_register_tv"
         android:text="@string/phone"
-        android:textSize="15sp" />
+        android:textSize="16sp" />
 
     <com.noqapp.android.client.views.cutomviews.TextEditRobotoLight
         android:id="@+id/edt_phone"

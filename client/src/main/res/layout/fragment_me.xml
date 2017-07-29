@@ -86,7 +86,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/autojoinon"
                 android:textColor="@color/color_total_val"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ToggleButton
                 android:id="@+id/toggleAutojoin"
@@ -132,7 +132,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/remoteJoinAvail"
                 android:textColor="@color/color_total_val"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_RemoteScanCount"
@@ -141,7 +141,7 @@
                 android:layout_weight="0.25"
                 android:gravity="center_vertical|right"
                 android:text="0"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <View
@@ -184,15 +184,15 @@
                     android:gravity="center_vertical"
                     android:text="@string/invite"
                     android:textColor="@color/color_total_val"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
-                <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight=".5"
                     android:text="@string/freeRemoteJoin"
                     android:textColor="@color/color_list_text"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <ImageView
@@ -235,7 +235,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/ratetheapp"
                 android:textColor="@color/color_total_val"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_rate"

@@ -49,7 +49,6 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     private static Context context;
     private static QueueHandler mHandler;
     private static TokenQueueViewInterface tokenQueueViewInterface;
-    private RelativeLayout rl_empty_screen;
     private String TAG = ListQueueFragment.class.getSimpleName();
     private ListQueueAdapter listAdapter;
     private ExpandableListView expListView;
@@ -68,8 +67,6 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         context = getActivity();
         View view = inflater.inflate(R.layout.fragment_listqueue, container, false);
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
-        rl_empty_screen = (RelativeLayout) view.findViewById(R.id.rl_empty_screen);
-        //ButterKnife.bind(this,view);
 
         header = (ViewGroup) inflater.inflate(R.layout.listview_header, expListView, false);
         Button btn_scn = (Button) header.findViewById(R.id.btnScanQRCode);
@@ -195,7 +192,6 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size()) + "::" + String.valueOf(historylist.size()));
         initListView(currentlist, historylist);
-        rl_empty_screen.setVisibility(View.GONE);
         expListView.setVisibility(View.VISIBLE);
     }
 
@@ -203,9 +199,11 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
         listDataHeader.add("Current Queue");
-        listDataHeader.add("QHistory");
         listDataChild.put(listDataHeader.get(0), currentlist); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), historylist);
+        if(historylist.size()>0) {
+            listDataHeader.add("QHistory");
+            listDataChild.put(listDataHeader.get(1), historylist);
+        }
         listAdapter = null;
         expListView.setAdapter(listAdapter);
         listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild);
@@ -226,7 +224,8 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         }
         expListView.setAdapter(listAdapter);
         expListView.expandGroup(0);//By default expand the list first group
-        expListView.expandGroup(1);
+        if(historylist.size()>0)
+          expListView.expandGroup(1);
 
         // Listview on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {

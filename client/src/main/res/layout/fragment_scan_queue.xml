@@ -24,7 +24,7 @@
                 android:layout_marginBottom="20dp"
                 android:background="@mipmap/camera" />
 
-            <TextView
+            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_label"
                 style="@style/style_join_queue_tv"
                 android:layout_below="@+id/iv_camera"

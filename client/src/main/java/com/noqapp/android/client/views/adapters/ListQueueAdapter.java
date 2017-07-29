@@ -162,12 +162,13 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 break;
 
             case 1:
-                convertView = inflater.inflate(R.layout.list_group, null);
-                TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
-                ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
-                lblListHeader.setTypeface(null, Typeface.BOLD);
-                lblListHeader.setText(headerTitle);
-                ivGroupIndicator.setSelected(isExpanded);
+
+                    convertView = inflater.inflate(R.layout.list_group, null);
+                    TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
+                    ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
+                    lblListHeader.setText(headerTitle);
+                    ivGroupIndicator.setSelected(isExpanded);
+
                 break;
         }
         return convertView;
