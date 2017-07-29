@@ -101,7 +101,7 @@ public class LaunchActivity extends AppCompatActivity {
         iv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLogoutEditDialog();
+                showLogoutDialog();
             }
         });
 
@@ -336,7 +336,7 @@ public class LaunchActivity extends AppCompatActivity {
         }
     }
 
-    private void showLogoutEditDialog() {
+    private void showLogoutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(launchActivity);
         LayoutInflater inflater = LayoutInflater.from(launchActivity);
         builder.setTitle(null);
@@ -374,7 +374,7 @@ public class LaunchActivity extends AppCompatActivity {
         //navigate to signup/login
         replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
         if (showAlert) {
-            ShowAlertInformation.showDialog(this, getString(R.string.authentication_fail), getString(R.string.authentication_fail_msg));
+            ShowAlertInformation.showThemeDialog(this, getString(R.string.authentication_fail), getString(R.string.authentication_fail_msg));
         }
     }
 

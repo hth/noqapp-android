@@ -22,7 +22,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".40"
+            android:layout_weight=".35"
             android:background="@drawable/home_top_bg"
             android:orientation="vertical">
 
@@ -52,11 +52,11 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
-                android:text="Location -Address is Vashi \n Railway station"
+                android:text="Location: Address is Station \n Railway station"
                 android:textColor="@color/colorAddress"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_mobile"
@@ -66,15 +66,15 @@
                 android:layout_marginBottom="10dp"
                 android:drawableLeft="@mipmap/date"
                 android:drawablePadding="4dp"
-                android:text="Date of service : Today"
+                android:text="Date of service: Today"
                 android:textColor="@color/colorMobile"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".20"
+            android:layout_weight=".25"
             android:background="@drawable/review_center"
             android:gravity="center_vertical"
             android:orientation="vertical"
