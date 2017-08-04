@@ -48,7 +48,7 @@ public class QueueApiModel {
                     queuePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (response.body() != null) {
+                if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
                     queuePresenter.queueResponse(response.body());
                 } else {
@@ -74,7 +74,7 @@ public class QueueApiModel {
                     tokenAndQueuePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (response.body() != null && response.body().getError() == null) {
+                if (null != response.body() && null == response.body().getError()) {
                     /// if (response.body().getTokenAndQueues().size() > 0) {
                     Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
                     Log.d("Response joinqueuevalue", response.body().getTokenAndQueues().toString());
@@ -110,18 +110,18 @@ public class QueueApiModel {
                     tokenAndQueuePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (response.body() != null && response.body().getError() == null) {
+                if (null != response.body() && null == response.body().getError()) {
                     // if (response.body().getTokenAndQueues().size() > 0) {
                     Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
                     //Todo: Remove below line after testing done and uncomment queue response
                     // tokenAndQueuePresenter.noHistoryQueue();
-                    tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues());
+                    tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues(), response.body().isSinceBeginning());
 //                    } else {
 //                        //TODO something logical
 //                        Log.d(TAG, "Empty historical history");
 //                        tokenAndQueuePresenter.noHistoryQueue();
 //                    }
-                } else if (response.body() != null && response.body().getError() != null) {
+                } else if (null != response.body() && null != response.body().getError()) {
                     Log.e(TAG, "Got error");
                     tokenAndQueuePresenter.historyQueueError();
                 }
@@ -143,7 +143,7 @@ public class QueueApiModel {
                     tokenPresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (response.body() != null && response.body().getError() == null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", response.body().toString());
                     tokenPresenter.tokenPresenterResponse(response.body());
                 } else {
@@ -169,7 +169,7 @@ public class QueueApiModel {
                     responsePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (response.body() != null) {
+                if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
                     responsePresenter.responsePresenterResponse(response.body());
                 } else {

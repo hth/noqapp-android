@@ -23,6 +23,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonTokenAndQueueList {
 
+    @JsonProperty ("sb")
+    private boolean sinceBeginning;
+
     @JsonProperty("tqs")
     private List<JsonTokenAndQueue> tokenAndQueues = new ArrayList<>();
 
@@ -35,6 +38,14 @@ public class JsonTokenAndQueueList {
 
     public void setTokenAndQueues(List<JsonTokenAndQueue> tokenAndQueues) {
         this.tokenAndQueues = tokenAndQueues;
+    }
+
+    public boolean isSinceBeginning() {
+        return sinceBeginning;
+    }
+
+    public void setSinceBeginning(boolean sinceBeginning) {
+        this.sinceBeginning = sinceBeginning;
     }
 
     public ErrorEncounteredJson getError() {

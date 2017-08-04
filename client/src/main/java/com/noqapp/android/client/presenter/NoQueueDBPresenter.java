@@ -10,9 +10,9 @@ import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 import java.util.List;
 
 /**
- * Created by omkar on 4/1/17.
+ * User: omkar
+ * Date: 4/1/17 12:37 PM
  */
-
 public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
 
     public TokenQueueViewInterface tokenQueueViewInterface;
@@ -22,7 +22,7 @@ public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
         this.context = context;
     }
 
-    public void saveTokenQueue(List<JsonTokenAndQueue> tokenAndQueues, boolean isCurrentQueueCall) {
+    public void saveTokenQueue(List<JsonTokenAndQueue> tokenAndQueues, boolean isCurrentQueueCall, boolean sinceBeginning) {
         TokenAndQueueDB.queueDBPresenterInterface = this;
 
         if (isCurrentQueueCall) {
@@ -30,6 +30,9 @@ public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
             TokenAndQueueDB.deleteCurrentQueue();
             TokenAndQueueDB.saveCurrentQueue(tokenAndQueues);
         } else {
+            if (sinceBeginning) {
+                TokenAndQueueDB.deleteHistoryQueue();
+            }
             TokenAndQueueDB.saveHistoryQueue(tokenAndQueues);
         }
         //TokenAndQueueDB.save(tokenAndQueues, isCurrentQueueCall);

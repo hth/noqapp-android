@@ -208,6 +208,10 @@ public class TokenAndQueueDB {
         queueDBPresenterInterface.dbSaved(true);
     }
 
+    public static void deleteHistoryQueue() {
+        dbHandler.getWritableDb().execSQL("delete from " + TokenQueueHistory.TABLE_NAME);
+    }
+
     public static void saveHistoryQueue(List<JsonTokenAndQueue> list) {
         for (JsonTokenAndQueue tokenAndQueue : list) {
             ContentValues values = createQueueContentValues(tokenAndQueue);
