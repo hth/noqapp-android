@@ -137,14 +137,14 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     public void currentQueueResponse(List<JsonTokenAndQueue> tokenAndQueues) {
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
-        dbPresenter.saveTokenQueue(tokenAndQueues, true);
+        dbPresenter.saveTokenQueue(tokenAndQueues, true, false);
     }
 
     @Override
-    public void historyQueueResponse(List<JsonTokenAndQueue> tokenAndQueues) {
+    public void historyQueueResponse(List<JsonTokenAndQueue> tokenAndQueues, boolean sinceBeginning) {
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(context);
         dbPresenter.tokenQueueViewInterface = this;
-        dbPresenter.saveTokenQueue(tokenAndQueues, false);
+        dbPresenter.saveTokenQueue(tokenAndQueues, false, sinceBeginning);
     }
 
     @Override

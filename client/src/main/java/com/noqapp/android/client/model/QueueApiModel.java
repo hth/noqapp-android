@@ -115,7 +115,7 @@ public class QueueApiModel {
                     Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
                     //Todo: Remove below line after testing done and uncomment queue response
                     // tokenAndQueuePresenter.noHistoryQueue();
-                    tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues());
+                    tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues(), response.body().isSinceBeginning());
 //                    } else {
 //                        //TODO something logical
 //                        Log.d(TAG, "Empty historical history");
