@@ -371,6 +371,12 @@ public class LaunchActivity extends AppCompatActivity {
         // logout
         sharedpreferences.edit().clear().apply();
         MerchantListFragment.selected_pos = -1;
+        if (new AppUtils().isTablet(getApplicationContext())) {
+            LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
+            LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
+            list_fragment.setLayoutParams(lp1);
+            list_detail_fragment.setLayoutParams(lp0);
+        }
         //navigate to signup/login
         replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
         if (showAlert) {
