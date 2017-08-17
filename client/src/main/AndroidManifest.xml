@@ -62,6 +62,11 @@
             android:theme="@style/BaseTheme">
         </activity>
         <activity
+            android:name="com.noqapp.android.client.views.activities.WebViewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme">
+        </activity>
+        <activity
             android:name="com.noqapp.android.client.views.activities.BarcodeScannerActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"

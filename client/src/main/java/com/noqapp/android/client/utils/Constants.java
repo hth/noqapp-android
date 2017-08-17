@@ -37,6 +37,12 @@ public class Constants {
     private static final String TAG = Constants.class.getName();
     private static String VERSION_RELEASE;
 
+
+    //Urls
+    public static final String URL_TERM_CONDITION = "https://receiptofi.com/termsofuse";
+    public static final String URL_PRIVACY_POLICY = "https://receiptofi.com/privacypolicy";
+    public static final String URL_ABOUT_US = "https://receiptofi.com";
+
     /**
      * Computes App version.
      *

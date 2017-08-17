@@ -48,6 +48,10 @@ public class MeFragment extends NoQueueBaseFragment {
     @BindView(R.id.ll_invite)
     protected LinearLayout ll_invite;
 
+    @BindView(R.id.ll_legal)
+    protected LinearLayout ll_legal;
+
+
     private String inviteCode;
 
     public static MeFragment getInstance() {
@@ -142,5 +146,10 @@ public class MeFragment extends NoQueueBaseFragment {
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse("http://play.google.com/store/apps/details?id=" + getActivity().getPackageName())));
         }
+    }
+
+    @OnClick({R.id.ll_legal})
+    public void action_Legal() {
+        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LegalFragment(), TAG, LaunchActivity.tabMe);
     }
 }
