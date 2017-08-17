@@ -53,7 +53,8 @@ public class ScanQueueFragment extends Scanner {
                 startScanningBarcode();
             }
         } else {
-            startScanningBarcode();
+           // startScanningBarcode();
+            // commented due to last discussion that barcode should not start automatically
         }
     }
 
