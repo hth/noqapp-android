@@ -66,8 +66,6 @@ public class MerchantListAdapter extends BaseAdapter {
         recordHolder.tv_inqueue.setText(String.valueOf(jsonTopic.getRemaining()));
 
         if (position == MerchantListFragment.selected_pos) {
-            // view.setBackgroundColor(ContextCompat.getColor(
-            //        context, R.color.pressed_color));
             recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
                     context, R.color.pressed_color));
             recordHolder.tv_queue_name.setTextColor(Color.WHITE);

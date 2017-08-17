@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private RelativeLayout rl_empty_screen;
     private Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Runnable updater;
+    private Runnable updater,run;
     private Snackbar snackbar;
     private boolean isFragmentVisible = false;
 
@@ -98,6 +99,13 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             public void run() {
                 updateSnackbarTxt();// update the snakebar after every minute
                 timerHandler.postDelayed(updater, 60000);
+            }
+        };
+        run = new Runnable() {
+            public void run() {
+                adapter.notifyDataSetChanged();
+                listview.invalidateViews();
+                listview.refreshDrawableState();
             }
         };
         timerHandler.post(updater);
@@ -195,12 +203,11 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                 } else {
                     merchantViewPagerFragment.setPage(position);
                 }
-                for (int j = 0; j < parent.getChildCount(); j++) {
-                    parent.getChildAt(j).setBackgroundColor(Color.TRANSPARENT);
-                }
-                // change the background color of the selected element
-                view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.pressed_color));
                 selected_pos = position;
+                // to set the selected cell color
+                getActivity().runOnUiThread(run);
+
+
             }
         });
         LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
