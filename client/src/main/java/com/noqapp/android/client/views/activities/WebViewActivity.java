@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,7 +90,11 @@ public class WebViewActivity extends AppCompatActivity {
             }
 
         });
-        tv_toolbar_title.setText(getString(R.string.screen_legal));
+        if (url.equals(Constants.URL_HOW_IT_WORKS)) {
+            tv_toolbar_title.setText(getString(R.string.screen_invite_details));
+        }else {
+            tv_toolbar_title.setText(getString(R.string.screen_legal));
+        }
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
