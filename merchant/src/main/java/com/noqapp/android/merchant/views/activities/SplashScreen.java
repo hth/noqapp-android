@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.crashlytics.android.Crashlytics;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -19,7 +20,7 @@ public class SplashScreen extends AppCompatActivity {
     protected static boolean display = true;
     static SplashScreen splashScreen;
     protected boolean isAactive = true;
-    protected int splashTime = 2000;
+    protected int splashTime = 4000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,11 @@ public class SplashScreen extends AppCompatActivity {
         splashScreen = this;
         Message msg = new Message();
         msg.what = 0;
-        mHandler.sendMessageDelayed(msg, splashTime); // 2 sec delay
+        mHandler.sendMessageDelayed(msg, splashTime); // 4 sec delay
+        LottieAnimationView animationView = (LottieAnimationView) findViewById(R.id.animation_view);
+        animationView.setAnimation("data.json");
+        animationView.playAnimation();
+        animationView.loop(true);
     }
 
     @Override
