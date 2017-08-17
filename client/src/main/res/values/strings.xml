@@ -121,7 +121,7 @@
     <string name="login_register">Login/Register</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="logout_msg">Would you like to logout?</string>
+    <string name="logout_msg">Data created when not logged in could be lost forever</string>
     <string name="error_mobile_blank">Please enter phone number</string>
     <string name="error_login">Please login to remote join</string>
     <string name="error_remote_join_available">You don\'t have enough remote join available.</string>
