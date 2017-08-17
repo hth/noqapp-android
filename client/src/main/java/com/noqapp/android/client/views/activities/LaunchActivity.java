@@ -136,7 +136,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         iv_home.setBackgroundResource(R.mipmap.home_active);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
         initProgress();
-        onClick(rl_me);
+        onClick(rl_home);
         Intent in = new Intent(this, ReviewActivity.class);
         //startActivity(in);
         broadcastReceiver = new BroadcastReceiver() {
