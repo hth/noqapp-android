@@ -65,5 +65,5 @@
     <string name="error_pwd_length">Password length should be greater than 5</string>
     <string name="authentication_fail">Authentication failure</string>
     <string name="authentication_fail_msg">Please login again.</string>
-    <string name="copy_right">US Patent Pending \n NoQApp &#174; is a trademark of NoQueue Inc.\n 2017 \u00a9 NoQueue &#174; Inc</string>
+    <string name="copy_right">NoQApp &#174; is a trademark of NoQueue Inc.\n 2017 \u00a9 NoQueue &#174; Inc</string>
 </resources>

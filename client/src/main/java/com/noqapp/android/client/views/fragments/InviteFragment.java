@@ -15,7 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.WebViewActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,9 +67,6 @@ public class InviteFragment extends NoQueueBaseFragment {
                     " took a galley of type and scrambled it to make a type specimen book.");
             String invite_code = bundle.getString("invite_code", "");
 
-            if (invite_code.isEmpty()) {
-                btn_send_invite.setEnabled(false);
-            }
             tv_title.setText(title);
             tv_details.setText(details);
             tv_invite_code.setText(invite_code);
@@ -81,14 +81,18 @@ public class InviteFragment extends NoQueueBaseFragment {
 
     @OnClick(R.id.btn_send_invite)
     public void sendInvitation() {
-        try {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, selectedText);
-            sendIntent.setType("text/plain");
-            startActivity(sendIntent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getActivity(), getString(R.string.app_missing), Toast.LENGTH_SHORT).show();
+        if(selectedText.equals("")) {
+            ShowAlertInformation.showThemeDialog(getActivity(),getString(R.string.alert),getString(R.string.empty_invite_code));
+        }else {
+            try {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, selectedText);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(getActivity(), getString(R.string.app_missing), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -97,17 +101,21 @@ public class InviteFragment extends NoQueueBaseFragment {
         ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", selectedText);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(getActivity(), "copied", Toast.LENGTH_SHORT).show();
+        if (selectedText.equals(""))
+            Toast.makeText(getActivity(), "Nothing to copy", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getActivity(), "copied", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.tv_how_it_works)
     public void howItWorks() {
-        Bundle b = new Bundle();
-        b.putString("title", tv_title.getText().toString());
-        b.putString("details", tv_details.getText().toString());
-        InviteDetailFragment inviteDetailFragment = new InviteDetailFragment();
-        inviteDetailFragment.setArguments(b);
-        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, inviteDetailFragment, TAG, LaunchActivity.tabMe);
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            Intent in = new Intent(getActivity(), WebViewActivity.class);
+            in.putExtra("url", Constants.URL_HOW_IT_WORKS);
+            getActivity().startActivity(in);
+        } else {
+            ShowAlertInformation.showNetworkDialog(getActivity());
+        }
     }
 
     @Override

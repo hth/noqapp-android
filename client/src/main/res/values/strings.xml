@@ -11,6 +11,8 @@
     <string name="screen_qdetails">QDetails</string>
     <string name="screen_invite">Invite</string>
     <string name="screen_review">Review</string>
+    <string name="screen_legal">Legal</string>
+    <string name="screen_invite_details">Invite Details</string>
 
 
 
@@ -25,6 +27,7 @@
     <string name="autojoinon">Auto Join On Scan</string>
     <string name="remoteJoinAvail">Remote Join Available</string>
     <string name="ratetheapp">Rate the app</string>
+    <string name="legal">Legal</string>
     <string name="invite">Invite</string>
     <string name="firstname">First Name</string>
 
@@ -33,12 +36,17 @@
     <string name="your_invite_code">Your Invite Code</string>
     <string name="copy">Copy</string>
     <string name="send_invite">Send Invites -></string>
-
+    <string name="empty_invite_code">Please login to have invite code to share.</string>
 
     <string name="empty_history">You don\'t have any \n recent history.</string>
     <string name="close">Close</string>
 
 
+    <!--Legal Screen-->
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="term_condition">Terms &amp; Conditions</string>
+    <string name="about_us">About us</string>
+    <string name="version_no">App version: %1$s</string>
 
     <!--Register Screen-->
 
@@ -154,7 +162,7 @@
     <string name="authentication_fail_msg">Please login again.</string>
     <string name="barcode_error">Queue not found</string>
     <string name="barcode_error_msg">No merchant is associated with this NoQueue code</string>
-    <string name="copy_right">US Patent Pending \n NoQApp &#174; is a trademark of NoQueue Inc.\n 2017 \u00a9 NoQueue &#174; Inc</string>
-
+    <string name="copy_right">NoQApp &#174; is a trademark of NoQueue Inc.\n 2017 \u00a9 NoQueue &#174; Inc</string>
+    <string name="alert">Alert</string>
 
 </resources>
