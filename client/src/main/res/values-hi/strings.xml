@@ -101,7 +101,7 @@
     <string name="login_register">Login/Register</string>
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
-    <string name="logout_msg">क्या आप लॉगआउट करना चाहेंगे?</string>
+    <string name="logout_msg">लॉग इन नहीं होने पर बनाए गए डेटा को हमेशा के लिए खो दिया जा सकता है</string>
     <string name="error_mobile_blank">Please enter phone number</string>
     <string name="error_login">Please login to remote join</string>
     <string name="error_remote_join_available">Yoy don\'t have enough remote join available.</string>
