@@ -45,7 +45,7 @@
         </activity>
         <activity android:name="com.noqapp.android.merchant.views.activities.SettingDialogActivity"
             android:excludeFromRecents="true"
-            android:theme="@style/Theme.AppCompat.Dialog">
+            android:theme="@style/myDialog">
         </activity>
         <service android:name="com.noqapp.android.merchant.network.NoQueueFirebaseInstanceServices">
             <intent-filter>

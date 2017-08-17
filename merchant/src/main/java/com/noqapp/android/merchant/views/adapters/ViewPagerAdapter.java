@@ -26,10 +26,12 @@ import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.SettingActivity;
+import com.noqapp.android.merchant.views.activities.SettingDialogActivity;
 import com.noqapp.android.merchant.views.fragments.MerchantViewPagerFragment;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
@@ -94,19 +96,17 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         iv_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(new AppUtils().isTablet(context)) {
-//                    FragmentTransaction fragmentTransaction = LaunchActivity.getLaunchActivity().getSupportFragmentManager().beginTransaction();
-//                    fragmentTransaction.replace(R.id.list_detail_fragment, settingsFragment);
-//                    //  fragmentTransaction.addToBackStack(null);
-//                    fragmentTransaction.commit();
-//                }else{
-                // LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, settingsFragment, "SettingsFragment");
-                Intent in = new Intent(context, SettingActivity.class);
-                in.putExtra("codeQR", lq.getCodeQR());
-                ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
-                ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
+                if (new AppUtils().isTablet(context)) {
+                    Intent in = new Intent(context, SettingDialogActivity.class);
+                    in.putExtra("codeQR", lq.getCodeQR());
+                    ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
+                } else {
+                    Intent in = new Intent(context, SettingActivity.class);
+                    in.putExtra("codeQR", lq.getCodeQR());
+                    ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
+                    ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
 
-                //}
+                }
             }
         });
 

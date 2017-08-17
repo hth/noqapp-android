@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -25,10 +27,11 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private ProgressDialog progressDialog;
     private TextView tv_toolbar_title;
     private ImageView iv_logout;
-    private ImageView actionbarBack;
+    protected ImageView actionbarBack;
     private TextView tv_title;
     private ToggleButton toggleDayClosed, togglePreventJoin;
     private String codeQR;
+    protected boolean isDialog = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         super.onCreate(savedInstanceState);
         QueueSettingModel.queueSettingPresenter = this;
         setContentView(R.layout.activity_setting);
+        if(isDialog){
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            int screenWidth = (int) (metrics.widthPixels * 0.60);
+            int height = (int) (metrics.heightPixels * 0.60);
+            getWindow().setLayout(screenWidth, height);
+        }
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         iv_logout = (ImageView) findViewById(R.id.iv_logout);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
@@ -68,6 +77,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
+
 
     }
 
