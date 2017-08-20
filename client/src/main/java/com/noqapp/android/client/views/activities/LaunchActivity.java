@@ -149,7 +149,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     Log.d(TAG, "payload=" + payload + " codeQR=" + codeQR);
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                        Toast.makeText(launchActivity, "Notification payload P: " + payload, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(launchActivity, "Notification payload P: " + payload, Toast.LENGTH_LONG).show();
                         String userStatus = intent.getStringExtra("u");
                         /**
                          * Save codeQR of review & show the review screen on app
@@ -163,7 +163,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                             callSkipScreen(codeQR);
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                        Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
                         String current_serving = intent.getStringExtra(Constants.MSG_TYPE_CS);
                         String go_to = intent.getStringExtra(Constants.MSG_TYPE_G);
                         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
@@ -194,7 +194,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         }
 
                     } else {
-                        Toast.makeText(launchActivity, "Notification : " + payload, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(launchActivity, "Notification : " + payload, Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -371,7 +371,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         // shown only one time if it is skipped
         if (StringUtils.isNotBlank(codeQRSkip)) {
             ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
-            Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
+           // Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
         }
     }
 
