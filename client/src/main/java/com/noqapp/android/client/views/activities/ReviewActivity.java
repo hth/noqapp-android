@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -72,6 +73,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     @BindView(R.id.seekbarWithIntervals)
     SeekbarWithIntervals seekbarWithIntervals;
 
+    @BindView(R.id.seekbarAppCompact)
+    AppCompatSeekBar seekbarAppCompact;
+
 
     private JsonTokenAndQueue jtk;
     private ProgressDialog progressDialog;
@@ -111,6 +115,26 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
             }
         });
+        seekbarAppCompact.setProgress(Constants.DEFAULT_REVIEW_TIME_SAVED);
+        seekbarAppCompact.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //Toast.makeText(ReviewActivity.this, "onStopTrackingTouch", Toast.LENGTH_SHORT).show();
+                tv_hr_saved.setText(getSeekbarLabel(seekBar.getProgress() + 1));
+            }
+        });
+
+
         seekbarWithIntervals.setIntervals(getIntervals());
 
         seekbarWithIntervals.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -148,7 +172,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         ReviewRating rr = new ReviewRating();
                         rr.setCodeQR(jtk.getCodeQR());
                         rr.setToken(jtk.getToken());
-                        rr.setHoursSaved(String.valueOf(seekbarWithIntervals.getProgress() + 1));
+                        rr.setHoursSaved(String.valueOf(seekbarAppCompact.getProgress() + 1));
                         rr.setRatingCount(String.valueOf(Math.round(ratingBar.getRating())));
                         /* New instance of progressbar because it is a new activity. */
                         progressDialog = new ProgressDialog(ReviewActivity.this);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:seek_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#99ffffff"
@@ -148,7 +149,30 @@
                     android:id="@+id/seekbarWithIntervals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_centerInParent="true" />
+
+
+                <android.support.v7.widget.AppCompatSeekBar
+
+                    android:id="@+id/seekbarAppCompact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="4"
+                    android:maxHeight="15dp"
+                    android:minHeight="15dp"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/red_gredient"
+                    android:scaleY="-0.55"
+                    android:splitTrack="false"
+                    android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:thumb="@drawable/circle_bg_drawable"
+                    android:thumbOffset="8dp"
+                    android:tickMark="@drawable/seekbar_seprator"
+                    android:tickMarkTintMode="@android:color/transparent"
+                    seek_view:tickMarkTint="@android:color/transparent"
+
+                    />
 
                 <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                     android:id="@+id/tv_hr_saved"
