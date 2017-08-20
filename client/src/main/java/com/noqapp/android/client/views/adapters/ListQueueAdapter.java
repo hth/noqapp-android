@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.LayerDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Formatter;
 
 import java.util.HashMap;
@@ -92,19 +94,19 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 txtToken1.setText(String.valueOf(queue.getToken()));
                 switch (queue.getHoursSaved()) {
                     case 1:
-                        tv_hour_saved.setText("30 min");
+                        tv_hour_saved.setText("Saved 30 min");
                         break;
                     case 2:
-                        tv_hour_saved.setText("1 hour");
+                        tv_hour_saved.setText("Saved 1 hour");
                         break;
                     case 3:
-                        tv_hour_saved.setText("2 hour");
+                        tv_hour_saved.setText("Saved 2 hour");
                         break;
                     case 4:
-                        tv_hour_saved.setText("3 hours");
+                        tv_hour_saved.setText("Saved 3 hours");
                         break;
                     case 5:
-                        tv_hour_saved.setText("4 hours");
+                        tv_hour_saved.setText("Saved 4 hours");
                         break;
                     default:
                         tv_hour_saved.setText("");
@@ -112,6 +114,8 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 
                 Log.v("rating ", "" + queue.getRatingCount());
                 ratingBar.setRating(queue.getRatingCount());
+                LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+                AppUtilities.setRatingBarColor(stars,context);
                 break;
         }
         return convertView;
