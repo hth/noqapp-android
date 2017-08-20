@@ -1,6 +1,13 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +90,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_join, container, false);
         ButterKnife.bind(this, view);
-
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        AppUtilities.setRatingBarColor(stars,getActivity());
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,4 +250,6 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     public void click() {
         LaunchActivity.getLaunchActivity().onBackPressed();
     }
+
+
 }
