@@ -30,6 +30,7 @@ public class Constants {
     public static final String MSG_TYPE_Q = "q";
     public static final String MSG_TYPE_C = "c";
     public static final String MSG_TYPE_U = "u";
+
     //error codes
     public static final int INVALID_CREDENTIAL = 401;
     public static final int INVALID_BAR_CODE = 404;
@@ -37,12 +38,11 @@ public class Constants {
     private static final String TAG = Constants.class.getName();
     private static String VERSION_RELEASE;
 
-
     //Urls
-    public static final String URL_TERM_CONDITION = "https://receiptofi.com/termsofuse";
-    public static final String URL_PRIVACY_POLICY = "https://receiptofi.com/privacypolicy";
-    public static final String URL_ABOUT_US = "https://receiptofi.com";
-    public static final String URL_HOW_IT_WORKS = "https://receiptofi.com/release.html";
+    public static final String URL_TERM_CONDITION = "https://noqapp.com/termsofuse";
+    public static final String URL_PRIVACY_POLICY = "https://noqapp.com/privacypolicy";
+    public static final String URL_ABOUT_US = "https://noqapp.com/aboutus";
+    public static final String URL_HOW_IT_WORKS = "https://noqapp.com/howitworks";
 
     /**
      * Computes App version.
