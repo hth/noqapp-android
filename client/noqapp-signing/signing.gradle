@@ -1,5 +1,5 @@
 def Properties props = new Properties()
-if (env == 'release') {
+if (env == 'release' || env == 'sandbox') {
     def propFile = new File(signingFileLocation + receiptAppProperties)
 
     if (propFile.canRead()) {
