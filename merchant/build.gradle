@@ -150,6 +150,7 @@ android {
     }
 
     signingConfigs {
+        debug
         release
     }
     apply from: 'noqapp-signing/signing.gradle'
