@@ -1,5 +1,5 @@
 def Properties props = new Properties()
-if (env == 'release' || env == 'sandbox') {
+if (env == 'release') {
     def propFile = new File(signingFileLocation + releaseAppProperties)
 
     if (propFile.canRead()) {
@@ -22,6 +22,30 @@ if (env == 'release' || env == 'sandbox') {
     } else {
         println 'signing.properties not found'
         android.buildTypes.release.signingConfig = null
+    }
+} else if (env == 'sandbox') {
+    def propFile = new File(signingFileLocation + sandboxAppProperties)
+
+    if (propFile.canRead()) {
+        props.load(new FileInputStream(propFile))
+
+        if (props != null &&
+                props.containsKey('STORE_FILE') &&
+                props.containsKey('STORE_PASSWORD') &&
+                props.containsKey('KEY_ALIAS') &&
+                props.containsKey('KEY_PASSWORD')
+        ) {
+            android.signingConfigs.sandbox.storeFile = file(props['STORE_FILE'])
+            android.signingConfigs.sandbox.storePassword = props['STORE_PASSWORD']
+            android.signingConfigs.sandbox.keyAlias = props['KEY_ALIAS']
+            android.signingConfigs.sandbox.keyPassword = props['KEY_PASSWORD']
+        } else {
+            println 'signing.client.sandbox.properties found but some entries are missing'
+            android.buildTypes.sandbox.signingConfig = null
+        }
+    } else {
+        println 'signing.client.sandbox.properties not found'
+        android.buildTypes.sandbox.signingConfig = null
     }
 } else if (env == 'debug') {
     println 'Found debug environment'
