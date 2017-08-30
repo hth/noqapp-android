@@ -42,7 +42,7 @@ android {
     def versionPatch = 0;
 
     if (versionPropsFile.canRead()) {
-        if (env == "release") {
+        if (env == "release" || env == "sandbox") {
             def Properties versionProps = new Properties()
             versionProps.load(new FileInputStream(versionPropsFile))
             versionMajor = versionProps['VERSION_MAJOR'].toInteger()
@@ -56,7 +56,7 @@ android {
     def versionBuildPropsFile = file('version.build.properties')
     def versionBuild = 0;
 
-    if (env == "release") {
+    if (env == "release" || env == "sandbox") {
         if (versionBuildPropsFile.canRead()) {
             def Properties versionBuildProps = new Properties()
             versionBuildProps.load(new FileInputStream(versionBuildPropsFile))
@@ -109,7 +109,7 @@ android {
         buildConfigField 'boolean', 'STRICT_MODE', 'true'
         buildConfigField "String", "BUILD", "\"$buildNumber\""
 
-        if (env == 'debug' || env == 'release') {
+        if (env == 'debug' || env == "sandbox" || env == 'release') {
             apkName = "-" + versionMajor + "." + versionMinor + "." + versionPatch + "." + versionBuild + "-" + buildNumber + ".apk"
         }
 
@@ -150,7 +150,7 @@ android {
     }
 
     signingConfigs {
-        debug
+        sandbox
         release
     }
     apply from: 'noqapp-signing/signing.gradle'
@@ -194,6 +194,38 @@ android {
 
             buildConfigField STRING, "NOQAPP_MOBILE", endpointStaging
             buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityStaging
+        }
+
+        sandbox {
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+
+            proguardFile '../library-proguard/proguard-butterknife-7.pro'
+            proguardFile '../library-proguard/proguard-crashlytics.pro'
+            proguardFile '../library-proguard/proguard-facebook.pro'
+            proguardFile '../library-proguard/proguard-facebook-conceal.pro'
+            proguardFile '../library-proguard/proguard-google-analytics.pro'
+            proguardFile '../library-proguard/proguard-google-play-services.pro'
+            proguardFile '../library-proguard/proguard-gson.pro'
+            proguardFile '../library-proguard/proguard-jackson-2.pro'
+            proguardFile '../library-proguard/proguard-org-apache.pro'
+            proguardFile '../library-proguard/proguard-square-okhttp3.pro'
+            proguardFile '../library-proguard/proguard-square-retrofit2.pro'
+
+            proguardFile 'merchant-release-proguard.config'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.sandbox
+
+            buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, FALSE
+            buildConfigField BOOLEAN, REPORT_CRASHES, TRUE
+            buildConfigField BOOLEAN, ENABLE_VIEW_SERVER, FALSE
+            buildConfigField BOOLEAN, ENABLE_SHARING, FALSE
+            buildConfigField BOOLEAN, DEBUG_IMAGES, FALSE
+
+            buildConfigField STRING, "NOQAPP_MOBILE", endpointLive
+            buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityLive
         }
 
         release {
