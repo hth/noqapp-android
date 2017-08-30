@@ -192,7 +192,7 @@ android {
             buildConfigField BOOLEAN, ENABLE_SHARING, TRUE
             buildConfigField BOOLEAN, DEBUG_IMAGES, TRUE
 
-            buildConfigField STRING, "NOQAPP_MOBILE", endpointStaging
+            buildConfigField STRING, "NOQAPP_MOBILE", endpointSandbox
             buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityStaging
         }
 
@@ -224,7 +224,7 @@ android {
             buildConfigField BOOLEAN, ENABLE_SHARING, FALSE
             buildConfigField BOOLEAN, DEBUG_IMAGES, FALSE
 
-            buildConfigField STRING, "NOQAPP_MOBILE", endpointLive
+            buildConfigField STRING, "NOQAPP_MOBILE", endpointSandbox
             buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityLive
         }
 
