@@ -87,7 +87,7 @@ android {
                 versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
             }
         } else {
-            throw new GradleException("Could not read version.properties!")
+            throw new GradleException("Could not read version.build.properties!")
         }
     }
 
