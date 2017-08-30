@@ -1,6 +1,6 @@
 def Properties props = new Properties()
 if (env == 'release' || env == 'sandbox') {
-    def propFile = new File(signingFileLocation + receiptAppProperties)
+    def propFile = new File(signingFileLocation + releaseAppProperties)
 
     if (propFile.canRead()) {
         props.load(new FileInputStream(propFile))
