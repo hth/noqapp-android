@@ -62,10 +62,7 @@ public class InviteFragment extends NoQueueBaseFragment {
         Bundle bundle = getArguments();
         if (null != bundle) {
             String title = bundle.getString("title", "Invite Friends");
-            String details = bundle.getString("details", "As a user of NoQApp, you can invite your friends. " +
-                    "On successful registration of your friend, you and your friend both receive 2 free remote joins. " +
-                    "A remote join can be used to join a queue remotely, if a business has opened this feature for " +
-                    "their queue. To keep getting free remote joins, keep sending invites to your friends.");
+            String details = bundle.getString("details", "As a user of NoQApp, you can invite your friends and family.");
             String invite_code = bundle.getString("invite_code", "");
 
             tv_title.setText(title);
