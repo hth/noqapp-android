@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -215,7 +216,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
 
     private boolean validate() {
         btnRegistration.setBackgroundResource(R.drawable.button_drawable);
-        btnRegistration.setTextColor(getResources().getColor(R.color.colorMobile));
+        btnRegistration.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorMobile));
         btnRegistration.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
         boolean isValid = true;
         edt_Name.setError(null);

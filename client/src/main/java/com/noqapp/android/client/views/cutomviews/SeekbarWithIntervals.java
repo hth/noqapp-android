@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.cutomviews;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -218,9 +219,9 @@ public class SeekbarWithIntervals extends LinearLayout {
                 for (int i = 0; i < getRelativeLayout().getChildCount(); i++) {
                     TextView tv = (TextView) getRelativeLayout().getChildAt(i);
                     if (i == seekBar.getProgress())
-                        tv.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        tv.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
                     else
-                        tv.setTextColor(getResources().getColor(R.color.color_btn_select));
+                        tv.setTextColor(ContextCompat.getColor(getActivity(),R.color.color_btn_select));
                 }
                 onSeekBarChangeListener.onProgressChanged(seekBar, progress, fromUser);
             }

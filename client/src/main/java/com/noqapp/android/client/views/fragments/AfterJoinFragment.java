@@ -2,6 +2,8 @@ package com.noqapp.android.client.views.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.Formatter;
+import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -69,6 +72,9 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
 
     @BindView(R.id.tv_hour_saved)
     protected TextView tv_hour_saved;
+
+    @BindView(R.id.tv_estimated_time)
+    protected TextView tv_estimated_time;
 
     @BindView(R.id.ll_change_bg)
     protected LinearLayout ll_change_bg;
@@ -116,6 +122,12 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                     AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
                 }
             });
+            if(!TextUtils.isEmpty(""+jsonQueue.getAverageServiceTime()) && jsonQueue.getAverageServiceTime()>0) {
+                tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonQueue.afterHowLong()*jsonQueue.getAverageServiceTime()));
+                tv_estimated_time.setVisibility(View.VISIBLE);
+            }else{
+                tv_estimated_time.setVisibility(View.GONE);
+            }
             gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR);
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
@@ -263,6 +275,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     public void setBackGround(int pos) {
         tv_after.setTextColor(Color.WHITE);
         tv_how_long.setTextColor(Color.WHITE);
+        tv_estimated_time.setTextColor(Color.WHITE);
         tv_after.setText("Soon is your turn! You are:");
         //tv_after.setVisibility(View.VISIBLE);
         switch (pos) {
@@ -290,10 +303,12 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 break;
             default:
                 tv_after.setText("You are:");
-                tv_after.setTextColor(getResources().getColor(R.color.colorActionbar));
-                tv_how_long.setTextColor(getResources().getColor(R.color.colorActionbar));
+                tv_after.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorActionbar));
+                tv_how_long.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorActionbar));
                 ll_change_bg.setBackgroundResource(R.drawable.square_bg_drawable);
+                tv_estimated_time.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorActionbar));
                 break;
+
         }
     }
 
@@ -303,6 +318,12 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
         tv_how_long.setText(String.valueOf(jsonQueue.afterHowLong()));
+        if(!TextUtils.isEmpty(""+jsonQueue.getAverageServiceTime())&& jsonQueue.getAverageServiceTime()>0) {
+            tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonQueue.afterHowLong()*jsonQueue.getAverageServiceTime()));
+            tv_estimated_time.setVisibility(View.VISIBLE);
+        }else{
+            tv_estimated_time.setVisibility(View.GONE);
+        }
         setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);
     }
 }

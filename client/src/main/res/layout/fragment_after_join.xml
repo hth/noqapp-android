@@ -185,6 +185,14 @@
                             android:textColor="@color/colorActionbar"
                             android:textSize="36sp" />
 
+                        <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                            android:id="@+id/tv_estimated_time"
+                            style="@style/style_join_queue_tv"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/white"
+                            android:visibility="gone"
+                            android:textSize="15sp" />
+
                     </LinearLayout>
 
                     <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
