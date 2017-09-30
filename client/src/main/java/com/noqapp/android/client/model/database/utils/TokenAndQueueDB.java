@@ -150,10 +150,10 @@ public class TokenAndQueueDB {
     }
 
     public static List<JsonTokenAndQueue> getHistoryQueueList() {
-        String orderBy = TokenQueue.CREATE_DATE + " DESC";
 
+        String query = "SELECT * , MAX("+TokenQueue.CREATE_DATE+") FROM "+TokenQueueHistory.TABLE_NAME+" GROUP BY "+TokenQueue.CODE_QR;
         List<JsonTokenAndQueue> listJsonQueue = new ArrayList<>();
-        Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueueHistory.TABLE_NAME, null, null, null, null, null, orderBy, null);
+        Cursor cursor = dbHandler.getWritableDb().rawQuery(query,null);
 
         if (cursor != null) {
             if (cursor.getCount() > 0) {
