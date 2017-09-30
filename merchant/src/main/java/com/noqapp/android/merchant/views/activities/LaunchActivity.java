@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
+import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.NetworkUtil;
@@ -372,8 +373,8 @@ public class LaunchActivity extends AppCompatActivity {
         sharedpreferences.edit().clear().apply();
         MerchantListFragment.selected_pos = -1;
         if (new AppUtils().isTablet(getApplicationContext())) {
-            LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
-            LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
+            LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
+            LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
             list_fragment.setLayoutParams(lp1);
             list_detail_fragment.setLayoutParams(lp0);
         }
@@ -391,6 +392,16 @@ public class LaunchActivity extends AppCompatActivity {
                 boolean isDataClear = data.getExtras().getBoolean(Constants.CLEAR_DATA, false);
                 if (isDataClear)
                     clearLoginData(true);
+            }
+        }else if (requestCode == Constants.RESULT_ACQUIRE){
+            if(resultCode == RESULT_OK){
+                boolean isCustomerAcquire = data.getExtras().getBoolean(Constants.CUSTOMER_ACQUIRE, false);
+                 if(isCustomerAcquire){
+                    // update the acquire no
+                    if (fragmentCommunicator != null) {
+                        fragmentCommunicator.acquireCustomer((JsonToken) data.getSerializableExtra("data"));
+                    }
+                }
             }
         }
     }

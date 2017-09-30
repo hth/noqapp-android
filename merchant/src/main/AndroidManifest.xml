@@ -32,6 +32,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.noqapp.android.merchant.views.activities.LaunchActivity"
+                  android:windowSoftInputMode="adjustPan"
+            android:configChanges="keyboardHidden|orientation"
             android:theme="@style/BaseTheme">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -44,6 +46,16 @@
             </intent-filter>
         </activity>
         <activity android:name="com.noqapp.android.merchant.views.activities.SettingDialogActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/myDialog">
+        </activity>
+        <activity android:name="com.noqapp.android.merchant.views.activities.OutOfSequenceActivity"
+            android:theme="@style/BaseTheme">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.noqapp.android.merchant.views.activities.OutOfSequenceDialogActivity"
             android:excludeFromRecents="true"
             android:theme="@style/myDialog">
         </activity>

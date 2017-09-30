@@ -94,12 +94,21 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignRight="@id/strut"
-                        android:gravity="center">
+                        android:layout_alignRight="@id/strut">
+
+                        <ImageView
+                            android:id="@+id/iv_out_of_sequence"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/info" />
 
                         <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                             android:id="@+id/tv_current"
                             style="@style/style_join_queue_tv"
+                            android:layout_centerInParent="true"
                             android:text="@string/serving"
                             android:textColor="@color/colorAddress"
                             android:textSize="15sp" />

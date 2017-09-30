@@ -10,6 +10,7 @@ import com.noqapp.android.client.model.types.QueueStatusEnum;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * User: hitender
@@ -85,6 +86,9 @@ public class JsonTokenAndQueue implements Serializable {
 
     @JsonProperty("ra")
     private int ratingCount;
+
+    @JsonProperty("as")
+    private long averageServiceTime;
 
     @JsonProperty("hr")
     private int hoursSaved;
@@ -228,6 +232,14 @@ public class JsonTokenAndQueue implements Serializable {
         this.ratingCount = ratingCount;
     }
 
+    public long getAverageServiceTime() {
+        return averageServiceTime;
+    }
+
+    public void setAverageServiceTime(long averageServiceTime) {
+        this.averageServiceTime = averageServiceTime;
+    }
+
     public int getHoursSaved() {
         return hoursSaved;
     }
@@ -256,24 +268,27 @@ public class JsonTokenAndQueue implements Serializable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("codeQR", codeQR)
-                .append("coordinate", coordinate)
-                .append("businessName", businessName)
-                .append("displayName", displayName)
-                .append("storeAddress", storeAddress)
-                .append("countryShortName", countryShortName)
-                .append("storePhone", storePhone)
-                .append("tokenAvailableFrom", tokenAvailableFrom)
-                .append("startHour", startHour)
-                .append("endHour", endHour)
-                .append("topic", topic)
-                .append("servingNumber", servingNumber)
-                .append("lastNumber", lastNumber)
-                .append("token", token)
-                .append("queueStatus", queueStatus)
-                .append("serviceEndTime", serviceEndTime)
-                .append("createDate", createDate)
-                .toString();
+        return "JsonTokenAndQueue{" +
+                "codeQR='" + codeQR + '\'' +
+                ", coordinate=" + Arrays.toString(coordinate) +
+                ", businessName='" + businessName + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", storeAddress='" + storeAddress + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
+                ", storePhone='" + storePhone + '\'' +
+                ", tokenAvailableFrom=" + tokenAvailableFrom +
+                ", startHour=" + startHour +
+                ", endHour=" + endHour +
+                ", topic='" + topic + '\'' +
+                ", servingNumber=" + servingNumber +
+                ", lastNumber=" + lastNumber +
+                ", token=" + token +
+                ", queueStatus=" + queueStatus +
+                ", serviceEndTime='" + serviceEndTime + '\'' +
+                ", ratingCount=" + ratingCount +
+                ", averageServiceTime=" + averageServiceTime +
+                ", hoursSaved=" + hoursSaved +
+                ", createDate='" + createDate + '\'' +
+                '}';
     }
 }

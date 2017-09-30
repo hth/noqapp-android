@@ -28,7 +28,9 @@ public class Constants {
     public static final String MSG_TYPE_Q = "q";
     public static final String MSG_TYPE_C = "c";
     public static final int RESULT_SETTING = 123;
+    public static final int RESULT_ACQUIRE = 124;
     public static final String CLEAR_DATA = "clearData";
+    public static final String CUSTOMER_ACQUIRE = "acquire_customer";
     //error codes
     public static final int INVALID_CREDENTIAL = 401;
     private static final String TAG = Constants.class.getName();

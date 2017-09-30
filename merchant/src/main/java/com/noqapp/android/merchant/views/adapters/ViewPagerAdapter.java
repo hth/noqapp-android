@@ -30,6 +30,8 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.OutOfSequenceActivity;
+import com.noqapp.android.merchant.views.activities.OutOfSequenceDialogActivity;
 import com.noqapp.android.merchant.views.activities.SettingActivity;
 import com.noqapp.android.merchant.views.activities.SettingDialogActivity;
 import com.noqapp.android.merchant.views.fragments.MerchantViewPagerFragment;
@@ -51,6 +53,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     private Context context;
     private List<JsonTopic> topics;
     private LayoutInflater inflater;
+
 
     public ViewPagerAdapter(Context context, List<JsonTopic> topics) {
         this.context = context;
@@ -109,6 +112,40 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 }
             }
         });
+
+
+        ImageView iv_out_of_sequence = (ImageView) itemView.findViewById(R.id.iv_out_of_sequence);
+        iv_out_of_sequence.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LaunchActivity.getLaunchActivity().setCounterName(tv_counter_name.getText().toString().trim());
+                if (tv_counter_name.getText().toString().trim().equals("")) {
+                    Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+                } else {
+                    Served served = new Served();
+                    served.setCodeQR(lq.getCodeQR());
+                    served.setQueueStatus(lq.getQueueStatus());
+                    // served.setQueueUserState(QueueUserStateEnum.N); don't send for time being
+                    //served.setServedNumber(lq.getServingNumber());
+                    served.setGoTo(tv_counter_name.getText().toString());
+                    if (new AppUtils().isTablet(context)) {
+                        Intent in = new Intent(context, OutOfSequenceDialogActivity.class);
+                        in.putExtra("codeQR", lq.getCodeQR());
+                        in.putExtra("data", served);
+                        ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
+                    } else {
+                        Intent in = new Intent(context, OutOfSequenceActivity.class);
+                        in.putExtra("codeQR", lq.getCodeQR());
+                        in.putExtra("data", served);
+                        ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
+                        ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
+
+                    }
+                }
+            }
+        });
+
 
         TextView tv_skip = (TextView) itemView.findViewById(R.id.tv_skip);
         TextView tv_next = (TextView) itemView.findViewById(R.id.tv_next);

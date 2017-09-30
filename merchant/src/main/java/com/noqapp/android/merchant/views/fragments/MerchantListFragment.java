@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -283,6 +284,28 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void acquireCustomer(JsonToken token) {
+
+        try {
+            if (null != token) {
+                JsonTopic jt = topics.get(MerchantViewPagerFragment.pagercurrrentpos);
+                if (token.getCodeQR().equalsIgnoreCase(jt.getCodeQR())) {
+                    jt.setServingNumber(token.getServingNumber());
+                    topics.set(MerchantViewPagerFragment.pagercurrrentpos, jt);
+                    adapter.notifyDataSetChanged();
+                    if (null != merchantViewPagerFragment) {
+                        merchantViewPagerFragment.updateListData(topics);
+                    }
+                    Toast.makeText(context, "Customer is acuired ", Toast.LENGTH_LONG).show();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

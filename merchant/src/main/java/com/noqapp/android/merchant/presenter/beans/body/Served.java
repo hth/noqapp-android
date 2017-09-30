@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 
+import java.io.Serializable;
+
 /**
  * User: hitender
  * Date: 4/22/17 6:38 PM
@@ -25,7 +27,7 @@ import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Served {
+public class Served implements Serializable {
     @JsonProperty("c")
     private String codeQR;
 

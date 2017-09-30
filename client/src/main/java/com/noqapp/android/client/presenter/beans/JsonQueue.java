@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -101,6 +102,12 @@ public class JsonQueue implements Serializable {
 
     @JsonProperty("rc")
     private int ratingCount;
+
+    @JsonProperty("as")
+    private long averageServiceTime;
+
+    @JsonProperty("ja")
+    private boolean remoteJoinAvailable = false;
 
     @JsonProperty("lu")
     private boolean allowLoggedInUser = false;
@@ -202,6 +209,22 @@ public class JsonQueue implements Serializable {
         return ratingCount;
     }
 
+    public long getAverageServiceTime() {
+        return averageServiceTime;
+    }
+
+    public void setAverageServiceTime(long averageServiceTime) {
+        this.averageServiceTime = averageServiceTime;
+    }
+
+    public boolean isRemoteJoinAvailable() {
+        return remoteJoinAvailable;
+    }
+
+    public void setRemoteJoinAvailable(boolean remoteJoinAvailable) {
+        this.remoteJoinAvailable = remoteJoinAvailable;
+    }
+
     public int getPeopleInQueue() {
         return lastNumber - servingNumber;
     }
@@ -235,37 +258,40 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setLastNumber(lastNumber);
         jsonTokenAndQueue.setQueueStatus(queueStatus);
         jsonTokenAndQueue.setServiceEndTime(serviceEndTime);
+        jsonTokenAndQueue.setAverageServiceTime(averageServiceTime);
         jsonTokenAndQueue.setCreateDate(created);
         return jsonTokenAndQueue;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("codeQR", codeQR)
-                .append("coordinate", coordinate)
-                .append("businessName", businessName)
-                .append("displayName", displayName)
-                .append("storeAddress", storeAddress)
-                .append("countryShortName", countryShortName)
-                .append("storePhone", storePhone)
-                .append("tokenAvailableFrom", tokenAvailableFrom)
-                .append("startHour", startHour)
-                .append("tokenNotAvailableFrom", tokenNotAvailableFrom)
-                .append("endHour", endHour)
-                .append("preventJoining", preventJoining)
-                .append("dayClosed", dayClosed)
-                .append("topic", topic)
-                .append("servingNumber", servingNumber)
-                .append("lastNumber", lastNumber)
-                .append("queueStatus", queueStatus)
-                .append("serviceEndTime", serviceEndTime)
-                .append("remoteJoinCount", remoteJoinCount)
-                .append("created", created)
-                .append("rating", rating)
-                .append("ratingCount", ratingCount)
-                .append("allowLoggedInUser", allowLoggedInUser)
-                .append("error", error)
-                .toString();
+        return "JsonQueue{" +
+                "codeQR='" + codeQR + '\'' +
+                ", coordinate=" + Arrays.toString(coordinate) +
+                ", businessName='" + businessName + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", storeAddress='" + storeAddress + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
+                ", storePhone='" + storePhone + '\'' +
+                ", tokenAvailableFrom=" + tokenAvailableFrom +
+                ", startHour=" + startHour +
+                ", tokenNotAvailableFrom=" + tokenNotAvailableFrom +
+                ", endHour=" + endHour +
+                ", preventJoining=" + preventJoining +
+                ", dayClosed=" + dayClosed +
+                ", topic='" + topic + '\'' +
+                ", servingNumber=" + servingNumber +
+                ", lastNumber=" + lastNumber +
+                ", queueStatus=" + queueStatus +
+                ", serviceEndTime='" + serviceEndTime + '\'' +
+                ", remoteJoinCount=" + remoteJoinCount +
+                ", created='" + created + '\'' +
+                ", rating=" + rating +
+                ", ratingCount=" + ratingCount +
+                ", averageServiceTime=" + averageServiceTime +
+                ", remoteJoinAvailable=" + remoteJoinAvailable +
+                ", allowLoggedInUser=" + allowLoggedInUser +
+                ", error=" + error +
+                '}';
     }
 }

@@ -1,6 +1,14 @@
 package com.noqapp.android.merchant.presenter.beans;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -18,13 +26,16 @@ import java.io.Serializable;
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE
 )
-@JsonPropertyOrder (alphabetic = true)
-@JsonIgnoreProperties (ignoreUnknown = true)
-@JsonInclude (JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonQueuePersonList implements Serializable {
 
-    @JsonProperty ("qps")
+    @JsonProperty("qps")
     private List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public List<JsonQueuedPerson> getQueuedPeople() {
         return queuedPeople;
@@ -33,5 +44,13 @@ public class JsonQueuePersonList implements Serializable {
     public JsonQueuePersonList setQueuedPeople(List<JsonQueuedPerson> queuedPeople) {
         this.queuedPeople = queuedPeople;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
     }
 }
