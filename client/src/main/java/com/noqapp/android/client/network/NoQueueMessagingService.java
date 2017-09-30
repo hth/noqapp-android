@@ -87,6 +87,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 }
                 if (remoteMessage.getData().get(MSG_TYPE_F).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     pushNotification.putExtra(MSG_TYPE_U, remoteMessage.getData().get(MSG_TYPE_U));
+                    pushNotification.putExtra(MSG_TYPE_CS, remoteMessage.getData().get(MSG_TYPE_CS));
+                    pushNotification.putExtra(MSG_TYPE_G, remoteMessage.getData().get(MSG_TYPE_G));
                 }
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } else {

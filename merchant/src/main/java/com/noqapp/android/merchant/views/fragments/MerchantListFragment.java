@@ -299,7 +299,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                     if (null != merchantViewPagerFragment) {
                         merchantViewPagerFragment.updateListData(topics);
                     }
-                    Toast.makeText(context, "Customer is acuired ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Customer is acquired ", Toast.LENGTH_LONG).show();
                 }
             }
         } catch (Exception e) {

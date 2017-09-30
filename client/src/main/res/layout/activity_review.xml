@@ -116,6 +116,7 @@
                     android:layout_toRightOf="@+id/ratingBar"
                     android:text="0.0"
                     android:textColor="@android:color/black"
+                    android:visibility="gone"
                     android:textSize="20sp" />
             </RelativeLayout>
         </LinearLayout>

@@ -32,8 +32,9 @@
             </intent-filter>
         </activity>
         <activity android:name="com.noqapp.android.merchant.views.activities.LaunchActivity"
-                  android:windowSoftInputMode="adjustPan"
-            android:configChanges="keyboardHidden|orientation"
+
+            android:windowSoftInputMode="adjustResize"
+
             android:theme="@style/BaseTheme">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />

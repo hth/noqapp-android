@@ -1,5 +1,15 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@android:color/white"
+    android:paddingRight="@dimen/tab_screen_padding"
+    android:paddingLeft="@dimen/tab_screen_padding"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
+
+
+    <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@android:color/white"
@@ -73,3 +83,4 @@
         android:text="@string/copy_right"
         android:textColor="@android:color/black" />
 </RelativeLayout>
+</ScrollView>

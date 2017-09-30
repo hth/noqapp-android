@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:textColor="@color/color_list_text"
-                    android:visibility="gone" />
+                    />
 
                 <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                     android:id="@+id/tv_hour_saved"

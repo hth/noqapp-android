@@ -137,7 +137,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
         initProgress();
         onClick(rl_home);
-        Intent in = new Intent(this, ReviewActivity.class);
+        final Intent in = new Intent(this, ReviewActivity.class);
         //startActivity(in);
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -149,13 +149,15 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     Log.d(TAG, "payload=" + payload + " codeQR=" + codeQR);
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                       // Toast.makeText(launchActivity, "Notification payload P: " + payload, Toast.LENGTH_LONG).show();
                         String userStatus = intent.getStringExtra("u");
                         /**
                          * Save codeQR of review & show the review screen on app
                          * resume if there is any record in Review DB for review key
                          */
-                        if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                        if(null == userStatus){
+                            updateNotifcation(intent,codeQR,false);
+                        }
+                        else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                             ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                             callReviewActivity(codeQR);
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
@@ -163,36 +165,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                             callSkipScreen(codeQR);
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                       // Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
-                        String current_serving = intent.getStringExtra(Constants.MSG_TYPE_CS);
-                        String go_to = intent.getStringExtra(Constants.MSG_TYPE_G);
-                        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-                        //update DB & after join screen
-                        jtk.setServingNumber(Integer.parseInt(current_serving));
-                        /**
-                         * Save codeQR of goto & show it in after join screen on app
-                         * Review DB for review key && current serving == token no.
-                         */
-                        if (Integer.parseInt(current_serving) == jtk.getToken())
-                            ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
-                        if (jtk.isTokenExpired()) {
-                            //un subscribe the topic
-                            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-                        }
-                        TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-                        List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
-                        if (null != currentTabFragments && currentTabFragments.size() > 1) {
-                            int size = currentTabFragments.size();
-                            Fragment currentfrg = currentTabFragments.get(size - 1);
-                            if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                                String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
-                                if (codeQR.equals(qcode)) {
-                                    //updating the serving status
-                                    ((AfterJoinFragment) currentfrg).setObject(jtk, go_to);
-                                }
-                            }
-                        }
-
+                        updateNotifcation(intent,codeQR,true);
                     } else {
                        // Toast.makeText(launchActivity, "Notification : " + payload, Toast.LENGTH_LONG).show();
                     }
@@ -487,5 +460,38 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         JoinFragment jf = new JoinFragment();
         jf.setArguments(b);
         NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
+    }
+
+    private void updateNotifcation(Intent intent, String codeQR, boolean isReview){
+        // Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
+        String current_serving = intent.getStringExtra(Constants.MSG_TYPE_CS);
+        String go_to = intent.getStringExtra(Constants.MSG_TYPE_G);
+        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
+        //update DB & after join screen
+        jtk.setServingNumber(Integer.parseInt(current_serving));
+        /**
+         * Save codeQR of goto & show it in after join screen on app
+         * Review DB for review key && current serving == token no.
+         */
+        if (Integer.parseInt(current_serving) == jtk.getToken() && isReview)
+            ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
+        if (jtk.isTokenExpired()) {
+            //un subscribe the topic
+            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+            TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+            List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
+            if (null != currentTabFragments && currentTabFragments.size() > 1) {
+                int size = currentTabFragments.size();
+                Fragment currentfrg = currentTabFragments.get(size - 1);
+                if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
+                    String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
+                    if (codeQR.equals(qcode)) {
+                        //updating the serving status
+                        ((AfterJoinFragment) currentfrg).setObject(jtk, go_to);
+                    }
+                }
+            }
+
+        }
     }
 }
