@@ -85,6 +85,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         View itemView = inflater.inflate(R.layout.viewpager_item, container, false);
         ManageQueueModel.manageQueuePresenter = this;
         final JsonTopic lq = topics.get(position);
+        final QueueStatusEnum queueStatus = lq.getQueueStatus();
         TextView tv_current_value = (TextView) itemView.findViewById(R.id.tv_current_value);
         TextView tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
         TextView tv_title = (TextView) itemView.findViewById(R.id.tv_title);
@@ -118,30 +119,33 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         iv_out_of_sequence.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                LaunchActivity.getLaunchActivity().setCounterName(tv_counter_name.getText().toString().trim());
-                if (tv_counter_name.getText().toString().trim().equals("")) {
-                    Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
-                } else {
-                    Served served = new Served();
-                    served.setCodeQR(lq.getCodeQR());
-                    served.setQueueStatus(lq.getQueueStatus());
-                    // served.setQueueUserState(QueueUserStateEnum.N); don't send for time being
-                    //served.setServedNumber(lq.getServingNumber());
-                    served.setGoTo(tv_counter_name.getText().toString());
-                    if (new AppUtils().isTablet(context)) {
-                        Intent in = new Intent(context, OutOfSequenceDialogActivity.class);
-                        in.putExtra("codeQR", lq.getCodeQR());
-                        in.putExtra("data", served);
-                        ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
+                if (queueStatus == QueueStatusEnum.N) {
+                    LaunchActivity.getLaunchActivity().setCounterName(tv_counter_name.getText().toString().trim());
+                    if (tv_counter_name.getText().toString().trim().equals("")) {
+                        Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
-                        Intent in = new Intent(context, OutOfSequenceActivity.class);
-                        in.putExtra("codeQR", lq.getCodeQR());
-                        in.putExtra("data", served);
-                        ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
-                        ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
+                        Served served = new Served();
+                        served.setCodeQR(lq.getCodeQR());
+                        served.setQueueStatus(lq.getQueueStatus());
+                        // served.setQueueUserState(QueueUserStateEnum.N); don't send for time being
+                        //served.setServedNumber(lq.getServingNumber());
+                        served.setGoTo(tv_counter_name.getText().toString());
+                        if (new AppUtils().isTablet(context)) {
+                            Intent in = new Intent(context, OutOfSequenceDialogActivity.class);
+                            in.putExtra("codeQR", lq.getCodeQR());
+                            in.putExtra("data", served);
+                            ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
+                        } else {
+                            Intent in = new Intent(context, OutOfSequenceActivity.class);
+                            in.putExtra("codeQR", lq.getCodeQR());
+                            in.putExtra("data", served);
+                            ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
+                            ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
 
+                        }
                     }
+                }else{
+                    ShowAlertInformation.showThemeDialog(context,"Error","Please start the queue to avail this facility");
                 }
             }
         });
@@ -149,7 +153,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
 
         TextView tv_skip = (TextView) itemView.findViewById(R.id.tv_skip);
         TextView tv_next = (TextView) itemView.findViewById(R.id.tv_next);
-        TextView tv_start = (TextView) itemView.findViewById(R.id.tv_start);
+        final TextView tv_start = (TextView) itemView.findViewById(R.id.tv_start);
         ImageView iv_edit = (ImageView) itemView.findViewById(R.id.iv_edit);
 
         tv_current_value.setText(String.valueOf(lq.getServingNumber()));
@@ -157,7 +161,6 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         tv_total_value.setText(String.valueOf(lq.getToken() - lq.getServingNumber()));
         tv_title.setText(lq.getDisplayName());
         tv_serving_customer.setText(Html.fromHtml("Serving: " + (StringUtils.isNotBlank(lq.getCustomerName()) ? "<b>" + lq.getCustomerName() + "</b> " : context.getString(R.string.name_unavailable))));
-        final QueueStatusEnum queueStatus = lq.getQueueStatus();
         btn_start.setText(context.getString(R.string.start));
 
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
@@ -314,7 +317,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                     if (tv_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
-                        if (btn_start.getText().equals(context.getString(R.string.pause))) {
+                        if (tv_start.getText().equals(context.getString(R.string.pause))) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                             builder.setTitle("Confirm");

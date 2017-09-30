@@ -105,20 +105,26 @@
                             android:layout_margin="5dp"
                             android:src="@drawable/info" />
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                            android:id="@+id/tv_current"
-                            style="@style/style_join_queue_tv"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="@string/serving"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="15sp" />
+                            android:orientation="vertical">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
-                            android:id="@+id/tv_current_value"
-                            style="@style/style_join_queue_tv"
-                            android:layout_below="@+id/tv_current"
-                            android:textColor="@color/colorMobile"
-                            android:textSize="36sp" />
+                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                                android:id="@+id/tv_current"
+                                style="@style/style_join_queue_tv"
+                                android:text="@string/serving"
+                                android:textColor="@color/colorAddress"
+                                android:textSize="15sp" />
+
+                            <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+                                android:id="@+id/tv_current_value"
+                                style="@style/style_join_queue_tv"
+                                android:layout_below="@+id/tv_current"
+                                android:textColor="@color/colorMobile"
+                                android:textSize="36sp" />
+                        </LinearLayout>
                     </RelativeLayout>
 
                     <RelativeLayout
