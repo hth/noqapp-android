@@ -27,19 +27,19 @@ public class GetTimeAgoUtils {
         // TODO: localize
         final long diff = now - time;
         if (diff < MINUTE_MILLIS) {
-            return "soon";
+            return "Soon";
         } else if (diff < 2 * MINUTE_MILLIS) {
-            return "in a minute";
+            return "In a minute";
         } else if (diff < 50 * MINUTE_MILLIS) {
-            return "in " + diff / MINUTE_MILLIS + " minutes";
+            return "In " + diff / MINUTE_MILLIS + " minutes";
         } else if (diff < 90 * MINUTE_MILLIS) {
-            return "in an hour";
+            return "In an hour";
         } else if (diff < 24 * HOUR_MILLIS) {
-            return "in " + diff / HOUR_MILLIS + " hours";
+            return "In " + diff / HOUR_MILLIS + " hours ago";
         } else if (diff < 48 * HOUR_MILLIS) {
-            return "tomorrow";
+            return "Tomorrow";
         } else {
-            return "in " + diff / DAY_MILLIS + " days";
+            return "In " + diff / DAY_MILLIS + " days";
         }
     }
 }
