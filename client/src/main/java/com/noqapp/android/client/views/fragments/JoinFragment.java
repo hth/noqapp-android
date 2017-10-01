@@ -91,7 +91,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         View view = inflater.inflate(R.layout.fragment_join, container, false);
         ButterKnife.bind(this, view);
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        AppUtilities.setRatingBarColor(stars,getActivity());
+        AppUtilities.setRatingBarColor(stars, getActivity());
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,7 +184,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
         tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
         ratingBar.setRating(jsonQueue.getRating());
-       // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
+        // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
         tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount())
                 + " Reviews");
 

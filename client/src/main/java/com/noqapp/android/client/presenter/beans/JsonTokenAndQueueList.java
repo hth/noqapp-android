@@ -23,7 +23,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonTokenAndQueueList {
 
-    @JsonProperty ("sb")
+    @JsonProperty("sb")
     private boolean sinceBeginning;
 
     @JsonProperty("tqs")

@@ -216,7 +216,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
 
     private boolean validate() {
         btnRegistration.setBackgroundResource(R.drawable.button_drawable);
-        btnRegistration.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorMobile));
+        btnRegistration.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
         btnRegistration.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
         boolean isValid = true;
         edt_Name.setError(null);

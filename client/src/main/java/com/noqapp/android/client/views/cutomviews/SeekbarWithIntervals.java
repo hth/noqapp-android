@@ -219,9 +219,9 @@ public class SeekbarWithIntervals extends LinearLayout {
                 for (int i = 0; i < getRelativeLayout().getChildCount(); i++) {
                     TextView tv = (TextView) getRelativeLayout().getChildAt(i);
                     if (i == seekBar.getProgress())
-                        tv.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+                        tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
                     else
-                        tv.setTextColor(ContextCompat.getColor(getActivity(),R.color.color_btn_select));
+                        tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.color_btn_select));
                 }
                 onSeekBarChangeListener.onProgressChanged(seekBar, progress, fromUser);
             }

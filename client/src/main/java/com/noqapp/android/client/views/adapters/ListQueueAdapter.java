@@ -115,7 +115,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 Log.v("rating ", "" + queue.getRatingCount());
                 ratingBar.setRating(queue.getRatingCount());
                 LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-                AppUtilities.setRatingBarColor(stars,context);
+                AppUtilities.setRatingBarColor(stars, context);
                 break;
         }
         return convertView;

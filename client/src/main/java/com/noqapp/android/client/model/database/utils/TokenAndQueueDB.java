@@ -151,9 +151,9 @@ public class TokenAndQueueDB {
 
     public static List<JsonTokenAndQueue> getHistoryQueueList() {
 
-        String query = "SELECT * , MAX("+TokenQueue.CREATE_DATE+") FROM "+TokenQueueHistory.TABLE_NAME+" GROUP BY "+TokenQueue.CODE_QR;
+        String query = "SELECT * , MAX(" + TokenQueue.CREATE_DATE + ") FROM " + TokenQueueHistory.TABLE_NAME + " GROUP BY " + TokenQueue.CODE_QR;
         List<JsonTokenAndQueue> listJsonQueue = new ArrayList<>();
-        Cursor cursor = dbHandler.getWritableDb().rawQuery(query,null);
+        Cursor cursor = dbHandler.getWritableDb().rawQuery(query, null);
 
         if (cursor != null) {
             if (cursor.getCount() > 0) {

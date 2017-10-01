@@ -92,7 +92,7 @@ public class WebViewActivity extends AppCompatActivity {
         });
         if (url.equals(Constants.URL_HOW_IT_WORKS)) {
             tv_toolbar_title.setText(getString(R.string.screen_invite_details));
-        }else {
+        } else {
             tv_toolbar_title.setText(getString(R.string.screen_legal));
         }
         actionbarBack.setOnClickListener(new View.OnClickListener() {

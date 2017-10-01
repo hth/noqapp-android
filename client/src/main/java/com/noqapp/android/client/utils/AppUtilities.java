@@ -133,19 +133,15 @@ public class AppUtilities {
         }
     }
 
-    public static void setRatingStarColor(Drawable drawable, @ColorInt int color)
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
+    public static void setRatingStarColor(Drawable drawable, @ColorInt int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             DrawableCompat.setTint(drawable, color);
-        }
-        else
-        {
+        } else {
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
     }
 
-    public static void setRatingBarColor(LayerDrawable stars, Context context){
+    public static void setRatingBarColor(LayerDrawable stars, Context context) {
 
         // Filled stars
         setRatingStarColor(stars.getDrawable(2), ContextCompat.getColor(context, R.color.rating_select));

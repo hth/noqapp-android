@@ -20,6 +20,8 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.WebViewActivity;
 
+import org.apache.commons.lang3.StringUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -79,9 +81,9 @@ public class InviteFragment extends NoQueueBaseFragment {
 
     @OnClick(R.id.btn_send_invite)
     public void sendInvitation() {
-        if(selectedText.equals("")) {
-            ShowAlertInformation.showThemeDialog(getActivity(),getString(R.string.alert),getString(R.string.empty_invite_code));
-        }else {
+        if (StringUtils.isBlank(selectedText)) {
+            ShowAlertInformation.showThemeDialog(getActivity(), getString(R.string.alert), getString(R.string.empty_invite_code));
+        } else {
             try {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);

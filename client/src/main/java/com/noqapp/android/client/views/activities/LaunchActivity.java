@@ -154,10 +154,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                          * Save codeQR of review & show the review screen on app
                          * resume if there is any record in Review DB for review key
                          */
-                        if(null == userStatus){
-                            updateNotifcation(intent,codeQR,false);
-                        }
-                        else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                        if (null == userStatus) {
+                            updateNotifcation(intent, codeQR, false);
+                        } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                             ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                             callReviewActivity(codeQR);
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
@@ -165,9 +164,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                             callSkipScreen(codeQR);
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                        updateNotifcation(intent,codeQR,true);
+                        updateNotifcation(intent, codeQR, true);
                     } else {
-                       // Toast.makeText(launchActivity, "Notification : " + payload, Toast.LENGTH_LONG).show();
+                        // Toast.makeText(launchActivity, "Notification : " + payload, Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -344,7 +343,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         // shown only one time if it is skipped
         if (StringUtils.isNotBlank(codeQRSkip)) {
             ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
-           // Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
+            // Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -462,7 +461,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
     }
 
-    private void updateNotifcation(Intent intent, String codeQR, boolean isReview){
+    private void updateNotifcation(Intent intent, String codeQR, boolean isReview) {
         // Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
         String current_serving = intent.getStringExtra(Constants.MSG_TYPE_CS);
         String go_to = intent.getStringExtra(Constants.MSG_TYPE_G);
