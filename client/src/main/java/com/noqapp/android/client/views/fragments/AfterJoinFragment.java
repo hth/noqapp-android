@@ -124,7 +124,8 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             });
             if (!TextUtils.isEmpty("" + jsonTokenAndQueue.getAverageServiceTime()) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
                 //TODO(chandra) this code is incorrect as after How long will be 0 when queue is not serving yet
-                tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime()));
+                String msg = String.format(getString(R.string.estimated_time), GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime()));
+                tv_estimated_time.setText(msg);
                 tv_estimated_time.setVisibility(View.VISIBLE);
             } else {
                 tv_estimated_time.setVisibility(View.GONE);
