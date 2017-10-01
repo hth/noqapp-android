@@ -54,7 +54,7 @@
     <string name="roboto_regular_font">fonts/roboto_regular.ttf</string>
     <string name="counter_name">Enter counter name</string>
     <string name="error_counter_empty">Please enter counter name</string>
-    <string name="last_update">Last Update:</string>
+    <string name="last_update">Updated:</string>
     <string name="pause">Pause</string>
     <string name="empty_counter">Please enter counter name</string>
     <string name="dayclosed">Day Closed</string>
