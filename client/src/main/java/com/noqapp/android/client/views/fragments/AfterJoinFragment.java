@@ -41,7 +41,7 @@ import butterknife.OnClick;
 public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPresenter, ResponsePresenter {
 
     private static final String TAG = AfterJoinFragment.class.getSimpleName();
-    public JsonToken mJsonToken;
+    public JsonToken jsonToken;
 
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
@@ -79,7 +79,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     @BindView(R.id.ll_change_bg)
     protected LinearLayout ll_change_bg;
 
-    private JsonTokenAndQueue jsonQueue;
+    private JsonTokenAndQueue jsonTokenAndQueue;
     private String codeQR;
     private String displayName;
     private String storePhone;
@@ -97,19 +97,19 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         ButterKnife.bind(this, view);
         Bundle bundle = getArguments();
         if (null != bundle) {
-            jsonQueue = (JsonTokenAndQueue) bundle.getSerializable(KEY_JSON_TOKEN_QUEUE);
-            Log.d("AfterJoin bundle", jsonQueue.toString());
+            jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializable(KEY_JSON_TOKEN_QUEUE);
+            Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
             codeQR = bundle.getString(KEY_CODE_QR);
-            displayName = jsonQueue.getBusinessName();
-            storePhone = jsonQueue.getStorePhone();
-            queueName = jsonQueue.getDisplayName();
-            address = jsonQueue.getStoreAddress();
-            topic = jsonQueue.getTopic();
+            displayName = jsonTokenAndQueue.getBusinessName();
+            storePhone = jsonTokenAndQueue.getStorePhone();
+            queueName = jsonTokenAndQueue.getDisplayName();
+            address = jsonTokenAndQueue.getStoreAddress();
+            topic = jsonTokenAndQueue.getTopic();
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
-            tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), storePhone));
+            tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour()));
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), storePhone));
             tv_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -122,19 +122,19 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                     AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
                 }
             });
-            if (!TextUtils.isEmpty("" + jsonQueue.getAverageServiceTime()) && jsonQueue.getAverageServiceTime() > 0) {
+            if (!TextUtils.isEmpty("" + jsonTokenAndQueue.getAverageServiceTime()) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
                 //TODO(chandra) this code is incorrect as after How long will be 0 when queue is not serving yet
-                tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonQueue.afterHowLong() * jsonQueue.getAverageServiceTime()));
+                tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime()));
                 tv_estimated_time.setVisibility(View.VISIBLE);
             } else {
                 tv_estimated_time.setVisibility(View.GONE);
             }
             gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR);
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
-                tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
-                tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
-                tv_how_long.setText(String.valueOf(jsonQueue.afterHowLong()));
-                setBackGround(jsonQueue.afterHowLong());
+                tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
+                tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+                tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
+                setBackGround(jsonTokenAndQueue.afterHowLong());
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     if (isResumeFirst) {
@@ -152,16 +152,16 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     @Override
     public void tokenPresenterResponse(JsonToken token) {
         Log.d(TAG, token.toString());
-        this.mJsonToken = token;
+        this.jsonToken = token;
         tv_total_value.setText(String.valueOf(token.getServingNumber()));
         tv_current_value.setText(String.valueOf(token.getToken()));
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
         setBackGround(token.afterHowLong());
         NoQueueMessagingService.subscribeTopics(topic);
-        jsonQueue.setServingNumber(token.getServingNumber());
-        jsonQueue.setToken(token.getToken());
+        jsonTokenAndQueue.setServingNumber(token.getServingNumber());
+        jsonTokenAndQueue.setToken(token.getToken());
         //save data to DB
-        TokenAndQueueDB.saveJoinQueueObject(jsonQueue);
+        TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
              /* Update the remote join count */
         NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount() - 1);
         LaunchActivity.getLaunchActivity().dismissProgress();
@@ -315,12 +315,12 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
 
     public void setObject(JsonTokenAndQueue jq, String go_to) {
         gotoPerson = go_to;
-        jsonQueue = jq;
-        tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
-        tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
-        tv_how_long.setText(String.valueOf(jsonQueue.afterHowLong()));
-        if (!TextUtils.isEmpty("" + jsonQueue.getAverageServiceTime()) && jsonQueue.getAverageServiceTime() > 0) {
-            tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonQueue.afterHowLong() * jsonQueue.getAverageServiceTime()));
+        jsonTokenAndQueue = jq;
+        tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
+        tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+        tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
+        if (!TextUtils.isEmpty("" + jsonTokenAndQueue.getAverageServiceTime()) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
+            tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime()));
             tv_estimated_time.setVisibility(View.VISIBLE);
         } else {
             tv_estimated_time.setVisibility(View.GONE);
