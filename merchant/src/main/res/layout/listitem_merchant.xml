@@ -35,8 +35,7 @@
                     android:gravity="center"
                     android:text=""
                     android:textSize="15sp"
-                    android:textColor="@color/colorMobile"
-                    />
+                    android:textColor="@color/colorMobile" />
             </LinearLayout>
 
             <LinearLayout

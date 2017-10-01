@@ -8,6 +8,7 @@ buildscript {
     }
 }
 import groovy.xml.Namespace
+
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 

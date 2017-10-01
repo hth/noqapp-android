@@ -3,8 +3,6 @@
     <string name="app_name_splash">Merchant</string>
 
 
-
-
     <!-- Strings related to login -->
     <string name="prompt_email">email</string>
     <string name="prompt_pwd">password</string>
