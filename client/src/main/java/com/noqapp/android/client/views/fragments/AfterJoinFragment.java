@@ -122,10 +122,11 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                     AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
                 }
             });
-            if(!TextUtils.isEmpty(""+jsonQueue.getAverageServiceTime()) && jsonQueue.getAverageServiceTime()>0) {
-                tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonQueue.afterHowLong()*jsonQueue.getAverageServiceTime()));
+            if (!TextUtils.isEmpty("" + jsonQueue.getAverageServiceTime()) && jsonQueue.getAverageServiceTime() > 0) {
+                //TODO(chandra) this code is incorrect as after How long will be 0 when queue is not serving yet
+                tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonQueue.afterHowLong() * jsonQueue.getAverageServiceTime()));
                 tv_estimated_time.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 tv_estimated_time.setVisibility(View.GONE);
             }
             gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR);
@@ -303,10 +304,10 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 break;
             default:
                 tv_after.setText("You are:");
-                tv_after.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorActionbar));
-                tv_how_long.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorActionbar));
+                tv_after.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorActionbar));
+                tv_how_long.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorActionbar));
                 ll_change_bg.setBackgroundResource(R.drawable.square_bg_drawable);
-                tv_estimated_time.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorActionbar));
+                tv_estimated_time.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorActionbar));
                 break;
 
         }
@@ -318,10 +319,10 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getToken()));
         tv_how_long.setText(String.valueOf(jsonQueue.afterHowLong()));
-        if(!TextUtils.isEmpty(""+jsonQueue.getAverageServiceTime())&& jsonQueue.getAverageServiceTime()>0) {
-            tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonQueue.afterHowLong()*jsonQueue.getAverageServiceTime()));
+        if (!TextUtils.isEmpty("" + jsonQueue.getAverageServiceTime()) && jsonQueue.getAverageServiceTime() > 0) {
+            tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonQueue.afterHowLong() * jsonQueue.getAverageServiceTime()));
             tv_estimated_time.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tv_estimated_time.setVisibility(View.GONE);
         }
         setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);

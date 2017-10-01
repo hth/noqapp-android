@@ -233,6 +233,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                     Toast.makeText(getActivity(), getString(R.string.error_login), Toast.LENGTH_LONG).show();
                 }
             } else {
+                //TODO(chandra) make sure jsonQueue is not null. Prevent action on join button.
+
                 Bundle b = new Bundle();
                 b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
                 b.putBoolean(KEY_FROM_LIST, false);
