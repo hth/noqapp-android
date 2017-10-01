@@ -393,10 +393,10 @@ public class LaunchActivity extends AppCompatActivity {
                 if (isDataClear)
                     clearLoginData(true);
             }
-        }else if (requestCode == Constants.RESULT_ACQUIRE){
-            if(resultCode == RESULT_OK){
+        } else if (requestCode == Constants.RESULT_ACQUIRE) {
+            if (resultCode == RESULT_OK) {
                 boolean isCustomerAcquire = data.getExtras().getBoolean(Constants.CUSTOMER_ACQUIRE, false);
-                 if(isCustomerAcquire){
+                if (isCustomerAcquire) {
                     // update the acquire no
                     if (fragmentCommunicator != null) {
                         fragmentCommunicator.acquireCustomer((JsonToken) data.getSerializableExtra("data"));

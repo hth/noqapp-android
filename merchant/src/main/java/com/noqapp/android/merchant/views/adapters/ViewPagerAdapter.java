@@ -144,8 +144,8 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
 
                         }
                     }
-                }else{
-                    ShowAlertInformation.showThemeDialog(context,"Error","Please start the queue to avail this facility");
+                } else {
+                    ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
                 }
             }
         });

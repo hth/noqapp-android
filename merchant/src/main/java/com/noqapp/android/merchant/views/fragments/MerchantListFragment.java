@@ -56,7 +56,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private RelativeLayout rl_empty_screen;
     private Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Runnable updater,run;
+    private Runnable updater, run;
     private Snackbar snackbar;
     private boolean isFragmentVisible = false;
 

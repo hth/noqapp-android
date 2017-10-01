@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class OutOfSequenceActivity extends AppCompatActivity implements QueuePersonListPresenter,ManageQueuePresenter {
+public class OutOfSequenceActivity extends AppCompatActivity implements QueuePersonListPresenter, ManageQueuePresenter {
 
     private ProgressDialog progressDialog;
     private TextView tv_toolbar_title;
@@ -45,8 +45,6 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
     private TextView tv_title;
     private String codeQR;
     protected boolean isDialog = false;
-
-
 
 
     private OutOfSequenceListAdapter adapter;
@@ -68,7 +66,7 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
         ManageQueueModel.manageQueuePresenter = this;
         context = this;
         setContentView(R.layout.activity_outofsequence);
-        if(isDialog){
+        if (isDialog) {
             DisplayMetrics metrics = getResources().getDisplayMetrics();
             int screenWidth = (int) (metrics.widthPixels * 0.60);
             int height = (int) (metrics.heightPixels * 0.60);
@@ -126,8 +124,6 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
     }
 
 
-
-
     @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
         if (null != jsonQueuePersonList) {
@@ -138,7 +134,6 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
 
 
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -165,10 +160,10 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
 
     @Override
     public void manageQueueResponse(JsonToken token) {
-        if(null != token){
+        if (null != token) {
             Intent intent = new Intent();
             intent.putExtra(Constants.CUSTOMER_ACQUIRE, true);
-            intent.putExtra("data",token);
+            intent.putExtra("data", token);
             if (getParent() == null) {
                 setResult(Activity.RESULT_OK, intent);
             } else {

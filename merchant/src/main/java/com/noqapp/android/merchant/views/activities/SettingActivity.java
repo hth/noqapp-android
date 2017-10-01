@@ -43,7 +43,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         super.onCreate(savedInstanceState);
         QueueSettingModel.queueSettingPresenter = this;
         setContentView(R.layout.activity_setting);
-        if(isDialog){
+        if (isDialog) {
             DisplayMetrics metrics = getResources().getDisplayMetrics();
             int screenWidth = (int) (metrics.widthPixels * 0.60);
             int height = (int) (metrics.heightPixels * 0.60);

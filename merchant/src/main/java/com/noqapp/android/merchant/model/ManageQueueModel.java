@@ -137,6 +137,7 @@ public class ManageQueueModel {
             }
         });
     }
+
     /**
      * Get setting for a specific queue.
      *
@@ -161,7 +162,6 @@ public class ManageQueueModel {
                     Log.e(TAG, "Found error while get queue setting");
                 }
             }
-
 
 
             @Override

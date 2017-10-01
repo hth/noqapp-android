@@ -12,7 +12,7 @@ public class SettingDialogActivity extends SettingActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        isDialog =true;
+        isDialog = true;
         super.onCreate(savedInstanceState);
         this.setFinishOnTouchOutside(false);
         actionbarBack.setBackgroundResource(R.drawable.cross);

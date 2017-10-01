@@ -11,7 +11,7 @@ import java.io.Serializable;
  * User: hitender
  * Date: 9/7/17 6:24 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -30,7 +30,7 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty("t")
     private int token;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String customerName = "";
 
     public int getToken() {

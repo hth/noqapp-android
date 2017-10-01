@@ -48,7 +48,7 @@ public class OutOfSequenceListAdapter extends BaseAdapter {
         }
         JsonQueuedPerson jsonQueuedPerson = items.get(position);
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
-        recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName())?context.getString(R.string.unregister_user):jsonQueuedPerson.getCustomerName());
+        recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
 
 
         return view;
@@ -57,6 +57,7 @@ public class OutOfSequenceListAdapter extends BaseAdapter {
     static class RecordHolder {
         TextView tv_customer_name;
         TextView tv_sequence_number;
+
         RecordHolder() {
         }
     }
