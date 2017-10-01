@@ -18,20 +18,21 @@
         <item name="colorControlNormal">@android:color/white</item>
         //the rest of your codes...
     </style>
-    <style name="style_home" >
+
+    <style name="style_home">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
 
-    <style name="style_home_rl" >
-    <item name="android:layout_width">0dp</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_gravity">center</item>
-    <item name="android:layout_weight">.33</item>
-</style>
+    <style name="style_home_rl">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_weight">.33</item>
+    </style>
 
-    <style name="style_invite_tv" >
+    <style name="style_invite_tv">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
@@ -39,7 +40,7 @@
         <item name="android:layout_marginBottom">10dp</item>
     </style>
 
-    <style name="style_join_queue_tv" >
+    <style name="style_join_queue_tv">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerHorizontal">true</item>
@@ -47,7 +48,7 @@
     </style>
 
 
-    <style name="style_register_tv" >
+    <style name="style_register_tv">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16sp</item>
@@ -55,7 +56,7 @@
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
-    <style name="style_register_edt" >
+    <style name="style_register_edt">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">10dp</item>

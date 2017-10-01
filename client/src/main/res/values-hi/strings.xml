@@ -71,7 +71,6 @@
     <string name="fail_to_cancel">Failed to cancel the queue</string>
 
 
-
     <!--- Review Screen -->
     <string name="radio_save_30min">Saved 30 min </string>
     <string name="radio_save_1hr">Saved 1 hour </string>
@@ -81,18 +80,13 @@
     <string name="submit">Review</string>
 
 
-
     <!-- Custom Fonts -->
     <string name="raleway_bold_font">fonts/raleway_bold.ttf</string>
     <string name="raleway_regular_font">fonts/raleway_regular.ttf</string>
     <string name="roboto_regular_font">fonts/roboto_regular.ttf</string>
     <string name="roboto_light_font">fonts/roboto_light.ttf</string>
 
-  
-  
-  
-  
-  
+
     <!-- Others -->
     <string name="ok">OK</string>
     <string name="exit_app">बाहर निकलने के लिए वापस फिर से दबाएं</string>

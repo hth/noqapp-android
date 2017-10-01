@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="horizontal">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal">
 
     <SeekBar
         android:id="@+id/seekbar"
@@ -13,7 +13,7 @@
         android:minHeight="@dimen/seekbar_height"
         android:progressDrawable="@drawable/seekbar_drawable"
         android:splitTrack="false"
-        android:thumb="@drawable/custom_thumb"/>
+        android:thumb="@drawable/custom_thumb" />
 
     <RelativeLayout
         android:id="@+id/intervals"
@@ -22,5 +22,5 @@
         android:layout_below="@+id/seekbar"
         android:layout_marginRight="-0.25dp"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal" />
 </RelativeLayout>

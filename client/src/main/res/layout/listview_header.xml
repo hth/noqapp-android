@@ -5,5 +5,5 @@
     android:orientation="vertical">
 
 
-   <include layout="@layout/fragment_scan_queue"/>
+    <include layout="@layout/fragment_scan_queue" />
 </LinearLayout>

@@ -21,6 +21,7 @@
             android:orientation="vertical">
 
         </LinearLayout>
+
         <View
             android:id="@+id/seprator"
             android:layout_width="match_parent"
@@ -28,6 +29,7 @@
             android:layout_above="@+id/navigation"
 
             android:background="@color/color_separator" />
+
         <LinearLayout
             android:id="@+id/navigation"
             android:layout_width="match_parent"
