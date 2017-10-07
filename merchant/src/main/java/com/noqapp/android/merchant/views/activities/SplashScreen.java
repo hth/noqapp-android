@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.crashlytics.android.Crashlytics;
+import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 
@@ -20,7 +21,7 @@ public class SplashScreen extends AppCompatActivity {
     protected static boolean display = true;
     static SplashScreen splashScreen;
     protected boolean isAactive = true;
-    protected int splashTime = 4000;
+    protected int splashTime = BuildConfig.BUILD_TYPE.equals("debug")?1000:4000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

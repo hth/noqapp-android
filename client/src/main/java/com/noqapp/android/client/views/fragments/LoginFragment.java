@@ -147,6 +147,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     public void onResume() {
         super.onResume();
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
+        LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_me));
     }
 
     @OnClick(R.id.btn_login)

@@ -124,6 +124,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
     @Override
     public void onResume() {
         super.onResume();
+        LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_me));
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 

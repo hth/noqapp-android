@@ -1,23 +1,20 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@android:color/white"
-    android:paddingRight="@dimen/tab_screen_padding"
-    android:paddingLeft="@dimen/tab_screen_padding"
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp">
+    android:background="@android:color/white">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@android:color/white"
-        android:paddingRight="@dimen/tab_screen_padding"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        android:paddingBottom="20dp"
         android:paddingLeft="@dimen/tab_screen_padding"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:paddingRight="@dimen/tab_screen_padding"
+        android:paddingTop="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,22 +63,24 @@
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/button_drawable"
                 android:text="@string/sign_in"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
                 android:textSize="18sp" />
 
+
+            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_login"
+                android:gravity="center"
+                android:text="@string/copy_right"
+                android:textColor="@android:color/black" />
+
         </LinearLayout>
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="@string/copy_right"
-            android:textColor="@android:color/black" />
+
     </RelativeLayout>
 </ScrollView>

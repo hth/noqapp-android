@@ -44,8 +44,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
 
         View view = inflater.inflate(R.layout.frag_login, container, false);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
         btn_login = (Button) view.findViewById(R.id.btn_login);
         edt_email = (EditText) view.findViewById(R.id.edt_email);
         edt_pwd = (EditText) view.findViewById(R.id.edt_pwd);
