@@ -71,11 +71,19 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 TextView tv_store_name = (TextView) convertView.findViewById(R.id.tv_store_name);
                 TextView tv_date_of_service = (TextView) convertView.findViewById(R.id.tv_date_of_service);
                 TextView txtToken = (TextView) convertView.findViewById(R.id.txtToken);
+                TextView tv_hour_saved = (TextView) convertView.findViewById(R.id.tv_hour_saved);
                 txtnumber.setText("#" + String.valueOf(childPosition + 1));
                 tv_queue_name.setText(queue.getDisplayName());
                 tv_store_name.setText(queue.getBusinessName());
                 tv_date_of_service.setText(queue.getServiceEndTime());
-                txtToken.setText(String.valueOf(queue.getToken()));
+                txtToken.setVisibility(View.VISIBLE);
+                if(queue.afterHowLong() > 0){
+                    txtToken.setText(String.valueOf(queue.afterHowLong()));
+                    tv_hour_saved.setText( "You are");
+                }else if(queue.afterHowLong() <= 0){
+                    txtToken.setVisibility(View.GONE);
+                    tv_hour_saved.setText( "Your turn");
+                }
                 break;
 
             case 1:
@@ -85,7 +93,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 TextView tv_store_name1 = (TextView) convertView.findViewById(R.id.tv_store_name);
                 TextView tv_date_of_service1 = (TextView) convertView.findViewById(R.id.tv_date_of_service);
                 TextView txtToken1 = (TextView) convertView.findViewById(R.id.txtToken);
-                TextView tv_hour_saved = (TextView) convertView.findViewById(R.id.tv_hour_saved);
+                TextView tv_hour_saved1 = (TextView) convertView.findViewById(R.id.tv_hour_saved);
                 RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
                 txtnumber1.setText("#" + String.valueOf(childPosition + 1));
                 tv_queue_name1.setText(queue.getDisplayName());
@@ -94,22 +102,22 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 txtToken1.setText(String.valueOf(queue.getToken()));
                 switch (queue.getHoursSaved()) {
                     case 1:
-                        tv_hour_saved.setText("Saved 30 min");
+                        tv_hour_saved1.setText("Saved 30 min");
                         break;
                     case 2:
-                        tv_hour_saved.setText("Saved 1 hour");
+                        tv_hour_saved1.setText("Saved 1 hour");
                         break;
                     case 3:
-                        tv_hour_saved.setText("Saved 2 hour");
+                        tv_hour_saved1.setText("Saved 2 hour");
                         break;
                     case 4:
-                        tv_hour_saved.setText("Saved 3 hours");
+                        tv_hour_saved1.setText("Saved 3 hours");
                         break;
                     case 5:
-                        tv_hour_saved.setText("Saved 4 hours");
+                        tv_hour_saved1.setText("Saved 4 hours");
                         break;
                     default:
-                        tv_hour_saved.setText("");
+                        tv_hour_saved1.setText("");
                 }
 
                 Log.v("rating ", "" + queue.getRatingCount());

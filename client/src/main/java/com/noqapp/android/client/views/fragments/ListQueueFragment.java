@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -297,5 +300,11 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
                     break;
             }
         }
+    }
+
+    public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
+        TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(),""+jq.getServingNumber(),""+jq.getToken());
+        //fetch the
+        fetchCurrentAndHistoryList();
     }
 }

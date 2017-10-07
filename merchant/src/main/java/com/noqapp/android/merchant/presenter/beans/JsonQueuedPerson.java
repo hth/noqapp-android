@@ -33,6 +33,9 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty("n")
     private String customerName = "";
 
+    @JsonProperty("sid")
+    private String serverDeviceId = "";
+
     public int getToken() {
         return token;
     }
@@ -49,5 +52,13 @@ public class JsonQueuedPerson implements Serializable {
     public JsonQueuedPerson setCustomerName(String customerName) {
         this.customerName = customerName;
         return this;
+    }
+
+    public String getServerDeviceId() {
+        return serverDeviceId;
+    }
+
+    public void setServerDeviceId(String serverDeviceId) {
+        this.serverDeviceId = serverDeviceId;
     }
 }

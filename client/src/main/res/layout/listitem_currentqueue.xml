@@ -76,13 +76,6 @@
                 android:layout_weight="0.40"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_hour_saved"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:visibility="gone" />
-
                 <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                     android:id="@+id/txtToken"
                     android:layout_width="match_parent"
@@ -90,6 +83,12 @@
                     android:gravity="right"
                     android:textColor="@color/color_list_text"
                     android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/tv_hour_saved"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right" />
 
                 <RatingBar
                     android:id="@+id/ratingBar"

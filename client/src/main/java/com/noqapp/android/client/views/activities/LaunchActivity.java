@@ -489,6 +489,16 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         ((AfterJoinFragment) currentfrg).setObject(jtk, go_to);
                     }
                 }
+            }else  if (null != currentTabFragments && currentTabFragments.size() == 1) {
+                try {
+                    int size = currentTabFragments.size();
+                    Fragment currentfrg = currentTabFragments.get(size - 1);
+                    if (currentfrg.getClass().getSimpleName().equals(ListQueueFragment.class.getSimpleName())) {
+                        ((ListQueueFragment) currentfrg).updateListFromNotification(jtk, go_to);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
         }
