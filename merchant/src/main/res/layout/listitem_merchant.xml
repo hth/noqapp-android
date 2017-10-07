@@ -34,8 +34,8 @@
                     android:background="@drawable/circle_bg_drawable"
                     android:gravity="center"
                     android:text=""
-                    android:textSize="15sp"
-                    android:textColor="@color/colorMobile" />
+                    android:textColor="@color/colorMobile"
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -59,14 +59,30 @@
                     android:textSize="15sp" />
             </LinearLayout>
 
-            <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
-                android:id="@+id/tv_inqueue"
+
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.25"
-                android:gravity="center"
-                android:textColor="@color/color_list_subtitle"
-                android:textSize="24sp" />
+                android:orientation="vertical">
+
+                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+                    android:id="@+id/tv_inqueue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/color_list_subtitle"
+                    android:textSize="22sp" />
+
+                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+                    android:id="@+id/tv_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/in_Queue"
+                    android:textColor="@color/color_list_subtitle"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

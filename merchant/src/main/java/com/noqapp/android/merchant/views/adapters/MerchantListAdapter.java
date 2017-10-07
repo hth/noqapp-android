@@ -48,6 +48,7 @@ public class MerchantListAdapter extends BaseAdapter {
             recordHolder.tv_queue_name = (TextView) view.findViewById(R.id.tv_queue_name);
             recordHolder.tv_serving_no = (TextView) view.findViewById(R.id.tv_serving_no);
             recordHolder.tv_inqueue = (TextView) view.findViewById(R.id.tv_inqueue);
+            recordHolder.tv_label = (TextView) view.findViewById(R.id.tv_label);
             recordHolder.cardview = (CardView) view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
@@ -71,11 +72,13 @@ public class MerchantListAdapter extends BaseAdapter {
             recordHolder.tv_queue_name.setTextColor(Color.WHITE);
             recordHolder.tv_serving_no.setTextColor(Color.WHITE);
             recordHolder.tv_inqueue.setTextColor(Color.WHITE);
+            recordHolder.tv_label.setTextColor(Color.WHITE);
         } else {
             recordHolder.cardview.setCardBackgroundColor(Color.TRANSPARENT);
             recordHolder.tv_queue_name.setTextColor(ContextCompat.getColor(context, R.color.color_action_bar));
             recordHolder.tv_serving_no.setTextColor(ContextCompat.getColor(context, R.color.color_list_subtitle));
             recordHolder.tv_inqueue.setTextColor(ContextCompat.getColor(context, R.color.color_list_subtitle));
+            recordHolder.tv_label.setTextColor(ContextCompat.getColor(context, R.color.color_list_subtitle));
         }
         return view;
     }
@@ -85,6 +88,7 @@ public class MerchantListAdapter extends BaseAdapter {
         TextView tv_queue_name;
         TextView tv_serving_no;
         TextView tv_inqueue;
+        TextView tv_label;
         CardView cardview;
 
         RecordHolder() {
