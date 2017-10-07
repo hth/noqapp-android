@@ -60,9 +60,9 @@ public class MerchantListAdapter extends BaseAdapter {
         if (jsonTopic.getQueueStatus() == QueueStatusEnum.D) {
             recordHolder.tv_serving_no.setText("Done");
         } else if (jsonTopic.getToken() == 0) {
-            recordHolder.tv_serving_no.setText("Not started");
+            recordHolder.tv_serving_no.setText("Not Started");
         } else {
-            recordHolder.tv_serving_no.setText("Serving: " + String.valueOf(jsonTopic.getServingNumber()));
+            recordHolder.tv_serving_no.setText("Serving Now: " + String.valueOf(jsonTopic.getServingNumber()));
         }
         recordHolder.tv_inqueue.setText(String.valueOf(jsonTopic.getRemaining()));
 

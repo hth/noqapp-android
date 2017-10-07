@@ -163,7 +163,7 @@
                     android:maxHeight="15dp"
                     android:minHeight="15dp"
                     android:progress="0"
-                    android:progressDrawable="@drawable/red_gredient"
+                    android:progressDrawable="@drawable/seek_style"
                     android:scaleY="-0.55"
                     android:splitTrack="false"
                     android:theme="@style/Widget.AppCompat.SeekBar.Discrete"

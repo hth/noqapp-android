@@ -66,5 +66,5 @@
     <string name="authentication_fail_msg">Please login again.</string>
     <string name="copy_right">NoQApp &#174; is a trademark of NoQueue Inc.\n 2017 \u00a9 NoQueue &#174; Inc</string>
     <string name="unregister_user">Un Registered User</string>
-    <string name="error_user_served">No %1$s is being currently served.</string>
+    <string name="error_user_served">%1$s is being currently served.</string>
 </resources>
