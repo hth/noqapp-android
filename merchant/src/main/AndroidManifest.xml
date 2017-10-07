@@ -34,7 +34,6 @@
         </activity>
         <activity
             android:name="com.noqapp.android.merchant.views.activities.LaunchActivity"
-            android:windowSoftInputMode="stateHidden"
             android:theme="@style/BaseTheme">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />

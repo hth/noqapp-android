@@ -15,7 +15,7 @@
 
         <ImageView
             android:id="@+id/left_nav"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:layout_width="@dimen/left_right_icon"
             android:layout_height="@dimen/left_right_icon"
             android:layout_gravity="left"
@@ -23,7 +23,7 @@
 
         <ImageView
             android:id="@+id/right_nav"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:layout_width="@dimen/left_right_icon"
             android:layout_height="@dimen/left_right_icon"
             android:layout_gravity="right"

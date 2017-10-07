@@ -134,18 +134,21 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.show();
-                        served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
-                        ManageQueueModel.acquire(
-                                LaunchActivity.getLaunchActivity().getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                served);
-                    } else {
-                        ShowAlertInformation.showNetworkDialog(OutOfSequenceActivity.this);
+                    if(position == 0){
+                        Toast.makeText(context,getString(R.string.error_user_served,String.valueOf(jsonQueuedPersonArrayList.get(position).getToken())),Toast.LENGTH_LONG).show();
+                        finish();
+                    }else {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.show();
+                            served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
+                            ManageQueueModel.acquire(
+                                    LaunchActivity.getLaunchActivity().getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    served);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(OutOfSequenceActivity.this);
+                        }
                     }
                 }
             });

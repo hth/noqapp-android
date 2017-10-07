@@ -8,4 +8,6 @@
     <dimen name="cell_size">55dp</dimen>
     <dimen name="screen_padding">20dp</dimen>
     <dimen name="tab_screen_padding">400dp</dimen>
+    <dimen name="edit_icon_size">24dp</dimen>
+
 </resources>

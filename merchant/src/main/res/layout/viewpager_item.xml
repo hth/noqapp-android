@@ -18,12 +18,16 @@
             android:layout_weight="1"
             android:background="@android:color/white"
             android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center"
             android:weightSum="1">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".2"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:background="@color/pager_top_bg"
                 android:padding="5dp">
 
@@ -32,12 +36,14 @@
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:text="sfsdf"
                     android:textColor="@color/color_action_bar"
+                    android:layout_marginBottom="10dp"
                     android:textSize="24sp" />
 
                 <RelativeLayout
+                    android:id="@+id/top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_title"
@@ -47,7 +53,7 @@
 
                     <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="10dp"
                         android:layout_toLeftOf="@+id/iv_settings"
@@ -188,21 +194,23 @@
                         <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                             android:id="@+id/tv_counter_name"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="40dp"
                             android:layout_centerVertical="true"
                             android:layout_marginBottom="10dp"
                             android:layout_toLeftOf="@+id/iv_edit"
                             android:gravity="center"
                             android:hint="@string/counter_name"
+                            android:layout_marginRight="5dp"
                             android:paddingLeft="5dp"
+                            android:background="@drawable/square_white_bg_drawable"
                             android:paddingRight="5dp"
                             android:textColor="@color/colorAddress"
                             android:textSize="18sp" />
 
                         <ImageView
                             android:id="@+id/iv_edit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/edit_icon_size"
+                            android:layout_height="@dimen/edit_icon_size"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_margin="5dp"

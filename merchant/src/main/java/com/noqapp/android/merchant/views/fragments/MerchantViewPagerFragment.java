@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.ViewPagerAdapter;
 import com.noqapp.android.merchant.views.customsviews.CustomViewPager;
@@ -114,7 +115,11 @@ public class MerchantViewPagerFragment extends Fragment {
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue_detail));
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
-        LaunchActivity.getLaunchActivity().enableDisableBack(true);
+        if (new AppUtils().isTablet(getActivity())) {
+            LaunchActivity.getLaunchActivity().enableDisableBack(false);
+        }else{
+            LaunchActivity.getLaunchActivity().enableDisableBack(true);
+        }
         LaunchActivity.getLaunchActivity().enableLogout();
     }
 
