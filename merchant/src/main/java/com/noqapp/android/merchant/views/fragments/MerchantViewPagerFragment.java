@@ -25,8 +25,13 @@ public class MerchantViewPagerFragment extends Fragment {
     private CustomViewPager viewPager;
     private ImageView leftNav, rightNav;
     private ArrayList<JsonTopic> topicsList;
-
-
+    private static UpdateListColorCallBack updateListColorCallBack;
+    public interface UpdateListColorCallBack {
+        void onUpdateListColorCallBack(int pos);
+    }
+    public static void setUpdateListColorCallBack(UpdateListColorCallBack updateListColorBack) {
+        updateListColorCallBack = updateListColorBack;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantviewpager, container, false);
@@ -70,6 +75,8 @@ public class MerchantViewPagerFragment extends Fragment {
                 if (viewPager.getAdapter().getCount() > 1)
                     rightNav.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(tab);
+                // to update the selected color of merchant list
+                updateListColorCallBack.onUpdateListColorCallBack(tab);
             }
         });
 
@@ -88,6 +95,8 @@ public class MerchantViewPagerFragment extends Fragment {
                 if (viewPager.getAdapter().getCount() > 1)
                     leftNav.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(tab);
+                // to update the selected color of merchant list
+                updateListColorCallBack.onUpdateListColorCallBack(tab);
             }
         });
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

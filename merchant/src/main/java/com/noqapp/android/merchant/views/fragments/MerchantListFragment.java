@@ -45,7 +45,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener {
+public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener,MerchantViewPagerFragment.UpdateListColorCallBack {
 
     public static int selected_pos = -1;
     public MerchantViewPagerFragment merchantViewPagerFragment;
@@ -80,7 +80,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         swipeRefreshLayout.setOnRefreshListener(this);
         Bundle bundle = getArguments();
         ViewPagerAdapter.setAdapterCallBack(this);
-
+        MerchantViewPagerFragment.setUpdateListColorCallBack(this);
         snackbar = Snackbar.make(listview, "", Snackbar.LENGTH_INDEFINITE);
         snackbar.getView().setBackgroundResource(R.drawable.red_gredient);
 
@@ -351,4 +351,10 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             snackbar.setText(getString(R.string.last_update) + " " + GetTimeAgoUtils.getTimeAgo(LaunchActivity.getLaunchActivity().getLastUpdateTime()));
     }
 
+    @Override
+    public void onUpdateListColorCallBack(int pos) {
+        selected_pos = pos;
+        // to set the selected cell color
+        getActivity().runOnUiThread(run);
+    }
 }
