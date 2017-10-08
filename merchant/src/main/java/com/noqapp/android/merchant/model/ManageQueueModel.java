@@ -100,6 +100,7 @@ public class ManageQueueModel {
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
+                manageQueuePresenter.manageQueueError(null);
             }
         });
     }
@@ -163,6 +164,7 @@ public class ManageQueueModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
+                    queuePersonListPresenter.queuePersonListError();
                 }
             }
 

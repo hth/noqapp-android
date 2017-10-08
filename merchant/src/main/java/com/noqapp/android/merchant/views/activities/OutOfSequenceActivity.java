@@ -180,7 +180,7 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
 
     @Override
     public void manageQueueError(ErrorEncounteredJson errorEncounteredJson) {
-        if(errorEncounteredJson.getSystemErrorCode().equals("350")){
+        if(null!= errorEncounteredJson && errorEncounteredJson.getSystemErrorCode().equals("350")){
             Toast.makeText(context,getString(R.string.error_client_just_acquired),Toast.LENGTH_LONG).show();
             if(lastSelectedPos >=0){
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");

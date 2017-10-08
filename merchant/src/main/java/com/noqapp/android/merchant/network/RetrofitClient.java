@@ -15,7 +15,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class RetrofitClient {
     private static Retrofit retrofit;
-    private static long TIME_OUT = 60;
+    private static long TIME_OUT = 45;
 
     public static Retrofit getClient() {
         if (retrofit == null) {
