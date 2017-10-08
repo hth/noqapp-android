@@ -156,7 +156,7 @@
     <string name="barcode_error_msg">No merchant is associated with this NoQueue code</string>
     <string name="copy_right">NoQApp &#174; is a trademark of NoQueue Inc.\n 2017 \u00a9 NoQueue &#174; Inc</string>
     <string name="alert">Alert</string>
-    <string name="estimated_time">You will be serviced in: %1$s</string>
+    <string name="estimated_time">You will be serviced: %1$s</string>
     <string name="error_remote_join_not_available">This facility has not allowed joining queue remotly</string>
     <string name="error_join">Remote Q Join Error</string>
 

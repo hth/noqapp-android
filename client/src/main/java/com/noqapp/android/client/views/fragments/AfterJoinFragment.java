@@ -125,14 +125,6 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                     AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
                 }
             });
-            if (!TextUtils.isEmpty("" + jsonTokenAndQueue.getAverageServiceTime()) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
-                //TODO(chandra) this code is incorrect as after How long will be 0 when queue is not serving yet
-                String msg = String.format(getString(R.string.estimated_time), GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime()));
-                tv_estimated_time.setText(msg);
-                tv_estimated_time.setVisibility(View.VISIBLE);
-            } else {
-                tv_estimated_time.setVisibility(View.GONE);
-            }
             gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR);
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
@@ -164,6 +156,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         NoQueueMessagingService.subscribeTopics(topic);
         jsonTokenAndQueue.setServingNumber(token.getServingNumber());
         jsonTokenAndQueue.setToken(token.getToken());
+        updateEstimatedTime();
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
              /* Update the remote join count */
@@ -341,12 +334,21 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
         tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
+        updateEstimatedTime();
+        setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);
+    }
+
+    private void updateEstimatedTime(){
         if (!TextUtils.isEmpty("" + jsonTokenAndQueue.getAverageServiceTime()) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
-            tv_estimated_time.setText(getString(R.string.estimated_time) + " " + GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime()));
-            tv_estimated_time.setVisibility(View.VISIBLE);
+            String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime());
+            if (null == output) {
+                tv_estimated_time.setVisibility(View.GONE);
+            } else {
+                tv_estimated_time.setText(String.format(getString(R.string.estimated_time) , output));
+                tv_estimated_time.setVisibility(View.VISIBLE);
+            }
         } else {
             tv_estimated_time.setVisibility(View.GONE);
         }
-        setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);
     }
 }

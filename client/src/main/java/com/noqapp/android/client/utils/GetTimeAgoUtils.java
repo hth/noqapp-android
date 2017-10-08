@@ -14,18 +14,12 @@ public class GetTimeAgoUtils {
 
 
     public static String getTimeAgo(long time) {
-        if (time < 1000000000000L) {
-            // if timestamp given in seconds, convert to millis
-            time *= 1000;
-        }
 
-        long now = System.currentTimeMillis();
-        if (time > now || time <= 0) {
+        if (time == 0) {
             return null;
         }
-
         // TODO: localize
-        final long diff = now - time;
+        final long diff = time;
         if (diff < MINUTE_MILLIS) {
             return "Soon";
         } else if (diff < 2 * MINUTE_MILLIS) {
