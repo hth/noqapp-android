@@ -237,9 +237,8 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                 }
             }
         }catch (Exception e){
-            e.printStackTrace();
+            Log.e("Error",e.getMessage(),e);
         }
-
         LaunchActivity.getLaunchActivity().onBackPressed();
     }
 

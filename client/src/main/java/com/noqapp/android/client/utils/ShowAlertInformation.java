@@ -2,6 +2,7 @@ package com.noqapp.android.client.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,7 @@ public class ShowAlertInformation {
         ShowAlertInformation.showThemeDialog(context, context.getString(R.string.authentication_fail_title), context.getString(R.string.authentication_fail_msg));
     }
 
-    public static void showThemeDialog(Context context, String title, String message) {
+    public static void showThemeDialog(Context context, String title, String message,boolean isGravityLeft) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
@@ -30,6 +31,8 @@ public class ShowAlertInformation {
         TextView tv_msg = (TextView) customDialogView.findViewById(R.id.tv_msg);
         tvtitle.setText(title);
         tv_msg.setText(message);
+        if(isGravityLeft)
+            tv_msg.setGravity(Gravity.LEFT);
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -51,7 +54,9 @@ public class ShowAlertInformation {
         });
         mAlertDialog.show();
     }
-
+    public static void showThemeDialog(Context context, String title, String message) {
+        showThemeDialog(context,title,message,false);
+    }
     public static void showBarcodeErrorDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);

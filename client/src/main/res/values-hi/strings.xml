@@ -9,15 +9,15 @@
     <string name="scan">Click to Scan NoQueue QR Code</string>
     <string name="title_activity_join_queue">JoinQueueActivity</string>
     <string name="registration">Registration</string>
-    <string name="autojoinon">Auto Join On Scan</string>
-    <string name="remoteJoinAvail">Remote Join Available</string>
+    <string name="autojoinon">Auto QJoin On Scan</string>
+    <string name="remoteJoinAvail">Remote QJoin Available</string>
     <string name="ratetheapp">Rate the app</string>
     <string name="legal">Legal</string>
     <string name="invite">Invite</string>
     <string name="firstname">First Name</string>
 
     <!--Invite Screen-->
-    <string name="how_it_works">how it works</string>
+    <string name="how_it_works">How it works?</string>
     <string name="your_invite_code">Your Invite Code</string>
     <string name="copy">Copy</string>
     <string name="send_invite">Send Invites -></string>
@@ -61,7 +61,7 @@
     <string name="you_are_after">You are after</string>
     <string name="serving_now">Serving now</string>
     <string name="your_token">Your Token</string>
-    <string name="remotejoin">Remote Join</string>
+    <string name="remotejoin">Remote QJoin</string>
 
     <!--- Scan Screen -->
     <string name="currently_serving">Currently serving</string>
@@ -97,13 +97,13 @@
 
 
     <string name="logout">लॉग आउट</string>
-    <string name="login_register">Login/Register</string>
+    <string name="login_register">Login / Register</string>
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
     <string name="logout_msg">लॉग इन नहीं होने पर बनाए गए डेटा को हमेशा के लिए खो दिया जा सकता है</string>
     <string name="error_mobile_blank">Please enter phone number</string>
     <string name="error_login">Please login to remote join</string>
-    <string name="error_remote_join_available">Yoy don\'t have enough remote join available.</string>
+    <string name="error_remote_join_available">Yoy don\'t have enough remote join available</string>
     <string name="error_rateservice">Please rate the service</string>
     <string name="review_thanks">Thanks for feedback.</string>
     <string name="error_timesaved">Please provide how many no. of hour you saved.</string>
@@ -119,7 +119,8 @@
     <string name="barcode_error_msg">No merchant is associated with this NoQueue code</string>
     <string name="copy_right">NoQApp &#174; is a trademark of NoQueue Inc.\n 2017 \u00a9 NoQueue &#174; Inc</string>
     <string name="estimated_time">You will be serviced: %1$s</string>
-    <string name="error_remote_join_not_available">This facility has not allowed joining queue remotly</string>
-    <string name="error_join">Remote Q Join Error</string>
+    <string name="error_remote_join_not_available">This facility has not allowed joining queue remotely</string>
+    <string name="error_join">Remote QJoin Error</string>
+    <string name="login_hint">Enter phone no. without country code</string>
 
 </resources>

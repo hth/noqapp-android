@@ -26,7 +26,8 @@
         <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
             android:id="@+id/tv_msg"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
             android:layout_below="@+id/tvtitle"
             android:layout_marginBottom="10dp"
             android:gravity="center"

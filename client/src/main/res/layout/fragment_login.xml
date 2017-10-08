@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:inputType="phone"
         android:maxLength="15"
+        android:hint="@string/login_hint"
         android:textSize="18sp" />
 
     <com.noqapp.android.client.views.cutomviews.TextEditRobotoLight

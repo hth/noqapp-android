@@ -148,7 +148,17 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity().setActionBarTitle("Join");
+        if (getArguments().getBoolean(KEY_FROM_LIST, false)) {
+
+            if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
+                LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.remotejoin));
+            }else{
+                LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_join));
+            }
+        } else {
+            LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_join));
+        }
+
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 
@@ -185,7 +195,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
         ratingBar.setRating(jsonQueue.getRating());
         // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
-        tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount())
+        tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount()==0?"No":jsonQueue.getRatingCount())
                 + " Reviews");
 
         codeQR = jsonQueue.getCodeQR();
@@ -217,15 +227,15 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                 String errorMsg = "";
                 boolean isValid = true;
                 if (!UserUtils.isLogin()) {
-                    errorMsg = getString(R.string.error_login)+"\n";
+                    errorMsg += getString(R.string.bullet) + getString(R.string.error_login)+"\n";
                     isValid = false;
                 }
                 if (!jsonQueue.isRemoteJoinAvailable()) {
-                    errorMsg = getString(R.string.error_remote_join_not_available)+"\n";
+                    errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_not_available)+"\n";
                     isValid = false;
                 }
                 if (jsonQueue.getRemoteJoinCount() == 0) {
-                    errorMsg = getString(R.string.error_remote_join_available);
+                    errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_available);
                     isValid = false;
                 }
                 if(isValid) {
@@ -239,7 +249,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                     afterJoinFragment.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
                 }else{
-                    ShowAlertInformation.showThemeDialog(getActivity(),getString(R.string.error_join),errorMsg);
+                    ShowAlertInformation.showThemeDialog(getActivity(),getString(R.string.error_join),errorMsg,true);
                 }
             } else {
                 //TODO(chandra) make sure jsonQueue is not null. Prevent action on join button.
