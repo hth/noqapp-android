@@ -127,6 +127,7 @@ public class ManageQueueModel {
                     }
                 } else if (response.body() != null && response.body().getError() != null) {
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                    manageQueuePresenter.manageQueueError(errorEncounteredJson);
                     Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
                 }
             }

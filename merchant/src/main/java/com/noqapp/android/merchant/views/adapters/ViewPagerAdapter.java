@@ -23,6 +23,7 @@ import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.android.merchant.model.types.UserLevelEnum;
+import com.noqapp.android.merchant.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
@@ -411,7 +412,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     }
 
     @Override
-    public void manageQueueError() {
+    public void manageQueueError(ErrorEncounteredJson errorEncounteredJson) {
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
