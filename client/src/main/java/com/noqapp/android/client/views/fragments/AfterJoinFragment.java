@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,6 +34,8 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -226,6 +229,24 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     }
 
     private void navigateToList() {
+        try {
+            //Remove the join and after join screen from the QScan tab if the both screen having same QR code
+            List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabHome);
+            if (null != currentTabFragments && currentTabFragments.size() > 1) {
+                int size = currentTabFragments.size();
+                Fragment currentfrg = currentTabFragments.get(size - 1);
+                if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
+                    String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
+                    if (codeQR.equals(qcode)) {
+                        currentTabFragments.remove(currentTabFragments.size() - 1);
+                        currentTabFragments.remove(currentTabFragments.size() - 1);
+                    }
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         LaunchActivity.getLaunchActivity().onBackPressed();
     }
 

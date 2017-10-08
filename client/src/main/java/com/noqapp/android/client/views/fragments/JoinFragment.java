@@ -214,27 +214,35 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             Toast.makeText(getActivity(), joinErrorMsg, Toast.LENGTH_LONG).show();
         } else {
             if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
-
-                if (UserUtils.isLogin()) {
-                    if (jsonQueue.getRemoteJoinCount() == 0) {
-                        Toast.makeText(getActivity(), getString(R.string.error_remote_join_available), Toast.LENGTH_LONG).show();
-                    } else {
-                        Bundle b = new Bundle();
-                        b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
-                        b.putBoolean(KEY_FROM_LIST, false);
-                        b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-                        b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, true);
-                        b.putBoolean(KEY_IS_HISTORY, getArguments().getBoolean(KEY_IS_HISTORY, false));
-                        AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
-                        afterJoinFragment.setArguments(b);
-                        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
-                    }
-                } else {
-                    Toast.makeText(getActivity(), getString(R.string.error_login), Toast.LENGTH_LONG).show();
+                String errorMsg = "";
+                boolean isValid = true;
+                if (!UserUtils.isLogin()) {
+                    errorMsg = getString(R.string.error_login)+"\n";
+                    isValid = false;
+                }
+                if (!jsonQueue.isRemoteJoinAvailable()) {
+                    errorMsg = getString(R.string.error_remote_join_not_available)+"\n";
+                    isValid = false;
+                }
+                if (jsonQueue.getRemoteJoinCount() == 0) {
+                    errorMsg = getString(R.string.error_remote_join_available);
+                    isValid = false;
+                }
+                if(isValid) {
+                    Bundle b = new Bundle();
+                    b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
+                    b.putBoolean(KEY_FROM_LIST, false);
+                    b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+                    b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, true);
+                    b.putBoolean(KEY_IS_HISTORY, getArguments().getBoolean(KEY_IS_HISTORY, false));
+                    AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
+                    afterJoinFragment.setArguments(b);
+                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
+                }else{
+                    ShowAlertInformation.showThemeDialog(getActivity(),getString(R.string.error_join),errorMsg);
                 }
             } else {
                 //TODO(chandra) make sure jsonQueue is not null. Prevent action on join button.
-
                 Bundle b = new Bundle();
                 b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
                 b.putBoolean(KEY_FROM_LIST, false);
