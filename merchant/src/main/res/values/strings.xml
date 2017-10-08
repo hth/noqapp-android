@@ -57,7 +57,7 @@
     <string name="empty_counter">Please enter counter name</string>
     <string name="dayclosed">Day Closed</string>
     <string name="preventjoining">Prevent Joining</string>
-    <string name="name_unavailable">Name Unavailable</string>
+    <string name="name_unavailable">NA</string>
     <string name="cancel">Cancel</string>
     <string name="update">Update</string>
     <string name="setting">Queue Settings</string>

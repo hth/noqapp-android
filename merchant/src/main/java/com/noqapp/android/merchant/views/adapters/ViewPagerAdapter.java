@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
@@ -30,6 +32,7 @@ import com.noqapp.android.merchant.presenter.beans.body.Served;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.OutOfSequenceActivity;
 import com.noqapp.android.merchant.views.activities.OutOfSequenceDialogActivity;
@@ -97,6 +100,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         Button btn_skip = (Button) itemView.findViewById(R.id.btn_skip);
         Button btn_next = (Button) itemView.findViewById(R.id.btn_next);
         final Button btn_start = (Button) itemView.findViewById(R.id.btn_start);
+        TextView tv_deviceId = (TextView) itemView.findViewById(R.id.tv_deviceId);
+        tv_deviceId.setText(UserUtils.getDeviceId());
+        tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug")?View.VISIBLE:View.GONE);
         ImageView iv_settings = (ImageView) itemView.findViewById(R.id.iv_settings);
         iv_settings.setOnClickListener(new View.OnClickListener() {
             @Override

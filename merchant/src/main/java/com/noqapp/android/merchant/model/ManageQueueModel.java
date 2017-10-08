@@ -93,6 +93,7 @@ public class ManageQueueModel {
                 } else if (response.body() != null && response.body().getError() != null) {
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
                     Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
+                    manageQueuePresenter.manageQueueError(null);
                 }
             }
 
@@ -135,6 +136,7 @@ public class ManageQueueModel {
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
+                manageQueuePresenter.manageQueueError(null);
             }
         });
     }

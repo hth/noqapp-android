@@ -75,6 +75,12 @@
                         android:gravity="center_vertical"
                         android:scaleType="centerInside" />
                 </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_deviceId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/top"/>
             </RelativeLayout>
 
 
