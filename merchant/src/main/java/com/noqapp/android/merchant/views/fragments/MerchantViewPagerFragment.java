@@ -26,12 +26,15 @@ public class MerchantViewPagerFragment extends Fragment {
     private ImageView leftNav, rightNav;
     private ArrayList<JsonTopic> topicsList;
     private static UpdateListColorCallBack updateListColorCallBack;
+
     public interface UpdateListColorCallBack {
         void onUpdateListColorCallBack(int pos);
     }
+
     public static void setUpdateListColorCallBack(UpdateListColorCallBack updateListColorBack) {
         updateListColorCallBack = updateListColorBack;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantviewpager, container, false);
@@ -126,7 +129,7 @@ public class MerchantViewPagerFragment extends Fragment {
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
         if (new AppUtils().isTablet(getActivity())) {
             LaunchActivity.getLaunchActivity().enableDisableBack(false);
-        }else{
+        } else {
             LaunchActivity.getLaunchActivity().enableDisableBack(true);
         }
         LaunchActivity.getLaunchActivity().enableLogout();

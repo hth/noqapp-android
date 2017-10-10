@@ -133,24 +133,24 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (TextUtils.isEmpty(jsonQueuedPersonArrayList.get(position).getServerDeviceId())) {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                progressDialog.show();
-                                lastSelectedPos = position;
-                                served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
-                                ManageQueueModel.acquire(
-                                        LaunchActivity.getLaunchActivity().getDeviceID(),
-                                        LaunchActivity.getLaunchActivity().getEmail(),
-                                        LaunchActivity.getLaunchActivity().getAuth(),
-                                        served);
-                            } else {
-                                ShowAlertInformation.showNetworkDialog(OutOfSequenceActivity.this);
-                            }
-                        } else if (jsonQueuedPersonArrayList.get(position).getServerDeviceId().equals(UserUtils.getDeviceId())) {
-                            Toast.makeText(context,getString(R.string.error_client_acquired_by_you),Toast.LENGTH_LONG).show();
+                    if (TextUtils.isEmpty(jsonQueuedPersonArrayList.get(position).getServerDeviceId())) {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.show();
+                            lastSelectedPos = position;
+                            served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
+                            ManageQueueModel.acquire(
+                                    LaunchActivity.getLaunchActivity().getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    served);
                         } else {
-                            Toast.makeText(context,getString(R.string.error_client_acquired),Toast.LENGTH_LONG).show();
+                            ShowAlertInformation.showNetworkDialog(OutOfSequenceActivity.this);
                         }
+                    } else if (jsonQueuedPersonArrayList.get(position).getServerDeviceId().equals(UserUtils.getDeviceId())) {
+                        Toast.makeText(context, getString(R.string.error_client_acquired_by_you), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(context, getString(R.string.error_client_acquired), Toast.LENGTH_LONG).show();
+                    }
                 }
             });
         }
@@ -180,9 +180,9 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
 
     @Override
     public void manageQueueError(ErrorEncounteredJson errorEncounteredJson) {
-        if(null!= errorEncounteredJson && errorEncounteredJson.getSystemErrorCode().equals("350")){
-            Toast.makeText(context,getString(R.string.error_client_just_acquired),Toast.LENGTH_LONG).show();
-            if(lastSelectedPos >=0){
+        if (null != errorEncounteredJson && errorEncounteredJson.getSystemErrorCode().equals("350")) {
+            Toast.makeText(context, getString(R.string.error_client_just_acquired), Toast.LENGTH_LONG).show();
+            if (lastSelectedPos >= 0) {
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
                 lastSelectedPos = -1;
                 adapter.notifyDataSetChanged();
@@ -192,7 +192,6 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
         }
         dismissProgress();
     }
-
 
 
     @Override

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -102,7 +101,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         final Button btn_start = (Button) itemView.findViewById(R.id.btn_start);
         TextView tv_deviceId = (TextView) itemView.findViewById(R.id.tv_deviceId);
         tv_deviceId.setText(UserUtils.getDeviceId());
-        tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug")?View.VISIBLE:View.GONE);
+        tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         ImageView iv_settings = (ImageView) itemView.findViewById(R.id.iv_settings);
         iv_settings.setOnClickListener(new View.OnClickListener() {
             @Override

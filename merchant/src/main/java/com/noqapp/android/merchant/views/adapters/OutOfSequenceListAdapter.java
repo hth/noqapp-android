@@ -67,6 +67,7 @@ public class OutOfSequenceListAdapter extends BaseAdapter {
         TextView tv_customer_name;
         TextView tv_sequence_number;
         ImageView iv_info;
+
         RecordHolder() {
         }
     }

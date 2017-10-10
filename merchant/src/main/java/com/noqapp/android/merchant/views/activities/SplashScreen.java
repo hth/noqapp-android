@@ -21,7 +21,7 @@ public class SplashScreen extends AppCompatActivity {
     protected static boolean display = true;
     static SplashScreen splashScreen;
     protected boolean isAactive = true;
-    protected int splashTime = BuildConfig.BUILD_TYPE.equals("debug")?1000:4000;
+    protected int splashTime = BuildConfig.BUILD_TYPE.equals("debug") ? 1000 : 4000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
