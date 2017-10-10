@@ -77,12 +77,12 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 tv_store_name.setText(queue.getBusinessName());
                 tv_date_of_service.setText(queue.getServiceEndTime());
                 txtToken.setVisibility(View.VISIBLE);
-                if(queue.afterHowLong() > 0){
+                if (queue.afterHowLong() > 0) {
                     txtToken.setText(String.valueOf(queue.afterHowLong()));
-                    tv_hour_saved.setText( "You are");
-                }else if(queue.afterHowLong() <= 0){
+                    tv_hour_saved.setText("You are");
+                } else if (queue.afterHowLong() <= 0) {
                     txtToken.setVisibility(View.GONE);
-                    tv_hour_saved.setText( "Your turn");
+                    tv_hour_saved.setText("Your turn");
                 }
                 break;
 

@@ -1,13 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -152,7 +146,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
 
             if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
                 LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.remotejoin));
-            }else{
+            } else {
                 LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_join));
             }
         } else {
@@ -195,7 +189,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
         ratingBar.setRating(jsonQueue.getRating());
         // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
-        tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount()==0?"No":jsonQueue.getRatingCount())
+        tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount())
                 + " Reviews");
 
         codeQR = jsonQueue.getCodeQR();
@@ -227,18 +221,18 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                 String errorMsg = "";
                 boolean isValid = true;
                 if (!UserUtils.isLogin()) {
-                    errorMsg += getString(R.string.bullet) + getString(R.string.error_login)+"\n";
+                    errorMsg += getString(R.string.bullet) + getString(R.string.error_login) + "\n";
                     isValid = false;
                 }
                 if (!jsonQueue.isRemoteJoinAvailable()) {
-                    errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_not_available)+"\n";
+                    errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_not_available) + "\n";
                     isValid = false;
                 }
                 if (jsonQueue.getRemoteJoinCount() == 0) {
                     errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_available);
                     isValid = false;
                 }
-                if(isValid) {
+                if (isValid) {
                     Bundle b = new Bundle();
                     b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
                     b.putBoolean(KEY_FROM_LIST, false);
@@ -248,8 +242,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                     AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
                     afterJoinFragment.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
-                }else{
-                    ShowAlertInformation.showThemeDialog(getActivity(),getString(R.string.error_join),errorMsg,true);
+                } else {
+                    ShowAlertInformation.showThemeDialog(getActivity(), getString(R.string.error_join), errorMsg, true);
                 }
             } else {
                 //TODO(chandra) make sure jsonQueue is not null. Prevent action on join button.

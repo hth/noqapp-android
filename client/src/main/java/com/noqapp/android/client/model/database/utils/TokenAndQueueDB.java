@@ -281,7 +281,7 @@ public class TokenAndQueueDB {
         try {
             ContentValues con = new ContentValues();
             con.put(TokenQueue.SERVING_NUMBER, servingno);
-          //  con.put(TokenQueue.TOKEN, token);
+            //  con.put(TokenQueue.TOKEN, token);
             int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?", new String[]{codeQR});
             Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + String.valueOf(successCount));
             //AppUtilities.exportDatabase(LaunchActivity.getLaunchActivity());
@@ -289,6 +289,7 @@ public class TokenAndQueueDB {
             Log.e(TAG, "Error updateJoinQueueObject reason=" + e.getLocalizedMessage(), e);
         }
     }
+
     public boolean isTokenExist(String table_name, String codeQR, String date) {
         String whereClause = TokenQueue.CODE_QR + " = ?" + " AND " + TokenQueue.CREATE_DATE + " = ?";
         return DatabaseUtils.longForQuery(

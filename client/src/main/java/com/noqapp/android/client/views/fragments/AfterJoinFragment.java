@@ -236,8 +236,8 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                     }
                 }
             }
-        }catch (Exception e){
-            Log.e("Error",e.getMessage(),e);
+        } catch (Exception e) {
+            Log.e("Error", e.getMessage(), e);
         }
         LaunchActivity.getLaunchActivity().onBackPressed();
     }
@@ -337,13 +337,13 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);
     }
 
-    private void updateEstimatedTime(){
+    private void updateEstimatedTime() {
         if (!TextUtils.isEmpty("" + jsonTokenAndQueue.getAverageServiceTime()) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
             String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime());
             if (null == output) {
                 tv_estimated_time.setVisibility(View.GONE);
             } else {
-                tv_estimated_time.setText(String.format(getString(R.string.estimated_time) , output));
+                tv_estimated_time.setText(String.format(getString(R.string.estimated_time), output));
                 tv_estimated_time.setVisibility(View.VISIBLE);
             }
         } else {
