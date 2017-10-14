@@ -39,10 +39,10 @@ public class Constants {
     private static String VERSION_RELEASE;
 
     //Urls
-    public static final String URL_TERM_CONDITION = "https://noqapp.com/termsofuse";
-    public static final String URL_PRIVACY_POLICY = "https://noqapp.com/privacypolicy";
-    public static final String URL_ABOUT_US = "https://noqapp.com/aboutus";
-    public static final String URL_HOW_IT_WORKS = "https://noqapp.com/howitworks";
+    public static final String URL_TERM_CONDITION = "https://noqapp.com/beta/terms.html";
+    public static final String URL_PRIVACY_POLICY = "https://noqapp.com/beta/privacy.html";
+    public static final String URL_ABOUT_US = "https://noqapp.com/beta/our-story.html";
+    public static final String URL_HOW_IT_WORKS = "https://noqapp.com/beta/how-it-works.html";
 
     /**
      * Computes App version.
