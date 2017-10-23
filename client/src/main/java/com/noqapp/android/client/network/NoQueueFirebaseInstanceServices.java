@@ -35,9 +35,9 @@ public class NoQueueFirebaseInstanceServices extends FirebaseInstanceIdService {
         if (StringUtils.isBlank(deviceId)) {
             deviceId = UUID.randomUUID().toString().toUpperCase();
             setSharedPreferenceDeviceID(sharedpreferences, deviceId);
-            Log.d(TAG, "Device Id created" + deviceId);
+            Log.d(TAG, "Created deviceId=" + deviceId);
         } else {
-            Log.d(TAG, "Device Id exist" + deviceId);
+            Log.d(TAG, "Exist deviceId=" + deviceId);
         }
         DeviceModel.register(deviceId, deviceToken);
     }
