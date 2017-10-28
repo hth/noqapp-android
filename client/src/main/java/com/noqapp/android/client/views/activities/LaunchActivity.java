@@ -155,7 +155,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                          * resume if there is any record in Review DB for review key
                          */
                         if (null == userStatus) {
-                            updateNotifcation(intent, codeQR, false);
+                            updateNotification(intent, codeQR, false);
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                             ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                             callReviewActivity(codeQR);
@@ -164,7 +164,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                             callSkipScreen(codeQR);
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                        updateNotifcation(intent, codeQR, true);
+                        updateNotification(intent, codeQR, true);
                     } else {
                         // Toast.makeText(launchActivity, "Notification : " + payload, Toast.LENGTH_LONG).show();
                     }
@@ -461,14 +461,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
     }
 
-    private void updateNotifcation(Intent intent, String codeQR, boolean isReview) {
+    private void updateNotification(Intent intent, String codeQR, boolean isReview) {
         // Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
         String current_serving = intent.getStringExtra(Constants.MSG_TYPE_CS);
         String go_to = intent.getStringExtra(Constants.MSG_TYPE_G);
         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
         //update DB & after join screen
         jtk.setServingNumber(Integer.parseInt(current_serving));
-        /**
+        /*
          * Save codeQR of goto & show it in after join screen on app
          * Review DB for review key && current serving == token no.
          */
