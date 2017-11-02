@@ -55,36 +55,36 @@ public interface ManageQueueService {
     @POST("api/m/mq/acquire.json")
     Call<JsonToken> acquire(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Header("X-R-MAIL")
-                    String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-                    String auth,
+            String auth,
 
             @Body
-                    Served served
+            Served served
     );
 
     @POST("api/m/mq/showQueuedClients/{codeQR}.json")
     Call<JsonQueuePersonList> getQueuePersonList(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Header("X-R-MAIL")
-                    String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-                    String auth,
+            String auth,
 
             @Path("codeQR")
-                    String codeQR
+            String codeQR
     );
 }

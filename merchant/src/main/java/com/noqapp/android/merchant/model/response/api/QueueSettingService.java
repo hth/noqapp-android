@@ -24,30 +24,30 @@ public interface QueueSettingService {
             String dt,
 
             @Header("X-R-MAIL")
-             String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-             String auth,
+            String auth,
 
             @Body
-             QueueSetting queueSetting
+            QueueSetting queueSetting
     );
 
     @GET("api/m/mq/state/{codeQR}.json")
     Call<QueueSetting> getQueueState(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Header("X-R-MAIL")
-                    String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-                    String auth,
+            String auth,
 
             @Path("codeQR")
-                    String codeQR
+            String codeQR
     );
 }
