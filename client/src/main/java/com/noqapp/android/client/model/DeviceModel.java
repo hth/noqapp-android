@@ -51,4 +51,29 @@ public class DeviceModel {
             }
         });
     }
+
+    /**
+     * Check is current app version is supported.
+     *
+     * @param did
+     */
+    public static void isSupportedAppVersion(String did) {
+        deviceService.isSupportedAppVersion(did, Constants.DEVICE_TYPE, Constants.appVersion()).enqueue(new Callback<DeviceRegistered>() {
+            @Override
+            public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Empty history");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DeviceRegistered> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+            }
+        });
+    }
+
 }

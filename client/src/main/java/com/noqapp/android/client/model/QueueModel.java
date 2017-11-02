@@ -152,7 +152,7 @@ public final class QueueModel {
      * @param codeQR
      */
     public static void joinQueue(String did, String codeQR) {
-        queueService.joinQueue(did, Constants.DEVICE_TYPE, Constants.appVersion(), codeQR).enqueue(new Callback<JsonToken>() {
+        queueService.joinQueue(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_BAR_CODE) {

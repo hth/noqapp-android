@@ -25,4 +25,16 @@ public interface DeviceService {
             @Body
             DeviceToken deviceToken
     );
+
+    @POST("open/device/version.json")
+    Call<DeviceRegistered> isSupportedAppVersion(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-VR")
+            String versionRelease
+    );
 }

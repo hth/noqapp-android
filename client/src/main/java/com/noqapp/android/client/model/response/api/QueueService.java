@@ -80,9 +80,6 @@ public interface QueueService {
             @Header("X-R-DT")
             String dt,
 
-            @Header("X-R-VR")
-            String versionRelease,
-
             @Header("X-R-MAIL")
             String mail,
 
@@ -136,9 +133,6 @@ public interface QueueService {
 
             @Header("X-R-DT")
             String dt,
-
-            @Header("X-R-VR")
-            String versionRelease,
 
             @Header("X-R-MAIL")
             String mail,

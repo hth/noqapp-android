@@ -62,9 +62,6 @@ public interface QueueService {
             @Header("X-R-DT")
             String dt,
 
-            @Header("X-R-VR")
-            String versionRelease,
-
             @Path("codeQR")
             String codeQR
     );

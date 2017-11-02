@@ -136,7 +136,7 @@ public class QueueApiModel {
     }
 
     public static void joinQueue(String did, String mail, String auth, String codeQR) {
-        queueService.joinQueue(did, Constants.DEVICE_TYPE, Constants.appVersion(), mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
+        queueService.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
@@ -214,7 +214,7 @@ public class QueueApiModel {
     }
 
     public static void remoteJoinQueue(String did, String mail, String auth, String codeQR) {
-        queueService.remoteJoinQueue(did, Constants.DEVICE_TYPE, Constants.appVersion(), mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
+        queueService.remoteJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {

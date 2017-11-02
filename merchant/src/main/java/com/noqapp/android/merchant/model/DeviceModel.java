@@ -7,6 +7,7 @@ import com.noqapp.android.merchant.model.response.api.DeviceService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.DeviceRegistered;
 import com.noqapp.android.merchant.presenter.beans.body.DeviceToken;
+import com.noqapp.android.merchant.utils.Constants;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +37,30 @@ public class DeviceModel {
      */
     public static void register(String did, DeviceToken deviceToken) {
         deviceService.register(did, DEVICE_TYPE, deviceToken).enqueue(new Callback<DeviceRegistered>() {
+            @Override
+            public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Empty history");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DeviceRegistered> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+            }
+        });
+    }
+
+    /**
+     * Check is current app version is supported.
+     *
+     * @param did
+     */
+    public static void isSupportedAppVersion(String did) {
+        deviceService.isSupportedAppVersion(did, DEVICE_TYPE, Constants.appVersion()).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.body() != null) {
