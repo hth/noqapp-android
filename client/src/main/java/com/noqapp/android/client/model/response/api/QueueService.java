@@ -15,7 +15,6 @@ import retrofit2.http.Path;
 
 /**
  * Registered client APIs.
- * //TODO
  * <p>
  * User: hitender
  * Date: 3/27/17 8:05 PM
@@ -81,6 +80,9 @@ public interface QueueService {
             @Header("X-R-DT")
             String dt,
 
+            @Header("X-R-VR")
+            String versionRelease,
+
             @Header("X-R-MAIL")
             String mail,
 
@@ -134,6 +136,9 @@ public interface QueueService {
 
             @Header("X-R-DT")
             String dt,
+
+            @Header("X-R-VR")
+            String versionRelease,
 
             @Header("X-R-MAIL")
             String mail,

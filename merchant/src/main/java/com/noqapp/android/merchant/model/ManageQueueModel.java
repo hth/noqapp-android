@@ -43,7 +43,7 @@ public class ManageQueueModel {
      * @param auth
      */
     public static void getQueues(String did, String mail, String auth) {
-        manageQueueService.getQueues(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTopicList>() {
+        manageQueueService.getQueues(did, Constants.DEVICE_TYPE, Constants.appVersion(), mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
                 if (response.code() == 401) {
