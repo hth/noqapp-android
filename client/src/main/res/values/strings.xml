@@ -115,7 +115,7 @@
     <string name="exit_app">Press back again to exit</string>
     <string name="app_missing">No app to share invitation</string>
     <string name="select_country">Select Country</string>
-    <!--Stop waiting in queues. Use my invite code '%@' to download and register with NoQApp. We both earn Remote Joins. To learn more, go to www.noqapp.com/about. \n\nIf you own a store or restaurant or provide services and would like to increase customer statisfaction become NoQApp Merchant. Learn more go to page www.noqapp.com/about.-->
+    <!--Stop waiting in queues. Use my invite code '%@' to download and register with NoQApp. We both earn Remote Joins. To learn more, go to www.noqapp.com/about. \n\nIf you own a store or restaurant or provide services and would like to increase customer satisfaction become NoQApp Merchant. Learn more go to page www.noqapp.com/about.-->
 
     <!--Me Screen-->
     <string name="logout">Logout</string>
