@@ -36,7 +36,7 @@ android {
     archivesBaseName = "client";
 
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
 
     def versionPropsFile = file('version.properties')
     def versionMajor = 0;
@@ -349,7 +349,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true
     }
-    compile 'com.airbnb.android:lottie:2.2.3'
+    compile 'com.airbnb.android:lottie:2.2.5'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -357,7 +357,7 @@ dependencies {
 
 }
 
+apply plugin: 'com.google.gms.google-services'
+
 /** Gradle default task. */
 defaultTasks 'clean', 'assembleDebug'
-
-apply plugin: 'com.google.gms.google-services'
