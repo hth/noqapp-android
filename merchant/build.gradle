@@ -341,6 +341,7 @@ dependencies {
         transitive = true
     }
     compile 'com.airbnb.android:lottie:2.2.5'
+    compile 'org.jsoup:jsoup:1.8.3'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

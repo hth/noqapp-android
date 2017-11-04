@@ -22,15 +22,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.DeviceModel;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.network.NoQueueMessagingService;
+import com.noqapp.android.client.network.VersionCheckAsync;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.NetworkUtil;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.AfterJoinFragment;
 import com.noqapp.android.client.views.fragments.JoinFragment;
 import com.noqapp.android.client.views.fragments.ListQueueFragment;
@@ -39,6 +43,7 @@ import com.noqapp.android.client.views.fragments.MeFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
+import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -52,7 +57,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener {
+public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, AppBlacklistPresenter {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static DatabaseHelper dbHandler;
     public static String tabHome = "ScanQ";
@@ -125,6 +130,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
         launchActivity = this;
+        DeviceModel.appBlacklistPresenter = this;
         Log.v("device id check", getDeviceID());
         setReviewShown(false);//Reset the flag when app is killed
         //AppUtilities.exportDatabase(this);
@@ -171,6 +177,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 }
             }
         };
+
+        //Add new Api call to check the app blacklist
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
+        }
     }
 
     @Override
@@ -502,5 +513,18 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             }
 
         }
+    }
+
+    @Override
+    public void appBlacklistError() {
+
+        ShowAlertInformation.showThemePlayStoreDialog(launchActivity,getString(R.string.playstore_title),getString(R.string.playstore_msg),false);
+
+    }
+
+    @Override
+    public void appBlacklistResponse() {
+        if(isOnline())
+            new VersionCheckAsync(launchActivity).execute();
     }
 }

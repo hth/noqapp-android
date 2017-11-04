@@ -70,4 +70,9 @@
     <string name="error_client_just_acquired">Client is just acquired by someone else</string>
     <string name="error_client_acquired">Client is acquired by someone else</string>
     <string name="error_client_acquired_by_you">Client is acquired by you</string>
+    <string name="btn_playstore">Open Play Store</string>
+    <string name="playstore_title">Unsupported Version</string>
+    <string name="playstore_msg">This version of the app is no longer supported. Please update the app.</string>
+    <string name="playstore_update_title">New Version Available</string>
+    <string name="playstore_update_msg">New version of NoQApp is available on play store. Please update the application.</string>
 </resources>

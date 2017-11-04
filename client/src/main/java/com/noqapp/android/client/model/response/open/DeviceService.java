@@ -1,6 +1,7 @@
 package com.noqapp.android.client.model.response.open;
 
 import com.noqapp.android.client.presenter.beans.DeviceRegistered;
+import com.noqapp.android.client.presenter.beans.body.AppVersionCheck;
 import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 
 import retrofit2.Call;
@@ -27,7 +28,7 @@ public interface DeviceService {
     );
 
     @POST("open/device/version.json")
-    Call<DeviceRegistered> isSupportedAppVersion(
+    Call<AppVersionCheck> isSupportedAppVersion(
             @Header("X-R-DID")
             String did,
 

@@ -26,20 +26,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.DeviceModel;
 import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
+import com.noqapp.android.merchant.network.VersionCheckAsync;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.NetworkUtil;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
+import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-public class LaunchActivity extends AppCompatActivity {
+public class LaunchActivity extends AppCompatActivity implements AppBlacklistPresenter{
 
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
@@ -86,6 +90,7 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         launchActivity = this;
+        DeviceModel.appBlacklistPresenter = this;
         Log.v("device id check", getDeviceID());
         networkUtil = new NetworkUtil(this);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -149,6 +154,11 @@ public class LaunchActivity extends AppCompatActivity {
                 }
             }
         };
+
+        //Add new Api call to check the app blacklist
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
+        }
     }
 
     public void setActionBarTitle(String title) {
@@ -406,4 +416,17 @@ public class LaunchActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void appBlacklistError() {
+
+        ShowAlertInformation.showThemePlayStoreDialog(launchActivity,getString(R.string.playstore_title),getString(R.string.playstore_msg),false);
+
+    }
+
+    @Override
+    public void appBlacklistResponse() {
+        if(isOnline())
+            new VersionCheckAsync(launchActivity).execute();
+    }
 }

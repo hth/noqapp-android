@@ -90,4 +90,40 @@ public class ShowAlertInformation {
         });
         mAlertDialog.show();
     }
+
+    public static void showThemePlayStoreDialog(final Context context, String title, String message , boolean isNegativeEnable) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+        TextView tvtitle = (TextView) customDialogView.findViewById(R.id.tvtitle);
+        TextView tv_msg = (TextView) customDialogView.findViewById(R.id.tv_msg);
+        View seperator = (View) customDialogView.findViewById(R.id.seperator);
+        tvtitle.setText(title);
+        tv_msg.setText(message);
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        Button btn_yes = (Button) customDialogView.findViewById(R.id.btn_yes);
+        btn_yes.setText(context.getString(R.string.btn_playstore));
+        Button btn_no = (Button) customDialogView.findViewById(R.id.btn_no);
+        if(isNegativeEnable) {
+            btn_no.setVisibility(View.VISIBLE);
+            seperator.setVisibility(View.VISIBLE);
+            mAlertDialog.setCanceledOnTouchOutside(true);
+        }
+        btn_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertDialog.dismiss();
+            }
+        });
+        btn_yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppUtilities.openPlayStore(context);
+            }
+        });
+        mAlertDialog.show();
+    }
 }
