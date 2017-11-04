@@ -15,10 +15,10 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class RetrofitClient {
     private static Retrofit retrofit;
-    private static long TIME_OUT = 45;
+    private static long TIME_OUT = 35;
 
     public static Retrofit getClient() {
-        if (retrofit == null) {
+        if (null == retrofit) {
             final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .readTimeout(TIME_OUT, TimeUnit.SECONDS)
                     .connectTimeout(TIME_OUT, TimeUnit.SECONDS)

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -18,10 +19,10 @@ import java.io.IOException;
 /**
  * Created by chandra on 11/4/17.
  */
-
 public class VersionCheckAsync extends AsyncTask<String, String, String> {
+    private final static String TAG = VersionCheckAsync.class.getSimpleName();
 
-    private  Context context;
+    private Context context;
     private String newVersion;
 
     public VersionCheckAsync(Context context) {
@@ -30,7 +31,6 @@ public class VersionCheckAsync extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... params) {
-
         try {
             newVersion = Jsoup.connect("https://play.google.com/store/apps/details?id=" + context.getPackageName() + "&hl=en")
                     .timeout(30000)
@@ -41,7 +41,7 @@ public class VersionCheckAsync extends AsyncTask<String, String, String> {
                     .first()
                     .ownText();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Background check reason=" + e.getLocalizedMessage(), e);
         }
 
         return newVersion;
@@ -52,11 +52,15 @@ public class VersionCheckAsync extends AsyncTask<String, String, String> {
         super.onPostExecute(s);
         try {
             String currentVersion = Constants.appVersion();
-            if(Integer.parseInt(currentVersion)<Integer.parseInt(newVersion.replace(".","")))
-                ShowAlertInformation.showThemePlayStoreDialog(context,context.getString(R.string.playstore_update_title),context.getString(R.string.playstore_update_msg),true);
-
+            if (Integer.parseInt(currentVersion) < Integer.parseInt(newVersion.replace(".", ""))) {
+                ShowAlertInformation.showThemePlayStoreDialog(
+                        context,
+                        context.getString(R.string.playstore_update_title),
+                        context.getString(R.string.playstore_update_msg),
+                        true);
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Compare version check reason=" + e.getLocalizedMessage(), e);
         }
     }
 }

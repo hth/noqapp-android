@@ -57,6 +57,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
+
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, AppBlacklistPresenter {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static DatabaseHelper dbHandler;
@@ -178,7 +180,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             }
         };
 
-        //Add new Api call to check the app blacklist
+        /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
@@ -506,9 +508,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         } else if (null != currentTabFragments && currentTabFragments.size() == 1) {
             try {
                 int size = currentTabFragments.size();
-                Fragment currentfrg = currentTabFragments.get(size - 1);
-                if (currentfrg.getClass().getSimpleName().equals(ListQueueFragment.class.getSimpleName())) {
-                    ((ListQueueFragment) currentfrg).updateListFromNotification(jtk, go_to);
+                Fragment currentFragment = currentTabFragments.get(size - 1);
+                if (currentFragment.getClass().getSimpleName().equals(ListQueueFragment.class.getSimpleName())) {
+                    ((ListQueueFragment) currentFragment).updateListFromNotification(jtk, go_to);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -519,14 +521,13 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     @Override
     public void appBlacklistError() {
-
-        ShowAlertInformation.showThemePlayStoreDialog(launchActivity,getString(R.string.playstore_title),getString(R.string.playstore_msg),false);
-
+        ShowAlertInformation.showThemePlayStoreDialog(launchActivity, getString(R.string.playstore_title), getString(R.string.playstore_msg), false);
     }
 
     @Override
     public void appBlacklistResponse() {
-        if(isOnline())
+        if (isOnline() && !BUILD_TYPE.equals("debug")) {
             new VersionCheckAsync(launchActivity).execute();
+        }
     }
 }

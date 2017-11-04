@@ -67,7 +67,7 @@ public class DeviceModel {
                 if (null != response.body() && null != response.body().getError()) {
                     Log.d("Get queue setting", String.valueOf(response.body()));
                     appBlacklistPresenter.appBlacklistError();
-                }else {
+                } else {
                     appBlacklistPresenter.appBlacklistResponse();
                 }
             }

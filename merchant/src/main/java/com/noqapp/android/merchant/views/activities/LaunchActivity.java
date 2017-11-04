@@ -43,7 +43,9 @@ import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-public class LaunchActivity extends AppCompatActivity implements AppBlacklistPresenter{
+import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
+
+public class LaunchActivity extends AppCompatActivity implements AppBlacklistPresenter {
 
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
@@ -155,7 +157,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             }
         };
 
-        //Add new Api call to check the app blacklist
+        /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
@@ -419,14 +421,13 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
 
     @Override
     public void appBlacklistError() {
-
-        ShowAlertInformation.showThemePlayStoreDialog(launchActivity,getString(R.string.playstore_title),getString(R.string.playstore_msg),false);
-
+        ShowAlertInformation.showThemePlayStoreDialog(launchActivity, getString(R.string.playstore_title), getString(R.string.playstore_msg), false);
     }
 
     @Override
     public void appBlacklistResponse() {
-        if(isOnline())
+        if (isOnline() && !BUILD_TYPE.equals("debug")) {
             new VersionCheckAsync(launchActivity).execute();
+        }
     }
 }

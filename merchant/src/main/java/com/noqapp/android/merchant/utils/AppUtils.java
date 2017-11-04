@@ -12,7 +12,6 @@ import android.net.Uri;
 
 public class AppUtils {
 
-
     public static ApkVersionModel parseVersion(String version) {
         if (null == version || !version.contains(".")) {
             return null;
@@ -32,7 +31,7 @@ public class AppUtils {
         return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    public static void openPlayStore(Context context){
+    static void openPlayStore(Context context) {
         final String appPackageName = context.getPackageName(); // getPackageName() from Context or Activity object
         try {
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));

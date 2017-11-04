@@ -44,14 +44,12 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
     private String codeQR;
     protected boolean isDialog = false;
 
-
     private OutOfSequenceListAdapter adapter;
     private List<JsonQueuedPerson> jsonQueuedPersonArrayList;
     private ListView listview;
     private Context context;
     private Served served;
     private int lastSelectedPos = -1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,10 +95,7 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
         } else {
             ShowAlertInformation.showNetworkDialog(OutOfSequenceActivity.this);
         }
-
-
     }
-
 
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
@@ -114,14 +109,12 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
         }
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.stay, R.anim.slide_down);
     }
-
 
     @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
@@ -193,7 +186,6 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
         dismissProgress();
     }
 
-
     @Override
     public void authenticationFailure(int errorcode) {
         LaunchActivity.getLaunchActivity().dismissProgress();
@@ -208,5 +200,4 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
             finish();
         }
     }
-
 }
