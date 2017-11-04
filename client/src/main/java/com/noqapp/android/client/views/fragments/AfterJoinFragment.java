@@ -329,7 +329,9 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
 
     public void setObject(JsonTokenAndQueue jq, String go_to) {
         gotoPerson = go_to;
-        jsonTokenAndQueue = jq;
+       // jsonTokenAndQueue = jq; removed to avoided the override of the data
+        jsonTokenAndQueue.setServingNumber(jq.getServingNumber());
+        jsonTokenAndQueue.setToken(jq.getToken());
         tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
         tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
@@ -341,13 +343,13 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         if (!TextUtils.isEmpty("" + jsonTokenAndQueue.getAverageServiceTime()) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
             String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime());
             if (null == output) {
-                tv_estimated_time.setVisibility(View.GONE);
+                tv_estimated_time.setVisibility(View.INVISIBLE);
             } else {
                 tv_estimated_time.setText(String.format(getString(R.string.estimated_time), output));
                 tv_estimated_time.setVisibility(View.VISIBLE);
             }
         } else {
-            tv_estimated_time.setVisibility(View.GONE);
+            tv_estimated_time.setVisibility(View.INVISIBLE);
         }
     }
 }

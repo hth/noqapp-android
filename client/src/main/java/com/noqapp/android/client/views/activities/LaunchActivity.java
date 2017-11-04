@@ -483,36 +483,38 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
          * Save codeQR of goto & show it in after join screen on app
          * Review DB for review key && current serving == token no.
          */
-        if (Integer.parseInt(current_serving) == jtk.getToken() && isReview)
+        if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
             ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
+        }
+
         if (jtk.isTokenExpired()) {
             //un subscribe the topic
             NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-            TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-            List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
-            if (null != currentTabFragments && currentTabFragments.size() > 1) {
-                int size = currentTabFragments.size();
-                Fragment currentfrg = currentTabFragments.get(size - 1);
-                if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                    String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
-                    if (codeQR.equals(qcode)) {
-                        //updating the serving status
-                        ((AfterJoinFragment) currentfrg).setObject(jtk, go_to);
-                    }
-                }
-            } else if (null != currentTabFragments && currentTabFragments.size() == 1) {
-                try {
-                    int size = currentTabFragments.size();
-                    Fragment currentfrg = currentTabFragments.get(size - 1);
-                    if (currentfrg.getClass().getSimpleName().equals(ListQueueFragment.class.getSimpleName())) {
-                        ((ListQueueFragment) currentfrg).updateListFromNotification(jtk, go_to);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        }
+        TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+        List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
+        if (null != currentTabFragments && currentTabFragments.size() > 1) {
+            int size = currentTabFragments.size();
+            Fragment currentfrg = currentTabFragments.get(size - 1);
+            if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
+                String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
+                if (codeQR.equals(qcode)) {
+                    //updating the serving status
+                    ((AfterJoinFragment) currentfrg).setObject(jtk, go_to);
                 }
             }
-
+        } else if (null != currentTabFragments && currentTabFragments.size() == 1) {
+            try {
+                int size = currentTabFragments.size();
+                Fragment currentfrg = currentTabFragments.get(size - 1);
+                if (currentfrg.getClass().getSimpleName().equals(ListQueueFragment.class.getSimpleName())) {
+                    ((ListQueueFragment) currentfrg).updateListFromNotification(jtk, go_to);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     @Override

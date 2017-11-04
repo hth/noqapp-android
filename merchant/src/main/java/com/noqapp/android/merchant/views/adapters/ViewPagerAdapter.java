@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,6 +90,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         ManageQueueModel.manageQueuePresenter = this;
         final JsonTopic lq = topics.get(position);
         final QueueStatusEnum queueStatus = lq.getQueueStatus();
+        RelativeLayout rl_left = (RelativeLayout) itemView.findViewById(R.id.rl_left);
         TextView tv_current_value = (TextView) itemView.findViewById(R.id.tv_current_value);
         TextView tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
         TextView tv_title = (TextView) itemView.findViewById(R.id.tv_title);
@@ -120,7 +122,39 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             }
         });
 
+        rl_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (queueStatus == QueueStatusEnum.N) {
+                    LaunchActivity.getLaunchActivity().setCounterName(tv_counter_name.getText().toString().trim());
+                    if (tv_counter_name.getText().toString().trim().equals("")) {
+                        Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+                    } else {
+                        Served served = new Served();
+                        served.setCodeQR(lq.getCodeQR());
+                        served.setQueueStatus(lq.getQueueStatus());
+                        // served.setQueueUserState(QueueUserStateEnum.N); don't send for time being
+                        //served.setServedNumber(lq.getServingNumber());
+                        served.setGoTo(tv_counter_name.getText().toString());
+                        if (new AppUtils().isTablet(context)) {
+                            Intent in = new Intent(context, OutOfSequenceDialogActivity.class);
+                            in.putExtra("codeQR", lq.getCodeQR());
+                            in.putExtra("data", served);
+                            ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
+                        } else {
+                            Intent in = new Intent(context, OutOfSequenceActivity.class);
+                            in.putExtra("codeQR", lq.getCodeQR());
+                            in.putExtra("data", served);
+                            ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
+                            ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
 
+                        }
+                    }
+                } else {
+                    ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
+                }
+            }
+        });
         ImageView iv_out_of_sequence = (ImageView) itemView.findViewById(R.id.iv_out_of_sequence);
         iv_out_of_sequence.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -456,6 +490,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                     edt_counter.setError(mContext.getString(R.string.empty_counter));
                 } else {
                     textView.setText(edt_counter.getText().toString());
+                    LaunchActivity.getLaunchActivity().setCounterName(edt_counter.getText().toString().trim());
                     mAlertDialog.dismiss();
                 }
             }

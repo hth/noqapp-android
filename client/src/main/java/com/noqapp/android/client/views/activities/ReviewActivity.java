@@ -155,7 +155,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             }
         });
         seekbarWithIntervals.setProgress(Constants.DEFAULT_REVIEW_TIME_SAVED);
-        tv_hr_saved.setText(getSeekbarLabel(1));
+        tv_hr_saved.setText(getSeekbarLabel(2));
 
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener(new View.OnClickListener() {

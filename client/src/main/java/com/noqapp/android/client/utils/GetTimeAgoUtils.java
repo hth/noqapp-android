@@ -21,7 +21,7 @@ public class GetTimeAgoUtils {
         // TODO: localize
         final long diff = time;
         if (diff < MINUTE_MILLIS) {
-            return "Soon";
+            return "In "+diff/1000+" seconds";
         } else if (diff < 2 * MINUTE_MILLIS) {
             return "In a minute";
         } else if (diff < 50 * MINUTE_MILLIS) {
