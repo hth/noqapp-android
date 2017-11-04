@@ -16,9 +16,12 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
+import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.client.views.activities.WebViewActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +54,9 @@ public class MeFragment extends NoQueueBaseFragment {
     @BindView(R.id.ll_legal)
     protected LinearLayout ll_legal;
 
+    @BindView(R.id.ll_referal)
+    protected LinearLayout ll_referal;
+
 
     private String inviteCode;
 
@@ -81,7 +87,7 @@ public class MeFragment extends NoQueueBaseFragment {
         if (!phone.equals("")) {
             tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(NoQueueBaseActivity.getCountryShortName(), phone));
         }
-        tv_scanCount.setText(String.valueOf(remoteScanCount));
+        tv_scanCount.setText(String.valueOf(remoteScanCount)+" ");
         toggleAutoJoin.setChecked(isAutoScanAvail);
         toggleAutoJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -151,5 +157,16 @@ public class MeFragment extends NoQueueBaseFragment {
     @OnClick({R.id.ll_legal})
     public void action_Legal() {
         replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LegalFragment(), TAG, LaunchActivity.tabMe);
+    }
+
+    @OnClick({R.id.ll_referal})
+    public void promotionalClick(){
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            Intent in = new Intent(getActivity(), WebViewActivity.class);
+            in.putExtra("url", Constants.URL_ABOUT_US);
+            getActivity().startActivity(in);
+        } else {
+            ShowAlertInformation.showNetworkDialog(getActivity());
+        }
     }
 }

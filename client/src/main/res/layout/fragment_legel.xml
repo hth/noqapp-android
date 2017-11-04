@@ -62,12 +62,20 @@
                         android:paddingRight="@dimen/screen_padding">
 
                         <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight=".75"
                             android:gravity="center_vertical"
                             android:text="@string/term_condition"
                             android:textColor="@color/color_total_val"
                             android:textSize="18sp" />
+
+                        <ImageView
+
+                            android:layout_width="23dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/right_arrow" />
 
 
                     </LinearLayout>
@@ -90,14 +98,20 @@
                         android:paddingRight="@dimen/screen_padding">
 
                         <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight=".75"
                             android:gravity="center_vertical"
                             android:text="@string/privacy_policy"
                             android:textColor="@color/color_total_val"
                             android:textSize="18sp" />
 
+                        <ImageView
 
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/right_arrow"/>
                     </LinearLayout>
 
                     <View
@@ -118,12 +132,19 @@
                         android:paddingRight="@dimen/screen_padding">
 
                         <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight=".75"
                             android:gravity="center_vertical"
                             android:text="@string/about_us"
                             android:textColor="@color/color_total_val"
                             android:textSize="18sp" />
+                        <ImageView
+
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/right_arrow" />
                     </LinearLayout>
 
 
