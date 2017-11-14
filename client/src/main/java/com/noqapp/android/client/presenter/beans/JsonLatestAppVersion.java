@@ -1,10 +1,9 @@
-package com.noqapp.android.merchant.presenter.beans;
+package com.noqapp.android.client.presenter.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import com.noqapp.android.client.presenter.beans.ErrorEncounteredJson;
 
 /**
  * Created by chandra on 11/4/17.
@@ -20,20 +19,20 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class AppVersionCheck {
+public class JsonLatestAppVersion {
 
-    @JsonProperty("r")
-    private int supportedVersion;
+    @JsonProperty("av")
+    private String latestAppVersion;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public int getSupportedVersion() {
-        return supportedVersion;
+    public String getLatestAppVersion() {
+        return latestAppVersion;
     }
 
-    public void setSupportedVersion(int supportedVersion) {
-        this.supportedVersion = supportedVersion;
+    public void setLatestAppVersion(String latestAppVersion) {
+        this.latestAppVersion = latestAppVersion;
     }
 
     public ErrorEncounteredJson getError() {
@@ -46,10 +45,9 @@ public class AppVersionCheck {
 
     @Override
     public String toString() {
-        return "AppVersionCheck{" +
-                "supportedVersion=" + supportedVersion +
+        return "JsonLatestAppVersion{" +
+                "latestAppVersion='" + latestAppVersion + '\'' +
                 ", error=" + error +
                 '}';
     }
 }
-

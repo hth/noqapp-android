@@ -427,6 +427,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     @Override
     public void appBlacklistResponse() {
         if (isOnline() && !BUILD_TYPE.equals("debug")) {
+            //TODO(hth) This can be replaced with version received when looking for blacklist
             new VersionCheckAsync(launchActivity).execute();
         }
     }

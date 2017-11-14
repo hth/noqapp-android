@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.model.response.api;
 
-import com.noqapp.android.merchant.presenter.beans.AppVersionCheck;
 import com.noqapp.android.merchant.presenter.beans.DeviceRegistered;
+import com.noqapp.android.merchant.presenter.beans.JsonLatestAppVersion;
 import com.noqapp.android.merchant.presenter.beans.body.DeviceToken;
 
 import retrofit2.Call;
@@ -28,7 +28,7 @@ public interface DeviceService {
     );
 
     @POST("open/device/version.json")
-    Call<AppVersionCheck> isSupportedAppVersion(
+    Call<JsonLatestAppVersion> isSupportedAppVersion(
             @Header("X-R-DID")
             String did,
 
