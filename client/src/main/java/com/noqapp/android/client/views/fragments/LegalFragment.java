@@ -22,7 +22,7 @@ public class LegalFragment extends NoQueueBaseFragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_legel, container, false);
+        View view = inflater.inflate(R.layout.fragment_legal, container, false);
         TextView tv_version = (TextView) view.findViewById(R.id.tv_version);
         tv_version.setText(BuildConfig.BUILD_TYPE.equalsIgnoreCase("release") ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                 : getString(R.string.version_no, "Not for release"));

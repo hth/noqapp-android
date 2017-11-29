@@ -219,7 +219,8 @@
                     android:minHeight="@dimen/cell_size"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/screen_padding"
-                    android:paddingRight="@dimen/screen_padding">
+                    android:paddingRight="@dimen/screen_padding"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/ll_referal"
