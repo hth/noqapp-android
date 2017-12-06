@@ -111,6 +111,10 @@ public class JsonQueue implements Serializable {
     @JsonProperty("lu")
     private boolean allowLoggedInUser = false;
 
+    //TODO add this property in Queue Settings screen
+    @JsonProperty ("at")
+    private int availableTokenCount;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -230,6 +234,14 @@ public class JsonQueue implements Serializable {
 
     public boolean isAllowLoggedInUser() {
         return allowLoggedInUser;
+    }
+
+    public int getAvailableTokenCount() {
+        return availableTokenCount;
+    }
+
+    public void setAvailableTokenCount(int availableTokenCount) {
+        this.availableTokenCount = availableTokenCount;
     }
 
     public ErrorEncounteredJson getError() {

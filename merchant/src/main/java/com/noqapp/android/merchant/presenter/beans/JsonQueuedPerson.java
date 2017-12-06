@@ -33,6 +33,9 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty("n")
     private String customerName = "";
 
+    @JsonProperty("n")
+    private String customerPhone = "";
+
     @JsonProperty("sid")
     private String serverDeviceId = "";
 

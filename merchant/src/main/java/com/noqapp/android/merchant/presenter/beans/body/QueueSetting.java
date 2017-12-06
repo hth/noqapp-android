@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.merchant.presenter.beans.ErrorEncounteredJson;
 
-
 /**
  * Created by chandra on 7/15/17.
  */
@@ -35,6 +34,10 @@ public class QueueSetting {
     @JsonProperty("dc")
     private boolean preventJoining;
 
+    //TODO add this property in Queue Settings screen
+    @JsonProperty ("at")
+    private int availableTokenCount;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -60,6 +63,14 @@ public class QueueSetting {
 
     public void setPreventJoining(boolean preventJoining) {
         this.preventJoining = preventJoining;
+    }
+
+    public int getAvailableTokenCount() {
+        return availableTokenCount;
+    }
+
+    public void setAvailableTokenCount(int availableTokenCount) {
+        this.availableTokenCount = availableTokenCount;
     }
 
     public ErrorEncounteredJson getError() {
