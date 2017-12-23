@@ -188,14 +188,18 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
     }
 
     private void startPhoneNumberVerification(String phoneNumber) {
-        // [START start_phone_auth]
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,        // Phone number to verify
-                60,                 // Timeout duration
-                TimeUnit.SECONDS,   // Unit of timeout
-                getActivity(),               // Activity (for callback binding)
-                mCallbacks);        // OnVerificationStateChangedCallbacks
-        // [END start_phone_auth]
+        try {
+            // [START start_phone_auth]
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                    phoneNumber,        // Phone number to verify
+                    60,                 // Timeout duration
+                    TimeUnit.SECONDS,   // Unit of timeout
+                    getActivity(),               // Activity (for callback binding)
+                    mCallbacks);        // OnVerificationStateChangedCallbacks
+            // [END start_phone_auth]
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 

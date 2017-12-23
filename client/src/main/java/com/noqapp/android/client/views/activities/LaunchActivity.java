@@ -435,7 +435,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 if (backPressToast != null) {
                     backPressToast.cancel();
                 }
-                super.onBackPressed();
+                //super.onBackPressed();
+                finish();
             }
         }
     }

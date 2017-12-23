@@ -261,7 +261,8 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
                 lastPress = currentTime;
             } else {
                 if (backpressToast != null) backpressToast.cancel();
-                super.onBackPressed();
+                //super.onBackPressed();
+                finish();
             }
         } else {
             super.onBackPressed();
