@@ -76,4 +76,9 @@
     <string name="playstore_msg">This version of the NoQApp Merchant is no longer supported. Please update app to latest version.\n</string>
     <string name="playstore_update_title">Newer App Version Available</string>
     <string name="playstore_update_msg">New version of NoQApp Merchant is available on play store. Please update your app to latest version.\n</string>
+    <string name="error_client_left_queue">Client cannot be acquired as client has left the queue.</string>
+    <string name="msg_client_available">Can be acquired</string>
+    <string name="msg_client_acquired_by_you">Acquired by you</string>
+    <string name="msg_client_already_acquired">Acquired by someone else</string>
+    <string name="msg_client_left_queue">Has left the Queue</string>
 </resources>

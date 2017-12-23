@@ -58,7 +58,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                     btn_login.setTextColor(Color.WHITE);
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
-                        LoginModel.login(email, pwd);
+                        LoginModel.login(email.toLowerCase(), pwd);
                     } else {
                         ShowAlertInformation.showNetworkDialog(getActivity());
                     }

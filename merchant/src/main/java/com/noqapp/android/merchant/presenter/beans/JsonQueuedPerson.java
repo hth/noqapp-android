@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 
 import java.io.Serializable;
 
@@ -33,8 +34,11 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty("n")
     private String customerName = "";
 
-    @JsonProperty("n")
+    @JsonProperty("p")
     private String customerPhone = "";
+
+    @JsonProperty("qu")
+    private QueueUserStateEnum queueUserState;
 
     @JsonProperty("sid")
     private String serverDeviceId = "";
@@ -57,11 +61,30 @@ public class JsonQueuedPerson implements Serializable {
         return this;
     }
 
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public JsonQueuedPerson setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+        return this;
+    }
+
+    public QueueUserStateEnum getQueueUserState() {
+        return queueUserState;
+    }
+
+    public JsonQueuedPerson setQueueUserState(QueueUserStateEnum queueUserState) {
+        this.queueUserState = queueUserState;
+        return this;
+    }
+
     public String getServerDeviceId() {
         return serverDeviceId;
     }
 
-    public void setServerDeviceId(String serverDeviceId) {
+    public JsonQueuedPerson setServerDeviceId(String serverDeviceId) {
         this.serverDeviceId = serverDeviceId;
+        return this;
     }
 }

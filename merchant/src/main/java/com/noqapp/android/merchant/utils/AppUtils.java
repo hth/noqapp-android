@@ -1,9 +1,18 @@
 package com.noqapp.android.merchant.utils;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
 
 /**
  * User: hitender
@@ -12,6 +21,7 @@ import android.net.Uri;
 
 public class AppUtils {
 
+    private final String TAG = AppUtils.class.getSimpleName();
     public static ApkVersionModel parseVersion(String version) {
         if (null == version || !version.contains(".")) {
             return null;
@@ -37,6 +47,27 @@ public class AppUtils {
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
         } catch (android.content.ActivityNotFoundException anfe) {
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
+    }
+
+    public void makeCall(Activity context, String phoneNumber) {
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            int checkPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
+            if (checkPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                        context,
+                        new String[]{Manifest.permission.CALL_PHONE},
+                        111);
+            } else {
+                try {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:" + phoneNumber));
+                    context.startActivity(callIntent);
+                } catch (ActivityNotFoundException ex) {
+                    Log.w(TAG, "Failed calling reason=" + ex.getLocalizedMessage());
+                    Toast.makeText(context, "Please install a calling application", Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
 }

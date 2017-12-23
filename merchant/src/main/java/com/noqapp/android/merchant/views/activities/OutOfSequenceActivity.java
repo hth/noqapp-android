@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
+import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.android.merchant.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -126,23 +127,28 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (TextUtils.isEmpty(jsonQueuedPersonArrayList.get(position).getServerDeviceId())) {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            progressDialog.show();
-                            lastSelectedPos = position;
-                            served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
-                            ManageQueueModel.acquire(
-                                    LaunchActivity.getLaunchActivity().getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(),
-                                    served);
+
+                    if(jsonQueuedPersonArrayList.get(position).getQueueUserState() ==  QueueUserStateEnum.A){
+                        Toast.makeText(context, getString(R.string.error_client_left_queue), Toast.LENGTH_LONG).show();
+                    }else {
+                        if (TextUtils.isEmpty(jsonQueuedPersonArrayList.get(position).getServerDeviceId())) {
+                            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                progressDialog.show();
+                                lastSelectedPos = position;
+                                served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
+                                ManageQueueModel.acquire(
+                                        LaunchActivity.getLaunchActivity().getDeviceID(),
+                                        LaunchActivity.getLaunchActivity().getEmail(),
+                                        LaunchActivity.getLaunchActivity().getAuth(),
+                                        served);
+                            } else {
+                                ShowAlertInformation.showNetworkDialog(OutOfSequenceActivity.this);
+                            }
+                        } else if (jsonQueuedPersonArrayList.get(position).getServerDeviceId().equals(UserUtils.getDeviceId())) {
+                            Toast.makeText(context, getString(R.string.error_client_acquired_by_you), Toast.LENGTH_LONG).show();
                         } else {
-                            ShowAlertInformation.showNetworkDialog(OutOfSequenceActivity.this);
+                            Toast.makeText(context, getString(R.string.error_client_acquired), Toast.LENGTH_LONG).show();
                         }
-                    } else if (jsonQueuedPersonArrayList.get(position).getServerDeviceId().equals(UserUtils.getDeviceId())) {
-                        Toast.makeText(context, getString(R.string.error_client_acquired_by_you), Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(context, getString(R.string.error_client_acquired), Toast.LENGTH_LONG).show();
                     }
                 }
             });
