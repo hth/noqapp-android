@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.PhoneFormatterUtil;
@@ -23,6 +23,7 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import java.util.List;
 
 public class OutOfSequenceListAdapter extends BaseAdapter {
+    private static final String TAG = OutOfSequenceListAdapter.class.getSimpleName();
     private Context context;
     private List<JsonQueuedPerson> items;
 
@@ -66,7 +67,7 @@ public class OutOfSequenceListAdapter extends BaseAdapter {
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
         recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                //TODO : @ Chandra Please change the country code dynamically
+                //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
                 PhoneFormatterUtil.formatNumber("IN", phoneNo));
         recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,15 +96,11 @@ public class OutOfSequenceListAdapter extends BaseAdapter {
                     recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
                             context, R.color.disable_list));
                     recordHolder.tv_status_msg.setText(context.getString(R.string.msg_client_left_queue));
-
                 break;
             default:
+                Log.e(TAG, "Reached unsupported condition state=" + jsonQueuedPerson.getQueueUserState());
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
-
-
-
-
         return view;
     }
 
