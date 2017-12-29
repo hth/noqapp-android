@@ -20,8 +20,8 @@ import android.widget.Toast;
  */
 
 public class AppUtils {
-
     private final String TAG = AppUtils.class.getSimpleName();
+
     public static ApkVersionModel parseVersion(String version) {
         if (null == version || !version.contains(".")) {
             return null;
@@ -50,6 +50,7 @@ public class AppUtils {
         }
     }
 
+    //TODO(chandra) conditioned to call when permission available
     public void makeCall(Activity context, String phoneNumber) {
         if (!TextUtils.isEmpty(phoneNumber)) {
             int checkPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
