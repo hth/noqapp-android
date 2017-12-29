@@ -10,6 +10,7 @@ import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonQueueList;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -67,6 +68,38 @@ public final class QueueModel {
 
             @Override
             public void onFailure(@NonNull Call<JsonQueue> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+
+                queuePresenter.queueError();
+            }
+        });
+    }
+
+    /**
+     * Gets state of a queue whose QR code was scanned.
+     *
+     * @param did
+     * @param qrCode
+     */
+    public static void getAllQueueState(String did, String qrCode) {
+        queueService.getAllQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonQueueList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonQueueList> call, @NonNull Response<JsonQueueList> response) {
+                if (response.code() == Constants.INVALID_BAR_CODE) {
+                    queuePresenter.authenticationFailure(response.code());
+                    return;
+                }
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    queuePresenter.queueResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Get state of queue upon scan");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonQueueList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
 
                 queuePresenter.queueError();
