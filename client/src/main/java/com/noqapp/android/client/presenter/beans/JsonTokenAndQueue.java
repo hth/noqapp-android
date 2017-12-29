@@ -64,6 +64,9 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("e")
     private int endHour;
 
+    @JsonProperty ("de")
+    private int delayedInMinutes;
+
     @JsonProperty("o")
     private String topic;
 
@@ -93,6 +96,9 @@ public class JsonTokenAndQueue implements Serializable {
 
     @JsonProperty("u")
     private String createDate;
+
+    @JsonProperty ("bc")
+    private String bizCategoryId;
 
     public String getCodeQR() {
         return codeQR;
@@ -174,6 +180,15 @@ public class JsonTokenAndQueue implements Serializable {
         this.endHour = endHour;
     }
 
+    public int getDelayedInMinutes() {
+        return delayedInMinutes;
+    }
+
+    public JsonTokenAndQueue setDelayedInMinutes(int delayedInMinutes) {
+        this.delayedInMinutes = delayedInMinutes;
+        return this;
+    }
+
     public String getTopic() {
         return topic;
     }
@@ -252,6 +267,14 @@ public class JsonTokenAndQueue implements Serializable {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public void setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
     }
 
     @JsonIgnoreProperties

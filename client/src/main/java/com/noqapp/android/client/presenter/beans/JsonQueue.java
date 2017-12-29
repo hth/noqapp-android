@@ -69,6 +69,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("e")
     private int endHour;
 
+    @JsonProperty ("de")
+    private int delayedInMinutes;
+
     @JsonProperty("pj")
     private boolean preventJoining;
 
@@ -115,6 +118,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty ("at")
     private int availableTokenCount;
 
+    @JsonProperty ("bc")
+    private String bizCategoryId;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -160,6 +166,15 @@ public class JsonQueue implements Serializable {
 
     public int getEndHour() {
         return endHour;
+    }
+
+    public int getDelayedInMinutes() {
+        return delayedInMinutes;
+    }
+
+    public JsonQueue setDelayedInMinutes(int delayedInMinutes) {
+        this.delayedInMinutes = delayedInMinutes;
+        return this;
     }
 
     public boolean isPreventJoining() {
@@ -244,6 +259,10 @@ public class JsonQueue implements Serializable {
         this.availableTokenCount = availableTokenCount;
     }
 
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -264,6 +283,7 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setTokenAvailableFrom(tokenAvailableFrom);
         jsonTokenAndQueue.setStartHour(startHour);
         jsonTokenAndQueue.setEndHour(endHour);
+        jsonTokenAndQueue.setDelayedInMinutes(delayedInMinutes);
         jsonTokenAndQueue.setTopic(topic);
         jsonTokenAndQueue.setServingNumber(servingNumber);
         jsonTokenAndQueue.setLastNumber(lastNumber);
@@ -271,6 +291,7 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setServiceEndTime(serviceEndTime);
         jsonTokenAndQueue.setAverageServiceTime(averageServiceTime);
         jsonTokenAndQueue.setCreateDate(created);
+        jsonTokenAndQueue.setBizCategoryId(bizCategoryId);
         return jsonTokenAndQueue;
     }
 
