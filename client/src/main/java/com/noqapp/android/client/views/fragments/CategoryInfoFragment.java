@@ -92,6 +92,8 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             , "#E41655"
 
     };
+    private CategoryListPagerAdapter mFragmentCardAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category_info, container, false);
@@ -182,6 +184,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         }
 
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
+
     }
 
     @Override
@@ -252,7 +255,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             mFragments.add( CategoryListFragment.newInstance(temp,jsonQueueList.getCategories().get(j).getCategoryName(), color));
 
         }
-        CategoryListPagerAdapter mFragmentCardAdapter = new CategoryListPagerAdapter(getActivity().getSupportFragmentManager(),
+        mFragmentCardAdapter = new CategoryListPagerAdapter(getActivity().getSupportFragmentManager(),
                 mFragments);
         list_pager.setAdapter(null);
         list_pager.setAdapter(mFragmentCardAdapter);
