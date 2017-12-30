@@ -10,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -29,12 +27,10 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
-import com.noqapp.android.client.views.adapters.CategoryListAdapter;
 import com.noqapp.android.client.views.adapters.CategoryListPagerAdapter;
 import com.noqapp.android.client.views.adapters.CategoryPagerAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -149,30 +145,20 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
                 frtag = LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
             }
         }
-//        iv_down.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                ll_slide_view.startAnimation( animHide );
-//                ll_slide_view.setVisibility(View.GONE);
-//            }
-//        });
-
         view.setFocusableInTouchMode(true);
         view.requestFocus();
         view.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                // Log.i(tag, "keyCode: " + keyCode);
-                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                 //   Log.i(tag, "onKey Back listener is working!!!");
-                  //  getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    if(isSliderOpen){
-                        ll_slide_view.startAnimation( animHide );
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    //   Log.i(tag, "onKey Back listener is working!!!");
+                    if (isSliderOpen) {
+                        ll_slide_view.startAnimation(animHide);
                         ll_slide_view.setVisibility(View.GONE);
                         isSliderOpen = false;
                         return true;
                     }
-
                     return false;
                 }
                 return false;
@@ -189,10 +175,10 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
                 LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.remotejoin));
             } else {
-                LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_join));
+                LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_qscan_detail));
             }
         } else {
-            LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_join));
+            LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_qscan_detail));
         }
 
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
@@ -253,24 +239,24 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
 
         ll_slide_view.setVisibility(View.VISIBLE);
         ll_slide_view.startAnimation( animShow );
-        List<CategoryListFragment> mFragments = new ArrayList<>();
+        ArrayList<CategoryListFragment> mFragments = new ArrayList<>();
         for (int j =0 ;j<jsonQueueList.getCategories().size();j++){
 
-            List<JsonQueue> temp = new ArrayList<>();
+            ArrayList<JsonQueue> temp = new ArrayList<>();
             for (int i=0;i<jsonQueueList.getQueues().size();i++){
                 if(null!= jsonQueueList.getQueues().get(i).getBizCategoryId() &&
                         jsonQueueList.getQueues().get(i).getBizCategoryId().equals(jsonQueueList.getCategories().get(j).getBizCategoryId()))
                     temp.add(jsonQueueList.getQueues().get(i));
             }
             String color = colorCodes[j % colorCodes.length];
-            mFragments.add(new CategoryListFragment(temp,jsonQueueList.getCategories().get(j).getCategoryName(), color));
+            mFragments.add( CategoryListFragment.newInstance(temp,jsonQueueList.getCategories().get(j).getCategoryName(), color));
 
         }
         CategoryListPagerAdapter mFragmentCardAdapter = new CategoryListPagerAdapter(getActivity().getSupportFragmentManager(),
                 mFragments);
-
+        list_pager.setAdapter(null);
         list_pager.setAdapter(mFragmentCardAdapter);
-       // list_pager.setOffscreenPageLimit(3);
+        list_pager.setOffscreenPageLimit(3);
         list_pager.setCurrentItem(position);
         isSliderOpen = true;
 
