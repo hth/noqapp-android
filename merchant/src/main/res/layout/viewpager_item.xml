@@ -42,6 +42,14 @@
                     android:layout_marginBottom="10dp"
                     android:textSize="24sp" />
 
+                <ImageView
+                    android:id="@+id/iv_generate_token"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tv_title"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/add_token"/>
+
                 <RelativeLayout
                     android:id="@+id/top"
                     android:layout_width="match_parent"

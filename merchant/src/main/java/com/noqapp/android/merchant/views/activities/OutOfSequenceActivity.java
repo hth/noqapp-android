@@ -206,4 +206,9 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
             finish();
         }
     }
+
+    @Override
+    public void dispenseTokenResponse(JsonToken token) {
+        
+    }
 }

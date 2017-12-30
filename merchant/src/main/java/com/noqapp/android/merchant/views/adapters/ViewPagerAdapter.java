@@ -121,7 +121,22 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 }
             }
         });
-
+        ImageView iv_generate_token = (ImageView) itemView.findViewById(R.id.iv_generate_token);
+        iv_generate_token.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                    ManageQueueModel.dispenseToken(
+                            LaunchActivity.getLaunchActivity().getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            lq.getCodeQR());
+                } else {
+                    ShowAlertInformation.showNetworkDialog(context);
+                }
+            }
+        });
         rl_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -460,6 +475,14 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         LaunchActivity.getLaunchActivity().dismissProgress();
         if (errorCode == Constants.INVALID_CREDENTIAL) {
             LaunchActivity.getLaunchActivity().clearLoginData(true);
+        }
+    }
+
+    @Override
+    public void dispenseTokenResponse(JsonToken token) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        if (null != token) {
+            Toast.makeText(context,"The genrated token no is :"+token.getToken(),Toast.LENGTH_LONG).show();
         }
     }
 
