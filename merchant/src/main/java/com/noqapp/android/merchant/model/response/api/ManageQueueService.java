@@ -90,4 +90,22 @@ public interface ManageQueueService {
             @Path("codeQR")
             String codeQR
     );
+
+    @POST("api/m/mq/dispenseToken/{codeQR}.json")
+    Call<JsonToken> dispenseToken(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR
+    );
 }
