@@ -77,9 +77,9 @@ public class ScanQueueFragment extends Scanner {
         b.putString(KEY_CODE_QR, codeQR);
         b.putBoolean(KEY_FROM_LIST, fromList);
         b.putBoolean(KEY_IS_HISTORY, false);
-        JoinFragment jf = new JoinFragment();
-        jf.setArguments(b);
-        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, currentTab);
+        CategoryInfoFragment cif = new CategoryInfoFragment();
+        cif.setArguments(b);
+        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, currentTab);
     }
 
     @Override

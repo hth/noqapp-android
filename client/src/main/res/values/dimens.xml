@@ -13,6 +13,7 @@
 
     <!--Scsn screen-->
     <dimen name="message_label">15sp</dimen>
+    <dimen name="card_padding">30dp</dimen>
 
 
 </resources>
