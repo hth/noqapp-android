@@ -88,11 +88,12 @@ public class CategoryPagerAdapter extends PagerAdapter {
         TextView tv_detail = (TextView) view.findViewById(R.id.tv_detail);
         tv_title.setText(jsonCategory.getCategoryName());
         if (jsonQueue.isDayClosed()) {
+            //Fetch for tomorrow when closed
             tv_detail.setText(jsonQueue.getDisplayName() + " is closed today.");
         } else if(jsonQueue.getStartHour() < systemHourMinutes) {
-            tv_detail.setText(jsonQueue.getDisplayName() + " can see you now.");
+            tv_detail.setText(jsonQueue.getDisplayName() + " is open and can service you now. Click to join the queue.");
         } else {
-            tv_detail.setText(jsonQueue.getDisplayName() + " can see you at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + ".");
+            tv_detail.setText(jsonQueue.getDisplayName() + " can service you at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + ".");
         }
         final CardView cardView = (CardView) view.findViewById(R.id.cardView);
         cardView.setCardBackgroundColor(Color.parseColor(colorCodes[position % colorCodes.length]));
