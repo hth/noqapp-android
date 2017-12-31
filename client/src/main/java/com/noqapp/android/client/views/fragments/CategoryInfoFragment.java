@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.ComparisonChain;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -33,7 +34,12 @@ import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.adapters.CategoryListPagerAdapter;
 import com.noqapp.android.client.views.adapters.CategoryPagerAdapter;
 
+import org.joda.time.Instant;
+import org.joda.time.LocalDateTime;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,11 +235,19 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         tv_queue_name.setText(jsonQueue.getDisplayName());
         tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
         tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
-        tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
+        if (jsonQueue.isDayClosed()) {
+            tv_hour_saved.setText(getString(R.string.store_closed));
+        } else {
+            tv_hour_saved.setText(
+                    getString(R.string.store_hour)
+                            + " "
+                            + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
+                            + " - "
+                            + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
+        }
         ratingBar.setRating(jsonQueue.getRating());
         // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
-        tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount())
-                + " Reviews");
+        tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount()) + " Reviews");
 
         codeQR = jsonQueue.getCodeQR();
 
@@ -262,6 +276,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName("My Name"));
         cacheCategory.put("category", categoryMap);
 
+        int systemHour = Integer.parseInt(String.valueOf(LocalDateTime.now().getHourOfDay()) + String.valueOf(LocalDateTime.now().getMinuteOfHour()));
         Map<String, ArrayList<JsonQueue>> queueMap = new HashMap<>();
         for (JsonQueue jsonQueue : jsonQueueList.getQueues()) {
 
@@ -274,9 +289,23 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             } else {
                 ArrayList<JsonQueue> jsonQueues = queueMap.get(categoryId);
                 jsonQueues.add(jsonQueue);
+                sortQueueThatIsNearToCurrentTime(systemHour, jsonQueues);
             }
         }
         cacheQueue.put("queue", queueMap);
+    }
+
+    //TODO(chandra) this logic goes in merchant too
+    private void sortQueueThatIsNearToCurrentTime(final int systemHour, ArrayList<JsonQueue> jsonQueues) {
+        Collections.sort(jsonQueues, new Comparator<JsonQueue>() {
+            @Override
+            public int compare(JsonQueue p1, JsonQueue p2) {
+                return ComparisonChain.start()
+                        .compareFalseFirst(p1.isDayClosed(), p2.isDayClosed())
+                        .compare(p1.getStartHour() - systemHour, p2.getStartHour() - systemHour)
+                        .result();
+            }
+        });
     }
 
     public List<JsonCategory> getCategoryThatArePopulated() {

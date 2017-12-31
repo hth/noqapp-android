@@ -59,8 +59,16 @@ public class CategoryListAdapter extends BaseAdapter {
         final JsonQueue jsonQueue = jsonQueues.get(position);
 
         recordHolder.tv_queue_name.setText(jsonQueue.getDisplayName());
-        recordHolder.tv_store_timing.setText(context.getString(R.string.store_hour) + " " +
-                Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
+        if (jsonQueue.isDayClosed()) {
+            recordHolder.tv_store_timing.setText(context.getString(R.string.store_closed));
+        } else {
+            recordHolder.tv_store_timing.setText(
+                    context.getString(R.string.store_hour)
+                            + " "
+                            + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
+                            + " - "
+                            + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
+        }
         recordHolder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
