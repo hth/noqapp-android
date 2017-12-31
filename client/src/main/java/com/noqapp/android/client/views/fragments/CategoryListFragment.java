@@ -18,25 +18,28 @@ import com.noqapp.android.client.views.adapters.CategoryListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class CategoryListFragment extends NoQueueBaseFragment {
 
-
-
-    public static CategoryListFragment newInstance(ArrayList<JsonQueue> list, String categoryName, String color) {
+    public static CategoryListFragment newInstance(ArrayList<JsonQueue> jsonQueues, String categoryName, String color) {
         CategoryListFragment fragmentFirst = new CategoryListFragment();
         Bundle args = new Bundle();
         args.putString("color", color);
         args.putString("categoryName", categoryName);
-        args.putSerializable("arrayList",list);
+        args.putSerializable("jsonQueues", jsonQueues);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
-    public CategoryListFragment(){}
+
+    public CategoryListFragment() {
+    }
+
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState
+    ) {
         View view = inflater.inflate(R.layout.fragment_category_list, container, false);
 
         LinearLayout ll_top = (LinearLayout) view.findViewById(R.id.ll_top);
@@ -44,14 +47,13 @@ public class CategoryListFragment extends NoQueueBaseFragment {
         ListView iv_list = (ListView) view.findViewById(R.id.iv_list);
         String categoryName = getArguments().getString("categoryName");
         String color = getArguments().getString("color");
-        final List<JsonQueue> arrayList = (ArrayList<JsonQueue>)getArguments().getSerializable("arrayList");
-
+        final List<JsonQueue> jsonQueues = (ArrayList<JsonQueue>) getArguments().getSerializable("jsonQueues");
 
         //
-        CategoryListAdapter adapter = new CategoryListAdapter(getActivity(), arrayList);
-        if(iv_list.getHeaderViewsCount() ==0) {
+        CategoryListAdapter adapter = new CategoryListAdapter(getActivity(), jsonQueues);
+        if (0 == iv_list.getHeaderViewsCount()) {
             View footer = (View) inflater.inflate(R.layout.category_lv_header, iv_list, false);
-            TextView tv = (TextView)footer.findViewById(R.id.tv_category);
+            TextView tv = (TextView) footer.findViewById(R.id.tv_category);
             tv.setBackgroundColor(Color.parseColor(color));
             tv.setText(categoryName);
             iv_list.addHeaderView(footer);

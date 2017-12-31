@@ -64,7 +64,7 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("e")
     private int endHour;
 
-    @JsonProperty ("de")
+    @JsonProperty("de")
     private int delayedInMinutes;
 
     @JsonProperty("o")
@@ -97,7 +97,7 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("u")
     private String createDate;
 
-    @JsonProperty ("bc")
+    @JsonProperty("bc")
     private String bizCategoryId;
 
     public String getCodeQR() {

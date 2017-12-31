@@ -166,14 +166,12 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         }
     }
 
-
     private void callLoginAPI(String phoneNumber) {
         Login login = new Login();
         login.setPhone(phoneNumber);
         login.setCountryShortName("");
         RegisterModel.login(UserUtils.getDeviceId(), login);
     }
-
 
     private boolean validate() {
         new AppUtilities().hideKeyBoard(getActivity());
@@ -197,10 +195,9 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                     getActivity(),               // Activity (for callback binding)
                     mCallbacks);        // OnVerificationStateChangedCallbacks
             // [END start_phone_auth]
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {

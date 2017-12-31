@@ -160,7 +160,7 @@ public class MeFragment extends NoQueueBaseFragment {
     }
 
     @OnClick({R.id.ll_referal})
-    public void promotionalClick(){
+    public void promotionalClick() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             Intent in = new Intent(getActivity(), WebViewActivity.class);
             in.putExtra("url", Constants.URL_ABOUT_US);

@@ -32,13 +32,16 @@ public class CategoryPagerAdapter extends PagerAdapter {
             , "#E41655"
 
     };
+
     public interface CategoryPagerClick {
-        public void pageClicked(int position);
+        void pageClicked(int position);
     }
+
     private List<JsonCategory> categories;
     private Context context;
     private CategoryPagerClick categoryPagerClick;
-    public CategoryPagerAdapter(Context context, List<JsonCategory> categories,CategoryPagerClick pagerClick) {
+
+    public CategoryPagerAdapter(Context context, List<JsonCategory> categories, CategoryPagerClick pagerClick) {
         this.categories = categories;
         this.context = context;
         this.categoryPagerClick = pagerClick;
@@ -62,7 +65,7 @@ public class CategoryPagerAdapter extends PagerAdapter {
         TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
         TextView tv_detail = (TextView) view.findViewById(R.id.tv_detail);
         tv_title.setText(categories.get(position).getCategoryName());
-       // tv_detail.setText(mData.get(position).getText());
+        // tv_detail.setText(mData.get(position).getText());
         final CardView cardView = (CardView) view.findViewById(R.id.cardView);
         cardView.setCardBackgroundColor(Color.parseColor(colorCodes[position % colorCodes.length]));
         cardView.setOnClickListener(new View.OnClickListener() {

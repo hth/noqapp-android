@@ -21,15 +21,15 @@ import java.util.List;
 
 public class CategoryListAdapter extends BaseAdapter {
     private Context context;
-    private List<JsonQueue> items;
+    private List<JsonQueue> jsonQueues;
 
-    public CategoryListAdapter(Context context, List<JsonQueue> arrayList) {
+    public CategoryListAdapter(Context context, List<JsonQueue> jsonQueues) {
         this.context = context;
-        this.items = arrayList;
+        this.jsonQueues = jsonQueues;
     }
 
     public int getCount() {
-        return this.items.size();
+        return this.jsonQueues.size();
     }
 
     public Object getItem(int n) {
@@ -46,17 +46,17 @@ public class CategoryListAdapter extends BaseAdapter {
         if (view == null) {
             recordHolder = new RecordHolder();
             view = layoutInflater.inflate(R.layout.listitem_category, null);
-           // recordHolder.tv_number = (TextView) view.findViewById(R.id.tv_number);
+            // recordHolder.tv_number = (TextView) view.findViewById(R.id.tv_number);
             recordHolder.tv_queue_name = (TextView) view.findViewById(R.id.tv_queue_name);
             recordHolder.tv_store_timing = (TextView) view.findViewById(R.id.tv_store_timing);
-           // recordHolder.tv_inqueue = (TextView) view.findViewById(R.id.tv_inqueue);
-           // recordHolder.tv_label = (TextView) view.findViewById(R.id.tv_label);
+            // recordHolder.tv_inqueue = (TextView) view.findViewById(R.id.tv_inqueue);
+            // recordHolder.tv_label = (TextView) view.findViewById(R.id.tv_label);
             recordHolder.cardview = (CardView) view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        final JsonQueue jsonQueue = items.get(position);
+        final JsonQueue jsonQueue = jsonQueues.get(position);
 
         recordHolder.tv_queue_name.setText(jsonQueue.getDisplayName());
         recordHolder.tv_store_timing.setText(context.getString(R.string.store_hour) + " " +
@@ -71,18 +71,18 @@ public class CategoryListAdapter extends BaseAdapter {
                 b.putSerializable("object", jsonQueue);
                 JoinFragment jf = new JoinFragment();
                 jf.setArguments(b);
-                NoQueueBaseFragment.replaceFragmentWithBackStack(LaunchActivity.getLaunchActivity(), R.id.frame_layout, jf,JoinFragment.class.getName(), LaunchActivity.tabHome);
+                NoQueueBaseFragment.replaceFragmentWithBackStack(LaunchActivity.getLaunchActivity(), R.id.frame_layout, jf, JoinFragment.class.getName(), LaunchActivity.tabHome);
             }
         });
         return view;
     }
 
     static class RecordHolder {
-       // TextView tv_number;
+        // TextView tv_number;
         TextView tv_queue_name;
         TextView tv_store_timing;
-       // TextView tv_inqueue;
-       // TextView tv_label;
+        // TextView tv_inqueue;
+        // TextView tv_label;
         CardView cardview;
 
         RecordHolder() {

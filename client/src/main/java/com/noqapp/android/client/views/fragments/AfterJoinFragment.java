@@ -329,7 +329,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
 
     public void setObject(JsonTokenAndQueue jq, String go_to) {
         gotoPerson = go_to;
-       // jsonTokenAndQueue = jq; removed to avoided the override of the data
+        // jsonTokenAndQueue = jq; removed to avoided the override of the data
         jsonTokenAndQueue.setServingNumber(jq.getServingNumber());
         jsonTokenAndQueue.setToken(jq.getToken());
         tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));

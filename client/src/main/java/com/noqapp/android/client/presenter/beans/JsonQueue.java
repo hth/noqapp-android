@@ -69,7 +69,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("e")
     private int endHour;
 
-    @JsonProperty ("de")
+    @JsonProperty("de")
     private int delayedInMinutes;
 
     @JsonProperty("pj")
@@ -115,10 +115,10 @@ public class JsonQueue implements Serializable {
     private boolean allowLoggedInUser = false;
 
     //TODO add this property in Queue Settings screen
-    @JsonProperty ("at")
+    @JsonProperty("at")
     private int availableTokenCount;
 
-    @JsonProperty ("bc")
+    @JsonProperty("bc")
     private String bizCategoryId;
 
     @JsonProperty("error")

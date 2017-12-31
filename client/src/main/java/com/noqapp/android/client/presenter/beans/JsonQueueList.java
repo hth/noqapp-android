@@ -26,7 +26,7 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonQueueList {
-    
+
     @JsonProperty("cs")
     private List<JsonCategory> categories = new ArrayList<>();
 

@@ -19,7 +19,6 @@ public class CategoryListPagerAdapter extends FragmentStatePagerAdapter {
         this.mFragments = mFragments;
     }
 
-
     @Override
     public int getItemPosition(Object object) {
         return POSITION_NONE;

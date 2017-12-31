@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePresenter,CategoryPagerAdapter.CategoryPagerClick {
+public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePresenter, CategoryPagerAdapter.CategoryPagerClick {
     private final String TAG = CategoryInfoFragment.class.getSimpleName();
 
     @BindView(R.id.tv_store_name)
@@ -101,8 +101,8 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         AppUtilities.setRatingBarColor(stars, getActivity());
 
-        animShow = AnimationUtils.loadAnimation( getActivity(), R.anim.popup_show);
-        animHide = AnimationUtils.loadAnimation( getActivity(), R.anim.popup_hide);
+        animShow = AnimationUtils.loadAnimation(getActivity(), R.anim.popup_show);
+        animHide = AnimationUtils.loadAnimation(getActivity(), R.anim.popup_hide);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,9 +131,9 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
 //                        QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
 //                    }
 //                } else {
-                    QueueModel.queuePresenter = this;
-                    QueueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
-               // }
+                QueueModel.queuePresenter = this;
+                QueueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
+                // }
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
@@ -152,7 +152,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         view.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-               // Log.i(tag, "keyCode: " + keyCode);
+                // Log.i(tag, "keyCode: " + keyCode);
                 if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
                     //   Log.i(tag, "onKey Back listener is working!!!");
                     if (isSliderOpen) {
@@ -227,13 +227,15 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
     @Override
     public void queueResponse(JsonQueueList jsonQueueList) {
         this.jsonQueueList = jsonQueueList;
-        if(!jsonQueueList.getQueues().isEmpty())
-           queueResponse(jsonQueueList.getQueues().get(0));
+        if (!jsonQueueList.getQueues().isEmpty()) {
+            queueResponse(jsonQueueList.getQueues().get(0));
+        } else {
+            //TODO(chandra) when its empty do something nice
+        }
 
-        CategoryPagerAdapter mCardAdapter = new CategoryPagerAdapter(getActivity(),jsonQueueList.getCategories(),this);
+        CategoryPagerAdapter mCardAdapter = new CategoryPagerAdapter(getActivity(), jsonQueueList.getCategories(), this);
         viewPager.setAdapter(mCardAdapter);
         viewPager.setOffscreenPageLimit(3);
-
     }
 
     @Override
@@ -241,18 +243,18 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
 
 
         ll_slide_view.setVisibility(View.VISIBLE);
-        ll_slide_view.startAnimation( animShow );
+        ll_slide_view.startAnimation(animShow);
         ArrayList<CategoryListFragment> mFragments = new ArrayList<>();
-        for (int j =0 ;j<jsonQueueList.getCategories().size();j++){
+        for (int j = 0; j < jsonQueueList.getCategories().size(); j++) {
 
             ArrayList<JsonQueue> temp = new ArrayList<>();
-            for (int i=0;i<jsonQueueList.getQueues().size();i++){
-                if(null!= jsonQueueList.getQueues().get(i).getBizCategoryId() &&
+            for (int i = 0; i < jsonQueueList.getQueues().size(); i++) {
+                if (null != jsonQueueList.getQueues().get(i).getBizCategoryId() &&
                         jsonQueueList.getQueues().get(i).getBizCategoryId().equals(jsonQueueList.getCategories().get(j).getBizCategoryId()))
                     temp.add(jsonQueueList.getQueues().get(i));
             }
             String color = colorCodes[j % colorCodes.length];
-            mFragments.add( CategoryListFragment.newInstance(temp,jsonQueueList.getCategories().get(j).getCategoryName(), color));
+            mFragments.add(CategoryListFragment.newInstance(temp, jsonQueueList.getCategories().get(j).getCategoryName(), color));
 
         }
         mFragmentCardAdapter = new CategoryListPagerAdapter(getActivity().getSupportFragmentManager(),
