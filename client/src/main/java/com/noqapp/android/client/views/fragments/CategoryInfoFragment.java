@@ -34,7 +34,6 @@ import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.adapters.CategoryListPagerAdapter;
 import com.noqapp.android.client.views.adapters.CategoryPagerAdapter;
 
-import org.joda.time.Instant;
 import org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
@@ -47,6 +46,8 @@ import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.noqapp.android.client.utils.AppUtilities.getSystemHourMinutes;
 
 public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePresenter, CategoryPagerAdapter.CategoryPagerClick {
     private final String TAG = CategoryInfoFragment.class.getSimpleName();
@@ -258,17 +259,27 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         this.jsonQueueList = jsonQueueList;
         if (!jsonQueueList.getQueues().isEmpty()) {
             queueResponse(jsonQueueList.getQueues().get(0));
-            populateCache(jsonQueueList);
+            populateAndSortedCache(jsonQueueList);
         } else {
             //TODO(chandra) when its empty do something nice
         }
 
-        CategoryPagerAdapter mCardAdapter = new CategoryPagerAdapter(getActivity(), getCategoryThatArePopulated(), this);
+        Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
+        CategoryPagerAdapter mCardAdapter = new CategoryPagerAdapter(
+                getActivity(),
+                getCategoryThatArePopulated(),
+                queueMap,
+                this);
         viewPager.setAdapter(mCardAdapter);
         viewPager.setOffscreenPageLimit(3);
     }
 
-    private void populateCache(JsonQueueList jsonQueueList) {
+    /**
+     * Populated cache and sorted based on current time.
+     *
+     * @param jsonQueueList
+     */
+    private void populateAndSortedCache(JsonQueueList jsonQueueList) {
         Map<String, JsonCategory> categoryMap = new HashMap<>();
         for (JsonCategory jsonCategory : jsonQueueList.getCategories()) {
             categoryMap.put(jsonCategory.getBizCategoryId(), jsonCategory);
@@ -276,7 +287,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName("My Name"));
         cacheCategory.put("category", categoryMap);
 
-        int systemHour = Integer.parseInt(String.valueOf(LocalDateTime.now().getHourOfDay()) + String.valueOf(LocalDateTime.now().getMinuteOfHour()));
+        int systemHourMinutes = getSystemHourMinutes();
         Map<String, ArrayList<JsonQueue>> queueMap = new HashMap<>();
         for (JsonQueue jsonQueue : jsonQueueList.getQueues()) {
 
@@ -289,20 +300,20 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             } else {
                 ArrayList<JsonQueue> jsonQueues = queueMap.get(categoryId);
                 jsonQueues.add(jsonQueue);
-                sortQueueThatIsNearToCurrentTime(systemHour, jsonQueues);
+                sortQueueThatIsNearToCurrentTime(systemHourMinutes, jsonQueues);
             }
         }
         cacheQueue.put("queue", queueMap);
     }
 
     //TODO(chandra) this logic goes in merchant too
-    private void sortQueueThatIsNearToCurrentTime(final int systemHour, ArrayList<JsonQueue> jsonQueues) {
+    private void sortQueueThatIsNearToCurrentTime(final int systemHourMinutes, ArrayList<JsonQueue> jsonQueues) {
         Collections.sort(jsonQueues, new Comparator<JsonQueue>() {
             @Override
-            public int compare(JsonQueue p1, JsonQueue p2) {
+            public int compare(JsonQueue jq1, JsonQueue jq2) {
                 return ComparisonChain.start()
-                        .compareFalseFirst(p1.isDayClosed(), p2.isDayClosed())
-                        .compare(p1.getStartHour() - systemHour, p2.getStartHour() - systemHour)
+                        .compareFalseFirst(jq1.isDayClosed(), jq2.isDayClosed())
+                        .compare(jq1.getStartHour() - systemHourMinutes, jq2.getStartHour() - systemHourMinutes)
                         .result();
             }
         });

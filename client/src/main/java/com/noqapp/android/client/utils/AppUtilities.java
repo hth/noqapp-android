@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 
+import org.joda.time.LocalDateTime;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -158,5 +160,9 @@ public class AppUtilities {
         } catch (android.content.ActivityNotFoundException anfe) {
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
+    }
+
+    public static int getSystemHourMinutes() {
+        return Integer.parseInt(String.valueOf(LocalDateTime.now().getHourOfDay()) + String.valueOf(LocalDateTime.now().getMinuteOfHour()));
     }
 }
