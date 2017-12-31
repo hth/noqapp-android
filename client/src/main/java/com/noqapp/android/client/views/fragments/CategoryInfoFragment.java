@@ -99,23 +99,6 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             .maximumSize(1)
             .build();
 
-    private String[] colorCodes = new String[]
-            {
-                    "#F08a5d",
-                    "#B83b5e",
-                    "#Aa96da",
-                    "#Ff9999",
-                    "#6a2c70",
-                    "#3fc1c9",
-                    "#3F72AF",
-                    "#9896F1",
-                    "#15B7B9",
-                    "#52616B",
-                    "#1FAB89",
-                    "#3FC1C9",
-                    "#3498DB",
-                    "#E41655"
-            };
     private CategoryListPagerAdapter mFragmentCardAdapter;
 
     @Override
@@ -341,7 +324,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
 
         int count = 0;
         for (String key : categoryMap.keySet()) {
-            String color = colorCodes[count % colorCodes.length];
+            String color = Constants.colorCodes[count % Constants.colorCodes.length];
             count++;
 
             if (queueMap.containsKey(key)) {

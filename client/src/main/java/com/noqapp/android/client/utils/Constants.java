@@ -44,6 +44,22 @@ public class Constants {
     public static final String URL_PRIVACY_POLICY = "https://noqapp.com/mobile/m.privacy.html";
     public static final String URL_HOW_IT_WORKS = "https://noqapp.com/mobile/m.how-invite-works.html";
 
+    public static final String[] colorCodes = new String[]{
+            "#F08a5d",
+            "#B83b5e",
+            "#Aa96da",
+            "#Ff9999",
+            "#6a2c70",
+            "#3fc1c9",
+            "#3F72AF",
+            "#9896F1",
+            "#15B7B9",
+            "#52616B",
+            "#1FAB89",
+            "#3FC1C9",
+            "#3498DB",
+            "#E41655"};
+
     /**
      * Computes App version.
      *

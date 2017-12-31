@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.Formatter;
 
 import java.util.ArrayList;
@@ -21,23 +22,6 @@ import java.util.Map;
 import static com.noqapp.android.client.utils.AppUtilities.getSystemHourMinutes;
 
 public class CategoryPagerAdapter extends PagerAdapter {
-
-    private String[] colorCodes = new String[]{"#F08a5d"
-            , "#B83b5e"
-            , "#Aa96da"
-            , "#Ff9999"
-            , "#6a2c70"
-            , "#3fc1c9"
-            , "#3F72AF"
-            , "#9896F1"
-            , "#15B7B9"
-            , "#52616B"
-            , "#1FAB89"
-            , "#3FC1C9"
-            , "#3498DB"
-            , "#E41655"
-
-    };
 
     public interface CategoryPagerClick {
         void pageClicked(int position);
@@ -96,7 +80,7 @@ public class CategoryPagerAdapter extends PagerAdapter {
             tv_detail.setText(jsonQueue.getDisplayName() + " can service you at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + ".");
         }
         final CardView cardView = (CardView) view.findViewById(R.id.cardView);
-        cardView.setCardBackgroundColor(Color.parseColor(colorCodes[position % colorCodes.length]));
+        cardView.setCardBackgroundColor(Color.parseColor(Constants.colorCodes[position % Constants.colorCodes.length]));
         cardView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 categoryPagerClick.pageClicked(position);
