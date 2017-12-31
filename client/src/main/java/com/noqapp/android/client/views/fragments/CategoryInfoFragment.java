@@ -76,22 +76,23 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
     private JsonQueueList jsonQueueList;
     private boolean isSliderOpen = false;
 
-    private String[] colorCodes = new String[]{"#F08a5d"
-            , "#B83b5e"
-            , "#Aa96da"
-            , "#Ff9999"
-            , "#6a2c70"
-            , "#3fc1c9"
-            , "#3F72AF"
-            , "#9896F1"
-            , "#15B7B9"
-            , "#52616B"
-            , "#1FAB89"
-            , "#3FC1C9"
-            , "#3498DB"
-            , "#E41655"
-
-    };
+    private String[] colorCodes = new String[]
+            {
+                    "#F08a5d",
+                    "#B83b5e",
+                    "#Aa96da",
+                    "#Ff9999",
+                    "#6a2c70",
+                    "#3fc1c9",
+                    "#3F72AF",
+                    "#9896F1",
+                    "#15B7B9",
+                    "#52616B",
+                    "#1FAB89",
+                    "#3FC1C9",
+                    "#3498DB",
+                    "#E41655"
+            };
     private CategoryListPagerAdapter mFragmentCardAdapter;
 
     @Override
@@ -173,7 +174,6 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
     public void onResume() {
         super.onResume();
         if (getArguments().getBoolean(KEY_FROM_LIST, false)) {
-
             if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
                 LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.remotejoin));
             } else {
@@ -184,7 +184,6 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         }
 
         LaunchActivity.getLaunchActivity().enableDisableBack(true);
-
     }
 
     @Override
@@ -240,8 +239,6 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
 
     @Override
     public void pageClicked(int position) {
-
-
         ll_slide_view.setVisibility(View.VISIBLE);
         ll_slide_view.startAnimation(animShow);
         ArrayList<CategoryListFragment> mFragments = new ArrayList<>();
@@ -257,7 +254,8 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             mFragments.add(CategoryListFragment.newInstance(temp, jsonQueueList.getCategories().get(j).getCategoryName(), color));
 
         }
-        mFragmentCardAdapter = new CategoryListPagerAdapter(getActivity().getSupportFragmentManager(),
+        mFragmentCardAdapter = new CategoryListPagerAdapter(
+                getActivity().getSupportFragmentManager(),
                 mFragments);
         list_pager.setAdapter(null);
         list_pager.setAdapter(mFragmentCardAdapter);
