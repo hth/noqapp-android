@@ -341,6 +341,7 @@ dependencies {
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile 'net.danlew:android.joda:2.9.9'
 
+    compile 'com.google.guava:guava:23.6-android'
     compile 'com.google.firebase:firebase-core:11.6.2'
     compile 'com.google.firebase:firebase-auth:11.6.2'
     compile 'com.google.firebase:firebase-messaging:11.6.2'

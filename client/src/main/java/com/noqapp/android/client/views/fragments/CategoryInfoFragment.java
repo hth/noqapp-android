@@ -14,9 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
+import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonQueueList;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -31,6 +34,10 @@ import com.noqapp.android.client.views.adapters.CategoryListPagerAdapter;
 import com.noqapp.android.client.views.adapters.CategoryPagerAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,6 +82,15 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
     private Animation animShow, animHide;
     private JsonQueueList jsonQueueList;
     private boolean isSliderOpen = false;
+
+    //Set cache parameters
+    private final Cache<String, Map<String, JsonCategory>> cacheCategory = CacheBuilder.newBuilder()
+            .maximumSize(1)
+            .build();
+
+    private final Cache<String, Map<String, ArrayList<JsonQueue>>> cacheQueue = CacheBuilder.newBuilder()
+            .maximumSize(1)
+            .build();
 
     private String[] colorCodes = new String[]
             {
@@ -228,13 +244,49 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         this.jsonQueueList = jsonQueueList;
         if (!jsonQueueList.getQueues().isEmpty()) {
             queueResponse(jsonQueueList.getQueues().get(0));
+            populateCache(jsonQueueList);
         } else {
             //TODO(chandra) when its empty do something nice
         }
 
-        CategoryPagerAdapter mCardAdapter = new CategoryPagerAdapter(getActivity(), jsonQueueList.getCategories(), this);
+        CategoryPagerAdapter mCardAdapter = new CategoryPagerAdapter(getActivity(), getCategoryThatArePopulated(), this);
         viewPager.setAdapter(mCardAdapter);
         viewPager.setOffscreenPageLimit(3);
+    }
+
+    private void populateCache(JsonQueueList jsonQueueList) {
+        Map<String, JsonCategory> categoryMap = new HashMap<>();
+        for (JsonCategory jsonCategory : jsonQueueList.getCategories()) {
+            categoryMap.put(jsonCategory.getBizCategoryId(), jsonCategory);
+        }
+        categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName("My Name"));
+        cacheCategory.put("category", categoryMap);
+
+        Map<String, ArrayList<JsonQueue>> queueMap = new HashMap<>();
+        for (JsonQueue jsonQueue : jsonQueueList.getQueues()) {
+            String categoryId = jsonQueue.getBizCategoryId() == null ? "" : jsonQueue.getBizCategoryId();
+            if (!queueMap.containsKey(categoryId)) {
+                //Likely hood of blank bizCategoryId
+                ArrayList<JsonQueue> jsonQueues = new ArrayList<>();
+                jsonQueues.add(jsonQueue);
+                queueMap.put(categoryId, jsonQueues);
+            } else {
+                ArrayList<JsonQueue> jsonQueues = queueMap.get(categoryId);
+                jsonQueues.add(jsonQueue);
+            }
+        }
+        cacheQueue.put("queue", queueMap);
+    }
+
+    public List<JsonCategory> getCategoryThatArePopulated() {
+        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
+        Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
+
+        Set<String> categoryKey = categoryMap.keySet();
+        Set<String> queueKey = queueMap.keySet();
+
+        categoryKey.retainAll(queueKey);
+        return new ArrayList<>(categoryMap.values());
     }
 
     @Override
@@ -242,18 +294,36 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         ll_slide_view.setVisibility(View.VISIBLE);
         ll_slide_view.startAnimation(animShow);
         ArrayList<CategoryListFragment> mFragments = new ArrayList<>();
-        for (int j = 0; j < jsonQueueList.getCategories().size(); j++) {
 
-            ArrayList<JsonQueue> temp = new ArrayList<>();
-            for (int i = 0; i < jsonQueueList.getQueues().size(); i++) {
-                if (null != jsonQueueList.getQueues().get(i).getBizCategoryId() &&
-                        jsonQueueList.getQueues().get(i).getBizCategoryId().equals(jsonQueueList.getCategories().get(j).getBizCategoryId()))
-                    temp.add(jsonQueueList.getQueues().get(i));
+        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
+        Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
+
+        int count = 0;
+        for(String key : categoryMap.keySet()) {
+            String color = colorCodes[count % colorCodes.length];
+            count ++;
+
+            if (queueMap.containsKey(key)) {
+                mFragments.add(CategoryListFragment.newInstance(queueMap.get(key), categoryMap.get(key).getCategoryName(), color));
+            } else {
+                Log.w(TAG, "Skipped empty category " + key);
             }
-            String color = colorCodes[j % colorCodes.length];
-            mFragments.add(CategoryListFragment.newInstance(temp, jsonQueueList.getCategories().get(j).getCategoryName(), color));
-
         }
+
+
+//TODO(chandra) why this logic is relatively bad then new logic. Of course have to delete this
+//        for (int j = 0; j < jsonQueueList.getCategories().size(); j++) {
+//
+//            ArrayList<JsonQueue> temp = new ArrayList<>();
+//            for (int i = 0; i < jsonQueueList.getQueues().size(); i++) {
+//                if (null != jsonQueueList.getQueues().get(i).getBizCategoryId() &&
+//                        jsonQueueList.getQueues().get(i).getBizCategoryId().equals(jsonQueueList.getCategories().get(j).getBizCategoryId()))
+//                    temp.add(jsonQueueList.getQueues().get(i));
+//            }
+//            String color = colorCodes[j % colorCodes.length];
+//            mFragments.add(CategoryListFragment.newInstance(temp, jsonQueueList.getCategories().get(j).getCategoryName(), color));
+//
+//        }
         mFragmentCardAdapter = new CategoryListPagerAdapter(
                 getActivity().getSupportFragmentManager(),
                 mFragments);
