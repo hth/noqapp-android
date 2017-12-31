@@ -264,9 +264,10 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
 
         Map<String, ArrayList<JsonQueue>> queueMap = new HashMap<>();
         for (JsonQueue jsonQueue : jsonQueueList.getQueues()) {
+
+            //Likely hood of blank bizCategoryId
             String categoryId = jsonQueue.getBizCategoryId() == null ? "" : jsonQueue.getBizCategoryId();
             if (!queueMap.containsKey(categoryId)) {
-                //Likely hood of blank bizCategoryId
                 ArrayList<JsonQueue> jsonQueues = new ArrayList<>();
                 jsonQueues.add(jsonQueue);
                 queueMap.put(categoryId, jsonQueues);
@@ -299,9 +300,9 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
 
         int count = 0;
-        for(String key : categoryMap.keySet()) {
+        for (String key : categoryMap.keySet()) {
             String color = colorCodes[count % colorCodes.length];
-            count ++;
+            count++;
 
             if (queueMap.containsKey(key)) {
                 mFragments.add(CategoryListFragment.newInstance(queueMap.get(key), categoryMap.get(key).getCategoryName(), color));
