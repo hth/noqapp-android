@@ -45,20 +45,30 @@ public class Constants {
     public static final String URL_HOW_IT_WORKS = "https://noqapp.com/mobile/m.how-invite-works.html";
 
     public static final String[] colorCodes = new String[]{
-            "#F08a5d",
-            "#B83b5e",
-            "#Aa96da",
-            "#Ff9999",
-            "#6a2c70",
-            "#3fc1c9",
-            "#3F72AF",
-            "#9896F1",
+            "#AA96DA",
+            "#A1EAFB",
+            "#FFCEF3",
+            "#CABBE9",
+            "#D4A5A5",
+            "#FFECDA",
+            "#F9FFEA",
+            "#A6D0E4",
+            "#FDFDFD",
+            "#D6E4F0",
+            "#ffcccc",
+            "#B2E6E9",
+            "#D5D5F9",
             "#15B7B9",
             "#52616B",
             "#1FAB89",
             "#3FC1C9",
             "#3498DB",
-            "#E41655"};
+            "#A6E4E7",
+            "#FFFEEC",
+            "#FCCDE2",
+            "#E9E9E5",
+            "#FDFCE0",
+            };
 
     /**
      * Computes App version.
