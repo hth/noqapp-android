@@ -34,8 +34,6 @@ import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.adapters.CategoryListPagerAdapter;
 import com.noqapp.android.client.views.adapters.CategoryPagerAdapter;
 
-import org.joda.time.LocalDateTime;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

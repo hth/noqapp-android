@@ -88,7 +88,7 @@ public class CategoryListAdapter extends BaseAdapter {
             }
 
             if (jsonQueue.getEndHour() <= systemHourMinutes) {
-                recordHolder.tv_store_status.setText("Closed");
+                recordHolder.tv_store_status.setText("Closed Now");
             }
         }
 
