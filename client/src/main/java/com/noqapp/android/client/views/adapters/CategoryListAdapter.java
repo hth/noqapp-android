@@ -1,6 +1,8 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -77,18 +79,25 @@ public class CategoryListAdapter extends BaseAdapter {
         if (!jsonQueue.isDayClosed()) {
             if(systemHourMinutes > jsonQueue.getStartHour() && systemHourMinutes < jsonQueue.getEndHour()) {
                 recordHolder.tv_store_status.setText("Open Now");
+                recordHolder.tv_store_status.setTextColor(Color.parseColor("#095053"));
+                recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
             }
 
             if(systemHourMinutes < jsonQueue.getStartHour() && systemHourMinutes >= jsonQueue.getTokenAvailableFrom()) {
                 recordHolder.tv_store_status.setText("Opening Soon");
+                recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
+                recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
             }
 
             if (jsonQueue.getEndHour() > systemHourMinutes && jsonQueue.getTokenNotAvailableFrom() <= systemHourMinutes) {
                 recordHolder.tv_store_status.setText("Closing Soon");
+                recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
+                recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
             }
 
             if (jsonQueue.getEndHour() <= systemHourMinutes) {
                 recordHolder.tv_store_status.setText("Closed Now");
+                recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
             }
         }
 
