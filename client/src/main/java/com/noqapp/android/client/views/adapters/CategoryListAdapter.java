@@ -76,7 +76,7 @@ public class CategoryListAdapter extends BaseAdapter {
         int systemHourMinutes = AppUtilities.getSystemHourMinutes();
         if (!jsonQueue.isDayClosed()) {
             if(systemHourMinutes > jsonQueue.getStartHour() && systemHourMinutes < jsonQueue.getEndHour()) {
-                recordHolder.tv_store_status.setText("Open");
+                recordHolder.tv_store_status.setText("Open Now");
             }
 
             if(systemHourMinutes < jsonQueue.getStartHour() && systemHourMinutes >= jsonQueue.getTokenAvailableFrom()) {
