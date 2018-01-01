@@ -77,7 +77,7 @@ public class CategoryListAdapter extends BaseAdapter {
 
         int systemHourMinutes = AppUtilities.getSystemHourMinutes();
         if (!jsonQueue.isDayClosed()) {
-            if(systemHourMinutes > jsonQueue.getStartHour() && systemHourMinutes < jsonQueue.getEndHour()) {
+            if(systemHourMinutes >= jsonQueue.getStartHour() && systemHourMinutes <= jsonQueue.getEndHour()) {
                 recordHolder.tv_store_status.setText("Open Now");
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#095053"));
                 recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
@@ -95,7 +95,7 @@ public class CategoryListAdapter extends BaseAdapter {
                 recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
             }
 
-            if (jsonQueue.getEndHour() <= systemHourMinutes) {
+            if (jsonQueue.getEndHour() < systemHourMinutes || jsonQueue.getStartHour() > systemHourMinutes) {
                 recordHolder.tv_store_status.setText("Closed Now");
                 recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
             }
