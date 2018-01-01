@@ -68,6 +68,10 @@ public class Constants {
             "#FCCDE2",
             "#E9E9E5",
             "#FDFCE0",
+            "#D1D8F5",
+            "#C3E9FD",
+            "#C4F5F1",
+            "#F4FADE",
             };
 
     /**
