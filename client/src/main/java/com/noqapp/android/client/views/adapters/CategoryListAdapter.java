@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.fragments.JoinFragment;
@@ -49,6 +51,7 @@ public class CategoryListAdapter extends BaseAdapter {
             // recordHolder.tv_number = (TextView) view.findViewById(R.id.tv_number);
             recordHolder.tv_queue_name = (TextView) view.findViewById(R.id.tv_queue_name);
             recordHolder.tv_store_timing = (TextView) view.findViewById(R.id.tv_store_timing);
+            recordHolder.tv_store_status = (TextView) view.findViewById(R.id.tv_store_status);
             // recordHolder.tv_inqueue = (TextView) view.findViewById(R.id.tv_inqueue);
             // recordHolder.tv_label = (TextView) view.findViewById(R.id.tv_label);
             recordHolder.cardview = (CardView) view.findViewById(R.id.cardview);
@@ -69,6 +72,26 @@ public class CategoryListAdapter extends BaseAdapter {
                             + " - "
                             + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
         }
+
+        int systemHourMinutes = AppUtilities.getSystemHourMinutes();
+        if (!jsonQueue.isDayClosed()) {
+            if(systemHourMinutes > jsonQueue.getStartHour() && systemHourMinutes < jsonQueue.getEndHour()) {
+                recordHolder.tv_store_status.setText("Open");
+            }
+
+            if(systemHourMinutes < jsonQueue.getStartHour() && systemHourMinutes >= jsonQueue.getTokenAvailableFrom()) {
+                recordHolder.tv_store_status.setText("Opening Soon");
+            }
+
+            if (jsonQueue.getEndHour() > systemHourMinutes && jsonQueue.getTokenNotAvailableFrom() <= systemHourMinutes) {
+                recordHolder.tv_store_status.setText("Closing Soon");
+            }
+
+            if (jsonQueue.getEndHour() <= systemHourMinutes) {
+                recordHolder.tv_store_status.setText("Closed");
+            }
+        }
+
         recordHolder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +112,7 @@ public class CategoryListAdapter extends BaseAdapter {
         // TextView tv_number;
         TextView tv_queue_name;
         TextView tv_store_timing;
+        TextView tv_store_status;
         // TextView tv_inqueue;
         // TextView tv_label;
         CardView cardview;

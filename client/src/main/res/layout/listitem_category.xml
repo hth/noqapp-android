@@ -21,7 +21,6 @@
             android:padding="@dimen/list_item_margin"
             >
 
-
             <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
                 android:id="@+id/tv_queue_name"
                 android:layout_width="match_parent"
@@ -37,6 +36,12 @@
                 android:textColor="@color/color_btn_select"
                 android:textSize="15sp" />
 
+            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                android:id="@+id/tv_store_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_btn_select"
+                android:textSize="15sp" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
