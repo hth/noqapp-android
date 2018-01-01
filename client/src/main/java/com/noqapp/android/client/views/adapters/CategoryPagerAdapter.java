@@ -95,7 +95,7 @@ public class CategoryPagerAdapter extends PagerAdapter {
         } else if(jsonQueue.getStartHour() < getSystemHourMinutes()) {
             //Based on location let them know in how much time they will reach or suggest the next queue.
             additionalText = jsonQueue.getDisplayName()
-                    + " is open and can service you now. Click to join the queue.";
+                    + " is open & can service you now. Click to join the queue.";
         } else {
             if(jsonQueue.getTokenAvailableFrom() < getSystemHourMinutes()) {
                 additionalText = jsonQueue.getDisplayName()
