@@ -71,6 +71,7 @@ public class Constants {
             "#F4FADE",
             "#D8E9F0",
             "#D4A5A5",
+            "#BBDBDD"
             };
 
     /**

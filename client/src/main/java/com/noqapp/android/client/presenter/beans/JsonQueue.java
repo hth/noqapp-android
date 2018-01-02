@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.utils.Constants;
 
@@ -15,7 +16,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
- * User: omkar
+ * User: hitender
  * Date: 3/26/17 2:19 PM
  */
 @SuppressWarnings({
@@ -54,6 +55,9 @@ public class JsonQueue implements Serializable {
 
     @JsonProperty("p")
     private String storePhone;
+
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
 
     @JsonProperty("f")
     private int tokenAvailableFrom;
@@ -150,6 +154,10 @@ public class JsonQueue implements Serializable {
 
     public String getStorePhone() {
         return storePhone;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
     }
 
     public int getTokenAvailableFrom() {
@@ -305,10 +313,12 @@ public class JsonQueue implements Serializable {
                 ", storeAddress='" + storeAddress + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
                 ", storePhone='" + storePhone + '\'' +
+                ", businessType=" + businessType +
                 ", tokenAvailableFrom=" + tokenAvailableFrom +
                 ", startHour=" + startHour +
                 ", tokenNotAvailableFrom=" + tokenNotAvailableFrom +
                 ", endHour=" + endHour +
+                ", delayedInMinutes=" + delayedInMinutes +
                 ", preventJoining=" + preventJoining +
                 ", dayClosed=" + dayClosed +
                 ", topic='" + topic + '\'' +
@@ -323,6 +333,8 @@ public class JsonQueue implements Serializable {
                 ", averageServiceTime=" + averageServiceTime +
                 ", remoteJoinAvailable=" + remoteJoinAvailable +
                 ", allowLoggedInUser=" + allowLoggedInUser +
+                ", availableTokenCount=" + availableTokenCount +
+                ", bizCategoryId='" + bizCategoryId + '\'' +
                 ", error=" + error +
                 '}';
     }

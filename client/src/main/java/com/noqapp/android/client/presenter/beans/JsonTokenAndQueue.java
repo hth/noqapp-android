@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 
 import java.io.Serializable;
@@ -52,6 +53,9 @@ public class JsonTokenAndQueue implements Serializable {
 
     @JsonProperty("p")
     private String storePhone;
+
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
 
     @JsonProperty("f")
     private int tokenAvailableFrom;
@@ -154,6 +158,14 @@ public class JsonTokenAndQueue implements Serializable {
 
     public void setStorePhone(String storePhone) {
         this.storePhone = storePhone;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
     }
 
     public int getTokenAvailableFrom() {
@@ -297,9 +309,11 @@ public class JsonTokenAndQueue implements Serializable {
                 ", storeAddress='" + storeAddress + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
                 ", storePhone='" + storePhone + '\'' +
+                ", businessType=" + businessType +
                 ", tokenAvailableFrom=" + tokenAvailableFrom +
                 ", startHour=" + startHour +
                 ", endHour=" + endHour +
+                ", delayedInMinutes=" + delayedInMinutes +
                 ", topic='" + topic + '\'' +
                 ", servingNumber=" + servingNumber +
                 ", lastNumber=" + lastNumber +
@@ -310,6 +324,7 @@ public class JsonTokenAndQueue implements Serializable {
                 ", averageServiceTime=" + averageServiceTime +
                 ", hoursSaved=" + hoursSaved +
                 ", createDate='" + createDate + '\'' +
+                ", bizCategoryId='" + bizCategoryId + '\'' +
                 '}';
     }
 }
