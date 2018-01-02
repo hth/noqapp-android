@@ -77,34 +77,40 @@ public class CategoryListAdapter extends BaseAdapter {
 
         int systemHourMinutes = AppUtilities.getSystemHourMinutes();
         if (!jsonQueue.isDayClosed()) {
-            if(systemHourMinutes >= jsonQueue.getStartHour() && systemHourMinutes <= jsonQueue.getEndHour()) {
+            // Before Token Available Time
+            if (systemHourMinutes < jsonQueue.getTokenAvailableFrom()) {
+                recordHolder.tv_store_status.setText("Closed Now. Appointment booking starts at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom()));
+                recordHolder.tv_store_status.setTextColor(Color.parseColor("#095053"));
+            }
+
+            // Between Token Available and Start Hour
+            if (systemHourMinutes >= jsonQueue.getTokenAvailableFrom() && systemHourMinutes < jsonQueue.getStartHour()) {
+                recordHolder.tv_store_status.setText("Appointment booking for today started");
+                recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
+            }
+
+            // After Start Hour and Before Token Not Available From
+            if (systemHourMinutes >= jsonQueue.getStartHour() && systemHourMinutes < jsonQueue.getTokenNotAvailableFrom()) {
                 recordHolder.tv_store_status.setText("Open Now");
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#095053"));
             }
 
-            if(systemHourMinutes < jsonQueue.getStartHour() && systemHourMinutes >= jsonQueue.getTokenAvailableFrom()) {
-                recordHolder.tv_store_status.setText("Opens at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom()));
-                recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
-            }
-
-            if (jsonQueue.getEndHour() > systemHourMinutes && jsonQueue.getTokenNotAvailableFrom() <= systemHourMinutes) {
+            // When between Token Not Available From and End Hour
+            if (systemHourMinutes >= jsonQueue.getTokenNotAvailableFrom() && systemHourMinutes < jsonQueue.getEndHour()) {
                 recordHolder.tv_store_status.setText("Closing Soon");
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
             }
 
-            if (jsonQueue.getEndHour() < systemHourMinutes || jsonQueue.getStartHour() > systemHourMinutes) {
-                if (systemHourMinutes >= jsonQueue.getTokenAvailableFrom() && systemHourMinutes < jsonQueue.getStartHour()) {
-                    recordHolder.tv_store_status.setText("Closed Now. Open for appointments.");
-                }
-
-                if (systemHourMinutes < jsonQueue.getTokenAvailableFrom() && systemHourMinutes < jsonQueue.getStartHour()) {
-                    recordHolder.tv_store_status.setText("Closed Now. Open for appointment at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom()));
-                }
-
-                if (jsonQueue.getEndHour() < systemHourMinutes) {
-                    recordHolder.tv_store_status.setText("Closed Now");
-                }
+            // When after End Hour
+            if (systemHourMinutes >= jsonQueue.getEndHour()) {
+                recordHolder.tv_store_status.setText("Closed Now");
             }
+
+            recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
+        } else {
+            // Show when will this be open next.
+            recordHolder.tv_store_status.setText("Show some smart message");
+            recordHolder.tv_store_status.setTextColor(Color.DKGRAY);
             recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
         }
 
