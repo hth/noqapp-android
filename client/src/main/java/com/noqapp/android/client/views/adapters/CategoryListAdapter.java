@@ -80,25 +80,32 @@ public class CategoryListAdapter extends BaseAdapter {
             if(systemHourMinutes >= jsonQueue.getStartHour() && systemHourMinutes <= jsonQueue.getEndHour()) {
                 recordHolder.tv_store_status.setText("Open Now");
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#095053"));
-                recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
             }
 
             if(systemHourMinutes < jsonQueue.getStartHour() && systemHourMinutes >= jsonQueue.getTokenAvailableFrom()) {
                 recordHolder.tv_store_status.setText("Opening Soon");
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
-                recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
             }
 
             if (jsonQueue.getEndHour() > systemHourMinutes && jsonQueue.getTokenNotAvailableFrom() <= systemHourMinutes) {
                 recordHolder.tv_store_status.setText("Closing Soon");
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
-                recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
             }
 
             if (jsonQueue.getEndHour() < systemHourMinutes || jsonQueue.getStartHour() > systemHourMinutes) {
-                recordHolder.tv_store_status.setText("Closed Now");
-                recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
+                if (systemHourMinutes >= jsonQueue.getTokenAvailableFrom() && systemHourMinutes < jsonQueue.getStartHour()) {
+                    recordHolder.tv_store_status.setText("Closed Now. Open for appointments.");
+                }
+
+                if (systemHourMinutes < jsonQueue.getTokenAvailableFrom() && systemHourMinutes < jsonQueue.getStartHour()) {
+                    recordHolder.tv_store_status.setText("Closed Now. Open for appointment at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom()));
+                }
+
+                if (jsonQueue.getEndHour() < systemHourMinutes) {
+                    recordHolder.tv_store_status.setText("Closed Now");
+                }
             }
+            recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
         }
 
         recordHolder.cardview.setOnClickListener(new View.OnClickListener() {
