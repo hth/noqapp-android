@@ -102,11 +102,11 @@ public class CategoryListAdapter extends BaseAdapter {
                             recordHolder.tv_store_status.setText("Appointment booking for today started");
                             break;
                         default:
-                            recordHolder.tv_store_status.setText("Now you can join queue. Queue service begins at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()));
+                            recordHolder.tv_store_status.setText("Now you can join queue. Queue service will begin at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()));
                             break;
                     }
                 } else {
-                    recordHolder.tv_store_status.setText("Now you can join queue. Queue service begins at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()));
+                    recordHolder.tv_store_status.setText("Now you can join queue. Queue service will begin at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()));
                 }
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
             }
