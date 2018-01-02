@@ -83,7 +83,7 @@ public class CategoryListAdapter extends BaseAdapter {
             }
 
             if(systemHourMinutes < jsonQueue.getStartHour() && systemHourMinutes >= jsonQueue.getTokenAvailableFrom()) {
-                recordHolder.tv_store_status.setText("Opening Soon");
+                recordHolder.tv_store_status.setText("Opens at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom()));
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
             }
 
