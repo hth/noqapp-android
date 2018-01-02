@@ -92,12 +92,12 @@ public class CategoryPagerAdapter extends PagerAdapter {
         if (jsonQueue.isDayClosed()) {
             //Fetch for tomorrow when closed
             additionalText = jsonQueue.getDisplayName() + " is closed today.";
-        } else if (jsonQueue.getStartHour() <= getSystemHourMinutes()) {
+        } else if (getSystemHourMinutes() >= jsonQueue.getStartHour() && getSystemHourMinutes() < jsonQueue.getEndHour()) {
             //Based on location let them know in how much time they will reach or suggest the next queue.
             additionalText = jsonQueue.getDisplayName()
                     + " is open & can service you now. Click to join the queue.";
         } else {
-            if (jsonQueue.getTokenAvailableFrom() <= getSystemHourMinutes()) {
+            if (getSystemHourMinutes() >= jsonQueue.getTokenAvailableFrom()) {
                 additionalText = jsonQueue.getDisplayName()
                         + " opens at "
                         + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
