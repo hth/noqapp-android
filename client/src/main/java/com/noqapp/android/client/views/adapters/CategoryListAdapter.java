@@ -79,19 +79,52 @@ public class CategoryListAdapter extends BaseAdapter {
         if (!jsonQueue.isDayClosed()) {
             // Before Token Available Time
             if (systemHourMinutes < jsonQueue.getTokenAvailableFrom()) {
-                recordHolder.tv_store_status.setText("Closed Now. Appointment booking starts at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom()));
+                if (jsonQueue.getBusinessType() != null) {
+                    switch (jsonQueue.getBusinessType()) {
+                        case DO:
+                            recordHolder.tv_store_status.setText("Closed Now. Appointment booking starts at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom()));
+                            break;
+                        default:
+                            recordHolder.tv_store_status.setText("Closed Now. You can join queue at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom()));
+                            break;
+                    }
+                } else {
+                    recordHolder.tv_store_status.setText("Closed Now. You can join queue at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom()));
+                }
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#095053"));
             }
 
             // Between Token Available and Start Hour
             if (systemHourMinutes >= jsonQueue.getTokenAvailableFrom() && systemHourMinutes < jsonQueue.getStartHour()) {
-                recordHolder.tv_store_status.setText("Appointment booking for today started");
+                if (jsonQueue.getBusinessType() != null) {
+                    switch (jsonQueue.getBusinessType()) {
+                        case DO:
+                            recordHolder.tv_store_status.setText("Appointment booking for today started");
+                            break;
+                        default:
+                            recordHolder.tv_store_status.setText("Now you can join queue. Queue service begins at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()));
+                            break;
+                    }
+                } else {
+                    recordHolder.tv_store_status.setText("Now you can join queue. Queue service begins at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()));
+                }
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
             }
 
             // After Start Hour and Before Token Not Available From
             if (systemHourMinutes >= jsonQueue.getStartHour() && systemHourMinutes < jsonQueue.getTokenNotAvailableFrom()) {
-                recordHolder.tv_store_status.setText("Open Now. Book Appointments");
+                if (jsonQueue.getBusinessType() != null) {
+                    switch (jsonQueue.getBusinessType()) {
+                        case DO:
+                            recordHolder.tv_store_status.setText("Open Now. Book Appointments");
+                            break;
+                        default:
+                            recordHolder.tv_store_status.setText("Open Now. Join Queue.");
+                            break;
+                    }
+                } else {
+                    recordHolder.tv_store_status.setText("Open Now. Join Queue.");
+                }
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#095053"));
             }
 
