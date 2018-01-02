@@ -91,7 +91,7 @@ public class CategoryListAdapter extends BaseAdapter {
 
             // After Start Hour and Before Token Not Available From
             if (systemHourMinutes >= jsonQueue.getStartHour() && systemHourMinutes < jsonQueue.getTokenNotAvailableFrom()) {
-                recordHolder.tv_store_status.setText("Open Now");
+                recordHolder.tv_store_status.setText("Open Now. Book Appointments");
                 recordHolder.tv_store_status.setTextColor(Color.parseColor("#095053"));
             }
 
