@@ -137,6 +137,7 @@ public class CategoryListAdapter extends BaseAdapter {
             // When after End Hour
             if (systemHourMinutes >= jsonQueue.getEndHour()) {
                 recordHolder.tv_store_status.setText("Closed Now");
+                recordHolder.tv_store_status.setTextColor(context.getResources().getColor(R.color.color_btn_select));
             }
 
             recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);

@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Ints;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -282,24 +284,10 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             } else {
                 ArrayList<JsonQueue> jsonQueues = queueMap.get(categoryId);
                 jsonQueues.add(jsonQueue);
-                sortQueueThatIsNearToCurrentTime(systemHourMinutes, jsonQueues);
+                AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
             }
         }
         cacheQueue.put("queue", queueMap);
-    }
-
-    //TODO(chandra) this logic goes in merchant too
-    private void sortQueueThatIsNearToCurrentTime(final int systemHourMinutes, ArrayList<JsonQueue> jsonQueues) {
-        Collections.sort(jsonQueues, new Comparator<JsonQueue>() {
-            @Override
-            public int compare(JsonQueue jq1, JsonQueue jq2) {
-                return ComparisonChain.start()
-                        .compareFalseFirst(jq1.isDayClosed(), jq2.isDayClosed())
-                        .compare(jq1.getEndHour(), jq2.getEndHour())
-                        .compare(jq1.getStartHour() - systemHourMinutes, jq2.getStartHour() - systemHourMinutes)
-                        .result();
-            }
-        });
     }
 
     public List<JsonCategory> getCategoryThatArePopulated() {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.common.base.Objects;
 import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.utils.Constants;
@@ -132,48 +133,108 @@ public class JsonQueue implements Serializable {
         return codeQR;
     }
 
+    public JsonQueue setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
+
     public double[] getCoordinate() {
         return coordinate;
+    }
+
+    public JsonQueue setCoordinate(double[] coordinate) {
+        this.coordinate = coordinate;
+        return this;
     }
 
     public String getBusinessName() {
         return businessName;
     }
 
+    public JsonQueue setBusinessName(String businessName) {
+        this.businessName = businessName;
+        return this;
+    }
+
     public String getDisplayName() {
         return displayName;
+    }
+
+    public JsonQueue setDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
     }
 
     public String getStoreAddress() {
         return storeAddress;
     }
 
+    public JsonQueue setStoreAddress(String storeAddress) {
+        this.storeAddress = storeAddress;
+        return this;
+    }
+
     public String getCountryShortName() {
         return countryShortName;
+    }
+
+    public JsonQueue setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
+        return this;
     }
 
     public String getStorePhone() {
         return storePhone;
     }
 
+    public JsonQueue setStorePhone(String storePhone) {
+        this.storePhone = storePhone;
+        return this;
+    }
+
     public BusinessTypeEnum getBusinessType() {
         return businessType;
+    }
+
+    public JsonQueue setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
     }
 
     public int getTokenAvailableFrom() {
         return tokenAvailableFrom;
     }
 
+    public JsonQueue setTokenAvailableFrom(int tokenAvailableFrom) {
+        this.tokenAvailableFrom = tokenAvailableFrom;
+        return this;
+    }
+
     public int getStartHour() {
         return startHour;
+    }
+
+    public JsonQueue setStartHour(int startHour) {
+        this.startHour = startHour;
+        return this;
     }
 
     public int getTokenNotAvailableFrom() {
         return tokenNotAvailableFrom;
     }
 
+    public JsonQueue setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
+        this.tokenNotAvailableFrom = tokenNotAvailableFrom;
+        return this;
+    }
+
     public int getEndHour() {
         return endHour;
+    }
+
+    public JsonQueue setEndHour(int endHour) {
+        this.endHour = endHour;
+        return this;
     }
 
     public int getDelayedInMinutes() {
@@ -189,33 +250,73 @@ public class JsonQueue implements Serializable {
         return preventJoining;
     }
 
+    public JsonQueue setPreventJoining(boolean preventJoining) {
+        this.preventJoining = preventJoining;
+        return this;
+    }
+
     public boolean isDayClosed() {
         return dayClosed;
+    }
+
+    public JsonQueue setDayClosed(boolean dayClosed) {
+        this.dayClosed = dayClosed;
+        return this;
     }
 
     public String getTopic() {
         return topic;
     }
 
+    public JsonQueue setTopic(String topic) {
+        this.topic = topic;
+        return this;
+    }
+
     public int getServingNumber() {
         return servingNumber;
+    }
+
+    public JsonQueue setServingNumber(int servingNumber) {
+        this.servingNumber = servingNumber;
+        return this;
     }
 
     public int getLastNumber() {
         return lastNumber;
     }
 
+    public JsonQueue setLastNumber(int lastNumber) {
+        this.lastNumber = lastNumber;
+        return this;
+    }
+
     public QueueStatusEnum getQueueStatus() {
         return queueStatus;
+    }
+
+    public JsonQueue setQueueStatus(QueueStatusEnum queueStatus) {
+        this.queueStatus = queueStatus;
+        return this;
     }
 
     public String getServiceEndTime() {
         return serviceEndTime;
     }
 
+    public JsonQueue setServiceEndTime(String serviceEndTime) {
+        this.serviceEndTime = serviceEndTime;
+        return this;
+    }
+
     /* Used when joining remotely. */
     public int getRemoteJoinCount() {
         return remoteJoinCount;
+    }
+
+    public JsonQueue setRemoteJoinCount(int remoteJoinCount) {
+        this.remoteJoinCount = remoteJoinCount;
+        return this;
     }
 
     public String getCreated() {
@@ -231,8 +332,18 @@ public class JsonQueue implements Serializable {
         return rating;
     }
 
+    public JsonQueue setRating(float rating) {
+        this.rating = rating;
+        return this;
+    }
+
     public int getRatingCount() {
         return ratingCount;
+    }
+
+    public JsonQueue setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+        return this;
     }
 
     public long getAverageServiceTime() {
@@ -259,16 +370,27 @@ public class JsonQueue implements Serializable {
         return allowLoggedInUser;
     }
 
+    public JsonQueue setAllowLoggedInUser(boolean allowLoggedInUser) {
+        this.allowLoggedInUser = allowLoggedInUser;
+        return this;
+    }
+
     public int getAvailableTokenCount() {
         return availableTokenCount;
     }
 
-    public void setAvailableTokenCount(int availableTokenCount) {
+    public JsonQueue setAvailableTokenCount(int availableTokenCount) {
         this.availableTokenCount = availableTokenCount;
+        return this;
     }
 
     public String getBizCategoryId() {
         return bizCategoryId;
+    }
+
+    public JsonQueue setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
+        return this;
     }
 
     public ErrorEncounteredJson getError() {
@@ -301,6 +423,19 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setCreateDate(created);
         jsonTokenAndQueue.setBizCategoryId(bizCategoryId);
         return jsonTokenAndQueue;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JsonQueue jsonQueue = (JsonQueue) o;
+        return Objects.equal(codeQR, jsonQueue.codeQR);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(codeQR);
     }
 
     @Override

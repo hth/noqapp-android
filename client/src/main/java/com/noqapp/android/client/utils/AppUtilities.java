@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.JsonQueue;
 
 import org.joda.time.LocalDateTime;
 
@@ -32,8 +33,12 @@ import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -163,7 +168,40 @@ public class AppUtilities {
     }
 
     public static int getSystemHourMinutes() {
-        // To make sure time 11:06 AM is not represented as 116 but as 1106.
-        return Integer.parseInt(String.valueOf(LocalDateTime.now().getHourOfDay()) + String.format(Locale.US, "%02d", LocalDateTime.now().getMinuteOfHour()));
+        // To make sure minute in time 11:06 AM is not represented as 116 but as 1106.
+        LocalDateTime localDateTime = LocalDateTime.now();
+        int time = Integer.parseInt(String.valueOf(localDateTime.getHourOfDay()) + String.format(Locale.US, "%02d", localDateTime.getMinuteOfHour()));
+        Log.i(TAG, "System Time " + time);
+        return time;
+    }
+
+    //TODO(chandra) this logic goes in merchant too
+    public static void sortJsonQueues(final int systemHourMinutes, List<JsonQueue> jsonQueues) {
+        List<JsonQueue> closedTodayQueues = new ArrayList<>();
+        List<JsonQueue> afterNowClosedQueues = new ArrayList<>();
+        for (JsonQueue jsonQueue : jsonQueues) {
+            if (jsonQueue.isDayClosed()) {
+                closedTodayQueues.add(jsonQueue);
+            } else if (jsonQueue.getEndHour() < systemHourMinutes) {
+                afterNowClosedQueues.add(jsonQueue);
+            }
+        }
+
+        jsonQueues.removeAll(afterNowClosedQueues);
+        jsonQueues.removeAll(closedTodayQueues);
+        Comparator<JsonQueue> openNow = new Comparator<JsonQueue>() {
+            @Override
+            public int compare(JsonQueue o1, JsonQueue o2) {
+                return systemHourMinutes - o1.getStartHour() < systemHourMinutes - o2.getStartHour() ? 1 : -1;
+            }
+        };
+
+        Collections.sort(jsonQueues, openNow);
+        jsonQueues.addAll(afterNowClosedQueues);
+        jsonQueues.addAll(closedTodayQueues);
+
+        for (JsonQueue jsonQueue : jsonQueues) {
+            System.out.println(jsonQueue.getDisplayName());
+        }
     }
 }
