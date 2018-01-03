@@ -163,6 +163,7 @@ public class AppUtilities {
     }
 
     public static int getSystemHourMinutes() {
-        return Integer.parseInt(String.valueOf(LocalDateTime.now().getHourOfDay()) + String.valueOf(LocalDateTime.now().getMinuteOfHour()));
+        // To make sure time 11:06 AM is not represented as 116 but as 1106.
+        return Integer.parseInt(String.valueOf(LocalDateTime.now().getHourOfDay()) + String.format(Locale.US, "%02d", LocalDateTime.now().getMinuteOfHour()));
     }
 }

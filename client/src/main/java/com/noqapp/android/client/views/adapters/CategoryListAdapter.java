@@ -99,7 +99,7 @@ public class CategoryListAdapter extends BaseAdapter {
                 if (jsonQueue.getBusinessType() != null) {
                     switch (jsonQueue.getBusinessType()) {
                         case DO:
-                            recordHolder.tv_store_status.setText("Appointment booking for today started");
+                            recordHolder.tv_store_status.setText("Now accepting appointments for today");
                             break;
                         default:
                             recordHolder.tv_store_status.setText("Now you can join queue. Queue service will begin at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()));

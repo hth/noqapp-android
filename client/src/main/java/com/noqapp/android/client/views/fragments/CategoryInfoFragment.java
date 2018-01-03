@@ -295,7 +295,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             public int compare(JsonQueue jq1, JsonQueue jq2) {
                 return ComparisonChain.start()
                         .compareFalseFirst(jq1.isDayClosed(), jq2.isDayClosed())
-                        .compare(jq2.getEndHour(), jq1.getEndHour())
+                        .compare(jq1.getEndHour(), jq2.getEndHour())
                         .compare(jq1.getStartHour() - systemHourMinutes, jq2.getStartHour() - systemHourMinutes)
                         .result();
             }
