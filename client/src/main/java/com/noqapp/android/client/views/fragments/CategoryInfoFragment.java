@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -261,7 +262,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
      * @param jsonQueueList
      */
     private void populateAndSortedCache(JsonQueueList jsonQueueList) {
-        Map<String, JsonCategory> categoryMap = new HashMap<>();
+        Map<String, JsonCategory> categoryMap = new LinkedHashMap<>();
         for (JsonCategory jsonCategory : jsonQueueList.getCategories()) {
             categoryMap.put(jsonCategory.getBizCategoryId(), jsonCategory);
         }
