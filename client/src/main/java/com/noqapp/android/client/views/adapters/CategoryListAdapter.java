@@ -117,27 +117,27 @@ public class CategoryListAdapter extends BaseAdapter {
                 if (jsonQueue.getBusinessType() != null) {
                     switch (jsonQueue.getBusinessType()) {
                         case DO:
-                            recordHolder.tv_store_status.setText("Open Now. Book Appointments");
+                            recordHolder.tv_store_status.setText("Open now. Book your appointment for today.");
                             break;
                         default:
-                            recordHolder.tv_store_status.setText("Open Now. Join Queue.");
+                            recordHolder.tv_store_status.setText("Open now. Join the queue.");
                             break;
                     }
                 } else {
-                    recordHolder.tv_store_status.setText("Open Now. Join Queue.");
+                    recordHolder.tv_store_status.setText("Open Now. Join the queue.");
                 }
                 recordHolder.tv_store_status.setTextColor(context.getResources().getColor(R.color.open_queue));
             }
 
             // When between Token Not Available From and End Hour
             if (systemHourMinutes >= jsonQueue.getTokenNotAvailableFrom() && systemHourMinutes < jsonQueue.getEndHour()) {
-                recordHolder.tv_store_status.setText("Closing Soon");
+                recordHolder.tv_store_status.setText("Closing soon");
                 recordHolder.tv_store_status.setTextColor(context.getResources().getColor(R.color.before_opening_queue));
             }
 
             // When after End Hour
             if (systemHourMinutes >= jsonQueue.getEndHour()) {
-                recordHolder.tv_store_status.setText("Closed Now");
+                recordHolder.tv_store_status.setText("Closed now");
                 recordHolder.tv_store_status.setTextColor(context.getResources().getColor(R.color.color_btn_select));
             }
 
