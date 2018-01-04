@@ -20,6 +20,6 @@
     <color name="rating_unselect">#80e92270</color>
     <color name="progress_unselect">#4de92270</color>
     <color name="open_queue">#095053</color>
-    <color name="before_opening_queue">#a86041</color>
+    <color name="before_opening_queue">#ae6b3f</color>
 
 </resources>
