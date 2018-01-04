@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.List;
 
 
 public class CategoryListAdapter extends BaseAdapter {
+    private static final String TAG = CategoryListAdapter.class.getSimpleName();
     private Context context;
     private List<JsonQueue> jsonQueues;
 
@@ -91,7 +93,6 @@ public class CategoryListAdapter extends BaseAdapter {
                 } else {
                     recordHolder.tv_store_status.setText("Closed Now. You can join queue at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom()));
                 }
-                recordHolder.tv_store_status.setTextColor(Color.parseColor("#095053"));
             }
 
             // Between Token Available and Start Hour
@@ -108,7 +109,7 @@ public class CategoryListAdapter extends BaseAdapter {
                 } else {
                     recordHolder.tv_store_status.setText("Now you can join queue. Queue service will begin at " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()));
                 }
-                recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
+                recordHolder.tv_store_status.setTextColor(context.getResources().getColor(R.color.before_opening_queue));
             }
 
             // After Start Hour and Before Token Not Available From
@@ -125,13 +126,13 @@ public class CategoryListAdapter extends BaseAdapter {
                 } else {
                     recordHolder.tv_store_status.setText("Open Now. Join Queue.");
                 }
-                recordHolder.tv_store_status.setTextColor(Color.parseColor("#095053"));
+                recordHolder.tv_store_status.setTextColor(context.getResources().getColor(R.color.open_queue));
             }
 
             // When between Token Not Available From and End Hour
             if (systemHourMinutes >= jsonQueue.getTokenNotAvailableFrom() && systemHourMinutes < jsonQueue.getEndHour()) {
                 recordHolder.tv_store_status.setText("Closing Soon");
-                recordHolder.tv_store_status.setTextColor(Color.parseColor("#a86041"));
+                recordHolder.tv_store_status.setTextColor(context.getResources().getColor(R.color.before_opening_queue));
             }
 
             // When after End Hour
