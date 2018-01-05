@@ -16,9 +16,6 @@ import android.widget.TextView;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.Ordering;
-import com.google.common.primitives.Ints;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -86,7 +83,6 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
     private String frtag;
 
     private Animation animShow, animHide;
-    private JsonQueueList jsonQueueList;
     private boolean isSliderOpen = false;
 
     //Set cache parameters
@@ -243,7 +239,6 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
 
     @Override
     public void queueResponse(JsonQueueList jsonQueueList) {
-        this.jsonQueueList = jsonQueueList;
         if (!jsonQueueList.getQueues().isEmpty()) {
             queueResponse(jsonQueueList.getQueues().get(0));
             populateAndSortedCache(jsonQueueList);
