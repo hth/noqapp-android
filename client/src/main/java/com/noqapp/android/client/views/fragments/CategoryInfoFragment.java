@@ -37,8 +37,6 @@ import com.noqapp.android.client.views.adapters.CategoryListPagerAdapter;
 import com.noqapp.android.client.views.adapters.CategoryPagerAdapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -99,6 +97,11 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
     private final Cache<String, Map<String, ArrayList<JsonQueue>>> cacheQueue = CacheBuilder.newBuilder()
             .maximumSize(1)
             .build();
+
+    private final Cache<String, Map<String, String>> cachePhone = CacheBuilder.newBuilder()
+            .maximumSize(1)
+            .build();
+
 
     private CategoryListPagerAdapter mFragmentCardAdapter;
 
@@ -268,7 +271,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         for (JsonCategory jsonCategory : jsonQueueList.getCategories()) {
             categoryMap.put(jsonCategory.getBizCategoryId(), jsonCategory);
         }
-        categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName("My Name"));
+        categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName(jsonQueueList.getQueues().get(0).getBusinessName()));
         cacheCategory.put("category", categoryMap);
 
         int systemHourMinutes = getSystemHourMinutes();
@@ -288,6 +291,19 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             }
         }
         cacheQueue.put("queue", queueMap);
+
+        //TODO(hth) No matter which category I am, I need to see that category phone number with rest of the available numbers
+        //OR show all the numbers of that category/queue thats active
+        Map<String, String> phoneMap = new HashMap<>();
+        for (String key : queueMap.keySet()) {
+            List<JsonQueue> jsonQueues = queueMap.get(key);
+            for (JsonQueue jsonQueue : jsonQueues) {
+                phoneMap.put(
+                        jsonQueue.getBizCategoryId(),
+                        PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
+            }
+        }
+        cachePhone.put("phone", phoneMap);
     }
 
     public List<JsonCategory> getCategoryThatArePopulated() {
