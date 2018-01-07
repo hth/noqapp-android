@@ -97,10 +97,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     //save data to database
                     String payload = remoteMessage.getData().get(MSG_TYPE_F);
                     String codeQR = remoteMessage.getData().get(MSG_TYPE_C);
-                    /***
+                    /*
                      * When u==S then it is re-view
                      *      u==N then it is skip(Rejoin) Pending task
-                     * */
+                     */
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
 
@@ -110,10 +110,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
 
 
-                        /**
+                        /*
                          * Save codeQR of review & show the review screen on app
                          * resume if there is any record in Review DB for review key
-                         * **/
+                         */
                         if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                             ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                             sendNotification(title, body, codeQR, true);//pass codeQR to open review screen
@@ -129,10 +129,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR);
                         String go_to = remoteMessage.getData().get(MSG_TYPE_G);
 
-                        /**
+                        /*
                          * Save codeQR of goto & show it in after join screen on app
-                         *  Review DB for review key && current serving == token no.
-                         * **/
+                         * Review DB for review key && current serving == token no.
+                         */
                         if (Integer.parseInt(current_serving) == jtk.getToken())
                             ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
                         //update DB & after join screen
@@ -145,8 +145,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         sendNotification(title, body); // pass null to show only notification with no action
                     }
                 }
-            }catch (Exception e){
-                e.printStackTrace();
+            } catch (Exception e) {
+                Log.e(TAG, "Error reading message " + e.getLocalizedMessage(), e);
                 sendNotification(title, body);
             }
         }
