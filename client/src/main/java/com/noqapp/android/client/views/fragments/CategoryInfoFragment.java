@@ -94,8 +94,9 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             .maximumSize(1)
             .build();
 
-    private float rating;
-    private int ratingCount;
+    /* Compute Rating and Rating Count at runtime. */
+    private float rating = 0;
+    private int ratingCount = 0;
 
     private CategoryListPagerAdapter mFragmentCardAdapter;
 
