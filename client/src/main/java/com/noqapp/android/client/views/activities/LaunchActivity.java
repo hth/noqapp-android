@@ -454,12 +454,16 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
         if (null == jtk)
             jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR);
-        Intent in = new Intent(launchActivity, ReviewActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("object", jtk);
-        in.putExtras(bundle);
-        startActivityForResult(in, Constants.requestCodeJoinQActivity);
-        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+        if (null != jtk) {
+            Intent in = new Intent(launchActivity, ReviewActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("object", jtk);
+            in.putExtras(bundle);
+            startActivityForResult(in, Constants.requestCodeJoinQActivity);
+            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+        }else{
+            ReviewDB.insert(ReviewDB.KEY_REVIEW, "", "");
+        }
     }
 
     private void callSkipScreen(String codeQR) {
