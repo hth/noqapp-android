@@ -461,7 +461,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             in.putExtras(bundle);
             startActivityForResult(in, Constants.requestCodeJoinQActivity);
             NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-        }else{
+        } else {
             ReviewDB.insert(ReviewDB.KEY_REVIEW, "", "");
         }
     }

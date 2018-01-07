@@ -31,9 +31,9 @@ public class CategoryListAdapter extends BaseAdapter {
     private static final String TAG = CategoryListAdapter.class.getSimpleName();
     private Context context;
     private List<JsonQueue> jsonQueues;
-    private boolean fromList,fromHistory;
+    private boolean fromList, fromHistory;
 
-    public CategoryListAdapter(Context context, List<JsonQueue> jsonQueues,boolean fromList,boolean fromHistory) {
+    public CategoryListAdapter(Context context, List<JsonQueue> jsonQueues, boolean fromList, boolean fromHistory) {
         this.context = context;
         this.jsonQueues = jsonQueues;
         this.fromHistory = fromHistory;
@@ -177,7 +177,7 @@ public class CategoryListAdapter extends BaseAdapter {
                 JoinFragment jf = new JoinFragment();
                 jf.setArguments(b);
                 NoQueueBaseFragment.replaceFragmentWithBackStack(LaunchActivity.getLaunchActivity(), R.id.frame_layout, jf, JoinFragment.class.getName(),
-                        fromList?LaunchActivity.tabList:LaunchActivity.tabHome);
+                        fromList ? LaunchActivity.tabList : LaunchActivity.tabHome);
             }
         });
         return view;

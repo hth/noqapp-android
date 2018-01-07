@@ -128,9 +128,9 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    if(jsonQueuedPersonArrayList.get(position).getQueueUserState() ==  QueueUserStateEnum.A){
+                    if (jsonQueuedPersonArrayList.get(position).getQueueUserState() == QueueUserStateEnum.A) {
                         Toast.makeText(context, getString(R.string.error_client_left_queue), Toast.LENGTH_LONG).show();
-                    }else {
+                    } else {
                         if (TextUtils.isEmpty(jsonQueuedPersonArrayList.get(position).getServerDeviceId())) {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 progressDialog.show();
@@ -209,6 +209,6 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
 
     @Override
     public void dispenseTokenResponse(JsonToken token) {
-        
+
     }
 }

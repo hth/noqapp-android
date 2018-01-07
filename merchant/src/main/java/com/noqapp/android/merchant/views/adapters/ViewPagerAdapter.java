@@ -131,7 +131,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             public void onClick(View view) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
-                   showCreateTokenDialog(context,lq.getCodeQR());
+                    showCreateTokenDialog(context, lq.getCodeQR());
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
                 }
@@ -481,8 +481,8 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     @Override
     public void dispenseTokenResponse(JsonToken token) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        if (null != token && null!= tv_create_token) {
-           // Toast.makeText(context,,Toast.LENGTH_LONG).show();
+        if (null != token && null != tv_create_token) {
+            // Toast.makeText(context,,Toast.LENGTH_LONG).show();
             tv_create_token.setText("The genrated token no is ");
             btn_create_token.setText(context.getString(R.string.done));
             iv_banner.setBackgroundResource(R.drawable.after_token_generated);
@@ -544,14 +544,14 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
 
             @Override
             public void onClick(View v) {
-                if(btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
+                if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
                     ManageQueueModel.dispenseToken(
                             LaunchActivity.getLaunchActivity().getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
                             codeQR);
                     btn_create_token.setClickable(false);
-                }else{
+                } else {
                     mAlertDialog.dismiss();
                 }
             }

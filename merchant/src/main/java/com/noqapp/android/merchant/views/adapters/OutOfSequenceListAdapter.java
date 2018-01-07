@@ -92,10 +92,10 @@ public class OutOfSequenceListAdapter extends BaseAdapter {
                 recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
                 break;
             case A:
-                    recordHolder.iv_info.setBackgroundResource(R.drawable.acquire_cancel_by_user);
-                    recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
-                            context, R.color.disable_list));
-                    recordHolder.tv_status_msg.setText(context.getString(R.string.msg_client_left_queue));
+                recordHolder.iv_info.setBackgroundResource(R.drawable.acquire_cancel_by_user);
+                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
+                        context, R.color.disable_list));
+                recordHolder.tv_status_msg.setText(context.getString(R.string.msg_client_left_queue));
                 break;
             default:
                 Log.e(TAG, "Reached unsupported condition state=" + jsonQueuedPerson.getQueueUserState());
