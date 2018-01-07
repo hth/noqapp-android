@@ -181,7 +181,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         super.onResume();
         if (getArguments().getBoolean(KEY_FROM_LIST, false)) {
             if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
-                LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.remotejoin));
+                LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_remote_qscan_detail));
             } else {
                 LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_qscan_detail));
             }
@@ -330,7 +330,9 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             count++;
 
             if (queueMap.containsKey(key)) {
-                mFragments.add(CategoryListFragment.newInstance(queueMap.get(key), categoryMap.get(key).getCategoryName(), color));
+                mFragments.add(CategoryListFragment.newInstance(queueMap.get(key), categoryMap.get(key).getCategoryName(), color,
+                        getArguments().getBoolean(KEY_FROM_LIST, false),
+                        getArguments().getBoolean(KEY_IS_HISTORY, false)));
             } else {
                 Log.w(TAG, "Skipped empty category " + key);
             }

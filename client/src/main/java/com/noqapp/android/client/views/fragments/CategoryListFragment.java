@@ -20,12 +20,14 @@ import java.util.List;
 
 public class CategoryListFragment extends NoQueueBaseFragment {
 
-    public static CategoryListFragment newInstance(ArrayList<JsonQueue> jsonQueues, String categoryName, String color) {
+    public static CategoryListFragment newInstance(ArrayList<JsonQueue> jsonQueues, String categoryName, String color,boolean fromList,boolean fromHistory) {
         CategoryListFragment fragmentFirst = new CategoryListFragment();
         Bundle args = new Bundle();
         args.putString("color", color);
         args.putString("categoryName", categoryName);
         args.putSerializable("jsonQueues", jsonQueues);
+        args.putBoolean(KEY_FROM_LIST, fromList);
+        args.putBoolean(KEY_IS_HISTORY, fromHistory);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -51,7 +53,7 @@ public class CategoryListFragment extends NoQueueBaseFragment {
         tv.setBackgroundColor(Color.parseColor(color));
         tv.setText(categoryName);
         final List<JsonQueue> jsonQueues = (ArrayList<JsonQueue>) getArguments().getSerializable("jsonQueues");
-        CategoryListAdapter adapter = new CategoryListAdapter(getActivity(), jsonQueues);
+        CategoryListAdapter adapter = new CategoryListAdapter(getActivity(), jsonQueues, getArguments().getBoolean(KEY_FROM_LIST), getArguments().getBoolean(KEY_IS_HISTORY));
         card_view.setCardBackgroundColor(Color.parseColor(color));
         iv_list.setAdapter(adapter);
         return view;

@@ -31,10 +31,13 @@ public class CategoryListAdapter extends BaseAdapter {
     private static final String TAG = CategoryListAdapter.class.getSimpleName();
     private Context context;
     private List<JsonQueue> jsonQueues;
+    private boolean fromList,fromHistory;
 
-    public CategoryListAdapter(Context context, List<JsonQueue> jsonQueues) {
+    public CategoryListAdapter(Context context, List<JsonQueue> jsonQueues,boolean fromList,boolean fromHistory) {
         this.context = context;
         this.jsonQueues = jsonQueues;
+        this.fromHistory = fromHistory;
+        this.fromList = fromList;
     }
 
     public int getCount() {
@@ -168,12 +171,13 @@ public class CategoryListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Bundle b = new Bundle();
                 b.putString(NoQueueBaseFragment.KEY_CODE_QR, "");
-                b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
-                b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
+                b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, fromList);
+                b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, fromHistory);
                 b.putSerializable("object", jsonQueue);
                 JoinFragment jf = new JoinFragment();
                 jf.setArguments(b);
-                NoQueueBaseFragment.replaceFragmentWithBackStack(LaunchActivity.getLaunchActivity(), R.id.frame_layout, jf, JoinFragment.class.getName(), LaunchActivity.tabHome);
+                NoQueueBaseFragment.replaceFragmentWithBackStack(LaunchActivity.getLaunchActivity(), R.id.frame_layout, jf, JoinFragment.class.getName(),
+                        fromList?LaunchActivity.tabList:LaunchActivity.tabHome);
             }
         });
         return view;

@@ -103,7 +103,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         if (null != bundle) {
             codeQR = bundle.getString(KEY_CODE_QR);
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable("object");
-            queueResponse(jsonQueue);
+
             boolean callingFromHistory = getArguments().getBoolean(KEY_IS_HISTORY, false);
 //            if (LaunchActivity.getLaunchActivity().isOnline()) {
 //                LaunchActivity.getLaunchActivity().progressDialog.show();
@@ -136,6 +136,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                 btn_no.setVisibility(View.VISIBLE);
                 frtag = LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
             }
+
+            queueResponse(jsonQueue);
         }
         return view;
     }
@@ -255,7 +257,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                 //TODO(chandra) make sure jsonQueue is not null. Prevent action on join button.
                 Bundle b = new Bundle();
                 b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
-                b.putBoolean(KEY_FROM_LIST, false);
+                //TODO // previously KEY_FROM_LIST  was false need to verify
+                b.putBoolean(KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
                 b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, true));
                 b.putBoolean(KEY_IS_HISTORY, getArguments().getBoolean(KEY_IS_HISTORY, false));
                 b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
