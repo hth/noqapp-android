@@ -292,7 +292,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             if (jsonQueue.getRatingCount() != 0) {
                 ratingQueue += jsonQueue.getRating();
                 ratingCountQueue += jsonQueue.getRatingCount();
-                queueWithRating ++;
+                queueWithRating++;
             }
         }
         rating = ratingQueue / queueWithRating;

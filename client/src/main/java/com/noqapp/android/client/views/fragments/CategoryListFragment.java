@@ -20,7 +20,7 @@ import java.util.List;
 
 public class CategoryListFragment extends NoQueueBaseFragment {
 
-    public static CategoryListFragment newInstance(ArrayList<JsonQueue> jsonQueues, String categoryName, String color,boolean fromList,boolean fromHistory) {
+    public static CategoryListFragment newInstance(ArrayList<JsonQueue> jsonQueues, String categoryName, String color, boolean fromList, boolean fromHistory) {
         CategoryListFragment fragmentFirst = new CategoryListFragment();
         Bundle args = new Bundle();
         args.putString("color", color);
