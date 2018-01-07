@@ -94,10 +94,8 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             .maximumSize(1)
             .build();
 
-    private final Cache<String, Map<String, String>> cachePhone = CacheBuilder.newBuilder()
-            .maximumSize(1)
-            .build();
-
+    private float rating;
+    private int ratingCount;
 
     private CategoryListPagerAdapter mFragmentCardAdapter;
 
@@ -232,9 +230,9 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
                             + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
         }
         tv_hour_saved.setVisibility(View.INVISIBLE);
-        ratingBar.setRating(jsonQueue.getRating());
+        ratingBar.setRating(rating);
         // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
-        tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount()) + " Reviews");
+        tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
 
         codeQR = jsonQueue.getCodeQR();
 
@@ -243,8 +241,8 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
     @Override
     public void queueResponse(JsonQueueList jsonQueueList) {
         if (!jsonQueueList.getQueues().isEmpty()) {
-            queueResponse(jsonQueueList.getQueues().get(0));
             populateAndSortedCache(jsonQueueList);
+            queueResponse(jsonQueueList.getQueues().get(0));
         } else {
             //TODO(chandra) when its empty do something nice
         }
@@ -274,6 +272,8 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
 
         int systemHourMinutes = getSystemHourMinutes();
         Map<String, ArrayList<JsonQueue>> queueMap = new HashMap<>();
+        float ratingQueue = 0;
+        int ratingCountQueue = 0, queueWithRating = 0;
         for (JsonQueue jsonQueue : jsonQueueList.getQueues()) {
 
             //Likely hood of blank bizCategoryId
@@ -287,21 +287,17 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
                 jsonQueues.add(jsonQueue);
                 AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
             }
-        }
-        cacheQueue.put("queue", queueMap);
 
-        //TODO(hth) No matter which category I am, I need to see that category phone number with rest of the available numbers
-        //OR show all the numbers of that category/queue thats active
-        Map<String, String> phoneMap = new HashMap<>();
-        for (String key : queueMap.keySet()) {
-            List<JsonQueue> jsonQueues = queueMap.get(key);
-            for (JsonQueue jsonQueue : jsonQueues) {
-                phoneMap.put(
-                        jsonQueue.getBizCategoryId(),
-                        PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
+            if (jsonQueue.getRatingCount() != 0) {
+                ratingQueue += jsonQueue.getRating();
+                ratingCountQueue += jsonQueue.getRatingCount();
+                queueWithRating ++;
             }
         }
-        cachePhone.put("phone", phoneMap);
+        rating = ratingQueue / queueWithRating;
+        ratingCount = ratingCountQueue;
+
+        cacheQueue.put("queue", queueMap);
     }
 
     public List<JsonCategory> getCategoryThatArePopulated() {
@@ -338,20 +334,6 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             }
         }
 
-
-//TODO(chandra) why this logic is relatively bad then new logic. Of course have to delete this
-//        for (int j = 0; j < jsonQueueList.getCategories().size(); j++) {
-//
-//            ArrayList<JsonQueue> temp = new ArrayList<>();
-//            for (int i = 0; i < jsonQueueList.getQueues().size(); i++) {
-//                if (null != jsonQueueList.getQueues().get(i).getBizCategoryId() &&
-//                        jsonQueueList.getQueues().get(i).getBizCategoryId().equals(jsonQueueList.getCategories().get(j).getBizCategoryId()))
-//                    temp.add(jsonQueueList.getQueues().get(i));
-//            }
-//            String color = colorCodes[j % colorCodes.length];
-//            mFragments.add(CategoryListFragment.newInstance(temp, jsonQueueList.getCategories().get(j).getCategoryName(), color));
-//
-//        }
         mFragmentCardAdapter = new CategoryListPagerAdapter(
                 getActivity().getSupportFragmentManager(),
                 mFragments);
