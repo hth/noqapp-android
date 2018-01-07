@@ -57,6 +57,10 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     private Context context;
     private List<JsonTopic> topics;
     private LayoutInflater inflater;
+    private TextView tv_create_token;
+    private Button btn_create_token;
+    private ImageView iv_banner;
+    private TextView tvcount;
 
 
     public ViewPagerAdapter(Context context, List<JsonTopic> topics) {
@@ -127,11 +131,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             public void onClick(View view) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
-                    ManageQueueModel.dispenseToken(
-                            LaunchActivity.getLaunchActivity().getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            lq.getCodeQR());
+                   showCreateTokenDialog(context,lq.getCodeQR());
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
                 }
@@ -481,8 +481,14 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     @Override
     public void dispenseTokenResponse(JsonToken token) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        if (null != token) {
-            Toast.makeText(context,"The genrated token no is :"+token.getToken(),Toast.LENGTH_LONG).show();
+        if (null != token && null!= tv_create_token) {
+           // Toast.makeText(context,,Toast.LENGTH_LONG).show();
+            tv_create_token.setText("The genrated token no is ");
+            btn_create_token.setText(context.getString(R.string.done));
+            iv_banner.setBackgroundResource(R.drawable.after_token_generated);
+            tvcount.setText(String.valueOf(token.getToken()));
+            tvcount.setVisibility(View.VISIBLE);
+            btn_create_token.setClickable(true);
         }
     }
 
@@ -521,4 +527,35 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         mAlertDialog.show();
     }
 
+
+    private void showCreateTokenDialog(final Context mContext, final String codeQR) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_create_token, null, false);
+        tv_create_token = (TextView) customDialogView.findViewById(R.id.tvtitle);
+        iv_banner = (ImageView) customDialogView.findViewById(R.id.iv_banner);
+        tvcount = (TextView) customDialogView.findViewById(R.id.tvcount);
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        btn_create_token = (Button) customDialogView.findViewById(R.id.btn_create_token);
+        btn_create_token.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
+                    ManageQueueModel.dispenseToken(
+                            LaunchActivity.getLaunchActivity().getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            codeQR);
+                    btn_create_token.setClickable(false);
+                }else{
+                    mAlertDialog.dismiss();
+                }
+            }
+        });
+        mAlertDialog.show();
+    }
 }
