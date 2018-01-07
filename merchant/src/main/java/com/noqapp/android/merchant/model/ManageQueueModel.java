@@ -176,4 +176,40 @@ public class ManageQueueModel {
             }
         });
     }
+
+    /**
+     * Get setting for a specific queue.
+     *
+     * @param did
+     * @param mail
+     * @param auth
+     */
+    public static void dispenseToken(String did, String mail, String auth, String codeQR) {
+        manageQueueService.dispenseToken(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
+                if (response.code() == 401) {
+                    manageQueuePresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("Get queue setting", String.valueOf(response.body()));
+                    manageQueuePresenter.dispenseTokenResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Found error while get queue setting");
+                    ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                    manageQueuePresenter.manageQueueError(errorEncounteredJson);
+                }
+            }
+
+
+            @Override
+            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                manageQueuePresenter.manageQueueError(null);
+            }
+        });
+    }
 }

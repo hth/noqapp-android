@@ -25,7 +25,7 @@ public class Formatter {
     private static final TimeZone tz = TimeZone.getTimeZone("UTC");
 
     private static DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HHmm");
-    private static DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("hh:mma");
+    private static DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("hh:mm a");
 
     private Formatter() {
         formatRFC822.setTimeZone(tz);

@@ -1,6 +1,7 @@
 package com.noqapp.android.client.presenter;
 
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonQueueList;
 
 /**
  * User: omkar
@@ -9,6 +10,8 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 public interface QueuePresenter {
 
     void queueResponse(JsonQueue queue);
+
+    void queueResponse(JsonQueueList jsonQueues);
 
     void queueError();
 

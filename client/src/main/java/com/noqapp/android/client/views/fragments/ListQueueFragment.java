@@ -129,9 +129,9 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         b.putString(KEY_CODE_QR, codeQR);
         b.putBoolean(KEY_FROM_LIST, true);
         b.putBoolean(KEY_IS_HISTORY, false);
-        JoinFragment jf = new JoinFragment();
-        jf.setArguments(b);
-        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
+        CategoryInfoFragment cif = new CategoryInfoFragment();
+        cif.setArguments(b);
+        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
     }
 
     @Override
@@ -243,11 +243,11 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
                     ajf.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, LaunchActivity.tabList);
                 } else {
-                    JoinFragment jf = new JoinFragment();
+                    CategoryInfoFragment cif = new CategoryInfoFragment();
                     b.putBoolean(KEY_IS_HISTORY, true);
                     b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false);
-                    jf.setArguments(b);
-                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
+                    cif.setArguments(b);
+                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
                 }
                 return false;
             }

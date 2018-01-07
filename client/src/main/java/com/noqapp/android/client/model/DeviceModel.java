@@ -24,6 +24,7 @@ public class DeviceModel {
 
     private static final DeviceService deviceService;
     public static AppBlacklistPresenter appBlacklistPresenter;
+
     static {
         deviceService = RetrofitClient.getClient().create(DeviceService.class);
     }

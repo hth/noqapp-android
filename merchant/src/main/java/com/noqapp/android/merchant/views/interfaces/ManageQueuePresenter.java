@@ -11,4 +11,6 @@ public interface ManageQueuePresenter {
     void manageQueueError(ErrorEncounteredJson errorEncounteredJson);
 
     void authenticationFailure(int errorCode);
+
+    void dispenseTokenResponse(JsonToken token);
 }

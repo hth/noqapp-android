@@ -12,10 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.QueueApiModel;
-import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonQueueList;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
@@ -103,23 +102,25 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         Bundle bundle = getArguments();
         if (null != bundle) {
             codeQR = bundle.getString(KEY_CODE_QR);
+            JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable("object");
+
             boolean callingFromHistory = getArguments().getBoolean(KEY_IS_HISTORY, false);
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                LaunchActivity.getLaunchActivity().progressDialog.show();
-                if (UserUtils.isLogin()) {
-                    QueueApiModel.queuePresenter = this;
-                    if (callingFromHistory) {
-                        QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-                    } else {
-                        QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-                    }
-                } else {
-                    QueueModel.queuePresenter = this;
-                    QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
-                }
-            } else {
-                ShowAlertInformation.showNetworkDialog(getActivity());
-            }
+//            if (LaunchActivity.getLaunchActivity().isOnline()) {
+//                LaunchActivity.getLaunchActivity().progressDialog.show();
+//                if (UserUtils.isLogin()) {
+//                    QueueApiModel.queuePresenter = this;
+//                    if (callingFromHistory) {
+//                        QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+//                    } else {
+//                        QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+//                    }
+//                } else {
+//                    QueueModel.queuePresenter = this;
+//                    QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
+//                }
+//            } else {
+//                ShowAlertInformation.showNetworkDialog(getActivity());
+//            }
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 frtag = LaunchActivity.tabList;
                 if (callingFromHistory) {
@@ -135,6 +136,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                 btn_no.setVisibility(View.VISIBLE);
                 frtag = LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
             }
+
+            queueResponse(jsonQueue);
         }
         return view;
     }
@@ -212,6 +215,11 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         }
     }
 
+    @Override
+    public void queueResponse(JsonQueueList jsonQueues) {
+
+    }
+
     @OnClick(R.id.btn_joinQueue)
     public void joinQueue() {
         if (isJoinNotPossible) {
@@ -249,7 +257,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                 //TODO(chandra) make sure jsonQueue is not null. Prevent action on join button.
                 Bundle b = new Bundle();
                 b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
-                b.putBoolean(KEY_FROM_LIST, false);
+                //TODO // previously KEY_FROM_LIST  was false need to verify
+                b.putBoolean(KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
                 b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, true));
                 b.putBoolean(KEY_IS_HISTORY, getArguments().getBoolean(KEY_IS_HISTORY, false));
                 b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());

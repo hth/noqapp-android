@@ -1,6 +1,7 @@
 package com.noqapp.android.client.model.response.open;
 
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonQueueList;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
@@ -23,6 +24,18 @@ public interface QueueService {
 
     @GET("open/token/{codeQR}.json")
     Call<JsonQueue> getQueueState(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Path("codeQR")
+            String codeQR
+    );
+
+    @GET("open/token/v1/{codeQR}.json")
+    Call<JsonQueueList> getAllQueueState(
             @Header("X-R-DID")
             String did,
 
