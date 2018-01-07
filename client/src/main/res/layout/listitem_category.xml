@@ -29,6 +29,35 @@
                 android:layout_marginBottom="10dp"
                 android:textSize="20sp" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:numStars="5"
+                    android:layout_gravity="right"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="right"
+                    android:rating="0.0"
+                    android:isIndicator="true" />
+
+                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                    android:id="@+id/tv_mobile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/color_btn_select"
+                    android:drawableLeft="@drawable/phone"
+                    android:drawablePadding="2dp"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
             <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                 android:id="@+id/tv_store_timing"
                 android:layout_width="match_parent"

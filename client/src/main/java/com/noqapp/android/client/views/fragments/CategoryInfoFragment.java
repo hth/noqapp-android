@@ -217,8 +217,10 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         Log.d(TAG, "Queue=" + jsonQueue.toString());
         tv_store_name.setText(jsonQueue.getBusinessName());
         tv_queue_name.setText(jsonQueue.getDisplayName());
+        tv_queue_name.setVisibility(View.INVISIBLE);
         tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
         tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
+        tv_mobile.setVisibility(View.GONE);
         if (jsonQueue.isDayClosed()) {
             tv_hour_saved.setText(getString(R.string.store_closed));
         } else {
@@ -229,6 +231,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
                             + " - "
                             + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
         }
+        tv_hour_saved.setVisibility(View.INVISIBLE);
         ratingBar.setRating(jsonQueue.getRating());
         // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
         tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount()) + " Reviews");

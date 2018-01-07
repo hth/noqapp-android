@@ -47,17 +47,11 @@ public class CategoryListFragment extends NoQueueBaseFragment {
         ListView iv_list = (ListView) view.findViewById(R.id.iv_list);
         String categoryName = getArguments().getString("categoryName");
         String color = getArguments().getString("color");
+        TextView tv = (TextView) view.findViewById(R.id.tv_category);
+        tv.setBackgroundColor(Color.parseColor(color));
+        tv.setText(categoryName);
         final List<JsonQueue> jsonQueues = (ArrayList<JsonQueue>) getArguments().getSerializable("jsonQueues");
-
-        //
         CategoryListAdapter adapter = new CategoryListAdapter(getActivity(), jsonQueues);
-        if (0 == iv_list.getHeaderViewsCount()) {
-            View footer = (View) inflater.inflate(R.layout.category_lv_header, iv_list, false);
-            TextView tv = (TextView) footer.findViewById(R.id.tv_category);
-            tv.setBackgroundColor(Color.parseColor(color));
-            tv.setText(categoryName);
-            iv_list.addHeaderView(footer);
-        }
         card_view.setCardBackgroundColor(Color.parseColor(color));
         iv_list.setAdapter(adapter);
         return view;

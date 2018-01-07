@@ -69,8 +69,10 @@ public class CategoryPagerAdapter extends PagerAdapter {
         container.addView(view);
         TextView tv_title = view.findViewById(R.id.tv_title);
         TextView tv_detail = view.findViewById(R.id.tv_detail);
+        TextView tv_noinq = view.findViewById(R.id.tv_noinq);
         tv_title.setText(jsonCategory.getCategoryName());
         tv_detail.setText(getAdditionalCardText(jsonQueue));
+        tv_noinq.setText(String.valueOf(jsonQueues.size()));
         final CardView cardView = (CardView) view.findViewById(R.id.cardView);
         cardView.setCardBackgroundColor(Color.parseColor(Constants.colorCodes[position % Constants.colorCodes.length]));
         cardView.setOnClickListener(new View.OnClickListener() {
