@@ -167,7 +167,7 @@ public class AppUtilities {
         }
     }
 
-    public static int getSystemHourMinutes() {
+    public static int getTimeIn24HourFormat() {
         // To make sure minute in time 11:06 AM is not represented as 116 but as 1106.
         LocalDateTime localDateTime = LocalDateTime.now();
         int time = Integer.parseInt(String.valueOf(localDateTime.getHourOfDay()) + String.format(Locale.US, "%02d", localDateTime.getMinuteOfHour()));

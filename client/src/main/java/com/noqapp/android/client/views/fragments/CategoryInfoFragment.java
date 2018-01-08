@@ -43,7 +43,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.noqapp.android.client.utils.AppUtilities.getSystemHourMinutes;
+import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
 
 public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePresenter, CategoryPagerAdapter.CategoryPagerClick {
     private final String TAG = CategoryInfoFragment.class.getSimpleName();
@@ -271,7 +271,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName(jsonQueueList.getQueues().get(0).getBusinessName()));
         cacheCategory.put("category", categoryMap);
 
-        int systemHourMinutes = getSystemHourMinutes();
+        int systemHourMinutes = getTimeIn24HourFormat();
         Map<String, ArrayList<JsonQueue>> queueMap = new HashMap<>();
         float ratingQueue = 0;
         int ratingCountQueue = 0, queueWithRating = 0;
