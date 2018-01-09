@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import com.noqapp.android.client.views.fragments.JoinFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
 import java.util.List;
-
 
 public class CategoryListAdapter extends BaseAdapter {
     private static final String TAG = CategoryListAdapter.class.getSimpleName();
@@ -175,7 +173,11 @@ public class CategoryListAdapter extends BaseAdapter {
                 b.putSerializable("object", jsonQueue);
                 JoinFragment jf = new JoinFragment();
                 jf.setArguments(b);
-                NoQueueBaseFragment.replaceFragmentWithBackStack(LaunchActivity.getLaunchActivity(), R.id.frame_layout, jf, JoinFragment.class.getName(),
+                NoQueueBaseFragment.replaceFragmentWithBackStack(
+                        LaunchActivity.getLaunchActivity(),
+                        R.id.frame_layout,
+                        jf,
+                        JoinFragment.class.getName(),
                         fromList ? LaunchActivity.tabList : LaunchActivity.tabHome);
             }
         });
