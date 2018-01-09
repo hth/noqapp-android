@@ -158,10 +158,11 @@ public class CategoryListAdapter extends BaseAdapter {
 
             recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
         } else {
-            // Show when will this be open next.
-            recordHolder.tv_store_status.setText("Show some smart message");
-            recordHolder.tv_store_status.setTextColor(Color.DKGRAY);
-            recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
+            //TODO(hth) Show when will this be open next. For now hide it.
+            //recordHolder.tv_store_status.setText("Show some smart message");
+            //recordHolder.tv_store_status.setTextColor(Color.DKGRAY);
+            //recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
+            recordHolder.tv_store_status.setVisibility(View.GONE);
         }
 
         recordHolder.cardview.setOnClickListener(new View.OnClickListener() {
