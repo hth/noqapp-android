@@ -18,7 +18,6 @@ public class UserUtils {
 
     public static String getEmail() {
         return NoQueueBaseActivity.getMail();
-
     }
 
     public static String getAuth() {

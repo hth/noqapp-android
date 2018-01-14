@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.noqapp.android.client.utils.AppUtilities.getSystemHourMinutes;
+import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
 
 public class CategoryPagerAdapter extends PagerAdapter {
 
@@ -94,12 +94,12 @@ public class CategoryPagerAdapter extends PagerAdapter {
         if (jsonQueue.isDayClosed()) {
             //Fetch for tomorrow when closed
             additionalText = jsonQueue.getDisplayName() + " is closed today.";
-        } else if (getSystemHourMinutes() >= jsonQueue.getStartHour() && getSystemHourMinutes() < jsonQueue.getEndHour()) {
+        } else if (getTimeIn24HourFormat() >= jsonQueue.getStartHour() && getTimeIn24HourFormat() < jsonQueue.getEndHour()) {
             //Based on location let them know in how much time they will reach or suggest the next queue.
             additionalText = jsonQueue.getDisplayName()
                     + " is open & can service you now. Click to join the queue.";
         } else {
-            if (getSystemHourMinutes() >= jsonQueue.getTokenAvailableFrom()) {
+            if (getTimeIn24HourFormat() >= jsonQueue.getTokenAvailableFrom()) {
                 additionalText = jsonQueue.getDisplayName()
                         + " opens at "
                         + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())

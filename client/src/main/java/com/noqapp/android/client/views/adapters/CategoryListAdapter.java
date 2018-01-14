@@ -1,12 +1,10 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -25,7 +22,6 @@ import com.noqapp.android.client.views.fragments.JoinFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
 import java.util.List;
-
 
 public class CategoryListAdapter extends BaseAdapter {
     private static final String TAG = CategoryListAdapter.class.getSimpleName();
@@ -94,10 +90,10 @@ public class CategoryListAdapter extends BaseAdapter {
                             + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
         }
 
-        int systemHourMinutes = AppUtilities.getSystemHourMinutes();
+        int timeIn24HourFormat = AppUtilities.getTimeIn24HourFormat();
         if (!jsonQueue.isDayClosed()) {
             // Before Token Available Time
-            if (systemHourMinutes < jsonQueue.getTokenAvailableFrom()) {
+            if (timeIn24HourFormat < jsonQueue.getTokenAvailableFrom()) {
                 if (jsonQueue.getBusinessType() != null) {
                     switch (jsonQueue.getBusinessType()) {
                         case DO:
@@ -113,7 +109,7 @@ public class CategoryListAdapter extends BaseAdapter {
             }
 
             // Between Token Available and Start Hour
-            if (systemHourMinutes >= jsonQueue.getTokenAvailableFrom() && systemHourMinutes < jsonQueue.getStartHour()) {
+            if (timeIn24HourFormat >= jsonQueue.getTokenAvailableFrom() && timeIn24HourFormat < jsonQueue.getStartHour()) {
                 if (jsonQueue.getBusinessType() != null) {
                     switch (jsonQueue.getBusinessType()) {
                         case DO:
@@ -130,7 +126,7 @@ public class CategoryListAdapter extends BaseAdapter {
             }
 
             // After Start Hour and Before Token Not Available From
-            if (systemHourMinutes >= jsonQueue.getStartHour() && systemHourMinutes < jsonQueue.getTokenNotAvailableFrom()) {
+            if (timeIn24HourFormat >= jsonQueue.getStartHour() && timeIn24HourFormat < jsonQueue.getTokenNotAvailableFrom()) {
                 if (jsonQueue.getBusinessType() != null) {
                     switch (jsonQueue.getBusinessType()) {
                         case DO:
@@ -147,23 +143,24 @@ public class CategoryListAdapter extends BaseAdapter {
             }
 
             // When between Token Not Available From and End Hour
-            if (systemHourMinutes >= jsonQueue.getTokenNotAvailableFrom() && systemHourMinutes < jsonQueue.getEndHour()) {
+            if (timeIn24HourFormat >= jsonQueue.getTokenNotAvailableFrom() && timeIn24HourFormat < jsonQueue.getEndHour()) {
                 recordHolder.tv_store_status.setText("Closing soon");
                 recordHolder.tv_store_status.setTextColor(context.getResources().getColor(R.color.before_opening_queue));
             }
 
             // When after End Hour
-            if (systemHourMinutes >= jsonQueue.getEndHour()) {
+            if (timeIn24HourFormat >= jsonQueue.getEndHour()) {
                 recordHolder.tv_store_status.setText("Closed now");
                 recordHolder.tv_store_status.setTextColor(context.getResources().getColor(R.color.color_btn_select));
             }
 
             recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
         } else {
-            // Show when will this be open next.
-            recordHolder.tv_store_status.setText("Show some smart message");
-            recordHolder.tv_store_status.setTextColor(Color.DKGRAY);
-            recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
+            //TODO(hth) Show when will this be open next. For now hide it.
+            //recordHolder.tv_store_status.setText("Show some smart message");
+            //recordHolder.tv_store_status.setTextColor(Color.DKGRAY);
+            //recordHolder.tv_store_status.setTypeface(null, Typeface.BOLD);
+            recordHolder.tv_store_status.setVisibility(View.GONE);
         }
 
         recordHolder.cardview.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +173,11 @@ public class CategoryListAdapter extends BaseAdapter {
                 b.putSerializable("object", jsonQueue);
                 JoinFragment jf = new JoinFragment();
                 jf.setArguments(b);
-                NoQueueBaseFragment.replaceFragmentWithBackStack(LaunchActivity.getLaunchActivity(), R.id.frame_layout, jf, JoinFragment.class.getName(),
+                NoQueueBaseFragment.replaceFragmentWithBackStack(
+                        LaunchActivity.getLaunchActivity(),
+                        R.id.frame_layout,
+                        jf,
+                        JoinFragment.class.getName(),
                         fromList ? LaunchActivity.tabList : LaunchActivity.tabHome);
             }
         });
