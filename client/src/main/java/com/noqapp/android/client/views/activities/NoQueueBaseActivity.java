@@ -93,7 +93,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(PREKEY_PHONE, profile.getPhoneRaw());
         editor.putString(PREKEY_NAME, profile.getName());
-        editor.putString(PREKEY_GENDER, profile.getGender());
+        editor.putString(PREKEY_GENDER, profile.getGender().name());
         editor.putString(PREKEY_MAIL, profile.getMail());
         editor.putInt(PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
         editor.putBoolean(PREKEY_AUTOJOIN, true);
