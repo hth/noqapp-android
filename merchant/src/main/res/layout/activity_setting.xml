@@ -255,7 +255,7 @@
                         android:layout_marginTop="20dp"
                         android:background="@drawable/button_drawable_red"
                         android:padding="10dp"
-                        android:text="Update"
+                        android:text="Update Hours"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
                         android:textSize="18sp" />
