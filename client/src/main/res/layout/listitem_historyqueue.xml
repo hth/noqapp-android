@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:padding="1dp"
                     android:textColor="@color/colorMobile"
-                    android:text="show catagories "
+                    android:text="Show Categories "
                     android:gravity="center"
                     android:drawableRight="@drawable/show_category"
                     android:textSize="15sp" />

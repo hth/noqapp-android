@@ -82,4 +82,5 @@
     <string name="msg_client_already_acquired">Acquired by someone else</string>
     <string name="msg_client_left_queue">Has left the Queue</string>
     <string name="create_token">Create Token</string>
+    <string name="unlimited_token">UnLimited Tokens</string>
 </resources>

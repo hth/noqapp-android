@@ -336,6 +336,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
     compile 'com.squareup.okhttp3:okhttp:3.9.1'
     compile 'org.apache.commons:commons-lang3:3.6'
+    compile 'net.danlew:android.joda:2.9.9'
 
     compile 'com.google.guava:guava:23.6-android'
     compile 'com.google.firebase:firebase-core:11.8.0'

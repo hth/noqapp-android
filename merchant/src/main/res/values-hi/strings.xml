@@ -73,4 +73,5 @@
     <string name="playstore_update_title">Newer App Version Available</string>
     <string name="playstore_update_msg">New version of NoQApp Merchant is available on play store. Please update your app to latest version.\n</string>
     <string name="create_token">Create Token</string>
+    <string name="unlimited_token">UnLimited Tokens</string>
 </resources>
