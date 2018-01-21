@@ -264,6 +264,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
     private class TextViewClick implements View.OnClickListener {
         private TextView textView;
+
         public TextViewClick(TextView textView) {
             this.textView = textView;
         }
