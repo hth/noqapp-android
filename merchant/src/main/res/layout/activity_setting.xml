@@ -252,7 +252,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="20dp"
                         android:background="@drawable/button_drawable_red"
                         android:padding="10dp"
                         android:text="Update"

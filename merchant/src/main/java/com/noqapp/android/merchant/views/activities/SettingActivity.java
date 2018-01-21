@@ -33,6 +33,8 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Calendar;
 
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
@@ -117,21 +119,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                     if (!edt_token_no.getText().toString().equals("")) {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             progressDialog.show();
-                            QueueSetting queueSetting = new QueueSetting();
-                            queueSetting.setCodeQR(codeQR);
-                            queueSetting.setDayClosed(toggleDayClosed.isChecked());
-                            queueSetting.setPreventJoining(togglePreventJoin.isChecked());
-                            queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
-                            queueSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
-                            queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
-                            queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
-                            queueSetting.setAvailableTokenCount(Integer.parseInt(edt_token_no.getText().toString()));
-                            QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
+                            updateQueueSettings();
                         } else {
                             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
                         }
                     } else {
-                        Toast.makeText(SettingActivity.this, "Empty field is not allowed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SettingActivity.this, "Empty field is not allowed. For Un-Limited Tokens set value to '0'", Toast.LENGTH_LONG).show();
                     }
                 }
                 return false;
@@ -152,15 +145,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             public void onClick(View view) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.show();
-                    QueueSetting queueSetting = new QueueSetting();
-                    queueSetting.setCodeQR(codeQR);
-                    queueSetting.setDayClosed(toggleDayClosed.isChecked());
-                    queueSetting.setPreventJoining(togglePreventJoin.isChecked());
-                    queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
-                    queueSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
-                    queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
-                    queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
-                    QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
+                    updateQueueSettings();
                 } else {
                     ShowAlertInformation.showNetworkDialog(SettingActivity.this);
                 }
@@ -247,11 +232,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     public void onClick(View v) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            QueueSetting queueSetting = new QueueSetting();
-            queueSetting.setCodeQR(codeQR);
-            queueSetting.setDayClosed(toggleDayClosed.isChecked());
-            queueSetting.setPreventJoining(togglePreventJoin.isChecked());
-            QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
+            updateQueueSettings();
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
             if (v.getId() == R.id.toggleDayClosed) {
@@ -260,6 +241,23 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 togglePreventJoin.setChecked(!togglePreventJoin.isChecked());
             }
         }
+    }
+
+    private void updateQueueSettings() {
+        QueueSetting queueSetting = new QueueSetting();
+        queueSetting.setCodeQR(codeQR);
+        queueSetting.setDayClosed(toggleDayClosed.isChecked());
+        queueSetting.setPreventJoining(togglePreventJoin.isChecked());
+        queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
+        queueSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
+        queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
+        queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
+        if (StringUtils.isBlank(edt_token_no.getText().toString())) {
+            queueSetting.setAvailableTokenCount(0);
+        } else {
+            queueSetting.setAvailableTokenCount(Integer.parseInt(edt_token_no.getText().toString()));
+        }
+        QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
     }
 
     private class TextViewClick implements View.OnClickListener {
