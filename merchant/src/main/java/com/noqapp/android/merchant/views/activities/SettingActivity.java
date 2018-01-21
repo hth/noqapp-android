@@ -95,7 +95,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     edt_token_no.setVisibility(View.INVISIBLE);
-                    tv_limited_label.setText("Un-Limited Token");
+                    tv_limited_label.setText("Un-Limited Tokens");
                     View view = SettingActivity.this.getCurrentFocus();
                     if (view != null) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -104,7 +104,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 } else {
                     edt_token_no.setVisibility(View.VISIBLE);
                     // edt_token_no.setText("1");
-                    tv_limited_label.setText("Limited Token");
+                    tv_limited_label.setText("Limited Tokens");
                 }
             }
         });
@@ -205,13 +205,13 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getEndHour()));
             if (queueSetting.getAvailableTokenCount() <= 0) {
                 cb_limit.setChecked(true);
-                tv_limited_label.setText("Un-Limited Token");
+                tv_limited_label.setText("Un-Limited Tokens");
                 edt_token_no.setVisibility(View.INVISIBLE);
             } else {
                 cb_limit.setChecked(false);
                 edt_token_no.setText(String.valueOf(queueSetting.getAvailableTokenCount()));
                 edt_token_no.setVisibility(View.VISIBLE);
-                tv_limited_label.setText("Limited Token");
+                tv_limited_label.setText("Limited Tokens");
                 View view = SettingActivity.this.getCurrentFocus();
                 if (edt_token_no != null) {
                     edt_token_no.clearFocus();

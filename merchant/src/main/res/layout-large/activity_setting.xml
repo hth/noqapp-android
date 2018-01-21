@@ -146,7 +146,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".8"
                                 android:padding="5dp"
-                                android:text="Token available from: "
+                                android:text="Token Available From"
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 
@@ -173,7 +173,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".8"
                                 android:padding="5dp"
-                                android:text="Store start time: "
+                                android:text="Start Time"
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 
@@ -208,7 +208,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".8"
                                 android:padding="5dp"
-                                android:text="Token not available from: "
+                                android:text="Token Not Available From"
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 
@@ -235,7 +235,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".8"
                                 android:padding="5dp"
-                                android:text="Store close time: "
+                                android:text="Close Time"
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 

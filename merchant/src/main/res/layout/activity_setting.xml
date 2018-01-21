@@ -144,7 +144,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".8"
                                 android:padding="5dp"
-                                android:text="Token available from: "
+                                android:text="Token Available From"
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 
@@ -171,7 +171,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".8"
                                 android:padding="5dp"
-                                android:text="Store start time: "
+                                android:text="Start Time"
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 
@@ -204,7 +204,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".8"
                                 android:padding="5dp"
-                                android:text="Token not available from: "
+                                android:text="Token Not Available From"
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 
@@ -230,7 +230,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".8"
                                 android:padding="5dp"
-                                android:text="Store close time: "
+                                android:text="Close Time"
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 
@@ -245,7 +245,6 @@
                                 android:textSize="18sp" />
                         </LinearLayout>
                     </LinearLayout>
-                    a
 
                     <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
                         android:id="@+id/btn_update_time"
@@ -285,7 +284,7 @@
                         android:id="@+id/tv_limited_label"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.6"
                         android:gravity="center_vertical"
                         android:text="@string/unlimited_token"
                         android:textColor="@color/color_total_val"
@@ -296,7 +295,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="0.25"
+                        android:layout_weight="0.20"
                         android:background="@drawable/square_white_bg_drawable"
                         android:gravity="center"
                         android:imeOptions="actionDone"
@@ -311,7 +310,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="0.25"
+                        android:layout_weight="0.20"
                         android:button="@drawable/checkbox_selector"
                         android:layoutDirection="rtl" />
                 </LinearLayout>
