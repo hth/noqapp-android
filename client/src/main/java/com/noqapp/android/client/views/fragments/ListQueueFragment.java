@@ -250,11 +250,12 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
                     ajf.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, LaunchActivity.tabList);
                 } else {
-                    CategoryInfoFragment cif = new CategoryInfoFragment();
                     b.putBoolean(KEY_IS_HISTORY, true);
                     b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false);
-                    cif.setArguments(b);
-                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
+                    b.putBoolean("isCategoryData",false);
+                    JoinFragment jf = new JoinFragment();
+                    jf.setArguments(b);
+                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
                 }
                 return false;
             }
