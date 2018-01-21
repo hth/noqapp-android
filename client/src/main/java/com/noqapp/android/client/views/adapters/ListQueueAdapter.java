@@ -1,7 +1,9 @@
 package com.noqapp.android.client.views.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,21 +21,29 @@ import com.noqapp.android.client.utils.Formatter;
 import java.util.HashMap;
 import java.util.List;
 
+
+
 public class ListQueueAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<JsonTokenAndQueue>> listDataChild;
+    private ListOnClick listOnClick;
 
+    public interface ListOnClick{
+        void listShowCategory(String qrCode);
+    }
     public ListQueueAdapter(
             Context context,
             List<String> listDataHeader,
-            HashMap<String, List<JsonTokenAndQueue>> listChildData
+            HashMap<String, List<JsonTokenAndQueue>> listChildData,
+            ListOnClick listOnClick
     ) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
+        this.listOnClick = listOnClick;
     }
 
     @Override
@@ -48,7 +58,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        JsonTokenAndQueue queue = (JsonTokenAndQueue) getChild(groupPosition, childPosition);
+        final JsonTokenAndQueue queue = (JsonTokenAndQueue) getChild(groupPosition, childPosition);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //        if (null == rowLayout) {
@@ -95,6 +105,14 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 TextView txtToken1 = (TextView) convertView.findViewById(R.id.txtToken);
                 TextView tv_hour_saved1 = (TextView) convertView.findViewById(R.id.tv_hour_saved);
                 RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
+                TextView tv_more_category = (TextView) convertView.findViewById(R.id.tv_more_category);
+                tv_more_category.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listOnClick.listShowCategory(queue.getCodeQR());
+                    }
+                });
+
                 txtnumber1.setText("#" + String.valueOf(childPosition + 1));
                 tv_queue_name1.setText(queue.getDisplayName());
                 tv_store_name1.setText(queue.getBusinessName());

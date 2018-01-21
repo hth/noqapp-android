@@ -68,7 +68,16 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_list_text"
                     android:textSize="15sp" />
-
+                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                    android:id="@+id/tv_more_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="1dp"
+                    android:textColor="@color/colorMobile"
+                    android:text="show catagories "
+                    android:gravity="center"
+                    android:drawableRight="@drawable/show_category"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 

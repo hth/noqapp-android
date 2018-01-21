@@ -53,12 +53,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorActionbar"
+                    android:paddingTop="5dp"
                     android:textSize="20sp" />
 
                 <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                     android:id="@+id/tv_store_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:textSize="15sp" />
 
                 <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
@@ -84,10 +86,11 @@
                     android:textColor="@color/color_list_text"
                     android:textSize="24sp" />
 
-                <TextView
+                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
                     android:id="@+id/tv_hour_saved"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="15sp"
                     android:gravity="right" />
 
                 <RatingBar
