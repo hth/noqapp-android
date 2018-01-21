@@ -281,8 +281,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
                         String codeQR = ((AfterJoinFragment) currentFragment).getCodeQR();
                         if (intent_qrCode.equals(codeQR)) {
-                            currentTabFragments.remove(currentTabFragments.size() - 1);
-                            currentTabFragments.remove(currentTabFragments.size() - 1);
+                            // clear the stack till first screen of tablist
+                            currentTabFragments.subList(1, currentTabFragments.size()).clear();
                         }
                     }
                 }
@@ -294,8 +294,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
                         String codeQR = ((AfterJoinFragment) currentFragment).getCodeQR();
                         if (intent_qrCode.equals(codeQR)) {
-                            currentTabFragmentsQ.remove(currentTabFragmentsQ.size() - 1);
-                            currentTabFragmentsQ.remove(currentTabFragmentsQ.size() - 1);
+                            // clear the stack till first screen of tabHome
+                            currentTabFragmentsQ.subList(1, currentTabFragmentsQ.size()).clear();
                         }
                     }
                 }
