@@ -209,10 +209,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         if (null != queueSetting) {
             toggleDayClosed.setChecked(queueSetting.isDayClosed());
             togglePreventJoin.setChecked(queueSetting.isPreventJoining());
-            tv_store_close.setText(Formatter.convertMilitaryTo12HourFormat(queueSetting.getEndHour()));
-            tv_store_start.setText(Formatter.convertMilitaryTo12HourFormat(queueSetting.getStartHour()));
-            tv_token_available.setText(Formatter.convertMilitaryTo12HourFormat(queueSetting.getTokenAvailableFrom()));
-            tv_token_not_available.setText(Formatter.convertMilitaryTo12HourFormat(queueSetting.getTokenNotAvailableFrom()));
+            tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getEndHour()));
+            tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
+            tv_token_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenAvailableFrom()));
+            tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
             if(queueSetting.getAvailableTokenCount()<=0){
                 cb_limit.setChecked(true);
                 tv_limited_label.setText("Un-Limited Token");

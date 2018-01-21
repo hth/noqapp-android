@@ -25,7 +25,8 @@ public class Formatter {
     private static final TimeZone tz = TimeZone.getTimeZone("UTC");
 
     private static DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HHmm");
-    private static DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("HH:mm");
+    private static DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("hh:mm a");
+    private static DateTimeFormatter outputFormatter24 = DateTimeFormat.forPattern("HH:mm");
 
     private Formatter() {
         formatRFC822.setTimeZone(tz);
@@ -70,11 +71,19 @@ public class Formatter {
         return outputFormatter.print(parseLocalTime(rawTimestamp));
     }
 
+    private static String convertMilitaryTo24HourFormat(String rawTimestamp) {
+        return outputFormatter24.print(parseLocalTime(rawTimestamp));
+    }
+
     static String formatMilitaryTime(int rawTimestamp) {
         return String.format(Locale.US, "%04d", rawTimestamp);
     }
 
     public static String convertMilitaryTo12HourFormat(int rawTimestamp) {
         return convertMilitaryTo12HourFormat(formatMilitaryTime(rawTimestamp));
+    }
+
+    public static String convertMilitaryTo24HourFormat(int rawTimestamp) {
+        return convertMilitaryTo24HourFormat(formatMilitaryTime(rawTimestamp));
     }
 }
