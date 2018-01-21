@@ -279,7 +279,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
-                    //textView.setText( selectedHour + ":" + selectedMinute);
                 }
             }, hour, minute, true);//Yes 24 hour time
             mTimePicker.setTitle("Select Time");
