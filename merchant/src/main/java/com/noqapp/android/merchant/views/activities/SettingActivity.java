@@ -209,15 +209,15 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         if (null != queueSetting) {
             toggleDayClosed.setChecked(queueSetting.isDayClosed());
             togglePreventJoin.setChecked(queueSetting.isPreventJoining());
-            tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getEndHour()));
-            tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
             tv_token_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenAvailableFrom()));
+            tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
             tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
-            if(queueSetting.getAvailableTokenCount()<=0){
+            tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getEndHour()));
+            if (queueSetting.getAvailableTokenCount() <= 0) {
                 cb_limit.setChecked(true);
                 tv_limited_label.setText("Un-Limited Token");
                 edt_token_no.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 cb_limit.setChecked(false);
                 edt_token_no.setText(String.valueOf(queueSetting.getAvailableTokenCount()));
                 edt_token_no.setVisibility(View.VISIBLE);
@@ -225,7 +225,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 View view = SettingActivity.this.getCurrentFocus();
                 if (edt_token_no != null) {
                     edt_token_no.clearFocus();
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(edt_token_no.getWindowToken(), 0);
                 }
             }
