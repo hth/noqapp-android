@@ -131,11 +131,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="1dp"
+                            android:layout_weight=".5"
                             android:orientation="horizontal"
                             android:weightSum="1">
 
@@ -160,11 +162,11 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
+                            android:layout_marginLeft="1dp"
+                            android:layout_weight=".5"
+                            android:orientation="horizontal">
 
                             <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                                 android:layout_width="0dp"
@@ -191,12 +193,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         android:weightSum="1">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="1dp"
+                            android:layout_weight=".5"
                             android:orientation="horizontal">
 
                             <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
@@ -220,9 +224,10 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_weight=".5"
                             android:orientation="horizontal">
 
                             <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
@@ -245,6 +250,7 @@
                                 android:textSize="18sp" />
                         </LinearLayout>
                     </LinearLayout>
+                    a
 
                     <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
                         android:id="@+id/btn_update_time"
@@ -284,7 +290,7 @@
                         android:id="@+id/tv_limited_label"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.6"
+                        android:layout_weight="0.5"
                         android:gravity="center_vertical"
                         android:text="@string/unlimited_token"
                         android:textColor="@color/color_total_val"
@@ -295,7 +301,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="0.20"
+                        android:layout_weight="0.25"
                         android:background="@drawable/square_white_bg_drawable"
                         android:gravity="center"
                         android:imeOptions="actionDone"
@@ -310,7 +316,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="0.20"
+                        android:layout_weight="0.25"
                         android:button="@drawable/checkbox_selector"
                         android:layoutDirection="rtl" />
                 </LinearLayout>

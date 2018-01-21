@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.QueueApiModel;
+import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonQueueList;
@@ -78,6 +80,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     private String frtag;
     private boolean isJoinNotPossible = false;
     private String joinErrorMsg = "";
+    private boolean isCategoryData = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,25 +105,11 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         Bundle bundle = getArguments();
         if (null != bundle) {
             codeQR = bundle.getString(KEY_CODE_QR);
+            isCategoryData = bundle.getBoolean("isCategoryData", true);
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable("object");
 
             boolean callingFromHistory = getArguments().getBoolean(KEY_IS_HISTORY, false);
-//            if (LaunchActivity.getLaunchActivity().isOnline()) {
-//                LaunchActivity.getLaunchActivity().progressDialog.show();
-//                if (UserUtils.isLogin()) {
-//                    QueueApiModel.queuePresenter = this;
-//                    if (callingFromHistory) {
-//                        QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-//                    } else {
-//                        QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-//                    }
-//                } else {
-//                    QueueModel.queuePresenter = this;
-//                    QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
-//                }
-//            } else {
-//                ShowAlertInformation.showNetworkDialog(getActivity());
-//            }
+
             if (bundle.getBoolean(KEY_FROM_LIST, false)) {
                 frtag = LaunchActivity.tabList;
                 if (callingFromHistory) {
@@ -137,7 +126,27 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                 frtag = LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
             }
 
-            queueResponse(jsonQueue);
+            if (isCategoryData) {
+                queueResponse(jsonQueue);
+            } else {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                    if (UserUtils.isLogin()) {
+                        QueueApiModel.queuePresenter = this;
+                        if (callingFromHistory) {
+                            QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                        } else {
+                            QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                        }
+                    } else {
+                        QueueModel.queuePresenter = this;
+                        QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
+                    }
+                } else {
+                    ShowAlertInformation.showNetworkDialog(getActivity());
+                }
+            }
+
         }
         return view;
     }

@@ -1,4 +1,4 @@
-package com.noqapp.android.client.utils;
+package com.noqapp.android.merchant.utils;
 
 import android.util.Log;
 

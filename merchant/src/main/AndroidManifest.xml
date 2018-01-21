@@ -43,6 +43,8 @@
         </activity>
         <activity
             android:name="com.noqapp.android.merchant.views.activities.SettingActivity"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/BaseTheme">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -51,7 +53,9 @@
         <activity
             android:name="com.noqapp.android.merchant.views.activities.SettingDialogActivity"
             android:excludeFromRecents="true"
-            android:theme="@style/myDialog"></activity>
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/myDialog"/>
         <activity
             android:name="com.noqapp.android.merchant.views.activities.OutOfSequenceActivity"
             android:theme="@style/BaseTheme">
@@ -62,7 +66,7 @@
         <activity
             android:name="com.noqapp.android.merchant.views.activities.OutOfSequenceDialogActivity"
             android:excludeFromRecents="true"
-            android:theme="@style/myDialog"></activity>
+            android:theme="@style/myDialog"/>
 
         <service android:name="com.noqapp.android.merchant.network.NoQueueFirebaseInstanceServices">
             <intent-filter>

@@ -129,17 +129,8 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
             boolean callingFromHistory = getArguments().getBoolean(KEY_IS_HISTORY, false);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
-//                if (UserUtils.isLogin()) {
-//                    QueueApiModel.queuePresenter = this;
-//                    if (callingFromHistory) {
-//                        QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-//                    } else {
-//                        QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-//                    }
-//                } else {
                 QueueModel.queuePresenter = this;
                 QueueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
-                // }
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }

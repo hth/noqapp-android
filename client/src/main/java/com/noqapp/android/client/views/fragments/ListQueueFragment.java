@@ -42,7 +42,7 @@ import java.util.List;
  * Step 3- update the DB
  * Step 4- update the list
  **/
-public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter, TokenQueueViewInterface {
+public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter, TokenQueueViewInterface, ListQueueAdapter.ListOnClick {
 
     private static final int MSG_CURRENT_QUEUE = 0;
     private static final int MSG_HISTORY_QUEUE = 1;
@@ -124,14 +124,21 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     }
 
     @Override
-    protected void barcodeResult(String codeQR) {
+    protected void barcodeResult(String codeQR, boolean isCategory) {
         Bundle b = new Bundle();
         b.putString(KEY_CODE_QR, codeQR);
         b.putBoolean(KEY_FROM_LIST, true);
         b.putBoolean(KEY_IS_HISTORY, false);
-        CategoryInfoFragment cif = new CategoryInfoFragment();
-        cif.setArguments(b);
-        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
+        if (isCategory) {
+            CategoryInfoFragment cif = new CategoryInfoFragment();
+            cif.setArguments(b);
+            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
+        } else {
+            JoinFragment jf = new JoinFragment();
+            b.putBoolean("isCategoryData", false);
+            jf.setArguments(b);
+            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
+        }
     }
 
     @Override
@@ -206,7 +213,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         }
         listAdapter = null;
         expListView.setAdapter(listAdapter);
-        listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild);
+        listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild, this);
 
         if (currentlist.size() == 0 && expListView.getHeaderViewsCount() == 0) {
             //header.setVisibility(View.VISIBLE);
@@ -243,11 +250,12 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
                     ajf.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, LaunchActivity.tabList);
                 } else {
-                    CategoryInfoFragment cif = new CategoryInfoFragment();
                     b.putBoolean(KEY_IS_HISTORY, true);
                     b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false);
-                    cif.setArguments(b);
-                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
+                    b.putBoolean("isCategoryData", false);
+                    JoinFragment jf = new JoinFragment();
+                    jf.setArguments(b);
+                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
                 }
                 return false;
             }
@@ -265,6 +273,18 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
             msg.what = MSG_HISTORY_QUEUE;
             mHandler.sendMessage(msg);
         }
+    }
+
+    @Override
+    public void listShowCategory(String qrCode) {
+        Bundle b = new Bundle();
+        b.putString(KEY_CODE_QR, qrCode);
+        b.putBoolean(KEY_FROM_LIST, true);
+        b.putBoolean(KEY_IS_HISTORY, true);
+        b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false);
+        CategoryInfoFragment cif = new CategoryInfoFragment();
+        cif.setArguments(b);
+        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
     }
 
     private static class QueueHandler extends Handler {

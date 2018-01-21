@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.client.model.types.GenderEnum;
 import com.noqapp.android.client.model.types.UserLevelEnum;
+
+import java.io.Serializable;
 
 /**
  * User: hitender
@@ -25,7 +28,7 @@ import com.noqapp.android.client.model.types.UserLevelEnum;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class JsonProfile {
+public class JsonProfile implements Serializable {
     @JsonProperty("nm")
     private String name;
 
@@ -51,7 +54,7 @@ public class JsonProfile {
     private String birthday;
 
     @JsonProperty("ge")
-    private String gender;
+    private GenderEnum gender;
 
     @JsonProperty("ul")
     private UserLevelEnum userLevel;
@@ -63,88 +66,99 @@ public class JsonProfile {
         return name;
     }
 
-    public void setName(String name) {
+    public JsonProfile setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getMail() {
         return mail;
     }
 
-    public void setMail(String mail) {
+    public JsonProfile setMail(String mail) {
         this.mail = mail;
+        return this;
     }
 
     public String getCountryShortName() {
         return countryShortName;
     }
 
-    public void setCountryShortName(String countryShortName) {
+    public JsonProfile setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
+        return this;
     }
 
     public String getPhoneRaw() {
         return phoneRaw;
     }
 
-    public void setPhoneRaw(String phoneRaw) {
+    public JsonProfile setPhoneRaw(String phoneRaw) {
         this.phoneRaw = phoneRaw;
+        return this;
     }
 
     public String getTimeZone() {
         return timeZone;
     }
 
-    public void setTimeZone(String timeZone) {
+    public JsonProfile setTimeZone(String timeZone) {
         this.timeZone = timeZone;
+        return this;
     }
 
     public String getInviteCode() {
         return inviteCode;
     }
 
-    public void setInviteCode(String inviteCode) {
+    public JsonProfile setInviteCode(String inviteCode) {
         this.inviteCode = inviteCode;
+        return this;
     }
 
     public int getRemoteJoin() {
         return remoteJoin;
     }
 
-    public void setRemoteJoin(int remoteJoin) {
+    public JsonProfile setRemoteJoin(int remoteJoin) {
         this.remoteJoin = remoteJoin;
+        return this;
     }
 
     public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public JsonProfile setBirthday(String birthday) {
         this.birthday = birthday;
+        return this;
     }
 
-    public String getGender() {
+    public GenderEnum getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public JsonProfile setGender(GenderEnum gender) {
         this.gender = gender;
+        return this;
     }
 
     public UserLevelEnum getUserLevel() {
         return userLevel;
     }
 
-    public void setUserLevel(UserLevelEnum userLevel) {
+    public JsonProfile setUserLevel(UserLevelEnum userLevel) {
         this.userLevel = userLevel;
+        return this;
     }
 
     public ErrorEncounteredJson getError() {
         return error;
     }
 
-    public void setError(ErrorEncounteredJson error) {
+    public JsonProfile setError(ErrorEncounteredJson error) {
         this.error = error;
+        return this;
     }
 
     @Override
@@ -158,7 +172,8 @@ public class JsonProfile {
                 ", inviteCode='" + inviteCode + '\'' +
                 ", remoteJoin=" + remoteJoin +
                 ", birthday='" + birthday + '\'' +
-                ", gender='" + gender + '\'' +
+                ", gender=" + gender +
+                ", userLevel=" + userLevel +
                 ", error=" + error +
                 '}';
     }

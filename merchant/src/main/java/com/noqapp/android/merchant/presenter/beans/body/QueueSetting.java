@@ -28,14 +28,31 @@ public class QueueSetting {
     @JsonProperty("c")
     private String codeQR;
 
-    @JsonProperty("pj")
-    private boolean dayClosed;
+    @JsonProperty("f")
+    private int tokenAvailableFrom;
 
-    @JsonProperty("dc")
+    /* Store business start hour. */
+    @JsonProperty("b")
+    private int startHour;
+
+    @JsonProperty("m")
+    private int tokenNotAvailableFrom;
+
+    /* Store business end hour. */
+    @JsonProperty("e")
+    private int endHour;
+
+    @JsonProperty("de")
+    private int delayedInMinutes;
+
+    @JsonProperty("pj")
     private boolean preventJoining;
 
+    @JsonProperty("dc")
+    private boolean dayClosed = false;
+
     //TODO add this property in Queue Settings screen
-    @JsonProperty ("at")
+    @JsonProperty("at")
     private int availableTokenCount;
 
     @JsonProperty("error")
@@ -45,48 +62,104 @@ public class QueueSetting {
         return codeQR;
     }
 
-    public void setCodeQR(String codeQR) {
+    public QueueSetting setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
     }
 
-    public boolean isDayClosed() {
-        return dayClosed;
+    public int getTokenAvailableFrom() {
+        return tokenAvailableFrom;
     }
 
-    public void setDayClosed(boolean dayClosed) {
-        this.dayClosed = dayClosed;
+    public QueueSetting setTokenAvailableFrom(int tokenAvailableFrom) {
+        this.tokenAvailableFrom = tokenAvailableFrom;
+        return this;
+    }
+
+    public int getStartHour() {
+        return startHour;
+    }
+
+    public QueueSetting setStartHour(int startHour) {
+        this.startHour = startHour;
+        return this;
+    }
+
+    public int getTokenNotAvailableFrom() {
+        return tokenNotAvailableFrom;
+    }
+
+    public QueueSetting setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
+        this.tokenNotAvailableFrom = tokenNotAvailableFrom;
+        return this;
+    }
+
+    public int getEndHour() {
+        return endHour;
+    }
+
+    public QueueSetting setEndHour(int endHour) {
+        this.endHour = endHour;
+        return this;
+    }
+
+    public int getDelayedInMinutes() {
+        return delayedInMinutes;
+    }
+
+    public QueueSetting setDelayedInMinutes(int delayedInMinutes) {
+        this.delayedInMinutes = delayedInMinutes;
+        return this;
     }
 
     public boolean isPreventJoining() {
         return preventJoining;
     }
 
-    public void setPreventJoining(boolean preventJoining) {
+    public QueueSetting setPreventJoining(boolean preventJoining) {
         this.preventJoining = preventJoining;
+        return this;
+    }
+
+    public boolean isDayClosed() {
+        return dayClosed;
+    }
+
+    public QueueSetting setDayClosed(boolean dayClosed) {
+        this.dayClosed = dayClosed;
+        return this;
     }
 
     public int getAvailableTokenCount() {
         return availableTokenCount;
     }
 
-    public void setAvailableTokenCount(int availableTokenCount) {
+    public QueueSetting setAvailableTokenCount(int availableTokenCount) {
         this.availableTokenCount = availableTokenCount;
+        return this;
     }
 
     public ErrorEncounteredJson getError() {
         return error;
     }
 
-    public void setError(ErrorEncounteredJson error) {
+    public QueueSetting setError(ErrorEncounteredJson error) {
         this.error = error;
+        return this;
     }
 
     @Override
     public String toString() {
         return "QueueSetting{" +
                 "codeQR='" + codeQR + '\'' +
-                ", dayClosed=" + dayClosed +
+                ", tokenAvailableFrom=" + tokenAvailableFrom +
+                ", startHour=" + startHour +
+                ", tokenNotAvailableFrom=" + tokenNotAvailableFrom +
+                ", endHour=" + endHour +
+                ", delayedInMinutes=" + delayedInMinutes +
                 ", preventJoining=" + preventJoining +
+                ", dayClosed=" + dayClosed +
+                ", availableTokenCount=" + availableTokenCount +
                 ", error=" + error +
                 '}';
     }
