@@ -45,11 +45,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private ToggleButton toggleDayClosed, togglePreventJoin;
     private String codeQR;
     protected boolean isDialog = false;
-    private TextView tv_store_close,tv_store_start,tv_token_available,tv_token_not_available,tv_limited_label;
+    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label;
     private Button btn_update_time;
     private CheckBox cb_limit;
     private EditText edt_token_no;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,17 +93,17 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         cb_limit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b) {
                     edt_token_no.setVisibility(View.INVISIBLE);
                     tv_limited_label.setText("Un-Limited Token");
                     View view = SettingActivity.this.getCurrentFocus();
                     if (view != null) {
-                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
-                }else{
+                } else {
                     edt_token_no.setVisibility(View.VISIBLE);
-                   // edt_token_no.setText("1");
+                    // edt_token_no.setText("1");
                     tv_limited_label.setText("Limited Token");
                 }
             }
@@ -115,38 +114,38 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                   /* Write your logic here that will be executed when user taps next button */
-                    if(!edt_token_no.getText().toString().equals("")){
+                    if (!edt_token_no.getText().toString().equals("")) {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             progressDialog.show();
                             QueueSetting queueSetting = new QueueSetting();
                             queueSetting.setCodeQR(codeQR);
                             queueSetting.setDayClosed(toggleDayClosed.isChecked());
                             queueSetting.setPreventJoining(togglePreventJoin.isChecked());
-                            queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":","")));
-                            queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":","")));
-                            queueSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":","")));
-                            queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":","")));
+                            queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
+                            queueSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
+                            queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
+                            queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
                             queueSetting.setAvailableTokenCount(Integer.parseInt(edt_token_no.getText().toString()));
                             QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
                         } else {
                             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
                         }
-                    }else{
-                        Toast.makeText(SettingActivity.this,"Empty field is not allowed",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(SettingActivity.this, "Empty field is not allowed", Toast.LENGTH_LONG).show();
                     }
                 }
                 return false;
             }
         });
-        tv_token_available = (TextView) findViewById(R.id.tv_token_available) ;
-        tv_store_start = (TextView) findViewById(R.id.tv_store_start) ;
-        tv_token_not_available = (TextView) findViewById(R.id.tv_token_not_available) ;
-        tv_store_close = (TextView) findViewById(R.id.tv_store_close) ;
+        tv_token_available = (TextView) findViewById(R.id.tv_token_available);
+        tv_store_start = (TextView) findViewById(R.id.tv_store_start);
+        tv_token_not_available = (TextView) findViewById(R.id.tv_token_not_available);
+        tv_store_close = (TextView) findViewById(R.id.tv_store_close);
         tv_token_available.setOnClickListener(new TextViewClick(tv_token_available));
         tv_store_start.setOnClickListener(new TextViewClick(tv_store_start));
         tv_token_not_available.setOnClickListener(new TextViewClick(tv_token_not_available));
         tv_store_close.setOnClickListener(new TextViewClick(tv_store_close));
-        tv_limited_label = (TextView)findViewById(R.id.tv_limited_label);
+        tv_limited_label = (TextView) findViewById(R.id.tv_limited_label);
         btn_update_time = (Button) findViewById(R.id.btn_update_time);
         btn_update_time.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,10 +156,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                     queueSetting.setCodeQR(codeQR);
                     queueSetting.setDayClosed(toggleDayClosed.isChecked());
                     queueSetting.setPreventJoining(togglePreventJoin.isChecked());
-                    queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":","")));
-                    queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":","")));
-                    queueSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":","")));
-                    queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":","")));
+                    queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
+                    queueSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
+                    queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
+                    queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
                     QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
                 } else {
                     ShowAlertInformation.showNetworkDialog(SettingActivity.this);
@@ -168,21 +167,13 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             }
         });
 
-
-
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             QueueSettingModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
-
-
-
-
-
     }
-
 
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
@@ -195,7 +186,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             progressDialog.dismiss();
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -272,10 +262,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         }
     }
 
-    private class TextViewClick implements View.OnClickListener{
-
+    private class TextViewClick implements View.OnClickListener {
         private TextView textView;
-        public TextViewClick(TextView textView){
+        public TextViewClick(TextView textView) {
             this.textView = textView;
         }
 

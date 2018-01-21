@@ -59,8 +59,8 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
                     String[] codeQR = rawData.split("/");
                     //endswith - q.htm or b.htm
                     // to define weather we need to show category screen or join screen
-                            boolean isCategoryData = rawData.endsWith("b.htm")?true:false;
-                    barcodeResult(codeQR[3],isCategoryData);
+                    boolean isCategoryData = rawData.endsWith("b.htm") ? true : false;
+                    barcodeResult(codeQR[3], isCategoryData);
                 } catch (Exception e) {
                     Log.e(TAG, "Failed parsing codeQR reason=" + e.getLocalizedMessage(), e);
                 }
@@ -71,7 +71,7 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
         }
     }
 
-    protected abstract void barcodeResult(String codeQR,boolean isCategoryData);
+    protected abstract void barcodeResult(String codeQR, boolean isCategoryData);
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

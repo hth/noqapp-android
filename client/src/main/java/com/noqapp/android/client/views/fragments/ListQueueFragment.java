@@ -42,7 +42,7 @@ import java.util.List;
  * Step 3- update the DB
  * Step 4- update the list
  **/
-public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter, TokenQueueViewInterface , ListQueueAdapter.ListOnClick{
+public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter, TokenQueueViewInterface, ListQueueAdapter.ListOnClick {
 
     private static final int MSG_CURRENT_QUEUE = 0;
     private static final int MSG_HISTORY_QUEUE = 1;
@@ -124,18 +124,18 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     }
 
     @Override
-    protected void barcodeResult(String codeQR,boolean isCategory) {
+    protected void barcodeResult(String codeQR, boolean isCategory) {
         Bundle b = new Bundle();
         b.putString(KEY_CODE_QR, codeQR);
         b.putBoolean(KEY_FROM_LIST, true);
         b.putBoolean(KEY_IS_HISTORY, false);
-        if(isCategory) {
+        if (isCategory) {
             CategoryInfoFragment cif = new CategoryInfoFragment();
             cif.setArguments(b);
             replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
-        }else {
+        } else {
             JoinFragment jf = new JoinFragment();
-            b.putBoolean("isCategoryData",false);
+            b.putBoolean("isCategoryData", false);
             jf.setArguments(b);
             replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
         }
@@ -213,7 +213,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         }
         listAdapter = null;
         expListView.setAdapter(listAdapter);
-        listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild,this);
+        listAdapter = new ListQueueAdapter(getActivity(), listDataHeader, listDataChild, this);
 
         if (currentlist.size() == 0 && expListView.getHeaderViewsCount() == 0) {
             //header.setVisibility(View.VISIBLE);
@@ -252,7 +252,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
                 } else {
                     b.putBoolean(KEY_IS_HISTORY, true);
                     b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false);
-                    b.putBoolean("isCategoryData",false);
+                    b.putBoolean("isCategoryData", false);
                     JoinFragment jf = new JoinFragment();
                     jf.setArguments(b);
                     replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
@@ -284,7 +284,7 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false);
         CategoryInfoFragment cif = new CategoryInfoFragment();
         cif.setArguments(b);
-        replaceFragmentWithBackStack( getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
+        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
     }
 
     private static class QueueHandler extends Handler {

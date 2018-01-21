@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 
 
-
 public class ListQueueAdapter extends BaseExpandableListAdapter {
 
     private Context context;
@@ -31,9 +30,10 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<JsonTokenAndQueue>> listDataChild;
     private ListOnClick listOnClick;
 
-    public interface ListOnClick{
+    public interface ListOnClick {
         void listShowCategory(String qrCode);
     }
+
     public ListQueueAdapter(
             Context context,
             List<String> listDataHeader,

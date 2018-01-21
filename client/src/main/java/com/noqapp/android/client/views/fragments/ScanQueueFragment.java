@@ -72,18 +72,18 @@ public class ScanQueueFragment extends Scanner {
     }
 
     @Override
-    protected void barcodeResult(String codeQR , boolean isCategoryData) {
+    protected void barcodeResult(String codeQR, boolean isCategoryData) {
         Bundle b = new Bundle();
         b.putString(KEY_CODE_QR, codeQR);
         b.putBoolean(KEY_FROM_LIST, fromList);
         b.putBoolean(KEY_IS_HISTORY, false);
-        if(isCategoryData) {
+        if (isCategoryData) {
             CategoryInfoFragment cif = new CategoryInfoFragment();
             cif.setArguments(b);
             replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, currentTab);
-        }else{
+        } else {
             JoinFragment jf = new JoinFragment();
-            b.putBoolean("isCategoryData",false);
+            b.putBoolean("isCategoryData", false);
             jf.setArguments(b);
             replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, currentTab);
 

@@ -105,7 +105,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         Bundle bundle = getArguments();
         if (null != bundle) {
             codeQR = bundle.getString(KEY_CODE_QR);
-            isCategoryData = bundle.getBoolean("isCategoryData",true);
+            isCategoryData = bundle.getBoolean("isCategoryData", true);
             JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable("object");
 
             boolean callingFromHistory = getArguments().getBoolean(KEY_IS_HISTORY, false);
