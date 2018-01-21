@@ -124,14 +124,21 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
     }
 
     @Override
-    protected void barcodeResult(String codeQR) {
+    protected void barcodeResult(String codeQR,boolean isCategory) {
         Bundle b = new Bundle();
         b.putString(KEY_CODE_QR, codeQR);
         b.putBoolean(KEY_FROM_LIST, true);
         b.putBoolean(KEY_IS_HISTORY, false);
-        CategoryInfoFragment cif = new CategoryInfoFragment();
-        cif.setArguments(b);
-        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
+        if(isCategory) {
+            CategoryInfoFragment cif = new CategoryInfoFragment();
+            cif.setArguments(b);
+            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
+        }else {
+            JoinFragment jf = new JoinFragment();
+            b.putBoolean("isCategoryData",false);
+            jf.setArguments(b);
+            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
+        }
     }
 
     @Override

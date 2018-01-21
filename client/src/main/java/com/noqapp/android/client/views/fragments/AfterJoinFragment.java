@@ -232,7 +232,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
                     String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
                     if (codeQR.equals(qcode)) {
                         currentTabFragments.remove(currentTabFragments.size() - 1);
-                        currentTabFragments.remove(currentTabFragments.size() - 1);
+                        //currentTabFragments.remove(currentTabFragments.size() - 1);
                     }
                 }
             }
