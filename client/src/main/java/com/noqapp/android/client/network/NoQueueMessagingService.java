@@ -103,30 +103,45 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                      */
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                        if (StringUtils.isNotBlank(codeQR)) {
+                            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
+                            String userStatus = remoteMessage.getData().get(Constants.QueueUserState);
+                            // un-subscribe from the topic
+                            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
 
-                        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-                        String userStatus = remoteMessage.getData().get(Constants.QueueUserState);
-                        // un-subscribe from the topic
-                        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-
-
-                        /*
-                         * Save codeQR of review & show the review screen on app
-                         * resume if there is any record in Review DB for review key
-                         */
-                        if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                            ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
-                            sendNotification(title, body, codeQR, true);//pass codeQR to open review screen
-                        } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                            ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
-                            sendNotification(title, body, codeQR, false);//pass codeQR to open skip screen
+                            /*
+                             * Save codeQR of review & show the review screen on app
+                             * resume if there is any record in Review DB for review key
+                             */
+                            if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                                ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
+                                sendNotification(title, body, codeQR, true);//pass codeQR to open review screen
+                            } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
+                                ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
+                                sendNotification(title, body, codeQR, false);//pass codeQR to open skip screen
+                            }
+                        } else {
+                            Log.w(TAG, "To implement this when a message like this is received");
+                            //TODO something for this data
+//                            {
+//                                "content_available": true,
+//                                      "data": {
+//                                        "body": "World Android",
+//                                        "cs": 0,
+//                                        "f": "P",
+//                                        "ln": 0,
+//                                        "title": "Hello Android"
+//                                      },
+//                                "priority": "high",
+//                                "to": "XXXXX"
+//                            }
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-
                         String current_serving = remoteMessage.getData().get(CurrentlyServing);
                         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-                        if (null == jtk)
+                        if (null == jtk) {
                             jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR);
+                        }
                         String go_to = remoteMessage.getData().get(GoTo_Counter);
 
                         /*
