@@ -74,4 +74,6 @@
     <string name="playstore_update_msg">New version of NoQApp Merchant is available on play store. Please update your app to latest version.\n</string>
     <string name="create_token">Create Token</string>
     <string name="unlimited_token">UnLimited Tokens</string>
+    <string name="error_time">Time has to be greater than 12:00 AM</string>
+    <string name="error_access_denied">You are not authorised to access this module</string>
 </resources>

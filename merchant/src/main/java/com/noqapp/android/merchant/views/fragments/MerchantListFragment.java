@@ -55,7 +55,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private Runnable updater, run;
     private Snackbar snackbar;
     private boolean isFragmentVisible = false;
-
     public MerchantListFragment() {
 
     }
@@ -79,7 +78,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         MerchantViewPagerFragment.setUpdateListColorCallBack(this);
         snackbar = Snackbar.make(listview, "", Snackbar.LENGTH_INDEFINITE);
         snackbar.getView().setBackgroundResource(R.drawable.red_gredient);
-
         snackbar.addCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {

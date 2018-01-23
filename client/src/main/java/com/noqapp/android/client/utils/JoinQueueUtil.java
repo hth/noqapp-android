@@ -95,6 +95,15 @@ public class JoinQueueUtil {
             }
         }
 
+        // Check againts for limited tokens
+        if (!joinQueueState.isJoinNotPossible() && (jsonQueue.getAvailableTokenCount() > 0 && jsonQueue.getLastNumber() >= jsonQueue.getAvailableTokenCount())) {
+                Log.d(TAG, "Queue token for the day is exhausted");
+                String msg = context.getString(R.string.error_reached_daily_limit);
+                joinQueueState.setJoinNotPossible(true)
+                        .setJoinErrorMsg(msg);
+
+        }
+
         return joinQueueState;
     }
 

@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.DeviceModel;
 import com.noqapp.android.merchant.model.types.UserLevelEnum;
@@ -36,12 +37,17 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.NetworkUtil;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
 import org.apache.commons.lang3.text.WordUtils;
+
+import java.util.HashMap;
+
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
@@ -56,6 +62,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     private final String IS_LOGIN = "IsLoggedIn";
     private final String KEY_USER_EMAIL = "userEmail";
     private final String KEY_USER_NAME = "userName";
+    private final String KEY_IS_ACCESS_GRANT = "accessGrant";
     private final String KEY_USER_LEVEL = "userLevel";
     private final String KEY_MERCHANT_COUNTER_NAME = "counterName";
     private final String KEY_USER_ID = "userID";
@@ -113,6 +120,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             }
         });
 
+
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,20 +128,29 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             }
         });
         if (isLoggedIn()) {
-            if (!new AppUtils().isTablet(getApplicationContext())) {
-                merchantListFragment = new MerchantListFragment();
-                replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
-                // setUserName();
-            } else {
-                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
-                LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
+            if(isAccessGrant()) {
+                if (!new AppUtils().isTablet(getApplicationContext())) {
+                    merchantListFragment = new MerchantListFragment();
+                    replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
+                    // setUserName();
+                } else {
+                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
+                    LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
+                    list_fragment.setLayoutParams(lp1);
+                    list_detail_fragment.setLayoutParams(lp2);
+                    merchantListFragment = new MerchantListFragment();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_layout, merchantListFragment);
+                    //  fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            }else{
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
+                LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
                 list_fragment.setLayoutParams(lp1);
-                list_detail_fragment.setLayoutParams(lp2);
-                merchantListFragment = new MerchantListFragment();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout, merchantListFragment);
-                //  fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                list_detail_fragment.setLayoutParams(lp0);
+                AccessDeniedFragment adf = new AccessDeniedFragment();
+                replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
             }
             setUserName();
         } else {
@@ -196,8 +213,10 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         return sharedpreferences.getString(KEY_MERCHANT_COUNTER_NAME, "");
     }
 
-    public void setCounterName(String counterName) {
-        sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, counterName).apply();
+    public void setCounterName(HashMap<String,String> mHashmap) {
+        Gson gson = new Gson();
+        String strInput = gson.toJson(mHashmap);
+        sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, strInput).apply();
     }
 
     public UserLevelEnum getUserLevel() {
@@ -232,6 +251,13 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         return sharedpreferences.getBoolean(IS_LOGIN, false);
     }
 
+    public boolean isAccessGrant() {
+        return sharedpreferences.getBoolean(KEY_IS_ACCESS_GRANT, true);
+    }
+
+    public void setAccessGrant(boolean isAccessGrant) {
+        sharedpreferences.edit().putBoolean(KEY_IS_ACCESS_GRANT, isAccessGrant).apply();
+    }
     public void setUserInformation(String userName, String userId, String email, String auth, boolean isLogin) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(KEY_USER_NAME, userName);
@@ -288,6 +314,8 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     public void setUserName() {
         tv_name.setText(WordUtils.initials(getUserName()));
     }
+
+
 
     @Override
     protected void onResume() {

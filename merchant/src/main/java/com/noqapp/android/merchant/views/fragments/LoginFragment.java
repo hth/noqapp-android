@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.LoginModel;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
+import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -108,17 +109,27 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         if (null != jsonMerchant) {
             LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
             LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
-            MerchantListFragment mlf = new MerchantListFragment();
-            Bundle b = new Bundle();
-            b.putSerializable("jsonMerchant", jsonMerchant);
-            mlf.setArguments(b);
-            if (new AppUtils().isTablet(getActivity())) {
-                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
-                LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
-                LaunchActivity.getLaunchActivity().list_fragment.setLayoutParams(lp1);
-                LaunchActivity.getLaunchActivity().list_detail_fragment.setLayoutParams(lp2);
+
+
+            if(jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.Q_SUPERVISOR || jsonMerchant.getJsonProfile().getUserLevel()== UserLevelEnum.S_MANAGER ) {
+                if (new AppUtils().isTablet(getActivity())) {
+                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
+                    LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
+                    LaunchActivity.getLaunchActivity().list_fragment.setLayoutParams(lp1);
+                    LaunchActivity.getLaunchActivity().list_detail_fragment.setLayoutParams(lp2);
+                }
+                LaunchActivity.getLaunchActivity().setAccessGrant(true);
+                MerchantListFragment mlf = new MerchantListFragment();
+                Bundle b = new Bundle();
+                b.putSerializable("jsonMerchant", jsonMerchant);
+                mlf.setArguments(b);
+                LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, mlf);
+            }else{
+                // unauthorised to see the screen
+                LaunchActivity.getLaunchActivity().setAccessGrant(false);
+                AccessDeniedFragment adf = new AccessDeniedFragment();
+                LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
             }
-            LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, mlf);
             LaunchActivity.getLaunchActivity().setUserName();
         }
         LaunchActivity.getLaunchActivity().dismissProgress();

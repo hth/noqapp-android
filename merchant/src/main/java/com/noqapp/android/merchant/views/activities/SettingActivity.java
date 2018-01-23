@@ -276,10 +276,14 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             mTimePicker = new TimePickerDialog(SettingActivity.this, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                    textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                    if (selectedHour == 0 && selectedMinute == 0) {
+                        Toast.makeText(SettingActivity.this, getString(R.string.error_time), Toast.LENGTH_LONG).show();
+                    } else {
+                        textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                    }
                 }
             }, hour, minute, true);//Yes 24 hour time
-            mTimePicker.setTitle("Select Time");
+            //mTimePicker.setTitle("Select Time");
             mTimePicker.show();
         }
     }
