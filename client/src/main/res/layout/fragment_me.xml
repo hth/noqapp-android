@@ -255,11 +255,13 @@
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/right_arrow" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
                     android:background="@color/color_separator" />
+
                 <LinearLayout
                     android:id="@+id/ll_rate_app"
                     android:layout_width="match_parent"
@@ -319,8 +321,7 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/right_arrow"
-                        />
+                        android:src="@drawable/right_arrow" />
                 </LinearLayout>
 
             </LinearLayout>

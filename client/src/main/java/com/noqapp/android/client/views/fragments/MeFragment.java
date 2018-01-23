@@ -87,7 +87,7 @@ public class MeFragment extends NoQueueBaseFragment {
         if (!phone.equals("")) {
             tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(NoQueueBaseActivity.getCountryShortName(), phone));
         }
-        tv_scanCount.setText(String.valueOf(remoteScanCount));
+        tv_scanCount.setText(String.valueOf(remoteScanCount) + " ");
         toggleAutoJoin.setChecked(isAutoScanAvail);
         toggleAutoJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
