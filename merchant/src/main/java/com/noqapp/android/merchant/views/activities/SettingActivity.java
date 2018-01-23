@@ -248,9 +248,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         queueSetting.setCodeQR(codeQR);
         queueSetting.setDayClosed(toggleDayClosed.isChecked());
         queueSetting.setPreventJoining(togglePreventJoin.isChecked());
-        queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
+        queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
         queueSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
-        queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
+        queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
         queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
         if (StringUtils.isBlank(edt_token_no.getText().toString())) {
             queueSetting.setAvailableTokenCount(0);

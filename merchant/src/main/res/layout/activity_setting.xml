@@ -280,7 +280,6 @@
                     android:paddingRight="@dimen/screen_padding">
 
                     <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-
                         android:id="@+id/tv_limited_label"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
