@@ -17,8 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
@@ -40,9 +38,7 @@ import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener, MerchantViewPagerFragment.UpdateListColorCallBack {
