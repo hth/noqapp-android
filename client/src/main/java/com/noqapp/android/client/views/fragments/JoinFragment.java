@@ -201,15 +201,15 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
         String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) +
                 " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour());
-        if(jsonQueue.getDelayedInMinutes()>0) {
-            String red =  "<font color='#e92270'>"+jsonQueue.getDelayedInMinutes()+" minutes late</font>";
-            time = time + " " +red;
+        if (jsonQueue.getDelayedInMinutes() > 0) {
+            String red = "<font color='#e92270'><b>Late " + jsonQueue.getDelayedInMinutes() + " minutes.</b></font>";
+            time = time + " " + red;
         }
         tv_hour_saved.setText(Html.fromHtml(time));
         ratingBar.setRating(jsonQueue.getRating());
         // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
-        tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount())
-                + " Reviews");
+        String reviewText = String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount()) + " Reviews";
+        tv_rating_review.setText(reviewText);
 
         codeQR = jsonQueue.getCodeQR();
         countryShortName = jsonQueue.getCountryShortName();

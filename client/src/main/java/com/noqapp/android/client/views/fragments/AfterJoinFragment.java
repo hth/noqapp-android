@@ -112,13 +112,13 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
-           // tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour()));
+            // tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour()));
 
             String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) +
                     " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour());
-            if(jsonTokenAndQueue.getDelayedInMinutes()>0) {
-                String red =  "<font color='#e92270'>"+jsonTokenAndQueue.getDelayedInMinutes()+" minutes late</font>";
-                time = time + " " +red;
+            if (jsonTokenAndQueue.getDelayedInMinutes() > 0) {
+                String red = "<font color='#e92270'><b>Late " + jsonTokenAndQueue.getDelayedInMinutes() + " minutes.</b></font>";
+                time = time + " " + red;
             }
             tv_hour_saved.setText(Html.fromHtml(time));
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), storePhone));
