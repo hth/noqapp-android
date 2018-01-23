@@ -23,13 +23,13 @@ public class Constants {
     public static final String ISREVIEW = "isreview";
     public static final String CURRENT_SERVING = "current_serving";
     public static final String LASTNO = "lastno";
-    public static final String MSG_TYPE_F = "f";
-    public static final String MSG_TYPE_G = "g";
-    public static final String MSG_TYPE_LN = "ln";
-    public static final String MSG_TYPE_CS = "cs";
-    public static final String MSG_TYPE_Q = "q";
-    public static final String MSG_TYPE_C = "c";
-    public static final String MSG_TYPE_U = "u";
+    public static final String Firebase_Type = "f";
+    public static final String GoTo_Counter = "g";
+    public static final String LastNumber = "ln";
+    public static final String CurrentlyServing = "cs";
+    public static final String QueueStatus = "q";
+    public static final String CodeQR = "c";
+    public static final String QueueUserState = "u";
 
     //error codes
     public static final int INVALID_CREDENTIAL = 401;
