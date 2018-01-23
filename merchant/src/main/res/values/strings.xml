@@ -83,4 +83,6 @@
     <string name="msg_client_left_queue">Has left the Queue</string>
     <string name="create_token">Create Token</string>
     <string name="unlimited_token">Un-Limited Tokens</string>
+    <string name="error_time">Time has to be greater than 12:00 AM</string>
+    <string name="error_access_denied">You are not authorised to access this module</string>
 </resources>

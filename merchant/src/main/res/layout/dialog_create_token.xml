@@ -4,24 +4,40 @@
     android:layout_gravity="center"
     android:background="@android:color/white">
 
-    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
-        android:id="@+id/tv_toolbar_title"
+    <RelativeLayout
+        android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:background="@color/color_action_bar"
+        android:background="@color/color_action_bar">
 
-        android:gravity="center"
-        android:text="@string/create_token"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/actionbarBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/cross"
+            android:padding="10dp" />
+
+
+        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+            android:id="@+id/tv_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/create_token"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_toolbar_title"
+        android:layout_below="@+id/ll_top"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="10dp"
@@ -56,8 +72,8 @@
                 android:id="@+id/tvcount"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/button_drawable_red"
                 android:gravity="center"
                 android:textColor="@android:color/white"

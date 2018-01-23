@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
@@ -38,7 +40,9 @@ import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener, MerchantViewPagerFragment.UpdateListColorCallBack {
@@ -55,7 +59,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private Runnable updater, run;
     private Snackbar snackbar;
     private boolean isFragmentVisible = false;
-
     public MerchantListFragment() {
 
     }
@@ -79,7 +82,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         MerchantViewPagerFragment.setUpdateListColorCallBack(this);
         snackbar = Snackbar.make(listview, "", Snackbar.LENGTH_INDEFINITE);
         snackbar.getView().setBackgroundResource(R.drawable.red_gredient);
-
         snackbar.addCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
