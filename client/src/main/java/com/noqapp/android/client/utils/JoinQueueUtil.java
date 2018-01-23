@@ -130,7 +130,7 @@ public class JoinQueueUtil {
         DateTime todayTokenAvailableFrom = today.toDateTime(tokenAvailableFrom);
         DateTime todayTokenNotAvailableFrom = today.toDateTime(tokenNotAvailableFrom);
 
-        return now.isBefore(todayTokenAvailableFrom) || now.isAfter(todayTokenNotAvailableFrom);
+        return now.isBefore(todayTokenAvailableFrom) || now.isAfter(todayTokenNotAvailableFrom.plusMinutes(jsonQueue.getDelayedInMinutes()));
     }
 
     /**

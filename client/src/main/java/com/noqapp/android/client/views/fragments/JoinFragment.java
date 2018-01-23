@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.fragments;
 
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -198,7 +199,13 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
-        tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
+        String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) +
+                " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour());
+        if(jsonQueue.getDelayedInMinutes()>0) {
+            String red =  "<font color='#e92270'>"+jsonQueue.getDelayedInMinutes()+" minutes late</font>";
+            time = time + " " +red;
+        }
+        tv_hour_saved.setText(Html.fromHtml(time));
         ratingBar.setRating(jsonQueue.getRating());
         // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
         tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount())
