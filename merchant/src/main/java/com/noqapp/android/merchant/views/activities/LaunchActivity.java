@@ -47,8 +47,6 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.HashMap;
 
-import retrofit2.converter.jackson.JacksonConverterFactory;
-
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
 public class LaunchActivity extends AppCompatActivity implements AppBlacklistPresenter {
@@ -353,7 +351,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             String status = intent.getStringExtra(Constants.STATUS);
             String current_serving = intent.getStringExtra(Constants.CURRENT_SERVING);
             String lastno = intent.getStringExtra(Constants.LASTNO);
-            String payload = intent.getStringExtra(Constants.MSG_TYPE_F);
+            String payload = intent.getStringExtra(Constants.Firebase_Type);
             Log.v("Notify msg background",
                     "Push notification: " + message + "\n" + "qrcode : " + qrcode
                             + "\n" + "status : " + status
