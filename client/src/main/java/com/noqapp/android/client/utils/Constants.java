@@ -80,10 +80,16 @@ public class Constants {
      */
     public static String appVersion() {
         if (StringUtils.isBlank(VERSION_RELEASE)) {
-            String computedVersion = BuildConfig.VERSION_NAME.replace(".", "");
-            VERSION_RELEASE = Integer.valueOf(computedVersion) > 100 ? computedVersion : "109";
-            Log.i(TAG, "App version=" + VERSION_RELEASE);
+            switch (BuildConfig.BUILD_TYPE) {
+                case "debug":
+                    VERSION_RELEASE = String.valueOf(10_0000);
+                    break;
+                default:
+                    VERSION_RELEASE = BuildConfig.VERSION_NAME.replace(".", "");
+                    Log.i(TAG, "App version=" + VERSION_RELEASE);
+            }
         }
+        Log.i(TAG, "App version=" + VERSION_RELEASE);
         return VERSION_RELEASE;
     }
 }
