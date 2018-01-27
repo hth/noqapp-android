@@ -126,7 +126,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             }
         });
         if (isLoggedIn()) {
-            if(isAccessGrant()) {
+            if (isAccessGrant()) {
                 if (!new AppUtils().isTablet(getApplicationContext())) {
                     merchantListFragment = new MerchantListFragment();
                     replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
@@ -142,7 +142,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
                     //  fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
-            }else{
+            } else {
                 LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
                 LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
                 list_fragment.setLayoutParams(lp1);
@@ -211,7 +211,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         return sharedpreferences.getString(KEY_MERCHANT_COUNTER_NAME, "");
     }
 
-    public void setCounterName(HashMap<String,String> mHashmap) {
+    public void setCounterName(HashMap<String, String> mHashmap) {
         Gson gson = new Gson();
         String strInput = gson.toJson(mHashmap);
         sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, strInput).apply();
@@ -256,6 +256,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     public void setAccessGrant(boolean isAccessGrant) {
         sharedpreferences.edit().putBoolean(KEY_IS_ACCESS_GRANT, isAccessGrant).apply();
     }
+
     public void setUserInformation(String userName, String userId, String email, String auth, boolean isLogin) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(KEY_USER_NAME, userName);
@@ -312,7 +313,6 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     public void setUserName() {
         tv_name.setText(WordUtils.initials(getUserName()));
     }
-
 
 
     @Override
