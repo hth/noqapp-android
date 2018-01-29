@@ -284,8 +284,9 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         /* Added to update the screen if app is in background & notification received */
         if (!isResumeFirst) {
             JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-            if (null != jtk)
+            if (null != jtk) {
                 setObject(jtk, gotoPerson);
+            }
         }
         if (isResumeFirst) {
             isResumeFirst = false;
