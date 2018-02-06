@@ -9,9 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -30,6 +33,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.adapters.AutocompleteAdapter;
 import com.noqapp.android.merchant.views.adapters.MerchantListAdapter;
 import com.noqapp.android.merchant.views.adapters.ViewPagerAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
@@ -47,6 +51,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     public MerchantViewPagerFragment merchantViewPagerFragment;
     private Handler timerHandler;
     private MerchantListAdapter adapter;
+    private AutocompleteAdapter temp_adapter;
     private ArrayList<JsonTopic> topics;
     private ListView listview;
     private RelativeLayout rl_empty_screen;
@@ -55,6 +60,9 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private Runnable updater, run;
     private Snackbar snackbar;
     private boolean isFragmentVisible = false;
+    private AutoCompleteTextView auto_complete_search;
+
+
     public MerchantListFragment() {
 
     }
@@ -72,6 +80,47 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         listview = (ListView) view.findViewById(R.id.listview);
         rl_empty_screen = (RelativeLayout) view.findViewById(R.id.rl_empty_screen);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
+        auto_complete_search = (AutoCompleteTextView) view.findViewById(R.id.auto_complete_search);
+        auto_complete_search.setThreshold(1);
+        auto_complete_search.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (auto_complete_search.getRight() - auto_complete_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // your action here
+                        auto_complete_search.setText("");
+                        InputMethodManager inputMethodManager =(InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(auto_complete_search.getWindowToken(), 0);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+        auto_complete_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+
+                String selectedQRcode = temp_adapter.getQRCode(pos);
+                for (int j = 0; j < topics.size(); j++) {
+                    JsonTopic jt = topics.get(j);
+                    if (selectedQRcode.equalsIgnoreCase(jt.getCodeQR())) {
+                        auto_complete_search.setText("");
+                        InputMethodManager inputMethodManager =(InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(auto_complete_search.getWindowToken(), 0);
+
+                        listview.performItemClick(
+                                listview.getAdapter().getView(j, null, null),
+                                j,
+                                listview.getAdapter().getItemId(j));
+                        break;
+                    }
+                }
+            }
+        });
+
         swipeRefreshLayout.setOnRefreshListener(this);
         Bundle bundle = getArguments();
         ViewPagerAdapter.setAdapterCallBack(this);
@@ -159,6 +208,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             //Show error
             rl_empty_screen.setVisibility(View.VISIBLE);
             listview.setVisibility(View.GONE);
+            //header.setVisibility(View.GONE);
         }
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -184,7 +234,9 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         listview.setVisibility(View.VISIBLE);
         adapter = new MerchantListAdapter(getActivity(), topics);
         listview.setAdapter(adapter);
-
+        temp_adapter = new AutocompleteAdapter(getActivity(),
+                R.layout.auto_text_item, topics);
+        auto_complete_search.setAdapter(temp_adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
