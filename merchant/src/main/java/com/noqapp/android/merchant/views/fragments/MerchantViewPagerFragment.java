@@ -136,8 +136,12 @@ public class MerchantViewPagerFragment extends Fragment {
     }
 
     public void updateListData(final ArrayList<JsonTopic> jsonTopics) {
-        topicsList = jsonTopics;
-        adapter.notifyDataSetChanged();
+        try {
+            topicsList = jsonTopics;
+            adapter.notifyDataSetChanged();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void setPage(int pos) {

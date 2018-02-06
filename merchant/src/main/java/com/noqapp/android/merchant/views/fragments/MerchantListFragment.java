@@ -295,42 +295,48 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
     @Override
-    public void passDataToFragment(String codeQR, String current_serving, String status, String lastNumber, String payload) {
-        try {
-            for (int i = 0; i < topics.size(); i++) {
-                JsonTopic jt = topics.get(i);
-                if (jt.getCodeQR().equalsIgnoreCase(codeQR)) {
+    public void passDataToFragment(final String codeQR, final String current_serving, final String status, final String lastNumber, final String payload) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //stuff that updates ui
+                try {
+                    for (int i = 0; i < topics.size(); i++) {
+                        JsonTopic jt = topics.get(i);
+                        if (jt.getCodeQR().equalsIgnoreCase(codeQR)) {
 
-                    if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
-                        if (QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S)) {
-                            jt.setToken(Integer.parseInt(lastNumber));
-                            jt.setServingNumber(Integer.parseInt(current_serving));
-                        } else {
-                            if (Integer.parseInt(lastNumber) >= jt.getToken()) {
-                                jt.setToken(Integer.parseInt(lastNumber));
-                            }
-                        }
+                            if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
+                                if (QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S)) {
+                                    jt.setToken(Integer.parseInt(lastNumber));
+                                    jt.setServingNumber(Integer.parseInt(current_serving));
+                                } else {
+                                    if (Integer.parseInt(lastNumber) >= jt.getToken()) {
+                                        jt.setToken(Integer.parseInt(lastNumber));
+                                    }
+                                }
                         /* Update only from merchant msg. */
-                        jt.setQueueStatus(QueueStatusEnum.valueOf(status));
-                    } else {
-                        if (Integer.parseInt(lastNumber) >= jt.getToken()) {
-                            jt.setToken(Integer.parseInt(lastNumber));
+                                jt.setQueueStatus(QueueStatusEnum.valueOf(status));
+                            } else {
+                                if (Integer.parseInt(lastNumber) >= jt.getToken()) {
+                                    jt.setToken(Integer.parseInt(lastNumber));
+                                }
+                            }
+                            //jt.setToken(Integer.parseInt(lastno));
+                            topics.set(i, jt);
+                            adapter.notifyDataSetChanged();
+                            if (null != merchantViewPagerFragment) {
+                                merchantViewPagerFragment.updateListData(topics);
+                            }
+                            LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
+                            updateSnackbarTxt();
+                            break;
                         }
                     }
-                    //jt.setToken(Integer.parseInt(lastno));
-                    topics.set(i, jt);
-                    adapter.notifyDataSetChanged();
-                    if (null != merchantViewPagerFragment) {
-                        merchantViewPagerFragment.updateListData(topics);
-                    }
-                    LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
-                    updateSnackbarTxt();
-                    break;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @Override
