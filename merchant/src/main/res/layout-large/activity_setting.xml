@@ -144,7 +144,7 @@
                             <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".8"
+                                android:layout_weight=".7"
                                 android:padding="5dp"
                                 android:text="Token Available From"
                                 android:textColor="@color/color_total_val"
@@ -154,8 +154,9 @@
                                 android:id="@+id/tv_token_available"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".2"
+                                android:layout_weight=".3"
                                 android:background="@drawable/square_white_bg_drawable"
+                                android:gravity="center"
                                 android:padding="5dp"
                                 android:textColor="@android:color/black"
                                 android:textSize="18sp" />
@@ -171,7 +172,7 @@
                             <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".8"
+                                android:layout_weight=".7"
                                 android:padding="5dp"
                                 android:text="Start Time"
                                 android:textColor="@color/color_total_val"
@@ -181,8 +182,9 @@
                                 android:id="@+id/tv_store_start"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".2"
+                                android:layout_weight=".3"
                                 android:background="@drawable/square_white_bg_drawable"
+                                android:gravity="center"
                                 android:padding="5dp"
                                 android:textColor="@android:color/black"
                                 android:textSize="18sp" />
@@ -206,7 +208,7 @@
                             <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".8"
+                                android:layout_weight=".7"
                                 android:padding="5dp"
                                 android:text="Token Not Available From"
                                 android:textColor="@color/color_total_val"
@@ -216,8 +218,9 @@
                                 android:id="@+id/tv_token_not_available"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".2"
+                                android:layout_weight=".3"
                                 android:background="@drawable/square_white_bg_drawable"
+                                android:gravity="center"
                                 android:padding="5dp"
                                 android:textColor="@android:color/black"
                                 android:textSize="18sp" />
@@ -233,7 +236,7 @@
                             <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".8"
+                                android:layout_weight=".7"
                                 android:padding="5dp"
                                 android:text="Close Time"
                                 android:textColor="@color/color_total_val"
@@ -243,8 +246,9 @@
                                 android:id="@+id/tv_store_close"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".2"
+                                android:layout_weight=".3"
                                 android:background="@drawable/square_white_bg_drawable"
+                                android:gravity="center"
                                 android:padding="5dp"
                                 android:textColor="@android:color/black"
                                 android:textSize="18sp" />

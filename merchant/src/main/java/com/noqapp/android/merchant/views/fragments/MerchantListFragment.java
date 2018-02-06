@@ -89,9 +89,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                 if(event.getAction() == MotionEvent.ACTION_UP) {
                     if(event.getRawX() >= (auto_complete_search.getRight() - auto_complete_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         // your action here
-                        auto_complete_search.setText("");
-                        InputMethodManager inputMethodManager =(InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                        inputMethodManager.hideSoftInputFromWindow(auto_complete_search.getWindowToken(), 0);
+                        hideAndReset();
                         return true;
                     }
                 }
@@ -107,10 +105,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                 for (int j = 0; j < topics.size(); j++) {
                     JsonTopic jt = topics.get(j);
                     if (selectedQRcode.equalsIgnoreCase(jt.getCodeQR())) {
-                        auto_complete_search.setText("");
-                        InputMethodManager inputMethodManager =(InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                        inputMethodManager.hideSoftInputFromWindow(auto_complete_search.getWindowToken(), 0);
-
+                        hideAndReset();
                         listview.performItemClick(
                                 listview.getAdapter().getView(j, null, null),
                                 j,
@@ -171,6 +166,12 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             }
         }
         return view;
+    }
+
+    private void hideAndReset() {
+        auto_complete_search.setText("");
+        InputMethodManager inputMethodManager =(InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(auto_complete_search.getWindowToken(), 0);
     }
 
     @Override
