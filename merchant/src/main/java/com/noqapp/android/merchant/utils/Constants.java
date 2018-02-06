@@ -42,15 +42,22 @@ public class Constants {
      * @return
      */
     public static String appVersion() {
+        int version = Integer.valueOf(BuildConfig.VERSION_NAME.replace(".", ""));
         if (StringUtils.isBlank(VERSION_RELEASE)) {
             switch (BuildConfig.BUILD_TYPE) {
                 case "debug":
-                    VERSION_RELEASE = String.valueOf(10_0000);
+                    version = 10_0000;
                     break;
                 default:
-                    VERSION_RELEASE = BuildConfig.VERSION_NAME.replace(".", "");
-                    Log.i(TAG, "App version=" + VERSION_RELEASE);
+                    if (version < 1000) {
+                        version = version * 100;
+                    } else {
+                        version = version * 10;
+                    }
             }
+
+            VERSION_RELEASE = String.valueOf(version);
+            Log.i(TAG, "App version=" + VERSION_RELEASE);
         }
         Log.i(TAG, "App version=" + VERSION_RELEASE);
         return VERSION_RELEASE;
