@@ -295,6 +295,10 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
 
     @Override
     public void passDataToFragment(final String codeQR, final String current_serving, final String status, final String lastNumber, final String payload) {
+        if (getActivity() == null) {
+            return;
+        }
+
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
