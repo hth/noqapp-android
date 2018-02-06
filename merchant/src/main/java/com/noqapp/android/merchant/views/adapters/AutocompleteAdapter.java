@@ -3,13 +3,12 @@ package com.noqapp.android.merchant.views.adapters;
 /**
  * Created by chandra on 2/6/18.
  */
-
 import android.content.Context;
-        import android.graphics.Color;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.ArrayAdapter;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
@@ -28,8 +27,6 @@ public class AutocompleteAdapter extends ArrayAdapter {
     private ListFilter listFilter = new ListFilter();
     private List<JsonTopic> dataListAllItems;
 
-
-
     public AutocompleteAdapter(Context context, int resource, List<JsonTopic> storeDataLst) {
         super(context, resource, storeDataLst);
         dataList = storeDataLst;
@@ -47,10 +44,12 @@ public class AutocompleteAdapter extends ArrayAdapter {
 
         return dataList.get(position).getDisplayName();
     }
+
     public String getQRCode(int position) {
 
         return dataList.get(position).getCodeQR();
     }
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
@@ -78,7 +77,7 @@ public class AutocompleteAdapter extends ArrayAdapter {
             FilterResults results = new FilterResults();
             if (dataListAllItems == null) {
                 synchronized (lock) {
-                    dataListAllItems = new ArrayList<JsonTopic>(dataList);
+                    dataListAllItems = new ArrayList<>(dataList);
                 }
             }
 
@@ -90,10 +89,10 @@ public class AutocompleteAdapter extends ArrayAdapter {
             } else {
                 final String searchStrLowerCase = prefix.toString().toLowerCase();
 
-                ArrayList<JsonTopic> matchValues = new ArrayList<JsonTopic>();
+                ArrayList<JsonTopic> matchValues = new ArrayList<>();
 
                 for (JsonTopic dataItem : dataListAllItems) {
-                    if (dataItem.getDisplayName().toLowerCase().startsWith(searchStrLowerCase)) {
+                    if (dataItem.getDisplayName().toLowerCase().contains(searchStrLowerCase)) {
                         matchValues.add(dataItem);
                     }
                 }
@@ -108,7 +107,7 @@ public class AutocompleteAdapter extends ArrayAdapter {
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             if (results.values != null) {
-                dataList = (ArrayList<JsonTopic>)results.values;
+                dataList = (ArrayList<JsonTopic>) results.values;
             } else {
                 dataList = null;
             }
@@ -118,6 +117,5 @@ public class AutocompleteAdapter extends ArrayAdapter {
                 notifyDataSetInvalidated();
             }
         }
-
     }
 }

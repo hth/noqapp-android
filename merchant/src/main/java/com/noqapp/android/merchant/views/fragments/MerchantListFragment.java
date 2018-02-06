@@ -62,7 +62,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private boolean isFragmentVisible = false;
     private AutoCompleteTextView auto_complete_search;
 
-
     public MerchantListFragment() {
 
     }
@@ -86,8 +85,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int DRAWABLE_RIGHT = 2;
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (auto_complete_search.getRight() - auto_complete_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (auto_complete_search.getRight() - auto_complete_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         // your action here
                         hideAndReset();
                         return true;
@@ -170,7 +169,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
 
     private void hideAndReset() {
         auto_complete_search.setText("");
-        InputMethodManager inputMethodManager =(InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(auto_complete_search.getWindowToken(), 0);
     }
 
@@ -314,7 +313,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                                         jt.setToken(Integer.parseInt(lastNumber));
                                     }
                                 }
-                        /* Update only from merchant msg. */
+                                /* Update only from merchant msg. */
                                 jt.setQueueStatus(QueueStatusEnum.valueOf(status));
                             } else {
                                 if (Integer.parseInt(lastNumber) >= jt.getToken()) {
@@ -358,7 +357,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -379,7 +377,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
     public void updateListData(List<JsonTopic> jsonTopics) {
-        topics = new ArrayList<JsonTopic>();
+        topics = new ArrayList<>();
         topics.addAll(jsonTopics);
     }
 
