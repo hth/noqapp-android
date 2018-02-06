@@ -135,6 +135,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 //                                "priority": "high",
 //                                "to": "XXXXX"
 //                            }
+                            sendNotification(title, body);
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         String current_serving = remoteMessage.getData().get(CurrentlyServing);
