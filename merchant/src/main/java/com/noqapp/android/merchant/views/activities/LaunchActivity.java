@@ -143,10 +143,13 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
                     fragmentTransaction.commit();
                 }
             } else {
-                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
-                LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
-                list_fragment.setLayoutParams(lp1);
-                list_detail_fragment.setLayoutParams(lp0);
+
+                if (new AppUtils().isTablet(getApplicationContext())) {
+                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
+                    LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
+                    list_fragment.setLayoutParams(lp1);
+                    list_detail_fragment.setLayoutParams(lp0);
+                }
                 AccessDeniedFragment adf = new AccessDeniedFragment();
                 replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
             }
