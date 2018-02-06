@@ -152,8 +152,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
-                    String payload = intent.getStringExtra(Constants.MSG_TYPE_F);
-                    String codeQR = intent.getStringExtra(Constants.MSG_TYPE_C);
+                    String payload = intent.getStringExtra(Constants.Firebase_Type);
+                    String codeQR = intent.getStringExtra(Constants.CodeQR);
                     Log.d(TAG, "payload=" + payload + " codeQR=" + codeQR);
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
@@ -481,8 +481,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     private void updateNotification(Intent intent, String codeQR, boolean isReview) {
         // Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
-        String current_serving = intent.getStringExtra(Constants.MSG_TYPE_CS);
-        String go_to = intent.getStringExtra(Constants.MSG_TYPE_G);
+        String current_serving = intent.getStringExtra(Constants.CurrentlyServing);
+        String go_to = intent.getStringExtra(Constants.GoTo_Counter);
         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
         //update DB & after join screen
         jtk.setServingNumber(Integer.parseInt(current_serving));

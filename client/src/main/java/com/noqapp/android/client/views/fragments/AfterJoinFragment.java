@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -111,7 +112,15 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
-            tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour()));
+            // tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour()));
+
+            String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) +
+                    " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour());
+            if (jsonTokenAndQueue.getDelayedInMinutes() > 0) {
+                String red = "<font color='#e92270'><b>Late " + jsonTokenAndQueue.getDelayedInMinutes() + " minutes.</b></font>";
+                time = time + " " + red;
+            }
+            tv_hour_saved.setText(Html.fromHtml(time));
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), storePhone));
             tv_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -275,8 +284,9 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         /* Added to update the screen if app is in background & notification received */
         if (!isResumeFirst) {
             JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-            if (null != jtk)
+            if (null != jtk) {
                 setObject(jtk, gotoPerson);
+            }
         }
         if (isResumeFirst) {
             isResumeFirst = false;

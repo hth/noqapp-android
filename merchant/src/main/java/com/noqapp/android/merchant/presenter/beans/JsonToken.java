@@ -43,6 +43,12 @@ public class JsonToken implements Serializable {
     @JsonProperty("n")
     private String customerName;
 
+    @JsonProperty ("e")
+    private String expectedServiceBegin;
+
+    @JsonProperty ("v")
+    private boolean clientVisitedThisStore;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -94,6 +100,24 @@ public class JsonToken implements Serializable {
         this.customerName = customerName;
     }
 
+    public String getExpectedServiceBegin() {
+        return expectedServiceBegin;
+    }
+
+    public JsonToken setExpectedServiceBegin(String expectedServiceBegin) {
+        this.expectedServiceBegin = expectedServiceBegin;
+        return this;
+    }
+
+    public boolean hasClientVisitedThisStore() {
+        return clientVisitedThisStore;
+    }
+
+    public JsonToken setClientVisitedThisStore(boolean clientVisitedThisStore) {
+        this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -102,6 +126,7 @@ public class JsonToken implements Serializable {
         this.error = error;
     }
 
+    @JsonIgnoreProperties
     public int getRemaining() {
         return token - servingNumber;
     }
@@ -115,6 +140,8 @@ public class JsonToken implements Serializable {
                 .append("servingNumber", servingNumber)
                 .append("token", token)
                 .append("customerName", customerName)
+                .append("expectedServiceBegin", expectedServiceBegin)
+                .append("clientVisitedThisStore", clientVisitedThisStore)
                 .append("error", error)
                 .toString();
     }

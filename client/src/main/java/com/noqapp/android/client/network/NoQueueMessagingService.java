@@ -30,12 +30,12 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 import static com.noqapp.android.client.utils.Constants.ISREVIEW;
-import static com.noqapp.android.client.utils.Constants.MSG_TYPE_C;
-import static com.noqapp.android.client.utils.Constants.MSG_TYPE_CS;
-import static com.noqapp.android.client.utils.Constants.MSG_TYPE_F;
-import static com.noqapp.android.client.utils.Constants.MSG_TYPE_G;
-import static com.noqapp.android.client.utils.Constants.MSG_TYPE_LN;
-import static com.noqapp.android.client.utils.Constants.MSG_TYPE_U;
+import static com.noqapp.android.client.utils.Constants.CodeQR;
+import static com.noqapp.android.client.utils.Constants.CurrentlyServing;
+import static com.noqapp.android.client.utils.Constants.Firebase_Type;
+import static com.noqapp.android.client.utils.Constants.GoTo_Counter;
+import static com.noqapp.android.client.utils.Constants.LastNumber;
+import static com.noqapp.android.client.utils.Constants.QueueUserState;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
@@ -79,55 +79,71 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 if (!isAppIsInBackground(getApplicationContext())) {
                     // app is in foreground, broadcast the push message
                     Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
-                    pushNotification.putExtra(MSG_TYPE_F, remoteMessage.getData().get(MSG_TYPE_F));
-                    pushNotification.putExtra(MSG_TYPE_C, remoteMessage.getData().get(MSG_TYPE_C));
-                    if (remoteMessage.getData().get(MSG_TYPE_F).equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                        pushNotification.putExtra(MSG_TYPE_CS, remoteMessage.getData().get(MSG_TYPE_CS));
-                        pushNotification.putExtra(MSG_TYPE_LN, remoteMessage.getData().get(MSG_TYPE_LN));
-                        pushNotification.putExtra(MSG_TYPE_G, remoteMessage.getData().get(MSG_TYPE_G));
+                    pushNotification.putExtra(Firebase_Type, remoteMessage.getData().get(Firebase_Type));
+                    pushNotification.putExtra(CodeQR, remoteMessage.getData().get(CodeQR));
+                    if (remoteMessage.getData().get(Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
+                        pushNotification.putExtra(CurrentlyServing, remoteMessage.getData().get(CurrentlyServing));
+                        pushNotification.putExtra(LastNumber, remoteMessage.getData().get(LastNumber));
+                        pushNotification.putExtra(GoTo_Counter, remoteMessage.getData().get(GoTo_Counter));
                     }
-                    if (remoteMessage.getData().get(MSG_TYPE_F).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                        pushNotification.putExtra(MSG_TYPE_U, remoteMessage.getData().get(MSG_TYPE_U));
-                        pushNotification.putExtra(MSG_TYPE_CS, remoteMessage.getData().get(MSG_TYPE_CS));
-                        pushNotification.putExtra(MSG_TYPE_G, remoteMessage.getData().get(MSG_TYPE_G));
+                    if (remoteMessage.getData().get(Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                        pushNotification.putExtra(QueueUserState, remoteMessage.getData().get(QueueUserState));
+                        pushNotification.putExtra(CurrentlyServing, remoteMessage.getData().get(CurrentlyServing));
+                        pushNotification.putExtra(GoTo_Counter, remoteMessage.getData().get(GoTo_Counter));
                     }
                     LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
                 } else {
                     // app is in background, show the notification in notification tray
                     //save data to database
-                    String payload = remoteMessage.getData().get(MSG_TYPE_F);
-                    String codeQR = remoteMessage.getData().get(MSG_TYPE_C);
+                    String payload = remoteMessage.getData().get(Firebase_Type);
+                    String codeQR = remoteMessage.getData().get(CodeQR);
                     /*
                      * When u==S then it is re-view
                      *      u==N then it is skip(Rejoin) Pending task
                      */
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                        if (StringUtils.isNotBlank(codeQR)) {
+                            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
+                            String userStatus = remoteMessage.getData().get(Constants.QueueUserState);
+                            // un-subscribe from the topic
+                            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
 
-                        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-                        String userStatus = remoteMessage.getData().get(Constants.MSG_TYPE_U);
-                        // un-subscribe from the topic
-                        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-
-
-                        /*
-                         * Save codeQR of review & show the review screen on app
-                         * resume if there is any record in Review DB for review key
-                         */
-                        if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                            ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
-                            sendNotification(title, body, codeQR, true);//pass codeQR to open review screen
-                        } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                            ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
-                            sendNotification(title, body, codeQR, false);//pass codeQR to open skip screen
+                            /*
+                             * Save codeQR of review & show the review screen on app
+                             * resume if there is any record in Review DB for review key
+                             */
+                            if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                                ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
+                                sendNotification(title, body, codeQR, true);//pass codeQR to open review screen
+                            } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
+                                ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
+                                sendNotification(title, body, codeQR, false);//pass codeQR to open skip screen
+                            }
+                        } else {
+                            Log.w(TAG, "To implement this when a message like this is received");
+                            //TODO something for this data
+//                            {
+//                                "content_available": true,
+//                                      "data": {
+//                                        "body": "World Android",
+//                                        "cs": 0,
+//                                        "f": "P",
+//                                        "ln": 0,
+//                                        "title": "Hello Android"
+//                                      },
+//                                "priority": "high",
+//                                "to": "XXXXX"
+//                            }
+                            sendNotification(title, body);
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-
-                        String current_serving = remoteMessage.getData().get(MSG_TYPE_CS);
+                        String current_serving = remoteMessage.getData().get(CurrentlyServing);
                         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-                        if (null == jtk)
+                        if (null == jtk) {
                             jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR);
-                        String go_to = remoteMessage.getData().get(MSG_TYPE_G);
+                        }
+                        String go_to = remoteMessage.getData().get(GoTo_Counter);
 
                         /*
                          * Save codeQR of goto & show it in after join screen on app

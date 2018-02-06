@@ -47,8 +47,6 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.HashMap;
 
-import retrofit2.converter.jackson.JacksonConverterFactory;
-
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
 public class LaunchActivity extends AppCompatActivity implements AppBlacklistPresenter {
@@ -128,7 +126,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             }
         });
         if (isLoggedIn()) {
-            if(isAccessGrant()) {
+            if (isAccessGrant()) {
                 if (!new AppUtils().isTablet(getApplicationContext())) {
                     merchantListFragment = new MerchantListFragment();
                     replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
@@ -144,11 +142,14 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
                     //  fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
-            }else{
-                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
-                LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
-                list_fragment.setLayoutParams(lp1);
-                list_detail_fragment.setLayoutParams(lp0);
+            } else {
+
+                if (new AppUtils().isTablet(getApplicationContext())) {
+                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
+                    LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
+                    list_fragment.setLayoutParams(lp1);
+                    list_detail_fragment.setLayoutParams(lp0);
+                }
                 AccessDeniedFragment adf = new AccessDeniedFragment();
                 replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
             }
@@ -213,7 +214,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         return sharedpreferences.getString(KEY_MERCHANT_COUNTER_NAME, "");
     }
 
-    public void setCounterName(HashMap<String,String> mHashmap) {
+    public void setCounterName(HashMap<String, String> mHashmap) {
         Gson gson = new Gson();
         String strInput = gson.toJson(mHashmap);
         sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, strInput).apply();
@@ -258,6 +259,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     public void setAccessGrant(boolean isAccessGrant) {
         sharedpreferences.edit().putBoolean(KEY_IS_ACCESS_GRANT, isAccessGrant).apply();
     }
+
     public void setUserInformation(String userName, String userId, String email, String auth, boolean isLogin) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(KEY_USER_NAME, userName);
@@ -316,7 +318,6 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -353,7 +354,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             String status = intent.getStringExtra(Constants.STATUS);
             String current_serving = intent.getStringExtra(Constants.CURRENT_SERVING);
             String lastno = intent.getStringExtra(Constants.LASTNO);
-            String payload = intent.getStringExtra(Constants.MSG_TYPE_F);
+            String payload = intent.getStringExtra(Constants.Firebase_Type);
             Log.v("Notify msg background",
                     "Push notification: " + message + "\n" + "qrcode : " + qrcode
                             + "\n" + "status : " + status

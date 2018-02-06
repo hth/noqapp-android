@@ -12,14 +12,13 @@
         android:background="@drawable/access_denied" />
 
     <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_access"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:text="@string/error_access_denied"
         android:textColor="@android:color/black"
         android:textSize="20sp" />

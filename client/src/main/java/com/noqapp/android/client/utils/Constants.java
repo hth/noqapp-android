@@ -23,13 +23,13 @@ public class Constants {
     public static final String ISREVIEW = "isreview";
     public static final String CURRENT_SERVING = "current_serving";
     public static final String LASTNO = "lastno";
-    public static final String MSG_TYPE_F = "f";
-    public static final String MSG_TYPE_G = "g";
-    public static final String MSG_TYPE_LN = "ln";
-    public static final String MSG_TYPE_CS = "cs";
-    public static final String MSG_TYPE_Q = "q";
-    public static final String MSG_TYPE_C = "c";
-    public static final String MSG_TYPE_U = "u";
+    public static final String Firebase_Type = "f";
+    public static final String GoTo_Counter = "g";
+    public static final String LastNumber = "ln";
+    public static final String CurrentlyServing = "cs";
+    public static final String QueueStatus = "q";
+    public static final String CodeQR = "c";
+    public static final String QueueUserState = "u";
 
     //error codes
     public static final int INVALID_CREDENTIAL = 401;
@@ -80,10 +80,16 @@ public class Constants {
      */
     public static String appVersion() {
         if (StringUtils.isBlank(VERSION_RELEASE)) {
-            String computedVersion = BuildConfig.VERSION_NAME.replace(".", "");
-            VERSION_RELEASE = Integer.valueOf(computedVersion) > 100 ? computedVersion : "109";
-            Log.i(TAG, "App version=" + VERSION_RELEASE);
+            switch (BuildConfig.BUILD_TYPE) {
+                case "debug":
+                    VERSION_RELEASE = String.valueOf(10_0000);
+                    break;
+                default:
+                    VERSION_RELEASE = BuildConfig.VERSION_NAME.replace(".", "");
+                    Log.i(TAG, "App version=" + VERSION_RELEASE);
+            }
         }
+        Log.i(TAG, "App version=" + VERSION_RELEASE);
         return VERSION_RELEASE;
     }
 }
