@@ -128,6 +128,7 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             }
 
             if (isCategoryData) {
+                //TODO(chandra) this fails
                 queueResponse(jsonQueue);
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {

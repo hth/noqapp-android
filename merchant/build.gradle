@@ -201,9 +201,13 @@ android {
         }
 
         sandbox {
-            debuggable false
-            minifyEnabled true
-            zipAlignEnabled true
+//            debuggable false
+//            minifyEnabled true
+//            zipAlignEnabled true
+            //Marked de-bugable
+            debuggable true
+            //when minifyEnabled is true gets exception com.android.dx.cf.code.SimException:
+            minifyEnabled false
 
             proguardFile '../library-proguard/proguard-butterknife-7.pro'
             proguardFile '../library-proguard/proguard-crashlytics.pro'
@@ -220,7 +224,7 @@ android {
             proguardFile 'merchant-release-proguard.config'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            signingConfig signingConfigs.sandbox
+            signingConfig signingConfigs.release
 
             buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, FALSE
             buildConfigField BOOLEAN, REPORT_CRASHES, TRUE
@@ -343,12 +347,12 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.8.0'
     compile 'com.googlecode.libphonenumber:libphonenumber:8.8.9'
     compile 'com.android.support:cardview-v7:27.0.2'
-    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.0@aar') {
         transitive = true
     }
     compile 'com.airbnb.android:lottie:2.3.1'
     compile 'org.jsoup:jsoup:1.8.3'
-    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.google.code.gson:gson:2.8.2'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
