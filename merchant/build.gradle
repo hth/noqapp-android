@@ -221,7 +221,7 @@ android {
             proguardFile '../library-proguard/proguard-square-okhttp3.pro'
             proguardFile '../library-proguard/proguard-square-retrofit2.pro'
 
-            proguardFile 'merchant-debug-proguard.config'
+            proguardFile 'merchant-release-proguard.config'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             signingConfig signingConfigs.release

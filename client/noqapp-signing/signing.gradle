@@ -24,7 +24,7 @@ if (env == 'release') {
         android.buildTypes.release.signingConfig = null
     }
 } else if (env == 'sandbox') {
-    def propFile = new File(signingFileLocation + releaseAppProperties)
+    def propFile = new File(signingFileLocation + sandboxAppProperties)
 
     if (propFile.canRead()) {
         props.load(new FileInputStream(propFile))
