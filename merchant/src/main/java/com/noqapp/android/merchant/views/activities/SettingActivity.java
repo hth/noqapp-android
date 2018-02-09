@@ -257,7 +257,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         } else {
             queueSetting.setAvailableTokenCount(Integer.parseInt(edt_token_no.getText().toString()));
         }
-        //queueSetting.setDelayedInMinutes(//TODO(Chandra) Add Button to set delay. Forgot about the button in settings page");
+        queueSetting.setDelayedInMinutes(//Chandra Add Button to set delay. Forgot about the button in settings page");
         QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
     }
 

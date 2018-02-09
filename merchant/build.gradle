@@ -201,13 +201,9 @@ android {
         }
 
         sandbox {
-//            debuggable false
-//            minifyEnabled true
-//            zipAlignEnabled true
-            //Marked de-bugable
-            debuggable true
-            //when minifyEnabled is true gets exception com.android.dx.cf.code.SimException:
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
 
             proguardFile '../library-proguard/proguard-butterknife-7.pro'
             proguardFile '../library-proguard/proguard-crashlytics.pro'
@@ -224,7 +220,7 @@ android {
             proguardFile 'merchant-release-proguard.config'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.sandbox
 
             buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, FALSE
             buildConfigField BOOLEAN, REPORT_CRASHES, TRUE
