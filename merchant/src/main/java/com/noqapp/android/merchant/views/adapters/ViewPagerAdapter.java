@@ -508,13 +508,27 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     public void dispenseTokenResponse(JsonToken token) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         if (null != token && null != tv_create_token) {
-            // Toast.makeText(context,,Toast.LENGTH_LONG).show();
-            tv_create_token.setText("The genrated token no is ");
-            btn_create_token.setText(context.getString(R.string.done));
-            iv_banner.setBackgroundResource(R.drawable.after_token_generated);
-            tvcount.setText(String.valueOf(token.getToken()));
-            tvcount.setVisibility(View.VISIBLE);
-            btn_create_token.setClickable(true);
+            switch(token.getQueueStatus()) {
+                case C:
+                    //TODO(chandra) tell the token cannot be acquire as its closed or prevent joining.
+                    break;
+                case D:
+                case N:
+                case P:
+                case R:
+                case S:
+                    // Toast.makeText(context,,Toast.LENGTH_LONG).show();
+                    tv_create_token.setText("The generated token no is ");
+                    btn_create_token.setText(context.getString(R.string.done));
+                    iv_banner.setBackgroundResource(R.drawable.after_token_generated);
+                    tvcount.setText(String.valueOf(token.getToken()));
+                    tvcount.setVisibility(View.VISIBLE);
+                    btn_create_token.setClickable(true);
+                    break;
+                default:
+                    Log.e(TAG, "Reached un-reachable condition");
+                    throw new RuntimeException("Reached unsupported condition");
+            }
         }
     }
 
