@@ -75,14 +75,14 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         String strOutput = LaunchActivity.getLaunchActivity().getCounterName();
         Type type = new TypeToken<HashMap<String, String>>(){}.getType();
         Gson gson = new Gson();
-        if(strOutput.equals("")) {
+        if (StringUtils.isBlank(strOutput)) {
             mHashmap.clear();
-        }else {
+        } else {
             mHashmap = gson.fromJson(strOutput, type);
         }
-        if(mHashmap.size()==0){
-            for (int i =0; i < topics.size();i++){
-                mHashmap.put(topics.get(i).getCodeQR(),"");
+        if (mHashmap.size() == 0) {
+            for (int i = 0; i < topics.size(); i++) {
+                mHashmap.put(topics.get(i).getCodeQR(), "");
             }
         }
     }
