@@ -51,7 +51,6 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 
-
 /**
  * User: chandra
  * Date: 4/16/17 4:02 PM
@@ -422,7 +421,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                                         Served served = new Served();
                                         served.setCodeQR(lq.getCodeQR());
                                         served.setQueueUserState(QueueUserStateEnum.S);
-                                        /*  send   QueueStatusEnum P for pause state */
+                                        /* send QueueStatusEnum P for pause state */
                                         served.setQueueStatus(QueueStatusEnum.P);
                                         served.setServedNumber(lq.getServingNumber());
                                         served.setGoTo(tv_counter_name.getText().toString());
@@ -439,7 +438,6 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                             });
 
                             builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
@@ -454,7 +452,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                                 Served served = new Served();
                                 served.setCodeQR(lq.getCodeQR());
                                 served.setQueueUserState(QueueUserStateEnum.S);
-                                  /*  send   QueueStatusEnum as it is for other than pause state */
+                                /* send QueueStatusEnum as it is for other than pause state */
                                 served.setQueueStatus(lq.getQueueStatus());
                                 served.setServedNumber(lq.getServingNumber());
                                 served.setGoTo(tv_counter_name.getText().toString());
