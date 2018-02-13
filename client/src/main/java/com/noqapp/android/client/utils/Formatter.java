@@ -62,6 +62,7 @@ public class Formatter {
 
         return "";
     }
+
     public static String getTimeAsString(Date date) {
         if (null != date) {
             return DateFormat.getTimeInstance().format(date);
