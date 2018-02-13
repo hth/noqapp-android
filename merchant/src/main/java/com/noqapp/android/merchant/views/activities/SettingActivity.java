@@ -34,6 +34,8 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 import java.util.Calendar;
 
@@ -51,6 +53,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private Button btn_update_time, btn_update_delay;
     private CheckBox cb_limit;
     private EditText edt_token_no;
+    private boolean arrivalTextChange = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,9 +265,21 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         } else {
             queueSetting.setAvailableTokenCount(Integer.parseInt(edt_token_no.getText().toString()));
         }
-        queueSetting.setDelayedInMinutes(
-                Integer.parseInt(tv_delay_in_minute.getText().toString().replace(":", ""))
-                        - Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
+
+        if (arrivalTextChange) {
+            DateTime start = DateTime.now().withTimeAtStartOfDay();
+            DateTime end = DateTime.now().withTimeAtStartOfDay();
+
+            int startHour = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[0]);
+            int startMinutes = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[1]);
+            int endHour = Integer.valueOf(tv_store_start.getText().toString().split(":")[0]);
+            int endMinutes = Integer.valueOf(tv_store_start.getText().toString().split(":")[1]);
+
+            Duration duration = new Duration(end.plusHours(endHour).plusMinutes(endMinutes), start.plusHours(startHour).plusMinutes(startMinutes));
+            queueSetting.setDelayedInMinutes((int) duration.getStandardMinutes());
+        } else {
+            queueSetting.setDelayedInMinutes(0);
+        }
         QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
     }
 
@@ -319,6 +334,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                             Toast.makeText(SettingActivity.this, getString(R.string.error_delay_time), Toast.LENGTH_LONG).show();
                         } else {
                             textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                            if (!textView.getText().toString().equalsIgnoreCase(tv_store_start.getText().toString())) {
+                                arrivalTextChange = true;
+                            }
                         }
                     }
                 }
