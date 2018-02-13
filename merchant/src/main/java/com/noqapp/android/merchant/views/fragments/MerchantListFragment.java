@@ -47,7 +47,7 @@ import java.util.List;
 
 public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener, MerchantViewPagerFragment.UpdateListColorCallBack {
 
-    public static int selected_pos = -1;
+    public static int selected_pos = 0;
     public MerchantViewPagerFragment merchantViewPagerFragment;
     private Handler timerHandler;
     private MerchantListAdapter adapter;
@@ -266,7 +266,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             merchantViewPagerFragment = new MerchantViewPagerFragment();
             Bundle b = new Bundle();
             b.putSerializable("jsonMerchant", topics);
-            b.putInt("position", 0);
+            b.putInt("position", selected_pos);
             merchantViewPagerFragment.setArguments(b);
             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.list_detail_fragment, merchantViewPagerFragment);

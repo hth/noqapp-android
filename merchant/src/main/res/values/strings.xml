@@ -87,4 +87,5 @@
     <string name="error_access_denied">Not authorized to access. Please contact your admin for permission.</string>
     <string name="text_delay">Arrival</string>
     <string name="error_delay_time">Time has to be greater than start time.</string>
+    <string name="queue_closed">Queue Closed</string>
 </resources>

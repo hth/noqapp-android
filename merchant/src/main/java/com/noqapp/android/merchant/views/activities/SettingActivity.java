@@ -262,8 +262,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         } else {
             queueSetting.setAvailableTokenCount(Integer.parseInt(edt_token_no.getText().toString()));
         }
-        queueSetting.setDelayedInMinutes(Integer.parseInt(tv_delay_in_minute.getText().toString().replace(":", ""))
-        -Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
+        queueSetting.setDelayedInMinutes(
+                Integer.parseInt(tv_delay_in_minute.getText().toString().replace(":", ""))
+                        - Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
         QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
     }
 
