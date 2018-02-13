@@ -540,6 +540,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         View customDialogView = inflater.inflate(R.layout.dialog_edit_counter, null, false);
         final EditText edt_counter = (EditText) customDialogView.findViewById(R.id.edt_counter);
         edt_counter.setText(textView.getText().toString().trim());
+        edt_counter.setSelection(textView.getText().toString().length());
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
