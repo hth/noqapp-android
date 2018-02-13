@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,12 +41,13 @@ import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.ToIntBiFunction;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginFragment extends NoQueueBaseFragment implements ProfilePresenter, View.OnClickListener {
+public class LoginFragment extends NoQueueBaseFragment implements ProfilePresenter {
     private final String TAG = LoginFragment.class.getSimpleName();
     private final int READ_AND_RECEIVE_SMS_PERMISSION_CODE = 101;
     private final String[] READ_AND_RECEIVE_SMS_PERMISSION_PERMS = {
@@ -134,6 +136,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
 
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
+                Toast.makeText(getActivity(),"verification code: "+mVerificationId, Toast.LENGTH_LONG).show();
                 // Update UI
                 updateUI(STATE_CODE_SENT);
 
@@ -304,20 +307,20 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_verify_phone:
+    @OnClick(R.id.btn_verify_phone)
+    public void btnVerifyClick() {
                 edt_verification_code.setError(null);
                 String code = edt_verification_code.getText().toString();
                 if (TextUtils.isEmpty(code)) {
                     edt_verification_code.setError("Cannot be empty.");
                     return;
                 }
-                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
-                signInWithPhoneAuthCredential(credential);
-                break;
-        }
+                if(mVerificationId !=null) {
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
+                    signInWithPhoneAuthCredential(credential);
+                }else{
+                    Toast.makeText(getActivity(),"mVerificationId is null: ", Toast.LENGTH_LONG).show();
+                }
     }
 
     private void updateUI(int uiState) {
