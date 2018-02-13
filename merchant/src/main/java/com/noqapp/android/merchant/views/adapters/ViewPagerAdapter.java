@@ -66,21 +66,21 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     private Button btn_create_token;
     private ImageView iv_banner;
     private TextView tvcount;
-    private HashMap<String,String> mHashmap = new HashMap<>();
+    private HashMap<String, String> mHashmap = new HashMap<>();
 
     public ViewPagerAdapter(Context context, List<JsonTopic> topics) {
         this.context = context;
         this.topics = topics;
 
         String strOutput = LaunchActivity.getLaunchActivity().getCounterName();
-        Type type = new TypeToken<HashMap<String, String>>(){}.getType();
+        Type type = new TypeToken<HashMap<String, String>>() {}.getType();
         Gson gson = new Gson();
         if (StringUtils.isBlank(strOutput)) {
             mHashmap.clear();
         } else {
             try {
                 mHashmap = gson.fromJson(strOutput, type);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 mHashmap = new HashMap<>();
             }
@@ -172,7 +172,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             @Override
             public void onClick(View v) {
                 if (queueStatus == QueueStatusEnum.N) {
-                    saveCounterNames(lq.getCodeQR(),tv_counter_name.getText().toString().trim());
+                    saveCounterNames(lq.getCodeQR(), tv_counter_name.getText().toString().trim());
                     if (tv_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
@@ -206,7 +206,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             @Override
             public void onClick(View v) {
                 if (queueStatus == QueueStatusEnum.N) {
-                    saveCounterNames(lq.getCodeQR(),tv_counter_name.getText().toString().trim());
+                    saveCounterNames(lq.getCodeQR(), tv_counter_name.getText().toString().trim());
                     if (tv_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
@@ -248,11 +248,11 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         tv_title.setText(lq.getDisplayName());
         tv_serving_customer.setText(Html.fromHtml("Serving: " + (StringUtils.isNotBlank(lq.getCustomerName()) ? "<b>" + lq.getCustomerName() + "</b> " : context.getString(R.string.name_unavailable))));
 
-        if(lq.hasClientVisitedThisStore())// check parameter to chow client is new or old
-        {
-            tv_serving_customer.setCompoundDrawablesWithIntrinsicBounds( R.drawable.new_client, 0, 0, 0);
-        }else{
-            tv_serving_customer.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0);
+        // check parameter to show client is new or has previously visited
+        if (lq.hasClientVisitedThisStore()) {
+            tv_serving_customer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.new_client, 0, 0, 0);
+        } else {
+            tv_serving_customer.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
         btn_start.setText(context.getString(R.string.start));
 
@@ -328,7 +328,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveCounterNames(lq.getCodeQR(),tv_counter_name.getText().toString().trim());
+                saveCounterNames(lq.getCodeQR(), tv_counter_name.getText().toString().trim());
                 if (tv_counter_name.getText().toString().trim().equals("")) {
                     Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                 } else {
@@ -355,7 +355,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         btn_skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveCounterNames(lq.getCodeQR(),tv_counter_name.getText().toString().trim());
+                saveCounterNames(lq.getCodeQR(), tv_counter_name.getText().toString().trim());
                 if (queueStatus != QueueStatusEnum.S && queueStatus != QueueStatusEnum.D) {
                     if (tv_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
@@ -387,19 +387,19 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         iv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCounterEditDialog(context, tv_counter_name,lq.getCodeQR());
+                showCounterEditDialog(context, tv_counter_name, lq.getCodeQR());
             }
         });
         tv_counter_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCounterEditDialog(context, tv_counter_name,lq.getCodeQR());
+                showCounterEditDialog(context, tv_counter_name, lq.getCodeQR());
             }
         });
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveCounterNames(lq.getCodeQR(),tv_counter_name.getText().toString().trim());
+                saveCounterNames(lq.getCodeQR(), tv_counter_name.getText().toString().trim());
                 if (lq.getToken() == 0) {
                     Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
                 } else if (lq.getRemaining() == 0 && lq.getServingNumber() == 0) {
@@ -520,7 +520,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     public void dispenseTokenResponse(JsonToken token) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         if (null != token && null != tv_create_token) {
-            switch(token.getQueueStatus()) {
+            switch (token.getQueueStatus()) {
                 case C:
                     tv_create_token.setText("Queue is closed. Cannot generate token.");
                     btn_create_token.setClickable(true);
@@ -573,7 +573,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                     edt_counter.setError(mContext.getString(R.string.empty_counter));
                 } else {
                     textView.setText(edt_counter.getText().toString());
-                    saveCounterNames(codeQR,edt_counter.getText().toString().trim());
+                    saveCounterNames(codeQR, edt_counter.getText().toString().trim());
                     mAlertDialog.dismiss();
                 }
             }
@@ -587,7 +587,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_create_token, null, false);
-        ImageView actionbarBack =  (ImageView) customDialogView.findViewById(R.id.actionbarBack);
+        ImageView actionbarBack = (ImageView) customDialogView.findViewById(R.id.actionbarBack);
         tv_create_token = (TextView) customDialogView.findViewById(R.id.tvtitle);
         iv_banner = (ImageView) customDialogView.findViewById(R.id.iv_banner);
         tvcount = (TextView) customDialogView.findViewById(R.id.tvcount);
@@ -622,9 +622,8 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         mAlertDialog.show();
     }
 
-    private void saveCounterNames(String codeQR, String name){
-            mHashmap.put(codeQR, name);
-            LaunchActivity.getLaunchActivity().setCounterName(mHashmap);
-
+    private void saveCounterNames(String codeQR, String name) {
+        mHashmap.put(codeQR, name);
+        LaunchActivity.getLaunchActivity().setCounterName(mHashmap);
     }
 }

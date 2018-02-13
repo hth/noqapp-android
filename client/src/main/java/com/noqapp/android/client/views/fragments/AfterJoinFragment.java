@@ -350,10 +350,10 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     }
 
     private void updateEstimatedTime() {
-        if(!TextUtils.isEmpty(jsonToken.getExpectedServiceBegin())){
-                tv_estimated_time.setText(String.format(getString(R.string.estimated_time), Formatter.getTimeAsString(Formatter.getDateFromString(jsonToken.getExpectedServiceBegin()))));
-                tv_estimated_time.setVisibility(View.VISIBLE);
-        }else {
+        if (!TextUtils.isEmpty(jsonToken.getExpectedServiceBegin())) {
+            tv_estimated_time.setText(String.format(getString(R.string.estimated_time), Formatter.getTimeAsString(Formatter.getDateFromString(jsonToken.getExpectedServiceBegin()))));
+            tv_estimated_time.setVisibility(View.VISIBLE);
+        } else {
             if (!TextUtils.isEmpty("" + jsonTokenAndQueue.getAverageServiceTime()) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
                 String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime());
                 if (null == output) {
