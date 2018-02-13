@@ -625,6 +625,5 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     private void saveCounterNames(String codeQR, String name) {
         mHashmap.put(codeQR, name);
         LaunchActivity.getLaunchActivity().setCounterName(mHashmap);
-
     }
 }
