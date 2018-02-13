@@ -512,7 +512,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                 case C:
                     tv_create_token.setText("Queue is closed. Cannot generate token.");
                     btn_create_token.setClickable(true);
-                    btn_create_token.setText(context.getString(R.string.closed_queue));
+                    btn_create_token.setText(context.getString(R.string.queue_closed));
                     break;
                 case D:
                 case N:
