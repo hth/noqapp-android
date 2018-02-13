@@ -510,9 +510,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         if (null != token && null != tv_create_token) {
             switch(token.getQueueStatus()) {
                 case C:
-                    tv_create_token.setText("The queue is closed now, can't generate token.");
+                    tv_create_token.setText("Queue is closed. Cannot generate token.");
                     btn_create_token.setClickable(true);
-                    btn_create_token.setText(context.getString(R.string.close_queue));
+                    btn_create_token.setText(context.getString(R.string.closed_queue));
                     break;
                 case D:
                 case N:
