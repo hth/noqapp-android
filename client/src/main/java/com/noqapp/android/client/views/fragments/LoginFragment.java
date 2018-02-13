@@ -310,19 +310,19 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
 
     @OnClick(R.id.btn_verify_phone)
     public void btnVerifyClick() {
-                edt_verification_code.setError(null);
-                String code = edt_verification_code.getText().toString();
-                if (TextUtils.isEmpty(code)) {
-                    edt_verification_code.setError("Cannot be empty.");
-                    return;
-                }
-                if(mVerificationId !=null) {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
-                    signInWithPhoneAuthCredential(credential);
-                }else{
-                    //Toast.makeText(getActivity(),"mVerificationId is null: ", Toast.LENGTH_LONG).show();
-                }
+        edt_verification_code.setError(null);
+        String code = edt_verification_code.getText().toString();
+        if (TextUtils.isEmpty(code)) {
+            edt_verification_code.setError("Cannot be empty.");
+            return;
+        }
+        if (mVerificationId != null) {
+            LaunchActivity.getLaunchActivity().progressDialog.show();
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
+            signInWithPhoneAuthCredential(credential);
+        } else {
+            //Toast.makeText(getActivity(),"mVerificationId is null: ", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void updateUI(int uiState) {
