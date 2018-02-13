@@ -126,14 +126,18 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == CAMERA_AND_STORAGE_PERMISSION_CODE) {
-            //both remaining permission allowed
-            if (grantResults.length == 2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-                scanBarcode();
-            } else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//one remaining permission allowed
-                scanBarcode();
-            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                //No permission allowed
-                //Do nothing
+            try {
+                //both remaining permission allowed
+                if (grantResults.length == 2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+                    scanBarcode();
+                } else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//one remaining permission allowed
+                    scanBarcode();
+                } else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    //No permission allowed
+                    //Do nothing
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
     }

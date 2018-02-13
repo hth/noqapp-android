@@ -78,7 +78,12 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         if (StringUtils.isBlank(strOutput)) {
             mHashmap.clear();
         } else {
-            mHashmap = gson.fromJson(strOutput, type);
+            try {
+                mHashmap = gson.fromJson(strOutput, type);
+            }catch (Exception e){
+                e.printStackTrace();
+                mHashmap = new HashMap<>();
+            }
         }
         if (mHashmap.size() == 0) {
             for (int i = 0; i < topics.size(); i++) {
