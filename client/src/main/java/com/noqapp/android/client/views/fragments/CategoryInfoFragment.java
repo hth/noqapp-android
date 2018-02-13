@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.app.Activity;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -13,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -203,31 +205,33 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
 
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
-        Log.d(TAG, "Queue=" + jsonQueue.toString());
-        tv_store_name.setText(jsonQueue.getBusinessName());
-        tv_queue_name.setText(jsonQueue.getDisplayName());
-        tv_queue_name.setVisibility(View.INVISIBLE);
-        tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
-        tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
-        tv_mobile.setVisibility(View.GONE);
-        if (jsonQueue.isDayClosed()) {
-            tv_hour_saved.setText(getString(R.string.store_closed));
-        } else {
-            tv_hour_saved.setText(
-                    getString(R.string.store_hour)
-                            + " "
-                            + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
-                            + " - "
-                            + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
+
+        Activity activity = getActivity();
+        if (activity != null && isAdded()) {
+            LaunchActivity.getLaunchActivity().dismissProgress();
+            Log.d(TAG, "Queue=" + jsonQueue.toString());
+            tv_store_name.setText(jsonQueue.getBusinessName());
+            tv_queue_name.setText(jsonQueue.getDisplayName());
+            tv_queue_name.setVisibility(View.INVISIBLE);
+            tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
+            tv_mobile.setVisibility(View.GONE);
+            if (jsonQueue.isDayClosed()) {
+                tv_hour_saved.setText(getString(R.string.store_closed));
+            } else {
+                tv_hour_saved.setText(
+                        getString(R.string.store_hour)
+                                + " "
+                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
+                                + " - "
+                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
+            }
+            tv_hour_saved.setVisibility(View.INVISIBLE);
+            ratingBar.setRating(rating);
+            // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
+            tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
+            codeQR = jsonQueue.getCodeQR();
         }
-        tv_hour_saved.setVisibility(View.INVISIBLE);
-        ratingBar.setRating(rating);
-        // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
-        tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
-
-        codeQR = jsonQueue.getCodeQR();
-
     }
 
     @Override

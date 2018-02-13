@@ -62,6 +62,13 @@ public class Formatter {
 
         return "";
     }
+    public static String getTimeAsString(Date date) {
+        if (null != date) {
+            return DateFormat.getTimeInstance().format(date);
+        }
+
+        return "";
+    }
 
     static LocalTime parseLocalTime(String rawTimestamp) {
         return inputFormatter.parseLocalTime(rawTimestamp);
