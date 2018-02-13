@@ -474,8 +474,17 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_REJOIN, true);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_AUTOJOIN_ELIGIBLE, false);
+        b.putBoolean("isCategoryData", false);
         JoinFragment jf = new JoinFragment();
         jf.setArguments(b);
+        // remove previous screens
+        List<Fragment> currentTabFragments = fragmentsStack.get(getCurrentSelectedTabTag());
+        if (null != currentTabFragments && currentTabFragments.size() > 1) {
+            int size = currentTabFragments.size();
+            // clear the stack till first screen of current tab
+            currentTabFragments.subList(1, size).clear();
+        }
+        //
         NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
     }
 
