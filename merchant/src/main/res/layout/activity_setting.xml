@@ -126,6 +126,67 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
                     android:orientation="vertical"
+                    android:padding="10dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:weightSum="1">
+
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4"
+                            android:padding="5dp"
+                            android:text="@string/text_delay"
+                            android:textColor="@color/color_total_val"
+                            android:textSize="18sp" />
+
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            android:id="@+id/tv_delay_in_minute"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".2"
+                            android:background="@drawable/square_white_bg_drawable"
+                            android:padding="5dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp" />
+
+
+                        <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+                            android:id="@+id/btn_update_delay"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4"
+                            android:background="@drawable/button_drawable_red"
+                            android:padding="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Update"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                card_view:cardCornerRadius="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
                     android:padding="15dp">
 
                     <LinearLayout
