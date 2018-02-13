@@ -225,7 +225,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                             // Update UI
                             updateUI(STATE_SIGN_IN_FAILED);
                         }
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
+                        LaunchActivity.getLaunchActivity().dismissProgress();
                     }
                 });
     }
