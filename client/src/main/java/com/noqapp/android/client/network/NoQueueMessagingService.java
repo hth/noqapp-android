@@ -6,10 +6,13 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -37,6 +40,7 @@ import static com.noqapp.android.client.utils.Constants.GoTo_Counter;
 import static com.noqapp.android.client.utils.Constants.LastNumber;
 import static com.noqapp.android.client.utils.Constants.QueueUserState;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
+import static com.noqapp.android.client.utils.Constants.colorCodes;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 
@@ -169,6 +173,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String title, String messageBody, String codeQR, boolean isReview) {
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         if (null != codeQR) {
             notificationIntent.putExtra(QRCODE, codeQR);
@@ -179,7 +184,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.launcher_icon)
+                .setColor(ContextCompat.getColor(getApplicationContext(),R.color.colorMobile))
+                .setSmallIcon(getNotificationIcon())
+                .setLargeIcon(bm)
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
@@ -190,12 +197,16 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String title, String messageBody) {
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
+
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.launcher_icon)
+                .setColor(ContextCompat.getColor(getApplicationContext(),R.color.colorMobile))
+                .setSmallIcon(getNotificationIcon())
+                .setLargeIcon(bm)
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
@@ -230,5 +241,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             }
         }
         return isInBackground;
+    }
+
+    private int getNotificationIcon() {
+        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+        return useWhiteIcon ? R.drawable.notification_icon : R.mipmap.launcher;
     }
 }

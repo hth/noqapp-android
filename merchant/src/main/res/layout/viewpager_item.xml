@@ -199,11 +199,13 @@
 
                     <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                         android:id="@+id/tv_serving_customer"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
-                        android:gravity="center_horizontal"
+                        android:layout_centerHorizontal="true"
+                        android:text=""
+                        android:gravity="center"
                         android:textColor="@color/colorAddress"
                         android:textSize="18sp" />
 

@@ -242,6 +242,13 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         tv_total_value.setText(String.valueOf(lq.getToken() - lq.getServingNumber()));
         tv_title.setText(lq.getDisplayName());
         tv_serving_customer.setText(Html.fromHtml("Serving: " + (StringUtils.isNotBlank(lq.getCustomerName()) ? "<b>" + lq.getCustomerName() + "</b> " : context.getString(R.string.name_unavailable))));
+
+        if(lq.hasClientVisitedThisStore())// check parameter to chow client is new or old
+        {
+            tv_serving_customer.setCompoundDrawablesWithIntrinsicBounds( R.drawable.new_client, 0, 0, 0);
+        }else{
+            tv_serving_customer.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0);
+        }
         btn_start.setText(context.getString(R.string.start));
 
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
@@ -540,6 +547,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         View customDialogView = inflater.inflate(R.layout.dialog_edit_counter, null, false);
         final EditText edt_counter = (EditText) customDialogView.findViewById(R.id.edt_counter);
         edt_counter.setText(textView.getText().toString().trim());
+        edt_counter.setSelection(textView.getText().toString().length());
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
