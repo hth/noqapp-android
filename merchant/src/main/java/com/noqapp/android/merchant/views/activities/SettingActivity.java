@@ -47,8 +47,8 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private ToggleButton toggleDayClosed, togglePreventJoin;
     private String codeQR;
     protected boolean isDialog = false;
-    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label,tv_delay_in_minute;
-    private Button btn_update_time,btn_update_delay;
+    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
+    private Button btn_update_time, btn_update_delay;
     private CheckBox cb_limit;
     private EditText edt_token_no;
 
@@ -193,7 +193,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
             tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
             tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getEndHour()));
-            tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()+queueSetting.getDelayedInMinutes()));
+            tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour() + queueSetting.getDelayedInMinutes()));
             if (queueSetting.getAvailableTokenCount() <= 0) {
                 cb_limit.setChecked(true);
                 tv_limited_label.setText("Un-Limited Tokens");
@@ -295,6 +295,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             mTimePicker.show();
         }
     }
+
     private class TextViewClickDelay implements View.OnClickListener {
         private TextView textView;
 
@@ -313,8 +314,8 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     if (selectedHour == 0 && selectedMinute == 0) {
                         Toast.makeText(SettingActivity.this, getString(R.string.error_time), Toast.LENGTH_LONG).show();
-                    }else {
-                        if ( Integer.parseInt(""+selectedHour+""+selectedMinute) <= Integer.parseInt(tv_store_start.getText().toString().replace(":",""))) {
+                    } else {
+                        if (Integer.parseInt("" + selectedHour + "" + selectedMinute) <= Integer.parseInt(tv_store_start.getText().toString().replace(":", ""))) {
                             Toast.makeText(SettingActivity.this, getString(R.string.error_delay_time), Toast.LENGTH_LONG).show();
                         } else {
                             textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
@@ -327,7 +328,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         }
     }
 
-    private void callUpdate(){
+    private void callUpdate() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             updateQueueSettings();

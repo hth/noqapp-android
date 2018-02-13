@@ -3,8 +3,8 @@ package com.noqapp.android.merchant.views.adapters;
 /**
  * Created by chandra on 2/6/18.
  */
+
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
