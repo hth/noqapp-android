@@ -173,7 +173,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String title, String messageBody, String codeQR, boolean isReview) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_launcher);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         if (null != codeQR) {
             notificationIntent.putExtra(QRCODE, codeQR);
@@ -197,7 +197,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String title, String messageBody) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_launcher);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
 
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -245,6 +245,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
-        return useWhiteIcon ? R.drawable.ic_stat_launcher : R.mipmap.launcher;
+        return useWhiteIcon ? R.drawable.notification_icon : R.mipmap.launcher;
     }
 }

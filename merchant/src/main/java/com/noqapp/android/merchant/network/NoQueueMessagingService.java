@@ -6,10 +6,13 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -78,6 +81,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String title, String messageBody, RemoteMessage remoteMessage) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
         if (null != remoteMessage) {
             notificationIntent.putExtra(Constants.MESSAGE, messageBody);
             notificationIntent.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.CodeQR));
@@ -93,7 +97,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.launcher)
+                .setColor(ContextCompat.getColor(getApplicationContext(),R.color.colorMobile))
+                .setSmallIcon(getNotificationIcon())
+                .setLargeIcon(bm)
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
@@ -130,5 +136,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             }
         }
         return isInBackground;
+    }
+    private int getNotificationIcon() {
+        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+        return useWhiteIcon ? R.drawable.notification_icon : R.mipmap.launcher;
     }
 }
