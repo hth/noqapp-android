@@ -80,6 +80,17 @@ public class MerchantListAdapter extends BaseAdapter {
             recordHolder.tv_inqueue.setTextColor(ContextCompat.getColor(context, R.color.color_list_subtitle));
             recordHolder.tv_label.setTextColor(ContextCompat.getColor(context, R.color.color_list_subtitle));
         }
+
+       if (jsonTopic.getRemaining() <= 0) {
+           recordHolder.tv_inqueue.setBackgroundResource(R.drawable.circle_bg_unselect_drawable);
+           if (position == MerchantListFragment.selected_pos)
+               recordHolder.tv_inqueue.setTextColor(Color.WHITE);
+           else
+               recordHolder.tv_inqueue.setTextColor(ContextCompat.getColor(context, R.color.color_list_subtitle));
+       } else {
+            recordHolder.tv_inqueue.setBackgroundResource(R.drawable.circle_bg_select_drawable);
+            recordHolder.tv_inqueue.setTextColor(Color.WHITE);
+        }
         return view;
     }
 
