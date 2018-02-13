@@ -225,6 +225,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                             // Update UI
                             updateUI(STATE_SIGN_IN_FAILED);
                         }
+                        LaunchActivity.getLaunchActivity().dismissProgress();
                     }
                 });
     }
@@ -316,6 +317,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                     return;
                 }
                 if(mVerificationId !=null) {
+                    LaunchActivity.getLaunchActivity().progressDialog.show();
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
                     signInWithPhoneAuthCredential(credential);
                 }else{
