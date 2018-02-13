@@ -136,7 +136,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
 
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
-                Toast.makeText(getActivity(),"verification code: "+mVerificationId, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(),"verification code: "+mVerificationId, Toast.LENGTH_LONG).show();
                 // Update UI
                 updateUI(STATE_CODE_SENT);
 
@@ -321,7 +321,7 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
                     signInWithPhoneAuthCredential(credential);
                 }else{
-                    Toast.makeText(getActivity(),"mVerificationId is null: ", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(),"mVerificationId is null: ", Toast.LENGTH_LONG).show();
                 }
     }
 
