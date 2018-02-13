@@ -47,8 +47,8 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private ToggleButton toggleDayClosed, togglePreventJoin;
     private String codeQR;
     protected boolean isDialog = false;
-    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label;
-    private Button btn_update_time;
+    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label,tv_delay_in_minute;
+    private Button btn_update_time,btn_update_delay;
     private CheckBox cb_limit;
     private EditText edt_token_no;
 
@@ -139,16 +139,21 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         tv_token_not_available.setOnClickListener(new TextViewClick(tv_token_not_available));
         tv_store_close.setOnClickListener(new TextViewClick(tv_store_close));
         tv_limited_label = (TextView) findViewById(R.id.tv_limited_label);
+        tv_delay_in_minute = (TextView) findViewById(R.id.tv_delay_in_minute);
+        tv_delay_in_minute.setOnClickListener(new TextViewClickDelay(tv_delay_in_minute));
         btn_update_time = (Button) findViewById(R.id.btn_update_time);
+        btn_update_delay = (Button) findViewById(R.id.btn_update_delay);
         btn_update_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.show();
-                    updateQueueSettings();
-                } else {
-                    ShowAlertInformation.showNetworkDialog(SettingActivity.this);
-                }
+                callUpdate();
+            }
+        });
+
+        btn_update_delay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callUpdate();
             }
         });
 
@@ -188,6 +193,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
             tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
             tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getEndHour()));
+            tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()+queueSetting.getDelayedInMinutes()));
             if (queueSetting.getAvailableTokenCount() <= 0) {
                 cb_limit.setChecked(true);
                 tv_limited_label.setText("Un-Limited Tokens");
@@ -197,7 +203,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 edt_token_no.setText(String.valueOf(queueSetting.getAvailableTokenCount()));
                 edt_token_no.setVisibility(View.VISIBLE);
                 tv_limited_label.setText("Limited Tokens");
-                View view = SettingActivity.this.getCurrentFocus();
                 if (edt_token_no != null) {
                     edt_token_no.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -257,7 +262,8 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         } else {
             queueSetting.setAvailableTokenCount(Integer.parseInt(edt_token_no.getText().toString()));
         }
-        //queueSetting.setDelayedInMinutes(//Chandra Add Button to set delay. Forgot about the button in settings page");
+        queueSetting.setDelayedInMinutes(Integer.parseInt(tv_delay_in_minute.getText().toString().replace(":", ""))
+        -Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
         QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
     }
 
@@ -288,4 +294,45 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             mTimePicker.show();
         }
     }
+    private class TextViewClickDelay implements View.OnClickListener {
+        private TextView textView;
+
+        public TextViewClickDelay(TextView textView) {
+            this.textView = textView;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Calendar mcurrentTime = Calendar.getInstance();
+            int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+            int minute = mcurrentTime.get(Calendar.MINUTE);
+            TimePickerDialog mTimePicker;
+            mTimePicker = new TimePickerDialog(SettingActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                    if (selectedHour == 0 && selectedMinute == 0) {
+                        Toast.makeText(SettingActivity.this, getString(R.string.error_time), Toast.LENGTH_LONG).show();
+                    }else {
+                        if ( Integer.parseInt(""+selectedHour+""+selectedMinute) <= Integer.parseInt(tv_store_start.getText().toString().replace(":",""))) {
+                            Toast.makeText(SettingActivity.this, getString(R.string.error_delay_time), Toast.LENGTH_LONG).show();
+                        } else {
+                            textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                        }
+                    }
+                }
+            }, hour, minute, true);//Yes 24 hour time
+            //mTimePicker.setTitle("Select Time");
+            mTimePicker.show();
+        }
+    }
+
+    private void callUpdate(){
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            updateQueueSettings();
+        } else {
+            ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+        }
+    }
+
 }
