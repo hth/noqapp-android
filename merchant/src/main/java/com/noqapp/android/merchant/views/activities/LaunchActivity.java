@@ -413,7 +413,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         }
         // logout
         sharedpreferences.edit().clear().apply();
-        MerchantListFragment.selected_pos = -1;
+        MerchantListFragment.selected_pos = 0;
         if (new AppUtils().isTablet(getApplicationContext())) {
             LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
             LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
