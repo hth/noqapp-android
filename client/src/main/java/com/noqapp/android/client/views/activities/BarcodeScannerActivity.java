@@ -7,7 +7,6 @@ import android.widget.Button;
 import com.google.zxing.client.android.CaptureActivity;
 import com.noqapp.android.client.R;
 
-
 public class BarcodeScannerActivity extends CaptureActivity {
 
     @Override
@@ -17,7 +16,6 @@ public class BarcodeScannerActivity extends CaptureActivity {
         Button btnClose = (Button) findViewById(R.id.btnClose);
 
         btnClose.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
@@ -25,7 +23,6 @@ public class BarcodeScannerActivity extends CaptureActivity {
             }
         });
     }
-
 
     @Override
     protected boolean showHelpOnFirstLaunch() {
