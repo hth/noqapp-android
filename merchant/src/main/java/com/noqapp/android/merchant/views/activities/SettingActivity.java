@@ -262,23 +262,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         queueSetting.setCodeQR(codeQR);
         queueSetting.setDayClosed(toggleDayClosed.isChecked());
         queueSetting.setPreventJoining(togglePreventJoin.isChecked());
-
-        if (StringUtils.isNotBlank(tv_token_available.getText().toString())) {
-            queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
-        }
-
-        if (StringUtils.isNotBlank(tv_store_start.getText().toString())) {
-            queueSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
-        }
-
-        if (StringUtils.isNotBlank(tv_token_not_available.getText().toString())) {
-            queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
-        }
-
-        if (StringUtils.isNotBlank(tv_store_close.getText().toString())) {
-            queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
-        }
-
+        queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
+        queueSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
+        queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
+        queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
         if (StringUtils.isBlank(edt_token_no.getText().toString())) {
             queueSetting.setAvailableTokenCount(0);
         } else {
@@ -287,14 +274,14 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
         if (arrivalTextChange) {
             DateTime start = DateTime.now().withTimeAtStartOfDay();
-            DateTime delay = DateTime.now().withTimeAtStartOfDay();
+            DateTime end = DateTime.now().withTimeAtStartOfDay();
 
-            int delayHour = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[0]);
-            int delayMinutes = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[1]);
-            int startHour = Integer.valueOf(tv_store_start.getText().toString().split(":")[0]);
-            int startMinutes = Integer.valueOf(tv_store_start.getText().toString().split(":")[1]);
+            int startHour = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[0]);
+            int startMinutes = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[1]);
+            int endHour = Integer.valueOf(tv_store_start.getText().toString().split(":")[0]);
+            int endMinutes = Integer.valueOf(tv_store_start.getText().toString().split(":")[1]);
 
-            Duration duration = new Duration(delay.plusHours(startHour).plusMinutes(startMinutes), start.plusHours(delayHour).plusMinutes(delayMinutes));
+            Duration duration = new Duration(end.plusHours(endHour).plusMinutes(endMinutes), start.plusHours(startHour).plusMinutes(startMinutes));
             queueSetting.setDelayedInMinutes((int) duration.getStandardMinutes());
         } else {
             queueSetting.setDelayedInMinutes(0);
