@@ -49,6 +49,8 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.HashMap;
 
+import io.fabric.sdk.android.Fabric;
+
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
 public class LaunchActivity extends AppCompatActivity implements AppBlacklistPresenter {
@@ -97,6 +99,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Answers());
         setContentView(R.layout.activity_main);
         launchActivity = this;
         DeviceModel.appBlacklistPresenter = this;

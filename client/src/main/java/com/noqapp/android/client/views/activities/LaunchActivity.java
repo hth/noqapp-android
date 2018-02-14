@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceModel;
 import com.noqapp.android.client.model.database.DatabaseHelper;
@@ -56,6 +57,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 
 import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
 
@@ -128,6 +130,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         JodaTimeAndroid.init(this);
+        Fabric.with(this, new Answers());
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
