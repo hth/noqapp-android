@@ -2,6 +2,8 @@ package com.noqapp.android.client.utils;
 
 import android.util.Log;
 
+import junit.framework.Assert;
+
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -72,6 +74,7 @@ public class Formatter {
     }
 
     public static LocalTime parseLocalTime(String rawTimestamp) {
+        Assert.assertTrue(rawTimestamp + " length has to be 4 characters", rawTimestamp.length() == 4);
         return inputFormatter.parseLocalTime(rawTimestamp);
     }
 
