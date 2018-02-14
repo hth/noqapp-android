@@ -39,6 +39,7 @@ import org.joda.time.Duration;
 import org.joda.time.LocalTime;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
 
@@ -198,8 +199,8 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
             tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getEndHour()));
 
-            LocalTime localTime = Formatter.parseLocalTime(String.valueOf(queueSetting.getStartHour()))
-                    .plusMinutes(queueSetting.getDelayedInMinutes());
+            LocalTime localTime = Formatter.parseLocalTime(String.format(Locale.US, "%04d", queueSetting.getStartHour()));
+            localTime = localTime.plusMinutes(queueSetting.getDelayedInMinutes());
             tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(localTime));
 
             if (queueSetting.getAvailableTokenCount() <= 0) {
@@ -335,13 +336,13 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                     if (selectedHour == 0 && selectedMinute == 0) {
                         Toast.makeText(SettingActivity.this, getString(R.string.error_time), Toast.LENGTH_LONG).show();
                     } else {
-                        if (Integer.parseInt("" + selectedHour + "" + selectedMinute) <= Integer.parseInt(tv_store_start.getText().toString().replace(":", ""))) {
+                        LocalTime startTime = Formatter.parseLocalTime(tv_store_start.getText().toString().replace(":", ""));
+                        LocalTime arrivalTime = Formatter.parseLocalTime(String.format("%02d%02d", selectedHour, selectedMinute));
+                        if (arrivalTime.isBefore(startTime)) {
                             Toast.makeText(SettingActivity.this, getString(R.string.error_delay_time), Toast.LENGTH_LONG).show();
                         } else {
                             textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
-                            if (!textView.getText().toString().equalsIgnoreCase(tv_store_start.getText().toString())) {
-                                arrivalTextChange = true;
-                            }
+                            arrivalTextChange = true;
                         }
                     }
                 }
