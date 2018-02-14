@@ -328,8 +328,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                             topics.set(i, jt);
                             adapter.notifyDataSetChanged();
                             temp_adapter = null;
-                            temp_adapter = new AutocompleteAdapter(getActivity(),
-                                    R.layout.auto_text_item, topics);
+                            temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
                             auto_complete_search.setAdapter(temp_adapter);
                             if (null != merchantViewPagerFragment) {
                                 merchantViewPagerFragment.updateListData(topics);
@@ -348,7 +347,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
 
     @Override
     public void acquireCustomer(JsonToken token) {
-
         try {
             if (null != token) {
                 JsonTopic jt = topics.get(MerchantViewPagerFragment.pagercurrrentpos);
@@ -360,8 +358,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                         merchantViewPagerFragment.updateListData(topics);
                     }
                     temp_adapter = null;
-                    temp_adapter = new AutocompleteAdapter(getActivity(),
-                            R.layout.auto_text_item, topics);
+                    temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
                     auto_complete_search.setAdapter(temp_adapter);
                     Toast.makeText(context, "Customer is acquired ", Toast.LENGTH_LONG).show();
                 }
@@ -383,8 +380,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                     topics.set(i, jt);
                     adapter.notifyDataSetChanged();
                     temp_adapter = null;
-                    temp_adapter = new AutocompleteAdapter(getActivity(),
-                            R.layout.auto_text_item, topics);
+                    temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
                     auto_complete_search.setAdapter(temp_adapter);
                     break;
                 }

@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.zxing.client.android.CaptureActivity;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.BarcodeScannerActivity;
@@ -21,7 +23,6 @@ import com.noqapp.android.client.views.activities.BarcodeScannerActivity;
 import org.apache.commons.lang3.StringUtils;
 
 public abstract class Scanner extends NoQueueBaseFragment implements CaptureActivity.BarcodeScannedResultCallback {
-
     private final String TAG = Scanner.class.getSimpleName();
     private final int CAMERA_AND_STORAGE_PERMISSION_CODE = 102;
     private final String[] CAMERA_AND_STORAGE_PERMISSION_PERMS = {
@@ -59,8 +60,11 @@ public abstract class Scanner extends NoQueueBaseFragment implements CaptureActi
                     String[] codeQR = rawData.split("/");
                     //endswith - q.htm or b.htm
                     // to define weather we need to show category screen or join screen
-                    boolean isCategoryData = rawData.endsWith("b.htm") ? true : false;
+                    boolean isCategoryData = rawData.endsWith("b.htm");
                     barcodeResult(codeQR[3], isCategoryData);
+
+                    Answers.getInstance().logCustom(new CustomEvent("Scan")
+                            .putCustomAttribute("codeQR", codeQR[3]));
                 } catch (Exception e) {
                     Log.e(TAG, "Failed parsing codeQR reason=" + e.getLocalizedMessage(), e);
                 }

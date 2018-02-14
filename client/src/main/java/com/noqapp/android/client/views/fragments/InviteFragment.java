@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.InviteEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -90,6 +92,10 @@ public class InviteFragment extends NoQueueBaseFragment {
                 sendIntent.putExtra(Intent.EXTRA_TEXT, selectedText);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
+
+                Answers.getInstance().logInvite(new InviteEvent()
+                        .putMethod("Invite")
+                        .putCustomAttribute("Code", selectedText));
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(getActivity(), getString(R.string.app_missing), Toast.LENGTH_SHORT).show();
             }
