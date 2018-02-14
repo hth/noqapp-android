@@ -36,6 +36,7 @@ import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import org.joda.time.LocalTime;
 
 import java.util.Calendar;
 
@@ -196,7 +197,11 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
             tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
             tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getEndHour()));
-            tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour() + queueSetting.getDelayedInMinutes()));
+
+            LocalTime localTime = Formatter.parseLocalTime(String.valueOf(queueSetting.getStartHour()))
+                    .plusMinutes(queueSetting.getDelayedInMinutes());
+            tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(localTime));
+
             if (queueSetting.getAvailableTokenCount() <= 0) {
                 cb_limit.setChecked(true);
                 tv_limited_label.setText("Un-Limited Tokens");

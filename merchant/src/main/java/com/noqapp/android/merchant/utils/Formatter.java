@@ -71,7 +71,7 @@ public class Formatter {
         return "";
     }
 
-    static LocalTime parseLocalTime(String rawTimestamp) {
+    public static LocalTime parseLocalTime(String rawTimestamp) {
         return inputFormatter.parseLocalTime(rawTimestamp);
     }
 
@@ -81,6 +81,10 @@ public class Formatter {
 
     private static String convertMilitaryTo24HourFormat(String rawTimestamp) {
         return outputFormatter24.print(parseLocalTime(rawTimestamp));
+    }
+
+    public static String convertMilitaryTo24HourFormat(LocalTime localTime) {
+        return outputFormatter24.print(localTime);
     }
 
     static String formatMilitaryTime(int rawTimestamp) {
