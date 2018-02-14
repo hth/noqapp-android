@@ -72,7 +72,7 @@ public class Formatter {
     }
 
     public static LocalTime parseLocalTime(String rawTimestamp) {
-        return inputFormatter.parseLocalTime(rawTimestamp);
+        return inputFormatter.parseLocalTime(String.format(Locale.US, "%04d", rawTimestamp));
     }
 
     private static String convertMilitaryTo12HourFormat(String rawTimestamp) {
