@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -160,6 +162,10 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
                     startPhoneNumberVerification(edt_phoneNo.getText().toString());
+
+                    Answers.getInstance().logLogin(new LoginEvent()
+                            .putMethod("Phone")
+                            .putSuccess(true));
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());
                 }

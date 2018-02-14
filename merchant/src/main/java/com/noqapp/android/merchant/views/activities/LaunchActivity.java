@@ -25,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.gson.Gson;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.DeviceModel;
@@ -118,7 +120,6 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             }
         });
 
-
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +144,6 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
                     fragmentTransaction.commit();
                 }
             } else {
-
                 if (new AppUtils().isTablet(getApplicationContext())) {
                     LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
                     LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
@@ -401,6 +401,8 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             public void onClick(View v) {
                 clearLoginData(false);
                 mAlertDialog.dismiss();
+                Answers.getInstance().logCustom(new CustomEvent("Logout")
+                        .putCustomAttribute("Success", "true"));
             }
         });
         mAlertDialog.show();

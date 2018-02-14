@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.LoginModel;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
@@ -60,6 +62,10 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         LoginModel.login(email.toLowerCase(), pwd);
+
+                        Answers.getInstance().logLogin(new LoginEvent()
+                                .putMethod("Email_Password_Login")
+                                .putSuccess(true));
                     } else {
                         ShowAlertInformation.showNetworkDialog(getActivity());
                     }

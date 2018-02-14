@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.SearchEvent;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 
@@ -19,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AutocompleteAdapter extends ArrayAdapter {
-
     private List<JsonTopic> dataList;
     private Context mContext;
     private int itemLayout;
@@ -41,21 +42,17 @@ public class AutocompleteAdapter extends ArrayAdapter {
 
     @Override
     public String getItem(int position) {
-
         return dataList.get(position).getDisplayName();
     }
 
     public String getQRCode(int position) {
-
         return dataList.get(position).getCodeQR();
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-
         if (view == null) {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(itemLayout, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
         }
 
         TextView strName = (TextView) view.findViewById(R.id.tv_name);
@@ -74,6 +71,9 @@ public class AutocompleteAdapter extends ArrayAdapter {
 
         @Override
         protected FilterResults performFiltering(CharSequence prefix) {
+            Answers.getInstance().logSearch(new SearchEvent()
+                    .putQuery(prefix.toString()));
+
             FilterResults results = new FilterResults();
             if (dataListAllItems == null) {
                 synchronized (lock) {
@@ -88,9 +88,7 @@ public class AutocompleteAdapter extends ArrayAdapter {
                 }
             } else {
                 final String searchStrLowerCase = prefix.toString().toLowerCase();
-
                 ArrayList<JsonTopic> matchValues = new ArrayList<>();
-
                 for (JsonTopic dataItem : dataListAllItems) {
                     if (dataItem.getDisplayName().toLowerCase().contains(searchStrLowerCase)) {
                         matchValues.add(dataItem);
@@ -111,6 +109,7 @@ public class AutocompleteAdapter extends ArrayAdapter {
             } else {
                 dataList = null;
             }
+
             if (results.count > 0) {
                 notifyDataSetChanged();
             } else {
