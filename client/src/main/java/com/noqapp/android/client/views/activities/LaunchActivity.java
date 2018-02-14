@@ -129,8 +129,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        JodaTimeAndroid.init(this);
         Fabric.with(this, new Answers());
+        JodaTimeAndroid.init(this);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
