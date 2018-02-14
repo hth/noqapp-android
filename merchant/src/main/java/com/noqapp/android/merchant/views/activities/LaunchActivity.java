@@ -45,6 +45,8 @@ import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.HashMap;
@@ -100,6 +102,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         }
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Answers());
+        JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
         launchActivity = this;
         DeviceModel.appBlacklistPresenter = this;
