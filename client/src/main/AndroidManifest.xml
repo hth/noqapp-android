@@ -36,10 +36,6 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <meta-data
-            android:name="com.facebook.accountkit.ApplicationName"
-            android:value="@string/app_name" />
-
         <activity
             android:name="com.noqapp.android.client.views.activities.SplashScreen"
             android:label="@string/title_activity_launch"
