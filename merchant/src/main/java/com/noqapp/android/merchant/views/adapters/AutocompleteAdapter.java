@@ -71,9 +71,6 @@ public class AutocompleteAdapter extends ArrayAdapter {
 
         @Override
         protected FilterResults performFiltering(CharSequence prefix) {
-            Answers.getInstance().logSearch(new SearchEvent()
-                    .putQuery(prefix.toString()));
-
             FilterResults results = new FilterResults();
             if (dataListAllItems == null) {
                 synchronized (lock) {
@@ -97,6 +94,9 @@ public class AutocompleteAdapter extends ArrayAdapter {
 
                 results.values = matchValues;
                 results.count = matchValues.size();
+
+                Answers.getInstance().logSearch(new SearchEvent()
+                        .putQuery(prefix.toString()));
             }
 
             return results;
