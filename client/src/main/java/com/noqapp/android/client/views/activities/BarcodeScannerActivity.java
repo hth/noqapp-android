@@ -15,13 +15,15 @@ public class BarcodeScannerActivity extends CaptureActivity {
         super.onCreate(bundle);
         Button btnClose = (Button) findViewById(R.id.btnClose);
 
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                finish();
-            }
-        });
+        if (null != btnClose) {
+            btnClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    finish();
+                }
+            });
+        }
     }
 
     @Override
