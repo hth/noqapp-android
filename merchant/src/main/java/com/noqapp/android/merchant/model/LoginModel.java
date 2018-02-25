@@ -38,9 +38,9 @@ public class LoginModel {
                         response.headers().get(APIConstant.Key.XR_MAIL),
                         response.headers().get(APIConstant.Key.XR_AUTH));
 
-                Log.d("Response", String.valueOf(response.body()));
-                Log.d("Response Mail", String.valueOf(response.headers().get(APIConstant.Key.XR_MAIL)));
-                Log.d("Response Auth", String.valueOf(response.headers().get(APIConstant.Key.XR_AUTH)));
+                Log.d("Login Response", String.valueOf(response.body()));
+                Log.d("Login Response Mail", String.valueOf(response.headers().get(APIConstant.Key.XR_MAIL)));
+                Log.d("Login Response Auth", String.valueOf(response.headers().get(APIConstant.Key.XR_AUTH)));
             }
 
             @Override
