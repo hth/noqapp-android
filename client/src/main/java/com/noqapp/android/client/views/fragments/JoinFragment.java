@@ -182,9 +182,9 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
             NoQueueBaseActivity.clearPreferences();
             ShowAlertInformation.showAuthenticErrorDialog(getActivity());
         }
+
         if (errorCode == Constants.INVALID_BAR_CODE) {
             ShowAlertInformation.showBarcodeErrorDialog(LaunchActivity.getLaunchActivity());
-
         }
     }
 
@@ -254,7 +254,8 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                 }
                 if (jsonQueue.getRemoteJoinCount() == 0) {
                     errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_available);
-                    isValid = false;
+                    //TODO(hth) Forced change to true when Remote Join fails.
+                    isValid = true;
                 }
                 if (isValid) {
                     Bundle b = new Bundle();
