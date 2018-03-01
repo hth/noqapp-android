@@ -168,7 +168,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         updateEstimatedTime();
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
-             /* Update the remote join count */
+        /* Update the remote join count */
         NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount() - 1);
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
