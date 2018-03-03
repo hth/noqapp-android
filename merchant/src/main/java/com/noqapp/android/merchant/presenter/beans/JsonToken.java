@@ -32,7 +32,7 @@ public class JsonToken implements Serializable {
     @JsonProperty("d")
     private String displayName;
 
-    @JsonProperty ("b")
+    @JsonProperty ("bt")
     private BusinessTypeEnum businessType;
 
     @JsonProperty("q")

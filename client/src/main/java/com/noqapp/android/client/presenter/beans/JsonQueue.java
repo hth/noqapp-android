@@ -48,7 +48,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("d")
     private String displayName;
 
-    @JsonProperty ("b")
+    @JsonProperty ("bt")
     private BusinessTypeEnum businessType;
 
     @JsonProperty("sa")
