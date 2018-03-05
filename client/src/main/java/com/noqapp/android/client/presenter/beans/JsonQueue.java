@@ -48,6 +48,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("d")
     private String displayName;
 
+    @JsonProperty ("bt")
+    private BusinessTypeEnum businessType;
+
     @JsonProperty("sa")
     private String storeAddress;
 
@@ -56,9 +59,6 @@ public class JsonQueue implements Serializable {
 
     @JsonProperty("p")
     private String storePhone;
-
-    @JsonProperty("bt")
-    private BusinessTypeEnum businessType;
 
     @JsonProperty("f")
     private int tokenAvailableFrom;
@@ -164,6 +164,15 @@ public class JsonQueue implements Serializable {
         this.displayName = displayName;
         return this;
     }
+    
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public JsonQueue setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
 
     public String getStoreAddress() {
         return storeAddress;
@@ -189,15 +198,6 @@ public class JsonQueue implements Serializable {
 
     public JsonQueue setStorePhone(String storePhone) {
         this.storePhone = storePhone;
-        return this;
-    }
-
-    public BusinessTypeEnum getBusinessType() {
-        return businessType;
-    }
-
-    public JsonQueue setBusinessType(BusinessTypeEnum businessType) {
-        this.businessType = businessType;
         return this;
     }
 
