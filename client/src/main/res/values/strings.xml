@@ -38,6 +38,7 @@
     <string name="empty_invite_code">Please login to have invite code to share.</string>
 
     <string name="empty_history">You don\'t have any \n recent history.</string>
+    <string name="empty_current_activity">You don\'t have any \n recent activity.</string>
     <string name="close">Close</string>
 
 

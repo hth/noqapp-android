@@ -5,5 +5,31 @@
     android:orientation="vertical">
 
 
-    <include layout="@layout/fragment_scan_queue" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center">
+
+
+        <ImageView
+            android:id="@+id/iv_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_separator"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="50dp"
+            android:background="@mipmap/no_history" />
+
+        <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_history"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:text="@string/empty_current_activity"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
 </LinearLayout>
