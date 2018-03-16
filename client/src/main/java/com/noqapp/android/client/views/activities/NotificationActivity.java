@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
@@ -33,6 +32,8 @@ public class NotificationActivity extends AppCompatActivity  {
     protected ImageView iv_notification;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
+    @BindView(R.id.tv_empty)
+    protected TextView tv_empty;
 
 
     @Override
@@ -48,8 +49,15 @@ public class NotificationActivity extends AppCompatActivity  {
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_notification));
-        List<NotificationBeans> NotificationsList = ReviewDB.getNotificationsList();
-        NotificationListAdapter adapter = new NotificationListAdapter(NotificationActivity.this, NotificationsList);
+        List<NotificationBeans> notificationsList = ReviewDB.getNotificationsList();
+        NotificationListAdapter adapter = new NotificationListAdapter(NotificationActivity.this, notificationsList);
         listview.setAdapter(adapter);
+        if(notificationsList.size()<=0){
+            listview.setVisibility(View.GONE);
+            tv_empty.setVisibility(View.VISIBLE);
+        }else{
+            listview.setVisibility(View.VISIBLE);
+            tv_empty.setVisibility(View.GONE);
+        }
     }
 }

@@ -182,5 +182,6 @@
 
 
     <string name="msg_default_status">Place NoQueue QR Code inside the viewfinder rectangle to scan it.</string>
+    <string name="notification_alert">Currently there are no Queue related notification available.</string>
 
 </resources>
