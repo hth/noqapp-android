@@ -64,7 +64,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"/>
         <activity
-            android:name="com.noqapp.android.client.views.activities.BarcodeScannerActivity"
+            android:name="com.noqapp.android.client.views.activities.BarcodeCaptureActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
@@ -75,6 +75,7 @@
             </intent-filter>
 
         </activity>
+
 
         <service android:name="com.noqapp.android.client.network.NoQueueFirebaseInstanceServices">
             <intent-filter>
