@@ -2,7 +2,6 @@ package com.noqapp.android.client.model.database.utils;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -87,7 +86,7 @@ public class ReviewDB {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseTable.Notification.KEY, key);
         cv.put(DatabaseTable.Notification.CODE_QR, codeQR);
-        cv.put(DatabaseTable.Notification.VALUE, value);
+        cv.put(DatabaseTable.Notification.BODY, value);
         cv.put(DatabaseTable.Notification.TITLE, title);
 
         try {
