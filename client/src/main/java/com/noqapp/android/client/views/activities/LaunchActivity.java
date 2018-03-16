@@ -108,6 +108,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
 
+    @BindView(R.id.iv_notification)
+    protected ImageView iv_notification;
+
     private long lastPress;
     private Toast backPressToast;
     private BroadcastReceiver broadcastReceiver;
@@ -144,6 +147,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         rl_list.setOnClickListener(this);
         rl_me.setOnClickListener(this);
         actionbarBack.setOnClickListener(this);
+        iv_notification.setOnClickListener(this);
         iv_home.setBackgroundResource(R.mipmap.home_active);
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
         initProgress();
@@ -252,6 +256,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 break;
             case R.id.actionbarBack:
                 onBackPressed();
+                break;
+            case R.id.iv_notification:
+                Intent in = new Intent(launchActivity, NotificationActivity.class);
+                startActivity(in);
                 break;
             default:
                 break;

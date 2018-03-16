@@ -67,6 +67,10 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
+
+    @BindView(R.id.iv_notification)
+    protected ImageView iv_notification;
+
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
 
@@ -156,7 +160,13 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         });
         seekbarWithIntervals.setProgress(Constants.DEFAULT_REVIEW_TIME_SAVED);
         tv_hr_saved.setText(getSeekbarLabel(2));
-
+        iv_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(ReviewActivity.this, NotificationActivity.class);
+                startActivity(in);
+            }
+        });
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override

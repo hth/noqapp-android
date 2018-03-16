@@ -11,6 +11,7 @@
     <string name="screen_qdetails">QDetails</string>
     <string name="screen_invite">Invite</string>
     <string name="screen_review">Review</string>
+    <string name="screen_notification">Notifications</string>
     <string name="screen_legal">Legal</string>
     <string name="screen_invite_details">Invite Details</string>
     <string name="screen_join">QJoin</string>

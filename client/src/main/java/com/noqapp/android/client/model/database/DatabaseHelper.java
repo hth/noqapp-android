@@ -11,7 +11,7 @@ import android.util.Log;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "noqueue.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private static DatabaseHelper dbInstance;
     private final String TAG = DatabaseHelper.class.getSimpleName();
     private SQLiteDatabase db = null;
@@ -60,63 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final Patch[] PATCHES = new Patch[]{
             new Patch(1, 2, "1.0.51") {
                 public void apply(SQLiteDatabase db) {
-                    CreateTable.createTableReceiptSplit(db);
-
-                    db.execSQL(
-                            "ALTER TABLE " +
-                                    DatabaseTable.Receipt.TABLE_NAME +
-                                    " RENAME TO " +
-                                    DatabaseTable.Receipt.TABLE_NAME + "_old;");
-
-                    CreateTable.createTableReceipts(db);
-                    db.execSQL(
-                            "INSERT INTO " + DatabaseTable.Receipt.TABLE_NAME +
-                                    "(" +
-                                    DatabaseTable.Receipt.BIZ_NAME + ", " +
-                                    DatabaseTable.Receipt.BIZ_STORE_ADDRESS + ", " +
-                                    DatabaseTable.Receipt.BIZ_STORE_PHONE + ", " +
-                                    DatabaseTable.Receipt.RECEIPT_DATE + ", " +
-                                    DatabaseTable.Receipt.EXPENSE_REPORT + ", " +
-                                    DatabaseTable.Receipt.BLOB_IDS + ", " +
-                                    DatabaseTable.Receipt.ID + ", " +
-                                    DatabaseTable.Receipt.NOTES + ", " +
-                                    DatabaseTable.Receipt.PTAX + ", " +
-                                    DatabaseTable.Receipt.RID + ", " +
-                                    DatabaseTable.Receipt.TAX + ", " +
-                                    DatabaseTable.Receipt.TOTAL + ", " +
-                                    //DatabaseTable.Receipt.BILL_STATUS + ", " +
-                                    DatabaseTable.Receipt.EXPENSE_TAG_ID + ", " +
-                                    DatabaseTable.Receipt.SPLIT_COUNT + ", " +
-                                    DatabaseTable.Receipt.SPLIT_TOTAL + ", " +
-                                    DatabaseTable.Receipt.SPLIT_TAX + ", " +
-                                    DatabaseTable.Receipt.ACTIVE + ", " +
-                                    DatabaseTable.Receipt.DELETED +
-                                    ") SELECT " +
-                                    DatabaseTable.Receipt.BIZ_NAME + ", " +
-                                    DatabaseTable.Receipt.BIZ_STORE_ADDRESS + ", " +
-                                    DatabaseTable.Receipt.BIZ_STORE_PHONE + ", " +
-                                    DatabaseTable.Receipt.RECEIPT_DATE + ", " +
-                                    DatabaseTable.Receipt.EXPENSE_REPORT + ", " +
-                                    DatabaseTable.Receipt.BLOB_IDS + ", " +
-                                    DatabaseTable.Receipt.ID + ", " +
-                                    DatabaseTable.Receipt.NOTES + ", " +
-                                    DatabaseTable.Receipt.PTAX + ", " +
-                                    DatabaseTable.Receipt.RID + ", " +
-                                    DatabaseTable.Receipt.TAX + ", " +
-                                    DatabaseTable.Receipt.TOTAL + ", " +
-                                    //DatabaseTable.Receipt.BILL_STATUS + ", " +
-                                    DatabaseTable.Receipt.EXPENSE_TAG_ID + ", " +
-                                    1 + ", " +
-                                    DatabaseTable.Receipt.TOTAL + ", " +
-                                    DatabaseTable.Receipt.TAX + ", " +
-                                    DatabaseTable.Receipt.ACTIVE + ", " +
-                                    DatabaseTable.Receipt.DELETED +
-                                    " FROM " + DatabaseTable.Receipt.TABLE_NAME + "_old;");
-                    db.execSQL("DROP TABLE " + DatabaseTable.Receipt.TABLE_NAME + "_old;");
-
-                    db.execSQL("UPDATE " + DatabaseTable.KeyValue.TABLE_NAME + " SET " +
-                            DatabaseTable.KeyValue.VALUE + " = '" + Boolean.toString(false) + "' " +
-                            "WHERE " + DatabaseTable.KeyValue.KEY + " = '" + KeyValueUtils.KEYS.WIFI_SYNC + "';");
+                    CreateTable.createTableReview(db);
                 }
             }
     };
