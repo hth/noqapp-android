@@ -42,7 +42,7 @@ import java.util.List;
  * Step 3- update the DB
  * Step 4- update the list
  **/
-public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter, TokenQueueViewInterface, ListQueueAdapter.ListOnClick {
+public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQueuePresenter, TokenQueueViewInterface, ListQueueAdapter.ListOnClick {
 
     private static final int MSG_CURRENT_QUEUE = 0;
     private static final int MSG_HISTORY_QUEUE = 1;
@@ -69,13 +69,6 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
         header = (ViewGroup) inflater.inflate(R.layout.listview_header, expListView, false);
-        Button btn_scn = (Button) header.findViewById(R.id.btnScanQRCode);
-        btn_scn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startScanningBarcode();
-            }
-        });
         footer = (ViewGroup) inflater.inflate(R.layout.listview_footer, expListView, false);
 
         return view;
@@ -123,23 +116,6 @@ public class ListQueueFragment extends Scanner implements TokenAndQueuePresenter
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
     }
 
-    @Override
-    protected void barcodeResult(String codeQR, boolean isCategory) {
-        Bundle b = new Bundle();
-        b.putString(KEY_CODE_QR, codeQR);
-        b.putBoolean(KEY_FROM_LIST, true);
-        b.putBoolean(KEY_IS_HISTORY, false);
-        if (isCategory) {
-            CategoryInfoFragment cif = new CategoryInfoFragment();
-            cif.setArguments(b);
-            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
-        } else {
-            JoinFragment jf = new JoinFragment();
-            b.putBoolean("isCategoryData", false);
-            jf.setArguments(b);
-            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
-        }
-    }
 
     @Override
     public void currentQueueResponse(List<JsonTokenAndQueue> tokenAndQueues) {

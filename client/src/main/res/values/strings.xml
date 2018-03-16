@@ -38,6 +38,7 @@
     <string name="empty_invite_code">Please login to have invite code to share.</string>
 
     <string name="empty_history">You don\'t have any \n recent history.</string>
+    <string name="empty_current_activity">You don\'t have any \n recent activity.</string>
     <string name="close">Close</string>
 
 
@@ -175,5 +176,10 @@
     <string name="playstore_update_title">Newer App Version Available</string>
     <string name="playstore_update_msg">New version of NoQApp is available on play store. Please update your app to latest version.\n</string>
 
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+
+
+    <string name="msg_default_status">Place NoQueue QR Code inside the viewfinder rectangle to scan it.</string>
 
 </resources>
