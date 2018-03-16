@@ -125,6 +125,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                              */
                             if (null == userStatus) {
                                 ReviewDB.insertNotification(ReviewDB.KEY_NOTIFY,remoteMessage.getData().get(CodeQR),body,title);
+                                sendNotification(title, body);
                             }else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                                 ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                                 sendNotification(title, body, codeQR, true);//pass codeQR to open review screen
