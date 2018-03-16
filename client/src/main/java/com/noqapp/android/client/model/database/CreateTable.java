@@ -71,7 +71,7 @@ public class CreateTable {
                 ");");
     }
 
-    public static void createTableReview(SQLiteDatabase db) {
+    private static void createTableReview(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableReview");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Review.TABLE_NAME + "("
                 + Review.KEY + " TEXT, "
@@ -82,8 +82,8 @@ public class CreateTable {
                 ");");
     }
 
-    private static void createTableNotificationReview(SQLiteDatabase db) {
-        Log.d(TAG, "executing createTableNotificationReview");
+    protected static void createTableNotification(SQLiteDatabase db) {
+        Log.d(TAG, "executing createTableNotification");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Notification.TABLE_NAME + "("
                 + Notification.KEY + " TEXT, "
                 + Notification.CODE_QR + " TEXT, "
@@ -98,6 +98,6 @@ public class CreateTable {
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);
         createTableReview(db);
-        createTableNotificationReview(db);
+        createTableNotification(db);
     }
 }
