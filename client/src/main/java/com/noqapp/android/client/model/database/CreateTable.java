@@ -6,13 +6,14 @@ import android.util.Log;
 import static com.noqapp.android.client.model.database.DatabaseTable.Review;
 import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueue;
 import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
+import static com.noqapp.android.client.model.database.DatabaseTable.Notification;
 
 /**
  * User: hitender
  * Date: 5/9/17 7:18 PM
  */
 
-class CreateTable {
+public class CreateTable {
     private static final String TAG = CreateTable.class.getSimpleName();
 
     private CreateTable() {
@@ -70,7 +71,7 @@ class CreateTable {
                 ");");
     }
 
-    private static void createTableReview(SQLiteDatabase db) {
+    public static void createTableReview(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableReview");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Review.TABLE_NAME + "("
                 + Review.KEY + " TEXT, "
@@ -81,9 +82,22 @@ class CreateTable {
                 ");");
     }
 
+    private static void createTableNotificationReview(SQLiteDatabase db) {
+        Log.d(TAG, "executing createTableNotificationReview");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + Notification.TABLE_NAME + "("
+                + Notification.KEY + " TEXT, "
+                + Notification.CODE_QR + " TEXT, "
+                + Notification.VALUE + " TEXT, "
+                + Notification.TITLE + " TEXT "+
+                //+ "PRIMARY KEY(`" + Notification.KEY + "`)" +
+
+                ");");
+    }
+
     static void createAllTable(SQLiteDatabase db) {
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);
         createTableReview(db);
+        createTableNotificationReview(db);
     }
 }

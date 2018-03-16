@@ -47,4 +47,15 @@ public class DatabaseTable {
         private Review() {
         }
     }
+
+    public static class Notification {
+        public static final String TABLE_NAME = "NOTIFICATION";
+        public static final String KEY = "key";
+        public static final String CODE_QR = "codeQR";
+        public static final String VALUE = "value";
+        public static final String TITLE = "title";
+
+        private Notification() {
+        }
+    }
 }

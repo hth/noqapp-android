@@ -11,8 +11,7 @@ import android.util.Log;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "noqueue.db";
-    private static final int DB_VERSION = 1;
-    private static final Patch[] PATCHES = new Patch[]{};
+    private static final int DB_VERSION = 2;
     private static DatabaseHelper dbInstance;
     private final String TAG = DatabaseHelper.class.getSimpleName();
     private SQLiteDatabase db = null;
@@ -57,5 +56,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             patch.apply(db);
         }
     }
+
+    private static final Patch[] PATCHES = new Patch[]{
+            new Patch(1, 2, "1.0.51") {
+                public void apply(SQLiteDatabase db) {
+                    CreateTable.createTableReview(db);
+                }
+            }
+    };
 
 }
