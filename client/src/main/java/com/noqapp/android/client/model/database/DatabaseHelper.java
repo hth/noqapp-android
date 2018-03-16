@@ -58,7 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private static final Patch[] PATCHES = new Patch[]{
-            new Patch(1, 2, "1.0.51") {
+            new Patch(1, 2, "1.0.33") {
                 public void apply(SQLiteDatabase db) {
                     CreateTable.createTableReview(db);
                 }
