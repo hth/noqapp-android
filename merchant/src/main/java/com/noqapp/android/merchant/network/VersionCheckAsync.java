@@ -42,6 +42,8 @@ public class VersionCheckAsync extends AsyncTask<String, String, String> {
                     .ownText();
         } catch (IOException e) {
             Log.e(TAG, "Background check reason=" + e.getLocalizedMessage(), e);
+        } catch (NullPointerException e) {
+            Log.e(TAG, "NPE during version check reason=" + e.getLocalizedMessage(), e);
         }
 
         return newVersion;
