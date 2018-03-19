@@ -565,7 +565,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public void appBlacklistResponse() {
         if (isOnline() && !BUILD_TYPE.equals("debug")) {
             //TODO(hth) This can be replaced with version received when looking for blacklist
-            new VersionCheckAsync(launchActivity).execute();
+            if (null != launchActivity) {
+                new VersionCheckAsync(launchActivity).execute();
+            }
         }
     }
 }
