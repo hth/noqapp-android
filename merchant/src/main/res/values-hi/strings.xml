@@ -76,4 +76,6 @@
     <string name="unlimited_token">UnLimited Tokens</string>
     <string name="error_time">Time has to be greater than 12:00 AM</string>
     <string name="error_access_denied">Not authorized to access. Please contact your admin for permission.</string>
+
+    <string name="notification_alert">You have zero notifications.</string>
 </resources>
