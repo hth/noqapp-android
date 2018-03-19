@@ -359,7 +359,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                         }
                     }
                 }
-            }, hour, minute, true);//Yes 24 hour time
+            }, hour, minute, false);//No 24 hour time
             //mTimePicker.setTitle("Select Time");
             mTimePicker.show();
         }

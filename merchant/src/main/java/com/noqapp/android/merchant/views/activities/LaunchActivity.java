@@ -30,6 +30,8 @@ import com.crashlytics.android.answers.CustomEvent;
 import com.google.gson.Gson;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.DeviceModel;
+import com.noqapp.android.merchant.model.database.DatabaseHelper;
+import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.network.VersionCheckAsync;
@@ -56,7 +58,7 @@ import io.fabric.sdk.android.Fabric;
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
 public class LaunchActivity extends AppCompatActivity implements AppBlacklistPresenter {
-
+    public static DatabaseHelper dbHandler;
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
     public static final String MyPREFERENCES = "AppPref";
@@ -84,6 +86,8 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     private BroadcastReceiver broadcastReceiver;
     private ImageView actionbarBack;
     private TextView tv_name;
+    private FrameLayout fl_notification;
+    private TextView tv_badge;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -101,6 +105,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         super.onCreate(savedInstanceState);
+        dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         Fabric.with(this, new Answers());
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
@@ -114,6 +119,16 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tv_name = (TextView) findViewById(R.id.tv_name);
+        tv_badge = (TextView) findViewById(R.id.tv_badge);
+        fl_notification =(FrameLayout) findViewById(R.id.fl_notification);
+        fl_notification.setVisibility(View.VISIBLE);
+        fl_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(launchActivity, NotificationActivity.class);
+                startActivity(in);
+            }
+        });
         if (new AppUtils().isTablet(this)) {
             list_fragment = (FrameLayout) findViewById(R.id.frame_layout);
             list_detail_fragment = (FrameLayout) findViewById(R.id.list_detail_fragment);
@@ -328,6 +343,15 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     protected void onResume() {
         super.onResume();
 
+        int notify_count = NotificationDB.getNotificationCount();
+        tv_badge.setText(String.valueOf(notify_count));
+        if(notify_count>0){
+            tv_badge.setVisibility(View.VISIBLE);
+        }else{
+            tv_badge.setVisibility(View.INVISIBLE);
+        }
+
+
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
@@ -368,6 +392,9 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
                             + "\n" + "lastno : " + lastno
                             + "\n" + "payload : " + payload
             );
+
+
+
 
             if (fragmentCommunicator != null) {
                 fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);

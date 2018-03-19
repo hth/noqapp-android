@@ -31,12 +31,51 @@
         android:layout_gravity="right|center_vertical"
         android:orientation="horizontal">
 
+
+
+
+
+        <FrameLayout
+            android:id="@+id/fl_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:clipToPadding="false"
+            android:visibility="invisible"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/iv_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_notification"
+                android:padding="12dp"
+                android:layout_margin="5dp"/>
+
+            <TextView
+                android:id="@+id/tv_badge"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="bottom|right"
+                android:background="@drawable/badge_bg"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+
+        </FrameLayout>
+
+
         <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text=""
+            android:layout_gravity="right|center_vertical"
             android:maxLength="2"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
