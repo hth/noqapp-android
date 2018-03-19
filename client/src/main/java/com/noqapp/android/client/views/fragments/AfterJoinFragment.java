@@ -179,15 +179,15 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
         if (null != response) {
             if (response.getResponse() == 1) {
                 Toast.makeText(getActivity(), getString(R.string.cancel_queue), Toast.LENGTH_LONG).show();
-                NoQueueMessagingService.unSubscribeTopics(topic);
-                TokenAndQueueDB.deleteTokenQueue(codeQR);
-                navigateToList();
             } else {
                 Toast.makeText(getActivity(), getString(R.string.fail_to_cancel), Toast.LENGTH_LONG).show();
             }
         } else {
             //Show error
         }
+        NoQueueMessagingService.unSubscribeTopics(topic);
+        TokenAndQueueDB.deleteTokenQueue(codeQR);
+        navigateToList();
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 

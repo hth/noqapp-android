@@ -9,18 +9,18 @@ public class NotificationBeans {
     private String title;
     private String msg;
     private String status;
-    private String notificationTime;
+    private String notificationCreate;
 
 
     public NotificationBeans() {
 
     }
 
-    public NotificationBeans(String title, String msg, String status, String notificationTime) {
+    public NotificationBeans(String title, String msg, String status, String notificationCreate) {
         this.title = title;
         this.msg = msg;
         this.status = status;
-        this.notificationTime =notificationTime;
+        this.notificationCreate =notificationCreate;
     }
 
     public String getTitle() {
@@ -50,12 +50,12 @@ public class NotificationBeans {
         return this;
     }
 
-    public String getNotificationTime() {
-        return notificationTime;
+    public String getNotificationCreate() {
+        return notificationCreate;
     }
 
-    public NotificationBeans setNotificationTime(String notificationTime) {
-        this.notificationTime = notificationTime;
+    public NotificationBeans setNotificationCreate(String notificationCreate) {
+        this.notificationCreate = notificationCreate;
         return this;
     }
 
@@ -65,7 +65,7 @@ public class NotificationBeans {
                 "title='" + title + '\'' +
                 ", msg='" + msg + '\'' +
                 ", status='" + status + '\'' +
-                ", notificationTime='" + notificationTime + '\'' +
+                ", notificationCreate='" + notificationCreate + '\'' +
                 '}';
     }
 }

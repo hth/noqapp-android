@@ -29,7 +29,7 @@ public class CreateTable {
                 + Notification.TITLE + " TEXT, "
                 + Notification.STATUS + " TEXT, "
                 + Notification.SEQUENCE + " INTEGER PRIMARY KEY   AUTOINCREMENT, "
-                + Notification.TIMING + " TEXT "+
+                + Notification.CREATE + " TEXT "+
                 //+ "PRIMARY KEY(`" + Notification.KEY + "`)" +
 
                 ");");
