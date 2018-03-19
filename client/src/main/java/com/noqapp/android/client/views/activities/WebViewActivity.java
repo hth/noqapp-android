@@ -17,10 +17,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.utils.Constants;
 
 import butterknife.BindView;
@@ -32,8 +34,10 @@ public class WebViewActivity extends AppCompatActivity {
     protected ImageView actionbarBack;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
-    @BindView(R.id.iv_notification)
-    protected ImageView iv_notification;
+    @BindView(R.id.fl_notification)
+    protected FrameLayout fl_notification;
+    @BindView(R.id.tv_badge)
+    protected TextView tv_badge;
     @BindView(R.id.webView)
     protected WebView webView;
 
@@ -103,7 +107,7 @@ public class WebViewActivity extends AppCompatActivity {
                 finish();
             }
         });
-        iv_notification.setOnClickListener(new View.OnClickListener() {
+        fl_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(WebViewActivity.this, NotificationActivity.class);
@@ -113,6 +117,19 @@ public class WebViewActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int notify_count = NotificationDB.getNotificationCount();
+        tv_badge.setText(String.valueOf(notify_count));
+        if(notify_count>0){
+            tv_badge.setVisibility(View.VISIBLE);
+        }else{
+            tv_badge.setVisibility(View.INVISIBLE);
+        }
+
+    }
 
     private class myWebClient extends WebViewClient {
 

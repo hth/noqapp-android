@@ -8,12 +8,13 @@ package com.noqapp.android.client.views.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.presenter.beans.NotificationBeans;
 import com.noqapp.android.client.views.adapters.NotificationListAdapter;
 
@@ -28,8 +29,8 @@ public class NotificationActivity extends AppCompatActivity  {
     protected ListView listview;
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
-    @BindView(R.id.iv_notification)
-    protected ImageView iv_notification;
+    @BindView(R.id.fl_notification)
+    protected FrameLayout fl_notification;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
     @BindView(R.id.tv_empty)
@@ -41,7 +42,7 @@ public class NotificationActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         ButterKnife.bind(this);
-        iv_notification.setVisibility(View.INVISIBLE);
+        fl_notification.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +50,7 @@ public class NotificationActivity extends AppCompatActivity  {
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_notification));
-        List<NotificationBeans> notificationsList = ReviewDB.getNotificationsList();
+        List<NotificationBeans> notificationsList = NotificationDB.getNotificationsList();
         NotificationListAdapter adapter = new NotificationListAdapter(NotificationActivity.this, notificationsList);
         listview.setAdapter(adapter);
         if(notificationsList.size()<=0){
@@ -59,5 +60,14 @@ public class NotificationActivity extends AppCompatActivity  {
             listview.setVisibility(View.VISIBLE);
             tv_empty.setVisibility(View.GONE);
         }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // mark all the entry as read
+        NotificationDB.updateNotification();
+
     }
 }

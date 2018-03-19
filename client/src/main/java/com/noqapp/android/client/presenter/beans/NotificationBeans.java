@@ -8,15 +8,17 @@ public class NotificationBeans {
 
     private String title;
     private String msg;
+    private String status;
 
 
     public NotificationBeans() {
 
     }
 
-    public NotificationBeans(String title, String msg) {
+    public NotificationBeans(String title, String msg, String status) {
         this.title = title;
         this.msg = msg;
+        this.status = status;
     }
 
     public String getTitle() {
@@ -37,11 +39,21 @@ public class NotificationBeans {
         return this;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public NotificationBeans setStatus(String status) {
+        this.status = status;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "NotificationBeans{" +
                 "title='" + title + '\'' +
                 ", msg='" + msg + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

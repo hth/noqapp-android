@@ -88,7 +88,9 @@ public class CreateTable {
                 + Notification.KEY + " TEXT, "
                 + Notification.CODE_QR + " TEXT, "
                 + Notification.BODY + " TEXT, "
-                + Notification.TITLE + " TEXT "+
+                + Notification.TITLE + " TEXT, "
+                + Notification.STATUS + " TEXT, "
+                + Notification.SEQUENCE + " INTEGER PRIMARY KEY   AUTOINCREMENT "+
                 //+ "PRIMARY KEY(`" + Notification.KEY + "`)" +
 
                 ");");

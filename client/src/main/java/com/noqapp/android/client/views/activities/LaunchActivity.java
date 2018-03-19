@@ -25,6 +25,7 @@ import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceModel;
 import com.noqapp.android.client.model.database.DatabaseHelper;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
@@ -89,6 +90,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     @BindView(R.id.tv_me)
     protected TextView tv_me;
+
+    @BindView(R.id.tv_badge)
+    protected TextView tv_badge;
 
     @BindView(R.id.iv_home)
     protected ImageView iv_home;
@@ -349,6 +353,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
+        int notify_count = NotificationDB.getNotificationCount();
+        tv_badge.setText(String.valueOf(notify_count));
+        if(notify_count>0){
+            tv_badge.setVisibility(View.VISIBLE);
+        }else{
+            tv_badge.setVisibility(View.INVISIBLE);
+        }
+
 
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
