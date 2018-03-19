@@ -5,7 +5,6 @@ import android.util.Log;
 
 import static com.noqapp.android.merchant.model.database.DatabaseTable.Notification;
 
-
 /**
  * User: hitender
  * Date: 5/9/17 7:18 PM
@@ -17,9 +16,6 @@ public class CreateTable {
     private CreateTable() {
     }
 
-
-
-
     static void createTableNotification(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableNotification");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Notification.TABLE_NAME + "("
@@ -28,8 +24,8 @@ public class CreateTable {
                 + Notification.BODY + " TEXT, "
                 + Notification.TITLE + " TEXT, "
                 + Notification.STATUS + " TEXT, "
-                + Notification.SEQUENCE + " INTEGER PRIMARY KEY   AUTOINCREMENT, "
-                + Notification.CREATE + " TEXT "+
+                + Notification.SEQUENCE + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + Notification.CREATE_DATE + " TEXT "+
                 //+ "PRIMARY KEY(`" + Notification.KEY + "`)" +
 
                 ");");

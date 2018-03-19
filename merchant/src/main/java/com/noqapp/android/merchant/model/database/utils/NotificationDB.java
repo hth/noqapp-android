@@ -42,7 +42,7 @@ public class NotificationDB {
         DateFormat dateFormat = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault());
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         String dateString = dateFormat.format(new Date());
-        cv.put(DatabaseTable.Notification.CREATE, dateString);
+        cv.put(DatabaseTable.Notification.CREATE_DATE, dateString);
         try {
             long successCount = dbHandler.getWritableDb().insertWithOnConflict(
                     DatabaseTable.Notification.TABLE_NAME,
