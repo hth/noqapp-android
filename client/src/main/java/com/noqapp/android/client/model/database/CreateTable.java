@@ -90,7 +90,8 @@ public class CreateTable {
                 + Notification.BODY + " TEXT, "
                 + Notification.TITLE + " TEXT, "
                 + Notification.STATUS + " TEXT, "
-                + Notification.SEQUENCE + " INTEGER PRIMARY KEY   AUTOINCREMENT "+
+                + Notification.SEQUENCE + " INTEGER PRIMARY KEY   AUTOINCREMENT, "
+                + Notification.TIMING + " TEXT "+
                 //+ "PRIMARY KEY(`" + Notification.KEY + "`)" +
 
                 ");");

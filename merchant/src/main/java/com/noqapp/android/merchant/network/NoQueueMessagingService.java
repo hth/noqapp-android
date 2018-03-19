@@ -19,6 +19,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -50,7 +51,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             Log.d(TAG, "Message data payload: CodeQR " + remoteMessage.getData().get(Constants.CodeQR));
             Log.d(TAG, "Message data payload: Firebase_Type " + remoteMessage.getData().get(Constants.Firebase_Type));
-            FirebaseMessageTypeEnum firebaseMessageTypeEnum = FirebaseMessageTypeEnum.valueOf(remoteMessage.getData().get(Constants.Firebase_Type));
 
             Log.d(TAG, "Message data payload: QueueStatus " + remoteMessage.getData().get(Constants.QueueStatus));
             Log.d(TAG, "Message data payload: CurrentlyServing " + remoteMessage.getData().get(Constants.CurrentlyServing));
@@ -59,6 +59,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");
             clearNotifications(this);
+
+            // add notification to DB
+
+            if (remoteMessage.getData().get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY,remoteMessage.getData().get(Constants.CodeQR),body,title);
+            }
+
+
             if (!isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);

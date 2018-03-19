@@ -1,4 +1,4 @@
-package com.noqapp.android.client.presenter.beans;
+package com.noqapp.android.merchant.presenter.beans;
 
 /**
  * Created by chandra on 3/16/18.
