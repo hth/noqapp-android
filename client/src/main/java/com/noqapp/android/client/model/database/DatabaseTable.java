@@ -56,7 +56,7 @@ public class DatabaseTable {
         public static final String TITLE = "title";
         public static final String STATUS = "status";
         public static final String SEQUENCE = "sequence";
-        public static final String TIMING = "timing";
+        public static final String CREATE = "create";
 
         private Notification() {
         }
