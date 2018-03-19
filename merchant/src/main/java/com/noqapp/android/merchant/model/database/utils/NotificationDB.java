@@ -8,9 +8,15 @@ import android.util.Log;
 
 import com.noqapp.android.merchant.model.database.DatabaseTable;
 import com.noqapp.android.merchant.presenter.beans.NotificationBeans;
+import com.noqapp.android.merchant.utils.Constants;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import static com.noqapp.android.merchant.views.activities.LaunchActivity.dbHandler;
 
@@ -32,7 +38,11 @@ public class NotificationDB {
         cv.put(DatabaseTable.Notification.BODY, value);
         cv.put(DatabaseTable.Notification.TITLE, title);
         cv.put(DatabaseTable.Notification.STATUS, KEY_UNREAD); // added default
-
+        // Returns the current date with the same format as Javascript's new Date().toJSON(), ISO 8601
+        DateFormat dateFormat = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault());
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String dateString = dateFormat.format(new Date());
+        cv.put(DatabaseTable.Notification.CREATE, dateString);
         try {
             long successCount = dbHandler.getWritableDb().insertWithOnConflict(
                     DatabaseTable.Notification.TABLE_NAME,
@@ -60,6 +70,7 @@ public class NotificationDB {
                         notificationBeans.setMsg(cursor.getString(2));
                         notificationBeans.setTitle(cursor.getString(3));
                         notificationBeans.setStatus(cursor.getString(4));
+                        notificationBeans.setNotificationCreate(cursor.getString(6));
                         notificationBeansList.add(notificationBeans);
                     }
                 } finally {

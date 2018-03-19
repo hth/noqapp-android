@@ -42,4 +42,28 @@ public class GetTimeAgoUtils {
             return diff / DAY_MILLIS + " days ago";
         }
     }
+
+    public static String getTimeInAgo(long time) {
+
+        if (time == 0) {
+            return null;
+        }
+        // TODO: localize
+        final long diff = time;
+        if (diff < MINUTE_MILLIS) {
+            return  diff / 1000 + " seconds ago";
+        } else if (diff < 2 * MINUTE_MILLIS) {
+            return "a minute ago";
+        } else if (diff < 50 * MINUTE_MILLIS) {
+            return diff / MINUTE_MILLIS + " minutes ago";
+        } else if (diff < 90 * MINUTE_MILLIS) {
+            return "an hour ago";
+        } else if (diff < 24 * HOUR_MILLIS) {
+            return  diff / HOUR_MILLIS + " hours ago";
+        } else if (diff < 48 * HOUR_MILLIS) {
+            return "Tomorrow";
+        } else {
+            return  diff / DAY_MILLIS + " days ago";
+        }
+    }
 }

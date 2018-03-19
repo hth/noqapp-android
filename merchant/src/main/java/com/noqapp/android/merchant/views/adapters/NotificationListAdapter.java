@@ -15,8 +15,13 @@ import android.widget.TextView;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.presenter.beans.NotificationBeans;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class NotificationListAdapter extends BaseAdapter {
     private static final String TAG = NotificationListAdapter.class.getSimpleName();
@@ -48,6 +53,7 @@ public class NotificationListAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.listitem_notification, null);
             recordHolder.tv_msg = (TextView) view.findViewById(R.id.tv_msg);
             recordHolder.tv_title = (TextView) view.findViewById(R.id.tv_title);
+            recordHolder.tv_create = (TextView) view.findViewById(R.id.tv_create);
             recordHolder.cardview = (CardView) view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
@@ -55,6 +61,19 @@ public class NotificationListAdapter extends BaseAdapter {
         }
         recordHolder.tv_title.setText(notificationsList.get(position).getTitle());
         recordHolder.tv_msg.setText(notificationsList.get(position).getMsg());
+
+
+        try {
+            String dateString = notificationsList.get(position).getNotificationCreate();
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault());
+            Date date = sdf.parse(dateString);
+            long startDate = new Date().getTime() - date.getTime();
+            recordHolder.tv_create.setText(GetTimeAgoUtils.getTimeInAgo(startDate));
+        } catch (Exception e) {
+            e.printStackTrace();
+            recordHolder.tv_create.setText("");
+        }
+
         if(notificationsList.get(position).getStatus().equals(NotificationDB.KEY_UNREAD)){
             recordHolder.tv_title.setTypeface(null, Typeface.BOLD);
             recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
@@ -68,6 +87,7 @@ public class NotificationListAdapter extends BaseAdapter {
     static class RecordHolder {
         TextView tv_title;
         TextView tv_msg;
+        TextView tv_create;
         CardView cardview;
 
         RecordHolder() {
