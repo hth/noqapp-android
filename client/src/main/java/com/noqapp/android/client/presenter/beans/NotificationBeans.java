@@ -9,16 +9,18 @@ public class NotificationBeans {
     private String title;
     private String msg;
     private String status;
+    private String notificationTime;
 
 
     public NotificationBeans() {
 
     }
 
-    public NotificationBeans(String title, String msg, String status) {
+    public NotificationBeans(String title, String msg, String status, String notificationTime) {
         this.title = title;
         this.msg = msg;
         this.status = status;
+        this.notificationTime =notificationTime;
     }
 
     public String getTitle() {
@@ -48,12 +50,22 @@ public class NotificationBeans {
         return this;
     }
 
+    public String getNotificationTime() {
+        return notificationTime;
+    }
+
+    public NotificationBeans setNotificationTime(String notificationTime) {
+        this.notificationTime = notificationTime;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "NotificationBeans{" +
                 "title='" + title + '\'' +
                 ", msg='" + msg + '\'' +
                 ", status='" + status + '\'' +
+                ", notificationTime='" + notificationTime + '\'' +
                 '}';
     }
 }
