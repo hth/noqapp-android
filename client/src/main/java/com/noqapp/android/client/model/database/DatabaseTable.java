@@ -52,8 +52,10 @@ public class DatabaseTable {
         public static final String TABLE_NAME = "NOTIFICATION";
         public static final String KEY = "key";
         public static final String CODE_QR = "codeQR";
-        public static final String VALUE = "value";
+        public static final String BODY = "body";
         public static final String TITLE = "title";
+        public static final String STATUS = "status";
+        public static final String SEQUENCE = "sequence";
 
         private Notification() {
         }

@@ -1,6 +1,9 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.presenter.beans.NotificationBeans;
 
 import java.util.List;
@@ -50,6 +54,13 @@ public class NotificationListAdapter extends BaseAdapter {
         }
         recordHolder.tv_title.setText(notificationsList.get(position).getTitle());
         recordHolder.tv_msg.setText(notificationsList.get(position).getMsg());
+        if(notificationsList.get(position).getStatus().equals(NotificationDB.KEY_UNREAD)){
+            recordHolder.tv_title.setTypeface(null, Typeface.BOLD);
+            recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
+        }else{
+            recordHolder.tv_title.setTypeface(null, Typeface.NORMAL);
+            recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_me_bg));
+        }
         return view;
     }
 

@@ -82,13 +82,15 @@ public class CreateTable {
                 ");");
     }
 
-    protected static void createTableNotification(SQLiteDatabase db) {
+    static void createTableNotification(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableNotification");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Notification.TABLE_NAME + "("
                 + Notification.KEY + " TEXT, "
                 + Notification.CODE_QR + " TEXT, "
-                + Notification.VALUE + " TEXT, "
-                + Notification.TITLE + " TEXT "+
+                + Notification.BODY + " TEXT, "
+                + Notification.TITLE + " TEXT, "
+                + Notification.STATUS + " TEXT, "
+                + Notification.SEQUENCE + " INTEGER PRIMARY KEY   AUTOINCREMENT "+
                 //+ "PRIMARY KEY(`" + Notification.KEY + "`)" +
 
                 ");");

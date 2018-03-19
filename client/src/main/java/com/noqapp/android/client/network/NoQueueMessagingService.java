@@ -20,6 +20,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
@@ -40,7 +41,6 @@ import static com.noqapp.android.client.utils.Constants.GoTo_Counter;
 import static com.noqapp.android.client.utils.Constants.LastNumber;
 import static com.noqapp.android.client.utils.Constants.QueueUserState;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
-import static com.noqapp.android.client.utils.Constants.colorCodes;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 
@@ -98,7 +98,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         // add notification to DB
                         String userStatus = remoteMessage.getData().get(QueueUserState);
                         if (null == userStatus) {
-                            ReviewDB.insertNotification(ReviewDB.KEY_NOTIFY,remoteMessage.getData().get(CodeQR),body,title);
+                            NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY,remoteMessage.getData().get(CodeQR),body,title);
                         }
                     }
                     LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
@@ -124,7 +124,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                              * resume if there is any record in Review DB for review key
                              */
                             if (null == userStatus) {
-                                ReviewDB.insertNotification(ReviewDB.KEY_NOTIFY,remoteMessage.getData().get(CodeQR),body,title);
+                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY,remoteMessage.getData().get(CodeQR),body,title);
+                                sendNotification(title, body);
                             }else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                                 ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                                 sendNotification(title, body, codeQR, true);//pass codeQR to open review screen
@@ -151,7 +152,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             // add notification to DB
                             String userStatus = remoteMessage.getData().get(QueueUserState);
                             if (null == userStatus) {
-                                ReviewDB.insertNotification(ReviewDB.KEY_NOTIFY,remoteMessage.getData().get(CodeQR),body,title);
+                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY,remoteMessage.getData().get(CodeQR),body,title);
                             }
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {

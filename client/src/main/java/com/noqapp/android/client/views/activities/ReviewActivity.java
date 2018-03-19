@@ -14,6 +14,7 @@ import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewModel;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.ReviewPresenter;
@@ -68,8 +70,11 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
 
-    @BindView(R.id.iv_notification)
-    protected ImageView iv_notification;
+    @BindView(R.id.fl_notification)
+    protected FrameLayout fl_notification;
+
+    @BindView(R.id.tv_badge)
+    protected TextView tv_badge;
 
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
@@ -160,7 +165,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         });
         seekbarWithIntervals.setProgress(Constants.DEFAULT_REVIEW_TIME_SAVED);
         tv_hr_saved.setText(getSeekbarLabel(2));
-        iv_notification.setOnClickListener(new View.OnClickListener() {
+        fl_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(ReviewActivity.this, NotificationActivity.class);
@@ -266,5 +271,18 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                 return "";
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int notify_count = NotificationDB.getNotificationCount();
+        tv_badge.setText(String.valueOf(notify_count));
+        if(notify_count>0){
+            tv_badge.setVisibility(View.VISIBLE);
+        }else{
+            tv_badge.setVisibility(View.INVISIBLE);
+        }
+
     }
 }
