@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 
 public class Constants {
+    public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final String DEVICE_TYPE = "A";
     public static final int requestCodeNotification = 2;
     // broadcast receiver intent filters
