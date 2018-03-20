@@ -170,7 +170,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         rl_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (queueStatus == QueueStatusEnum.N) {
+                //if (queueStatus == QueueStatusEnum.N) {
                     saveCounterNames(lq.getCodeQR(), tv_counter_name.getText().toString().trim());
                     if (tv_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
@@ -185,26 +185,28 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                             Intent in = new Intent(context, OutOfSequenceDialogActivity.class);
                             in.putExtra("codeQR", lq.getCodeQR());
                             in.putExtra("data", served);
+                            in.putExtra("queueStatus",queueStatus == QueueStatusEnum.N);
                             ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
                         } else {
                             Intent in = new Intent(context, OutOfSequenceActivity.class);
                             in.putExtra("codeQR", lq.getCodeQR());
                             in.putExtra("data", served);
+                            in.putExtra("queueStatus",queueStatus == QueueStatusEnum.N);
                             ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
                             ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
 
                         }
                     }
-                } else {
-                    ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
-                }
+//                } else {
+//                    ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
+//                }
             }
         });
         ImageView iv_out_of_sequence = (ImageView) itemView.findViewById(R.id.iv_out_of_sequence);
         iv_out_of_sequence.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (queueStatus == QueueStatusEnum.N) {
+                //if (queueStatus == QueueStatusEnum.N) {
                     saveCounterNames(lq.getCodeQR(), tv_counter_name.getText().toString().trim());
                     if (tv_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
@@ -219,19 +221,21 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                             Intent in = new Intent(context, OutOfSequenceDialogActivity.class);
                             in.putExtra("codeQR", lq.getCodeQR());
                             in.putExtra("data", served);
+                            in.putExtra("queueStatus",queueStatus == QueueStatusEnum.N);
                             ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
                         } else {
                             Intent in = new Intent(context, OutOfSequenceActivity.class);
                             in.putExtra("codeQR", lq.getCodeQR());
                             in.putExtra("data", served);
+                            in.putExtra("queueStatus",queueStatus == QueueStatusEnum.N);
                             ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
                             ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
 
                         }
                     }
-                } else {
-                    ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
-                }
+//                } else {
+//                    ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
+//                }
             }
         });
 
