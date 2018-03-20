@@ -1,19 +1,26 @@
 package com.noqapp.android.client.views.activities;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -62,7 +69,7 @@ import io.fabric.sdk.android.Fabric;
 
 import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
 
-public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, AppBlacklistPresenter {
+public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, AppBlacklistPresenter ,NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static DatabaseHelper dbHandler;
     public static String tabHome = "ScanQ";
@@ -156,6 +163,27 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
         initProgress();
         onClick(rl_home);
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+
+
+
+
+
+
         final Intent in = new Intent(this, ReviewActivity.class);
         //startActivity(in);
         broadcastReceiver = new BroadcastReceiver() {
@@ -422,6 +450,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
      */
     @Override
     public void onBackPressed() {
+
+
         List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
 
         if (currentTabFragments.size() > 1) {
@@ -461,6 +491,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 //super.onBackPressed();
                 finish();
             }
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         }
     }
 
@@ -570,4 +604,49 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             }
         }
     }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+
+        } else if (id == R.id.nav_invite) {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            Intent in = new Intent(this, WebViewActivity.class);
+            in.putExtra("url", Constants.URL_ABOUT_US);
+            startActivity(in);
+            } else {
+                ShowAlertInformation.showNetworkDialog(this);
+            }
+        } else if (id == R.id.nav_share) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Hey check out my app at: https://play.google.com/store/apps/details?id=" + this.getPackageName());
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+        } else if (id == R.id.nav_legal) {
+
+        } else if (id == R.id.nav_rate_app) {
+            Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            try {
+                startActivity(goToMarket);
+            } catch (ActivityNotFoundException e) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
+            }
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 }

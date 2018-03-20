@@ -100,7 +100,7 @@ android {
 
     defaultConfig {
         applicationId "com.noqapp.android.merchant"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 27
         multiDexEnabled true
         testHandleProfiling true
@@ -124,11 +124,14 @@ android {
                 "apkName ends with : $apkName"
 
         applicationVariants.all { variant ->
+//            variant.outputs.each { output ->
+//                output.outputFile = new File(
+//                        output.outputFile.parent,
+//                        output.outputFile.name.replace(".apk", "$apkName")
+//                )
             variant.outputs.each { output ->
-                output.outputFile = new File(
-                        output.outputFile.parent,
-                        output.outputFile.name.replace(".apk", "$apkName")
-                )
+                output.outputFileName = new File(output.outputFile.parent, output.outputFile.name.replace(".apk", "$apkName"))
+
             }
         }
     }

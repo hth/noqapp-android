@@ -15,5 +15,6 @@
     <dimen name="message_label">15sp</dimen>
     <dimen name="card_padding">30dp</dimen>
 
-
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
 </resources>

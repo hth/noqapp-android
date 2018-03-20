@@ -183,4 +183,8 @@
 
     <string name="msg_default_status">Place NoQueue QR Code inside the viewfinder rectangle to scan it.</string>
     <string name="notification_alert">You don\'t have any notifications.</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="home">Home</string>
+    <string name="share">Share</string>
 </resources>
