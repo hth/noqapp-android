@@ -1,32 +1,45 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.activities.DoctorProfileActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.StoreDetailActivity;
+import com.noqapp.android.client.views.adapters.RecyclerCustomAdapter;
+import com.noqapp.android.client.views.toremove.DataModel;
+import com.noqapp.android.client.views.toremove.MyData;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ScanQueueFragment extends Scanner {
+public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.OnItemClickListener{
     private final String TAG = ScanQueueFragment.class.getSimpleName();
 
-    @BindView(R.id.rl_empty)
-    protected RelativeLayout rl_empty;
+    @BindView(R.id.cv_scan)
+    protected CardView cv_scan;
 
-    @BindView(R.id.btnScanQRCode)
-    protected Button btnScanQRCode;
-
+    @BindView(R.id.recyclerView)
+    protected RecyclerView recyclerView;
+    @BindView(R.id.rv_merchant_around_you)
+    protected RecyclerView rv_merchant_around_you;
     private String currentTab = "";
     private boolean fromList = false;
-
+    private static RecyclerView.Adapter adapter,adapter1;
+    private static ArrayList<DataModel> data,data1;
+    private  RecyclerCustomAdapter.OnItemClickListener listener;
     public ScanQueueFragment() {
 
     }
@@ -56,6 +69,41 @@ public class ScanQueueFragment extends Scanner {
             // startScanningBarcode();
             // commented due to last discussion that barcode should not start automatically
         }
+        listener = this;
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(horizontalLayoutManagaer);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        data = new ArrayList<DataModel>();
+        for (int i = 0; i < MyData.nameArray.length; i++) {
+            data.add(new DataModel(
+                    MyData.nameArray[i],
+                    "",
+                    0,
+                    MyData.drawableArray[i]
+            ));
+        }
+        adapter = new RecyclerCustomAdapter(data,getActivity(), listener);
+        recyclerView.setAdapter(adapter);
+        rv_merchant_around_you.setHasFixedSize(true);
+        LinearLayoutManager horizontalLayoutManagaer1
+                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer1);
+       // rv_merchant_around_you.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL));
+        rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
+
+        data1 = new ArrayList<DataModel>();
+        for (int i = 0; i < MyData.nameArray1.length; i++) {
+            data1.add(new DataModel(
+                    MyData.nameArray1[i],
+                    "",
+                    0,
+                    MyData.drawableArray1[i]
+            ));
+        }
+        adapter1 = new RecyclerCustomAdapter(data1,getActivity(), listener);
+        rv_merchant_around_you.setAdapter(adapter1);
     }
 
     @Override
@@ -66,7 +114,7 @@ public class ScanQueueFragment extends Scanner {
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
     }
 
-    @OnClick(R.id.btnScanQRCode)
+    @OnClick(R.id.cv_scan)
     public void scanQR() {
         startScanningBarcode();
     }
@@ -93,5 +141,18 @@ public class ScanQueueFragment extends Scanner {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         //No call for super(). Bug on API Level > 11.
+    }
+
+    @Override
+    public void onItemClick(DataModel item, View view,int pos) {
+        if(pos%2==0) {
+            Intent in = new Intent(getActivity(), StoreDetailActivity.class);
+            in.putExtra("store_name", item.getName());
+            startActivity(in);
+        }else{
+            Intent in = new Intent(getActivity(), DoctorProfileActivity.class);
+           // in.putExtra("store_name",item.getName());
+            startActivity(in);
+        }
     }
 }

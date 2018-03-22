@@ -69,7 +69,7 @@ import io.fabric.sdk.android.Fabric;
 
 import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
 
-public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, AppBlacklistPresenter ,NavigationView.OnNavigationItemSelectedListener {
+public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter ,NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
     public static DatabaseHelper dbHandler;
     public static String tabHome = "ScanQ";
@@ -223,6 +223,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
+    }
+
+    @Override
+    public void updateLocationUI() {
+        Toast.makeText(launchActivity, "Location : " + cityName, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -630,6 +635,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             startActivity(sendIntent);
         } else if (id == R.id.nav_legal) {
 
+        } else if (id == R.id.nav_medical) {
+
         } else if (id == R.id.nav_rate_app) {
             Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
@@ -648,5 +655,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
 }

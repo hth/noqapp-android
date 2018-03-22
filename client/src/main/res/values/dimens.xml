@@ -6,6 +6,7 @@
     <dimen name="list_item_margin">5dp</dimen>
     <dimen name="cell_size">55dp</dimen>
     <dimen name="screen_padding">20dp</dimen>
+    <dimen name="screen_padding_home">5dp</dimen>
     <dimen name="seekbar_thumb_width">25dp</dimen>
     <dimen name="seekbar_height">12dp</dimen>
     <dimen name="seekbar_thumb_height">25dp</dimen>
@@ -17,4 +18,9 @@
 
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="detail_backdrop_height">256dp</dimen>
+
+    <dimen name="image_width">120dp</dimen>
+    <dimen name="image_final_width">32dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
 </resources>
