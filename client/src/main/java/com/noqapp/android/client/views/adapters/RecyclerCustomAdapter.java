@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,8 @@ public class RecyclerCustomAdapter extends RecyclerView.Adapter<RecyclerCustomAd
         ImageView imageView = holder.imageViewIcon;
 
         textViewName.setText(dataSet.get(listPosition).getName());
-        //textViewVersion.setText(dataSet.get(listPosition).getVersion());
+        if(!TextUtils.isEmpty(dataSet.get(listPosition).getVersion()))
+           textViewVersion.setText(dataSet.get(listPosition).getVersion());
 
         // textViewName.setBackgroundColor(Color.parseColor(colorCodes[listPosition%colorCodes.length]));
         imageView.setBackground(ContextCompat.getDrawable(context, dataSet.get(listPosition).getImage()));

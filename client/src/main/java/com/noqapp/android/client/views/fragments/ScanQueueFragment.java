@@ -7,11 +7,18 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.types.NearMeModel;
+import com.noqapp.android.client.presenter.NearMePresenter;
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
+import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.DoctorProfileActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
@@ -25,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.OnItemClickListener{
+public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.OnItemClickListener,NearMePresenter{
     private final String TAG = ScanQueueFragment.class.getSimpleName();
 
     @BindView(R.id.cv_scan)
@@ -93,17 +100,8 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
        // rv_merchant_around_you.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL));
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
 
-        data1 = new ArrayList<DataModel>();
-        for (int i = 0; i < MyData.nameArray1.length; i++) {
-            data1.add(new DataModel(
-                    MyData.nameArray1[i],
-                    "",
-                    0,
-                    MyData.drawableArray1[i]
-            ));
-        }
-        adapter1 = new RecyclerCustomAdapter(data1,getActivity(), listener);
-        rv_merchant_around_you.setAdapter(adapter1);
+
+        getNearMeInfo();
     }
 
     @Override
@@ -154,5 +152,48 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
            // in.putExtra("store_name",item.getName());
             startActivity(in);
         }
+    }
+
+    private void getNearMeInfo(){
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            StoreInfoParam storeInfoParam = new StoreInfoParam();
+            storeInfoParam.setCityName("Vashi");
+            storeInfoParam.setLatitude(String.valueOf(19.004550));
+            storeInfoParam.setLongitude(String.valueOf(73.014529));
+            storeInfoParam.setFilters("xyz");
+
+                        /* New instance of progressbar because it is a new activity. */
+//            progressDialog = new ProgressDialog(ReviewActivity.this);
+//            progressDialog.setIndeterminate(true);
+//            progressDialog.setMessage("Updating...");
+//            progressDialog.show();
+            NearMeModel.nearMePresenter = this;
+            NearMeModel.nearMeStore(UserUtils.getDeviceId(),storeInfoParam);
+        } else {
+            ShowAlertInformation.showNetworkDialog(getActivity());
+        }
+    }
+
+    @Override
+    public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
+
+        data1 = new ArrayList<DataModel>();
+        for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
+            data1.add(new DataModel(
+                    bizStoreElasticList.getBizStoreElastics().get(i).getDisplayName(),
+                    bizStoreElasticList.getBizStoreElastics().get(i).getTown(),
+                    0,
+                    MyData.drawableArray1[i]
+            ));
+        }
+        adapter1 = new RecyclerCustomAdapter(data1,getActivity(), listener);
+        rv_merchant_around_you.setAdapter(adapter1);
+        Log.v("NearMe",bizStoreElasticList.toString());
+
+    }
+
+    @Override
+    public void nearMeError() {
+
     }
 }

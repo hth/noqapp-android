@@ -34,8 +34,8 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
     private static final String TAG = "LocationActivity";
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
-    protected double latitute = 0;
-    protected double longitute = 0;
+    public double latitute = 0;
+    public double longitute = 0;
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 60 * 2 * 1000;  /* 10*6 secs */
     private long FASTEST_INTERVAL = 2000; /* 2 sec */

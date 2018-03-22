@@ -14,7 +14,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
@@ -43,7 +42,6 @@ import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.function.ToIntBiFunction;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

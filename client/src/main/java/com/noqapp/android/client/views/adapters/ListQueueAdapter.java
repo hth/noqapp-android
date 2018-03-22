@@ -1,9 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
