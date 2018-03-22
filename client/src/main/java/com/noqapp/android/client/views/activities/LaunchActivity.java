@@ -80,35 +80,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public ProgressDialog progressDialog;
     // Tabs associated with list of fragments
     public Map<String, List<Fragment>> fragmentsStack = new HashMap<String, List<Fragment>>();
-    @BindView(R.id.rl_list)
-    protected RelativeLayout rl_list;
-
-    @BindView(R.id.rl_home)
-    protected RelativeLayout rl_home;
-
-    @BindView(R.id.rl_me)
-    protected RelativeLayout rl_me;
-
-    @BindView(R.id.tv_home)
-    protected TextView tv_home;
-
-    @BindView(R.id.tv_list)
-    protected TextView tv_list;
-
-    @BindView(R.id.tv_me)
-    protected TextView tv_me;
 
     @BindView(R.id.tv_badge)
     protected TextView tv_badge;
 
-    @BindView(R.id.iv_home)
-    protected ImageView iv_home;
-
-    @BindView(R.id.iv_list)
-    protected ImageView iv_list;
-
-    @BindView(R.id.iv_me)
-    protected ImageView iv_me;
 
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
@@ -154,15 +129,21 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         setReviewShown(false);//Reset the flag when app is killed
         //AppUtilities.exportDatabase(this);
         networkUtil = new NetworkUtil(this);
-        rl_home.setOnClickListener(this);
-        rl_list.setOnClickListener(this);
-        rl_me.setOnClickListener(this);
+
         actionbarBack.setOnClickListener(this);
         iv_notification.setOnClickListener(this);
-        iv_home.setBackgroundResource(R.mipmap.home_active);
-        tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
+
+
         initProgress();
-        onClick(rl_home);
+        setCurrentSelectedTabTag(tabHome);
+        if (null == fragmentsStack.get(tabHome)) {
+            Fragment fragment = new ScanQueueFragment();
+            createStackForTab(tabHome);
+            addFragmentToStack(fragment);
+            replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+        } else {
+            replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
+        }
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -176,12 +157,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-
-
-
-
 
 
         final Intent in = new Intent(this, ReviewActivity.class);
@@ -250,47 +225,43 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public void onClick(View v) {
         int id = v.getId();
         Fragment fragment;
-        resetButtons();
         switch (id) {
-            case R.id.rl_home:
-                setCurrentSelectedTabTag(tabHome);
-                if (null == fragmentsStack.get(tabHome)) {
-                    fragment = new ScanQueueFragment();
-                    createStackForTab(tabHome);
-                    addFragmentToStack(fragment);
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-                } else {
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
-                }
-                iv_home.setBackgroundResource(R.mipmap.home_active);
-                tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
-                break;
-            case R.id.rl_list:
-                setCurrentSelectedTabTag(tabList);
-                if (null == fragmentsStack.get(tabList)) {
-                    fragment = new ListQueueFragment();
-                    createStackForTab(tabList);
-                    addFragmentToStack(fragment);
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-                } else {
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
-                }
-                iv_list.setBackgroundResource(R.mipmap.list_active);
-                tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
-                break;
-            case R.id.rl_me:
-                setCurrentSelectedTabTag(tabMe);
-                if (null == fragmentsStack.get(tabMe)) {
-                    fragment = MeFragment.getInstance();
-                    createStackForTab(tabMe);
-                    addFragmentToStack(fragment);
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-                } else {
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
-                }
-                iv_me.setBackgroundResource(R.mipmap.me_active);
-                tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
-                break;
+//            case R.id.rl_home:
+//                setCurrentSelectedTabTag(tabHome);
+//                if (null == fragmentsStack.get(tabHome)) {
+//                    fragment = new ScanQueueFragment();
+//                    createStackForTab(tabHome);
+//                    addFragmentToStack(fragment);
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+//                } else {
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
+//                }
+//
+//                break;
+//            case R.id.rl_list:
+//                setCurrentSelectedTabTag(tabList);
+//                if (null == fragmentsStack.get(tabList)) {
+//                    fragment = new ListQueueFragment();
+//                    createStackForTab(tabList);
+//                    addFragmentToStack(fragment);
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+//                } else {
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
+//                }
+//
+//                break;
+//            case R.id.rl_me:
+//                setCurrentSelectedTabTag(tabMe);
+//                if (null == fragmentsStack.get(tabMe)) {
+//                    fragment = MeFragment.getInstance();
+//                    createStackForTab(tabMe);
+//                    addFragmentToStack(fragment);
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+//                } else {
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
+//                }
+//
+//                break;
             case R.id.actionbarBack:
                 onBackPressed();
                 break;
@@ -307,14 +278,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         tv_toolbar_title.setText(title);
     }
 
-    private void resetButtons() {
-        iv_home.setBackgroundResource(R.mipmap.home_inactive);
-        iv_list.setBackgroundResource(R.mipmap.list_inactive);
-        iv_me.setBackgroundResource(R.mipmap.me_inactive);
-        tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
-        tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
-        tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -348,7 +311,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     }
                 }
                 dismissProgress();
-                onClick(rl_list);
+
             }
         }
     }
@@ -477,7 +440,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
                 currentTabFragments.remove(currentTabFragments.size() - 1);
                 fragmentsStack.put(tabList, null);
-                onClick(rl_list);
+                //onClick(rl_list);
             } else {
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout, fragment);
