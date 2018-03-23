@@ -126,6 +126,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("bc")
     private String bizCategoryId;
 
+    @JsonProperty ("pi")
+    private String profileImage;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -390,6 +393,15 @@ public class JsonQueue implements Serializable {
 
     public JsonQueue setBizCategoryId(String bizCategoryId) {
         this.bizCategoryId = bizCategoryId;
+        return this;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public JsonQueue setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
         return this;
     }
 
