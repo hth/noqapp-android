@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +46,6 @@ import com.noqapp.android.client.views.fragments.AfterJoinFragment;
 import com.noqapp.android.client.views.fragments.JoinFragment;
 import com.noqapp.android.client.views.fragments.ListQueueFragment;
 import com.noqapp.android.client.views.fragments.LoginFragment;
-import com.noqapp.android.client.views.fragments.MeFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
@@ -582,13 +579,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (id == R.id.nav_home) {
 
         } else if (id == R.id.nav_invite) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
-            Intent in = new Intent(this, WebViewActivity.class);
-            in.putExtra("url", Constants.URL_ABOUT_US);
-            startActivity(in);
-            } else {
-                ShowAlertInformation.showNetworkDialog(this);
-            }
+
         } else if (id == R.id.nav_share) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
@@ -597,9 +588,16 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
         } else if (id == R.id.nav_legal) {
-
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                Intent in = new Intent(this, WebViewActivity.class);
+                in.putExtra("url", Constants.URL_ABOUT_US);
+                startActivity(in);
+            } else {
+                ShowAlertInformation.showNetworkDialog(this);
+            }
         } else if (id == R.id.nav_medical) {
-
+            Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
+            startActivity(in);
         } else if (id == R.id.nav_rate_app) {
             Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
