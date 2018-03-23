@@ -11,11 +11,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.NearMeModel;
+import com.noqapp.android.client.model.types.StoreModel;
 import com.noqapp.android.client.presenter.NearMePresenter;
+import com.noqapp.android.client.presenter.StorePresenter;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
+import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -23,6 +29,7 @@ import com.noqapp.android.client.views.activities.DoctorProfileActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.adapters.RecyclerCustomAdapter;
+import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.toremove.DataModel;
 import com.noqapp.android.client.views.toremove.MyData;
 
@@ -32,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.OnItemClickListener,NearMePresenter{
+public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.OnItemClickListener,NearMePresenter,StorePresenter,StoreInfoAdapter.OnItemClickListener{
     private final String TAG = ScanQueueFragment.class.getSimpleName();
 
     @BindView(R.id.cv_scan)
@@ -44,9 +51,13 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     protected RecyclerView rv_merchant_around_you;
     private String currentTab = "";
     private boolean fromList = false;
-    private static RecyclerView.Adapter adapter,adapter1;
-    private static ArrayList<DataModel> data,data1;
+    private static RecyclerView.Adapter adapter;
+    private StoreInfoAdapter storeInfoAdapter;
+    private static ArrayList<DataModel> data;
+    private static ArrayList<BizStoreElastic> data1;
     private  RecyclerCustomAdapter.OnItemClickListener listener;
+    private  StoreInfoAdapter.OnItemClickListener listener1;
+
     public ScanQueueFragment() {
 
     }
@@ -77,6 +88,7 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
             // commented due to last discussion that barcode should not start automatically
         }
         listener = this;
+        listener1 = this;
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -177,17 +189,12 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     @Override
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
 
-        data1 = new ArrayList<DataModel>();
+        data1 = new ArrayList<>();
         for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
-            data1.add(new DataModel(
-                    bizStoreElasticList.getBizStoreElastics().get(i).getDisplayName(),
-                    bizStoreElasticList.getBizStoreElastics().get(i).getTown(),
-                    0,
-                    MyData.drawableArray1[i]
-            ));
+            data1.add(bizStoreElasticList.getBizStoreElastics().get(i));
         }
-        adapter1 = new RecyclerCustomAdapter(data1,getActivity(), listener);
-        rv_merchant_around_you.setAdapter(adapter1);
+        storeInfoAdapter = new StoreInfoAdapter(data1,getActivity(), listener1);
+        rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe",bizStoreElasticList.toString());
 
     }
@@ -195,5 +202,42 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     @Override
     public void nearMeError() {
 
+    }
+
+    @Override
+    public void storeResponse(JsonStore jsonStore) {
+        Toast.makeText(getActivity(),"jsonStore response success",Toast.LENGTH_LONG).show();
+        Log.v("jsonStore response :", jsonStore.toString());
+
+        if(jsonStore.getJsonQueue().getBusinessType() == BusinessTypeEnum.DO||
+                jsonStore.getJsonQueue().getBusinessType() == BusinessTypeEnum.HO){
+            // open hospital profile
+        }else{
+            //open store profile
+            Intent in = new Intent(getActivity(), StoreDetailActivity.class);
+            in.putExtra("store_name", jsonStore.getJsonQueue().getBusinessName());
+            startActivity(in);
+        }
+    }
+
+    @Override
+    public void storeError() {
+
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
+
+    }
+
+    @Override
+    public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+           // LaunchActivity.getLaunchActivity().progressDialog.show();
+            StoreModel.storePresenter = this;
+            StoreModel.getStoreService(UserUtils.getDeviceId(), item.getCodeQR());
+        } else {
+            ShowAlertInformation.showNetworkDialog(getActivity());
+        }
     }
 }
