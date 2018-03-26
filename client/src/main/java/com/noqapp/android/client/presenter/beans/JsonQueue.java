@@ -126,8 +126,8 @@ public class JsonQueue implements Serializable {
     @JsonProperty("bc")
     private String bizCategoryId;
 
-    @JsonProperty ("li")
-    private String locationImage;
+    @JsonProperty ("di")
+    private String displayImage;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -396,12 +396,12 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
-    public String getLocationImage() {
-        return locationImage;
+    public String getDisplayImage() {
+        return displayImage;
     }
 
-    public JsonQueue setLocationImage(String locationImage) {
-        this.locationImage = locationImage;
+    public JsonQueue setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
         return this;
     }
 

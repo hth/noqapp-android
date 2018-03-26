@@ -114,8 +114,8 @@ public class BizStoreElastic {
     @JsonProperty ("WL")
     private String webLocation;
 
-    @JsonProperty ("LI")
-    private String locationImage;
+    @JsonProperty ("DI")
+    private String displayImage;
 
     public String getId() {
         return id;
@@ -360,12 +360,12 @@ public class BizStoreElastic {
         return this;
     }
 
-    public String getLocationImage() {
-        return locationImage;
+    public String getDisplayImage() {
+        return displayImage;
     }
 
-    public BizStoreElastic setLocationImage(String locationImage) {
-        this.locationImage = locationImage;
+    public BizStoreElastic setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
         return this;
     }
 

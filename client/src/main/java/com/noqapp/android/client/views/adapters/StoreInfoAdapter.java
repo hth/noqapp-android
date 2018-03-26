@@ -73,7 +73,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
            textViewVersion.setText(dataSet.get(listPosition).getTown());
 
         Picasso.with(context)
-                .load(dataSet.get(listPosition).getLocationImage())
+                .load(dataSet.get(listPosition).getDisplayImage())
                 .into(imageView);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
