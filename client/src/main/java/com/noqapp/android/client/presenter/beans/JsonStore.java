@@ -30,6 +30,9 @@ public class JsonStore {
     @JsonProperty("queue")
     private JsonQueue jsonQueue;
 
+    @JsonProperty("hours")
+    private List<JsonHour> jsonHours = new LinkedList<>();
+
     @JsonProperty("categories")
     private List<JsonStoreCategory> jsonStoreCategories = new LinkedList<>();
 
@@ -45,12 +48,21 @@ public class JsonStore {
         return this;
     }
 
+    public List<JsonHour> getJsonHours() {
+        return jsonHours;
+    }
+
+    public JsonStore setJsonHours(List<JsonHour> jsonHours) {
+        this.jsonHours = jsonHours;
+        return this;
+    }
+
     public List<JsonStoreCategory> getJsonStoreCategories() {
         return jsonStoreCategories;
     }
 
-    public JsonStore addJsonStoreCategory(JsonStoreCategory jsonStoreCategory) {
-        this.jsonStoreCategories.add(jsonStoreCategory);
+    public JsonStore setJsonStoreCategories(List<JsonStoreCategory> jsonStoreCategories) {
+        this.jsonStoreCategories = jsonStoreCategories;
         return this;
     }
 
@@ -58,8 +70,8 @@ public class JsonStore {
         return jsonStoreProducts;
     }
 
-    public JsonStore addJsonStoreProduct(JsonStoreProduct jsonStoreProduct) {
-        this.jsonStoreProducts.add(jsonStoreProduct);
+    public JsonStore setJsonStoreProducts(List<JsonStoreProduct> jsonStoreProducts) {
+        this.jsonStoreProducts = jsonStoreProducts;
         return this;
     }
 }
