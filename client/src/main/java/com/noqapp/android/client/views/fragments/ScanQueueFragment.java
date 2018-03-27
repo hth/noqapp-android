@@ -11,35 +11,33 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.NearMeModel;
-import com.noqapp.android.client.model.types.StoreModel;
 import com.noqapp.android.client.presenter.NearMePresenter;
-import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.DoctorProfileActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
+import com.noqapp.android.client.views.activities.ViewAllListActivity;
 import com.noqapp.android.client.views.adapters.RecyclerCustomAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.toremove.DataModel;
 import com.noqapp.android.client.views.toremove.MyData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.OnItemClickListener,NearMePresenter,StorePresenter,StoreInfoAdapter.OnItemClickListener{
+public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.OnItemClickListener,NearMePresenter,StoreInfoAdapter.OnItemClickListener{
     private final String TAG = ScanQueueFragment.class.getSimpleName();
 
     @BindView(R.id.cv_scan)
@@ -57,6 +55,11 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     private static ArrayList<BizStoreElastic> data1;
     private  RecyclerCustomAdapter.OnItemClickListener listener;
     private  StoreInfoAdapter.OnItemClickListener listener1;
+
+    @BindView(R.id.tv_recent_view_all)
+    protected TextView tv_recent_view_all;
+    @BindView(R.id.tv_near_view_all)
+    protected TextView tv_near_view_all;
 
     public ScanQueueFragment() {
 
@@ -205,39 +208,32 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     }
 
     @Override
-    public void storeResponse(JsonStore jsonStore) {
-        Toast.makeText(getActivity(),"jsonStore response success",Toast.LENGTH_LONG).show();
-        Log.v("jsonStore response :", jsonStore.toString());
-
-        if(jsonStore.getJsonQueue().getBusinessType() == BusinessTypeEnum.DO||
-                jsonStore.getJsonQueue().getBusinessType() == BusinessTypeEnum.HO){
-            // open hospital profile
-        }else{
-            //open store profile
-            Intent in = new Intent(getActivity(), StoreDetailActivity.class);
-            in.putExtra("store_name", jsonStore.getJsonQueue().getBusinessName());
-            startActivity(in);
-        }
-    }
-
-    @Override
-    public void storeError() {
-
-    }
-
-    @Override
-    public void authenticationFailure(int errorCode) {
-
-    }
-
-    @Override
     public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-           // LaunchActivity.getLaunchActivity().progressDialog.show();
-            StoreModel.storePresenter = this;
-            StoreModel.getStoreService(UserUtils.getDeviceId(), item.getCodeQR());
-        } else {
-            ShowAlertInformation.showNetworkDialog(getActivity());
-        }
+        Intent in = new Intent(getActivity(), StoreDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("BizStoreElastic", item);
+        in.putExtras(bundle);
+        startActivity(in);
+    }
+
+    @OnClick(R.id.tv_near_view_all)
+    public void nearClick(){
+        Intent intent = new Intent(getActivity(),ViewAllListActivity.class);
+        //Bundle bundle = new Bundle();
+       // bundle.putSerializable("data", data1);
+
+        intent.putExtra("list", (Serializable) data1);
+        //intent.putExtras(bundle);
+        startActivity(intent);
+
+    }
+
+    @OnClick(R.id.tv_recent_view_all)
+    public void recentClick(){
+        Intent intent = new Intent(getActivity(),ViewAllListActivity.class);
+        Bundle bundle = new Bundle();
+       // bundle.putSerializable("data", data1);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

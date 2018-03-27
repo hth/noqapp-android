@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.BusinessTypeEnum;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -28,7 +29,7 @@ import java.util.Arrays;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BizStoreElastic {
+public class BizStoreElastic implements Serializable{
 
     @JsonIgnore
     private String id;

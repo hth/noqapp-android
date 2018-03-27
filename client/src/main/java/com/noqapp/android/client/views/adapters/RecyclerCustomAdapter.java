@@ -29,16 +29,16 @@ public class RecyclerCustomAdapter extends RecyclerView.Adapter<RecyclerCustomAd
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewName;
-        TextView textViewVersion;
-        ImageView imageViewIcon;
-        CardView card_view;
+        private TextView tv_name;
+        private TextView tv_detail;
+        private ImageView iv_main;
+        private CardView card_view;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            this.textViewName = (TextView) itemView.findViewById(R.id.textViewName);
-            this.textViewVersion = (TextView) itemView.findViewById(R.id.textViewVersion);
-            this.imageViewIcon = (ImageView) itemView.findViewById(R.id.imageView);
+            this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
+            this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
             this.card_view = (CardView) itemView.findViewById(R.id.card_view);
         }
     }
@@ -61,20 +61,17 @@ public class RecyclerCustomAdapter extends RecyclerView.Adapter<RecyclerCustomAd
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
-        TextView textViewName = holder.textViewName;
-        TextView textViewVersion = holder.textViewVersion;
-        ImageView imageView = holder.imageViewIcon;
 
-        textViewName.setText(dataSet.get(listPosition).getName());
-        if(!TextUtils.isEmpty(dataSet.get(listPosition).getVersion()))
-           textViewVersion.setText(dataSet.get(listPosition).getVersion());
+        holder.tv_name.setText(dataSet.get(listPosition).getName());
+        if (!TextUtils.isEmpty(dataSet.get(listPosition).getVersion()))
+            holder.tv_detail.setText(dataSet.get(listPosition).getVersion());
 
         // textViewName.setBackgroundColor(Color.parseColor(colorCodes[listPosition%colorCodes.length]));
-        imageView.setBackground(ContextCompat.getDrawable(context, dataSet.get(listPosition).getImage()));
+        holder.iv_main.setBackground(ContextCompat.getDrawable(context, dataSet.get(listPosition).getImage()));
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(dataSet.get(listPosition), v,listPosition);
+                listener.onItemClick(dataSet.get(listPosition), v, listPosition);
             }
         });
     }

@@ -82,6 +82,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
+            android:name=".views.activities.SliderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".views.activities.ViewAllListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
+        <activity
             android:name=".views.activities.WebViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />

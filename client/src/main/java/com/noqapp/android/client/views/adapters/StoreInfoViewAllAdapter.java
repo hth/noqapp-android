@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 
-public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyViewHolder> {
+public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewAllAdapter.MyViewHolder> {
     private final Context context;
     private ArrayList<BizStoreElastic> dataSet;
 
@@ -30,6 +30,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_name;
+        private TextView tv_address;
         private TextView tv_detail;
         private ImageView iv_main;
         private CardView card_view;
@@ -37,13 +38,14 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         public MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
             this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
             this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
             this.card_view = (CardView) itemView.findViewById(R.id.card_view);
         }
     }
 
-    public StoreInfoAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener) {
+    public StoreInfoViewAllAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -53,7 +55,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
     public MyViewHolder onCreateViewHolder(ViewGroup parent,
                                            int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cards_layout, parent, false);
+                .inflate(R.layout.recycler_item_view_all, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -62,10 +64,14 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
         holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
+        holder.tv_address.setText(dataSet.get(listPosition).getAddress());
         if (!TextUtils.isEmpty(dataSet.get(listPosition).getTown()))
-            holder.tv_detail.setText(dataSet.get(listPosition).getTown());
+            holder.tv_address.setText(dataSet.get(listPosition).getTown());
+
+        holder.tv_detail.setText(dataSet.get(listPosition).getPhone());
         Picasso.with(context)
-                .load(dataSet.get(listPosition).getDisplayImage())
+                .load("https://www.dennys.co.nz/wp-content/uploads/2017/06/pg-3.jpg")
+                        //dataSet.get(listPosition).getDisplayImage())
                 .into(holder.iv_main);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -67,16 +67,214 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:padding="10dp"
             android:paddingTop="24dp">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_store_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/tv_store_rating"
+                    android:gravity="left"
+                    android:maxLines="2"
+                    android:text="Navratna"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_store_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/holo_green_dark"
+                    android:gravity="left"
+                    android:padding="3dp"
+                    android:text="4.5"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+            </RelativeLayout>
 
             <TextView
+                android:id="@+id/tv_store_address"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:gravity="center"
-                android:text="Details"
-                android:textSize="42sp" />
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Seawood, Navi Mumbai"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/store_info" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_store_open_status_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="Open now : "
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/store_info" />
+                <TextView
+                    android:id="@+id/tv_store_open_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tv_store_open_status_label"
+                    android:orientation="vertical"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="17sp"
+                    android:text="9:30 am - 10:30 pm"
+                    android:textStyle="bold"
+                    />
+                <LinearLayout
+                    android:id="@+id/ll_store_open_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_store_open_status"
+                    android:layout_toRightOf="@+id/tv_store_open_status_label"
+                    android:orientation="vertical"
+
+                    />
+                <ImageView
+                    android:id="@+id/iv_store_open_status"
+                    android:layout_toRightOf="@+id/tv_store_open_status"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:background="@mipmap/arrow_down"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_store_name1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/tv_store_rating"
+                    android:gravity="left"
+                    android:maxLines="2"
+                    android:text="Menu"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_thumb_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_store_name2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/tv_store_rating"
+                    android:gravity="left"
+                    android:maxLines="2"
+                    android:text="Photos"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_photos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_store_name3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/tv_store_rating"
+                android:gravity="left"
+                android:maxLines="2"
+                android:text="Details"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Phone no"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/store_sub_headers" />
+
+            <TextView
+                android:id="@+id/tv_contact_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="022 24524587"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/store_info" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Address"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/store_sub_headers" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="address"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/store_info" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Famous for:"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/store_sub_headers" />
+
+            <TextView
+                android:id="@+id/tv_known_for"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chicken curry, Chicken Tandoor"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/store_info" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Payment Mode:"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/store_sub_headers" />
+
+            <TextView
+                android:id="@+id/tv_payment_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Credit Card, Debit Card, Cash, Paytm"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/store_info" />
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
