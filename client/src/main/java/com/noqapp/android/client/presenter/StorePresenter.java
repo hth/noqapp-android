@@ -1,7 +1,5 @@
 package com.noqapp.android.client.presenter;
 
-import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.JsonQueueList;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 
 /**

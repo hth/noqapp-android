@@ -3,25 +3,11 @@ package com.noqapp.android.client.model.types;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.noqapp.android.client.model.response.open.QueueService;
 import com.noqapp.android.client.model.response.open.StoreService;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.QueuePresenter;
-import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.StorePresenter;
-import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
-import com.noqapp.android.client.presenter.TokenPresenter;
-import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.JsonQueueList;
-import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonStore;
-import com.noqapp.android.client.presenter.beans.JsonToken;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
-import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 import com.noqapp.android.client.utils.Constants;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

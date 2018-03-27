@@ -1,9 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.presenter.beans.NotificationBeans;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;

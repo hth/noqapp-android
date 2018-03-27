@@ -3,15 +3,10 @@ package com.noqapp.android.client.model.types;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.model.response.open.NearMeService;
-import com.noqapp.android.client.model.response.open.ReviewService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.NearMePresenter;
-import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.JsonResponse;
-import com.noqapp.android.client.presenter.beans.body.ReviewRating;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 
 import retrofit2.Call;

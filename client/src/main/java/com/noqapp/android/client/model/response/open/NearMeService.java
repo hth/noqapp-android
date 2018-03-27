@@ -1,8 +1,6 @@
 package com.noqapp.android.client.model.response.open;
 
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.DeviceRegistered;
-import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 
 import retrofit2.Call;

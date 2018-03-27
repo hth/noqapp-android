@@ -33,14 +33,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-import static com.noqapp.android.client.utils.Constants.ISREVIEW;
 import static com.noqapp.android.client.utils.Constants.CodeQR;
 import static com.noqapp.android.client.utils.Constants.CurrentlyServing;
 import static com.noqapp.android.client.utils.Constants.Firebase_Type;
 import static com.noqapp.android.client.utils.Constants.GoTo_Counter;
+import static com.noqapp.android.client.utils.Constants.ISREVIEW;
 import static com.noqapp.android.client.utils.Constants.LastNumber;
-import static com.noqapp.android.client.utils.Constants.QueueUserState;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
+import static com.noqapp.android.client.utils.Constants.QueueUserState;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 

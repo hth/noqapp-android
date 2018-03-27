@@ -11,15 +11,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.NotificationBeans;
-import com.noqapp.android.client.views.adapters.MedicalHistoryAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

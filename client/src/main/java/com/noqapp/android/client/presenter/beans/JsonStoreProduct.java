@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
+
 /**
  * Created by hitender on 3/23/18.
  */
@@ -22,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonStoreProduct {
+public class JsonStoreProduct implements Serializable{
 
     @JsonProperty("n")
     private String productName;
