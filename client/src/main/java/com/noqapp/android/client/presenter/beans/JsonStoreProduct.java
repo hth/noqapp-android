@@ -33,7 +33,10 @@ public class JsonStoreProduct implements Serializable{
     private String productPrice;
 
     @JsonProperty("d")
-    private String productDescription;
+    private String productDiscount;
+
+    @JsonProperty("i")
+    private String productInfo;
 
     @JsonProperty("ci")
     private String storeCategoryId;
@@ -63,12 +66,21 @@ public class JsonStoreProduct implements Serializable{
         return this;
     }
 
-    public String getProductDescription() {
-        return productDescription;
+    public String getProductDiscount() {
+        return productDiscount;
     }
 
-    public JsonStoreProduct setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+    public JsonStoreProduct setProductDiscount(String productDiscount) {
+        this.productDiscount = productDiscount;
+        return this;
+    }
+
+    public String getProductInfo() {
+        return productInfo;
+    }
+
+    public JsonStoreProduct setProductInfo(String productInfo) {
+        this.productInfo = productInfo;
         return this;
     }
 
