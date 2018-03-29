@@ -26,6 +26,9 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonStoreProduct implements Serializable{
 
+    @JsonProperty("id")
+    private String productId;
+
     @JsonProperty("n")
     private String productName;
 
@@ -33,7 +36,7 @@ public class JsonStoreProduct implements Serializable{
     private String productPrice;
 
     @JsonProperty("d")
-    private String productDiscount;
+    private int productDiscount;
 
     @JsonProperty("i")
     private String productInfo;
@@ -47,6 +50,15 @@ public class JsonStoreProduct implements Serializable{
     //TODO product description references to html location.
     @JsonProperty("r")
     private String productReference;
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public JsonStoreProduct setProductId(String productId) {
+        this.productId = productId;
+        return this;
+    }
 
     public String getProductName() {
         return productName;
@@ -66,11 +78,11 @@ public class JsonStoreProduct implements Serializable{
         return this;
     }
 
-    public String getProductDiscount() {
+    public int getProductDiscount() {
         return productDiscount;
     }
 
-    public JsonStoreProduct setProductDiscount(String productDiscount) {
+    public JsonStoreProduct setProductDiscount(int productDiscount) {
         this.productDiscount = productDiscount;
         return this;
     }
