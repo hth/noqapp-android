@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.client.model.types.ProductTypeEnum;
+import com.noqapp.android.client.model.types.UnitOfMeasurementEnum;
 
 import java.io.Serializable;
 
@@ -33,7 +35,7 @@ public class JsonStoreProduct implements Serializable{
     private String productName;
 
     @JsonProperty("p")
-    private String productPrice;
+    private int productPrice;
 
     @JsonProperty("d")
     private int productDiscount;
@@ -44,11 +46,14 @@ public class JsonStoreProduct implements Serializable{
     @JsonProperty("ci")
     private String storeCategoryId;
 
-    @JsonProperty("f")
-    private boolean productFresh;
+    @JsonProperty("t")
+    private ProductTypeEnum ProductType;
 
-    //TODO product description references to html location.
-    @JsonProperty("r")
+    @JsonProperty("um")
+    private UnitOfMeasurementEnum unitOfMeasurement;
+
+    //TODO product info references to html location for more detail like for Medicine.
+    @JsonProperty("pr")
     private String productReference;
 
     public String getProductId() {
@@ -69,11 +74,11 @@ public class JsonStoreProduct implements Serializable{
         return this;
     }
 
-    public String getProductPrice() {
+    public int getProductPrice() {
         return productPrice;
     }
 
-    public JsonStoreProduct setProductPrice(String productPrice) {
+    public JsonStoreProduct setProductPrice(int productPrice) {
         this.productPrice = productPrice;
         return this;
     }
@@ -105,12 +110,21 @@ public class JsonStoreProduct implements Serializable{
         return this;
     }
 
-    public boolean isProductFresh() {
-        return productFresh;
+    public ProductTypeEnum getProductType() {
+        return ProductType;
     }
 
-    public JsonStoreProduct setProductFresh(boolean productFresh) {
-        this.productFresh = productFresh;
+    public JsonStoreProduct setProductType(ProductTypeEnum productType) {
+        ProductType = productType;
+        return this;
+    }
+
+    public UnitOfMeasurementEnum getUnitOfMeasurement() {
+        return unitOfMeasurement;
+    }
+
+    public JsonStoreProduct setUnitOfMeasurement(UnitOfMeasurementEnum unitOfMeasurement) {
+        this.unitOfMeasurement = unitOfMeasurement;
         return this;
     }
 
