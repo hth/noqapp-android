@@ -1,5 +1,8 @@
 package com.noqapp.android.client.model.types;
 
+/**
+ * Created by hitender on 4/1/18.
+ */
 public enum UnitOfMeasurementEnum {
     CNT("CNT", "Count"),
     HDO("HDO", "1/2 Dozen"),

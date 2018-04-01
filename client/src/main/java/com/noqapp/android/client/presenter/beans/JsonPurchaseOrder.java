@@ -11,6 +11,9 @@ import com.noqapp.android.client.model.types.PaymentTypeEnum;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Created by hitender on 4/1/18.
+ */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",

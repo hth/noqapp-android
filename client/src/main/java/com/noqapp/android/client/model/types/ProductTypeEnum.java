@@ -1,5 +1,8 @@
 package com.noqapp.android.client.model.types;
 
+/**
+ * Created by hitender on 4/1/18.
+ */
 public enum ProductTypeEnum {
     GE("GE", "General"),
     ME("ME", "Medicine"),
