@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
@@ -21,6 +22,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.activities.DoctorProfile1Activity;
 import com.noqapp.android.client.views.activities.DoctorProfileActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
@@ -60,6 +62,11 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     protected TextView tv_recent_view_all;
     @BindView(R.id.tv_near_view_all)
     protected TextView tv_near_view_all;
+
+
+
+    @BindView(R.id.btn_type_1)
+    protected Button btn_type_1;
 
     public ScanQueueFragment() {
 
@@ -236,4 +243,12 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
+    @OnClick(R.id.btn_type_1)
+    public void btn1(){
+        Intent intent = new Intent(getActivity(), DoctorProfile1Activity.class);
+        startActivity(intent);
+    }
+
+
 }

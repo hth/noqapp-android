@@ -204,4 +204,10 @@ public class AppUtilities {
             System.out.println(jsonQueue.getDisplayName());
         }
     }
+
+
+    public static double round (float value) {
+        int scale = (int) Math.pow(10, 1);
+        return (double) Math.round(value * scale) / scale;
+    }
 }

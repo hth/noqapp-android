@@ -94,6 +94,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
+            android:name=".views.activities.DoctorProfile1Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".views.activities.StoreMenuActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
+        <activity
             android:name=".views.activities.BarcodeCaptureActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"

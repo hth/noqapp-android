@@ -27,5 +27,5 @@
 
     <dimen name="store_info">16sp</dimen>
     <dimen name="store_sub_headers">18sp</dimen>
-
+    <dimen name="btn_height">35dp</dimen>
 </resources>
