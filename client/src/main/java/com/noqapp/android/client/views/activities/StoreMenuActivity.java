@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
@@ -15,7 +16,6 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
-import com.noqapp.android.client.presenter.beans.body.PurchaseOrderParam;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
@@ -28,7 +28,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrderPresenter{
+public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrderPresenter {
+    private static final String TAG = StoreMenuActivity.class.getSimpleName();
+
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
     @BindView(R.id.fl_notification)
@@ -59,7 +61,7 @@ public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrde
         tv_toolbar_title.setText("Menu");
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
         jsonQueue = (JsonQueue) getIntent().getSerializableExtra("jsonQueue");
-        expandableListTitle =  (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");;
+        expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
         expandableListDetail = (HashMap<String, List<ChildData>>) getIntent().getExtras().getSerializable("listDataChild");
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
@@ -83,9 +85,8 @@ public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrde
                         .setProductQuantity(5));
                 jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 
-                PurchaseOrderParam purchaseOrderParam = new PurchaseOrderParam();
-                purchaseOrderParam.setJsonPurchaseOrder(jsonPurchaseOrder.asJson());
-                PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), purchaseOrderParam);
+                Log.i(TAG, "order Place " + jsonPurchaseOrder.asJson());
+                PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder.asJson());
             }
         });
 

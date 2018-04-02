@@ -68,6 +68,7 @@ import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
 
 public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter ,NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
+
     public static DatabaseHelper dbHandler;
     public static String tabHome = "ScanQ";
     public static String tabList = "Queues";

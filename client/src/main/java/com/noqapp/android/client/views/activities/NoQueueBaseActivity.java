@@ -19,6 +19,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_PHONE = "phone";
     public static final String PREKEY_NAME = "name";
     public static final String PREKEY_MAIL = "mail";
+    //TODO add address from profile
     public static final String PREKEY_GENDER = "gender";
     public static final String PREKEY_REMOTE_JOIN = "remoteJoin";
     public static final String PREKEY_AUTOJOIN = "autojoin";
