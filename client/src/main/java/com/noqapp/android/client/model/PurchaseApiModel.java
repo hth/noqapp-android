@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.noqapp.android.client.model.response.api.PurchaseOrderService;
 import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.client.utils.Constants;
@@ -23,8 +24,8 @@ public class PurchaseApiModel {
         purchaseOrderService = RetrofitClient.getClient().create(PurchaseOrderService.class);
     }
 
-    public static void placeOrder(String did, String mail, String auth, String requestBody) {
-        purchaseOrderService.placeOrder(did, Constants.DEVICE_TYPE, mail, auth, requestBody).enqueue(new Callback<JsonResponse>() {
+    public static void placeOrder(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        purchaseOrderService.placeOrder(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {

@@ -86,7 +86,7 @@ public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrde
                 jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 
                 Log.i(TAG, "order Place " + jsonPurchaseOrder.asJson());
-                PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder.asJson());
+                PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
             }
         });
 

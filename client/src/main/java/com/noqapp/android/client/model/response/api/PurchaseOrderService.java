@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model.response.api;
 
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 
 import retrofit2.Call;
@@ -24,6 +25,6 @@ public interface PurchaseOrderService {
             String auth,
 
             @Body
-            String requestBody
+            JsonPurchaseOrder jsonPurchaseOrder
     );
 }
