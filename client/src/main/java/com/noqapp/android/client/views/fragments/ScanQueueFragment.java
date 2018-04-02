@@ -30,7 +30,6 @@ import com.noqapp.android.client.views.activities.ViewAllListActivity;
 import com.noqapp.android.client.views.adapters.RecyclerCustomAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.toremove.DataModel;
-import com.noqapp.android.client.views.toremove.MyData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -105,12 +104,11 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         data = new ArrayList<DataModel>();
-        for (int i = 0; i < MyData.nameArray.length; i++) {
+        String[] nameArray = {"Cakes", "Navratna", "Coffee Cafe Day", "Bikaner wala", "Haldiram"};
+        for (int i = 0; i < nameArray.length; i++) {
             data.add(new DataModel(
-                    MyData.nameArray[i],
-                    "",
-                    0,
-                    MyData.drawableArray[i]
+                    nameArray[i],
+                    "https://noqapp.com/imgs/240x120/b.jpeg"
             ));
         }
         adapter = new RecyclerCustomAdapter(data,getActivity(), listener);

@@ -2,8 +2,10 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,7 +46,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_known_for, tv_store_rating, tv_payment_mode, tv_amenities,tv_menu,tv_delivery_types;
+    private TextView tv_contact_no, tv_address, tv_known_for, tv_store_rating, tv_payment_mode, tv_amenities,tv_menu,tv_delivery_types,tv_store_name;
     private LinearLayout ll_store_open_status;
     private boolean isUp;
     private ImageView iv_store_open_status;
@@ -57,6 +59,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
         setContentView(R.layout.activity_store_detail);
 
         tv_address = (TextView) findViewById(R.id.tv_address);
+        tv_store_name = (TextView) findViewById(R.id.tv_store_name);
         tv_contact_no = (TextView) findViewById(R.id.tv_contact_no);
         tv_known_for = (TextView) findViewById(R.id.tv_known_for);
         tv_payment_mode = (TextView) findViewById(R.id.tv_payment_mode);
@@ -116,8 +119,10 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
             public void onClick(View view) {
                 if (isUp) {
                     ViewAnimationUtils.expand(ll_store_open_status);
+                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this,R.drawable.arrow_down_grey));
                 } else {
                     ViewAnimationUtils.collapse(ll_store_open_status);
+                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this,R.drawable.arrow_up_grey));
                 }
                 isUp = !isUp;
             }
@@ -163,7 +168,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
             jsonQueue = jsonStore.getJsonQueue();
             tv_contact_no.setText(jsonQueue.getStorePhone());
             tv_address.setText(jsonQueue.getStoreAddress());
-            collapsingToolbar.setTitle(jsonQueue.getDisplayName());
+            tv_store_name.setText(jsonQueue.getDisplayName());
             tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
             tv_known_for.setText(jsonQueue.getFamousFor());
             List<PaymentTypeEnum> temp = jsonQueue.getPaymentTypes();

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.toremove.DataModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -63,11 +64,9 @@ public class RecyclerCustomAdapter extends RecyclerView.Adapter<RecyclerCustomAd
 
 
         holder.tv_name.setText(dataSet.get(listPosition).getName());
-        if (!TextUtils.isEmpty(dataSet.get(listPosition).getVersion()))
-            holder.tv_detail.setText(dataSet.get(listPosition).getVersion());
-
-        // textViewName.setBackgroundColor(Color.parseColor(colorCodes[listPosition%colorCodes.length]));
-        holder.iv_main.setBackground(ContextCompat.getDrawable(context, dataSet.get(listPosition).getImage()));
+        Picasso.with(context)
+                .load(dataSet.get(listPosition).getImage())
+                .into(holder.iv_main);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

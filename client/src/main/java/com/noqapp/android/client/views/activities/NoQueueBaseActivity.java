@@ -82,11 +82,11 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static String getMail() {
-        return sharedPreferences.getString(APIConstant.Key.XR_MAIL, "");
+        return sharedPreferences.getString(APIConstant.Key.XR_MAIL, "ct@r.com");
     }
 
     public static String getAuth() {
-        return sharedPreferences.getString(APIConstant.Key.XR_AUTH, "");
+        return sharedPreferences.getString(APIConstant.Key.XR_AUTH, "$2a$15$4qGOiBx.eyvPyKUzz3xwp.oVuz4zXSWqOvqMFzRQu/K4zXdqd0RuC");
     }
 
     public static void commitProfile(JsonProfile profile, String email, String auth) {
