@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.views.toremove.ChildData;
 
 import java.util.HashMap;
@@ -25,20 +26,20 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
 
-    private List<String> listDataHeader; // header titles
+    private List<JsonStoreCategory> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<ChildData>> listDataChild;
 
-    public CustomExpandableListAdapter(Context context, List<String> listDataHeader,
-                                       HashMap<String, List<ChildData>> listChildData) {
+    public CustomExpandableListAdapter(Context context, List<JsonStoreCategory> listDataHeader,
+                                       HashMap<String, List<ChildData>> listDataChild) {
         this.context = context;
         this.listDataHeader = listDataHeader;
-        this.listDataChild = listChildData;
+        this.listDataChild = listDataChild;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition))
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition).getCategoryId())
                 .get(childPosititon);
     }
 
@@ -76,7 +77,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                     .getTag(R.layout.list_item_filter);
         }
 
-        childViewHolder.tv_child_title.setText(childData.getChildTitle());
+        childViewHolder.tv_child_title.setText(childData.getJsonStoreProduct().getProductName());
         childViewHolder.tv_value.setText(childData.getChildInput());
         childViewHolder.btn_increase.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +85,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 String val = childViewHolder.tv_value.getText().toString();
                 int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
                 childViewHolder.tv_value.setText("" + number);
-                listDataChild.get(listDataHeader.get(groupPosition))
+                listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                         .get(childPosition).setChildInput("" + number);
                 notifyDataSetChanged();
             }
@@ -95,7 +96,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 String val = childViewHolder.tv_value.getText().toString();
                 int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
                 childViewHolder.tv_value.setText("" + number);
-                listDataChild.get(listDataHeader.get(groupPosition))
+                listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                         .get(childPosition).setChildInput("" + number);
                 notifyDataSetChanged();
             }
@@ -108,7 +109,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition))
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition).getCategoryId())
                 .size();
     }
 
@@ -130,7 +131,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+        String headerTitle = ((JsonStoreCategory) getGroup(groupPosition)).getCategoryName();
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

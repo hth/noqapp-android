@@ -2,34 +2,28 @@ package com.noqapp.android.client.views.toremove;
 
 import android.text.TextUtils;
 
+import com.noqapp.android.client.presenter.beans.JsonStoreProduct;
+
+import java.io.Serializable;
+
 /**
  * Created by chandra on 3/28/18.
  */
 
-public class ChildData {
-    private String childTitle;
+public class ChildData implements Serializable {
+
     private String childInput;
+    private JsonStoreProduct jsonStoreProduct;
 
-    public ChildData(String childTitle, String childInput) {
-        this.childTitle = childTitle;
+
+    public ChildData(String childInput, JsonStoreProduct jsonStoreProduct) {
         this.childInput = childInput;
+        this.jsonStoreProduct = jsonStoreProduct;
     }
 
-    public ChildData(String childTitle) {
-        this.childTitle = childTitle;
-    }
-
-    public String getChildTitle() {
-        return childTitle;
-    }
-
-    public ChildData setChildTitle(String childTitle) {
-        this.childTitle = childTitle;
-        return this;
-    }
 
     public String getChildInput() {
-        return TextUtils.isEmpty(childInput)?"0":childInput;
+        return TextUtils.isEmpty(childInput) ? "0" : childInput;
     }
 
     public ChildData setChildInput(String childInput) {
@@ -37,11 +31,20 @@ public class ChildData {
         return this;
     }
 
+    public JsonStoreProduct getJsonStoreProduct() {
+        return jsonStoreProduct;
+    }
+
+    public ChildData setJsonStoreProduct(JsonStoreProduct jsonStoreProduct) {
+        this.jsonStoreProduct = jsonStoreProduct;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "ChildData{" +
-                "childTitle='" + childTitle + '\'' +
-                ", childInput='" + childInput + '\'' +
+                " childInput='" + childInput + '\'' +
+                ", jsonStoreProduct=" + jsonStoreProduct +
                 '}';
     }
 }

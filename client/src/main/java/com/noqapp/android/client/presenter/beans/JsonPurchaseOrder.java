@@ -60,7 +60,7 @@ public class JsonPurchaseOrder {
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
-    @JsonProperty ("op")
+    @JsonProperty ("pop")
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
 
     public JsonPurchaseOrder() {

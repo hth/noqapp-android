@@ -26,13 +26,17 @@ import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonStore;
+import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
+import com.noqapp.android.client.presenter.beans.JsonStoreProduct;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.utils.ViewAnimationUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
+import com.noqapp.android.client.views.toremove.ChildData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -82,17 +86,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
         rv_thumb_images.setHasFixedSize(true);
         rv_thumb_images.setLayoutManager(horizontalLayoutManager);
 
-        tv_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("BizStoreElastic", item);
-//                in.putExtras(bundle);
-                startActivity(in);
 
-            }
-        });
 
         LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rv_photos = (RecyclerView) findViewById(R.id.rv_photos);
@@ -206,6 +200,34 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
             ThumbnailGalleryAdapter adapter1 = new ThumbnailGalleryAdapter(this, tempurl1);
             rv_photos.setAdapter(adapter1);
             //
+
+          //  {
+                //TODO @Chandra Optimize the loop
+            final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
+
+            ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
+            final HashMap<String, List<ChildData>> listDataChild = new HashMap<>();
+            for (int l = 0; l < jsonStoreCategories.size(); l++) {
+                listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<ChildData>());
+            }
+            for (int k = 0; k < jsonStoreProducts.size(); k++) {
+                listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData("",jsonStoreProducts.get(k)));
+            }
+          //  }
+
+            tv_menu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
+                    bundle.putSerializable("listDataChild",listDataChild);
+                    bundle.putSerializable("jsonQueue",jsonQueue);
+                    in.putExtras(bundle);
+                    startActivity(in);
+
+                }
+            });
         }
     }
 

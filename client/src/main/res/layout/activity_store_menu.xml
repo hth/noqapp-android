@@ -30,9 +30,21 @@
             android:layout_below="@+id/header_cover_image"
             android:divider="@android:color/darker_gray"
             android:dividerHeight="0.5dp"
+            android:layout_above="@+id/tv_place_order"
             android:groupIndicator="@null" />
 
-
+        <TextView
+            android:id="@+id/tv_place_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Place Order"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:padding="15sp"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:textColor="@android:color/white"
+            android:background="@android:color/holo_green_dark"/>
     </RelativeLayout>
 
 </LinearLayout>
