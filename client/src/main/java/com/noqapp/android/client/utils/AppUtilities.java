@@ -210,22 +210,9 @@ public class AppUtilities {
         }
     }
 
-
     public static double round (float value) {
         int scale = (int) Math.pow(10, 1);
         return (double) Math.round(value * scale) / scale;
-    }
-
-    public static String parseJson(JsonPurchaseOrder jsonPurchaseOrder) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Writer writer = new StringWriter();
-            objectMapper.writeValue(writer, jsonPurchaseOrder);
-            return writer.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
     }
 }
 

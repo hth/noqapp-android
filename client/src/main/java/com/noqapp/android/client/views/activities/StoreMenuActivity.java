@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.PurchaseApiModel;
-import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
@@ -18,7 +17,6 @@ import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.presenter.beans.body.PurchaseOrderParam;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
-import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
 import com.noqapp.android.client.views.toremove.ChildData;
@@ -69,23 +67,25 @@ public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrde
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                PurchaseOrderParam purchaseOrderParam = new PurchaseOrderParam();
-                JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder();
-                jsonPurchaseOrder.setBizStoreId(jsonQueue.getBizCategoryId());
-                jsonPurchaseOrder.setBusinessType(jsonQueue.getBusinessType());
-                jsonPurchaseOrder.setQueueUserId("100000000021");
-               // jsonPurchaseOrder.setCustomerName(jsonQueue.);
-                jsonPurchaseOrder.setDeliveryType(jsonQueue.getDeliveryTypes().get(0));
-                jsonPurchaseOrder.setOrderPrice("100");
-                jsonPurchaseOrder.setPaymentType(jsonQueue.getPaymentTypes().get(0));
+                JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+                        .setBizStoreId(jsonQueue.getBizStoreId())
+                        .setBusinessType(jsonQueue.getBusinessType())
+                        .setQueueUserId("100000000021")
+                        // jsonPurchaseOrder.setCustomerName(jsonQueue.);
+                        .setDeliveryType(jsonQueue.getDeliveryTypes().get(0))
+                        .setOrderPrice("100")
+                        .setPaymentType(jsonQueue.getPaymentTypes().get(0));
 
                 List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
-                ll.add(new JsonPurchaseOrderProduct().setProductId("5ac1c36cb85cb7763e9ea9fc").setProductPrice(10000).setProductQuantity(5));
+                ll.add(new JsonPurchaseOrderProduct()
+                        .setProductId("5ac1c36cb85cb7763e9ea9fc")
+                        .setProductPrice(10000)
+                        .setProductQuantity(5));
                 jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-                purchaseOrderParam.setJsonPurchaseOrder(AppUtilities.parseJson(jsonPurchaseOrder));
-                PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),purchaseOrderParam);
 
+                PurchaseOrderParam purchaseOrderParam = new PurchaseOrderParam();
+                purchaseOrderParam.setJsonPurchaseOrder(jsonPurchaseOrder.asJson());
+                PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), purchaseOrderParam);
             }
         });
 

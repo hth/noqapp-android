@@ -28,7 +28,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonPurchaseOrder {
+public class JsonPurchaseOrder extends AbstractDomain {
 
     @JsonProperty("bs")
     private String bizStoreId;

@@ -42,6 +42,9 @@ import java.util.TimeZone;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonQueue implements Serializable {
 
+    @JsonProperty("bs")
+    private String bizStoreId;
+
     @JsonProperty("c")
     private String codeQR;
 
@@ -164,6 +167,15 @@ public class JsonQueue implements Serializable {
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    public String getBizStoreId() {
+        return bizStoreId;
+    }
+
+    public JsonQueue setBizStoreId(String bizStoreId) {
+        this.bizStoreId = bizStoreId;
+        return this;
+    }
 
     public String getCodeQR() {
         return codeQR;

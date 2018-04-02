@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonPurchaseOrderProduct {
+public class JsonPurchaseOrderProduct extends AbstractDomain {
 
     @JsonProperty("pi")
     private String productId;
