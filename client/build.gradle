@@ -125,9 +125,9 @@ android {
                 "apkName ends with : $apkName"
 
         applicationVariants.all { variant ->
-            variant.outputs.each { output ->
+            variant.outputs.all { output ->
                 output.outputFileName = new File(
-                        output.outputFile.canonicalPath,
+                        "../",
                         output.outputFile.name.replace(".apk", "$apkName"))
             }
         }
