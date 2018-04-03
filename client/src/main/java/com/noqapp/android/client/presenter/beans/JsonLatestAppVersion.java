@@ -3,7 +3,6 @@ package com.noqapp.android.client.presenter.beans;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.client.presenter.beans.ErrorEncounteredJson;
 
 /**
  * Created by chandra on 11/4/17.

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/nav_medical"
+            android:icon="@drawable/medical_history"
+            android:title="@string/medical_history" />
+
+    </group>
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_menu_share"
+            android:title="@string/share" />
+        <item
+            android:id="@+id/nav_invite"
+            android:icon="@drawable/invite"
+            android:title="@string/invite" />
+        <item
+            android:id="@+id/nav_legal"
+            android:icon="@drawable/legal"
+            android:title="@string/legal" />
+        <item
+            android:id="@+id/nav_rate_app"
+            android:icon="@drawable/ic_star"
+            android:title="@string/ratetheapp" />
+    </group>
+
+
+</menu>

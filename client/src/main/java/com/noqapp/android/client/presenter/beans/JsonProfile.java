@@ -38,6 +38,9 @@ public class JsonProfile implements Serializable {
     @JsonProperty("cs")
     private String countryShortName;
 
+    @JsonProperty ("ad")
+    private String address;
+
     @JsonProperty("pr")
     private String phoneRaw;
 
@@ -86,6 +89,15 @@ public class JsonProfile implements Serializable {
 
     public JsonProfile setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
+        return this;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public JsonProfile setAddress(String address) {
+        this.address = address;
         return this;
     }
 

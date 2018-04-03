@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -65,11 +64,12 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
-        View view = inflater.inflate(R.layout.fragment_listqueue, container, false);
-        expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
+        View view = null;
+                //= inflater.inflate(R.layout.fragment_listqueue, container, false);
+       // expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
         header = (ViewGroup) inflater.inflate(R.layout.listview_header, expListView, false);
-        footer = (ViewGroup) inflater.inflate(R.layout.listview_footer, expListView, false);
+       // footer = (ViewGroup) inflater.inflate(R.layout.listview_footer, expListView, false);
 
         return view;
     }

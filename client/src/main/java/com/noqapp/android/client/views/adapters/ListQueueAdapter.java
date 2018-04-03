@@ -1,9 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,73 +73,73 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 
         switch (groupPosition) {
             case 0:
-                convertView = inflater.inflate(R.layout.listitem_currentqueue, null);
-                TextView txtnumber = (TextView) convertView.findViewById(R.id.txtNumber);
-                TextView tv_queue_name = (TextView) convertView.findViewById(R.id.tv_queue_name);
-                TextView tv_store_name = (TextView) convertView.findViewById(R.id.tv_store_name);
-                TextView tv_date_of_service = (TextView) convertView.findViewById(R.id.tv_date_of_service);
-                TextView txtToken = (TextView) convertView.findViewById(R.id.txtToken);
-                TextView tv_hour_saved = (TextView) convertView.findViewById(R.id.tv_hour_saved);
-                txtnumber.setText("#" + String.valueOf(childPosition + 1));
-                tv_queue_name.setText(queue.getDisplayName());
-                tv_store_name.setText(queue.getBusinessName());
-                tv_date_of_service.setText(queue.getServiceEndTime());
-                txtToken.setVisibility(View.VISIBLE);
-                if (queue.afterHowLong() > 0) {
-                    txtToken.setText(String.valueOf(queue.afterHowLong()));
-                    tv_hour_saved.setText("You are");
-                } else if (queue.afterHowLong() <= 0) {
-                    txtToken.setVisibility(View.GONE);
-                    tv_hour_saved.setText("Your turn");
-                }
+               // convertView = inflater.inflate(R.layout.listitem_currentqueue, null);
+//                TextView txtnumber = (TextView) convertView.findViewById(R.id.txtNumber);
+//                TextView tv_queue_name = (TextView) convertView.findViewById(R.id.tv_queue_name);
+//                TextView tv_store_name = (TextView) convertView.findViewById(R.id.tv_store_name);
+//                TextView tv_date_of_service = (TextView) convertView.findViewById(R.id.tv_date_of_service);
+//                TextView txtToken = (TextView) convertView.findViewById(R.id.txtToken);
+//                TextView tv_hour_saved = (TextView) convertView.findViewById(R.id.tv_hour_saved);
+//                txtnumber.setText("#" + String.valueOf(childPosition + 1));
+//                tv_queue_name.setText(queue.getDisplayName());
+//                tv_store_name.setText(queue.getBusinessName());
+//                tv_date_of_service.setText(queue.getServiceEndTime());
+//                txtToken.setVisibility(View.VISIBLE);
+//                if (queue.afterHowLong() > 0) {
+//                    txtToken.setText(String.valueOf(queue.afterHowLong()));
+//                    tv_hour_saved.setText("You are");
+//                } else if (queue.afterHowLong() <= 0) {
+//                    txtToken.setVisibility(View.GONE);
+//                    tv_hour_saved.setText("Your turn");
+//                }
                 break;
 
             case 1:
-                convertView = inflater.inflate(R.layout.listitem_historyqueue, null);
-                TextView txtnumber1 = (TextView) convertView.findViewById(R.id.txtNumber);
-                TextView tv_queue_name1 = (TextView) convertView.findViewById(R.id.tv_queue_name);
-                TextView tv_store_name1 = (TextView) convertView.findViewById(R.id.tv_store_name);
-                TextView tv_date_of_service1 = (TextView) convertView.findViewById(R.id.tv_date_of_service);
-                TextView txtToken1 = (TextView) convertView.findViewById(R.id.txtToken);
-                TextView tv_hour_saved1 = (TextView) convertView.findViewById(R.id.tv_hour_saved);
-                RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
-                TextView tv_more_category = (TextView) convertView.findViewById(R.id.tv_more_category);
-                tv_more_category.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        listOnClick.listShowCategory(queue.getCodeQR());
-                    }
-                });
-
-                txtnumber1.setText("#" + String.valueOf(childPosition + 1));
-                tv_queue_name1.setText(queue.getDisplayName());
-                tv_store_name1.setText(queue.getBusinessName());
-                tv_date_of_service1.setText(Formatter.getDateTimeAsString(Formatter.getDateFromString(queue.getServiceEndTime())));
-                txtToken1.setText(String.valueOf(queue.getToken()));
-                switch (queue.getHoursSaved()) {
-                    case 1:
-                        tv_hour_saved1.setText("Saved 30 min");
-                        break;
-                    case 2:
-                        tv_hour_saved1.setText("Saved 1 hour");
-                        break;
-                    case 3:
-                        tv_hour_saved1.setText("Saved 2 hour");
-                        break;
-                    case 4:
-                        tv_hour_saved1.setText("Saved 3 hours");
-                        break;
-                    case 5:
-                        tv_hour_saved1.setText("Saved 4 hours");
-                        break;
-                    default:
-                        tv_hour_saved1.setText("");
-                }
-
-                Log.v("rating ", "" + queue.getRatingCount());
-                ratingBar.setRating(queue.getRatingCount());
-                LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-                AppUtilities.setRatingBarColor(stars, context);
+               // convertView = inflater.inflate(R.layout.listitem_historyqueue, null);
+//                TextView txtnumber1 = (TextView) convertView.findViewById(R.id.txtNumber);
+//                TextView tv_queue_name1 = (TextView) convertView.findViewById(R.id.tv_queue_name);
+//                TextView tv_store_name1 = (TextView) convertView.findViewById(R.id.tv_store_name);
+//                TextView tv_date_of_service1 = (TextView) convertView.findViewById(R.id.tv_date_of_service);
+//                TextView txtToken1 = (TextView) convertView.findViewById(R.id.txtToken);
+//                TextView tv_hour_saved1 = (TextView) convertView.findViewById(R.id.tv_hour_saved);
+//                RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
+//                TextView tv_more_category = (TextView) convertView.findViewById(R.id.tv_more_category);
+//                tv_more_category.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        listOnClick.listShowCategory(queue.getCodeQR());
+//                    }
+//                });
+//
+//                txtnumber1.setText("#" + String.valueOf(childPosition + 1));
+//                tv_queue_name1.setText(queue.getDisplayName());
+//                tv_store_name1.setText(queue.getBusinessName());
+//                tv_date_of_service1.setText(Formatter.getDateTimeAsString(Formatter.getDateFromString(queue.getServiceEndTime())));
+//                txtToken1.setText(String.valueOf(queue.getToken()));
+//                switch (queue.getHoursSaved()) {
+//                    case 1:
+//                        tv_hour_saved1.setText("Saved 30 min");
+//                        break;
+//                    case 2:
+//                        tv_hour_saved1.setText("Saved 1 hour");
+//                        break;
+//                    case 3:
+//                        tv_hour_saved1.setText("Saved 2 hour");
+//                        break;
+//                    case 4:
+//                        tv_hour_saved1.setText("Saved 3 hours");
+//                        break;
+//                    case 5:
+//                        tv_hour_saved1.setText("Saved 4 hours");
+//                        break;
+//                    default:
+//                        tv_hour_saved1.setText("");
+//                }
+//
+//                Log.v("rating ", "" + queue.getRatingCount());
+//                ratingBar.setRating(queue.getRatingCount());
+//                LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+//                AppUtilities.setRatingBarColor(stars, context);
                 break;
         }
         return convertView;
@@ -187,16 +185,16 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 
 
             case 0:
-                convertView = inflater.inflate(R.layout.list_group_blank, null);
+               // convertView = inflater.inflate(R.layout.list_group_blank, null);
                 break;
 
             case 1:
 
-                convertView = inflater.inflate(R.layout.list_group, null);
-                TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
-                ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
-                lblListHeader.setText(headerTitle);
-                ivGroupIndicator.setSelected(isExpanded);
+                //convertView = inflater.inflate(R.layout.list_group, null);
+//                TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
+//                ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
+//                lblListHeader.setText(headerTitle);
+//                ivGroupIndicator.setSelected(isExpanded);
 
                 break;
         }

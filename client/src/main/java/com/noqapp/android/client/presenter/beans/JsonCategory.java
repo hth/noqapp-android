@@ -47,4 +47,12 @@ public class JsonCategory {
         this.categoryName = categoryName;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonCategory{" +
+                "bizCategoryId='" + bizCategoryId + '\'' +
+                ", categoryName='" + categoryName + '\'' +
+                '}';
+    }
 }

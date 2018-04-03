@@ -43,6 +43,7 @@ public class NotificationActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_notification);
         ButterKnife.bind(this);
         fl_notification.setVisibility(View.INVISIBLE);
+        actionbarBack.setVisibility(View.VISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +52,7 @@ public class NotificationActivity extends AppCompatActivity  {
         });
         tv_toolbar_title.setText(getString(R.string.screen_notification));
         List<NotificationBeans> notificationsList = NotificationDB.getNotificationsList();
-        NotificationListAdapter adapter = new NotificationListAdapter(NotificationActivity.this, notificationsList);
+        NotificationListAdapter adapter = new NotificationListAdapter(this, notificationsList);
         listview.setAdapter(adapter);
         if(notificationsList.size()<=0){
             listview.setVisibility(View.GONE);

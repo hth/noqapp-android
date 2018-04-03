@@ -101,6 +101,7 @@ public class WebViewActivity extends AppCompatActivity {
         } else {
             tv_toolbar_title.setText(getString(R.string.screen_legal));
         }
+        actionbarBack.setVisibility(View.VISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

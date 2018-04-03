@@ -7,10 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.noqapp.android.client.model.database.DatabaseTable;
-import com.noqapp.android.client.presenter.beans.NotificationBeans;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
 

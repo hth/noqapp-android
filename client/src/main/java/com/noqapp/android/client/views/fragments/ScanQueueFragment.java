@@ -1,31 +1,71 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.types.NearMeModel;
+import com.noqapp.android.client.presenter.NearMePresenter;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
+import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.activities.DoctorProfile1Activity;
+import com.noqapp.android.client.views.activities.DoctorProfileActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.StoreDetailActivity;
+import com.noqapp.android.client.views.activities.ViewAllListActivity;
+import com.noqapp.android.client.views.adapters.RecyclerCustomAdapter;
+import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
+import com.noqapp.android.client.views.toremove.DataModel;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ScanQueueFragment extends Scanner {
+public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.OnItemClickListener,NearMePresenter,StoreInfoAdapter.OnItemClickListener{
     private final String TAG = ScanQueueFragment.class.getSimpleName();
 
-    @BindView(R.id.rl_empty)
-    protected RelativeLayout rl_empty;
+    @BindView(R.id.cv_scan)
+    protected CardView cv_scan;
 
-    @BindView(R.id.btnScanQRCode)
-    protected Button btnScanQRCode;
-
+    @BindView(R.id.recyclerView)
+    protected RecyclerView recyclerView;
+    @BindView(R.id.rv_merchant_around_you)
+    protected RecyclerView rv_merchant_around_you;
     private String currentTab = "";
     private boolean fromList = false;
+    private static RecyclerView.Adapter adapter;
+    private StoreInfoAdapter storeInfoAdapter;
+    private static ArrayList<DataModel> data;
+    private static ArrayList<BizStoreElastic> nearMeData;
+    private  RecyclerCustomAdapter.OnItemClickListener listener;
+    private  StoreInfoAdapter.OnItemClickListener listener1;
+
+    @BindView(R.id.tv_recent_view_all)
+    protected TextView tv_recent_view_all;
+    @BindView(R.id.tv_near_view_all)
+    protected TextView tv_near_view_all;
+
+
+
+    @BindView(R.id.btn_type_1)
+    protected Button btn_type_1;
 
     public ScanQueueFragment() {
 
@@ -56,6 +96,32 @@ public class ScanQueueFragment extends Scanner {
             // startScanningBarcode();
             // commented due to last discussion that barcode should not start automatically
         }
+        listener = this;
+        listener1 = this;
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(horizontalLayoutManagaer);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        data = new ArrayList<DataModel>();
+        String[] nameArray = {"Cakes", "Navratna", "Coffee Cafe Day", "Bikaner wala", "Haldiram"};
+        for (int i = 0; i < nameArray.length; i++) {
+            data.add(new DataModel(
+                    nameArray[i],
+                    "https://noqapp.com/imgs/240x120/b.jpeg"
+            ));
+        }
+        adapter = new RecyclerCustomAdapter(data,getActivity(), listener);
+        recyclerView.setAdapter(adapter);
+        rv_merchant_around_you.setHasFixedSize(true);
+        LinearLayoutManager horizontalLayoutManagaer1
+                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer1);
+       // rv_merchant_around_you.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL));
+        rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
+
+
+        getNearMeInfo();
     }
 
     @Override
@@ -66,7 +132,7 @@ public class ScanQueueFragment extends Scanner {
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
     }
 
-    @OnClick(R.id.btnScanQRCode)
+    @OnClick(R.id.cv_scan)
     public void scanQR() {
         startScanningBarcode();
     }
@@ -94,4 +160,90 @@ public class ScanQueueFragment extends Scanner {
     public void onSaveInstanceState(Bundle outState) {
         //No call for super(). Bug on API Level > 11.
     }
+
+
+
+    private void getNearMeInfo(){
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            StoreInfoParam storeInfoParam = new StoreInfoParam();
+            storeInfoParam.setCityName("Vashi");
+            storeInfoParam.setLatitude(String.valueOf(19.004550));
+            storeInfoParam.setLongitude(String.valueOf(73.014529));
+            storeInfoParam.setFilters("xyz");
+
+                        /* New instance of progressbar because it is a new activity. */
+//            progressDialog = new ProgressDialog(ReviewActivity.this);
+//            progressDialog.setIndeterminate(true);
+//            progressDialog.setMessage("Updating...");
+//            progressDialog.show();
+            NearMeModel.nearMePresenter = this;
+            NearMeModel.nearMeStore(UserUtils.getDeviceId(),storeInfoParam);
+        } else {
+            ShowAlertInformation.showNetworkDialog(getActivity());
+        }
+    }
+
+    @Override
+    public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
+
+        nearMeData = new ArrayList<>();
+        for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
+            nearMeData.add(bizStoreElasticList.getBizStoreElastics().get(i));
+        }
+        storeInfoAdapter = new StoreInfoAdapter(nearMeData,getActivity(), listener1);
+        rv_merchant_around_you.setAdapter(storeInfoAdapter);
+        Log.v("NearMe",bizStoreElasticList.toString());
+
+    }
+
+    @Override
+    public void nearMeError() {
+
+    }
+
+    @Override
+    public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
+        Intent in = new Intent(getActivity(), StoreDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("BizStoreElastic", item);
+        in.putExtras(bundle);
+        startActivity(in);
+    }
+
+    @Override
+    public void onItemClick(DataModel item, View view,int pos) {
+        if(pos%2==0) {
+            Intent in = new Intent(getActivity(), StoreDetailActivity.class);
+            in.putExtra("store_name", item.getName());
+            startActivity(in);
+        }else{
+            Intent in = new Intent(getActivity(), DoctorProfileActivity.class);
+            // in.putExtra("store_name",item.getName());
+            startActivity(in);
+        }
+    }
+    @OnClick(R.id.tv_near_view_all)
+    public void nearClick(){
+        Intent intent = new Intent(getActivity(),ViewAllListActivity.class);
+        intent.putExtra("list", (Serializable) nearMeData);
+        startActivity(intent);
+
+    }
+
+    @OnClick(R.id.tv_recent_view_all)
+    public void recentClick(){
+        Intent intent = new Intent(getActivity(),ViewAllListActivity.class);
+        Bundle bundle = new Bundle();
+       // bundle.putSerializable("data", data1);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btn_type_1)
+    public void btn1(){
+        Intent intent = new Intent(getActivity(), DoctorProfile1Activity.class);
+        startActivity(intent);
+    }
+
+
 }

@@ -1,51 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true">
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/rl_empty"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/color_grey_bg"
-            android:gravity="center"
-            android:visibility="visible">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="4dp">
 
-            <ImageView
-                android:id="@+id/iv_camera"
-                android:layout_width="wrap_content"
+
+            <RelativeLayout
+                android:id="@+id/ll_rate_app"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="20dp"
-                android:background="@mipmap/camera" />
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="40dp"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
 
-            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
-                android:id="@+id/tv_label"
-                style="@style/style_join_queue_tv"
-                android:layout_below="@+id/iv_camera"
-                android:layout_marginBottom="20dp"
-                android:text="@string/scan_label"
-                android:textColor="@color/color_list_text"
-                android:textSize="@dimen/message_label" />
+                <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="Current location"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
 
-            <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
-                android:id="@+id/btnScanQRCode"
-                android:layout_width="wrap_content"
+                <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/iv_rate"
+                    android:text="Jogeshwari"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/iv_rate"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/ic_arrow_down" />
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_scan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="4dp">
+
+
+            <RelativeLayout
+                android:id="@+id/rl_scan"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_label"
-                android:layout_centerInParent="true"
-                android:background="@drawable/button_drawable"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:text="@string/scan"
-                android:textAllCaps="false"
-                android:textColor="@color/colorMobile"
-                android:textSize="@dimen/message_label" />
-        </RelativeLayout>
-    </FrameLayout>
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
+
+                <ImageView
+                    android:id="@+id/iv_scan"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/barcode" />
+
+                <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    android:id="@+id/tv_scan_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/iv_scan"
+                    android:text="SCAN QR"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_scan_title"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/iv_scan"
+                    android:text="Scan QR code to join the Queue/ place order on the spot"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="16sp" />
+
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_recent_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="4dp">
+
+
+            <LinearLayout
+                android:id="@+id/rl_recent_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                        android:id="@+id/tv_recent_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_alignParentLeft="true"
+                        android:text="Recent Activity"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                        android:id="@+id/tv_recent_view_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="View All"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="horizontal" />
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_merchant_around_you"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardCornerRadius="4dp">
+
+
+            <LinearLayout
+                android:id="@+id/rl_merchant_around_you"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                        android:id="@+id/tv_merchant_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Merchants around you"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                        android:id="@+id/tv_near_view_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="View All"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_merchant_around_you"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="horizontal" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_type_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TYPE 1" />
+    </LinearLayout>
+
 </ScrollView>
+

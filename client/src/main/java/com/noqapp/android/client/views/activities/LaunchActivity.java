@@ -1,23 +1,28 @@
 package com.noqapp.android.client.views.activities;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +46,6 @@ import com.noqapp.android.client.views.fragments.AfterJoinFragment;
 import com.noqapp.android.client.views.fragments.JoinFragment;
 import com.noqapp.android.client.views.fragments.ListQueueFragment;
 import com.noqapp.android.client.views.fragments.LoginFragment;
-import com.noqapp.android.client.views.fragments.MeFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
@@ -62,8 +66,9 @@ import io.fabric.sdk.android.Fabric;
 
 import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
 
-public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, AppBlacklistPresenter {
+public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter ,NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
+
     public static DatabaseHelper dbHandler;
     public static String tabHome = "ScanQ";
     public static String tabList = "Queues";
@@ -73,35 +78,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public ProgressDialog progressDialog;
     // Tabs associated with list of fragments
     public Map<String, List<Fragment>> fragmentsStack = new HashMap<String, List<Fragment>>();
-    @BindView(R.id.rl_list)
-    protected RelativeLayout rl_list;
-
-    @BindView(R.id.rl_home)
-    protected RelativeLayout rl_home;
-
-    @BindView(R.id.rl_me)
-    protected RelativeLayout rl_me;
-
-    @BindView(R.id.tv_home)
-    protected TextView tv_home;
-
-    @BindView(R.id.tv_list)
-    protected TextView tv_list;
-
-    @BindView(R.id.tv_me)
-    protected TextView tv_me;
 
     @BindView(R.id.tv_badge)
     protected TextView tv_badge;
 
-    @BindView(R.id.iv_home)
-    protected ImageView iv_home;
-
-    @BindView(R.id.iv_list)
-    protected ImageView iv_list;
-
-    @BindView(R.id.iv_me)
-    protected ImageView iv_me;
 
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
@@ -147,15 +127,36 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         setReviewShown(false);//Reset the flag when app is killed
         //AppUtilities.exportDatabase(this);
         networkUtil = new NetworkUtil(this);
-        rl_home.setOnClickListener(this);
-        rl_list.setOnClickListener(this);
-        rl_me.setOnClickListener(this);
+
         actionbarBack.setOnClickListener(this);
         iv_notification.setOnClickListener(this);
-        iv_home.setBackgroundResource(R.mipmap.home_active);
-        tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
+
+
         initProgress();
-        onClick(rl_home);
+        setCurrentSelectedTabTag(tabHome);
+        if (null == fragmentsStack.get(tabHome)) {
+            Fragment fragment = new ScanQueueFragment();
+            createStackForTab(tabHome);
+            addFragmentToStack(fragment);
+            replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+        } else {
+            replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
+        }
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
         final Intent in = new Intent(this, ReviewActivity.class);
         //startActivity(in);
         broadcastReceiver = new BroadcastReceiver() {
@@ -198,6 +199,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
     @Override
+    public void updateLocationUI() {
+        Toast.makeText(launchActivity, "Location : " + cityName, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void onNewIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -217,47 +223,43 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public void onClick(View v) {
         int id = v.getId();
         Fragment fragment;
-        resetButtons();
         switch (id) {
-            case R.id.rl_home:
-                setCurrentSelectedTabTag(tabHome);
-                if (null == fragmentsStack.get(tabHome)) {
-                    fragment = new ScanQueueFragment();
-                    createStackForTab(tabHome);
-                    addFragmentToStack(fragment);
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-                } else {
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
-                }
-                iv_home.setBackgroundResource(R.mipmap.home_active);
-                tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
-                break;
-            case R.id.rl_list:
-                setCurrentSelectedTabTag(tabList);
-                if (null == fragmentsStack.get(tabList)) {
-                    fragment = new ListQueueFragment();
-                    createStackForTab(tabList);
-                    addFragmentToStack(fragment);
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-                } else {
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
-                }
-                iv_list.setBackgroundResource(R.mipmap.list_active);
-                tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
-                break;
-            case R.id.rl_me:
-                setCurrentSelectedTabTag(tabMe);
-                if (null == fragmentsStack.get(tabMe)) {
-                    fragment = MeFragment.getInstance();
-                    createStackForTab(tabMe);
-                    addFragmentToStack(fragment);
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-                } else {
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
-                }
-                iv_me.setBackgroundResource(R.mipmap.me_active);
-                tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_select));
-                break;
+//            case R.id.rl_home:
+//                setCurrentSelectedTabTag(tabHome);
+//                if (null == fragmentsStack.get(tabHome)) {
+//                    fragment = new ScanQueueFragment();
+//                    createStackForTab(tabHome);
+//                    addFragmentToStack(fragment);
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+//                } else {
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
+//                }
+//
+//                break;
+//            case R.id.rl_list:
+//                setCurrentSelectedTabTag(tabList);
+//                if (null == fragmentsStack.get(tabList)) {
+//                    fragment = new ListQueueFragment();
+//                    createStackForTab(tabList);
+//                    addFragmentToStack(fragment);
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+//                } else {
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
+//                }
+//
+//                break;
+//            case R.id.rl_me:
+//                setCurrentSelectedTabTag(tabMe);
+//                if (null == fragmentsStack.get(tabMe)) {
+//                    fragment = MeFragment.getInstance();
+//                    createStackForTab(tabMe);
+//                    addFragmentToStack(fragment);
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+//                } else {
+//                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
+//                }
+//
+//                break;
             case R.id.actionbarBack:
                 onBackPressed();
                 break;
@@ -274,14 +276,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_toolbar_title.setText(title);
     }
 
-    private void resetButtons() {
-        iv_home.setBackgroundResource(R.mipmap.home_inactive);
-        iv_list.setBackgroundResource(R.mipmap.list_inactive);
-        iv_me.setBackgroundResource(R.mipmap.me_inactive);
-        tv_home.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
-        tv_list.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
-        tv_me.setTextColor(ContextCompat.getColor(this, R.color.color_btn_unselect));
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -315,7 +309,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     }
                 }
                 dismissProgress();
-                onClick(rl_list);
+
             }
         }
     }
@@ -422,6 +416,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
      */
     @Override
     public void onBackPressed() {
+
+
         List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
 
         if (currentTabFragments.size() > 1) {
@@ -442,7 +438,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
                 currentTabFragments.remove(currentTabFragments.size() - 1);
                 fragmentsStack.put(tabList, null);
-                onClick(rl_list);
+                //onClick(rl_list);
             } else {
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout, fragment);
@@ -461,6 +457,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 //super.onBackPressed();
                 finish();
             }
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         }
     }
 
@@ -570,4 +570,54 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             }
         }
     }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+
+        } else if (id == R.id.nav_invite) {
+
+        } else if (id == R.id.nav_share) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Hey check out my app at: https://play.google.com/store/apps/details?id=" + this.getPackageName());
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+        } else if (id == R.id.nav_legal) {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                Intent in = new Intent(this, WebViewActivity.class);
+                in.putExtra("url", Constants.URL_ABOUT_US);
+                startActivity(in);
+            } else {
+                ShowAlertInformation.showNetworkDialog(this);
+            }
+        } else if (id == R.id.nav_medical) {
+            Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
+            startActivity(in);
+        } else if (id == R.id.nav_rate_app) {
+            Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            try {
+                startActivity(goToMarket);
+            } catch (ActivityNotFoundException e) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
+            }
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+
 }

@@ -17,7 +17,6 @@ package com.noqapp.android.client.barcode;
 
 import android.app.Activity;
 
-
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;
