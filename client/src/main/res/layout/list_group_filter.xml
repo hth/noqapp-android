@@ -2,24 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="8dp">
+
     <TextView
-        android:id="@+id/lblListHeader"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_list_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:textSize="22sp"
+        android:layout_toLeftOf="@+id/ivGroupIndicator"
+        android:textSize="20sp"
         android:textStyle="bold" />
-
 
     <ImageView
         android:id="@+id/ivGroupIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
         android:background="@drawable/group_indicator" />
-
 
 </RelativeLayout>

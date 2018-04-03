@@ -120,22 +120,23 @@
                     android:id="@+id/tv_store_open_status_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:gravity="left"
                     android:text="Open now : "
-                    android:layout_alignParentLeft="true"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/store_info" />
+
                 <TextView
                     android:id="@+id/tv_store_open_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tv_store_open_status_label"
                     android:orientation="vertical"
+                    android:text="9:30 am - 10:30 pm"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="17sp"
-                    android:text="9:30 am - 10:30 pm"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
+
                 <LinearLayout
                     android:id="@+id/ll_store_open_status"
                     android:layout_width="wrap_content"
@@ -145,13 +146,16 @@
                     android:orientation="vertical"
 
                     />
+
                 <ImageView
                     android:id="@+id/iv_store_open_status"
-                    android:layout_toRightOf="@+id/tv_store_open_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/arrow_down_grey"/>
+                    android:layout_toRightOf="@+id/tv_store_open_status"
+                    android:background="@drawable/arrow_down"
+                    android:padding="5dp" />
             </RelativeLayout>
 
 
@@ -159,17 +163,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/tv_menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/holo_green_dark"
+                    android:gravity="center"
                     android:padding="10dp"
                     android:text="Order Now"
-                    android:gravity="center"
-                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
                     android:textSize="20sp"
-                    android:textColor="@android:color/white"/>
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/tv_store_name1"
                     android:layout_width="match_parent"

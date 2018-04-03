@@ -118,10 +118,10 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
             public void onClick(View view) {
                 if (isUp) {
                     ViewAnimationUtils.expand(ll_store_open_status);
-                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this,R.drawable.arrow_down_grey));
+                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this,R.drawable.arrow_down));
                 } else {
                     ViewAnimationUtils.collapse(ll_store_open_status);
-                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this,R.drawable.arrow_up_grey));
+                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this,R.drawable.arrow_up));
                 }
                 isUp = !isUp;
             }
