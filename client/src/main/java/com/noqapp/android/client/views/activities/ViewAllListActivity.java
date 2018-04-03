@@ -60,13 +60,13 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
 
         listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
         storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, listener);
-        rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
         rv_merchant_around_you.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer1
+        LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer1);
+        rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
-
+       // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
+        rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
     }
 
 

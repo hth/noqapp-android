@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.views.cutomviews.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
         private TextView tv_name;
         private TextView tv_address;
         private TextView tv_detail;
+        private TextView tv_store_rating;
+        private TextView tv_category;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -40,6 +44,8 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
             this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
             this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
+            this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
+            this.tv_category = (TextView) itemView.findViewById(R.id.tv_category);
             this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
             this.card_view = (CardView) itemView.findViewById(R.id.card_view);
         }
@@ -67,11 +73,12 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
         holder.tv_address.setText(dataSet.get(listPosition).getAddress());
         if (!TextUtils.isEmpty(dataSet.get(listPosition).getTown()))
             holder.tv_address.setText(dataSet.get(listPosition).getTown());
-
         holder.tv_detail.setText(dataSet.get(listPosition).getPhone());
+        holder.tv_category.setText(dataSet.get(listPosition).getCategory());
+        holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(dataSet.get(listPosition).getRating())));
         Picasso.with(context)
-                .load("https://www.dennys.co.nz/wp-content/uploads/2017/06/pg-3.jpg")
-                        //dataSet.get(listPosition).getDisplayImage())
+                .load(dataSet.get(listPosition).getDisplayImage())
+                .transform(new RoundedTransformation(10, 4))
                 .into(holder.iv_main);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override

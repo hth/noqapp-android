@@ -22,9 +22,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 
 import org.joda.time.LocalDateTime;
@@ -32,9 +30,6 @@ import org.joda.time.LocalDateTime;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.nio.channels.FileChannel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

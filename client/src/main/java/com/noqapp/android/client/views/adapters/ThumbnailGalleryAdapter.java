@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.SliderActivity;
+import com.noqapp.android.client.views.cutomviews.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
 
         Picasso.with(mContext)
                 .load(imageUrls.get(position))
+                .transform(new RoundedTransformation(5, 0))
                 .into(holder.iv_photo);
     }
 

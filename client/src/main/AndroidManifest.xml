@@ -129,7 +129,9 @@
             android:name="io.fabric.ApiKey"
             android:value="fc745aa326a54082165c333f7a03cee25b12f3ff" />
 
-        <activity android:name=".views.activities.LocationActivity"></activity>
+        <activity
+            android:name=".views.activities.LocationActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

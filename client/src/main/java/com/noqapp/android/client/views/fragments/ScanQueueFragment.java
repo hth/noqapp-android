@@ -53,7 +53,7 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     private static RecyclerView.Adapter adapter;
     private StoreInfoAdapter storeInfoAdapter;
     private static ArrayList<DataModel> data;
-    private static ArrayList<BizStoreElastic> data1;
+    private static ArrayList<BizStoreElastic> nearMeData;
     private  RecyclerCustomAdapter.OnItemClickListener listener;
     private  StoreInfoAdapter.OnItemClickListener listener1;
 
@@ -161,18 +161,7 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
         //No call for super(). Bug on API Level > 11.
     }
 
-    @Override
-    public void onItemClick(DataModel item, View view,int pos) {
-        if(pos%2==0) {
-            Intent in = new Intent(getActivity(), StoreDetailActivity.class);
-            in.putExtra("store_name", item.getName());
-            startActivity(in);
-        }else{
-            Intent in = new Intent(getActivity(), DoctorProfileActivity.class);
-           // in.putExtra("store_name",item.getName());
-            startActivity(in);
-        }
-    }
+
 
     private void getNearMeInfo(){
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -197,11 +186,11 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     @Override
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
 
-        data1 = new ArrayList<>();
+        nearMeData = new ArrayList<>();
         for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
-            data1.add(bizStoreElasticList.getBizStoreElastics().get(i));
+            nearMeData.add(bizStoreElasticList.getBizStoreElastics().get(i));
         }
-        storeInfoAdapter = new StoreInfoAdapter(data1,getActivity(), listener1);
+        storeInfoAdapter = new StoreInfoAdapter(nearMeData,getActivity(), listener1);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe",bizStoreElasticList.toString());
 
@@ -221,14 +210,22 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
         startActivity(in);
     }
 
+    @Override
+    public void onItemClick(DataModel item, View view,int pos) {
+        if(pos%2==0) {
+            Intent in = new Intent(getActivity(), StoreDetailActivity.class);
+            in.putExtra("store_name", item.getName());
+            startActivity(in);
+        }else{
+            Intent in = new Intent(getActivity(), DoctorProfileActivity.class);
+            // in.putExtra("store_name",item.getName());
+            startActivity(in);
+        }
+    }
     @OnClick(R.id.tv_near_view_all)
     public void nearClick(){
         Intent intent = new Intent(getActivity(),ViewAllListActivity.class);
-        //Bundle bundle = new Bundle();
-       // bundle.putSerializable("data", data1);
-
-        intent.putExtra("list", (Serializable) data1);
-        //intent.putExtras(bundle);
+        intent.putExtra("list", (Serializable) nearMeData);
         startActivity(intent);
 
     }

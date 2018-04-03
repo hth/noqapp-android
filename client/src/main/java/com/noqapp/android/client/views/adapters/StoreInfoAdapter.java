@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
 
         private TextView tv_name;
         private TextView tv_detail;
+        private TextView tv_category;
+        private TextView tv_store_rating;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -38,6 +41,8 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
             super(itemView);
             this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
+            this.tv_category = (TextView) itemView.findViewById(R.id.tv_category);
+            this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
             this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
             this.card_view = (CardView) itemView.findViewById(R.id.card_view);
         }
@@ -62,6 +67,8 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
         holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
+        holder.tv_category.setText(dataSet.get(listPosition).getCategory());
+        holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(dataSet.get(listPosition).getRating())));
         if (!TextUtils.isEmpty(dataSet.get(listPosition).getTown()))
             holder.tv_detail.setText(dataSet.get(listPosition).getTown());
         Picasso.with(context)

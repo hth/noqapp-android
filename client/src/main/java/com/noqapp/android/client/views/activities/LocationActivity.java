@@ -37,7 +37,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
     public double latitute = 0;
     public double longitute = 0;
     private LocationRequest mLocationRequest;
-    private long UPDATE_INTERVAL = 60 * 2 * 1000;  /* 10*6 secs */
+    private long UPDATE_INTERVAL = 60 * 2 * 1000 * 10;  /* 10*6 secs */
     private long FASTEST_INTERVAL = 2000; /* 2 sec */
 
     private LocationManager locationManager;

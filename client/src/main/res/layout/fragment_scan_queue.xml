@@ -41,8 +41,8 @@
                 <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/iv_rate"
                     android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/iv_rate"
                     android:text="Jogeshwari"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
@@ -51,8 +51,8 @@
                     android:id="@+id/iv_rate"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_margin="5dp"
                     android:src="@drawable/ic_arrow_down" />
             </RelativeLayout>
@@ -90,8 +90,8 @@
                     android:id="@+id/tv_scan_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/iv_scan"
                     android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/iv_scan"
                     android:text="SCAN QR"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
@@ -170,6 +170,7 @@
 
 
         </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.CardView
             android:id="@+id/cv_merchant_around_you"
             android:layout_width="match_parent"
@@ -221,18 +222,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="horizontal" />
-
-
-                    <Button
-                        android:id="@+id/btn_type_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TYPE 1"/>
-
             </LinearLayout>
-
-
         </android.support.v7.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_type_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TYPE 1" />
     </LinearLayout>
 
 </ScrollView>
