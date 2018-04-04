@@ -8,6 +8,8 @@ import com.noqapp.android.client.model.types.ProductTypeEnum;
 import com.noqapp.android.client.model.types.UnitOfMeasurementEnum;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.MathContext;
 
 /**
  * Created by hitender on 3/23/18.
@@ -135,5 +137,13 @@ public class JsonStoreProduct implements Serializable{
     public JsonStoreProduct setProductReference(String productReference) {
         this.productReference = productReference;
         return this;
+    }
+
+    public String getDisplayPrice() {
+        return new BigDecimal(productPrice).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
+    }
+    
+    public String getDisplayDiscount() {
+        return new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
     }
 }
