@@ -222,44 +222,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        Fragment fragment;
         switch (id) {
-//            case R.id.rl_home:
-//                setCurrentSelectedTabTag(tabHome);
-//                if (null == fragmentsStack.get(tabHome)) {
-//                    fragment = new ScanQueueFragment();
-//                    createStackForTab(tabHome);
-//                    addFragmentToStack(fragment);
-//                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-//                } else {
-//                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
-//                }
-//
-//                break;
-//            case R.id.rl_list:
-//                setCurrentSelectedTabTag(tabList);
-//                if (null == fragmentsStack.get(tabList)) {
-//                    fragment = new ListQueueFragment();
-//                    createStackForTab(tabList);
-//                    addFragmentToStack(fragment);
-//                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-//                } else {
-//                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
-//                }
-//
-//                break;
-//            case R.id.rl_me:
-//                setCurrentSelectedTabTag(tabMe);
-//                if (null == fragmentsStack.get(tabMe)) {
-//                    fragment = MeFragment.getInstance();
-//                    createStackForTab(tabMe);
-//                    addFragmentToStack(fragment);
-//                    replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-//                } else {
-//                    replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
-//                }
-//
-//                break;
             case R.id.actionbarBack:
                 onBackPressed();
                 break;

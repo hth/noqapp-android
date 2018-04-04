@@ -227,7 +227,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
                 listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<ChildData>());
             }
             for (int k = 0; k < jsonStoreProducts.size(); k++) {
-                listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData("",jsonStoreProducts.get(k)));
+                listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0,jsonStoreProducts.get(k)));
             }
           //  }
 
@@ -241,7 +241,6 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
                     bundle.putSerializable("jsonQueue",jsonQueue);
                     in.putExtras(bundle);
                     startActivity(in);
-
                 }
             });
         }

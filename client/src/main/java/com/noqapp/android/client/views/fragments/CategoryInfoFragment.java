@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -33,6 +35,7 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.adapters.CategoryListPagerAdapter;
 import com.noqapp.android.client.views.adapters.CategoryPagerAdapter;
+import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +49,7 @@ import butterknife.ButterKnife;
 
 import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
 
-public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePresenter, CategoryPagerAdapter.CategoryPagerClick {
+public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePresenter, CategoryPagerAdapter.CategoryPagerClick , RecyclerViewGridAdapter.OnItemClickListener{
     private final String TAG = CategoryInfoFragment.class.getSimpleName();
 
     @BindView(R.id.tv_store_name)
@@ -79,6 +82,9 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
     @BindView(R.id.list_pager)
     protected ViewPager list_pager;
 
+    @BindView(R.id.rv_categories)
+    protected RecyclerView rv_categories;
+
     private String codeQR;
 
     private String frtag;
@@ -98,8 +104,9 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
     /* Compute Rating and Rating Count at runtime. */
     private float rating = 0;
     private int ratingCount = 0;
-
+    private  RecyclerView.LayoutManager recyclerViewLayoutManager;
     private CategoryListPagerAdapter mFragmentCardAdapter;
+    private RecyclerViewGridAdapter.OnItemClickListener listener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -107,7 +114,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         ButterKnife.bind(this, view);
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         AppUtilities.setRatingBarColor(stars, getActivity());
-
+        listener =this;
         animShow = AnimationUtils.loadAnimation(getActivity(), R.anim.popup_show);
         animHide = AnimationUtils.loadAnimation(getActivity(), R.anim.popup_hide);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
@@ -164,6 +171,10 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
                 return false;
             }
         });
+
+
+        recyclerViewLayoutManager = new GridLayoutManager(getActivity(), 2);
+        rv_categories.setLayoutManager(recyclerViewLayoutManager);
         return view;
     }
 
@@ -250,6 +261,13 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
                 this);
         viewPager.setAdapter(mCardAdapter);
         viewPager.setOffscreenPageLimit(3);
+
+
+        RecyclerViewGridAdapter recyclerView_Adapter = new RecyclerViewGridAdapter( getActivity(),
+                getCategoryThatArePopulated(),
+                queueMap,listener);
+
+        rv_categories.setAdapter(recyclerView_Adapter);
     }
 
     /**
@@ -338,5 +356,38 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
         list_pager.setCurrentItem(position);
         isSliderOpen = true;
 
+    }
+
+    @Override
+    public void onCategoryItemClick(int pos) {
+        ll_slide_view.setVisibility(View.VISIBLE);
+        ll_slide_view.startAnimation(animShow);
+        ArrayList<CategoryListFragment> mFragments = new ArrayList<>();
+
+        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
+        Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
+
+        int count = 0;
+        for (String key : categoryMap.keySet()) {
+            String color = Constants.colorCodes[count % Constants.colorCodes.length];
+            count++;
+
+            if (queueMap.containsKey(key)) {
+                mFragments.add(CategoryListFragment.newInstance(queueMap.get(key), categoryMap.get(key).getCategoryName(), color,
+                        getArguments().getBoolean(KEY_FROM_LIST, false),
+                        getArguments().getBoolean(KEY_IS_HISTORY, false)));
+            } else {
+                Log.w(TAG, "Skipped empty category " + key);
+            }
+        }
+
+        mFragmentCardAdapter = new CategoryListPagerAdapter(
+                getActivity().getSupportFragmentManager(),
+                mFragments);
+        list_pager.setAdapter(null);
+        list_pager.setAdapter(mFragmentCardAdapter);
+        list_pager.setOffscreenPageLimit(3);
+        list_pager.setCurrentItem(pos);
+        isSliderOpen = true;
     }
 }
