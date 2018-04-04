@@ -83,7 +83,7 @@ public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrde
                         // jsonPurchaseOrder.setCustomerName(jsonQueue.);
                         .setDeliveryType(jsonQueue.getDeliveryTypes().get(0))
                         .setOrderPrice("100")
-                        .setPaymentType(jsonQueue.getPaymentTypes().get(0));
+                        .setPaymentType(jsonQueue.getPaymentTypes().get(1));
 
                 List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                 ll.add(new JsonPurchaseOrderProduct()

@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.activities;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.utils.ViewAnimationUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.toremove.ChildData;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +54,8 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
     private BizStoreElastic bizStoreElastic;
     private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView rv_thumb_images,rv_photos;
+    private ImageView collapseImageView;
+    private  AppBarLayout appBarLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,34 +72,29 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
         tv_menu = (TextView) findViewById(R.id.tv_menu);
         ll_store_open_status = (LinearLayout) findViewById(R.id.ll_store_open_status);
         iv_store_open_status = (ImageView) findViewById(R.id.iv_store_open_status);
-
+        collapseImageView = (ImageView) findViewById(R.id.backdrop);
+        appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-
-        bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
-
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(" ");
-        loadBackdrop();
-
+        bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rv_thumb_images = (RecyclerView) findViewById(R.id.rv_thumb_images);
         rv_thumb_images.setHasFixedSize(true);
         rv_thumb_images.setLayoutManager(horizontalLayoutManager);
-
-
 
         LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rv_photos = (RecyclerView) findViewById(R.id.rv_photos);
         rv_photos.setHasFixedSize(true);
         rv_photos.setLayoutManager(horizontalLayoutManager1);
 
-
+        Picasso.with(this)
+                .load(bizStoreElastic.getDisplayImage())
+                .into(collapseImageView);
 
         for (int j = 0; j < 6; j++) {
             LinearLayout childLayout = new LinearLayout(this);
@@ -136,10 +135,6 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
         }
     }
 
-    private void loadBackdrop() {
-        final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        //Glide.with(this).load(Cheeses.getRandomCheeseDrawable()).centerCrop().into(imageView);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -177,7 +172,24 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
             }
             tv_payment_mode.setText(paymentMode);
 
+            appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                boolean isShow = true;
+                int scrollRange = -1;
 
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    if (scrollRange == -1) {
+                        scrollRange = appBarLayout.getTotalScrollRange();
+                    }
+                    if (scrollRange + verticalOffset == 0) {
+                        collapsingToolbar.setTitle(jsonQueue.getDisplayName());
+                        isShow = true;
+                    } else if(isShow) {
+                        collapsingToolbar.setTitle(" ");//be careful there should be a space between double quote otherwise it won't work
+                        isShow = false;
+                    }
+                }
+            });
             List<AmenityEnum> tempAmenity = jsonQueue.getAmenities();
             String amenity = "";
             for (int j = 0; j < tempAmenity.size(); j++) {

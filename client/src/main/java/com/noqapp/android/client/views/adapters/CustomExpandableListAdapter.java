@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,32 +54,27 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final ChildViewHolder childViewHolder;
         final ChildData childData = (ChildData) getChild(groupPosition, childPosition);
-
-
         if (convertView == null) {
-
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_filter, null);
-
             childViewHolder = new ChildViewHolder();
-
             childViewHolder.tv_child_title = (TextView) convertView
                     .findViewById(R.id.tv_child_title);
             childViewHolder.tv_value = (TextView) convertView
                     .findViewById(R.id.tv_value);
+            childViewHolder.tv_price = (TextView) convertView.findViewById(R.id.tv_price);
             childViewHolder.btn_increase = (Button) convertView.findViewById(R.id.btn_increase);
             childViewHolder.btn_decrease = (Button) convertView.findViewById(R.id.btn_decrease);
             convertView.setTag(R.layout.list_item_filter, childViewHolder);
-
         } else {
-
             childViewHolder = (ChildViewHolder) convertView
                     .getTag(R.layout.list_item_filter);
         }
 
         childViewHolder.tv_child_title.setText(childData.getJsonStoreProduct().getProductName());
         childViewHolder.tv_value.setText(childData.getChildInput());
+        childViewHolder.tv_price.setText(context.getString(R.string.rupee) + " " + childData.getJsonStoreProduct().getDisplayPrice());
         childViewHolder.btn_increase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,9 +98,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
-
         return convertView;
-
     }
 
     @Override
@@ -161,6 +155,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     public final class ChildViewHolder {
 
         TextView tv_child_title;
+        TextView tv_price;
         TextView tv_value;
         Button btn_decrease;
         Button btn_increase;
