@@ -204,4 +204,7 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     </string>
     <string name="medical_history">Medical History</string>
     <string name="medical_history_details">Medical History Details</string>
+
+
+    <string name="rupee">\u20B9</string>
 </resources>

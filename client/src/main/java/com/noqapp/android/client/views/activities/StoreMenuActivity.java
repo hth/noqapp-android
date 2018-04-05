@@ -28,6 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+// Scrollview issue  https://stackoverflow.com/questions/37605545/android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrderPresenter {
     private static final String TAG = StoreMenuActivity.class.getSimpleName();
@@ -76,20 +77,27 @@ public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrde
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();
+
+
+                List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
+                int price = 0;
+                for (ChildData value : getOrder.values()) {
+                    ll.add(new JsonPurchaseOrderProduct()
+                            .setProductId(value.getJsonStoreProduct().getProductId())
+                            .setProductPrice(value.getJsonStoreProduct().getProductPrice())
+                            .setProductQuantity(value.getChildInput()));
+                    price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
+                }
                 JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
                         .setBizStoreId(jsonQueue.getBizStoreId())
                         .setBusinessType(jsonQueue.getBusinessType())
                         .setQueueUserId("100000000021")
                         // jsonPurchaseOrder.setCustomerName(jsonQueue.);
                         .setDeliveryType(jsonQueue.getDeliveryTypes().get(0))
-                        .setOrderPrice("100")
-                        .setPaymentType(jsonQueue.getPaymentTypes().get(0));
-
-                List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
-                ll.add(new JsonPurchaseOrderProduct()
-                        .setProductId("5ac1c36cb85cb7763e9ea9fc")
-                        .setProductPrice(10000)
-                        .setProductQuantity(5));
+                        .setOrderPrice(String.valueOf(price))
+                        .setPaymentType(jsonQueue.getPaymentTypes().get(1));
                 jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 
                 Log.i(TAG, "order Place " + jsonPurchaseOrder.asJson());

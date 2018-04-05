@@ -1,19 +1,19 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.Formatter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,72 +21,76 @@ import java.util.Map;
 
 import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
 
-public class CategoryPagerAdapter extends PagerAdapter {
+public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGridAdapter.ViewHolder> {
 
-    public interface CategoryPagerClick {
-        void pageClicked(int position);
-    }
-
+    private final OnItemClickListener listener;
     private List<JsonCategory> categories;
     private Map<String, ArrayList<JsonQueue>> queueMap;
     private Context context;
-    private CategoryPagerClick categoryPagerClick;
 
-    public CategoryPagerAdapter(
-            Context context,
-            List<JsonCategory> categories,
-            Map<String, ArrayList<JsonQueue>> queueMap,
-            CategoryPagerClick pagerClick) {
+    public interface OnItemClickListener {
+        void onCategoryItemClick(int pos);
+    }
+
+    public RecyclerViewGridAdapter(Context context, List<JsonCategory> categories,
+            Map<String, ArrayList<JsonQueue>> queueMap, OnItemClickListener listener) {
         this.categories = categories;
         this.queueMap = queueMap;
         this.context = context;
-        this.categoryPagerClick = pagerClick;
+        this.listener = listener;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView tv_title;
+        private TextView tv_detail;
+        private TextView tv_noinq;
+        private ImageView iv_main;
+        private CardView card_view;
+
+        public ViewHolder(View v) {
+            super(v);
+            tv_title = v.findViewById(R.id.tv_title);
+            tv_detail = v.findViewById(R.id.tv_detail);
+            tv_noinq = v.findViewById(R.id.tv_noinq);
+            iv_main = v.findViewById(R.id.iv_main);
+            card_view = v.findViewById(R.id.card_view);
+        }
     }
 
     @Override
-    public int getCount() {
-        return categories.size();
+    public RecyclerViewGridAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(context).inflate(R.layout.grid_item_category, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        return viewHolder;
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
-    }
-
-    @Override
-    public Object instantiateItem(final ViewGroup container, final int position) {
+    public void onBindViewHolder(ViewHolder Vholder, final int position) {
         JsonCategory jsonCategory = categories.get(position);
         List<JsonQueue> jsonQueues = queueMap.get(jsonCategory.getBizCategoryId());
         JsonQueue jsonQueue = null;
         if (!jsonQueues.isEmpty()) {
             jsonQueue = jsonQueues.get(0);
         }
+        Vholder.tv_title.setText(jsonCategory.getCategoryName());
+        Vholder.tv_detail.setText(getAdditionalCardText(jsonQueue));
+        Vholder.tv_noinq.setText(String.valueOf(jsonQueues.size()));
 
-        View view = LayoutInflater
-                .from(container.getContext())
-                .inflate(R.layout.category_pager_item, container, false);
-
-        container.addView(view);
-        TextView tv_title = view.findViewById(R.id.tv_title);
-        TextView tv_detail = view.findViewById(R.id.tv_detail);
-        TextView tv_noinq = view.findViewById(R.id.tv_noinq);
-        tv_title.setText(jsonCategory.getCategoryName());
-        tv_detail.setText(getAdditionalCardText(jsonQueue));
-        tv_noinq.setText(String.valueOf(jsonQueues.size()));
-        final CardView cardView = (CardView) view.findViewById(R.id.cardView);
-        cardView.setCardBackgroundColor(Color.parseColor(Constants.colorCodes[position % Constants.colorCodes.length]));
-        cardView.setOnClickListener(new View.OnClickListener() {
+        Picasso.with(context)
+                .load("https://noqapp.com/imgs/240x120/a.jpeg")
+                .into(Vholder.iv_main);
+        Vholder.card_view.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                categoryPagerClick.pageClicked(position);
+                listener.onCategoryItemClick(position);
             }
         });
-
-        return view;
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
+    public int getItemCount() {
+        return categories.size();
     }
 
     private String getAdditionalCardText(JsonQueue jsonQueue) {

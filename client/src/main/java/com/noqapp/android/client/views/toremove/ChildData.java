@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.toremove;
 
-import android.text.TextUtils;
 
 import com.noqapp.android.client.presenter.beans.JsonStoreProduct;
 
@@ -12,21 +11,21 @@ import java.io.Serializable;
 
 public class ChildData implements Serializable {
 
-    private String childInput;
+    private int childInput;
     private JsonStoreProduct jsonStoreProduct;
 
 
-    public ChildData(String childInput, JsonStoreProduct jsonStoreProduct) {
+    public ChildData(int childInput, JsonStoreProduct jsonStoreProduct) {
         this.childInput = childInput;
         this.jsonStoreProduct = jsonStoreProduct;
     }
 
 
-    public String getChildInput() {
-        return TextUtils.isEmpty(childInput) ? "0" : childInput;
+    public int getChildInput() {
+        return childInput;
     }
 
-    public ChildData setChildInput(String childInput) {
+    public ChildData setChildInput(int childInput) {
         this.childInput = childInput;
         return this;
     }

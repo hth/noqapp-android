@@ -29,12 +29,16 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private List<JsonStoreCategory> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<ChildData>> listDataChild;
-
+    public HashMap<String, ChildData> getOrders() {
+        return orders;
+    }
+    private HashMap<String, ChildData> orders = new HashMap<>();
     public CustomExpandableListAdapter(Context context, List<JsonStoreCategory> listDataHeader,
                                        HashMap<String, List<ChildData>> listDataChild) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
+        orders.clear();
     }
 
     @Override
@@ -53,32 +57,27 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final ChildViewHolder childViewHolder;
         final ChildData childData = (ChildData) getChild(groupPosition, childPosition);
-
-
         if (convertView == null) {
-
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_filter, null);
-
             childViewHolder = new ChildViewHolder();
-
             childViewHolder.tv_child_title = (TextView) convertView
                     .findViewById(R.id.tv_child_title);
             childViewHolder.tv_value = (TextView) convertView
                     .findViewById(R.id.tv_value);
+            childViewHolder.tv_price = (TextView) convertView.findViewById(R.id.tv_price);
             childViewHolder.btn_increase = (Button) convertView.findViewById(R.id.btn_increase);
             childViewHolder.btn_decrease = (Button) convertView.findViewById(R.id.btn_decrease);
             convertView.setTag(R.layout.list_item_filter, childViewHolder);
-
         } else {
-
             childViewHolder = (ChildViewHolder) convertView
                     .getTag(R.layout.list_item_filter);
         }
 
         childViewHolder.tv_child_title.setText(childData.getJsonStoreProduct().getProductName());
-        childViewHolder.tv_value.setText(childData.getChildInput());
+        childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
+        childViewHolder.tv_price.setText(context.getString(R.string.rupee) + " " + childData.getJsonStoreProduct().getDisplayPrice());
         childViewHolder.btn_increase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +85,15 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
                 childViewHolder.tv_value.setText("" + number);
                 listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                        .get(childPosition).setChildInput("" + number);
+                        .get(childPosition).setChildInput( number);
+                if(number<=0){
+                    orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                            .get(childPosition).getJsonStoreProduct().getProductId());
+                }else{
+                    orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                            .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                            .get(childPosition));
+                }
                 notifyDataSetChanged();
             }
         });
@@ -97,14 +104,20 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
                 childViewHolder.tv_value.setText("" + number);
                 listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                        .get(childPosition).setChildInput("" + number);
+                        .get(childPosition).setChildInput(number);
+                if(number<=0){
+                    orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                            .get(childPosition).getJsonStoreProduct().getProductId());
+                }else{
+                    orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                            .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                            .get(childPosition));
+                }
                 notifyDataSetChanged();
             }
         });
 
-
         return convertView;
-
     }
 
     @Override
@@ -159,8 +172,8 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
 
     public final class ChildViewHolder {
-
         TextView tv_child_title;
+        TextView tv_price;
         TextView tv_value;
         Button btn_decrease;
         Button btn_increase;
