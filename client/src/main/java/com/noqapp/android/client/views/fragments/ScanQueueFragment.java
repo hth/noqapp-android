@@ -22,6 +22,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.DoctorProfile1Activity;
 import com.noqapp.android.client.views.activities.DoctorProfileActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -144,9 +145,14 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
         b.putBoolean(KEY_FROM_LIST, fromList);
         b.putBoolean(KEY_IS_HISTORY, false);
         if (isCategoryData) {
-            CategoryInfoFragment cif = new CategoryInfoFragment();
-            cif.setArguments(b);
-            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, currentTab);
+//            CategoryInfoFragment cif = new CategoryInfoFragment();
+//            cif.setArguments(b);
+//            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, currentTab);
+
+            Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
+            in.putExtra("b",b);
+            getActivity().startActivity(in);
+
         } else {
             JoinFragment jf = new JoinFragment();
             b.putBoolean("isCategoryData", false);
