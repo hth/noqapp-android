@@ -306,7 +306,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
         for (BizStoreElastic jsonQueue : bizStoreElasticList.getBizStoreElastics()) {
 
             //Likely hood of blank bizCategoryId
-            String categoryId = jsonQueue.getCategory() == null ? "" : jsonQueue.getCategory();
+            String categoryId = jsonQueue.getCategoryId() == null ? "" : jsonQueue.getCategoryId();
             if (!queueMap.containsKey(categoryId)) {
                 ArrayList<BizStoreElastic> jsonQueues = new ArrayList<>();
                 jsonQueues.add(jsonQueue);
