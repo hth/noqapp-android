@@ -5,17 +5,13 @@ package com.noqapp.android.client.views.activities;
  */
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -27,11 +23,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonQueueList;
@@ -41,13 +35,11 @@ import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.CategoryListPagerAdapter;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
-import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
-import com.noqapp.android.client.views.fragments.CategoryListFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -58,7 +50,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.google.common.cache.CacheBuilder.*;
+import static com.google.common.cache.CacheBuilder.newBuilder;
 import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
 
 public class CategoryInfoActivity extends AppCompatActivity implements QueuePresenter, RecyclerViewGridAdapter.OnItemClickListener {
@@ -108,9 +100,6 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     protected LinearLayout ll_cat_info;
 
     private String codeQR;
-
-    private String frtag;
-
     private Animation animShow, animHide;
     private boolean isSliderOpen = false;
 
@@ -127,7 +116,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     private float rating = 0;
     private int ratingCount = 0;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
-    private CategoryListPagerAdapter mFragmentCardAdapter;
+   // private CategoryListPagerAdapter mFragmentCardAdapter;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     Bundle bundle;
 
@@ -176,15 +165,6 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
                 QueueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
-            }
-            if (bundle.getBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false)) {
-                frtag = LaunchActivity.tabList;
-            } else {
-                frtag = LaunchActivity.tabHome;
-            }
-            if (bundle.getBoolean(NoQueueBaseFragment.KEY_IS_REJOIN, false)) {
-
-                frtag = LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
             }
         }
         ll_cat_info.setFocusableInTouchMode(true);
@@ -247,8 +227,6 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
 
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
-
-
             LaunchActivity.getLaunchActivity().dismissProgress();
             tv_store_name.setText(jsonQueue.getBusinessName());
             tv_queue_name.setText(jsonQueue.getDisplayName());
@@ -350,35 +328,14 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     }
 
     @Override
-    public void onCategoryItemClick(int pos) {
-        ll_slide_view.setVisibility(View.VISIBLE);
-        ll_slide_view.startAnimation(animShow);
-        ArrayList<CategoryListFragment> mFragments = new ArrayList<>();
+    public void onCategoryItemClick(int pos ,JsonCategory jsonCategory) {
 
         Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
         Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
+        Intent intent = new Intent(this, CategoryListActivity.class);
+        intent.putExtra("categoryName", categoryMap.get(jsonCategory.getBizCategoryId()).getCategoryName());
+        intent.putExtra("list", (Serializable) queueMap.get(jsonCategory.getBizCategoryId()));
+        startActivity(intent);
 
-        int count = 0;
-        for (String key : categoryMap.keySet()) {
-            String color = Constants.colorCodes[count % Constants.colorCodes.length];
-            count++;
-
-            if (queueMap.containsKey(key)) {
-                mFragments.add(CategoryListFragment.newInstance(queueMap.get(key), categoryMap.get(key).getCategoryName(), color,
-                        bundle.getBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false),
-                        bundle.getBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false)));
-            } else {
-                Log.w("", "Skipped empty category " + key);
-            }
-        }
-
-        mFragmentCardAdapter = new CategoryListPagerAdapter(
-                getSupportFragmentManager(),
-                mFragments);
-        list_pager.setAdapter(null);
-        list_pager.setAdapter(mFragmentCardAdapter);
-        list_pager.setOffscreenPageLimit(3);
-        list_pager.setCurrentItem(pos);
-        isSliderOpen = true;
     }
 }

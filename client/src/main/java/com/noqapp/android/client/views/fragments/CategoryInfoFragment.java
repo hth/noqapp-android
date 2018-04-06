@@ -319,7 +319,7 @@ public class CategoryInfoFragment extends NoQueueBaseFragment implements QueuePr
     }
 
     @Override
-    public void onCategoryItemClick(int pos) {
+    public void onCategoryItemClick(int pos ,JsonCategory jsonCategory) {
         ll_slide_view.setVisibility(View.VISIBLE);
         ll_slide_view.startAnimation(animShow);
         ArrayList<CategoryListFragment> mFragments = new ArrayList<>();

@@ -29,7 +29,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
     private Context context;
 
     public interface OnItemClickListener {
-        void onCategoryItemClick(int pos);
+        void onCategoryItemClick(int pos, JsonCategory jsonCategory);
     }
 
     public RecyclerViewGridAdapter(Context context, List<JsonCategory> categories,
@@ -67,7 +67,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
 
     @Override
     public void onBindViewHolder(ViewHolder Vholder, final int position) {
-        JsonCategory jsonCategory = categories.get(position);
+        final JsonCategory jsonCategory = categories.get(position);
         List<JsonQueue> jsonQueues = queueMap.get(jsonCategory.getBizCategoryId());
         JsonQueue jsonQueue = null;
         if (!jsonQueues.isEmpty()) {
@@ -83,7 +83,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
         Vholder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onCategoryItemClick(position);
+                listener.onCategoryItemClick(position,jsonCategory);
             }
         });
     }
