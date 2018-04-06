@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
@@ -28,19 +29,19 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StoreHourElastic implements Serializable {
 
-    @JsonIgnore("DW")
+    @JsonProperty("DW")
     private int dayOfWeek;
 
-    @JsonIgnore("TF")
+    @JsonProperty("TF")
     private int tokenAvailableFrom;
 
-    @JsonIgnore("SH")
+    @JsonProperty("SH")
     private int startHour;
 
-    @JsonIgnore("TE")
+    @JsonProperty("TE")
     private int tokenNotAvailableFrom;
 
-    @JsonIgnore("EH")
+    @JsonProperty("EH")
     private int endHour;
 
     public int getDayOfWeek() {
