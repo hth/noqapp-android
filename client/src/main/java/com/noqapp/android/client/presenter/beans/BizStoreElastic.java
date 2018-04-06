@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.BusinessTypeEnum;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by hitender on 3/22/18.
@@ -29,7 +31,7 @@ import java.util.Arrays;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BizStoreElastic implements Serializable{
+public class BizStoreElastic implements Serializable {
 
     @JsonIgnore
     private String id;
@@ -45,6 +47,9 @@ public class BizStoreElastic implements Serializable{
 
     @JsonProperty ("BC")
     private String category;
+
+    @JsonProperty ("BCI")
+    private String categoryId;
 
     @JsonProperty ("AD")
     private String address;
@@ -118,6 +123,9 @@ public class BizStoreElastic implements Serializable{
     @JsonProperty ("DI")
     private String displayImage;
 
+    @JsonProperty ("SH")
+    private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
+
     public String getId() {
         return id;
     }
@@ -160,6 +168,15 @@ public class BizStoreElastic implements Serializable{
 
     public BizStoreElastic setCategory(String category) {
         this.category = category;
+        return this;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public BizStoreElastic setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
         return this;
     }
 
@@ -367,6 +384,15 @@ public class BizStoreElastic implements Serializable{
 
     public BizStoreElastic setDisplayImage(String displayImage) {
         this.displayImage = displayImage;
+        return this;
+    }
+
+    public List<StoreHourElastic> getStoreHourElasticList() {
+        return storeHourElasticList;
+    }
+
+    public BizStoreElastic setStoreHourElasticList(List<StoreHourElastic> storeHourElasticList) {
+        this.storeHourElasticList = storeHourElasticList;
         return this;
     }
 
