@@ -258,9 +258,9 @@ public class ListQueueFragment extends NoQueueBaseFragment implements TokenAndQu
         b.putBoolean(KEY_FROM_LIST, true);
         b.putBoolean(KEY_IS_HISTORY, true);
         b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false);
-        CategoryInfoFragment cif = new CategoryInfoFragment();
-        cif.setArguments(b);
-        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
+       // CategoryInfoFragment cif = new CategoryInfoFragment();
+       // cif.setArguments(b);
+       // replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, LaunchActivity.tabList);
     }
 
     private static class QueueHandler extends Handler {

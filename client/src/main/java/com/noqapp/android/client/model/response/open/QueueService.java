@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model.response.open;
 
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonQueueList;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
@@ -35,7 +36,7 @@ public interface QueueService {
     );
 
     @GET("open/token/v1/{codeQR}.json")
-    Call<JsonQueueList> getAllQueueState(
+    Call<BizStoreElasticList> getAllQueueState(
             @Header("X-R-DID")
             String did,
 

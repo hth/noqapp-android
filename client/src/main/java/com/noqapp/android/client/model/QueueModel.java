@@ -9,6 +9,7 @@ import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonQueueList;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
@@ -82,9 +83,9 @@ public final class QueueModel {
      * @param qrCode
      */
     public static void getAllQueueState(String did, String qrCode) {
-        queueService.getAllQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonQueueList>() {
+        queueService.getAllQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<BizStoreElasticList>() {
             @Override
-            public void onResponse(@NonNull Call<JsonQueueList> call, @NonNull Response<JsonQueueList> response) {
+            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.INVALID_BAR_CODE) {
                     queuePresenter.authenticationFailure(response.code());
                     return;
@@ -99,7 +100,7 @@ public final class QueueModel {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonQueueList> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
 
                 queuePresenter.queueError();

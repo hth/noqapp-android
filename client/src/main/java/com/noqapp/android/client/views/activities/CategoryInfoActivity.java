@@ -5,17 +5,13 @@ package com.noqapp.android.client.views.activities;
  */
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -27,11 +23,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonQueueList;
@@ -41,13 +37,11 @@ import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.CategoryListPagerAdapter;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
-import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
-import com.noqapp.android.client.views.fragments.CategoryListFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -58,7 +52,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.google.common.cache.CacheBuilder.*;
+import static com.google.common.cache.CacheBuilder.newBuilder;
 import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
 
 public class CategoryInfoActivity extends AppCompatActivity implements QueuePresenter, RecyclerViewGridAdapter.OnItemClickListener {
@@ -108,9 +102,6 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     protected LinearLayout ll_cat_info;
 
     private String codeQR;
-
-    private String frtag;
-
     private Animation animShow, animHide;
     private boolean isSliderOpen = false;
 
@@ -119,7 +110,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
             .maximumSize(1)
             .build();
 
-    private final Cache<String, Map<String, ArrayList<JsonQueue>>> cacheQueue = newBuilder()
+    private final Cache<String, Map<String, ArrayList<BizStoreElastic>>> cacheQueue = newBuilder()
             .maximumSize(1)
             .build();
 
@@ -127,7 +118,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     private float rating = 0;
     private int ratingCount = 0;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
-    private CategoryListPagerAdapter mFragmentCardAdapter;
+   // private CategoryListPagerAdapter mFragmentCardAdapter;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     Bundle bundle;
 
@@ -176,15 +167,6 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
                 QueueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
-            }
-            if (bundle.getBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false)) {
-                frtag = LaunchActivity.tabList;
-            } else {
-                frtag = LaunchActivity.tabHome;
-            }
-            if (bundle.getBoolean(NoQueueBaseFragment.KEY_IS_REJOIN, false)) {
-
-                frtag = LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
             }
         }
         ll_cat_info.setFocusableInTouchMode(true);
@@ -249,46 +231,55 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     public void queueResponse(JsonQueue jsonQueue) {
 
 
-            LaunchActivity.getLaunchActivity().dismissProgress();
-            tv_store_name.setText(jsonQueue.getBusinessName());
-            tv_queue_name.setText(jsonQueue.getDisplayName());
-            tv_queue_name.setVisibility(View.GONE);
-            tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
-            tv_mobile.setVisibility(View.GONE);
-            if (jsonQueue.isDayClosed()) {
-                tv_hour_saved.setText(getString(R.string.store_closed));
-            } else {
-                tv_hour_saved.setText(
-                        getString(R.string.store_hour)
-                                + " "
-                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
-                                + " - "
-                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
-            }
-            tv_hour_saved.setVisibility(View.GONE);
-            ratingBar.setRating(rating);
-            // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
-            tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
-            codeQR = jsonQueue.getCodeQR();
-
-            Picasso.with(this)
-                    .load(jsonQueue.getDisplayImage())
-                    .into(iv_category_banner);
-
     }
 
     @Override
-    public void queueResponse(JsonQueueList jsonQueueList) {
-        if (!jsonQueueList.getQueues().isEmpty()) {
-            populateAndSortedCache(jsonQueueList);
-            queueResponse(jsonQueueList.getQueues().get(0));
+    public void queueResponse(BizStoreElasticList bizStoreElasticList) {
+        if (!bizStoreElasticList.getBizStoreElastics().isEmpty()) {
+            populateAndSortedCache(bizStoreElasticList);
+            //queueResponse();
+
+            BizStoreElastic bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
+            LaunchActivity.getLaunchActivity().dismissProgress();
+            tv_store_name.setText(bizStoreElastic.getBusinessName());
+            tv_queue_name.setText(bizStoreElastic.getDisplayName());
+            tv_queue_name.setVisibility(View.GONE);
+            tv_address.setText(Formatter.getFormattedAddress(bizStoreElastic.getAddress()));
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
+            tv_mobile.setVisibility(View.GONE);
+//            if (jsonQueue.isDayClosed()) {
+//                tv_hour_saved.setText(getString(R.string.store_closed));
+//            } else {
+//                tv_hour_saved.setText(
+//                        getString(R.string.store_hour)
+//                                + " "
+//                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
+//                                + " - "
+//                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
+//            }
+//            tv_hour_saved.setVisibility(View.GONE);
+            ratingBar.setRating(rating);
+            // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
+            tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
+            codeQR = bizStoreElastic.getCodeQR();
+
+            Picasso.with(this)
+                    .load(bizStoreElastic.getDisplayImage())
+                    .into(iv_category_banner);
+
+
+
+
+
+
+
         } else {
             //TODO(chandra) when its empty do something nice
         }
 
-        Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
-        RecyclerViewGridAdapter recyclerView_Adapter = new RecyclerViewGridAdapter( this,
+        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
+        RecyclerViewGridAdapter recyclerView_Adapter
+                = new RecyclerViewGridAdapter( this,
                 getCategoryThatArePopulated(),
                 queueMap,listener);
 
@@ -298,32 +289,32 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     /**
      * Populated cache and sorted based on current time.
      *
-     * @param jsonQueueList
+     * //@param jsonQueueList
      */
-    private void populateAndSortedCache(JsonQueueList jsonQueueList) {
+    private void populateAndSortedCache(BizStoreElasticList bizStoreElasticList) {
         Map<String, JsonCategory> categoryMap = new LinkedHashMap<>();
-        for (JsonCategory jsonCategory : jsonQueueList.getCategories()) {
+        for (JsonCategory jsonCategory : bizStoreElasticList.getJsonCategories()) {
             categoryMap.put(jsonCategory.getBizCategoryId(), jsonCategory);
         }
-        categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName(jsonQueueList.getQueues().get(0).getBusinessName()));
+        categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName(bizStoreElasticList.getBizStoreElastics().get(0).getBusinessName()));
         cacheCategory.put("category", categoryMap);
 
         int systemHourMinutes = getTimeIn24HourFormat();
-        Map<String, ArrayList<JsonQueue>> queueMap = new HashMap<>();
+        Map<String, ArrayList<BizStoreElastic>> queueMap = new HashMap<>();
         float ratingQueue = 0;
         int ratingCountQueue = 0, queueWithRating = 0;
-        for (JsonQueue jsonQueue : jsonQueueList.getQueues()) {
+        for (BizStoreElastic jsonQueue : bizStoreElasticList.getBizStoreElastics()) {
 
             //Likely hood of blank bizCategoryId
-            String categoryId = jsonQueue.getBizCategoryId() == null ? "" : jsonQueue.getBizCategoryId();
+            String categoryId = jsonQueue.getCategoryId() == null ? "" : jsonQueue.getCategoryId();
             if (!queueMap.containsKey(categoryId)) {
-                ArrayList<JsonQueue> jsonQueues = new ArrayList<>();
+                ArrayList<BizStoreElastic> jsonQueues = new ArrayList<>();
                 jsonQueues.add(jsonQueue);
                 queueMap.put(categoryId, jsonQueues);
             } else {
-                ArrayList<JsonQueue> jsonQueues = queueMap.get(categoryId);
+                ArrayList<BizStoreElastic> jsonQueues = queueMap.get(categoryId);
                 jsonQueues.add(jsonQueue);
-                AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
+               // AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
             }
 
             if (jsonQueue.getRatingCount() != 0) {
@@ -340,7 +331,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
 
     public List<JsonCategory> getCategoryThatArePopulated() {
         Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
-        Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
+        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
 
         Set<String> categoryKey = categoryMap.keySet();
         Set<String> queueKey = queueMap.keySet();
@@ -350,35 +341,14 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     }
 
     @Override
-    public void onCategoryItemClick(int pos) {
-        ll_slide_view.setVisibility(View.VISIBLE);
-        ll_slide_view.startAnimation(animShow);
-        ArrayList<CategoryListFragment> mFragments = new ArrayList<>();
+    public void onCategoryItemClick(int pos ,JsonCategory jsonCategory) {
 
         Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
-        Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
+        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
+        Intent intent = new Intent(this, CategoryListActivity.class);
+        intent.putExtra("categoryName", categoryMap.get(jsonCategory.getBizCategoryId()).getCategoryName());
+        intent.putExtra("list", (Serializable) queueMap.get(jsonCategory.getBizCategoryId()));
+        startActivity(intent);
 
-        int count = 0;
-        for (String key : categoryMap.keySet()) {
-            String color = Constants.colorCodes[count % Constants.colorCodes.length];
-            count++;
-
-            if (queueMap.containsKey(key)) {
-                mFragments.add(CategoryListFragment.newInstance(queueMap.get(key), categoryMap.get(key).getCategoryName(), color,
-                        bundle.getBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false),
-                        bundle.getBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false)));
-            } else {
-                Log.w("", "Skipped empty category " + key);
-            }
-        }
-
-        mFragmentCardAdapter = new CategoryListPagerAdapter(
-                getSupportFragmentManager(),
-                mFragments);
-        list_pager.setAdapter(null);
-        list_pager.setAdapter(mFragmentCardAdapter);
-        list_pager.setOffscreenPageLimit(3);
-        list_pager.setCurrentItem(pos);
-        isSliderOpen = true;
     }
 }

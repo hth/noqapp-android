@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.Formatter;
@@ -25,15 +26,15 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
 
     private final OnItemClickListener listener;
     private List<JsonCategory> categories;
-    private Map<String, ArrayList<JsonQueue>> queueMap;
+    private Map<String, ArrayList<BizStoreElastic>> queueMap;
     private Context context;
 
     public interface OnItemClickListener {
-        void onCategoryItemClick(int pos);
+        void onCategoryItemClick(int pos, JsonCategory jsonCategory);
     }
 
     public RecyclerViewGridAdapter(Context context, List<JsonCategory> categories,
-            Map<String, ArrayList<JsonQueue>> queueMap, OnItemClickListener listener) {
+            Map<String, ArrayList<BizStoreElastic>> queueMap, OnItemClickListener listener) {
         this.categories = categories;
         this.queueMap = queueMap;
         this.context = context;
@@ -67,14 +68,14 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
 
     @Override
     public void onBindViewHolder(ViewHolder Vholder, final int position) {
-        JsonCategory jsonCategory = categories.get(position);
-        List<JsonQueue> jsonQueues = queueMap.get(jsonCategory.getBizCategoryId());
-        JsonQueue jsonQueue = null;
+        final JsonCategory jsonCategory = categories.get(position);
+        List<BizStoreElastic> jsonQueues = queueMap.get(jsonCategory.getBizCategoryId());
+        BizStoreElastic jsonQueue = null;
         if (!jsonQueues.isEmpty()) {
             jsonQueue = jsonQueues.get(0);
         }
         Vholder.tv_title.setText(jsonCategory.getCategoryName());
-        Vholder.tv_detail.setText(getAdditionalCardText(jsonQueue));
+       // Vholder.tv_detail.setText(getAdditionalCardText(jsonQueue));
         Vholder.tv_noinq.setText(String.valueOf(jsonQueues.size()));
 
         Picasso.with(context)
@@ -83,7 +84,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
         Vholder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onCategoryItemClick(position);
+                listener.onCategoryItemClick(position,jsonCategory);
             }
         });
     }
