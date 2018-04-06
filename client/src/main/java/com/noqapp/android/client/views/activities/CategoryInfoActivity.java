@@ -26,6 +26,8 @@ import com.google.common.cache.Cache;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonQueueList;
@@ -108,7 +110,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
             .maximumSize(1)
             .build();
 
-    private final Cache<String, Map<String, ArrayList<JsonQueue>>> cacheQueue = newBuilder()
+    private final Cache<String, Map<String, ArrayList<BizStoreElastic>>> cacheQueue = newBuilder()
             .maximumSize(1)
             .build();
 
@@ -227,46 +229,57 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
 
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
-            LaunchActivity.getLaunchActivity().dismissProgress();
-            tv_store_name.setText(jsonQueue.getBusinessName());
-            tv_queue_name.setText(jsonQueue.getDisplayName());
-            tv_queue_name.setVisibility(View.GONE);
-            tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
-            tv_mobile.setVisibility(View.GONE);
-            if (jsonQueue.isDayClosed()) {
-                tv_hour_saved.setText(getString(R.string.store_closed));
-            } else {
-                tv_hour_saved.setText(
-                        getString(R.string.store_hour)
-                                + " "
-                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
-                                + " - "
-                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
-            }
-            tv_hour_saved.setVisibility(View.GONE);
-            ratingBar.setRating(rating);
-            // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
-            tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
-            codeQR = jsonQueue.getCodeQR();
 
-            Picasso.with(this)
-                    .load(jsonQueue.getDisplayImage())
-                    .into(iv_category_banner);
 
     }
 
     @Override
-    public void queueResponse(JsonQueueList jsonQueueList) {
-        if (!jsonQueueList.getQueues().isEmpty()) {
-            populateAndSortedCache(jsonQueueList);
-            queueResponse(jsonQueueList.getQueues().get(0));
+    public void queueResponse(BizStoreElasticList bizStoreElasticList) {
+        if (!bizStoreElasticList.getBizStoreElastics().isEmpty()) {
+            populateAndSortedCache(bizStoreElasticList);
+            //queueResponse();
+
+            BizStoreElastic bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
+            LaunchActivity.getLaunchActivity().dismissProgress();
+            tv_store_name.setText(bizStoreElastic.getBusinessName());
+            tv_queue_name.setText(bizStoreElastic.getDisplayName());
+            tv_queue_name.setVisibility(View.GONE);
+            tv_address.setText(Formatter.getFormattedAddress(bizStoreElastic.getAddress()));
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
+            tv_mobile.setVisibility(View.GONE);
+//            if (jsonQueue.isDayClosed()) {
+//                tv_hour_saved.setText(getString(R.string.store_closed));
+//            } else {
+//                tv_hour_saved.setText(
+//                        getString(R.string.store_hour)
+//                                + " "
+//                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
+//                                + " - "
+//                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
+//            }
+//            tv_hour_saved.setVisibility(View.GONE);
+            ratingBar.setRating(rating);
+            // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
+            tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
+            codeQR = bizStoreElastic.getCodeQR();
+
+            Picasso.with(this)
+                    .load(bizStoreElastic.getDisplayImage())
+                    .into(iv_category_banner);
+
+
+
+
+
+
+
         } else {
             //TODO(chandra) when its empty do something nice
         }
 
-        Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
-        RecyclerViewGridAdapter recyclerView_Adapter = new RecyclerViewGridAdapter( this,
+        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
+        RecyclerViewGridAdapter recyclerView_Adapter
+                = new RecyclerViewGridAdapter( this,
                 getCategoryThatArePopulated(),
                 queueMap,listener);
 
@@ -276,32 +289,32 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     /**
      * Populated cache and sorted based on current time.
      *
-     * @param jsonQueueList
+     * //@param jsonQueueList
      */
-    private void populateAndSortedCache(JsonQueueList jsonQueueList) {
+    private void populateAndSortedCache(BizStoreElasticList bizStoreElasticList) {
         Map<String, JsonCategory> categoryMap = new LinkedHashMap<>();
-        for (JsonCategory jsonCategory : jsonQueueList.getCategories()) {
+        for (JsonCategory jsonCategory : bizStoreElasticList.getJsonCategories()) {
             categoryMap.put(jsonCategory.getBizCategoryId(), jsonCategory);
         }
-        categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName(jsonQueueList.getQueues().get(0).getBusinessName()));
+        categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName(bizStoreElasticList.getBizStoreElastics().get(0).getBusinessName()));
         cacheCategory.put("category", categoryMap);
 
         int systemHourMinutes = getTimeIn24HourFormat();
-        Map<String, ArrayList<JsonQueue>> queueMap = new HashMap<>();
+        Map<String, ArrayList<BizStoreElastic>> queueMap = new HashMap<>();
         float ratingQueue = 0;
         int ratingCountQueue = 0, queueWithRating = 0;
-        for (JsonQueue jsonQueue : jsonQueueList.getQueues()) {
+        for (BizStoreElastic jsonQueue : bizStoreElasticList.getBizStoreElastics()) {
 
             //Likely hood of blank bizCategoryId
-            String categoryId = jsonQueue.getBizCategoryId() == null ? "" : jsonQueue.getBizCategoryId();
+            String categoryId = jsonQueue.getCategory() == null ? "" : jsonQueue.getCategory();
             if (!queueMap.containsKey(categoryId)) {
-                ArrayList<JsonQueue> jsonQueues = new ArrayList<>();
+                ArrayList<BizStoreElastic> jsonQueues = new ArrayList<>();
                 jsonQueues.add(jsonQueue);
                 queueMap.put(categoryId, jsonQueues);
             } else {
-                ArrayList<JsonQueue> jsonQueues = queueMap.get(categoryId);
+                ArrayList<BizStoreElastic> jsonQueues = queueMap.get(categoryId);
                 jsonQueues.add(jsonQueue);
-                AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
+               // AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
             }
 
             if (jsonQueue.getRatingCount() != 0) {
@@ -318,7 +331,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
 
     public List<JsonCategory> getCategoryThatArePopulated() {
         Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
-        Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
+        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
 
         Set<String> categoryKey = categoryMap.keySet();
         Set<String> queueKey = queueMap.keySet();
@@ -331,7 +344,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     public void onCategoryItemClick(int pos ,JsonCategory jsonCategory) {
 
         Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
-        Map<String, ArrayList<JsonQueue>> queueMap = cacheQueue.getIfPresent("queue");
+        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
         Intent intent = new Intent(this, CategoryListActivity.class);
         intent.putExtra("categoryName", categoryMap.get(jsonCategory.getBizCategoryId()).getCategoryName());
         intent.putExtra("list", (Serializable) queueMap.get(jsonCategory.getBizCategoryId()));

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by hitender on 3/22/18.
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -32,6 +32,9 @@ public class BizStoreElasticList {
     @JsonProperty("cityName")
     private String cityName;
 
+    @JsonProperty("categories")
+    private List<JsonCategory> jsonCategories = new ArrayList<>();
+
     @JsonProperty("result")
     private List<BizStoreElastic> bizStoreElastics = new ArrayList<>();
 
@@ -41,6 +44,15 @@ public class BizStoreElasticList {
 
     public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
         this.bizStoreElastics = bizStoreElastics;
+        return this;
+    }
+
+    public List<JsonCategory> getJsonCategories() {
+        return jsonCategories;
+    }
+
+    public BizStoreElasticList setJsonCategories(List<JsonCategory> jsonCategories) {
+        this.jsonCategories = jsonCategories;
         return this;
     }
 

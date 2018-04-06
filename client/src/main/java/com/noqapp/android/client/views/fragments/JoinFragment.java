@@ -16,6 +16,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonQueueList;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
@@ -232,9 +233,10 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     }
 
     @Override
-    public void queueResponse(JsonQueueList jsonQueues) {
+    public void queueResponse(BizStoreElasticList bizStoreElasticList) {
 
     }
+
 
     @OnClick(R.id.btn_joinQueue)
     public void joinQueue() {

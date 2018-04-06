@@ -34,7 +34,7 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryL
     protected FrameLayout fl_notification;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
-    private ArrayList<JsonQueue> jsonQueues ;
+    private ArrayList<BizStoreElastic> jsonQueues ;
     private CategoryListAdapter1 categoryListAdapter1;
     @BindView(R.id.rv_category_list)
     protected RecyclerView rv_category_list;
@@ -61,7 +61,7 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryL
 
         tv_toolbar_title.setText(categoryName);
         try {
-          jsonQueues = (ArrayList<JsonQueue>) getIntent().getExtras().getSerializable("list");
+          jsonQueues = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
         }catch (Exception e){
             e.printStackTrace();
             jsonQueues = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.noqapp.android.client.presenter;
 
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonQueueList;
 
@@ -11,7 +12,7 @@ public interface QueuePresenter {
 
     void queueResponse(JsonQueue queue);
 
-    void queueResponse(JsonQueueList jsonQueues);
+    void queueResponse(BizStoreElasticList bizStoreElasticList);
 
     void queueError();
 
