@@ -150,6 +150,7 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
 //            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, currentTab);
 
             Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
+            //TODO(chandra) Need to define b with a constant
             in.putExtra("b",b);
             getActivity().startActivity(in);
 
