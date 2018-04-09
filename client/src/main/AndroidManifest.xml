@@ -98,6 +98,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
+            android:name=".views.activities.JoinActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".views.activities.AfterJoinActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
+        <activity
             android:name=".views.activities.WebViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />

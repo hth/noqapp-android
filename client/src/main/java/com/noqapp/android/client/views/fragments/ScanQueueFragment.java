@@ -68,6 +68,7 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     @BindView(R.id.btn_type_1)
     protected Button btn_type_1;
 
+
     public ScanQueueFragment() {
 
     }
@@ -247,9 +248,40 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     }
 
     @OnClick(R.id.btn_type_1)
-    public void btn1(){
+    public void btn1() {
         Intent intent = new Intent(getActivity(), DoctorProfile1Activity.class);
         startActivity(intent);
+
+//
+//        // Extract Bitmap from ImageView drawable
+//        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.mipmap.launcher);
+//        if (drawable instanceof BitmapDrawable) {
+//            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+//
+//            // Store image to default external storage directory
+//            Uri bitmapUri = null;
+//            try {
+//                File file = new File(Environment.getExternalStoragePublicDirectory(
+//                        Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
+//                file.getParentFile().mkdirs();
+//                FileOutputStream out = new FileOutputStream(file);
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+//                out.close();
+//                bitmapUri = Uri.fromFile(file);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            if (bitmapUri != null) {
+//                Intent shareIntent = new Intent();
+//                shareIntent.putExtra(Intent.EXTRA_TEXT, "I am inviting you to join our app. A simple and secure app developed by us. https://www.google.co.in/");
+//                shareIntent.setAction(Intent.ACTION_SEND);
+//                shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+//                shareIntent.setType("*/*");
+//                startActivity(Intent.createChooser(shareIntent, "Share my app"));
+//            }
+//        }
+
+
     }
 
 

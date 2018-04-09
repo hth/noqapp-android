@@ -5,6 +5,7 @@ package com.noqapp.android.client.views.activities;
  */
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,9 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.views.adapters.CategoryListAdapter1;
+import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
 import java.util.ArrayList;
 
@@ -78,13 +80,25 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryL
     }
 
 
-
-    @Override
+       @Override
     public void onCategoryItemClick(BizStoreElastic item, View view, int pos) {
-//        Intent in = new Intent(this, StoreDetailActivity.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("BizStoreElastic", item);
-//        in.putExtras(bundle);
-//        startActivity(in);
+        if (item.getBusinessType().equalsIgnoreCase(BusinessTypeEnum.DO.toString()) ||
+                item.getBusinessType().equalsIgnoreCase(BusinessTypeEnum.HO.toString())) {
+            // open hospital profile
+            Intent in = new Intent(this, JoinActivity.class);
+            in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
+            in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
+            in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
+            in.putExtra("isCategoryData", false);
+            startActivity(in);
+        } else {
+            // open order screen
+            Intent in = new Intent(this, StoreDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("BizStoreElastic", item);
+            in.putExtras(bundle);
+            startActivity(in);
+        }
     }
+
 }

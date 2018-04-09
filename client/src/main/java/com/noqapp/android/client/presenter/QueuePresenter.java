@@ -2,7 +2,6 @@ package com.noqapp.android.client.presenter;
 
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.JsonQueueList;
 
 /**
  * User: omkar

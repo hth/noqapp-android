@@ -1,13 +1,19 @@
-package com.noqapp.android.client.views.fragments;
+package com.noqapp.android.client.views.activities;
 
+/**
+ * Created by chandra on 5/7/17.
+ */
+
+
+import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,16 +32,20 @@ import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter {
-    private final String TAG = JoinFragment.class.getSimpleName();
+public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter {
 
+
+    @BindView(R.id.actionbarBack)
+    protected ImageView actionbarBack;
+    @BindView(R.id.fl_notification)
+    protected FrameLayout fl_notification;
+    @BindView(R.id.tv_toolbar_title)
+    protected TextView tv_toolbar_title;
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
 
@@ -78,120 +88,104 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     private String codeQR;
     private String countryShortName;
     private JsonQueue jsonQueue;
-    private String frtag;
     private boolean isJoinNotPossible = false;
     private String joinErrorMsg = "";
     private boolean isCategoryData = true;
 
+
+
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_join, container, false);
-        ButterKnife.bind(this, view);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_join);
+        ButterKnife.bind(this);
+        fl_notification.setVisibility(View.INVISIBLE);
+        actionbarBack.setVisibility(View.VISIBLE);
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        tv_toolbar_title.setText(getString(R.string.screen_join));
+
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        AppUtilities.setRatingBarColor(stars, getActivity());
+        AppUtilities.setRatingBarColor(stars, this);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
+                AppUtilities.makeCall(JoinActivity.this, tv_mobile.getText().toString());
             }
         });
 
         tv_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
+                AppUtilities.openAddressInMap(JoinActivity.this, tv_address.getText().toString());
             }
         });
 
-        Bundle bundle = getArguments();
+        Intent bundle = getIntent();
         if (null != bundle) {
-            codeQR = bundle.getString(KEY_CODE_QR);
-            isCategoryData = bundle.getBoolean("isCategoryData", true);
-            JsonQueue jsonQueue = (JsonQueue) bundle.getSerializable("object");
+            codeQR = bundle.getStringExtra(KEY_CODE_QR);
+            isCategoryData = bundle.getBooleanExtra("isCategoryData", true);
+            JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable("object");
 
-            boolean callingFromHistory = getArguments().getBoolean(KEY_IS_HISTORY, false);
-
-            if (bundle.getBoolean(KEY_FROM_LIST, false)) {
-                frtag = LaunchActivity.tabList;
-                if (callingFromHistory) {
-                    btn_joinQueue.setText(getString(R.string.remotejoin));
-                }
-
-            } else {
-                frtag = LaunchActivity.tabHome;
-            }
-            if (bundle.getBoolean(KEY_IS_REJOIN, false)) {
+            if (bundle.getBooleanExtra(KEY_IS_REJOIN, false)) {
                 btn_joinQueue.setText(getString(R.string.yes));
                 tv_skip_msg.setVisibility(View.VISIBLE);
                 btn_no.setVisibility(View.VISIBLE);
-                frtag = LaunchActivity.getLaunchActivity().getCurrentSelectedTabTag();
             }
 
             if (isCategoryData) {
                 queueResponse(jsonQueue);
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                    //LaunchActivity.getLaunchActivity().progressDialog.show();
                     if (UserUtils.isLogin()) {
                         QueueApiModel.queuePresenter = this;
-                        if (callingFromHistory) {
-                            QueueApiModel.remoteScanQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-                        } else {
                             QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-                        }
+
                     } else {
                         QueueModel.queuePresenter = this;
                         QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
                     }
                 } else {
-                    ShowAlertInformation.showNetworkDialog(getActivity());
+                    ShowAlertInformation.showNetworkDialog(this);
                 }
             }
 
         }
-        return view;
+
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getArguments().getBoolean(KEY_FROM_LIST, false)) {
 
-            if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
-                LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.remotejoin));
-            } else {
-                LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_join));
-            }
-        } else {
-            LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_join));
-        }
-
-        LaunchActivity.getLaunchActivity().enableDisableBack(true);
-    }
 
     @Override
     public void queueError() {
-        Log.d(TAG, "Queue=Error");
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        Log.d("TAG", "Queue=Error");
+        //LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+       // LaunchActivity.getLaunchActivity().dismissProgress();
         if (errorCode == Constants.INVALID_CREDENTIAL) {
             NoQueueBaseActivity.clearPreferences();
-            ShowAlertInformation.showAuthenticErrorDialog(getActivity());
+            ShowAlertInformation.showAuthenticErrorDialog(this);
         }
 
         if (errorCode == Constants.INVALID_BAR_CODE) {
-            ShowAlertInformation.showBarcodeErrorDialog(LaunchActivity.getLaunchActivity());
+            ShowAlertInformation.showBarcodeErrorDialog(this);
         }
     }
 
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
-        Log.d(TAG, "Queue=" + jsonQueue.toString());
+
+        Log.d("TAG", "Queue=" + jsonQueue.toString());
         this.jsonQueue = jsonQueue;
         tv_store_name.setText(jsonQueue.getBusinessName());
         tv_queue_name.setText(jsonQueue.getDisplayName());
@@ -222,10 +216,10 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
         /* Update the remote join count */
         NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
         if (isJoinNotPossible) {
-            Toast.makeText(getActivity(), joinErrorMsg, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
         } else {
             /* Auto join after scan if auto-join status is true in me screen && it is not coming from skip notification as well as history queue. */
-            if (getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, true) && NoQueueBaseActivity.getAutoJoinStatus()) {
+            if (getIntent().getBooleanExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true) && NoQueueBaseActivity.getAutoJoinStatus()) {
                 joinQueue();
             }
         }
@@ -240,9 +234,9 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
     @OnClick(R.id.btn_joinQueue)
     public void joinQueue() {
         if (isJoinNotPossible) {
-            Toast.makeText(getActivity(), joinErrorMsg, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
         } else {
-            if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
+            if (getIntent().getBooleanExtra(KEY_IS_HISTORY, false)) {
                 String errorMsg = "";
                 boolean isValid = true;
                 if (!UserUtils.isLogin()) {
@@ -259,38 +253,33 @@ public class JoinFragment extends NoQueueBaseFragment implements QueuePresenter 
                     isValid = true;
                 }
                 if (isValid) {
-                    Bundle b = new Bundle();
-                    b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
-                    b.putBoolean(KEY_FROM_LIST, false);
-                    b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-                    b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, true);
-                    b.putBoolean(KEY_IS_HISTORY, getArguments().getBoolean(KEY_IS_HISTORY, false));
-                    AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
-                    afterJoinFragment.setArguments(b);
-                    replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
+                    Intent in = new Intent(this, AfterJoinActivity.class);
+                    in.putExtra(KEY_CODE_QR, jsonQueue.getCodeQR());
+                    in.putExtra(KEY_FROM_LIST, false);
+                    in.putExtra(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+                    in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true);
+                    in.putExtra(KEY_IS_HISTORY, getIntent().getBooleanExtra(KEY_IS_HISTORY, false));
+                    startActivity(in);
                 } else {
-                    ShowAlertInformation.showThemeDialog(getActivity(), getString(R.string.error_join), errorMsg, true);
+                    ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), errorMsg, true);
                 }
             } else {
                 //TODO(chandra) make sure jsonQueue is not null. Prevent action on join button.
-                Bundle b = new Bundle();
-                b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
+                Intent in = new Intent(this, AfterJoinActivity.class);
+                in.putExtra(KEY_CODE_QR, jsonQueue.getCodeQR());
                 //TODO // previously KEY_FROM_LIST  was false need to verify
-                b.putBoolean(KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
-                b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, getArguments().getBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, true));
-                b.putBoolean(KEY_IS_HISTORY, getArguments().getBoolean(KEY_IS_HISTORY, false));
-                b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-                AfterJoinFragment afterJoinFragment = new AfterJoinFragment();
-                afterJoinFragment.setArguments(b);
-                replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, afterJoinFragment, TAG, frtag);
+                in.putExtra(KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
+                in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, getIntent().getBooleanExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true));
+                in.putExtra(KEY_IS_HISTORY, getIntent().getBooleanExtra(KEY_IS_HISTORY, false));
+                in.putExtra(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+                startActivity(in);
             }
         }
     }
 
     @OnClick(R.id.btn_no)
     public void click() {
-        LaunchActivity.getLaunchActivity().onBackPressed();
+        finish();
     }
-
 
 }
