@@ -28,4 +28,7 @@
     <dimen name="store_info">16sp</dimen>
     <dimen name="store_sub_headers">18sp</dimen>
     <dimen name="btn_height">25dp</dimen>
+    <dimen name="rating_radius">30dp</dimen>
+    <dimen name="rating_padding">8dp</dimen>
+    <dimen name="rating_text_size">14dp</dimen>
 </resources>

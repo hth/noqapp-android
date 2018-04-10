@@ -12,7 +12,6 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -42,8 +41,6 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
 
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
-    @BindView(R.id.fl_notification)
-    protected FrameLayout fl_notification;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
     @BindView(R.id.tv_store_name)
@@ -101,8 +98,6 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
         ButterKnife.bind(this);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setVisibility(View.VISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -21,5 +21,7 @@
     <color name="progress_unselect">#4de92270</color>
     <color name="open_queue">#095053</color>
     <color name="before_opening_queue">#ae6b3f</color>
+    <!--65 % transparent -->
+    <color name="black_transparent">#A6000000</color>
 
 </resources>

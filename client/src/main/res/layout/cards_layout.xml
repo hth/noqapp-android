@@ -31,18 +31,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY" />
-                <TextView
-                    android:id="@+id/tv_store_rating"
-                    android:layout_width="wrap_content"
+
+                <include layout="@layout/rating_textview" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|top"
-                    android:background="@drawable/round_corner_green_bg"
-                    android:gravity="left"
-                    android:paddingLeft="3dp"
-                    android:paddingRight="3dp"
-                    android:text="0.0"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
+                    android:layout_gravity="bottom"
+                    android:background="@color/black_transparent"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="2.9 km"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="away from you"
+                        android:textColor="@android:color/white" />
+                </RelativeLayout>
             </FrameLayout>
 
             <LinearLayout
@@ -58,6 +71,7 @@
                     android:paddingLeft="5dp"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
+
                 <TextView
                     android:id="@+id/tv_status"
                     android:layout_width="match_parent"
@@ -66,6 +80,7 @@
                     android:paddingLeft="5dp"
                     android:text="Open"
                     android:textSize="14sp" />
+
                 <TextView
                     android:id="@+id/tv_category"
                     android:layout_width="match_parent"

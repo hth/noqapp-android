@@ -12,7 +12,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,8 +31,6 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
 
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
-    @BindView(R.id.fl_notification)
-    protected FrameLayout fl_notification;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
     private ArrayList<BizStoreElastic> listData;
@@ -48,8 +45,6 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
         ButterKnife.bind(this);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setVisibility(View.VISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

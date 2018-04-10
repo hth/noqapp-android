@@ -7,8 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -22,7 +26,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,11 +100,15 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @BindView(R.id.iv_notification)
     protected ImageView iv_notification;
+    @BindView(R.id.fl_notification)
+    protected FrameLayout fl_notification;
+
 
     private long lastPress;
     private Toast backPressToast;
     private BroadcastReceiver broadcastReceiver;
     private String currentSelectedTabTag = "";
+    private ImageView iv_profile;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -130,8 +140,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         actionbarBack.setOnClickListener(this);
         iv_notification.setOnClickListener(this);
-
-
+        fl_notification.setVisibility(View.VISIBLE);
+        actionbarBack.setVisibility(View.GONE);
         initProgress();
         setCurrentSelectedTabTag(tabHome);
         if (null == fragmentsStack.get(tabHome)) {
@@ -155,7 +165,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        LinearLayout mParent = (LinearLayout) navigationView.getHeaderView( 0 );
+        iv_profile = mParent.findViewById(R.id.iv_profile);
 
         final Intent in = new Intent(this, ReviewActivity.class);
         //startActivity(in);
@@ -196,6 +207,13 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
+        iv_profile.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(launchActivity, UserProfileActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -543,7 +561,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (id == R.id.nav_home) {
 
         } else if (id == R.id.nav_invite) {
-
+            Intent in = new Intent(this, InviteActivity.class);
+            startActivity(in);
         } else if (id == R.id.nav_share) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
@@ -579,6 +598,21 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private Bitmap getPath(Uri uri) {
+
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String filePath = cursor.getString(column_index);
+        // cursor.close();
+        // Convert file path into bitmap image using below line.
+        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+
+        return bitmap;
     }
 
 

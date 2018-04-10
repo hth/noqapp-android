@@ -87,18 +87,7 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_store_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/round_corner_green_bg"
-                    android:gravity="left"
-                    android:paddingLeft="3dp"
-                    android:paddingRight="3dp"
-                    android:text="0.0"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
+                <include layout="@layout/rating_textview" />
             </RelativeLayout>
 
             <TextView

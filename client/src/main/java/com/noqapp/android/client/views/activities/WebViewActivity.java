@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,8 +32,6 @@ public class WebViewActivity extends AppCompatActivity {
     protected ImageView actionbarBack;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
-    @BindView(R.id.fl_notification)
-    protected FrameLayout fl_notification;
     @BindView(R.id.tv_badge)
     protected TextView tv_badge;
     @BindView(R.id.webView)
@@ -101,18 +97,10 @@ public class WebViewActivity extends AppCompatActivity {
         } else {
             tv_toolbar_title.setText(getString(R.string.screen_legal));
         }
-        actionbarBack.setVisibility(View.VISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-        fl_notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(WebViewActivity.this, NotificationActivity.class);
-                startActivity(in);
             }
         });
 

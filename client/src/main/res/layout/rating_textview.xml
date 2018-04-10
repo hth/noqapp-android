@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_store_rating"
+    android:layout_width="@dimen/rating_radius"
+    android:layout_height="@dimen/rating_radius"
+    android:layout_gravity="right|top"
+    android:layout_marginRight="@dimen/rating_padding"
+    android:layout_marginTop="@dimen/rating_padding"
+    android:background="@drawable/round_corner_green_bg"
+    android:layout_alignParentRight="true"
+    android:gravity="center"
+    android:text="0.0"
+    android:textColor="@android:color/white"
+    android:textSize="@dimen/rating_text_size" />
