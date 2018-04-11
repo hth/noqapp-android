@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.cutomviews;
+package com.noqapp.android.client.views.customviews;
 
 import android.app.Activity;
 import android.content.Context;

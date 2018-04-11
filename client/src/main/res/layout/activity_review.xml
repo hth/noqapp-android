@@ -27,7 +27,7 @@
             android:background="@drawable/home_top_bg"
             android:orientation="vertical">
 
-            <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                 android:id="@+id/tv_store_name"
                 style="@style/style_join_queue_tv"
                 android:layout_gravity="center_horizontal"
@@ -36,7 +36,7 @@
                 android:textColor="@color/colorActionbar"
                 android:textSize="24sp" />
 
-            <com.noqapp.android.client.views.cutomviews.TextViewRobotoRegular
+            <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
                 android:id="@+id/tv_queue_name"
                 style="@style/style_join_queue_tv"
                 android:layout_below="@+id/tv_store_name"
@@ -46,7 +46,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="15sp" />
 
-            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                 android:id="@+id/tv_address"
                 style="@style/style_join_queue_tv"
                 android:layout_below="@+id/tv_queue_name"
@@ -59,7 +59,7 @@
                 android:textColor="@color/colorAddress"
                 android:textSize="18sp" />
 
-            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                 android:id="@+id/tv_mobile"
                 style="@style/style_join_queue_tv"
                 android:layout_below="@+id/tv_address"
@@ -81,7 +81,7 @@
             android:orientation="vertical"
             android:paddingTop="5dp">
 
-            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                 android:id="@+id/tv_service"
                 style="@style/style_join_queue_tv"
                 android:layout_below="@+id/tv_address"
@@ -109,7 +109,7 @@
                     android:stepSize="1"
                     android:theme="@style/RatingBar" />
 
-                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_rating_value"
                     style="@style/style_join_queue_tv"
                     android:layout_centerVertical="true"
@@ -129,7 +129,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                 style="@style/style_join_queue_tv"
                 android:layout_below="@+id/tv_queue_name"
                 android:layout_gravity="center_horizontal"
@@ -146,7 +146,7 @@
                 android:orientation="vertical"
                 android:weightSum="1">
 
-                <com.noqapp.android.client.views.cutomviews.SeekbarWithIntervals
+                <com.noqapp.android.client.views.customviews.SeekbarWithIntervals
                     android:id="@+id/seekbarWithIntervals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
 
                     />
 
-                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_hr_saved"
                     style="@style/style_join_queue_tv"
                     android:layout_gravity="center_horizontal"
@@ -187,7 +187,7 @@
 
             </LinearLayout>
 
-            <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
+            <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
                 android:id="@+id/btn_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"

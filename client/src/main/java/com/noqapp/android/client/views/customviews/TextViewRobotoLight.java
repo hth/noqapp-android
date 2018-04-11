@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.cutomviews;
+package com.noqapp.android.client.views.customviews;
 
 
 import android.content.Context;
@@ -14,30 +14,29 @@ import com.noqapp.android.client.R;
  * Created by chandra on 4/9/17.
  */
 
-public class TextViewRalewayRegular extends AppCompatTextView {
-    private static final String TAG = TextViewRalewayRegular.class.getName();
+public class TextViewRobotoLight extends AppCompatTextView {
+    private static final String TAG = TextViewRobotoLight.class.getName();
 
-    public TextViewRalewayRegular(Context context) {
+    public TextViewRobotoLight(Context context) {
         super(context);
     }
 
-    public TextViewRalewayRegular(Context context, AttributeSet attrs) {
+    public TextViewRobotoLight(Context context, AttributeSet attrs) {
         super(context, attrs);
         setCustomFont(context, attrs);
     }
 
-    public TextViewRalewayRegular(Context context, AttributeSet attrs, int defStyle) {
+    public TextViewRobotoLight(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setCustomFont(context, attrs);
     }
 
     private void setCustomFont(Context ctx, AttributeSet attrs) {
-        setCustomFont(ctx, ctx.getString(R.string.raleway_regular_font));
-
+        setCustomFont(ctx, ctx.getString(R.string.roboto_light_font));
     }
 
     public boolean setCustomFont(Context ctx, String asset) {
-        Typeface typeface = null;
+        Typeface typeface;
         try {
             typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {

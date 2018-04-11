@@ -55,6 +55,7 @@ import com.noqapp.android.client.views.fragments.LoginFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
+import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -84,7 +85,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public ProgressDialog progressDialog;
     // Tabs associated with list of fragments
     public Map<String, List<Fragment>> fragmentsStack = new HashMap<String, List<Fragment>>();
-
+    public ActivityCommunicator activityCommunicator;
     @BindView(R.id.tv_badge)
     protected TextView tv_badge;
 
@@ -360,7 +361,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Override
     protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+       // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
 
@@ -512,6 +513,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
         }
         TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+
+        if(activityCommunicator != null){
+            activityCommunicator.updateUI(codeQR,jtk, go_to);
+        }
         List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
         if (null != currentTabFragments && currentTabFragments.size() > 1) {
             int size = currentTabFragments.size();
@@ -599,22 +604,4 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    private Bitmap getPath(Uri uri) {
-
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String filePath = cursor.getString(column_index);
-        // cursor.close();
-        // Convert file path into bitmap image using below line.
-        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-
-        return bitmap;
-    }
-
-
-
 }

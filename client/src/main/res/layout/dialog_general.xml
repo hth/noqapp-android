@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
 
-        <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+        <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
             android:id="@+id/tvtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:textColor="@color/colorActionbar"
             android:textSize="24sp" />
 
-        <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
             android:id="@+id/tv_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
+            <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
                 android:id="@+id/btn_no"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
@@ -71,7 +71,7 @@
                 android:background="@color/color_grey_bg"
                 android:visibility="gone" />
 
-            <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
+            <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
                 android:id="@+id/btn_yes"
                 android:layout_width="0dp"
                 android:layout_height="40dp"

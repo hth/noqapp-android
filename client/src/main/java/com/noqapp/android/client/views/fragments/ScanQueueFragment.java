@@ -2,6 +2,8 @@ package com.noqapp.android.client.views.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,32 +16,46 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.QueueApiModel;
+import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.types.NearMeModel;
 import com.noqapp.android.client.presenter.NearMePresenter;
+import com.noqapp.android.client.presenter.NoQueueDBPresenter;
+import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.DoctorProfile1Activity;
-import com.noqapp.android.client.views.activities.DoctorProfileActivity;
+import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.activities.ViewAllListActivity;
+import com.noqapp.android.client.views.adapters.RecentActivityAdapter;
 import com.noqapp.android.client.views.adapters.RecyclerCustomAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
+import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
+import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 import com.noqapp.android.client.views.toremove.DataModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.OnItemClickListener,NearMePresenter,StoreInfoAdapter.OnItemClickListener{
+public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.OnItemClickListener,NearMePresenter,StoreInfoAdapter.OnItemClickListener,TokenAndQueuePresenter, TokenQueueViewInterface {
     private final String TAG = ScanQueueFragment.class.getSimpleName();
 
     @BindView(R.id.cv_scan)
@@ -47,12 +63,18 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
 
     @BindView(R.id.recyclerView)
     protected RecyclerView recyclerView;
+     @BindView(R.id.rv_current_activity)
+    protected RecyclerView rv_current_activity;
+    private static final int MSG_CURRENT_QUEUE = 0;
+    private static final int MSG_HISTORY_QUEUE = 1;
+    private static TokenQueueViewInterface tokenQueueViewInterface;
     @BindView(R.id.rv_merchant_around_you)
     protected RecyclerView rv_merchant_around_you;
     private String currentTab = "";
     private boolean fromList = false;
     private static RecyclerView.Adapter adapter;
     private StoreInfoAdapter storeInfoAdapter;
+    private RecentActivityAdapter recentActivityAdapter;
     private static ArrayList<DataModel> data;
     private static ArrayList<BizStoreElastic> nearMeData;
     private  RecyclerCustomAdapter.OnItemClickListener listener;
@@ -63,7 +85,7 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     @BindView(R.id.tv_near_view_all)
     protected TextView tv_near_view_all;
 
-
+    private static QueueHandler mHandler;
 
     @BindView(R.id.btn_type_1)
     protected Button btn_type_1;
@@ -72,7 +94,38 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
     public ScanQueueFragment() {
 
     }
+    private static class QueueHandler extends Handler {
+        private boolean isCurrentExecute = false;
+        private boolean isHistoryExecute = false;
 
+        // This method is used to handle received messages
+        public void handleMessage(Message msg) {
+            // switch to identify the message by its code
+            switch (msg.what) {
+                case MSG_CURRENT_QUEUE:
+                    //doSomething();
+                    isCurrentExecute = true;
+                    if (isHistoryExecute && isCurrentExecute) {
+                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(LaunchActivity.getLaunchActivity());
+                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
+                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
+                    }
+                    break;
+
+                case MSG_HISTORY_QUEUE:
+                    //doMoreThings();
+                    isHistoryExecute = true;
+                    if (isHistoryExecute && isCurrentExecute) {
+                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(LaunchActivity.getLaunchActivity());
+                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
+                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -98,6 +151,7 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
             // startScanningBarcode();
             // commented due to last discussion that barcode should not start automatically
         }
+        tokenQueueViewInterface = this;
         listener = this;
         listener1 = this;
         recyclerView.setHasFixedSize(true);
@@ -115,6 +169,19 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
         }
         adapter = new RecyclerCustomAdapter(data,getActivity(), listener);
         recyclerView.setAdapter(adapter);
+
+        //
+
+        rv_current_activity.setHasFixedSize(true);
+        LinearLayoutManager horizontalLayoutManagaer2
+                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rv_current_activity.setLayoutManager(horizontalLayoutManagaer2);
+        rv_current_activity.setItemAnimator(new DefaultItemAnimator());
+        rv_current_activity.addItemDecoration(new CirclePagerIndicatorDecoration());
+        Collections.reverse(data);
+        recentActivityAdapter = new RecentActivityAdapter(data,getActivity(), null);
+        rv_current_activity.setAdapter(recentActivityAdapter);
+        //
         rv_merchant_around_you.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer1
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -124,6 +191,31 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
 
 
         getNearMeInfo();
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            mHandler = new QueueHandler();
+
+            if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
+                //Call the current queue
+                QueueApiModel.tokenAndQueuePresenter = this;
+                QueueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+
+                //Call the history queue
+                DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
+                QueueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+            } else {
+                //Call the current queue
+                QueueModel.tokenAndQueuePresenter = this;
+                QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
+
+                //Call the history queue
+                DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
+                QueueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
+            }
+
+
+        } else {
+            ShowAlertInformation.showNetworkDialog(getActivity());
+        }
     }
 
     @Override
@@ -146,20 +238,17 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
         b.putBoolean(KEY_FROM_LIST, fromList);
         b.putBoolean(KEY_IS_HISTORY, false);
         if (isCategoryData) {
-//            CategoryInfoFragment cif = new CategoryInfoFragment();
-//            cif.setArguments(b);
-//            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, cif, TAG, currentTab);
-
             Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
-            //TODO(chandra) Need to define b with a constant
-            in.putExtra("b",b);
+            in.putExtra("bundle",b);
             getActivity().startActivity(in);
 
         } else {
-            JoinFragment jf = new JoinFragment();
-            b.putBoolean("isCategoryData", false);
-            jf.setArguments(b);
-            replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, currentTab);
+            Intent in = new Intent(getActivity(), JoinActivity.class);
+            in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
+            in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
+            in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
+            in.putExtra("isCategoryData", false);
+            startActivity(in);
 
         }
     }
@@ -220,15 +309,15 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
 
     @Override
     public void onItemClick(DataModel item, View view,int pos) {
-        if(pos%2==0) {
-            Intent in = new Intent(getActivity(), StoreDetailActivity.class);
-            in.putExtra("store_name", item.getName());
-            startActivity(in);
-        }else{
-            Intent in = new Intent(getActivity(), DoctorProfileActivity.class);
-            // in.putExtra("store_name",item.getName());
-            startActivity(in);
-        }
+//        if(pos%2==0) {
+//            Intent in = new Intent(getActivity(), StoreDetailActivity.class);
+//            in.putExtra("store_name", item.getName());
+//            startActivity(in);
+//        }else{
+//            Intent in = new Intent(getActivity(), DoctorProfileActivity.class);
+//            // in.putExtra("store_name",item.getName());
+//            startActivity(in);
+//        }
     }
     @OnClick(R.id.tv_near_view_all)
     public void nearClick(){
@@ -244,7 +333,7 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
         Bundle bundle = new Bundle();
        // bundle.putSerializable("data", data1);
         intent.putExtras(bundle);
-        startActivity(intent);
+       // startActivity(intent);
     }
 
     @OnClick(R.id.btn_type_1)
@@ -284,5 +373,68 @@ public class ScanQueueFragment extends Scanner implements RecyclerCustomAdapter.
 
     }
 
+    @Override
+    public void currentQueueResponse(List<JsonTokenAndQueue> tokenAndQueues) {
+        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(getActivity());
+        dbPresenter.tokenQueueViewInterface = this;
+        dbPresenter.saveTokenQueue(tokenAndQueues, true, false);
+    }
 
+    @Override
+    public void historyQueueResponse(List<JsonTokenAndQueue> tokenAndQueues, boolean sinceBeginning) {
+        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(getActivity());
+        dbPresenter.tokenQueueViewInterface = this;
+        dbPresenter.saveTokenQueue(tokenAndQueues, false, sinceBeginning);
+    }
+
+    @Override
+    public void historyQueueError() {
+        Log.d(TAG, "Token and queue Error");
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        passMsgToHandler(false);
+    }
+
+    @Override
+    public void currentQueueError() {
+        Log.d(TAG, "Token and queue Error");
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        passMsgToHandler(true);
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        if (errorCode == Constants.INVALID_CREDENTIAL) {
+            NoQueueBaseActivity.clearPreferences();
+            ShowAlertInformation.showAuthenticErrorDialog(getActivity());
+        }
+    }
+
+    @Override
+    public void currentQueueSaved() {
+        passMsgToHandler(true);
+    }
+
+    @Override
+    public void historyQueueSaved() {
+        passMsgToHandler(false);
+    }
+    private void passMsgToHandler(boolean isCurrentQueue) {
+        // pass msg to handler to load the data from DB
+        if (isCurrentQueue) {
+            Message msg = new Message();
+            msg.what = MSG_CURRENT_QUEUE;
+            mHandler.sendMessage(msg);
+        } else {
+            Message msg = new Message();
+            msg.what = MSG_HISTORY_QUEUE;
+            mHandler.sendMessage(msg);
+        }
+    }
+
+    @Override
+    public void tokenQueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size()) + ":History Queue Count:" + String.valueOf(historylist.size()));
+    }
 }

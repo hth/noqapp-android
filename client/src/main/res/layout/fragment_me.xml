@@ -26,7 +26,7 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
-                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_firstLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
-                <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_phoneno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             </LinearLayout>
 
 
-            <com.noqapp.android.client.views.cutomviews.ButtonRalewayRegular
+            <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
                 android:id="@+id/btn_register_login_logout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
                     android:paddingLeft="@dimen/screen_padding"
                     android:paddingRight="@dimen/screen_padding">
 
-                    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.75"
@@ -125,7 +125,7 @@
                     android:paddingLeft="@dimen/screen_padding"
                     android:paddingRight="@dimen/screen_padding">
 
-                    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.75"
@@ -134,7 +134,7 @@
                         android:textColor="@color/color_total_val"
                         android:textSize="18sp" />
 
-                    <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_RemoteScanCount"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -169,7 +169,7 @@
                         android:orientation="vertical"
                         android:weightSum="1">
 
-                        <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                        <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight=".5"
@@ -178,7 +178,7 @@
                             android:textColor="@color/color_total_val"
                             android:textSize="18sp" />
 
-                        <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight=".5"
@@ -231,7 +231,7 @@
                         android:orientation="vertical"
                         android:weightSum="1">
 
-                        <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                        <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight=".5"
@@ -240,7 +240,7 @@
                             android:textColor="@color/color_total_val"
                             android:textSize="18sp" />
 
-                        <com.noqapp.android.client.views.cutomviews.TextViewRobotoLight
+                        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight=".5"
@@ -272,7 +272,7 @@
                     android:paddingLeft="@dimen/screen_padding"
                     android:paddingRight="@dimen/screen_padding">
 
-                    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                         android:id="@+id/textView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -306,7 +306,7 @@
                     android:paddingLeft="@dimen/screen_padding"
                     android:paddingRight="@dimen/screen_padding">
 
-                    <com.noqapp.android.client.views.cutomviews.TextViewRalewayRegular
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
 
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

@@ -151,7 +151,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
             }
         });
 
-        bundle = getIntent().getBundleExtra("b");
+        bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
             codeQR = bundle.getString(NoQueueBaseFragment.KEY_CODE_QR);
             boolean callingFromHistory = bundle.getBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);

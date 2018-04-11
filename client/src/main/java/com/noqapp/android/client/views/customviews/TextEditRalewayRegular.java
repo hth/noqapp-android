@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.cutomviews;
+package com.noqapp.android.client.views.customviews;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -7,32 +7,31 @@ import android.util.AttributeSet;
 
 import com.noqapp.android.client.R;
 
-
 /**
  * User: hitender
  * Date: 5/7/17 12:05 AM
  */
-public class TextEditRalewayBold extends AppCompatEditText {
+public class TextEditRalewayRegular extends AppCompatEditText {
     private static final String TAG = TextEditRobotoRegular.class.getName();
 
     private Context context;
     private AttributeSet attrs;
     private int defStyle;
 
-    public TextEditRalewayBold(Context context) {
+    public TextEditRalewayRegular(Context context) {
         super(context);
         this.context = context;
         init();
     }
 
-    public TextEditRalewayBold(Context context, AttributeSet attrs) {
+    public TextEditRalewayRegular(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         this.attrs = attrs;
         init();
     }
 
-    public TextEditRalewayBold(Context context, AttributeSet attrs, int defStyle) {
+    public TextEditRalewayRegular(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.context = context;
         this.attrs = attrs;
@@ -41,19 +40,19 @@ public class TextEditRalewayBold extends AppCompatEditText {
     }
 
     private void init() {
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.raleway_bold_font));
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.raleway_regular_font));
         this.setTypeface(font);
     }
 
     @Override
     public void setTypeface(Typeface tf, int style) {
-        tf = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.raleway_bold_font));
+        tf = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.raleway_regular_font));
         super.setTypeface(tf, style);
     }
 
     @Override
     public void setTypeface(Typeface tf) {
-        tf = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.raleway_bold_font));
+        tf = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.raleway_regular_font));
         super.setTypeface(tf);
     }
 }

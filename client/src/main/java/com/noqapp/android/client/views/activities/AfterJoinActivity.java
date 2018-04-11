@@ -39,6 +39,7 @@ import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.AfterJoinFragment;
+import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPresenter, ResponsePresenter {
+public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPresenter, ResponsePresenter,ActivityCommunicator {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
 
     @BindView(R.id.actionbarBack)
@@ -114,7 +115,7 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_qdetails));
-
+        LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(KEY_JSON_TOKEN_QUEUE);
@@ -387,4 +388,25 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
         }
     }
 
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LaunchActivity.getLaunchActivity().activityCommunicator = null;
+    }
+
+    @Override
+    public void updateUI(String qrCode, JsonTokenAndQueue jq, String go_to) {
+        if (codeQR.equals(qrCode)) {
+            //updating the serving status
+            setObject(jq, go_to);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        super.onBackPressed();
+    }
 }

@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.views.adapters.CategoryListAdapter1;
+import com.noqapp.android.client.views.adapters.CategoryListAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CategoryListActivity extends AppCompatActivity implements CategoryListAdapter1.OnItemClickListener {
+public class CategoryListActivity extends AppCompatActivity implements CategoryListAdapter.OnItemClickListener {
 
 
     @BindView(R.id.actionbarBack)
@@ -34,10 +34,10 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryL
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
     private ArrayList<BizStoreElastic> jsonQueues ;
-    private CategoryListAdapter1 categoryListAdapter1;
+    private CategoryListAdapter categoryListAdapter1;
     @BindView(R.id.rv_category_list)
     protected RecyclerView rv_category_list;
-    private CategoryListAdapter1.OnItemClickListener listener;
+    private CategoryListAdapter.OnItemClickListener listener;
 
 
     @Override
@@ -64,7 +64,7 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryL
             jsonQueues = new ArrayList<>();
         }
 
-        categoryListAdapter1 = new CategoryListAdapter1(jsonQueues, this, listener);
+        categoryListAdapter1 = new CategoryListAdapter(jsonQueues, this, listener);
         rv_category_list.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

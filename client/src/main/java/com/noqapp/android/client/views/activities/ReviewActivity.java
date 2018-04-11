@@ -33,7 +33,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.cutomviews.SeekbarWithIntervals;
+import com.noqapp.android.client.views.customviews.SeekbarWithIntervals;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
