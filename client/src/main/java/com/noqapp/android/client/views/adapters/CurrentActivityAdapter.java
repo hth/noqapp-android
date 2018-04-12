@@ -10,18 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.toremove.DataModel;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
-public class RecyclerCustomAdapter extends RecyclerView.Adapter<RecyclerCustomAdapter.MyViewHolder> {
+public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivityAdapter.MyViewHolder> {
     private final Context context;
-    private ArrayList<DataModel> dataSet;
+    private List<JsonTokenAndQueue> dataSet;
 
     public interface OnItemClickListener {
-        void onItemClick(DataModel item, View view, int pos);
+        void currentItemClick(JsonTokenAndQueue item, View view, int pos);
     }
 
     private final OnItemClickListener listener;
@@ -44,7 +44,7 @@ public class RecyclerCustomAdapter extends RecyclerView.Adapter<RecyclerCustomAd
         }
     }
 
-    public RecyclerCustomAdapter(ArrayList<DataModel> data, Context context, OnItemClickListener listener) {
+    public CurrentActivityAdapter(List<JsonTokenAndQueue> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -54,7 +54,7 @@ public class RecyclerCustomAdapter extends RecyclerView.Adapter<RecyclerCustomAd
     public MyViewHolder onCreateViewHolder(ViewGroup parent,
                                            int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cards_layout, parent, false);
+                .inflate(R.layout.rcv_item_current_activity, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -62,16 +62,15 @@ public class RecyclerCustomAdapter extends RecyclerView.Adapter<RecyclerCustomAd
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
-
-        holder.tv_name.setText(dataSet.get(listPosition).getName());
+        holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
        // holder.tv_category.setText();
         Picasso.with(context)
-                .load(dataSet.get(listPosition).getImage())
+                .load("https://noqapp.com/imgs/240x120/b.jpeg")//dataSet.get(listPosition).getImage())
                 .into(holder.iv_main);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(dataSet.get(listPosition), v, listPosition);
+                listener.currentItemClick(dataSet.get(listPosition), v, listPosition);
             }
         });
     }
