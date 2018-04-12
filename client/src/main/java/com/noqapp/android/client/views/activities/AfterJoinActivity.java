@@ -5,6 +5,7 @@ package com.noqapp.android.client.views.activities;
  */
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -111,6 +112,7 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                returnResultBack();
                 finish();
             }
         });
@@ -250,7 +252,7 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
     private void navigateToList() {
         try {
             //Remove the join and after join screen from the QScan tab if the both screen having same QR code
-            List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabHome);
+            List<Fragment> currentTabFragments = null ;//LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabHome);
             if (null != currentTabFragments && currentTabFragments.size() > 1) {
                 int size = currentTabFragments.size();
                 Fragment currentfrg = currentTabFragments.get(size - 1);
@@ -405,8 +407,30 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
     }
 
     @Override
+    public void requestProcessed(String qrCode) {
+        if (codeQR.equals(qrCode)) {
+            //remove the screen from stack
+            returnResultBack();
+            finish();
+        }
+    }
+
+    @Override
     public void onBackPressed() {
+        returnResultBack();
         super.onBackPressed();
-        super.onBackPressed();
+
+    }
+
+    private void returnResultBack() {
+        if(getIntent().getBooleanExtra(Constants.FROM_JOIN_SCREEN, false)) {
+            Intent intent = new Intent();
+            intent.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
+            if (getParent() == null) {
+                setResult(Activity.RESULT_OK, intent);
+            } else {
+                getParent().setResult(Activity.RESULT_OK, intent);
+            }
+        }
     }
 }

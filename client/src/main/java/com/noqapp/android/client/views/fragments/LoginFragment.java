@@ -274,10 +274,10 @@ public class LoginFragment extends NoQueueBaseFragment implements ProfilePresent
             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
 
             //remove the login fragment from stack
-            List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe);
+            /*List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe);
             if (currentTabFragments.size() == 2) {
                 LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
-            }
+            }*/
             LaunchActivity.getLaunchActivity().dismissProgress();
         } else {
             // Rejected from  server

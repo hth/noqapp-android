@@ -6,16 +6,11 @@ package com.noqapp.android.client.views.activities;
 
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -32,25 +27,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.presenter.MePresenter;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
-import com.noqapp.android.client.views.fragments.MeFragment;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
-import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.interfaces.MeView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 

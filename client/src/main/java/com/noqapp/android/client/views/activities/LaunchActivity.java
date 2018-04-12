@@ -9,12 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -54,7 +50,6 @@ import com.noqapp.android.client.views.fragments.AfterJoinFragment;
 import com.noqapp.android.client.views.fragments.JoinFragment;
 import com.noqapp.android.client.views.fragments.ListQueueFragment;
 import com.noqapp.android.client.views.fragments.LoginFragment;
-import com.noqapp.android.client.views.fragments.MeFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
@@ -87,7 +82,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public NetworkUtil networkUtil;
     public ProgressDialog progressDialog;
     // Tabs associated with list of fragments
-    public Map<String, List<Fragment>> fragmentsStack = new HashMap<String, List<Fragment>>();
     public ActivityCommunicator activityCommunicator;
     @BindView(R.id.tv_badge)
     protected TextView tv_badge;
@@ -149,14 +143,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         actionbarBack.setVisibility(View.GONE);
         initProgress();
         setCurrentSelectedTabTag(tabHome);
-        if (null == fragmentsStack.get(tabHome)) {
-            Fragment fragment = new ScanQueueFragment();
-            createStackForTab(tabHome);
-            addFragmentToStack(fragment);
-            replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-        } else {
-            replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
-        }
+        Fragment fragment = new ScanQueueFragment();
+        replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -299,33 +287,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             if (resultCode == RESULT_OK) {
                 String intent_qrCode = data.getExtras().getString(Constants.QRCODE);
                 //Remove the AfterJoinFragment screen if having same qr code from tablist
-                List<Fragment> currentTabFragments = fragmentsStack.get(tabList);
-                if (null != currentTabFragments && currentTabFragments.size() > 1) {
-                    int size = currentTabFragments.size();
-                    Fragment currentFragment = currentTabFragments.get(size - 1);
-                    if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                        String codeQR = ((AfterJoinFragment) currentFragment).getCodeQR();
-                        if (intent_qrCode.equals(codeQR)) {
-                            // clear the stack till first screen of tablist
-                            currentTabFragments.subList(1, currentTabFragments.size()).clear();
-                        }
-                    }
-                }
-                //Remove the AfterJoinFragment screen if having same qr code from Homelist
-                List<Fragment> currentTabFragmentsQ = fragmentsStack.get(tabHome);
-                if (null != currentTabFragmentsQ && currentTabFragmentsQ.size() > 1) {
-                    int size = currentTabFragmentsQ.size();
-                    Fragment currentFragment = currentTabFragmentsQ.get(size - 1);
-                    if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                        String codeQR = ((AfterJoinFragment) currentFragment).getCodeQR();
-                        if (intent_qrCode.equals(codeQR)) {
-                            // clear the stack till first screen of tabHome
-                            currentTabFragmentsQ.subList(1, currentTabFragmentsQ.size()).clear();
-                        }
-                    }
+                if(activityCommunicator != null){
+                    activityCommunicator.requestProcessed(intent_qrCode);
                 }
                 dismissProgress();
-
             }
         }
     }
@@ -407,81 +372,23 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         super.onPause();
     }
 
-    /**
-     * Method for adding list of fragment for tab to our Back Stack
-     *
-     * @param tabTag The identifier tag for the tab
-     */
-    public void createStackForTab(String tabTag) {
-        List<Fragment> tabFragments = new ArrayList<Fragment>();
-        fragmentsStack.put(tabTag, tabFragments);
-    }
 
-    /**
-     * @param fragment The fragment that will be added to the Back Stack
-     */
-    public void addFragmentToStack(Fragment fragment) {
-        fragmentsStack.get(currentSelectedTabTag).add(fragment);
-    }
 
-    /**
-     * Used in TabListener for showing last opened screen from selected tab
-     *
-     * @return The last added fragment of actual tab will be returned
-     */
-    public Fragment getLastFragment() {
-        List<Fragment> fragments = fragmentsStack.get(currentSelectedTabTag);
-        return fragments.get(fragments.size() - 1);
-    }
-
-    /**
-     * Override default behavior of hardware Back button
-     * for navigation thru fragments on tab hierarchy
-     */
     @Override
     public void onBackPressed() {
-
-
-        List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
-
-        if (currentTabFragments.size() > 1) {
-
-            int size = currentTabFragments.size();
-            if (size == 4 && (currentSelectedTabTag.equals(tabHome) || currentSelectedTabTag.equals(tabList))) {
-                /* This condition is added for the skip screen */
-                currentTabFragments.remove(size - 1);
-                size = currentTabFragments.size();
-            }
-            // if it is not first screen then
-            // current screen is closed and removed from Back Stack and shown the previous one
-            Fragment fragment = currentTabFragments.get(size - 2);
-            Fragment currentFragment = currentTabFragments.get(size - 1);
-            currentTabFragments.remove(size - 1);
-
-
-            if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                currentTabFragments.remove(currentTabFragments.size() - 1);
-                fragmentsStack.put(tabList, null);
-                //onClick(rl_list);
-            } else {
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout, fragment);
-                fragmentTransaction.commit();
-            }
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastPress > 3000) {
+            backPressToast = Toast.makeText(launchActivity, getString(R.string.exit_app), Toast.LENGTH_LONG);
+            backPressToast.show();
+            lastPress = currentTime;
         } else {
-            long currentTime = System.currentTimeMillis();
-            if (currentTime - lastPress > 3000) {
-                backPressToast = Toast.makeText(launchActivity, getString(R.string.exit_app), Toast.LENGTH_LONG);
-                backPressToast.show();
-                lastPress = currentTime;
-            } else {
-                if (backPressToast != null) {
-                    backPressToast.cancel();
-                }
-                //super.onBackPressed();
-                finish();
+            if (backPressToast != null) {
+                backPressToast.cancel();
             }
+            //super.onBackPressed();
+            finish();
         }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -525,7 +432,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         JoinFragment jf = new JoinFragment();
         jf.setArguments(b);
         // remove previous screens
-        List<Fragment> currentTabFragments = fragmentsStack.get(getCurrentSelectedTabTag());
+        List<Fragment> currentTabFragments = null;//fragmentsStack.get(getCurrentSelectedTabTag());
         if (null != currentTabFragments && currentTabFragments.size() > 1) {
             int size = currentTabFragments.size();
             // clear the stack till first screen of current tab
@@ -559,7 +466,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if(activityCommunicator != null){
             activityCommunicator.updateUI(codeQR,jtk, go_to);
         }
-        List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
+        List<Fragment> currentTabFragments = null;//fragmentsStack.get(currentSelectedTabTag);
         if (null != currentTabFragments && currentTabFragments.size() > 1) {
             int size = currentTabFragments.size();
             Fragment currentfrg = currentTabFragments.get(size - 1);

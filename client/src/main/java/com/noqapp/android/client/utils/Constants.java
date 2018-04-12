@@ -15,6 +15,7 @@ public class Constants {
     public static final String DEVICE_TYPE = "A";
     public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final int requestCodeJoinQActivity = 11;
+    public static final int requestCodeAfterJoinQActivity = 12;
     public static final int requestCodeNotification = 2;
     public static final String PUSH_NOTIFICATION = "pushNotification";
     public static final String QRCODE = "qrcode";
@@ -30,7 +31,8 @@ public class Constants {
     public static final String QueueStatus = "q";
     public static final String CodeQR = "c";
     public static final String QueueUserState = "u";
-
+    public static final String ACTIVITY_TO_CLOSE = "activity_status";
+    public static final String FROM_JOIN_SCREEN = "from_join_screen";
     //error codes
     public static final int INVALID_CREDENTIAL = 401;
     public static final int INVALID_BAR_CODE = 404;

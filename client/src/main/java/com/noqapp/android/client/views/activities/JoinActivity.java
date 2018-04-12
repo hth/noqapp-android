@@ -90,9 +90,6 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
     private boolean isCategoryData = true;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,7 +138,7 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
                     //LaunchActivity.getLaunchActivity().progressDialog.show();
                     if (UserUtils.isLogin()) {
                         QueueApiModel.queuePresenter = this;
-                            QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                        QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
 
                     } else {
                         QueueModel.queuePresenter = this;
@@ -157,7 +154,6 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
     }
 
 
-
     @Override
     public void queueError() {
         Log.d("TAG", "Queue=Error");
@@ -166,7 +162,7 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
 
     @Override
     public void authenticationFailure(int errorCode) {
-       // LaunchActivity.getLaunchActivity().dismissProgress();
+        // LaunchActivity.getLaunchActivity().dismissProgress();
         if (errorCode == Constants.INVALID_CREDENTIAL) {
             NoQueueBaseActivity.clearPreferences();
             ShowAlertInformation.showAuthenticErrorDialog(this);
@@ -254,7 +250,8 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
                     in.putExtra(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
                     in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true);
                     in.putExtra(KEY_IS_HISTORY, getIntent().getBooleanExtra(KEY_IS_HISTORY, false));
-                    startActivity(in);
+                    in.putExtra(Constants.FROM_JOIN_SCREEN, true);
+                    startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
                 } else {
                     ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), errorMsg, true);
                 }
@@ -267,7 +264,8 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
                 in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, getIntent().getBooleanExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true));
                 in.putExtra(KEY_IS_HISTORY, getIntent().getBooleanExtra(KEY_IS_HISTORY, false));
                 in.putExtra(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-                startActivity(in);
+                in.putExtra(Constants.FROM_JOIN_SCREEN, true);
+                startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
             }
         }
     }
@@ -277,4 +275,19 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
         finish();
     }
 
+    /*
+     *If user navigate to AfterJoinActivity screen from here &
+     * he press back from that screen Join screen should removed from activity stack
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.requestCodeAfterJoinQActivity) {
+            if (resultCode == RESULT_OK) {
+                boolean toclose = data.getExtras().getBoolean(Constants.ACTIVITY_TO_CLOSE, false);
+                if (toclose) {
+                    finish();
+                }
+            }
+        }
+    }
 }
