@@ -12,13 +12,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
+import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
 import java.util.ArrayList;
 
@@ -30,8 +31,6 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
 
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
-    @BindView(R.id.fl_notification)
-    protected FrameLayout fl_notification;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
     private ArrayList<BizStoreElastic> listData;
@@ -46,8 +45,6 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
         ButterKnife.bind(this);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setVisibility(View.VISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,10 +69,22 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
 
     @Override
     public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
-        Intent in = new Intent(this, StoreDetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("BizStoreElastic", item);
-        in.putExtras(bundle);
-        startActivity(in);
+        if (item.getBusinessType().equalsIgnoreCase(BusinessTypeEnum.DO.toString()) ||
+                item.getBusinessType().equalsIgnoreCase(BusinessTypeEnum.HO.toString())) {
+            // open hospital profile
+            Intent in = new Intent(this, JoinActivity.class);
+            in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
+            in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
+            in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
+            in.putExtra("isCategoryData", false);
+            startActivity(in);
+        } else {
+            // open order screen
+            Intent in = new Intent(this, StoreDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("BizStoreElastic", item);
+            in.putExtras(bundle);
+            startActivity(in);
+        }
     }
 }

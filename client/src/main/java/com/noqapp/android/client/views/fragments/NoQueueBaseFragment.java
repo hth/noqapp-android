@@ -37,7 +37,6 @@ public class NoQueueBaseFragment extends Fragment {
         // Added to maintaining the stack
         if (StringUtils.isNotBlank(selectedTab)) {
             LaunchActivity.getLaunchActivity().setCurrentSelectedTabTag(selectedTab);
-            LaunchActivity.getLaunchActivity().addFragmentToStack(fragment);
         }
     }
 

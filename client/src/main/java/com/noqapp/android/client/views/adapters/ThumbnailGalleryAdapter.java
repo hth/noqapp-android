@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.SliderActivity;
-import com.noqapp.android.client.views.cutomviews.RoundedTransformation;
+import com.noqapp.android.client.views.customviews.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

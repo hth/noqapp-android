@@ -14,7 +14,6 @@ import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
@@ -34,7 +33,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.cutomviews.SeekbarWithIntervals;
+import com.noqapp.android.client.views.customviews.SeekbarWithIntervals;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -69,9 +68,6 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
-
-    @BindView(R.id.fl_notification)
-    protected FrameLayout fl_notification;
 
     @BindView(R.id.tv_badge)
     protected TextView tv_badge;
@@ -165,13 +161,6 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         });
         seekbarWithIntervals.setProgress(Constants.DEFAULT_REVIEW_TIME_SAVED);
         tv_hr_saved.setText(getSeekbarLabel(2));
-        fl_notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(ReviewActivity.this, NotificationActivity.class);
-                startActivity(in);
-            }
-        });
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override

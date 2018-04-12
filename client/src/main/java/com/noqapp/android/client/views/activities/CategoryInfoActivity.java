@@ -16,7 +16,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -30,7 +29,6 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.JsonQueueList;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.Formatter;
@@ -93,8 +91,6 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
 
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
-    @BindView(R.id.fl_notification)
-    protected FrameLayout fl_notification;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
 
@@ -127,8 +123,6 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_info);
         ButterKnife.bind(this);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setVisibility(View.VISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +151,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
             }
         });
 
-        bundle = getIntent().getBundleExtra("b");
+        bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
             codeQR = bundle.getString(NoQueueBaseFragment.KEY_CODE_QR);
             boolean callingFromHistory = bundle.getBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);

@@ -2,7 +2,6 @@ package com.noqapp.android.client.model.response.open;
 
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.JsonQueueList;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;

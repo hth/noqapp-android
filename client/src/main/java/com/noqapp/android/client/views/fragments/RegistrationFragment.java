@@ -151,11 +151,11 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
             NoQueueBaseActivity.commitProfile(profile, email, auth);
             replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
             //remove the login and register fragment from stack
-            List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe);
+            /*List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe);
             if (currentTabFragments.size() == 3) {
                 LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
                 LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
-            }
+            }*/
 
         } else {
             //Rejected from  server

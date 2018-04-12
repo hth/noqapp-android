@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.cutomviews;
+package com.noqapp.android.client.views.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;

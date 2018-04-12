@@ -8,7 +8,6 @@ package com.noqapp.android.client.views.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,8 +28,6 @@ public class NotificationActivity extends AppCompatActivity  {
     protected ListView listview;
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
-    @BindView(R.id.fl_notification)
-    protected FrameLayout fl_notification;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
     @BindView(R.id.tv_empty)
@@ -42,8 +39,6 @@ public class NotificationActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         ButterKnife.bind(this);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setVisibility(View.VISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

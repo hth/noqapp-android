@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.views.cutomviews.RoundedTransformation;
+import com.noqapp.android.client.views.customviews.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

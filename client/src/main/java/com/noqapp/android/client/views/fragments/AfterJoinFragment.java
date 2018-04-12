@@ -233,7 +233,7 @@ public class AfterJoinFragment extends NoQueueBaseFragment implements TokenPrese
     private void navigateToList() {
         try {
             //Remove the join and after join screen from the QScan tab if the both screen having same QR code
-            List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabHome);
+            List<Fragment> currentTabFragments = null;//LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabHome);
             if (null != currentTabFragments && currentTabFragments.size() > 1) {
                 int size = currentTabFragments.size();
                 Fragment currentfrg = currentTabFragments.get(size - 1);

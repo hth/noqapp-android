@@ -1,38 +1,36 @@
-package com.noqapp.android.client.views.cutomviews;
+package com.noqapp.android.client.views.customviews;
 
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.util.Log;
 
 import com.noqapp.android.client.R;
 
-
 /**
  * Created by chandra on 4/9/17.
  */
+public class ButtonRalewayRegular extends AppCompatButton {
+    private static final String TAG = ButtonRalewayRegular.class.getName();
 
-public class TextViewRobotoLight extends AppCompatTextView {
-    private static final String TAG = TextViewRobotoLight.class.getName();
-
-    public TextViewRobotoLight(Context context) {
+    public ButtonRalewayRegular(Context context) {
         super(context);
     }
 
-    public TextViewRobotoLight(Context context, AttributeSet attrs) {
+    public ButtonRalewayRegular(Context context, AttributeSet attrs) {
         super(context, attrs);
         setCustomFont(context, attrs);
     }
 
-    public TextViewRobotoLight(Context context, AttributeSet attrs, int defStyle) {
+    public ButtonRalewayRegular(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setCustomFont(context, attrs);
     }
 
     private void setCustomFont(Context ctx, AttributeSet attrs) {
-        setCustomFont(ctx, ctx.getString(R.string.roboto_light_font));
+        setCustomFont(ctx, ctx.getString(R.string.raleway_regular_font));
     }
 
     public boolean setCustomFont(Context ctx, String asset) {

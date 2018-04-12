@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.cutomviews;
+package com.noqapp.android.client.views.customviews;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -9,29 +9,30 @@ import com.noqapp.android.client.R;
 
 /**
  * User: hitender
- * Date: 5/7/17 12:05 AM
+ * Date: 5/7/17 12:06 AM
  */
-public class TextEditRalewayRegular extends AppCompatEditText {
+
+public class TextEditRobotoRegular extends AppCompatEditText {
     private static final String TAG = TextEditRobotoRegular.class.getName();
 
     private Context context;
     private AttributeSet attrs;
     private int defStyle;
 
-    public TextEditRalewayRegular(Context context) {
+    public TextEditRobotoRegular(Context context) {
         super(context);
         this.context = context;
         init();
     }
 
-    public TextEditRalewayRegular(Context context, AttributeSet attrs) {
+    public TextEditRobotoRegular(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         this.attrs = attrs;
         init();
     }
 
-    public TextEditRalewayRegular(Context context, AttributeSet attrs, int defStyle) {
+    public TextEditRobotoRegular(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.context = context;
         this.attrs = attrs;
@@ -40,19 +41,19 @@ public class TextEditRalewayRegular extends AppCompatEditText {
     }
 
     private void init() {
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.raleway_regular_font));
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.roboto_regular_font));
         this.setTypeface(font);
     }
 
     @Override
     public void setTypeface(Typeface tf, int style) {
-        tf = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.raleway_regular_font));
+        tf = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.roboto_regular_font));
         super.setTypeface(tf, style);
     }
 
     @Override
     public void setTypeface(Typeface tf) {
-        tf = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.raleway_regular_font));
+        tf = Typeface.createFromAsset(getContext().getAssets(), getContext().getString(R.string.roboto_regular_font));
         super.setTypeface(tf);
     }
 }

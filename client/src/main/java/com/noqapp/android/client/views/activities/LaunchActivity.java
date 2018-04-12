@@ -1,9 +1,11 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -22,7 +24,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +53,7 @@ import com.noqapp.android.client.views.fragments.LoginFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
+import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -77,8 +82,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public NetworkUtil networkUtil;
     public ProgressDialog progressDialog;
     // Tabs associated with list of fragments
-    public Map<String, List<Fragment>> fragmentsStack = new HashMap<String, List<Fragment>>();
-
+    public ActivityCommunicator activityCommunicator;
     @BindView(R.id.tv_badge)
     protected TextView tv_badge;
 
@@ -94,11 +98,16 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @BindView(R.id.iv_notification)
     protected ImageView iv_notification;
+    @BindView(R.id.fl_notification)
+    protected FrameLayout fl_notification;
+
 
     private long lastPress;
     private Toast backPressToast;
     private BroadcastReceiver broadcastReceiver;
     private String currentSelectedTabTag = "";
+    private ImageView iv_profile;
+    private TextView tv_login,tv_name,tv_email;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -130,18 +139,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         actionbarBack.setOnClickListener(this);
         iv_notification.setOnClickListener(this);
-
-
+        fl_notification.setVisibility(View.VISIBLE);
+        actionbarBack.setVisibility(View.GONE);
         initProgress();
         setCurrentSelectedTabTag(tabHome);
-        if (null == fragmentsStack.get(tabHome)) {
-            Fragment fragment = new ScanQueueFragment();
-            createStackForTab(tabHome);
-            addFragmentToStack(fragment);
-            replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
-        } else {
-            replaceFragmentWithoutBackStack(R.id.frame_layout, getLastFragment());
-        }
+        Fragment fragment = new ScanQueueFragment();
+        replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -155,8 +158,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
+        LinearLayout mParent = (LinearLayout) navigationView.getHeaderView( 0 );
+        iv_profile = mParent.findViewById(R.id.iv_profile);
+        tv_login = mParent.findViewById(R.id.tv_login);
+        tv_login.setOnClickListener(this);
+        tv_name = mParent.findViewById(R.id.tv_name);
+        tv_email = mParent.findViewById(R.id.tv_email);
         final Intent in = new Intent(this, ReviewActivity.class);
         //startActivity(in);
         broadcastReceiver = new BroadcastReceiver() {
@@ -196,6 +203,13 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
+        iv_profile.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(launchActivity, UserProfileActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -230,6 +244,33 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 Intent in = new Intent(launchActivity, NotificationActivity.class);
                 startActivity(in);
                 break;
+            case R.id.tv_login:
+                if (tv_login.getText().equals(getString(R.string.logout))) {
+                    new AlertDialog.Builder(launchActivity)
+                            .setTitle(getString(R.string.logout))
+                            .setMessage(getString(R.string.logout_msg))
+                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // logout
+                                    NoQueueBaseActivity.clearPreferences();
+                                    //navigate to signup/login
+                                   // replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
+                                    Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                                    startActivity(loginIntent);
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // user doesn't want to logout
+                                }
+                            })
+                            .show();
+                } else {
+                    Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                    startActivity(loginIntent);
+                }
+
+                break;
             default:
                 break;
         }
@@ -246,33 +287,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             if (resultCode == RESULT_OK) {
                 String intent_qrCode = data.getExtras().getString(Constants.QRCODE);
                 //Remove the AfterJoinFragment screen if having same qr code from tablist
-                List<Fragment> currentTabFragments = fragmentsStack.get(tabList);
-                if (null != currentTabFragments && currentTabFragments.size() > 1) {
-                    int size = currentTabFragments.size();
-                    Fragment currentFragment = currentTabFragments.get(size - 1);
-                    if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                        String codeQR = ((AfterJoinFragment) currentFragment).getCodeQR();
-                        if (intent_qrCode.equals(codeQR)) {
-                            // clear the stack till first screen of tablist
-                            currentTabFragments.subList(1, currentTabFragments.size()).clear();
-                        }
-                    }
-                }
-                //Remove the AfterJoinFragment screen if having same qr code from Homelist
-                List<Fragment> currentTabFragmentsQ = fragmentsStack.get(tabHome);
-                if (null != currentTabFragmentsQ && currentTabFragmentsQ.size() > 1) {
-                    int size = currentTabFragmentsQ.size();
-                    Fragment currentFragment = currentTabFragmentsQ.get(size - 1);
-                    if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                        String codeQR = ((AfterJoinFragment) currentFragment).getCodeQR();
-                        if (intent_qrCode.equals(codeQR)) {
-                            // clear the stack till first screen of tabHome
-                            currentTabFragmentsQ.subList(1, currentTabFragmentsQ.size()).clear();
-                        }
-                    }
+                if(activityCommunicator != null){
+                    activityCommunicator.requestProcessed(intent_qrCode);
                 }
                 dismissProgress();
-
             }
         }
     }
@@ -317,7 +335,15 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }else{
             tv_badge.setVisibility(View.INVISIBLE);
         }
-
+        if(UserUtils.isLogin()){
+            tv_login.setText("Logout");
+            tv_email.setText(UserUtils.getEmail());
+            tv_name.setText(NoQueueBaseActivity.getUserName());
+        }else{
+            tv_login.setText("Login");
+            tv_email.setText("guest.user@email.com");
+            tv_name.setText("Guest User");
+        }
 
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
@@ -342,85 +368,27 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Override
     protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+       // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
 
-    /**
-     * Method for adding list of fragment for tab to our Back Stack
-     *
-     * @param tabTag The identifier tag for the tab
-     */
-    public void createStackForTab(String tabTag) {
-        List<Fragment> tabFragments = new ArrayList<Fragment>();
-        fragmentsStack.put(tabTag, tabFragments);
-    }
 
-    /**
-     * @param fragment The fragment that will be added to the Back Stack
-     */
-    public void addFragmentToStack(Fragment fragment) {
-        fragmentsStack.get(currentSelectedTabTag).add(fragment);
-    }
 
-    /**
-     * Used in TabListener for showing last opened screen from selected tab
-     *
-     * @return The last added fragment of actual tab will be returned
-     */
-    public Fragment getLastFragment() {
-        List<Fragment> fragments = fragmentsStack.get(currentSelectedTabTag);
-        return fragments.get(fragments.size() - 1);
-    }
-
-    /**
-     * Override default behavior of hardware Back button
-     * for navigation thru fragments on tab hierarchy
-     */
     @Override
     public void onBackPressed() {
-
-
-        List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
-
-        if (currentTabFragments.size() > 1) {
-
-            int size = currentTabFragments.size();
-            if (size == 4 && (currentSelectedTabTag.equals(tabHome) || currentSelectedTabTag.equals(tabList))) {
-                /* This condition is added for the skip screen */
-                currentTabFragments.remove(size - 1);
-                size = currentTabFragments.size();
-            }
-            // if it is not first screen then
-            // current screen is closed and removed from Back Stack and shown the previous one
-            Fragment fragment = currentTabFragments.get(size - 2);
-            Fragment currentFragment = currentTabFragments.get(size - 1);
-            currentTabFragments.remove(size - 1);
-
-
-            if (currentFragment.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                currentTabFragments.remove(currentTabFragments.size() - 1);
-                fragmentsStack.put(tabList, null);
-                //onClick(rl_list);
-            } else {
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout, fragment);
-                fragmentTransaction.commit();
-            }
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastPress > 3000) {
+            backPressToast = Toast.makeText(launchActivity, getString(R.string.exit_app), Toast.LENGTH_LONG);
+            backPressToast.show();
+            lastPress = currentTime;
         } else {
-            long currentTime = System.currentTimeMillis();
-            if (currentTime - lastPress > 3000) {
-                backPressToast = Toast.makeText(launchActivity, getString(R.string.exit_app), Toast.LENGTH_LONG);
-                backPressToast.show();
-                lastPress = currentTime;
-            } else {
-                if (backPressToast != null) {
-                    backPressToast.cancel();
-                }
-                //super.onBackPressed();
-                finish();
+            if (backPressToast != null) {
+                backPressToast.cancel();
             }
+            //super.onBackPressed();
+            finish();
         }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -464,7 +432,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         JoinFragment jf = new JoinFragment();
         jf.setArguments(b);
         // remove previous screens
-        List<Fragment> currentTabFragments = fragmentsStack.get(getCurrentSelectedTabTag());
+        List<Fragment> currentTabFragments = null;//fragmentsStack.get(getCurrentSelectedTabTag());
         if (null != currentTabFragments && currentTabFragments.size() > 1) {
             int size = currentTabFragments.size();
             // clear the stack till first screen of current tab
@@ -494,7 +462,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
         }
         TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-        List<Fragment> currentTabFragments = fragmentsStack.get(currentSelectedTabTag);
+
+        if(activityCommunicator != null){
+            activityCommunicator.updateUI(codeQR,jtk, go_to);
+        }
+        List<Fragment> currentTabFragments = null;//fragmentsStack.get(currentSelectedTabTag);
         if (null != currentTabFragments && currentTabFragments.size() > 1) {
             int size = currentTabFragments.size();
             Fragment currentfrg = currentTabFragments.get(size - 1);
@@ -543,7 +515,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (id == R.id.nav_home) {
 
         } else if (id == R.id.nav_invite) {
-
+            Intent in = new Intent(this, InviteActivity.class);
+            startActivity(in);
         } else if (id == R.id.nav_share) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
@@ -580,7 +553,4 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
 }

@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.noqapp.android.client.model.APIConstant;
+import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
 
 /**
@@ -27,6 +28,14 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
     public static final int ACCOUNTKIT_REQUEST_CODE = 99;
     public static final String PREKEY_IS_REVIEW_SHOWN = "reviewScreen";
+
+
+    public static final String KEY_CODE_QR = DatabaseTable.TokenQueue.CODE_QR;
+    public static final String KEY_FROM_LIST = "fromList";
+    public static final String KEY_IS_HISTORY = "isHistory";
+    public static final String KEY_IS_REJOIN = "isRejoin";
+    public static final String KEY_IS_AUTOJOIN_ELIGIBLE = "autoJoinEligible";
+    public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
 
     /* Secured Shared Preference. */
     public static final String APP_PREF = "shared_pref";
@@ -83,11 +92,11 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static String getMail() {
-        return sharedPreferences.getString(APIConstant.Key.XR_MAIL, "ct@r.com");
+        return sharedPreferences.getString(APIConstant.Key.XR_MAIL, "");
     }
 
     public static String getAuth() {
-        return sharedPreferences.getString(APIConstant.Key.XR_AUTH, "$2a$15$4qGOiBx.eyvPyKUzz3xwp.oVuz4zXSWqOvqMFzRQu/K4zXdqd0RuC");
+        return sharedPreferences.getString(APIConstant.Key.XR_AUTH, "");
     }
 
     public static void commitProfile(JsonProfile profile, String email, String auth) {

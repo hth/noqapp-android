@@ -18,7 +18,6 @@ import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.JsonQueueList;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;

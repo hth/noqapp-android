@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.cutomviews;
+package com.noqapp.android.client.views.customviews;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

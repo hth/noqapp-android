@@ -19,7 +19,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <com.noqapp.android.client.views.cutomviews.TextViewRalewayBold
+            <com.noqapp.android.client.views.customviews.TextViewRalewayBold
                 android:id="@+id/tv_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
