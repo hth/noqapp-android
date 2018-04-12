@@ -1,9 +1,11 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -52,6 +54,7 @@ import com.noqapp.android.client.views.fragments.AfterJoinFragment;
 import com.noqapp.android.client.views.fragments.JoinFragment;
 import com.noqapp.android.client.views.fragments.ListQueueFragment;
 import com.noqapp.android.client.views.fragments.LoginFragment;
+import com.noqapp.android.client.views.fragments.MeFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
@@ -110,6 +113,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private BroadcastReceiver broadcastReceiver;
     private String currentSelectedTabTag = "";
     private ImageView iv_profile;
+    private TextView tv_login,tv_name,tv_email;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -168,7 +172,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         navigationView.setNavigationItemSelectedListener(this);
         LinearLayout mParent = (LinearLayout) navigationView.getHeaderView( 0 );
         iv_profile = mParent.findViewById(R.id.iv_profile);
-
+        tv_login = mParent.findViewById(R.id.tv_login);
+        tv_login.setOnClickListener(this);
+        tv_name = mParent.findViewById(R.id.tv_name);
+        tv_email = mParent.findViewById(R.id.tv_email);
         final Intent in = new Intent(this, ReviewActivity.class);
         //startActivity(in);
         broadcastReceiver = new BroadcastReceiver() {
@@ -248,6 +255,33 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             case R.id.iv_notification:
                 Intent in = new Intent(launchActivity, NotificationActivity.class);
                 startActivity(in);
+                break;
+            case R.id.tv_login:
+                if (tv_login.getText().equals(getString(R.string.logout))) {
+                    new AlertDialog.Builder(launchActivity)
+                            .setTitle(getString(R.string.logout))
+                            .setMessage(getString(R.string.logout_msg))
+                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // logout
+                                    NoQueueBaseActivity.clearPreferences();
+                                    //navigate to signup/login
+                                   // replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
+                                    Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                                    startActivity(loginIntent);
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // user doesn't want to logout
+                                }
+                            })
+                            .show();
+                } else {
+                    Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                    startActivity(loginIntent);
+                }
+
                 break;
             default:
                 break;
@@ -336,7 +370,15 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }else{
             tv_badge.setVisibility(View.INVISIBLE);
         }
-
+        if(UserUtils.isLogin()){
+            tv_login.setText("Logout");
+            tv_email.setText(UserUtils.getEmail());
+            tv_name.setText(NoQueueBaseActivity.getUserName());
+        }else{
+            tv_login.setText("Login");
+            tv_email.setText("guest.user@email.com");
+            tv_name.setText("Guest User");
+        }
 
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives

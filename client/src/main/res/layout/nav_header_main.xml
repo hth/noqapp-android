@@ -19,22 +19,30 @@
         android:clickable="true"
         android:elevation="5dp"
         android:padding="20dp"
+        android:layout_marginTop="20dp"
         android:scaleType="centerCrop"
         android:src="@drawable/user_profile_big"
         app:border_color="#FFFFFFFF"
         app:border_width="3dp" />
 
     <TextView
+        android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="User Profile"
+        android:text="Guest User"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="user.email@android.com" />
+        android:text="guest.user@email.com" />
+
+    <TextView
+        android:id="@+id/tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"/>
 
 </LinearLayout>
