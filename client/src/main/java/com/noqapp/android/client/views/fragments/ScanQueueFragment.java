@@ -255,6 +255,12 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             storeInfoParam.setLongitude(String.valueOf(73.014529));
             storeInfoParam.setFilters("xyz");
 
+            //For another location
+            //storeInfoParam.setCityName("Sunnyvale");
+            //storeInfoParam.setLatitude(String.valueOf(37.376177));
+            //storeInfoParam.setLongitude(String.valueOf(-122.0301356));
+            //storeInfoParam.setFilters("xyz");
+
             /* New instance of progressbar because it is a new activity. */
 //            progressDialog = new ProgressDialog(ReviewActivity.this);
 //            progressDialog.setIndeterminate(true);
