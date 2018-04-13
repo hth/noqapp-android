@@ -28,10 +28,8 @@ public class StoreInfoParam {
     @JsonProperty("q")
     private String query;
 
-
     @JsonProperty("cityName")
     private String cityName;
-
 
     @JsonProperty("lat")
     private String latitude;
@@ -39,6 +37,7 @@ public class StoreInfoParam {
     @JsonProperty("lng")
     private String longitude;
 
+    /* Apply specific filter on fields set on app, like city. */
     @JsonProperty("filters")
     private String filters;
 

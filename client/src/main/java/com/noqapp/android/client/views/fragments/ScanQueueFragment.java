@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -88,7 +91,11 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     @BindView(R.id.btn_type_1)
     protected Button btn_type_1;
 
-
+    @BindView(R.id.spinner)
+    protected Spinner spinner;
+    String[] city = { "Mumbai", "Delhi", "Calcutta" };
+    String[] lat_array = { "19.004550", "28.553399", "22.572645" };
+    String[] log_array = { "73.014529", "77.194165", "88.363892" };
     public ScanQueueFragment() {
 
     }
@@ -148,6 +155,12 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             // startScanningBarcode();
             // commented due to last discussion that barcode should not start automatically
         }
+
+
+        ArrayAdapter aa = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,city);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        spinner.setAdapter(aa);
         tokenQueueViewInterface = this;
         currentClickListner = this;
         recentClickListner = this;
@@ -178,11 +191,22 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
 
 
-        getNearMeInfo();
+        getNearMeInfo(city[0],lat_array[0],log_array[0]);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getNearMeInfo(city[position],lat_array[position],log_array[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             mHandler = new QueueHandler();
 
-            if (!UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
+            if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
                 //Call the current queue
                 QueueApiModel.tokenAndQueuePresenter = this;
                 QueueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
@@ -247,13 +271,19 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
 
-    private void getNearMeInfo() {
+    private void getNearMeInfo(String city,String lat, String longitute) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             StoreInfoParam storeInfoParam = new StoreInfoParam();
-            storeInfoParam.setCityName("Vashi");
-            storeInfoParam.setLatitude(String.valueOf(19.004550));
-            storeInfoParam.setLongitude(String.valueOf(73.014529));
+            storeInfoParam.setCityName(city);
+            storeInfoParam.setLatitude(lat);
+            storeInfoParam.setLongitude(longitute);
             storeInfoParam.setFilters("xyz");
+
+            //For another location
+            //storeInfoParam.setCityName("Sunnyvale");
+            //storeInfoParam.setLatitude(String.valueOf(37.376177));
+            //storeInfoParam.setLongitude(String.valueOf(-122.0301356));
+            //storeInfoParam.setFilters("xyz");
 
             /* New instance of progressbar because it is a new activity. */
 //            progressDialog = new ProgressDialog(ReviewActivity.this);
