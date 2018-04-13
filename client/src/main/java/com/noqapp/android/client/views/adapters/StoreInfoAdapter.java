@@ -72,7 +72,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
         holder.tv_category.setText(dataSet.get(listPosition).getCategory());
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(dataSet.get(listPosition).getRating())));
-        AppUtilities.setStoreDrawable(context,holder.iv_store_icon,dataSet.get(listPosition).getBusinessType());
+        AppUtilities.setStoreDrawable(context,holder.iv_store_icon,dataSet.get(listPosition).getBusinessType(),holder.tv_store_rating);
         if (!TextUtils.isEmpty(dataSet.get(listPosition).getTown()))
             holder.tv_detail.setText(dataSet.get(listPosition).getTown());
         Picasso.with(context)
