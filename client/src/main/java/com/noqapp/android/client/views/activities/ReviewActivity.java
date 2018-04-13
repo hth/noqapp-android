@@ -226,11 +226,11 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         NoQueueBaseActivity.setReviewShown(true);
         Intent intent = new Intent();
         intent.putExtra(Constants.QRCODE, jtk.getCodeQR());
-        if (getParent() == null) {
+       // if (getParent() == null) {
             setResult(Activity.RESULT_OK, intent);
-        } else {
-            getParent().setResult(Activity.RESULT_OK, intent);
-        }
+//        } else {
+//            getParent().setResult(Activity.RESULT_OK, intent);
+//        }
     }
 
     private List<String> getIntervals() {

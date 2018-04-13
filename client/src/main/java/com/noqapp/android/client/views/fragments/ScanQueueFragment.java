@@ -23,6 +23,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.NearMeModel;
 import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
@@ -236,6 +237,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         if (!fromList)// to not modify the actionbar if it is coming from list
             LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_scan));
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
+        fetchCurrentAndHistoryList();
     }
 
     @OnClick(R.id.cv_scan)
@@ -472,4 +474,18 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         recentActivityAdapter = new RecentActivityAdapter(historylist, getActivity(), recentClickListner);
         rv_recent_activity.setAdapter(recentActivityAdapter);
     }
+
+    public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
+        TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
+        //fetch the
+        fetchCurrentAndHistoryList();
+    }
+
+    public void fetchCurrentAndHistoryList() {
+        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(getActivity());
+        dbPresenter.tokenQueueViewInterface = this;
+        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
+    }
+
+
 }
