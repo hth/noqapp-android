@@ -108,7 +108,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private String currentSelectedTabTag = "";
     private ImageView iv_profile;
     private TextView tv_login,tv_name,tv_email;
-
+    private ScanQueueFragment scanfragment;
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
@@ -143,8 +143,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         actionbarBack.setVisibility(View.GONE);
         initProgress();
         setCurrentSelectedTabTag(tabHome);
-        Fragment fragment = new ScanQueueFragment();
-        replaceFragmentWithoutBackStack(R.id.frame_layout, fragment);
+        scanfragment = new ScanQueueFragment();
+        replaceFragmentWithoutBackStack(R.id.frame_layout, scanfragment);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -186,6 +186,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                             ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                             callReviewActivity(codeQR);
+                            // this code is added to close the join & after join screen if the request is processed
+                            if(activityCommunicator != null){
+                                activityCommunicator.requestProcessed(codeQR);
+                            }
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                             ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
                             callSkipScreen(codeQR);
@@ -196,6 +200,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         // Toast.makeText(launchActivity, "Notification : " + payload, Toast.LENGTH_LONG).show();
                     }
                 }
+
+
             }
         };
 
@@ -210,6 +216,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 startActivity(intent);
             }
         });
+
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
 
     @Override
@@ -347,7 +355,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
+      //  LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
@@ -466,28 +474,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if(activityCommunicator != null){
             activityCommunicator.updateUI(codeQR,jtk, go_to);
         }
-        List<Fragment> currentTabFragments = null;//fragmentsStack.get(currentSelectedTabTag);
-        if (null != currentTabFragments && currentTabFragments.size() > 1) {
-            int size = currentTabFragments.size();
-            Fragment currentfrg = currentTabFragments.get(size - 1);
-            if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
-                if (codeQR.equals(qcode)) {
-                    //updating the serving status
-                    ((AfterJoinFragment) currentfrg).setObject(jtk, go_to);
-                }
-            }
-        } else if (null != currentTabFragments && currentTabFragments.size() == 1) {
-            try {
-                int size = currentTabFragments.size();
-                Fragment currentFragment = currentTabFragments.get(size - 1);
-                if (currentFragment.getClass().getSimpleName().equals(ListQueueFragment.class.getSimpleName())) {
-                    ((ListQueueFragment) currentFragment).updateListFromNotification(jtk, go_to);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            scanfragment.updateListFromNotification(jtk, go_to);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
 
     }
 

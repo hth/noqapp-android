@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="210dp"
+    android:layout_width="180dp"
     android:layout_height="180dp"
     android:orientation="vertical"
     android:tag="cards main container">
@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         card_view:cardBackgroundColor="@color/white"
-        card_view:cardCornerRadius="10dp"
+        card_view:cardCornerRadius="3dp"
         card_view:cardElevation="2dp"
         card_view:cardUseCompatPadding="true">
 
