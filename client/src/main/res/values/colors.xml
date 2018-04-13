@@ -24,4 +24,8 @@
     <!--65 % transparent -->
     <color name="black_transparent">#A6000000</color>
 
+    <color name="bussiness_hospital">#2b58de</color>
+    <color name="bussiness_store">#6e22b4</color>
+    <color name="bussiness_bank">#328d69</color>
+
 </resources>

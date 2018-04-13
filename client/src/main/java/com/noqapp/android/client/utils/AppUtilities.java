@@ -20,9 +20,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 
 import org.joda.time.LocalDateTime;
@@ -208,6 +210,23 @@ public class AppUtilities {
     public static double round (float value) {
         int scale = (int) Math.pow(10, 1);
         return (double) Math.round(value * scale) / scale;
+    }
+
+
+    public static void setStoreDrawable(Context context, ImageView iv, String bussinessType) {
+        switch (bussinessType) {
+            case "Hospital":
+                iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.hospital));
+                iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
+                break;
+            case "Bank":
+                iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bank));
+                iv.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
+                break;
+            default:
+                iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.store));
+                iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
+        }
     }
 }
 

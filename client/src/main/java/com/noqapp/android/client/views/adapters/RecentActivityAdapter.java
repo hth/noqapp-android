@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
         private TextView tv_detail;
         private TextView tv_category;
         private ImageView iv_main;
+        private ImageView iv_store_icon;
         private CardView card_view;
 
         public MyViewHolder(View itemView) {
@@ -40,6 +42,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
             this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
             this.tv_category = (TextView) itemView.findViewById(R.id.tv_category);
             this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
+            this.iv_store_icon = (ImageView) itemView.findViewById(R.id.iv_store_icon);
             this.card_view = (CardView) itemView.findViewById(R.id.card_view);
         }
     }
@@ -65,6 +68,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
 
         holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
         // holder.tv_category.setText();
+        AppUtilities.setStoreDrawable(context,holder.iv_store_icon,dataSet.get(listPosition).getBusinessType()== null?"":dataSet.get(listPosition).getBusinessType().getDescription());
         Picasso.with(context)
                 .load("https://noqapp.com/imgs/240x120/b.jpeg")//dataSet.get(listPosition).getImage())
                 .into(holder.iv_main);
