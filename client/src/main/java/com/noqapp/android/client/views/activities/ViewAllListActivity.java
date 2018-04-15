@@ -1,10 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
@@ -26,6 +20,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Created by chandra on 5/7/17.
+ */
 public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener {
 
 
@@ -62,29 +59,31 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
-       // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
+        // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
     }
 
 
     @Override
     public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
-        if (item.getBusinessType().equalsIgnoreCase(BusinessTypeEnum.DO.toString()) ||
-                item.getBusinessType().equalsIgnoreCase(BusinessTypeEnum.HO.toString())) {
-            // open hospital profile
-            Intent in = new Intent(this, JoinActivity.class);
-            in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
-            in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-            in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
-            in.putExtra("isCategoryData", false);
-            startActivity(in);
-        } else {
-            // open order screen
-            Intent in = new Intent(this, StoreDetailActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("BizStoreElastic", item);
-            in.putExtras(bundle);
-            startActivity(in);
+        switch (item.getBusinessType()) {
+            case DO:
+            case HO:
+                // open hospital profile
+                Intent in = new Intent(this, JoinActivity.class);
+                in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
+                in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
+                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
+                in.putExtra("isCategoryData", false);
+                startActivity(in);
+                break;
+            default:
+                // open order screen
+                in = new Intent(this, StoreDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("BizStoreElastic", item);
+                in.putExtras(bundle);
+                startActivity(in);
         }
     }
 }
