@@ -70,8 +70,11 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
 
         holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
         // holder.tv_category.setText();
-        AppUtilities.setStoreDrawable(context, holder.iv_store_icon, dataSet.get(listPosition).
-                getBusinessType() == null ? "" : dataSet.get(listPosition).getBusinessType().getDescription(), holder.tv_store_rating);
+        AppUtilities.setStoreDrawable(
+                context,
+                holder.iv_store_icon,
+                dataSet.get(listPosition).getBusinessType(),
+                holder.tv_store_rating);
         Picasso.with(context)
                 .load("https://noqapp.com/imgs/240x120/b.jpeg")//dataSet.get(listPosition).getImage())
                 .into(holder.iv_main);

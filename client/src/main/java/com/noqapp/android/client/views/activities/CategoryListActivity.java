@@ -77,8 +77,7 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryL
 
        @Override
     public void onCategoryItemClick(BizStoreElastic item, View view, int pos) {
-        if (item.getBusinessType().equalsIgnoreCase(BusinessTypeEnum.DO.toString()) ||
-                item.getBusinessType().equalsIgnoreCase(BusinessTypeEnum.HO.toString())) {
+        if (item.getBusinessType() == BusinessTypeEnum.DO || item.getBusinessType() == BusinessTypeEnum.HO) {
             // open hospital profile
             Intent in = new Intent(this, JoinActivity.class);
             in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());

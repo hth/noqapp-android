@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 
 import org.joda.time.LocalDateTime;
@@ -213,14 +214,15 @@ public class AppUtilities {
     }
 
 
-    public static void setStoreDrawable(Context context, ImageView iv, String bussinessType, TextView tv_store_rating) {
+    public static void setStoreDrawable(Context context, ImageView iv, BusinessTypeEnum bussinessType, TextView tv_store_rating) {
         switch (bussinessType) {
-            case "Hospital":
+            case HO:
+            case DO:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.hospital));
                 iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
                 tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_hospital));
                 break;
-            case "Bank":
+            case BK:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bank));
                 iv.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
                 tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_bank));

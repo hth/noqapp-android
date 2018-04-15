@@ -43,7 +43,7 @@ public class BizStoreElastic implements Serializable {
     private String businessName;
 
     @JsonProperty("BT")
-    private String businessType;
+    private BusinessTypeEnum businessType;
 
     @JsonProperty ("BC")
     private String category;
@@ -153,12 +153,12 @@ public class BizStoreElastic implements Serializable {
         return this;
     }
 
-    public String getBusinessType() {
+    public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
 
     public BizStoreElastic setBusinessType(BusinessTypeEnum businessType) {
-        this.businessType = businessType.getDescription();
+        this.businessType = businessType;
         return this;
     }
 
