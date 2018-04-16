@@ -49,13 +49,13 @@ public interface QueueService {
     @GET("open/token/levelUp/{codeQR}.json")
     Call<BizStoreElasticList> getAllQueueStateLevelUp(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Path("codeQR")
-                    String codeQR
+            String codeQR
     );
 
     @GET("open/token/queues.json")

@@ -312,7 +312,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
-
     }
 
     @Override
@@ -344,8 +343,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 intent.putExtras(bundle);
                 startActivity(intent);
         }
-
-
     }
 
     @Override
@@ -391,12 +388,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void btn1() {
         Intent intent = new Intent(getActivity(), DoctorProfile1Activity.class);
        // startActivity(intent);
-
-
-
-
-
-
 
         Location mylocation = new Location("");
         Location dest_location = new Location("");

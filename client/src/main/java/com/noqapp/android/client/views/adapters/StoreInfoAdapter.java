@@ -80,11 +80,16 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         if (!TextUtils.isEmpty(dataSet.get(listPosition).getTown()))
             holder.tv_detail.setText(dataSet.get(listPosition).getTown());
 
-        holder.tv_distance.setText(AppUtilities.calculateDistanceInKm((float) LaunchActivity.getLaunchActivity().latitute, (float) LaunchActivity.getLaunchActivity().longitute,
-                (float) GeoHashUtils.decodeLatitude(dataSet.get(listPosition).getGeoHash()), (float) GeoHashUtils.decodeLongitude(dataSet.get(listPosition).getGeoHash())));
+        holder.tv_distance.setText(AppUtilities.calculateDistanceInKm(
+                (float) LaunchActivity.getLaunchActivity().latitute,
+                (float) LaunchActivity.getLaunchActivity().longitute,
+                (float) GeoHashUtils.decodeLatitude(dataSet.get(listPosition).getGeoHash()),
+                (float) GeoHashUtils.decodeLongitude(dataSet.get(listPosition).getGeoHash())));
+
         Picasso.with(context)
                 .load(dataSet.get(listPosition).getDisplayImage())
                 .into(holder.iv_main);
+
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
