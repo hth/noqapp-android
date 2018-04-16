@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.AmenityEnum;
-import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.DeliveryTypeEnum;
 import com.noqapp.android.client.model.types.PaymentTypeEnum;
 import com.noqapp.android.client.model.types.StoreModel;
@@ -41,7 +40,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 
 public class StoreDetailActivity extends AppCompatActivity implements StorePresenter {
 
@@ -137,14 +135,12 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
         }
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -156,96 +152,106 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
         // Toast.makeText(getActivity(),"jsonStore response success",Toast.LENGTH_LONG).show();
         Log.v("jsonStore response :", jsonStore.toString());
 
-        if (jsonStore.getJsonQueue().getBusinessType() == BusinessTypeEnum.DO ||
-                jsonStore.getJsonQueue().getBusinessType() == BusinessTypeEnum.HO) {
-            // open hospital profile
-        } else {
+        switch (jsonStore.getJsonQueue().getBusinessType()) {
+            case HO:
+            case DO:
+                // open hospital profile
+                break;
+            default:
+                populateStore();
 
-            jsonQueue = jsonStore.getJsonQueue();
-            tv_contact_no.setText(jsonQueue.getStorePhone());
-            tv_address.setText(jsonQueue.getStoreAddress());
-            tv_store_address.setText(jsonQueue.getStoreAddress());
-            tv_store_name.setText(jsonQueue.getDisplayName());
-            tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
-            tv_known_for.setText(jsonQueue.getFamousFor());
-            List<PaymentTypeEnum> temp = jsonQueue.getPaymentTypes();
-            String paymentMode = "";
-            for (int i = 0; i < temp.size(); i++) {
-                paymentMode += temp.get(i).getDescription() + (i < (temp.size() - 1) ? ", " : "");
-            }
-            tv_payment_mode.setText(paymentMode);
-
-            appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                boolean isShow = true;
-                int scrollRange = -1;
-
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    if (scrollRange == -1) {
-                        scrollRange = appBarLayout.getTotalScrollRange();
-                    }
-                    if (scrollRange + verticalOffset == 0) {
-                        collapsingToolbar.setTitle(jsonQueue.getDisplayName());
-                        isShow = true;
-                    } else if (isShow) {
-                        collapsingToolbar.setTitle(" ");//be careful there should be a space between double quote otherwise it won't work
-                        isShow = false;
-                    }
-                }
-            });
-            List<AmenityEnum> tempAmenity = jsonQueue.getAmenities();
-            String amenity = "";
-            for (int j = 0; j < tempAmenity.size(); j++) {
-                amenity += tempAmenity.get(j).getDescription() + (j < (tempAmenity.size() - 1) ? ", " : "");
-            }
-            tv_amenities.setText(amenity);
-
-
-            List<DeliveryTypeEnum> tempdeliveryTypes = jsonQueue.getDeliveryTypes();
-            String deliveryMode = "";
-            for (int j = 0; j < tempdeliveryTypes.size(); j++) {
-                deliveryMode += tempdeliveryTypes.get(j).getDescription() + (j < (tempdeliveryTypes.size() - 1) ? ", " : "");
-            }
-            tv_delivery_types.setText(deliveryMode);
-
-
-            //
-            ArrayList<String> tempurl = (ArrayList<String>) jsonQueue.getStoreServiceImages();
-            ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, tempurl);
-            rv_thumb_images.setAdapter(adapter);
-            //
-            ArrayList<String> tempurl1 = (ArrayList<String>) jsonQueue.getStoreInteriorImages();
-            ThumbnailGalleryAdapter adapter1 = new ThumbnailGalleryAdapter(this, tempurl1);
-            rv_photos.setAdapter(adapter1);
-            //
-
-            //  {
-            //TODO @Chandra Optimize the loop
-            final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
-
-            ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
-            final HashMap<String, List<ChildData>> listDataChild = new HashMap<>();
-            for (int l = 0; l < jsonStoreCategories.size(); l++) {
-                listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<ChildData>());
-            }
-            for (int k = 0; k < jsonStoreProducts.size(); k++) {
-                listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
-            }
-            //  }
-
-            tv_menu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
-                    bundle.putSerializable("listDataChild", listDataChild);
-                    bundle.putSerializable("jsonQueue", jsonQueue);
-                    in.putExtras(bundle);
-                    startActivity(in);
-                }
-            });
         }
+    }
+
+    private void populateStore() {
+        jsonQueue = jsonStore.getJsonQueue();
+        tv_contact_no.setText(jsonQueue.getStorePhone());
+        tv_address.setText(jsonQueue.getStoreAddress());
+        tv_store_address.setText(jsonQueue.getStoreAddress());
+        tv_store_name.setText(jsonQueue.getDisplayName());
+        tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
+        tv_known_for.setText(jsonQueue.getFamousFor());
+        List<PaymentTypeEnum> temp = jsonQueue.getPaymentTypes();
+        StringBuilder paymentMode = new StringBuilder();
+        for (int i = 0; i < temp.size(); i++) {
+            paymentMode.append(temp.get(i).getDescription()).append(i < (temp.size() - 1) ? ", " : "");
+        }
+        tv_payment_mode.setText(paymentMode.toString());
+
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = true;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    collapsingToolbar.setTitle(jsonQueue.getDisplayName());
+                    isShow = true;
+                } else if (isShow) {
+                    collapsingToolbar.setTitle(" ");//be careful there should be a space between double quote otherwise it won't work
+                    isShow = false;
+                }
+            }
+        });
+        List<AmenityEnum> amenities = jsonQueue.getAmenities();
+        StringBuilder amenity = new StringBuilder();
+        for (int j = 0; j < amenities.size(); j++) {
+            amenity.append(amenities.get(j).getDescription()).append(j < (amenities.size() - 1) ? ", " : "");
+        }
+        tv_amenities.setText(amenity.toString());
+
+
+        List<DeliveryTypeEnum> deliveryTypes = jsonQueue.getDeliveryTypes();
+        StringBuilder deliveryMode = new StringBuilder();
+        for (int j = 0; j < deliveryTypes.size(); j++) {
+            deliveryMode.append(deliveryTypes.get(j).getDescription()).append(j < (deliveryTypes.size() - 1) ? ", " : "");
+        }
+        tv_delivery_types.setText(deliveryMode.toString());
+
+
+        //
+        ArrayList<String> storeServiceImages = (ArrayList<String>) jsonQueue.getStoreServiceImages();
+        ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
+        rv_thumb_images.setAdapter(adapter);
+        //
+        ArrayList<String> storeInteriorImages = (ArrayList<String>) jsonQueue.getStoreInteriorImages();
+        ThumbnailGalleryAdapter adapter1 = new ThumbnailGalleryAdapter(this, storeInteriorImages);
+        rv_photos.setAdapter(adapter1);
+        //
+
+        //  {
+        //TODO @Chandra Optimize the loop
+        final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
+
+        ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
+        final HashMap<String, List<ChildData>> listDataChild = new HashMap<>();
+        for (int l = 0; l < jsonStoreCategories.size(); l++) {
+            listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<ChildData>());
+        }
+        for (int k = 0; k < jsonStoreProducts.size(); k++) {
+            if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
+                listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
+            } else {
+                //TODO(hth) when product without category else it will drop
+            }
+        }
+        //  }
+
+        tv_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
+                bundle.putSerializable("listDataChild", listDataChild);
+                bundle.putSerializable("jsonQueue", jsonQueue);
+                in.putExtras(bundle);
+                startActivity(in);
+            }
+        });
     }
 
     @Override
