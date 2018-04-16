@@ -38,7 +38,7 @@ public class JsonProfile implements Serializable {
     @JsonProperty("cs")
     private String countryShortName;
 
-    @JsonProperty ("ad")
+    @JsonProperty("ad")
     private String address;
 
     @JsonProperty("pr")

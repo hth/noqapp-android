@@ -98,7 +98,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         // add notification to DB
                         String userStatus = remoteMessage.getData().get(QueueUserState);
                         if (null == userStatus) {
-                            NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY,remoteMessage.getData().get(CodeQR),body,title);
+                            NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title);
                         }
                     }
                     LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
@@ -124,9 +124,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                              * resume if there is any record in Review DB for review key
                              */
                             if (null == userStatus) {
-                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY,remoteMessage.getData().get(CodeQR),body,title);
+                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title);
                                 sendNotification(title, body);
-                            }else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                            } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                                 ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                                 sendNotification(title, body, codeQR, true);//pass codeQR to open review screen
                             } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
@@ -152,7 +152,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             // add notification to DB
                             String userStatus = remoteMessage.getData().get(QueueUserState);
                             if (null == userStatus) {
-                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY,remoteMessage.getData().get(CodeQR),body,title);
+                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title);
                             }
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
@@ -198,7 +198,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setColor(ContextCompat.getColor(getApplicationContext(),R.color.colorMobile))
+                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
                 .setSmallIcon(getNotificationIcon())
                 .setLargeIcon(bm)
                 .setContentTitle(title)
@@ -218,7 +218,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setColor(ContextCompat.getColor(getApplicationContext(),R.color.colorMobile))
+                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
                 .setSmallIcon(getNotificationIcon())
                 .setLargeIcon(bm)
                 .setContentTitle(title)

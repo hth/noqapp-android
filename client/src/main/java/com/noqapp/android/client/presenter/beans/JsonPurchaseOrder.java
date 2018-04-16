@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by hitender on 4/1/18.
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -36,31 +36,31 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("qid")
     private String queueUserId;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String customerName;
 
-    @JsonProperty ("p")
+    @JsonProperty("p")
     private String customerPhone;
 
-    @JsonProperty ("da")
+    @JsonProperty("da")
     private String deliveryAddress;
 
-    @JsonProperty ("sd")
+    @JsonProperty("sd")
     private int storeDiscount;
 
-    @JsonProperty ("op")
+    @JsonProperty("op")
     private String orderPrice;
 
-    @JsonProperty ("dt")
+    @JsonProperty("dt")
     private DeliveryTypeEnum deliveryType;
 
-    @JsonProperty ("pt")
+    @JsonProperty("pt")
     private PaymentTypeEnum paymentType;
 
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
-    @JsonProperty ("pop")
+    @JsonProperty("pop")
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
 
     public JsonPurchaseOrder() {

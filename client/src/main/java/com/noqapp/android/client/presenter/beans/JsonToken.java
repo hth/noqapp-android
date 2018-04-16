@@ -49,10 +49,10 @@ public class JsonToken {
     @JsonProperty("n")
     private String customerName;
 
-    @JsonProperty ("e")
+    @JsonProperty("e")
     private String expectedServiceBegin;
 
-    @JsonProperty ("v")
+    @JsonProperty("v")
     private boolean clientVisitedThisStore;
 
     @JsonProperty("error")

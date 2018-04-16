@@ -57,7 +57,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("d")
     private String displayName;
 
-    @JsonProperty ("bt")
+    @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
     @JsonProperty("sa")
@@ -135,34 +135,34 @@ public class JsonQueue implements Serializable {
     @JsonProperty("bc")
     private String bizCategoryId;
 
-    @JsonProperty ("di")
+    @JsonProperty("di")
     private String displayImage;
 
     @JsonProperty("ff")
     private String famousFor;
 
-    @JsonProperty ("dd")
+    @JsonProperty("dd")
     private int discount;
 
-    @JsonProperty ("md")
+    @JsonProperty("md")
     private int minimumDeliveryOrder;
 
-    @JsonProperty ("si")
+    @JsonProperty("si")
     private List<String> storeServiceImages = new LinkedList<>();
 
-    @JsonProperty ("ii")
+    @JsonProperty("ii")
     private List<String> storeInteriorImages = new LinkedList<>();
 
-    @JsonProperty ("pm")
+    @JsonProperty("pm")
     private List<PaymentTypeEnum> paymentTypes = new LinkedList<>();
 
-    @JsonProperty ("dm")
+    @JsonProperty("dm")
     private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<>();
 
-    @JsonProperty ("am")
+    @JsonProperty("am")
     private List<AmenityEnum> amenities = new LinkedList<>();
 
-    @JsonProperty ("fa")
+    @JsonProperty("fa")
     private List<FacilityEnum> facilities = new LinkedList<>();
 
     @JsonProperty("error")
@@ -212,7 +212,7 @@ public class JsonQueue implements Serializable {
         this.displayName = displayName;
         return this;
     }
-    
+
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }

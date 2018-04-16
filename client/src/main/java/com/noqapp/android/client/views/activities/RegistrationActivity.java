@@ -158,7 +158,7 @@ public class RegistrationActivity extends AppCompatActivity implements MeView, V
                 LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
                 LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
             }*/
-           finish();
+            finish();
 
         } else {
             //Rejected from  server

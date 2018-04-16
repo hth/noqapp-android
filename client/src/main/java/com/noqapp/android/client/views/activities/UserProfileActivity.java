@@ -61,7 +61,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 selectImage();
                 break;
             case R.id.iv_edit:
-               // selectImage();
+                // selectImage();
                 break;
         }
 
@@ -78,7 +78,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-         if(requestCode == SELECT_PICTURE){
+        if (requestCode == SELECT_PICTURE) {
             if (resultCode == RESULT_OK) {
                 //  Bitmap bitmap = getPath(data.getData());
                 //  iv_profile.setImageBitmap(bitmap);

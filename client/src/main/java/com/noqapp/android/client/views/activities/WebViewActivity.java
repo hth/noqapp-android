@@ -112,9 +112,9 @@ public class WebViewActivity extends AppCompatActivity {
         super.onResume();
         int notify_count = NotificationDB.getNotificationCount();
         tv_badge.setText(String.valueOf(notify_count));
-        if(notify_count>0){
+        if (notify_count > 0) {
             tv_badge.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tv_badge.setVisibility(View.INVISIBLE);
         }
 

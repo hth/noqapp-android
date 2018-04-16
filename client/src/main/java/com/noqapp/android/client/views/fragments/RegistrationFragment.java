@@ -6,7 +6,6 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.Spannable;
@@ -38,7 +37,6 @@ import com.noqapp.android.client.views.interfaces.MeView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 

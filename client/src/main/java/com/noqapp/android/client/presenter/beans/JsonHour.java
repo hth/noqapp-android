@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Created by hitender on 3/27/18.
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -26,16 +26,16 @@ public class JsonHour {
     @JsonProperty("dw")
     private int dayOfWeek;
 
-    @JsonProperty ("tf")
+    @JsonProperty("tf")
     private int tokenAvailableFrom;
 
-    @JsonProperty ("sh")
+    @JsonProperty("sh")
     private int startHour;
 
-    @JsonProperty ("te")
+    @JsonProperty("te")
     private int tokenNotAvailableFrom;
 
-    @JsonProperty ("eh")
+    @JsonProperty("eh")
     private int endHour;
 
     public int getDayOfWeek() {

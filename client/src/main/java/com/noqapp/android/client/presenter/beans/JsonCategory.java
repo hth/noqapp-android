@@ -24,7 +24,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonCategory implements Serializable{
+public class JsonCategory implements Serializable {
 
     @JsonProperty("bc")
     private String bizCategoryId;

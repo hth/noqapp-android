@@ -47,15 +47,16 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_known_for, tv_store_rating, tv_payment_mode, tv_amenities,tv_menu,tv_delivery_types,tv_store_name,tv_store_address;
+    private TextView tv_contact_no, tv_address, tv_known_for, tv_store_rating, tv_payment_mode, tv_amenities, tv_menu, tv_delivery_types, tv_store_name, tv_store_address;
     private LinearLayout ll_store_open_status;
     private boolean isUp;
     private ImageView iv_store_open_status;
     private BizStoreElastic bizStoreElastic;
     private CollapsingToolbarLayout collapsingToolbar;
-    private RecyclerView rv_thumb_images,rv_photos;
+    private RecyclerView rv_thumb_images, rv_photos;
     private ImageView collapseImageView;
-    private  AppBarLayout appBarLayout;
+    private AppBarLayout appBarLayout;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,10 +119,10 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
             public void onClick(View view) {
                 if (isUp) {
                     ViewAnimationUtils.expand(ll_store_open_status);
-                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this,R.drawable.arrow_down));
+                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this, R.drawable.arrow_down));
                 } else {
                     ViewAnimationUtils.collapse(ll_store_open_status);
-                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this,R.drawable.arrow_up));
+                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this, R.drawable.arrow_up));
                 }
                 isUp = !isUp;
             }
@@ -186,7 +187,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
                     if (scrollRange + verticalOffset == 0) {
                         collapsingToolbar.setTitle(jsonQueue.getDisplayName());
                         isShow = true;
-                    } else if(isShow) {
+                    } else if (isShow) {
                         collapsingToolbar.setTitle(" ");//be careful there should be a space between double quote otherwise it won't work
                         isShow = false;
                     }
@@ -208,7 +209,6 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
             tv_delivery_types.setText(deliveryMode);
 
 
-
             //
             ArrayList<String> tempurl = (ArrayList<String>) jsonQueue.getStoreServiceImages();
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, tempurl);
@@ -219,8 +219,8 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
             rv_photos.setAdapter(adapter1);
             //
 
-          //  {
-                //TODO @Chandra Optimize the loop
+            //  {
+            //TODO @Chandra Optimize the loop
             final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
 
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
@@ -229,9 +229,9 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
                 listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<ChildData>());
             }
             for (int k = 0; k < jsonStoreProducts.size(); k++) {
-                listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0,jsonStoreProducts.get(k)));
+                listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
             }
-          //  }
+            //  }
 
             tv_menu.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -239,8 +239,8 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
                     Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
-                    bundle.putSerializable("listDataChild",listDataChild);
-                    bundle.putSerializable("jsonQueue",jsonQueue);
+                    bundle.putSerializable("listDataChild", listDataChild);
+                    bundle.putSerializable("jsonQueue", jsonQueue);
                     in.putExtras(bundle);
                     startActivity(in);
                 }

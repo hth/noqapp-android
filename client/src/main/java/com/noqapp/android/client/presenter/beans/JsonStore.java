@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by hitender on 3/23/18.
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",

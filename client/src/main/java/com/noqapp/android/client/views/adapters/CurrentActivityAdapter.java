@@ -63,7 +63,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
         holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
-       // holder.tv_category.setText();
+        // holder.tv_category.setText();
         Picasso.with(context)
                 .load("https://noqapp.com/imgs/240x120/b.jpeg")//dataSet.get(listPosition).getImage())
                 .into(holder.iv_main);

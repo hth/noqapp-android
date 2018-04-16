@@ -18,15 +18,12 @@
  */
 package com.noqapp.android.client.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
  * Utilities for converting to/from the GeoHash standard
- *
+ * <p>
  * The geohash long format is represented as lon/lat (x/y) interleaved with the 4 least significant bits
  * representing the level (1-12) [xyxy...xyxyllll]
- *
+ * <p>
  * This differs from a morton encoded value which interleaves lat/lon (y/x).*
  */
 public class GeoHashUtils {
@@ -36,14 +33,20 @@ public class GeoHashUtils {
 
     private static final String BASE_32_STRING = new String(BASE_32);
 
-    /** maximum precision for geohash strings */
+    /**
+     * maximum precision for geohash strings
+     */
     public static final int PRECISION = 12;
-    /** number of bits used for quantizing latitude and longitude values */
+    /**
+     * number of bits used for quantizing latitude and longitude values
+     */
     public static final short BITS = 31;
-    /** scaling factors to convert lat/lon into unsigned space */
-    private static final double LAT_SCALE = (0x1L<<BITS)/180.0D;
-    private static final double LON_SCALE = (0x1L<<BITS)/360.0D;
-    private static final short MORTON_OFFSET = (BITS<<1) - (PRECISION*5);
+    /**
+     * scaling factors to convert lat/lon into unsigned space
+     */
+    private static final double LAT_SCALE = (0x1L << BITS) / 180.0D;
+    private static final double LON_SCALE = (0x1L << BITS) / 360.0D;
+    private static final short MORTON_OFFSET = (BITS << 1) - (PRECISION * 5);
 
     // No instance:
     private GeoHashUtils() {
@@ -56,19 +59,23 @@ public class GeoHashUtils {
         int level = 11;
         long b;
         long l = 0L;
-        for(char c : hash.toCharArray()) {
-            b = (long)(BASE_32_STRING.indexOf(c));
-            l |= (b<<((level--*5) + MORTON_OFFSET));
+        for (char c : hash.toCharArray()) {
+            b = (long) (BASE_32_STRING.indexOf(c));
+            l |= (b << ((level-- * 5) + MORTON_OFFSET));
         }
         return BitUtil.flipFlop(l);
     }
 
-    /** decode longitude value from morton encoded geo point */
+    /**
+     * decode longitude value from morton encoded geo point
+     */
     public static final double decodeLongitude(final long hash) {
         return unscaleLon(BitUtil.deinterleave(hash));
     }
 
-    /** decode latitude value from morton encoded geo point */
+    /**
+     * decode latitude value from morton encoded geo point
+     */
     public static final double decodeLatitude(final long hash) {
         return unscaleLat(BitUtil.deinterleave(hash >>> 1));
     }
@@ -81,12 +88,16 @@ public class GeoHashUtils {
         return (val / LAT_SCALE) - 90;
     }
 
-    /** returns the latitude value from the string based geohash */
+    /**
+     * returns the latitude value from the string based geohash
+     */
     public static final double decodeLatitude(final String geohash) {
         return decodeLatitude(mortonEncode(geohash));
     }
 
-    /** returns the latitude value from the string based geohash */
+    /**
+     * returns the latitude value from the string based geohash
+     */
     public static final double decodeLongitude(final String geohash) {
         return decodeLongitude(mortonEncode(geohash));
     }

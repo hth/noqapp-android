@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

@@ -60,6 +60,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
     }
 
     public abstract void updateLocationUI();
+
     @Override
     public void onConnected(Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -83,7 +84,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
             String msg = "Updated Location: " +
                     Double.toString(latitute) + "," +
                     Double.toString(longitute);
-            getAddress(latitute,longitute);
+            getAddress(latitute, longitute);
             updateLocationUI();
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         } else {
@@ -146,7 +147,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         latitute = location.getLatitude();
         longitute = location.getLongitude();
-        getAddress(latitute,longitute);
+        getAddress(latitute, longitute);
         updateLocationUI();
     }
 
@@ -217,7 +218,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
             cityName = addresses.get(0).getAddressLine(0);
             if (!TextUtils.isEmpty(obj.getLocality()) && !TextUtils.isEmpty(obj.getSubLocality())) {
                 cityName = obj.getSubLocality() + "," + obj.getLocality();
-            }else {
+            } else {
                 if (!TextUtils.isEmpty(obj.getSubLocality())) {
                     cityName = obj.getSubLocality();
                 } else if (!TextUtils.isEmpty(obj.getLocality())) {

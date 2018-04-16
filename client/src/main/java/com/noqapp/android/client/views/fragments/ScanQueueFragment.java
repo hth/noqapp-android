@@ -97,9 +97,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @BindView(R.id.spinner)
     protected Spinner spinner;
-    String[] city = { "Mumbai", "Delhi", "Calcutta" };
-    String[] lat_array = { "19.004550", "28.553399", "22.572645" };
-    String[] log_array = { "73.014529", "77.194165", "88.363892" };
+    String[] city = {"Mumbai", "Delhi", "Calcutta"};
+    String[] lat_array = {"19.004550", "28.553399", "22.572645"};
+    String[] log_array = {"73.014529", "77.194165", "88.363892"};
+
     public ScanQueueFragment() {
 
     }
@@ -161,7 +162,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         }
 
 
-        ArrayAdapter aa = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,city);
+        ArrayAdapter aa = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, city);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spinner.setAdapter(aa);
@@ -195,11 +196,11 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
 
 
-        getNearMeInfo(city[0],lat_array[0],log_array[0]);
+        getNearMeInfo(city[0], lat_array[0], log_array[0]);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                getNearMeInfo(city[position],lat_array[position],log_array[position]);
+                getNearMeInfo(city[position], lat_array[position], log_array[position]);
             }
 
             @Override
@@ -276,7 +277,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
 
-    private void getNearMeInfo(String city,String lat, String longitute) {
+    private void getNearMeInfo(String city, String lat, String longitute) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             StoreInfoParam storeInfoParam = new StoreInfoParam();
             storeInfoParam.setCityName(city);
@@ -329,7 +330,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 b.putString(KEY_CODE_QR, item.getCodeQR());
                 b.putBoolean(KEY_FROM_LIST, fromList);
                 b.putBoolean(KEY_IS_HISTORY, false);
-                b.putBoolean("CallCategory",true);
+                b.putBoolean("CallCategory", true);
                 b.putBoolean("isCategoryData", false);
                 Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
                 in.putExtra("bundle", b);
@@ -387,7 +388,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     @OnClick(R.id.btn_type_1)
     public void btn1() {
         Intent intent = new Intent(getActivity(), DoctorProfile1Activity.class);
-       // startActivity(intent);
+        // startActivity(intent);
 
         Location mylocation = new Location("");
         Location dest_location = new Location("");
@@ -397,10 +398,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         mylocation.setLatitude(19.0068);
         mylocation.setLongitude(73.0147);
         float distance = mylocation.distanceTo(dest_location);//in meters
-        Toast.makeText(getActivity(), "Distance"+Double.toString(distance/1000),
+        Toast.makeText(getActivity(), "Distance" + Double.toString(distance / 1000),
                 Toast.LENGTH_LONG).show();
 
-        Log.v("distance :",AppUtilities.calculateDistanceInKm(19.0068f,73.0147f,19.077065f,72.998993f));
+        Log.v("distance :", AppUtilities.calculateDistanceInKm(19.0068f, 73.0147f, 19.077065f, 72.998993f));
 //
 //        // Extract Bitmap from ImageView drawable
 //        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.mipmap.launcher);
@@ -517,7 +518,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
     }
-
 
 
 }

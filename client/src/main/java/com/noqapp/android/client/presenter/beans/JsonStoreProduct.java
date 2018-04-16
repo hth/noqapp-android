@@ -14,7 +14,7 @@ import java.math.MathContext;
 /**
  * Created by hitender on 3/23/18.
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -28,7 +28,7 @@ import java.math.MathContext;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonStoreProduct implements Serializable{
+public class JsonStoreProduct implements Serializable {
 
     @JsonProperty("id")
     private String productId;
@@ -142,7 +142,7 @@ public class JsonStoreProduct implements Serializable{
     public String getDisplayPrice() {
         return new BigDecimal(productPrice).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
     }
-    
+
     public String getDisplayDiscount() {
         return new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
     }

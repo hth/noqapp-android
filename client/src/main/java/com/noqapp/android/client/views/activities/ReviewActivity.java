@@ -226,8 +226,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         NoQueueBaseActivity.setReviewShown(true);
         Intent intent = new Intent();
         intent.putExtra(Constants.QRCODE, jtk.getCodeQR());
-       // if (getParent() == null) {
-            setResult(Activity.RESULT_OK, intent);
+        // if (getParent() == null) {
+        setResult(Activity.RESULT_OK, intent);
 //        } else {
 //            getParent().setResult(Activity.RESULT_OK, intent);
 //        }
@@ -267,9 +267,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         super.onResume();
         int notify_count = NotificationDB.getNotificationCount();
         tv_badge.setText(String.valueOf(notify_count));
-        if(notify_count>0){
+        if (notify_count > 0) {
             tv_badge.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tv_badge.setVisibility(View.INVISIBLE);
         }
 

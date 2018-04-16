@@ -236,8 +236,9 @@ public class AppUtilities {
     /**
      * Calculate distance between two points in latitude and longitude. Uses Haversine
      * method as its base.
-     *
+     * <p>
      * lat1, lng1 Start point lat2, lng2
+     *
      * @returns Distance in KMeters
      */
     public static String calculateDistanceInKm(float lat1, float lng1, float lat2, float lng2) {

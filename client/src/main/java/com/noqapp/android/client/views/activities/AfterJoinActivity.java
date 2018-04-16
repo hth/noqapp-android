@@ -48,7 +48,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPresenter, ResponsePresenter,ActivityCommunicator {
+public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
 
     @BindView(R.id.actionbarBack)
@@ -162,7 +162,7 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     if (isResumeFirst) {
-                       // LaunchActivity.getLaunchActivity().progressDialog.show();
+                        // LaunchActivity.getLaunchActivity().progressDialog.show();
                         callQueue();
                     }
                 } else {
@@ -189,7 +189,7 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
         /* Update the remote join count */
         NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount() - 1);
-     //   LaunchActivity.getLaunchActivity().dismissProgress();
+        //   LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
@@ -207,13 +207,13 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
         NoQueueMessagingService.unSubscribeTopics(topic);
         TokenAndQueueDB.deleteTokenQueue(codeQR);
         navigateToList();
-      //  LaunchActivity.getLaunchActivity().dismissProgress();
+        //  LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
     public void responsePresenterError() {
         Log.d("", "responsePresenterError");
-       // LaunchActivity.getLaunchActivity().dismissProgress();
+        // LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
@@ -223,7 +223,7 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
 
     @Override
     public void authenticationFailure(int errorCode) {
-       // LaunchActivity.getLaunchActivity().dismissProgress();
+        // LaunchActivity.getLaunchActivity().dismissProgress();
         if (errorCode == Constants.INVALID_CREDENTIAL) {
             NoQueueBaseActivity.clearPreferences();
             ShowAlertInformation.showAuthenticErrorDialog(this);
@@ -236,7 +236,7 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
     @OnClick(R.id.btn_cancel_queue)
     public void cancelQueue() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-           // LaunchActivity.getLaunchActivity().progressDialog.show();
+            // LaunchActivity.getLaunchActivity().progressDialog.show();
             if (UserUtils.isLogin()) {
                 QueueApiModel.responsePresenter = this;
                 QueueApiModel.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
@@ -252,7 +252,7 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
     private void navigateToList() {
         try {
             //Remove the join and after join screen from the QScan tab if the both screen having same QR code
-            List<Fragment> currentTabFragments = null ;//LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabHome);
+            List<Fragment> currentTabFragments = null;//LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabHome);
             if (null != currentTabFragments && currentTabFragments.size() > 1) {
                 int size = currentTabFragments.size();
                 Fragment currentfrg = currentTabFragments.get(size - 1);
@@ -267,7 +267,7 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
         } catch (Exception e) {
             Log.e("Error", e.getMessage(), e);
         }
-       onBackPressed();
+        onBackPressed();
     }
 
     private void callQueue() {
@@ -391,7 +391,6 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -423,7 +422,7 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
     }
 
     private void returnResultBack() {
-        if(getIntent().getBooleanExtra(Constants.FROM_JOIN_SCREEN, false)) {
+        if (getIntent().getBooleanExtra(Constants.FROM_JOIN_SCREEN, false)) {
             Intent intent = new Intent();
             intent.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
             if (getParent() == null) {
