@@ -107,6 +107,32 @@ public final class QueueModel {
         });
     }
 
+    public static void getAllQueueStateLevelUp(String did, String qrCode) {
+        queueService.getAllQueueStateLevelUp(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<BizStoreElasticList>() {
+            @Override
+            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
+                if (response.code() == Constants.INVALID_BAR_CODE) {
+                    queuePresenter.authenticationFailure(response.code());
+                    return;
+                }
+                if (response.body() != null) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    queuePresenter.queueResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Get state of queue upon scan");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+
+                queuePresenter.queueError();
+            }
+        });
+    }
+
     /**
      * Get all the queues client has joined.
      *

@@ -158,7 +158,11 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
                 QueueModel.queuePresenter = this;
-                QueueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
+                if(bundle.getBoolean("CallCategory",false)) {
+                    QueueModel.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
+                }else {
+                    QueueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
+                }
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }

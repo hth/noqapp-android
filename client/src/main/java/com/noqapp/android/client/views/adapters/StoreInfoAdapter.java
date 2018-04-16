@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         private TextView tv_detail;
         private TextView tv_category;
         private TextView tv_store_rating;
+        private TextView tv_distance;
         private ImageView iv_main;
         private ImageView iv_store_icon;
         private CardView card_view;
@@ -45,6 +47,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
             this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
             this.tv_category = (TextView) itemView.findViewById(R.id.tv_category);
             this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
+            this.tv_distance = (TextView) itemView.findViewById(R.id.tv_distance);
             this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
             this.iv_store_icon = (ImageView) itemView.findViewById(R.id.iv_store_icon);
             this.card_view = (CardView) itemView.findViewById(R.id.card_view);
@@ -75,6 +78,9 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         AppUtilities.setStoreDrawable(context,holder.iv_store_icon,dataSet.get(listPosition).getBusinessType(),holder.tv_store_rating);
         if (!TextUtils.isEmpty(dataSet.get(listPosition).getTown()))
             holder.tv_detail.setText(dataSet.get(listPosition).getTown());
+
+//        holder.tv_distance.setText(String.valueOf(AppUtilities.calculateDistance((float) LaunchActivity.getLaunchActivity().latitute,(float) LaunchActivity.getLaunchActivity().longitute,
+//                (float) dataSet.get(listPosition).getGeoPointOfQ().getLat(),(float) dataSet.get(listPosition).getGeoPointOfQ().getLat())));
         Picasso.with(context)
                 .load(dataSet.get(listPosition).getDisplayImage())
                 .into(holder.iv_main);
