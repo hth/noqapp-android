@@ -88,10 +88,10 @@ public class SliderActivity extends AppCompatActivity {
             dots[i] = new TextView(this);
             dots[i].setText(Html.fromHtml("&#8226;"));
             dots[i].setTextSize(35);
-            dots[i].setTextColor(Color.parseColor("#000000"));
+            dots[i].setTextColor(Color.parseColor("#ffffff"));
             ll_dots.addView(dots[i]);
         }
         if (dots.length > 0)
-            dots[currentPage].setTextColor(Color.parseColor("#FFFFFF"));
+            dots[currentPage].setTextColor(Color.parseColor("#b71c1c"));
     }
 }

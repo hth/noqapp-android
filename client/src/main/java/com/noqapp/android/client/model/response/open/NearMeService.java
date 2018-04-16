@@ -18,12 +18,12 @@ public interface NearMeService {
     @POST("open/search/nearMe.json")
     Call<BizStoreElasticList> nearMe(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Body
-                    StoreInfoParam storeInfoParam
+            StoreInfoParam storeInfoParam
     );
 }

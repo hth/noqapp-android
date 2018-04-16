@@ -152,7 +152,6 @@ public class AppUtilities {
     }
 
     public static void setRatingBarColor(LayerDrawable stars, Context context) {
-
         // Filled stars
         setRatingStarColor(stars.getDrawable(2), ContextCompat.getColor(context, R.color.rating_select));
         // Half filled stars
@@ -208,7 +207,7 @@ public class AppUtilities {
         }
     }
 
-    public static double round (float value) {
+    public static double round(float value) {
         int scale = (int) Math.pow(10, 1);
         return (double) Math.round(value * scale) / scale;
     }
@@ -232,6 +231,26 @@ public class AppUtilities {
                 iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
                 tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_store));
         }
+    }
+
+    /**
+     * Calculate distance between two points in latitude and longitude. Uses Haversine
+     * method as its base.
+     *
+     * lat1, lng1 Start point lat2, lng2
+     * @returns Distance in KMeters
+     */
+    public static String calculateDistanceInKm(float lat1, float lng1, float lat2, float lng2) {
+        double earthRadius = 6371000; //meters
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLng = Math.toRadians(lng2 - lng1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        float dist = (float) (earthRadius * c);
+
+        return String.valueOf(round(dist / 1000)) + " km";// distance in km
     }
 }
 

@@ -114,7 +114,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     private float rating = 0;
     private int ratingCount = 0;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
-   // private CategoryListPagerAdapter mFragmentCardAdapter;
+    // private CategoryListPagerAdapter mFragmentCardAdapter;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     Bundle bundle;
 
@@ -158,7 +158,11 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
                 QueueModel.queuePresenter = this;
-                QueueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
+                if (bundle.getBoolean("CallCategory", false)) {
+                    QueueModel.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
+                } else {
+                    QueueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
+                }
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }
@@ -262,27 +266,22 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
                     .into(iv_category_banner);
 
 
-
-
-
-
-
         } else {
             //TODO(chandra) when its empty do something nice
         }
 
         Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
         RecyclerViewGridAdapter recyclerView_Adapter
-                = new RecyclerViewGridAdapter( this,
+                = new RecyclerViewGridAdapter(this,
                 getCategoryThatArePopulated(),
-                queueMap,listener);
+                queueMap, listener);
 
         rv_categories.setAdapter(recyclerView_Adapter);
     }
 
     /**
      * Populated cache and sorted based on current time.
-     *
+     * <p>
      * //@param jsonQueueList
      */
     private void populateAndSortedCache(BizStoreElasticList bizStoreElasticList) {
@@ -308,7 +307,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
             } else {
                 ArrayList<BizStoreElastic> jsonQueues = queueMap.get(categoryId);
                 jsonQueues.add(jsonQueue);
-               // AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
+                // AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
             }
 
             if (jsonQueue.getRatingCount() != 0) {
@@ -335,7 +334,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
     }
 
     @Override
-    public void onCategoryItemClick(int pos ,JsonCategory jsonCategory) {
+    public void onCategoryItemClick(int pos, JsonCategory jsonCategory) {
 
         Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
         Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");

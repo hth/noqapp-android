@@ -16,12 +16,12 @@ public interface StoreService {
     @GET("open/store/{codeQR}.json")
     Call<JsonStore> getStoreService(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Path("codeQR")
-                    String codeQR
+            String codeQR
     );
 }

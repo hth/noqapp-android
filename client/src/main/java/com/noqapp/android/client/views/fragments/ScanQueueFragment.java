@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.R;
@@ -33,6 +35,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -309,7 +312,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
-
     }
 
     @Override
@@ -319,11 +321,28 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @Override
     public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
-        Intent in = new Intent(getActivity(), StoreDetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("BizStoreElastic", item);
-        in.putExtras(bundle);
-        startActivity(in);
+        switch (item.getBusinessType()) {
+            case DO:
+            case HO:
+                // open hospital profile
+                Bundle b = new Bundle();
+                b.putString(KEY_CODE_QR, item.getCodeQR());
+                b.putBoolean(KEY_FROM_LIST, fromList);
+                b.putBoolean(KEY_IS_HISTORY, false);
+                b.putBoolean("CallCategory",true);
+                b.putBoolean("isCategoryData", false);
+                Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
+                in.putExtra("bundle", b);
+                startActivity(in);
+                break;
+            default:
+                // open order screen
+                Intent intent = new Intent(getActivity(), StoreDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("BizStoreElastic", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+        }
     }
 
     @Override
@@ -368,8 +387,20 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     @OnClick(R.id.btn_type_1)
     public void btn1() {
         Intent intent = new Intent(getActivity(), DoctorProfile1Activity.class);
-        startActivity(intent);
+       // startActivity(intent);
 
+        Location mylocation = new Location("");
+        Location dest_location = new Location("");
+
+        dest_location.setLatitude(19.077065);
+        dest_location.setLongitude(72.998993);
+        mylocation.setLatitude(19.0068);
+        mylocation.setLongitude(73.0147);
+        float distance = mylocation.distanceTo(dest_location);//in meters
+        Toast.makeText(getActivity(), "Distance"+Double.toString(distance/1000),
+                Toast.LENGTH_LONG).show();
+
+        Log.v("distance :",AppUtilities.calculateDistanceInKm(19.0068f,73.0147f,19.077065f,72.998993f));
 //
 //        // Extract Bitmap from ImageView drawable
 //        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.mipmap.launcher);
@@ -486,6 +517,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
     }
+
 
 
 }
