@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.squareup.picasso.Picasso;
 
@@ -75,12 +76,12 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
         holder.tv_category.setText(dataSet.get(listPosition).getCategory());
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(dataSet.get(listPosition).getRating())));
-        AppUtilities.setStoreDrawable(context,holder.iv_store_icon,dataSet.get(listPosition).getBusinessType(),holder.tv_store_rating);
+        AppUtilities.setStoreDrawable(context, holder.iv_store_icon, dataSet.get(listPosition).getBusinessType(), holder.tv_store_rating);
         if (!TextUtils.isEmpty(dataSet.get(listPosition).getTown()))
             holder.tv_detail.setText(dataSet.get(listPosition).getTown());
 
-//        holder.tv_distance.setText(String.valueOf(AppUtilities.calculateDistance((float) LaunchActivity.getLaunchActivity().latitute,(float) LaunchActivity.getLaunchActivity().longitute,
-//                (float) dataSet.get(listPosition).getGeoPointOfQ().getLat(),(float) dataSet.get(listPosition).getGeoPointOfQ().getLat())));
+        holder.tv_distance.setText(AppUtilities.calculateDistanceInKm((float) LaunchActivity.getLaunchActivity().latitute, (float) LaunchActivity.getLaunchActivity().longitute,
+                (float) GeoHashUtils.decodeLatitude(dataSet.get(listPosition).getGeoHash()), (float) GeoHashUtils.decodeLongitude(dataSet.get(listPosition).getGeoHash())));
         Picasso.with(context)
                 .load(dataSet.get(listPosition).getDisplayImage())
                 .into(holder.iv_main);

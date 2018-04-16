@@ -409,7 +409,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         Toast.makeText(getActivity(), "Distance"+Double.toString(distance/1000),
                 Toast.LENGTH_LONG).show();
 
-        Log.v("distance :",String.valueOf(AppUtilities.calculateDistance(19.0068f,73.0147f,19.077065f,72.998993f)));
+        Log.v("distance :",AppUtilities.calculateDistanceInKm(19.0068f,73.0147f,19.077065f,72.998993f));
 //
 //        // Extract Bitmap from ImageView drawable
 //        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.mipmap.launcher);

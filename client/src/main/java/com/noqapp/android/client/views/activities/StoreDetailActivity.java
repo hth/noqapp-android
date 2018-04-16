@@ -47,7 +47,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_known_for, tv_store_rating, tv_payment_mode, tv_amenities,tv_menu,tv_delivery_types,tv_store_name;
+    private TextView tv_contact_no, tv_address, tv_known_for, tv_store_rating, tv_payment_mode, tv_amenities,tv_menu,tv_delivery_types,tv_store_name,tv_store_address;
     private LinearLayout ll_store_open_status;
     private boolean isUp;
     private ImageView iv_store_open_status;
@@ -63,6 +63,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
 
         tv_address = (TextView) findViewById(R.id.tv_address);
         tv_store_name = (TextView) findViewById(R.id.tv_store_name);
+        tv_store_address = (TextView) findViewById(R.id.tv_store_address);
         tv_contact_no = (TextView) findViewById(R.id.tv_contact_no);
         tv_known_for = (TextView) findViewById(R.id.tv_known_for);
         tv_payment_mode = (TextView) findViewById(R.id.tv_payment_mode);
@@ -162,6 +163,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
             jsonQueue = jsonStore.getJsonQueue();
             tv_contact_no.setText(jsonQueue.getStorePhone());
             tv_address.setText(jsonQueue.getStoreAddress());
+            tv_store_address.setText(jsonQueue.getStoreAddress());
             tv_store_name.setText(jsonQueue.getDisplayName());
             tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
             tv_known_for.setText(jsonQueue.getFamousFor());
