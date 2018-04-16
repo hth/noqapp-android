@@ -7,7 +7,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by hitender on 3/22/18.
@@ -36,14 +39,14 @@ public class BizStoreElasticList {
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
     @JsonProperty("result")
-    private List<BizStoreElastic> bizStoreElastics = new ArrayList<>();
+    private List<BizStoreElastic> bizStoreElastics = new LinkedList<>();
 
-    public List<BizStoreElastic> getBizStoreElastics() {
-        return bizStoreElastics;
+    public String getCityName() {
+        return cityName;
     }
 
-    public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
-        this.bizStoreElastics = bizStoreElastics;
+    public BizStoreElasticList setCityName(String cityName) {
+        this.cityName = cityName;
         return this;
     }
 
@@ -56,12 +59,12 @@ public class BizStoreElasticList {
         return this;
     }
 
-    public String getCityName() {
-        return cityName;
+    public List<BizStoreElastic> getBizStoreElastics() {
+        return bizStoreElastics;
     }
 
-    public BizStoreElasticList setCityName(String cityName) {
-        this.cityName = cityName;
+    public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
+        this.bizStoreElastics = bizStoreElastics;
         return this;
     }
 }
