@@ -91,7 +91,7 @@ public class CreateTable {
                 + Notification.TITLE + " TEXT, "
                 + Notification.STATUS + " TEXT, "
                 + Notification.SEQUENCE + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + Notification.CREATE_DATE + " TEXT "+
+                + Notification.CREATE_DATE + " TEXT " +
                 //+ "PRIMARY KEY(`" + Notification.KEY + "`)" +
 
                 ");");

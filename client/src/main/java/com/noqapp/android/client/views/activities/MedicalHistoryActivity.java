@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MedicalHistoryActivity extends AppCompatActivity  {
+public class MedicalHistoryActivity extends AppCompatActivity {
 
     @BindView(R.id.listview)
     protected ListView listview;
@@ -53,27 +53,27 @@ public class MedicalHistoryActivity extends AppCompatActivity  {
         List<NotificationBeans> notificationsList = dummyData();
         MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(this, notificationsList);
         listview.setAdapter(adapter);
-        if(notificationsList.size()<=0){
+        if (notificationsList.size() <= 0) {
             listview.setVisibility(View.GONE);
             tv_empty.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             listview.setVisibility(View.VISIBLE);
             tv_empty.setVisibility(View.GONE);
         }
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent in = new Intent(MedicalHistoryActivity.this,MedicalHistoryDetailActivity.class);
+                Intent in = new Intent(MedicalHistoryActivity.this, MedicalHistoryDetailActivity.class);
                 startActivity(in);
             }
         });
 
     }
 
-    private List<NotificationBeans> dummyData(){
+    private List<NotificationBeans> dummyData() {
         List<NotificationBeans> list = new ArrayList<>();
-        for(int i = 0; i< 5;i++){
-            list.add(new NotificationBeans("title "+i,"This is medical history of the patient.","1",""));
+        for (int i = 0; i < 5; i++) {
+            list.add(new NotificationBeans("title " + i, "This is medical history of the patient.", "1", ""));
         }
         return list;
     }

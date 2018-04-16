@@ -65,7 +65,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 
         switch (groupPosition) {
             case 0:
-               // convertView = inflater.inflate(R.layout.listitem_currentqueue, null);
+                // convertView = inflater.inflate(R.layout.listitem_currentqueue, null);
 //                TextView txtnumber = (TextView) convertView.findViewById(R.id.txtNumber);
 //                TextView tv_queue_name = (TextView) convertView.findViewById(R.id.tv_queue_name);
 //                TextView tv_store_name = (TextView) convertView.findViewById(R.id.tv_store_name);
@@ -87,7 +87,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
                 break;
 
             case 1:
-               // convertView = inflater.inflate(R.layout.listitem_historyqueue, null);
+                // convertView = inflater.inflate(R.layout.listitem_historyqueue, null);
 //                TextView txtnumber1 = (TextView) convertView.findViewById(R.id.txtNumber);
 //                TextView tv_queue_name1 = (TextView) convertView.findViewById(R.id.tv_queue_name);
 //                TextView tv_store_name1 = (TextView) convertView.findViewById(R.id.tv_store_name);
@@ -177,7 +177,7 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
 
 
             case 0:
-               // convertView = inflater.inflate(R.layout.list_group_blank, null);
+                // convertView = inflater.inflate(R.layout.list_group_blank, null);
                 break;
 
             case 1:

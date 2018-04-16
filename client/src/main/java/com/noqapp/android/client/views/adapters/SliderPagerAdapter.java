@@ -18,7 +18,6 @@ import java.util.ArrayList;
  */
 
 
-
 public class SliderPagerAdapter extends PagerAdapter {
     private LayoutInflater layoutInflater;
     Activity activity;
@@ -35,7 +34,7 @@ public class SliderPagerAdapter extends PagerAdapter {
 
         View view = layoutInflater.inflate(R.layout.layout_slider, container, false);
         ImageView im_slider = (ImageView) view.findViewById(R.id.im_slider);
-        String url = image_arraylist.get(position).replace("40x40","240x120");// added to check the image Quality
+        String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
         Picasso.with(activity.getApplicationContext())
                 .load(url)
                 .placeholder(R.mipmap.launcher) // optional

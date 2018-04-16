@@ -20,7 +20,7 @@ import com.noqapp.android.client.views.fragments.InviteFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class InviteActivity extends AppCompatActivity  {
+public class InviteActivity extends AppCompatActivity {
 
 
     @BindView(R.id.actionbarBack)
@@ -31,8 +31,6 @@ public class InviteActivity extends AppCompatActivity  {
     protected TextView tv_toolbar_title;
     @BindView(R.id.frame_invite)
     protected FrameLayout frame_invite;
-
-
 
 
     @Override
@@ -58,7 +56,6 @@ public class InviteActivity extends AppCompatActivity  {
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_invite, inf, "").commit();
     }
-
 
 
 }

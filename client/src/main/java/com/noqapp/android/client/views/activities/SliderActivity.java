@@ -30,6 +30,7 @@ public class SliderActivity extends AppCompatActivity {
     private TextView[] dots;
     private int page_position = 0;
     private ImageView actionbarBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class SliderActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_slider_pager);
         actionbarBack = findViewById(R.id.actionbarBack);
-        page_position = getIntent().getIntExtra("pos",0);
+        page_position = getIntent().getIntExtra("pos", 0);
         init();
         addBottomDots(page_position);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
@@ -53,8 +54,8 @@ public class SliderActivity extends AppCompatActivity {
 
     private void init() {
 
-       // setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-       // getSupportActionBar().hide();
+        // setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        // getSupportActionBar().hide();
         vp_slider = (ViewPager) findViewById(R.id.vp_slider);
         ll_dots = (LinearLayout) findViewById(R.id.ll_dots);
         Bundle b = getIntent().getExtras();

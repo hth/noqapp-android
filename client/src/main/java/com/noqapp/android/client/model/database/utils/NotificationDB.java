@@ -59,7 +59,7 @@ public class NotificationDB {
 
     public static List<NotificationBeans> getNotificationsList() {
 
-        String query = "SELECT *  FROM " + DatabaseTable.Notification.TABLE_NAME + " ORDER BY "+DatabaseTable.Notification.SEQUENCE+ " DESC ";
+        String query = "SELECT *  FROM " + DatabaseTable.Notification.TABLE_NAME + " ORDER BY " + DatabaseTable.Notification.SEQUENCE + " DESC ";
         List<NotificationBeans> notificationBeansList = new ArrayList<>();
         Cursor cursor = dbHandler.getWritableDb().rawQuery(query, null);
         if (cursor != null) {
@@ -87,7 +87,7 @@ public class NotificationDB {
         cv.put(DatabaseTable.Notification.STATUS, KEY_READ);
         try {
             long successCount = dbHandler.getWritableDb().
-            update(DatabaseTable.Notification.TABLE_NAME, cv, DatabaseTable.Notification.STATUS + "=" + KEY_UNREAD, null);
+                    update(DatabaseTable.Notification.TABLE_NAME, cv, DatabaseTable.Notification.STATUS + "=" + KEY_UNREAD, null);
             Log.d(TAG, "Data updated notification " + String.valueOf(successCount));
         } catch (SQLException e) {
             Log.e(TAG, "Error update notification reason=" + e.getLocalizedMessage(), e);

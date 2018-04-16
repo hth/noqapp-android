@@ -11,7 +11,7 @@ import java.io.Serializable;
  * Created by hitender on 3/22/18.
  */
 
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -25,12 +25,12 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GeoPointOfQ implements Serializable{
+public class GeoPointOfQ implements Serializable {
 
     @JsonProperty("lat")
     private double lat;
 
-    @JsonProperty ("lon")
+    @JsonProperty("lon")
     private double lon;
 
     private GeoPointOfQ() {

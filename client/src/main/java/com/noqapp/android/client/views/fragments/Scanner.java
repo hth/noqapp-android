@@ -20,7 +20,7 @@ import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
-public abstract class Scanner extends NoQueueBaseFragment   {
+public abstract class Scanner extends NoQueueBaseFragment {
     private final String TAG = Scanner.class.getSimpleName();
     private final int CAMERA_AND_STORAGE_PERMISSION_CODE = 102;
     private final String[] CAMERA_AND_STORAGE_PERMISSION_PERMS = {
@@ -28,6 +28,7 @@ public abstract class Scanner extends NoQueueBaseFragment   {
             Manifest.permission.CAMERA
     };
     private static final int RC_BARCODE_CAPTURE = 9001;
+
     public Scanner() {
 
     }
@@ -143,7 +144,7 @@ public abstract class Scanner extends NoQueueBaseFragment   {
                     //No permission allowed
                     //Do nothing
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -189,7 +190,7 @@ public abstract class Scanner extends NoQueueBaseFragment   {
             } else {
 
             }
-        }else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }

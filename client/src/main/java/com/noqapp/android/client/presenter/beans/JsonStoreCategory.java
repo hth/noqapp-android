@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * Created by hitender on 3/23/18.
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -24,7 +24,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonStoreCategory implements Serializable{
+public class JsonStoreCategory implements Serializable {
 
     @JsonProperty("ci")
     private String categoryId;

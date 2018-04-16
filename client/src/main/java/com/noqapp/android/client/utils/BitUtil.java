@@ -16,7 +16,9 @@
  */
 package com.noqapp.android.client.utils;
 
-/**  A variety of high efficiency bit twiddling routines.
+/**
+ * A variety of high efficiency bit twiddling routines.
+ *
  * @lucene.internal
  */
 public final class BitUtil {
@@ -31,7 +33,8 @@ public final class BitUtil {
     // shift values for bit interleaving
     private static final short SHIFT[] = {1, 2, 4, 8, 16};
 
-    private BitUtil() {} // no instance
+    private BitUtil() {
+    } // no instance
 
     // The pop methods used to rely on bit-manipulation tricks for speed but it
     // turns out that it is faster to use the Long.bitCount method (which is an

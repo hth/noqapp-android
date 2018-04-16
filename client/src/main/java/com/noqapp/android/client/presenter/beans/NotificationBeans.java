@@ -20,7 +20,7 @@ public class NotificationBeans {
         this.title = title;
         this.msg = msg;
         this.status = status;
-        this.notificationCreate =notificationCreate;
+        this.notificationCreate = notificationCreate;
     }
 
     public String getTitle() {

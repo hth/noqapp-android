@@ -47,7 +47,7 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
     private Paint mTextPaint;
     private volatile Barcode mBarcode;
 
-    BarcodeGraphic(GraphicOverlay overlay,Activity context) {
+    BarcodeGraphic(GraphicOverlay overlay, Activity context) {
         super(overlay);
 
         mCurrentColorIndex = (mCurrentColorIndex + 1) % COLOR_CHOICES.length;
@@ -88,7 +88,7 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
                 isFirstScandetaction = false;
                 Intent intent = new Intent();
                 intent.putExtra("SCAN_RESULT", barcode.rawValue.toString());
-                intent.putExtra("SCAN_RESULT_FORMAT", String.valueOf( barcode.format));
+                intent.putExtra("SCAN_RESULT_FORMAT", String.valueOf(barcode.format));
                 context.setResult(Activity.RESULT_OK, intent);
                 context.finish();
             }

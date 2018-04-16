@@ -164,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
                     //@TODO @Chandra update the country code dynamic
-                    startPhoneNumberVerification("+91"+edt_phoneNo.getText().toString());
+                    startPhoneNumberVerification("+91" + edt_phoneNo.getText().toString());
 
                     Answers.getInstance().logLogin(new LoginEvent()
                             .putMethod("Phone")
@@ -297,7 +297,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
 //                rff.setArguments(b);
 //                replaceFragmentWithBackStack(this, R.id.frame_layout, rff, TAG, LaunchActivity.tabMe);
 
-                Intent in = new Intent(LoginActivity.this,RegistrationActivity.class);
+                Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
                 in.putExtra("mobile_no", verifiedMobileNo);
                 in.putExtra("country_code", "");
                 startActivity(in);
@@ -405,5 +405,5 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                 break;
         }
     }
-   
+
 }

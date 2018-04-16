@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -46,9 +45,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.NetworkUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.fragments.AfterJoinFragment;
 import com.noqapp.android.client.views.fragments.JoinFragment;
-import com.noqapp.android.client.views.fragments.ListQueueFragment;
 import com.noqapp.android.client.views.fragments.LoginFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
@@ -60,10 +57,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,7 +65,7 @@ import io.fabric.sdk.android.Fabric;
 
 import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
 
-public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter ,NavigationView.OnNavigationItemSelectedListener {
+public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     public static DatabaseHelper dbHandler;
@@ -107,8 +101,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private BroadcastReceiver broadcastReceiver;
     private String currentSelectedTabTag = "";
     private ImageView iv_profile;
-    private TextView tv_login,tv_name,tv_email;
+    private TextView tv_login, tv_name, tv_email;
     private ScanQueueFragment scanfragment;
+
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
@@ -158,7 +153,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        LinearLayout mParent = (LinearLayout) navigationView.getHeaderView( 0 );
+        LinearLayout mParent = (LinearLayout) navigationView.getHeaderView(0);
         iv_profile = mParent.findViewById(R.id.iv_profile);
         tv_login = mParent.findViewById(R.id.tv_login);
         tv_login.setOnClickListener(this);
@@ -187,7 +182,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
                             callReviewActivity(codeQR);
                             // this code is added to close the join & after join screen if the request is processed
-                            if(activityCommunicator != null){
+                            if (activityCommunicator != null) {
                                 activityCommunicator.requestProcessed(codeQR);
                             }
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
@@ -262,7 +257,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                     // logout
                                     NoQueueBaseActivity.clearPreferences();
                                     //navigate to signup/login
-                                   // replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
+                                    // replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
                                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                                     startActivity(loginIntent);
                                 }
@@ -295,7 +290,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             if (resultCode == RESULT_OK) {
                 String intent_qrCode = data.getExtras().getString(Constants.QRCODE);
                 //Remove the AfterJoinFragment screen if having same qr code from tablist
-                if(activityCommunicator != null){
+                if (activityCommunicator != null) {
                     activityCommunicator.requestProcessed(intent_qrCode);
                 }
                 dismissProgress();
@@ -338,16 +333,16 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         super.onResume();
         int notify_count = NotificationDB.getNotificationCount();
         tv_badge.setText(String.valueOf(notify_count));
-        if(notify_count>0){
+        if (notify_count > 0) {
             tv_badge.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tv_badge.setVisibility(View.INVISIBLE);
         }
-        if(UserUtils.isLogin()){
+        if (UserUtils.isLogin()) {
             tv_login.setText("Logout");
             tv_email.setText(UserUtils.getEmail());
             tv_name.setText(NoQueueBaseActivity.getUserName());
-        }else{
+        } else {
             tv_login.setText("Login");
             tv_email.setText("guest.user@email.com");
             tv_name.setText("Guest User");
@@ -355,7 +350,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
-      //  LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
+        //  LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
@@ -376,10 +371,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Override
     protected void onPause() {
-       // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
-
 
 
     @Override
@@ -471,8 +465,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
         TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
 
-        if(activityCommunicator != null){
-            activityCommunicator.updateUI(codeQR,jtk, go_to);
+        if (activityCommunicator != null) {
+            activityCommunicator.updateUI(codeQR, jtk, go_to);
         }
         try {
             scanfragment.updateListFromNotification(jtk, go_to);

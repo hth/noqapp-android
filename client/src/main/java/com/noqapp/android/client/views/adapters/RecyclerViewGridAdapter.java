@@ -34,7 +34,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
     }
 
     public RecyclerViewGridAdapter(Context context, List<JsonCategory> categories,
-            Map<String, ArrayList<BizStoreElastic>> queueMap, OnItemClickListener listener) {
+                                   Map<String, ArrayList<BizStoreElastic>> queueMap, OnItemClickListener listener) {
         this.categories = categories;
         this.queueMap = queueMap;
         this.context = context;
@@ -75,7 +75,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
             jsonQueue = jsonQueues.get(0);
         }
         Vholder.tv_title.setText(jsonCategory.getCategoryName());
-       // Vholder.tv_detail.setText(getAdditionalCardText(jsonQueue));
+        // Vholder.tv_detail.setText(getAdditionalCardText(jsonQueue));
         Vholder.tv_noinq.setText(String.valueOf(jsonQueues.size()));
 
         Picasso.with(context)
@@ -84,7 +84,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
         Vholder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onCategoryItemClick(position,jsonCategory);
+                listener.onCategoryItemClick(position, jsonCategory);
             }
         });
     }

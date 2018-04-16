@@ -22,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationActivity extends AppCompatActivity  {
+public class NotificationActivity extends AppCompatActivity {
 
     @BindView(R.id.listview)
     protected ListView listview;
@@ -49,10 +49,10 @@ public class NotificationActivity extends AppCompatActivity  {
         List<NotificationBeans> notificationsList = NotificationDB.getNotificationsList();
         NotificationListAdapter adapter = new NotificationListAdapter(this, notificationsList);
         listview.setAdapter(adapter);
-        if(notificationsList.size()<=0){
+        if (notificationsList.size() <= 0) {
             listview.setVisibility(View.GONE);
             tv_empty.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             listview.setVisibility(View.VISIBLE);
             tv_empty.setVisibility(View.GONE);
         }

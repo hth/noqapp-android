@@ -29,10 +29,13 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private List<JsonStoreCategory> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<ChildData>> listDataChild;
+
     public HashMap<String, ChildData> getOrders() {
         return orders;
     }
+
     private HashMap<String, ChildData> orders = new HashMap<>();
+
     public CustomExpandableListAdapter(Context context, List<JsonStoreCategory> listDataHeader,
                                        HashMap<String, List<ChildData>> listDataChild) {
         this.context = context;
@@ -85,11 +88,11 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
                 childViewHolder.tv_value.setText("" + number);
                 listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                        .get(childPosition).setChildInput( number);
-                if(number<=0){
+                        .get(childPosition).setChildInput(number);
+                if (number <= 0) {
                     orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition).getJsonStoreProduct().getProductId());
-                }else{
+                } else {
                     orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition));
@@ -105,10 +108,10 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tv_value.setText("" + number);
                 listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                         .get(childPosition).setChildInput(number);
-                if(number<=0){
+                if (number <= 0) {
                     orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition).getJsonStoreProduct().getProductId());
-                }else{
+                } else {
                     orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition));

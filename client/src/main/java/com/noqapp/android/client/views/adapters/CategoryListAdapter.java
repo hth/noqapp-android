@@ -21,6 +21,7 @@ import java.util.List;
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.MyViewHolder> {
     private final Context context;
     private List<BizStoreElastic> dataSet;
+
     //private List<JsonQueue> dataSet;
     public interface OnItemClickListener {
         void onCategoryItemClick(BizStoreElastic item, View view, int pos);
@@ -58,7 +59,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                                   int viewType) {
+                                           int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_item_view_all, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
@@ -175,32 +176,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
 
 }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-
-
 
 
 //        recordHolder.tv_mobile.setOnClickListener(new View.OnClickListener() {
