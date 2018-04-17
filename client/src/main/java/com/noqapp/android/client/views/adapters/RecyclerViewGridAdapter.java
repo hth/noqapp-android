@@ -13,6 +13,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Formatter;
 import com.squareup.picasso.Picasso;
 
@@ -75,7 +76,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
             jsonQueue = jsonQueues.get(0);
         }
         Vholder.tv_title.setText(jsonCategory.getCategoryName());
-        // Vholder.tv_detail.setText(getAdditionalCardText(jsonQueue));
+      //  Vholder.tv_detail.setText(AppUtilities.getAdditionalCardText(jsonQueue));
         Vholder.tv_noinq.setText(String.valueOf(jsonQueues.size()));
 
         Picasso.with(context)
@@ -94,30 +95,5 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
         return categories.size();
     }
 
-    private String getAdditionalCardText(JsonQueue jsonQueue) {
-        String additionalText;
-        if (jsonQueue.isDayClosed()) {
-            //Fetch for tomorrow when closed
-            additionalText = jsonQueue.getDisplayName() + " is closed today.";
-        } else if (getTimeIn24HourFormat() >= jsonQueue.getStartHour() && getTimeIn24HourFormat() < jsonQueue.getEndHour()) {
-            //Based on location let them know in how much time they will reach or suggest the next queue.
-            additionalText = jsonQueue.getDisplayName()
-                    + " is open & can service you now. Click to join the queue.";
-        } else {
-            if (getTimeIn24HourFormat() >= jsonQueue.getTokenAvailableFrom()) {
-                additionalText = jsonQueue.getDisplayName()
-                        + " opens at "
-                        + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
-                        + ". Join queue now to save time.";
-            } else {
-                additionalText = jsonQueue.getDisplayName()
-                        + " can service you at "
-                        + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
-                        + ". You can join this queue at "
-                        + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom());
-            }
-        }
 
-        return additionalText;
-    }
 }

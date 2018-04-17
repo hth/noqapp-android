@@ -26,7 +26,9 @@ import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.BusinessTypeEnum;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 
 import org.joda.time.LocalDateTime;
@@ -277,6 +279,33 @@ public class AppUtilities {
                     .putString("pref_language", "en").apply();
         }
 
+    }
+
+    public static String getAdditionalCardText(BizStoreElastic bizStoreElastic) {
+        StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(0);
+        String additionalText;
+        if (storeHourElastic.isDayClosed()) {
+            //Fetch for tomorrow when closed
+            additionalText = bizStoreElastic.getDisplayName() + " is closed today.";
+        } else if (getTimeIn24HourFormat() >= storeHourElastic.getStartHour() && getTimeIn24HourFormat() < storeHourElastic.getEndHour()) {
+            //Based on location let them know in how much time they will reach or suggest the next queue.
+            additionalText = bizStoreElastic.getDisplayName()
+                    + " is open & can service you now. Click to join the queue.";
+        } else {
+            if (getTimeIn24HourFormat() >= storeHourElastic.getTokenAvailableFrom()) {
+                additionalText = bizStoreElastic.getDisplayName()
+                        + " opens at "
+                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
+                        + ". Join queue now to save time.";
+            } else {
+                additionalText = bizStoreElastic.getDisplayName()
+                        + " can service you at "
+                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
+                        + ". You can join this queue at "
+                        + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom());
+            }
+        }
+        return additionalText;
     }
 }
 

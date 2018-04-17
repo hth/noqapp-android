@@ -263,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         if (requestCode == READ_AND_RECEIVE_SMS_PERMISSION_CODE) {
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startPhoneNumberVerification(edt_phoneNo.getText().toString());
+                startPhoneNumberVerification("+91"+edt_phoneNo.getText().toString());
             } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 //No permission allowed
                 //Do nothing

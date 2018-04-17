@@ -68,7 +68,7 @@
             android:layout_alignParentBottom="true"
             android:background="@android:color/holo_green_dark"
             android:gravity="center"
-            android:padding="5sp"
+            android:padding="10dp"
             android:text="Place Order"
             android:textColor="@android:color/white"
             android:textSize="18sp"

@@ -86,7 +86,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
                     Double.toString(longitute);
             getAddress(latitute, longitute);
             updateLocationUI();
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
         }
@@ -144,7 +144,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
 
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         latitute = location.getLatitude();
         longitute = location.getLongitude();
         getAddress(latitute, longitute);

@@ -115,6 +115,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private ImageView iv_profile;
     private TextView tv_login, tv_name, tv_email;
     private ScanQueueFragment scanfragment;
+    private DrawerLayout drawer;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -179,7 +180,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -306,7 +307,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                     startActivity(loginIntent);
                 }
-
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             default:
                 break;
@@ -426,8 +427,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             //super.onBackPressed();
             finish();
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
@@ -588,7 +587,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
