@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 
 import org.joda.time.LocalDateTime;
 
@@ -252,6 +253,30 @@ public class AppUtilities {
         float dist = (float) (earthRadius * c);
 
         return String.valueOf(round(dist / 1000)) + " km";// distance in km
+    }
+
+
+    public static void changeLanguage(String language) {
+
+        if (!language.equals("")) {
+            if (language.equals("en")) {
+                LaunchActivity.language = "en_US";
+                LaunchActivity.locale = Locale.ENGLISH;
+                LaunchActivity.languagepref.edit()
+                        .putString("pref_language", "en").apply();
+            } else {
+                LaunchActivity.language = "hi";
+                LaunchActivity.locale = new Locale("hi");;
+                LaunchActivity.languagepref.edit()
+                        .putString("pref_language", "hi").apply();
+            }
+        } else {
+            LaunchActivity.language = "en_US";
+            LaunchActivity.locale = Locale.ENGLISH;
+            LaunchActivity.languagepref.edit()
+                    .putString("pref_language", "en").apply();
+        }
+
     }
 }
 

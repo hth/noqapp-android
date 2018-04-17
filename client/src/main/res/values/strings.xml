@@ -214,4 +214,17 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="prompt_gender">Gender</string>
     <string name="prompt_marital_status">marital status</string>
     <string name="action_update">update profile</string>
+
+
+
+    <string name="language_setting">Change Language</string>
+    <string name="lang_dialog_title">Change Language</string>
+    <string name="hindi">Hindi</string>
+    <string name="english">English</string>
+    <!-- Language select dialog -->
+    <string-array name="lang_select">
+        <item>Select Language</item>
+        <item>English</item>
+        <item>Hindi</item>
+    </string-array>
 </resources>

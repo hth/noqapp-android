@@ -3,7 +3,7 @@
     <string name="title_activity_launch">NoQApp</string>
     <string name="btnBarcodeScanner">Me</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">सेटिंग्स</string>
     <string name="join">जुड़ें</string>
     <string name="cancel">Cancel</string>
     <string name="scan">Click to Scan NoQueue QR Code</string>
@@ -11,9 +11,9 @@
     <string name="registration">Registration</string>
     <string name="autojoinon">Auto QJoin On Scan</string>
     <string name="remoteJoinAvail">Remote QJoin Available</string>
-    <string name="ratetheapp">Rate the app</string>
-    <string name="legal">Legal</string>
-    <string name="invite">Invite</string>
+    <string name="ratetheapp">एप्लिकेशन का मूल्यांकन करें</string>
+    <string name="legal">वैधानिक</string>
+    <string name="invite">आमंत्रित करें</string>
     <string name="firstname">First Name</string>
 
     <!--Invite Screen-->
@@ -131,7 +131,11 @@
     <string name="playstore_update_title">Newer App Version Available</string>
     <string name="playstore_update_msg">New version of NoQApp is available on play store. Please update your app to latest version.\n</string>
     <string name="notification_alert">You don\'t have any notifications.</string>
-    <string name="home">Home</string>
-    <string name="share">Share</string>
-    <string name="medical_history">Madical History</string>
+    <string name="home">होम</string>
+    <string name="share">शेयर/साझा करें</string>
+    <string name="medical_history">चिकित्सा का इतिहास</string>
+    <string name="language_setting">भाषा बदलें</string>
+    <string name="lang_dialog_title">भाषा बदलें</string>
+    <string name="hindi"> हिंदी</string>
+    <string name="english">अंग्रेज़ी</string>
 </resources>

@@ -25,6 +25,7 @@ import com.noqapp.android.client.model.types.PaymentTypeEnum;
 import com.noqapp.android.client.model.types.StoreModel;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.ChildData;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
@@ -34,7 +35,6 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.utils.ViewAnimationUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
-import com.noqapp.android.client.views.toremove.ChildData;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
