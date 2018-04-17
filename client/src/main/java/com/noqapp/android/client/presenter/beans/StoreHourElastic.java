@@ -43,6 +43,9 @@ public class StoreHourElastic implements Serializable {
     @JsonProperty("EH")
     private int endHour;
 
+    @JsonProperty("DC")
+    private boolean dayClosed = false;
+
     public int getDayOfWeek() {
         return dayOfWeek;
     }
@@ -85,6 +88,15 @@ public class StoreHourElastic implements Serializable {
 
     public StoreHourElastic setEndHour(int endHour) {
         this.endHour = endHour;
+        return this;
+    }
+
+    public boolean isDayClosed() {
+        return dayClosed;
+    }
+
+    public StoreHourElastic setDayClosed(boolean dayClosed) {
+        this.dayClosed = dayClosed;
         return this;
     }
 }
