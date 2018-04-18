@@ -138,4 +138,13 @@
     <string name="lang_dialog_title">भाषा बदलें</string>
     <string name="hindi"> हिंदी</string>
     <string name="english">अंग्रेज़ी</string>
+    <string name="current_location">वर्तमान स्थान</string>
+    <string name="scan_qr">QR कोड स्कैन </string>
+    <string name="active_queue">सक्रिय पंक्ति / ऑर्डर</string>
+    <string name="recent_activity">हाल की गतिविधि</string>
+    <string name="merchant_near">आपके आस-पास की दुकानें</string>
+    <string name="view_all">सभी को देखें</string>
+    <string name="scan_info">कतार में शामिल होने के लिए QR कोड स्कैन करें / मौके पर ऑर्डर</string>
+    <string name="prompt_address_status">पता</string>
+    <string name="prompt_dob">DD-MM-YYYY</string>
 </resources>

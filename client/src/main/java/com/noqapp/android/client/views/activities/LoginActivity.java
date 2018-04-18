@@ -277,26 +277,11 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
             finish();//close the current activity
-
-           /* replaceFragmentWithoutBackStack(this, R.id.frame_layout, new MeFragment(), TAG);
-
-            //remove the login fragment from stack
-            List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe);
-            if (currentTabFragments.size() == 2) {
-                LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
-            }*/
             LaunchActivity.getLaunchActivity().dismissProgress();
         } else {
             // Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
             if (null != eej && eej.getSystemErrorCode().equals("412")) {
-//                Bundle b = new Bundle();
-//                b.putString("mobile_no", verifiedMobileNo);
-//                b.putString("country_code", "");
-//                RegistrationFragment rff = new RegistrationFragment();
-//                rff.setArguments(b);
-//                replaceFragmentWithBackStack(this, R.id.frame_layout, rff, TAG, LaunchActivity.tabMe);
-
                 Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
                 in.putExtra("mobile_no", verifiedMobileNo);
                 in.putExtra("country_code", "");

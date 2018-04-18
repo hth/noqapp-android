@@ -92,8 +92,8 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     private static QueueHandler mHandler;
 
-    @BindView(R.id.btn_type_1)
-    protected Button btn_type_1;
+    @BindView(R.id.btn_temp)
+    protected Button btn_temp;
 
     @BindView(R.id.spinner)
     protected Spinner spinner;
@@ -238,8 +238,8 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     @Override
     public void onResume() {
         super.onResume();
-        if (!fromList)// to not modify the actionbar if it is coming from list
-            LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_scan));
+
+        LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_scan));
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
         fetchCurrentAndHistoryList();
     }
@@ -385,8 +385,8 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         // startActivity(intent);
     }
 
-    @OnClick(R.id.btn_type_1)
-    public void btn1() {
+    @OnClick(R.id.btn_temp)
+    public void tempClick() {
         Intent intent = new Intent(getActivity(), DoctorProfile1Activity.class);
         // startActivity(intent);
 
