@@ -48,8 +48,8 @@ public class JsonQueue implements Serializable {
     @JsonProperty("c")
     private String codeQR;
 
-    @JsonProperty("cor")
-    private double[] coordinate;
+    @JsonProperty("gh")
+    private String geoHash;
 
     @JsonProperty("n")
     private String businessName;
@@ -186,12 +186,12 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
-    public double[] getCoordinate() {
-        return coordinate;
+    public String getGeoHash() {
+        return geoHash;
     }
 
-    public JsonQueue setCoordinate(double[] coordinate) {
-        this.coordinate = coordinate;
+    public JsonQueue setGeoHash(String geoHash) {
+        this.geoHash = geoHash;
         return this;
     }
 
@@ -542,7 +542,7 @@ public class JsonQueue implements Serializable {
     public JsonTokenAndQueue getJsonTokenAndQueue() {
         JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
         jsonTokenAndQueue.setCodeQR(codeQR);
-        jsonTokenAndQueue.setCoordinate(coordinate);
+        jsonTokenAndQueue.setGeoHash(geoHash);
         jsonTokenAndQueue.setBusinessName(businessName);
         jsonTokenAndQueue.setDisplayName(displayName);
         jsonTokenAndQueue.setStoreAddress(storeAddress);
@@ -580,7 +580,7 @@ public class JsonQueue implements Serializable {
     public String toString() {
         return "JsonQueue{" +
                 "codeQR='" + codeQR + '\'' +
-                ", coordinate=" + Arrays.toString(coordinate) +
+                ", geoHash=" + geoHash +
                 ", businessName='" + businessName + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", storeAddress='" + storeAddress + '\'' +

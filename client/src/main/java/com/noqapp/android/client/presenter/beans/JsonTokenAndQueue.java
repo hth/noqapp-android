@@ -36,8 +36,8 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("c")
     private String codeQR;
 
-    @JsonProperty("cor")
-    private double[] coordinate;
+    @JsonProperty("gh")
+    private String geoHash;
 
     @JsonProperty("n")
     private String businessName;
@@ -112,12 +112,13 @@ public class JsonTokenAndQueue implements Serializable {
         this.codeQR = codeQR;
     }
 
-    public double[] getCoordinate() {
-        return coordinate;
+    public String getGeoHash() {
+        return geoHash;
     }
 
-    public void setCoordinate(double[] coordinate) {
-        this.coordinate = coordinate;
+    public JsonTokenAndQueue setGeoHash(String geoHash) {
+        this.geoHash = geoHash;
+        return this;
     }
 
     public String getBusinessName() {
@@ -303,7 +304,7 @@ public class JsonTokenAndQueue implements Serializable {
     public String toString() {
         return "JsonTokenAndQueue{" +
                 "codeQR='" + codeQR + '\'' +
-                ", coordinate=" + Arrays.toString(coordinate) +
+                ", geoHash=" + geoHash +
                 ", businessName='" + businessName + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", storeAddress='" + storeAddress + '\'' +
