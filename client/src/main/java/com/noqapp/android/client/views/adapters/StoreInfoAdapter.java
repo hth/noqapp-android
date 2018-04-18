@@ -1,6 +1,8 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,7 +16,10 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.GeoHashUtils;
+import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.StoreDetailActivity;
+import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -71,24 +76,38 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+        BizStoreElastic item = dataSet.get(listPosition);
 
-        holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
-        holder.tv_category.setText(dataSet.get(listPosition).getCategory());
-        holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(dataSet.get(listPosition).getRating())));
-        AppUtilities.setStoreDrawable(context, holder.iv_store_icon, dataSet.get(listPosition).getBusinessType(), holder.tv_store_rating);
-        if (!TextUtils.isEmpty(dataSet.get(listPosition).getTown()))
-            holder.tv_detail.setText(dataSet.get(listPosition).getTown());
+        switch (item.getBusinessType()) {
+            case DO:
+            case HO:
+                holder.tv_name.setText(item.getBusinessName());
 
+                if (!TextUtils.isEmpty(item.getTown()))
+                    holder.tv_detail.setText(item.getTown());
+
+                Picasso.with(context)
+                        .load(item.getDisplayImage())
+                        .into(holder.iv_main);
+                break;
+            default:
+                holder.tv_name.setText(item.getDisplayName());
+
+                if (!TextUtils.isEmpty(item.getTown()))
+                    holder.tv_detail.setText(item.getTown());
+
+                Picasso.with(context)
+                        .load(item.getDisplayImage())
+                        .into(holder.iv_main);
+        }
+        holder.tv_category.setText(item.getArea()+","+item.getTown());
+        AppUtilities.setStoreDrawable(context, holder.iv_store_icon, item.getBusinessType(), holder.tv_store_rating);
         holder.tv_distance.setText(AppUtilities.calculateDistanceInKm(
                 (float) LaunchActivity.getLaunchActivity().latitute,
                 (float) LaunchActivity.getLaunchActivity().longitute,
-                (float) GeoHashUtils.decodeLatitude(dataSet.get(listPosition).getGeoHash()),
-                (float) GeoHashUtils.decodeLongitude(dataSet.get(listPosition).getGeoHash())));
-
-        Picasso.with(context)
-                .load(dataSet.get(listPosition).getDisplayImage())
-                .into(holder.iv_main);
-
+                (float) GeoHashUtils.decodeLatitude(item.getGeoHash()),
+                (float) GeoHashUtils.decodeLongitude(item.getGeoHash())));
+        holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(item.getRating())));
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

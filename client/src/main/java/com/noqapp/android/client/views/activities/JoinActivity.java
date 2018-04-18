@@ -211,7 +211,21 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
         } else {
             /* Auto join after scan if auto-join status is true in me screen && it is not coming from skip notification as well as history queue. */
             if (getIntent().getBooleanExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true) && NoQueueBaseActivity.getAutoJoinStatus()) {
-                joinQueue();
+                if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
+
+                    if (UserUtils.isLogin()) {
+                         joinQueue();
+                    } else {
+                        // please login to avail this feature
+                        Toast.makeText(JoinActivity.this,"please login to avail this feature",Toast.LENGTH_LONG).show();
+                        // Navigate to login screen
+                        Intent loginIntent = new Intent(JoinActivity.this, LoginActivity.class);
+                        startActivity(loginIntent);
+                    }
+                }else{
+                    // any user can join
+                    joinQueue();
+                }
             }
         }
     }
@@ -256,18 +270,39 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
                     ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), errorMsg, true);
                 }
             } else {
-                //TODO(chandra) make sure jsonQueue is not null. Prevent action on join button.
-                Intent in = new Intent(this, AfterJoinActivity.class);
-                in.putExtra(KEY_CODE_QR, jsonQueue.getCodeQR());
-                //TODO // previously KEY_FROM_LIST  was false need to verify
-                in.putExtra(KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
-                in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, getIntent().getBooleanExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true));
-                in.putExtra(KEY_IS_HISTORY, getIntent().getBooleanExtra(KEY_IS_HISTORY, false));
-                in.putExtra(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-                in.putExtra(Constants.FROM_JOIN_SCREEN, true);
-                startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+                if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
+
+                    if (UserUtils.isLogin()) {
+                        callAfterJoin();
+                    } else {
+                        // please login to avail this feature
+                        Toast.makeText(JoinActivity.this,"please login to avail this feature",Toast.LENGTH_LONG).show();
+                        // Navigate to login screen
+                        Intent loginIntent = new Intent(JoinActivity.this, LoginActivity.class);
+                        startActivity(loginIntent);
+                    }
+                }else{
+                    // any user can join
+                    callAfterJoin();
+                }
+
+
             }
         }
+    }
+
+    private void callAfterJoin() {
+
+        //TODO(chandra) make sure jsonQueue is not null. Prevent action on join button.
+        Intent in = new Intent(this, AfterJoinActivity.class);
+        in.putExtra(KEY_CODE_QR, jsonQueue.getCodeQR());
+        //TODO // previously KEY_FROM_LIST  was false need to verify
+        in.putExtra(KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
+        in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, getIntent().getBooleanExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true));
+        in.putExtra(KEY_IS_HISTORY, getIntent().getBooleanExtra(KEY_IS_HISTORY, false));
+        in.putExtra(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+        in.putExtra(Constants.FROM_JOIN_SCREEN, true);
+        startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }
 
     @OnClick(R.id.btn_no)

@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -20,12 +21,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,7 @@ import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.network.VersionCheckAsync;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.NetworkUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -58,6 +63,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,7 +71,7 @@ import io.fabric.sdk.android.Fabric;
 
 import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
 
-public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener {
+public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     public static DatabaseHelper dbHandler;
@@ -77,6 +83,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public ProgressDialog progressDialog;
     // Tabs associated with list of fragments
     public ActivityCommunicator activityCommunicator;
+
+
+
+    public static Locale locale;
+    public static SharedPreferences languagepref;
+    public static String language;
     @BindView(R.id.tv_badge)
     protected TextView tv_badge;
 
@@ -103,6 +115,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private ImageView iv_profile;
     private TextView tv_login, tv_name, tv_email;
     private ScanQueueFragment scanfragment;
+    private DrawerLayout drawer;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -132,6 +145,28 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         //AppUtilities.exportDatabase(this);
         networkUtil = new NetworkUtil(this);
 
+        //Language setup
+        languagepref = PreferenceManager.getDefaultSharedPreferences(this);
+        languagepref.registerOnSharedPreferenceChangeListener(this);
+        language = languagepref.getString(
+                "pref_language", "");
+
+
+        if (!language.equals("")) {
+            if (language.equals("hi")) {
+                language = "hi";
+                locale = new Locale("hi");
+            } else {
+                locale = Locale.ENGLISH;
+                language = "en_US";
+            }
+
+        } else {
+            locale = Locale.ENGLISH;
+            language = "en_US";
+        }
+
+
         actionbarBack.setOnClickListener(this);
         iv_notification.setOnClickListener(this);
         fl_notification.setVisibility(View.VISIBLE);
@@ -145,7 +180,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -272,7 +307,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                     startActivity(loginIntent);
                 }
-
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             default:
                 break;
@@ -331,6 +366,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
+        languagepref.registerOnSharedPreferenceChangeListener(this);
         int notify_count = NotificationDB.getNotificationCount();
         tv_badge.setText(String.valueOf(notify_count));
         if (notify_count > 0) {
@@ -373,6 +409,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     protected void onPause() {
         // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onPause();
+        languagepref.unregisterOnSharedPreferenceChangeListener(this);
     }
 
 
@@ -390,8 +427,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             //super.onBackPressed();
             finish();
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
@@ -498,45 +533,136 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        switch (id) {
+            case R.id.nav_home:
 
-        } else if (id == R.id.nav_invite) {
-            Intent in = new Intent(this, InviteActivity.class);
-            startActivity(in);
-        } else if (id == R.id.nav_share) {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT,
-                    "Hey check out my app at: https://play.google.com/store/apps/details?id=" + this.getPackageName());
-            sendIntent.setType("text/plain");
-            startActivity(sendIntent);
-        } else if (id == R.id.nav_legal) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                Intent in = new Intent(this, WebViewActivity.class);
-                in.putExtra("url", Constants.URL_ABOUT_US);
+                break;
+            case R.id.nav_invite: {
+                Intent in = new Intent(this, InviteActivity.class);
                 startActivity(in);
-            } else {
-                ShowAlertInformation.showNetworkDialog(this);
+                break;
             }
-        } else if (id == R.id.nav_medical) {
-            Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
-            startActivity(in);
-        } else if (id == R.id.nav_rate_app) {
-            Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
-            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            try {
-                startActivity(goToMarket);
-            } catch (ActivityNotFoundException e) {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
+            case R.id.nav_share:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,
+                        "Hey check out my app at: https://play.google.com/store/apps/details?id=" + this.getPackageName());
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                break;
+            case R.id.nav_legal:
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    Intent in = new Intent(this, WebViewActivity.class);
+                    in.putExtra("url", Constants.URL_ABOUT_US);
+                    startActivity(in);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(this);
+                }
+                break;
+            case R.id.nav_medical: {
+                Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
+                startActivity(in);
+                break;
             }
+            case R.id.nav_app_setting: {
+                Intent in = new Intent(launchActivity, SettingsActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.id.nav_change_language:
+                showChangeLangDialog();
+                break;
+            case R.id.nav_rate_app:
+                Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                try {
+                    startActivity(goToMarket);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
+                }
+                break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                                          String key) {
+        if (key.equals("pref_language")) {
+            ((MyApplication) getApplication()).setLocale();
+            restartActivity();
+        }
+    }
+
+    private void restartActivity() {
+        Intent intent = getIntent();
+        startActivity(intent);
+        finish();
+    }
+
+    public void showChangeLangDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_language, null);
+        dialogBuilder.setView(dialogView);
+
+        final Spinner spinner1 = (Spinner) dialogView.findViewById(R.id.spinner1);
+        final LinearLayout ll_hindi = (LinearLayout) dialogView.findViewById(R.id.ll_hindi);
+        final LinearLayout ll_english = (LinearLayout) dialogView.findViewById(R.id.ll_english);
+        final RadioButton rb_hi = (RadioButton) dialogView.findViewById(R.id.rb_hi);
+        final RadioButton rb_en = (RadioButton) dialogView.findViewById(R.id.rb_en);
+
+        if (language.equals("hi")) {
+            rb_hi.setChecked(true);
+            rb_en.setChecked(false);
+        } else {
+            rb_en.setChecked(true);
+            rb_hi.setChecked(false);
+        }
+
+
+        ll_hindi.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppUtilities.changeLanguage("hi");
+            }
+        });
+        ll_english.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppUtilities.changeLanguage("en");
+            }
+        });
+        dialogBuilder.setTitle("");
+      //  dialogBuilder.setMessage(getResources().getString(R.string.lang_dialog_message));
+//        dialogBuilder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int whichButton) {
+//                int langpos = spinner1.getSelectedItemPosition();
+//                switch(langpos) {
+//                    case 1: //English
+//
+//                        AppUtilities.changeLanguage("en");
+//                        return;
+//                    case 2: //Hindi
+//
+//                        AppUtilities.changeLanguage("hi");
+//                        return;
+//                }
+//            }
+//        });
+//        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int whichButton) {
+//                //pass
+//            }
+//       });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
 }

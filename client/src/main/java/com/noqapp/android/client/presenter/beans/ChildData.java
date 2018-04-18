@@ -1,7 +1,5 @@
-package com.noqapp.android.client.views.toremove;
+package com.noqapp.android.client.presenter.beans;
 
-
-import com.noqapp.android.client.presenter.beans.JsonStoreProduct;
 
 import java.io.Serializable;
 

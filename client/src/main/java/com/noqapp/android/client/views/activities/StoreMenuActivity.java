@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.PurchaseApiModel;
+import com.noqapp.android.client.presenter.beans.ChildData;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
@@ -19,7 +21,6 @@ import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
-import com.noqapp.android.client.views.toremove.ChildData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,31 +73,36 @@ public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrde
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(UserUtils.isLogin()) {
+                    HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();
 
-                HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();
 
+                    List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
+                    int price = 0;
+                    for (ChildData value : getOrder.values()) {
+                        ll.add(new JsonPurchaseOrderProduct()
+                                .setProductId(value.getJsonStoreProduct().getProductId())
+                                .setProductPrice(value.getJsonStoreProduct().getProductPrice())
+                                .setProductQuantity(value.getChildInput()));
+                        price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
+                    }
+                    JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+                            .setBizStoreId(jsonQueue.getBizStoreId())
+                            .setBusinessType(jsonQueue.getBusinessType())
+                            .setQueueUserId("100000000021")
+                            // jsonPurchaseOrder.setCustomerName(jsonQueue.);
+                            .setDeliveryType(jsonQueue.getDeliveryTypes().get(0)) // need to change dynamic
+                            .setOrderPrice(String.valueOf(price))
+                            .setPaymentType(jsonQueue.getPaymentTypes().get(1)); // need to change dynamic
+                    jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 
-                List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
-                int price = 0;
-                for (ChildData value : getOrder.values()) {
-                    ll.add(new JsonPurchaseOrderProduct()
-                            .setProductId(value.getJsonStoreProduct().getProductId())
-                            .setProductPrice(value.getJsonStoreProduct().getProductPrice())
-                            .setProductQuantity(value.getChildInput()));
-                    price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
+                    Log.i(TAG, "order Place " + jsonPurchaseOrder.asJson());
+                    PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                }else{
+                    // Navigate to login screen
+                    Intent loginIntent = new Intent(StoreMenuActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
                 }
-                JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                        .setBizStoreId(jsonQueue.getBizStoreId())
-                        .setBusinessType(jsonQueue.getBusinessType())
-                        .setQueueUserId("100000000021")
-                        // jsonPurchaseOrder.setCustomerName(jsonQueue.);
-                        .setDeliveryType(jsonQueue.getDeliveryTypes().get(0))
-                        .setOrderPrice(String.valueOf(price))
-                        .setPaymentType(jsonQueue.getPaymentTypes().get(1));
-                jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-
-                Log.i(TAG, "order Place " + jsonPurchaseOrder.asJson());
-                PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
             }
         });
 
@@ -122,6 +128,6 @@ public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrde
 
     @Override
     public void authenticationFailure(int errorCode) {
-
+        Toast.makeText(this, "Error code : "+""+errorCode, Toast.LENGTH_LONG).show();
     }
 }

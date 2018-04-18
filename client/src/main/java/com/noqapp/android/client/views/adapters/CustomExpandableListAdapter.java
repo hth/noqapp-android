@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.ChildData;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
-import com.noqapp.android.client.views.toremove.ChildData;
 
 import java.util.HashMap;
 import java.util.List;
