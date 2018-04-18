@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -47,6 +49,12 @@ public class JsonTokenAndQueue implements Serializable {
 
     @JsonProperty("sa")
     private String storeAddress;
+
+    @JsonProperty("ar")
+    private String area;
+
+    @JsonProperty("to")
+    private String town;
 
     @JsonProperty("cs")
     private String countryShortName;
@@ -143,6 +151,24 @@ public class JsonTokenAndQueue implements Serializable {
 
     public void setStoreAddress(String storeAddress) {
         this.storeAddress = storeAddress;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public JsonTokenAndQueue setArea(String area) {
+        this.area = area;
+        return this;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public JsonTokenAndQueue setTown(String town) {
+        this.town = town;
+        return this;
     }
 
     public String getCountryShortName() {
@@ -302,30 +328,32 @@ public class JsonTokenAndQueue implements Serializable {
 
     @Override
     public String toString() {
-        return "JsonTokenAndQueue{" +
-                "codeQR='" + codeQR + '\'' +
-                ", geoHash=" + geoHash +
-                ", businessName='" + businessName + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", storeAddress='" + storeAddress + '\'' +
-                ", countryShortName='" + countryShortName + '\'' +
-                ", storePhone='" + storePhone + '\'' +
-                ", businessType=" + businessType +
-                ", tokenAvailableFrom=" + tokenAvailableFrom +
-                ", startHour=" + startHour +
-                ", endHour=" + endHour +
-                ", delayedInMinutes=" + delayedInMinutes +
-                ", topic='" + topic + '\'' +
-                ", servingNumber=" + servingNumber +
-                ", lastNumber=" + lastNumber +
-                ", token=" + token +
-                ", queueStatus=" + queueStatus +
-                ", serviceEndTime='" + serviceEndTime + '\'' +
-                ", ratingCount=" + ratingCount +
-                ", averageServiceTime=" + averageServiceTime +
-                ", hoursSaved=" + hoursSaved +
-                ", createDate='" + createDate + '\'' +
-                ", bizCategoryId='" + bizCategoryId + '\'' +
-                '}';
+        return new ToStringBuilder(this)
+                .append("codeQR", codeQR)
+                .append("geoHash", geoHash)
+                .append("businessName", businessName)
+                .append("displayName", displayName)
+                .append("storeAddress", storeAddress)
+                .append("area", area)
+                .append("town", town)
+                .append("countryShortName", countryShortName)
+                .append("storePhone", storePhone)
+                .append("businessType", businessType)
+                .append("tokenAvailableFrom", tokenAvailableFrom)
+                .append("startHour", startHour)
+                .append("endHour", endHour)
+                .append("delayedInMinutes", delayedInMinutes)
+                .append("topic", topic)
+                .append("servingNumber", servingNumber)
+                .append("lastNumber", lastNumber)
+                .append("token", token)
+                .append("queueStatus", queueStatus)
+                .append("serviceEndTime", serviceEndTime)
+                .append("ratingCount", ratingCount)
+                .append("averageServiceTime", averageServiceTime)
+                .append("hoursSaved", hoursSaved)
+                .append("createDate", createDate)
+                .append("bizCategoryId", bizCategoryId)
+                .toString();
     }
 }

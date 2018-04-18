@@ -63,6 +63,12 @@ public class JsonQueue implements Serializable {
     @JsonProperty("sa")
     private String storeAddress;
 
+    @JsonProperty("ar")
+    private String area;
+
+    @JsonProperty("to")
+    private String town;
+
     @JsonProperty("cs")
     private String countryShortName;
 
@@ -228,6 +234,24 @@ public class JsonQueue implements Serializable {
 
     public JsonQueue setStoreAddress(String storeAddress) {
         this.storeAddress = storeAddress;
+        return this;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public JsonQueue setArea(String area) {
+        this.area = area;
+        return this;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public JsonQueue setTown(String town) {
+        this.town = town;
         return this;
     }
 
@@ -546,6 +570,8 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setBusinessName(businessName);
         jsonTokenAndQueue.setDisplayName(displayName);
         jsonTokenAndQueue.setStoreAddress(storeAddress);
+        jsonTokenAndQueue.setArea(area);
+        jsonTokenAndQueue.setTown(town);
         jsonTokenAndQueue.setCountryShortName(countryShortName);
         jsonTokenAndQueue.setStorePhone(storePhone);
         jsonTokenAndQueue.setTokenAvailableFrom(tokenAvailableFrom);
