@@ -69,13 +69,17 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @BindView(R.id.rv_recent_activity)
     protected RecyclerView rv_recent_activity;
+
     @BindView(R.id.rv_current_activity)
     protected RecyclerView rv_current_activity;
+
     private static final int MSG_CURRENT_QUEUE = 0;
     private static final int MSG_HISTORY_QUEUE = 1;
     private static TokenQueueViewInterface tokenQueueViewInterface;
+
     @BindView(R.id.rv_merchant_around_you)
     protected RecyclerView rv_merchant_around_you;
+
     private boolean fromList = false;
     private CurrentActivityAdapter currentActivityAdapter;
     private StoreInfoAdapter storeInfoAdapter;
@@ -87,6 +91,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @BindView(R.id.tv_recent_view_all)
     protected TextView tv_recent_view_all;
+
     @BindView(R.id.tv_near_view_all)
     protected TextView tv_near_view_all;
 
@@ -97,6 +102,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @BindView(R.id.spinner)
     protected Spinner spinner;
+
     String[] city = {"Mumbai", "Delhi", "Calcutta"};
     String[] lat_array = {"19.004550", "28.553399", "22.572645"};
     String[] log_array = {"73.014529", "77.194165", "88.363892"};
