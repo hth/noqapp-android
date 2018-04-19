@@ -17,9 +17,6 @@ import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 

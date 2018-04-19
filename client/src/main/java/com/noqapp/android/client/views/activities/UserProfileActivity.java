@@ -19,12 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.UserUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -12,16 +12,11 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
-import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Formatter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
 
 public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGridAdapter.ViewHolder> {
 

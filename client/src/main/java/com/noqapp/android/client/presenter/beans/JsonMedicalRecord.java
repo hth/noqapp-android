@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.BusinessTypeEnum;
 
+import java.io.Serializable;
 import java.util.List;
 
 @SuppressWarnings ({
@@ -22,7 +23,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonMedicalRecord extends AbstractDomain {
+public class JsonMedicalRecord extends AbstractDomain implements Serializable{
 
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
