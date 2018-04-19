@@ -26,6 +26,10 @@ public class DatabaseTable {
         public static final String RATING_COUNT = "ratingCount";
         public static final String HOURS_SAVED = "hoursSaved";
         public static final String CREATE_DATE = "createDate";
+        public static final String BUSINESS_TYPE = "businessType";
+        public static final String GEOHASH = "geohash";
+        public static final String TOWN = "town";
+        public static final String AREA = "area";
 
         private TokenQueue() {
         }

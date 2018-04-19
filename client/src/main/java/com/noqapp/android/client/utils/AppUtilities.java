@@ -28,6 +28,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 
@@ -322,8 +323,21 @@ public class AppUtilities {
         }
         return additionalText;
     }
+    public static String getStoreOpenStatus(JsonTokenAndQueue jsonTokenAndQueue) {
 
-    private static int getTodayDay(){
+        String additionalText;
+        DateFormat df = new SimpleDateFormat("hh:mm");
+        String time = df.format(Calendar.getInstance().getTime());
+        if(jsonTokenAndQueue.getStartHour()<=Integer.valueOf(time.replace(":",""))&&
+                Integer.valueOf(time.replace(":","")) <=jsonTokenAndQueue.getEndHour()){
+            additionalText =  "Open";
+        }else{
+            additionalText = "Closed";
+        }
+        return additionalText;
+    }
+
+    public static int getTodayDay(){
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date dateobj = new Date();
         System.out.println(df.format(dateobj));

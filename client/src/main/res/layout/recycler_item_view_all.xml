@@ -88,10 +88,11 @@
                 android:background="@color/color_invite_details" />
 
             <TextView
+                android:id="@+id/tv_store_special"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view_separator"
-                android:text="Dal Tadka , Chicken tikka, "
+                android:text=""
                 android:textSize="14sp" />
 
         </RelativeLayout>

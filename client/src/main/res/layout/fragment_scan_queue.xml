@@ -147,7 +147,6 @@
                     android:id="@+id/tv_current_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_alignParentLeft="true"
                     android:text="@string/active_queue"
                     android:textColor="@android:color/black"
@@ -200,7 +199,8 @@
                     android:layout_alignParentRight="true"
                     android:text="@string/view_all"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="invisible"/>
 
             </RelativeLayout>
 

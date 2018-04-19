@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
+import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.interfaces.NOQueueDBPresenterInterface;
@@ -56,6 +57,10 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
                     //    tokenAndQueue.setServiceEndTime(cursor.getString(14));
                     tokenAndQueue.setCreateDate(cursor.getString(15));
+                    tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(18)));
+                    tokenAndQueue.setGeoHash(cursor.getString(19));
+                    tokenAndQueue.setTown(cursor.getString(20));
+                    tokenAndQueue.setArea(cursor.getString(21));
                     listJsonQueue.add(tokenAndQueue);
                 }
             } catch (Exception e) {
@@ -179,7 +184,10 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setRatingCount(cursor.getInt(15));
                         tokenAndQueue.setHoursSaved(cursor.getInt(16));
                         tokenAndQueue.setCreateDate(cursor.getString(17));
-
+                        tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(18)));
+                        tokenAndQueue.setGeoHash(cursor.getString(19));
+                        tokenAndQueue.setTown(cursor.getString(20));
+                        tokenAndQueue.setArea(cursor.getString(21));
                         listJsonQueue.add(tokenAndQueue);
                     }
                 } finally {
@@ -248,6 +256,10 @@ public class TokenAndQueueDB {
             cv.put(TokenQueue.RATING_COUNT, tokenAndQueue.getRatingCount());
             cv.put(TokenQueue.HOURS_SAVED, tokenAndQueue.getHoursSaved());
             cv.put(TokenQueue.CREATE_DATE, tokenAndQueue.getCreateDate());
+            cv.put(TokenQueue.AREA,tokenAndQueue.getArea());
+            cv.put(TokenQueue.TOWN,tokenAndQueue.getTown());
+            cv.put(TokenQueue.BUSINESS_TYPE,tokenAndQueue.getBusinessType().name());
+            cv.put(TokenQueue.GEOHASH,tokenAndQueue.getGeoHash());
         } catch (Exception e) {
             Log.e(TAG, "Error createQueueContentValue reason=" + e.getLocalizedMessage(), e);
         }

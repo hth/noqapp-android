@@ -586,6 +586,7 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setAverageServiceTime(averageServiceTime);
         jsonTokenAndQueue.setCreateDate(created);
         jsonTokenAndQueue.setBizCategoryId(bizCategoryId);
+        jsonTokenAndQueue.setBusinessType(businessType);
         return jsonTokenAndQueue;
     }
 

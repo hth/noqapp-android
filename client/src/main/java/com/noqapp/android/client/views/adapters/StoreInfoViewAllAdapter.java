@@ -36,6 +36,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
         private TextView tv_detail;
         private TextView tv_store_rating;
         private TextView tv_category;
+        private TextView tv_store_special;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -46,6 +47,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
             this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
             this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
             this.tv_category = (TextView) itemView.findViewById(R.id.tv_category);
+            this.tv_store_special = (TextView) itemView.findViewById(R.id.tv_store_special);
             this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
             this.card_view = (CardView) itemView.findViewById(R.id.card_view);
         }
@@ -69,15 +71,16 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
-        holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
-        holder.tv_address.setText(dataSet.get(listPosition).getAddress());
-        if (!TextUtils.isEmpty(dataSet.get(listPosition).getTown()))
-            holder.tv_address.setText(dataSet.get(listPosition).getTown());
-        holder.tv_detail.setText(dataSet.get(listPosition).getPhone());
-        holder.tv_category.setText(dataSet.get(listPosition).getCategory());
-        holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(dataSet.get(listPosition).getRating())));
+        BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
+        holder.tv_name.setText(bizStoreElastic.getDisplayName());
+        holder.tv_address.setText(bizStoreElastic.getAddress());
+        if (!TextUtils.isEmpty(bizStoreElastic.getTown()))
+            holder.tv_address.setText(bizStoreElastic.getTown());
+        holder.tv_detail.setText(bizStoreElastic.getPhone());
+        holder.tv_category.setText(bizStoreElastic.getCategory());
+        holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
         Picasso.with(context)
-                .load(dataSet.get(listPosition).getDisplayImage())
+                .load(bizStoreElastic.getDisplayImage())
                 .transform(new RoundedTransformation(10, 4))
                 .into(holder.iv_main);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +89,19 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
                 listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
             }
         });
+
+        switch (bizStoreElastic.getBusinessType()) {
+            case DO:
+            case HO:
+                holder.tv_name.setText(bizStoreElastic.getBusinessName());
+                holder.tv_store_special.setText("Emergency 24 hours");
+                break;
+            default:
+                holder.tv_store_special.setText("Dal Tadka , Chicken tikka");
+                holder.tv_name.setText(bizStoreElastic.getDisplayName());
+        }
+
+
     }
 
     @Override

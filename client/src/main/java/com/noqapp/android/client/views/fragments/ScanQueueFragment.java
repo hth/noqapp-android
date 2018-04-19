@@ -71,6 +71,8 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected RecyclerView rv_recent_activity;
     @BindView(R.id.rv_current_activity)
     protected RecyclerView rv_current_activity;
+    @BindView(R.id.tv_current_title)
+    protected TextView tv_current_title;
     private static final int MSG_CURRENT_QUEUE = 0;
     private static final int MSG_HISTORY_QUEUE = 1;
     private static TokenQueueViewInterface tokenQueueViewInterface;
@@ -501,7 +503,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
         currentActivityAdapter = new CurrentActivityAdapter(currentlist, getActivity(), currentClickListner);
         rv_current_activity.setAdapter(currentActivityAdapter);
-
+        tv_current_title.setText(getString(R.string.active_queue)+" ("+String.valueOf(currentlist.size())+")");
 
         recentActivityAdapter = new RecentActivityAdapter(historylist, getActivity(), recentClickListner);
         rv_recent_activity.setAdapter(recentActivityAdapter);

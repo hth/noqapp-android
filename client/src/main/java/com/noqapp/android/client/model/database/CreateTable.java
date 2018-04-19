@@ -40,6 +40,11 @@ public class CreateTable {
                 + TokenQueue.RATING_COUNT + " TEXT , "
                 + TokenQueue.HOURS_SAVED + " TEXT , "
                 + TokenQueue.CREATE_DATE + " TEXT , "
+                + TokenQueue.BUSINESS_TYPE + " TEXT , "
+                + TokenQueue.GEOHASH + " TEXT , "
+                + TokenQueue.TOWN + " TEXT , "
+                + TokenQueue.AREA + " TEXT , "
+
                 + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                 ");");
@@ -66,6 +71,10 @@ public class CreateTable {
                 + TokenQueue.RATING_COUNT + " TEXT , "
                 + TokenQueue.HOURS_SAVED + " TEXT , "
                 + TokenQueue.CREATE_DATE + " TEXT , "
+                + TokenQueue.BUSINESS_TYPE + " TEXT , "
+                + TokenQueue.GEOHASH + " TEXT , "
+                + TokenQueue.TOWN + " TEXT , "
+                + TokenQueue.AREA + " TEXT , "
                 + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                 ");");
