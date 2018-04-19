@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -79,32 +81,35 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
         BizStoreElastic item = dataSet.get(listPosition);
-
         switch (item.getBusinessType()) {
             case DO:
             case HO:
                 holder.tv_name.setText(item.getBusinessName());
-
-                if (!TextUtils.isEmpty(item.getTown()))
-                      holder.tv_detail.setText(item.getTown());
-
                 Picasso.with(context)
                         .load(item.getDisplayImage())
                         .into(holder.iv_main);
                 holder.tv_status.setText("");
+                holder.tv_detail.setText("");
                 break;
             default:
                 holder.tv_name.setText(item.getDisplayName());
-
-                if (!TextUtils.isEmpty(item.getTown()))
-                    holder.tv_detail.setText(item.getTown());
-
                 Picasso.with(context)
                         .load(item.getDisplayImage())
                         .into(holder.iv_main);
                 holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
+                StoreHourElastic storeHourElastic = item.getStoreHourElasticList().get(AppUtilities.getTodayDay());
+                String time =  Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()) +
+                        " - " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour());
+                holder.tv_detail.setText(time);
         }
-        holder.tv_address.setText(item.getArea()+","+item.getTown());
+        String address="";
+        if (!TextUtils.isEmpty(item.getTown())) {
+            address = item.getTown();
+        }
+        if (!TextUtils.isEmpty(item.getArea())) {
+            address = item.getArea() +","+address;
+        }
+        holder.tv_address.setText(address);
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, item.getBusinessType(), holder.tv_store_rating);
         holder.tv_distance.setText(AppUtilities.calculateDistanceInKm(
                 (float) LaunchActivity.getLaunchActivity().latitute,
@@ -120,6 +125,8 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
                 listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
             }
         });
+
+
     }
 
     @Override

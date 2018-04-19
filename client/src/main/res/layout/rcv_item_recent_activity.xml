@@ -96,7 +96,7 @@
                         android:id="@+id/tv_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="2dp"
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:paddingLeft="5dp"
@@ -107,7 +107,7 @@
                         android:id="@+id/tv_status"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="2dp"
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:paddingLeft="5dp"
@@ -118,11 +118,12 @@
                         android:id="@+id/tv_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
+                        android:maxLength="21"
+                        android:paddingBottom="2dp"
                         android:paddingLeft="5dp"
+                        android:paddingTop="2dp"
                         android:text=""
-                        android:textSize="14sp"
-                        android:visibility="gone" />
+                        android:textSize="14sp" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
