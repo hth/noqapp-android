@@ -85,7 +85,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public ActivityCommunicator activityCommunicator;
 
 
-
     public static Locale locale;
     public static SharedPreferences languagepref;
     public static String language;
@@ -192,6 +191,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         iv_profile = mParent.findViewById(R.id.iv_profile);
         tv_login = mParent.findViewById(R.id.tv_login);
         tv_login.setOnClickListener(this);
+        iv_profile.setOnClickListener(this);
         tv_name = mParent.findViewById(R.id.tv_name);
         tv_email = mParent.findViewById(R.id.tv_email);
         final Intent in = new Intent(this, ReviewActivity.class);
@@ -239,13 +239,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
-        iv_profile.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(launchActivity, UserProfileActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
@@ -307,6 +301,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                     startActivity(loginIntent);
                 }
+                drawer.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.iv_profile:
+                Intent intent = new Intent(launchActivity, UserProfileActivity.class);
+                startActivity(intent);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             default:
@@ -534,9 +533,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.nav_home:
 
-                break;
             case R.id.nav_invite: {
                 Intent in = new Intent(this, InviteActivity.class);
                 startActivity(in);
@@ -613,7 +610,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         final View dialogView = inflater.inflate(R.layout.dialog_language, null);
         dialogBuilder.setView(dialogView);
 
-        final Spinner spinner1 = (Spinner) dialogView.findViewById(R.id.spinner1);
         final LinearLayout ll_hindi = (LinearLayout) dialogView.findViewById(R.id.ll_hindi);
         final LinearLayout ll_english = (LinearLayout) dialogView.findViewById(R.id.ll_english);
         final RadioButton rb_hi = (RadioButton) dialogView.findViewById(R.id.rb_hi);
@@ -641,27 +637,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             }
         });
         dialogBuilder.setTitle("");
-      //  dialogBuilder.setMessage(getResources().getString(R.string.lang_dialog_message));
-//        dialogBuilder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int whichButton) {
-//                int langpos = spinner1.getSelectedItemPosition();
-//                switch(langpos) {
-//                    case 1: //English
-//
-//                        AppUtilities.changeLanguage("en");
-//                        return;
-//                    case 2: //Hindi
-//
-//                        AppUtilities.changeLanguage("hi");
-//                        return;
-//                }
-//            }
-//        });
-//        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int whichButton) {
-//                //pass
-//            }
-//       });
         AlertDialog b = dialogBuilder.create();
         b.show();
     }

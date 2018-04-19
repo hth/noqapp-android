@@ -20,6 +20,8 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_PHONE = "phone";
     public static final String PREKEY_NAME = "name";
     public static final String PREKEY_MAIL = "mail";
+    public static final String PREKEY_DOB = "dateOfBirth";
+    public static final String PREKEY_PROFILE_IMAGE = "imageUri";
     //TODO add address from profile
     public static final String PREKEY_GENDER = "gender";
     public static final String PREKEY_REMOTE_JOIN = "remoteJoin";
@@ -67,6 +69,18 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_NAME, "Guest User");
     }
 
+    public static String getUserDOB() {
+        return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_DOB, "DD-MM-YYYY");
+    }
+
+    public static String getUserProfileUri() {
+        return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_PROFILE_IMAGE, "");
+    }
+
+    public static void setUserProfileUri(String profileUri) {
+        sharedPreferences.edit().putString(PREKEY_PROFILE_IMAGE, profileUri).apply();
+    }
+
     public static String getPhoneNo() {
         return sharedPreferences.getString(PREKEY_PHONE, "");
     }
@@ -104,6 +118,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(PREKEY_PHONE, profile.getPhoneRaw());
         editor.putString(PREKEY_NAME, profile.getName());
         editor.putString(PREKEY_GENDER, profile.getGender().name());
+        editor.putString(PREKEY_DOB, profile.getBirthday());
         editor.putString(PREKEY_MAIL, profile.getMail());
         editor.putInt(PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
         editor.putBoolean(PREKEY_AUTOJOIN, true);

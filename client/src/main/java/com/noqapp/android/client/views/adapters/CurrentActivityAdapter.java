@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.GeoHashUtils;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -30,16 +33,22 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
 
         private TextView tv_name;
         private TextView tv_detail;
-        private TextView tv_category;
+        private TextView tv_address;
+        private TextView tv_distance;
+        private TextView tv_store_rating;
         private ImageView iv_main;
+        private ImageView iv_store_icon;
         private CardView card_view;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
-            this.tv_category = (TextView) itemView.findViewById(R.id.tv_category);
+            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
+            this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
+            this.tv_distance = (TextView) itemView.findViewById(R.id.tv_distance);
             this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
+            this.iv_store_icon = (ImageView) itemView.findViewById(R.id.iv_store_icon);
             this.card_view = (CardView) itemView.findViewById(R.id.card_view);
         }
     }
@@ -61,9 +70,15 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-
-        holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
-        // holder.tv_category.setText();
+        JsonTokenAndQueue jsonTokenAndQueue = dataSet.get(listPosition);
+        holder.tv_name.setText(jsonTokenAndQueue.getDisplayName());
+//        holder.tv_distance.setText(AppUtilities.calculateDistanceInKm(
+//                (float) LaunchActivity.getLaunchActivity().latitute,
+//                (float) LaunchActivity.getLaunchActivity().longitute,
+//                (float) GeoHashUtils.decodeLatitude(dataSet.get(listPosition).getGeoHash()),
+//                (float) GeoHashUtils.decodeLongitude(dataSet.get(listPosition).getGeoHash())));
+        holder.tv_address.setText(jsonTokenAndQueue.getArea()+","+jsonTokenAndQueue.getTown());
+      //  AppUtilities.setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType(), holder.tv_store_rating);
         Picasso.with(context)
                 .load("https://noqapp.com/imgs/240x120/b.jpeg")//dataSet.get(listPosition).getImage())
                 .into(holder.iv_main);

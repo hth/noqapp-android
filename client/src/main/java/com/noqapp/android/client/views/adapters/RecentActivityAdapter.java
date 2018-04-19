@@ -31,7 +31,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
 
         private TextView tv_name;
         private TextView tv_detail;
-        private TextView tv_category;
+        private TextView tv_address;
         private TextView tv_store_rating;
         private TextView tv_distance;
         private ImageView iv_main;
@@ -42,7 +42,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
             super(itemView);
             this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
-            this.tv_category = (TextView) itemView.findViewById(R.id.tv_category);
+            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
             this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
             this.tv_distance = (TextView) itemView.findViewById(R.id.tv_distance);
             this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
@@ -79,6 +79,8 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
 //                holder.tv_store_rating);
 //        holder.tv_distance.setText(String.valueOf(AppUtilities.calculateDistance((float) LaunchActivity.getLaunchActivity().latitute,(float) LaunchActivity.getLaunchActivity().longitute,
 //                (float) dataSet.get(listPosition).getCoordinate()[0],(float) dataSet.get(listPosition).getCoordinate()[1])));
+     //   holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
+        holder.tv_address.setText(dataSet.get(listPosition).getArea()+","+dataSet.get(listPosition).getTown());
         Picasso.with(context)
                 .load("https://noqapp.com/imgs/240x120/b.jpeg")//dataSet.get(listPosition).getImage())
                 .into(holder.iv_main);

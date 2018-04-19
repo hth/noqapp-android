@@ -24,18 +24,15 @@
                 android:id="@+id/header_cover_image"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
-
-                android:src="@drawable/nav_menu_header_bg"
-                app:srcCompat="@drawable/nav_menu_header_bg" />
+                android:src="@color/colorPrimary"
+              />
 
             <de.hdodenhof.circleimageview.CircleImageView
 
                 android:id="@+id/iv_profile"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-
                 android:layout_below="@+id/header_cover_image"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="-90dp"
@@ -52,8 +49,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/header_cover_image"
-                android:background="#ebca0707"
-                android:elevation="4dp"
+                android:background="@color/colorPrimary"
+                android:elevation="0dp"
                 android:paddingBottom="24dp">
 
 
@@ -70,7 +67,7 @@
                     android:src="@android:drawable/ic_menu_edit" />
 
                 <TextView
-                    android:id="@+id/name"
+                    android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -118,7 +115,7 @@
                             android:inputType="textEmailAddress"
                             android:editable="false"
                             android:maxLines="1"
-                            android:text="Chandra Sharma"
+                            android:text="Guest User"
                             android:singleLine="true" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -127,7 +124,7 @@
                         android:layout_height="wrap_content">
 
                         <AutoCompleteTextView
-                            android:id="@+id/email"
+                            android:id="@+id/actv_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_email"
@@ -160,15 +157,34 @@
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@+id/marital_status"
+                            android:id="@+id/edt_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/prompt_marital_status"
+                            android:hint="@string/prompt_address_status"
                             android:editable="false"
                             android:imeActionId="6"
                             android:imeOptions="actionUnspecified"
                             android:inputType="text"
-                            android:text="Married"
+                            android:text="Address"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt_dob"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Date of Birth"
+                            android:editable="false"
+                            android:imeActionId="6"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="text"
+                            android:text="@string/prompt_dob"
                             android:maxLines="1"
                             android:singleLine="true" />
 
@@ -177,8 +193,9 @@
                     <Button
                         android:id="@+id/email_sign_in_button"
                         style="?android:textAppearanceSmall"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="16dp"
                         android:text="@string/action_update"
                         android:textStyle="bold" />

@@ -37,9 +37,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -282,7 +286,7 @@ public class AppUtilities {
     }
 
     public static String getAdditionalCardText(BizStoreElastic bizStoreElastic) {
-        StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(0);
+        StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(getTodayDay());
         String additionalText;
         if (storeHourElastic.isDayClosed()) {
             //Fetch for tomorrow when closed
@@ -306,6 +310,26 @@ public class AppUtilities {
             }
         }
         return additionalText;
+    }
+    public static String getStoreOpenStatus(BizStoreElastic bizStoreElastic) {
+
+        StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(getTodayDay());
+        String additionalText;
+        if (storeHourElastic.isDayClosed()) {
+            additionalText = "Closed";
+        } else {
+            additionalText =  "Open";
+        }
+        return additionalText;
+    }
+
+    private static int getTodayDay(){
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        Date dateobj = new Date();
+        System.out.println(df.format(dateobj));
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        return  c.get(Calendar.DAY_OF_WEEK)-1;
     }
 }
 

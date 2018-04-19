@@ -70,20 +70,23 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
             case DO:
             case HO:
                 // open hospital profile
-                Intent in = new Intent(this, JoinActivity.class);
-                in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
-                in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
-                in.putExtra("isCategoryData", false);
+                Bundle b = new Bundle();
+                b.putString(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
+                b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
+                b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
+                b.putBoolean("CallCategory", true);
+                b.putBoolean("isCategoryData", false);
+                Intent in = new Intent(this, CategoryInfoActivity.class);
+                in.putExtra("bundle", b);
                 startActivity(in);
                 break;
             default:
                 // open order screen
-                in = new Intent(this, StoreDetailActivity.class);
+                Intent intent = new Intent(this, StoreDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("BizStoreElastic", item);
-                in.putExtras(bundle);
-                startActivity(in);
+                intent.putExtras(bundle);
+                startActivity(intent);
         }
     }
 }

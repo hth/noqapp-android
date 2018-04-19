@@ -3,6 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#f2f2f2"
     android:fillViewport="true">
 
     <LinearLayout
@@ -34,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:text="Current location"
+                    android:text="@string/current_location"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -45,8 +46,8 @@
                     android:layout_toLeftOf="@+id/iv_rate"
                     android:text="Jogeshwari"
                     android:textColor="@android:color/black"
-                    android:visibility="gone"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/iv_rate"
@@ -55,18 +56,17 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_arrow_down" />
+                    android:src="@drawable/ic_arrow_down"
+                    android:visibility="gone" />
 
                 <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:theme="@style/ThemeOverlay.AppCompat.Light"
-                    android:layout_margin="5dp"
                     android:layout_centerVertical="true"
-                    />
+                    android:layout_margin="5dp"
+                    android:theme="@style/ThemeOverlay.AppCompat.Light" />
             </RelativeLayout>
 
         </android.support.v7.widget.CardView>
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/iv_scan"
-                    android:text="SCAN QR"
+                    android:text="@string/scan_qr"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -115,7 +115,7 @@
                     android:layout_below="@+id/tv_scan_title"
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/iv_scan"
-                    android:text="Scan QR code to join the Queue/ place order on the spot"
+                    android:text="@string/scan_info"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="16sp" />
 
@@ -125,171 +125,144 @@
 
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_current_activity"
+
+        <LinearLayout
+            android:id="@+id/rl_current_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            card_view:cardCornerRadius="4dp">
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/cell_size"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/screen_padding_home"
+            android:paddingRight="@dimen/screen_padding_home">
 
-
-            <LinearLayout
-                android:id="@+id/rl_current_activity"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:gravity="center_vertical"
-                android:minHeight="@dimen/cell_size"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/screen_padding_home"
-                android:paddingRight="@dimen/screen_padding_home">
+                android:padding="5dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    android:id="@+id/tv_current_title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp">
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                        android:id="@+id/tv_current_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:layout_alignParentLeft="true"
-                        android:text="Active Queue/ Order"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/active_queue"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
 
-                </RelativeLayout>
+            </RelativeLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_current_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="horizontal" />
-            </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_current_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal" />
+        </LinearLayout>
 
 
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_recent_activity"
+        <LinearLayout
+            android:id="@+id/rl_recent_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            card_view:cardCornerRadius="4dp">
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/cell_size"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/screen_padding_home"
+            android:paddingRight="@dimen/screen_padding_home">
 
-
-            <LinearLayout
-                android:id="@+id/rl_recent_activity"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:gravity="center_vertical"
-                android:minHeight="@dimen/cell_size"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/screen_padding_home"
-                android:paddingRight="@dimen/screen_padding_home">
+                android:padding="5dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    android:id="@+id/tv_recent_title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp">
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                        android:id="@+id/tv_recent_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/recent_activity"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-                        android:layout_alignParentLeft="true"
-                        android:text="Recent Activity"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                        android:id="@+id/tv_recent_view_all"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text="View All"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="16sp" />
-
-                </RelativeLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_recent_activity"
-                    android:layout_width="match_parent"
+                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    android:id="@+id/tv_recent_view_all"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scrollbars="horizontal" />
-            </LinearLayout>
+                    android:layout_alignParentRight="true"
+                    android:text="@string/view_all"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_recent_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal" />
+        </LinearLayout>
 
 
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_merchant_around_you"
+        <LinearLayout
+            android:id="@+id/rl_merchant_around_you"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            card_view:cardCornerRadius="4dp">
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/cell_size"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/screen_padding_home"
+            android:paddingRight="@dimen/screen_padding_home">
 
-
-            <LinearLayout
-                android:id="@+id/rl_merchant_around_you"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:gravity="center_vertical"
-                android:minHeight="@dimen/cell_size"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/screen_padding_home"
-                android:paddingRight="@dimen/screen_padding_home">
+                android:padding="5dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    android:id="@+id/tv_merchant_title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp">
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/merchant_near"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                        android:id="@+id/tv_merchant_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="Merchants around you"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                        android:id="@+id/tv_near_view_all"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text="View All"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="16sp" />
-
-                </RelativeLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_merchant_around_you"
-                    android:layout_width="match_parent"
+                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    android:id="@+id/tv_near_view_all"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scrollbars="horizontal" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+                    android:layout_alignParentRight="true"
+                    android:text="@string/view_all"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_merchant_around_you"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_temp"
@@ -299,10 +272,10 @@
                 android:src="@mipmap/launcher" />
 
             <Button
-                android:id="@+id/btn_type_1"
+                android:id="@+id/btn_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TYPE 1" />
+                android:text="TEMP" />
         </LinearLayout>
     </LinearLayout>
 
