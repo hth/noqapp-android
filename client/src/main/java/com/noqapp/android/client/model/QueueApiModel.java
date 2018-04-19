@@ -44,7 +44,7 @@ public class QueueApiModel {
         queueService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
-                if (response.code() == Constants.INVALID_BAR_CODE) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     queuePresenter.authenticationFailure(response.code());
                     return;
                 }
