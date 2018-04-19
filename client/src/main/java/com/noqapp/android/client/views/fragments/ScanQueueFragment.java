@@ -99,9 +99,11 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @BindView(R.id.spinner)
     protected Spinner spinner;
-    String[] city = {"Mumbai", "Delhi", "Calcutta"};
-    String[] lat_array = {"19.004550", "28.553399", "22.572645"};
-    String[] log_array = {"73.014529", "77.194165", "88.363892"};
+
+    //TODO(chandra) temp code
+    private String[] city = {"Mumbai", "Delhi", "Calcutta"};
+    private String[] lat_array = {"19.004550", "28.553399", "22.572645"};
+    private String[] log_array = {"73.014529", "77.194165", "88.363892"};
 
     public ScanQueueFragment() {
 

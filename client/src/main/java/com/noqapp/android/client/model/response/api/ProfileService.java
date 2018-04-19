@@ -10,49 +10,45 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
-
 /**
  * Registered client APIs.
  * <p>
  * User: hitender
  * Date: 3/27/17 8:05 PM
  */
-public interface ClientProfileService {
+public interface ProfileService {
 
     @GET("api/c/profile/fetch.json")
-    Call<JsonProfile> getUserprofile(
-
+    Call<JsonProfile> fetch(
             @Header("X-R-MAIL")
-                    String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-                    String auth
+            String auth
     );
-
 
     @POST("api/c/profile/update.json")
-    Call<JsonProfile> updateUserProfile(
-
+    Call<JsonProfile> upate(
             @Header("X-R-MAIL")
-                    String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-                    String auth,
+            String auth,
+
             @Body
-                    Registration registration
+            Registration registration
     );
 
-
     @POST("api/c/profile/migrate.json")
-    Call<JsonProfile> migrateUserProfile(
-
+    Call<JsonProfile> migrate(
             @Header("X-R-MAIL")
-                    String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-                    String auth,
+            String auth,
+
             @Body
-                    Registration registration
+            Registration registration
     );
 
 }
