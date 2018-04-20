@@ -45,6 +45,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity {
     protected TextView tv_clinical_finding;
     @BindView(R.id.tv_provisional)
     protected TextView tv_provisional;
+    @BindView(R.id.tv_investigation)
+    protected TextView tv_investigation;
     @BindView(R.id.ll_physical)
     protected LinearLayout ll_physical;
     @BindView(R.id.ll_medication)
@@ -70,39 +72,45 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity {
         tv_known_allergy.setText(jsonMedicalRecord.getKnownAllergies());
         tv_clinical_finding.setText(jsonMedicalRecord.getClinicalFinding());
         tv_provisional.setText(jsonMedicalRecord.getProvisionalDifferentialDiagnosis());
-        List<JsonMedicalPhysicalExamination> data = jsonMedicalRecord.getMedicalPhysicalExaminations();
-        for (int j = 0; j < data.size(); j++) {
+      //  tv_investigation.setText(jsonMedicalRecord.get);
+        try {
 
-            LinearLayout childLayout = new LinearLayout(this);
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            childLayout.setLayoutParams(linearParams);
-            TextView mType = new TextView(this);
-            mType.setTextSize(17);
-            mType.setPadding(5, 3, 0, 3);
-            mType.setTypeface(Typeface.DEFAULT_BOLD);
-            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-            mType.setText(data.get(j).getValue() +":"+data.get(j).getTestResult());
-            childLayout.addView(mType, 0);
-            ll_physical.addView(childLayout);
-        }
-        List<JsonMedicine> medicinedata = jsonMedicalRecord.getMedicines();
-        for (int j = 0; j < medicinedata.size(); j++) {
+            List<JsonMedicalPhysicalExamination> data = jsonMedicalRecord.getMedicalPhysicalExaminations();
+            for (int j = 0; j < data.size(); j++) {
 
-            LinearLayout childLayout = new LinearLayout(this);
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            childLayout.setLayoutParams(linearParams);
-            TextView mType = new TextView(this);
-            mType.setTextSize(17);
-            mType.setPadding(5, 3, 0, 3);
-            mType.setTypeface(Typeface.DEFAULT_BOLD);
-            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-            mType.setText(medicinedata.get(j).getName() +":"+medicinedata.get(j).getStrength()+":"+medicinedata.get(j).getTimes());
-            childLayout.addView(mType, 0);
-            ll_medication.addView(childLayout);
+                LinearLayout childLayout = new LinearLayout(this);
+                LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                childLayout.setLayoutParams(linearParams);
+                TextView mType = new TextView(this);
+                mType.setTextSize(17);
+                mType.setPadding(5, 3, 0, 3);
+                mType.setTypeface(Typeface.DEFAULT_BOLD);
+                mType.setGravity(Gravity.LEFT | Gravity.CENTER);
+                mType.setText(data.get(j).getValue() + ":" + data.get(j).getTestResult());
+                childLayout.addView(mType, 0);
+                ll_physical.addView(childLayout);
+            }
+            List<JsonMedicine> medicinedata = jsonMedicalRecord.getMedicines();
+            for (int j = 0; j < medicinedata.size(); j++) {
+
+                LinearLayout childLayout = new LinearLayout(this);
+                LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                childLayout.setLayoutParams(linearParams);
+                TextView mType = new TextView(this);
+                mType.setTextSize(17);
+                mType.setPadding(5, 3, 0, 3);
+                mType.setTypeface(Typeface.DEFAULT_BOLD);
+                mType.setGravity(Gravity.LEFT | Gravity.CENTER);
+                mType.setText(medicinedata.get(j).getName() + ":" + medicinedata.get(j).getStrength() + ":" + medicinedata.get(j).getTimes());
+                childLayout.addView(mType, 0);
+                ll_medication.addView(childLayout);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

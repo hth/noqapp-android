@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.MedicationRouteEnum;
 import com.noqapp.android.client.model.types.MedicationWithFoodEnum;
 
+import java.io.Serializable;
+
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
@@ -21,7 +23,7 @@ import com.noqapp.android.client.model.types.MedicationWithFoodEnum;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonMedicine extends AbstractDomain {
+public class JsonMedicine extends AbstractDomain implements Serializable {
 
     @JsonProperty("na")
     private String name;

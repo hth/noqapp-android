@@ -2,10 +2,6 @@ package com.noqapp.android.client.presenter;
 
 import com.noqapp.android.client.presenter.beans.JsonStore;
 
-/**
- * User: omkar
- * Date: 3/26/17 4:27 PM
- */
 public interface StorePresenter {
 
     void storeResponse(JsonStore jsonStore);
