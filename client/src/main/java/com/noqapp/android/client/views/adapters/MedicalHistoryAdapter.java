@@ -9,21 +9,16 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.NotificationBeans;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.GetTimeAgoUtils;
+import com.noqapp.android.client.presenter.beans.JsonMedicalRecord;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class MedicalHistoryAdapter extends BaseAdapter {
     private static final String TAG = MedicalHistoryAdapter.class.getSimpleName();
     private Context context;
-    private List<NotificationBeans> notificationsList;
+    private List<JsonMedicalRecord> notificationsList;
 
-    public MedicalHistoryAdapter(Context context, List<NotificationBeans> notificationsList) {
+    public MedicalHistoryAdapter(Context context, List<JsonMedicalRecord> notificationsList) {
         this.context = context;
         this.notificationsList = notificationsList;
     }
@@ -54,26 +49,19 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        recordHolder.tv_title.setText(notificationsList.get(position).getTitle());
-        recordHolder.tv_msg.setText(notificationsList.get(position).getMsg());
+        recordHolder.tv_title.setText(notificationsList.get(position).getChiefComplain());
+        recordHolder.tv_msg.setText(notificationsList.get(position).getClinicalFinding());
 
 
-        try {
-            String dateString = notificationsList.get(position).getNotificationCreate();
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault());
-            Date date = sdf.parse(dateString);
-            long startDate = new Date().getTime() - date.getTime();
-            recordHolder.tv_create.setText(GetTimeAgoUtils.getTimeInAgo(startDate));
-        } catch (Exception e) {
-            e.printStackTrace();
-            recordHolder.tv_create.setText("");
-        }
-//        if(notificationsList.get(position).getStatus().equals(NotificationDB.KEY_UNREAD)){
-//            recordHolder.tv_title.setTypeface(null, Typeface.BOLD);
-//            recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
-//        }else{
-//            recordHolder.tv_title.setTypeface(null, Typeface.NORMAL);
-//            recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_me_bg));
+//        try {
+//            String dateString = notificationsList.get(position).getNotificationCreate();
+//            SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault());
+//            Date date = sdf.parse(dateString);
+//            long startDate = new Date().getTime() - date.getTime();
+//            recordHolder.tv_create.setText(GetTimeAgoUtils.getTimeInAgo(startDate));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            recordHolder.tv_create.setText("");
 //        }
         return view;
     }

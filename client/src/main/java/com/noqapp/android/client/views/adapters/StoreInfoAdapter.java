@@ -1,8 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -18,10 +16,7 @@ import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.GeoHashUtils;
-import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.StoreDetailActivity;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

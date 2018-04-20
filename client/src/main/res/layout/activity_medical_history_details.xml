@@ -22,20 +22,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/history_detail_padding">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
+                    android:padding="5dp"
                     android:text="Chief Complaint: "
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_complaints"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".6"
+                    android:padding="5dp"
                     android:text="Chief Complaint details " />
 
             </LinearLayout>
@@ -43,20 +45,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/history_detail_padding">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
+                    android:padding="5dp"
                     android:text="Past History: "
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_past_history"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".6"
+                    android:padding="5dp"
                     android:text="Past History details " />
 
             </LinearLayout>
@@ -64,20 +68,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/history_detail_padding">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
+                    android:padding="5dp"
                     android:text="Family History: "
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_family_history"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".6"
+                    android:padding="5dp"
                     android:text="Family History details " />
 
             </LinearLayout>
@@ -85,20 +91,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/history_detail_padding">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
+                    android:padding="5dp"
                     android:text="Known Allergies: "
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_known_allergy"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".6"
+                    android:padding="5dp"
                     android:text="Known Allergies details " />
 
             </LinearLayout>
@@ -106,20 +114,21 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/history_detail_padding">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
+                    android:padding="5dp"
                     android:text="Physical Examination: "
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".6"
+                    android:padding="5dp"
                     android:text="Physical Examination details " />
 
             </LinearLayout>
@@ -127,20 +136,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/history_detail_padding">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
+                    android:padding="5dp"
                     android:text="Clinical Findings: "
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_clinical_finding"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".6"
+                    android:padding="5dp"
                     android:text="Clinical Findings details " />
 
             </LinearLayout>
@@ -148,28 +159,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/history_detail_padding">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
+                    android:padding="5dp"
                     android:text="Investigation Advised: "
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".6"
+                    android:padding="5dp"
                     android:text="Investigation Advised details " />
 
             </LinearLayout>
 
-
         </LinearLayout>
 
     </ScrollView>
-
 
 </LinearLayout>

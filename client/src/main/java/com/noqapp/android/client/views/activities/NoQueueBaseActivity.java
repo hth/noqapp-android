@@ -14,7 +14,9 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
 
 /**
- * Created by omkar on 4/8/17.
+ * This Class is created to store the information which data need to be final(Consistent)
+ * Through out the App. So only one class can extend this Activity. Otherwise it was a serious issue.
+ *
  */
 public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_PHONE = "phone";

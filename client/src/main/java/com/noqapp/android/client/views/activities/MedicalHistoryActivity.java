@@ -8,6 +8,7 @@ package com.noqapp.android.client.views.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -15,7 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.NotificationBeans;
+import com.noqapp.android.client.model.MedicalRecordApiModel;
+import com.noqapp.android.client.presenter.MedicalRecordPresenter;
+import com.noqapp.android.client.presenter.beans.JsonMedicalRecord;
+import com.noqapp.android.client.presenter.beans.JsonMedicalRecordList;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MedicalHistoryAdapter;
 
 import java.util.ArrayList;
@@ -24,7 +30,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MedicalHistoryActivity extends AppCompatActivity {
+public class MedicalHistoryActivity extends AppCompatActivity implements MedicalRecordPresenter {
 
     @BindView(R.id.listview)
     protected ListView listview;
@@ -35,6 +41,7 @@ public class MedicalHistoryActivity extends AppCompatActivity {
     @BindView(R.id.tv_empty)
     protected TextView tv_empty;
 
+    private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +57,39 @@ public class MedicalHistoryActivity extends AppCompatActivity {
 
         tv_toolbar_title.setText(getString(R.string.medical_history));
 
-        List<NotificationBeans> notificationsList = dummyData();
-        MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(this, notificationsList);
+        if (jsonMedicalRecords.size() <= 0) {
+            listview.setVisibility(View.GONE);
+            tv_empty.setVisibility(View.VISIBLE);
+        } else {
+            listview.setVisibility(View.VISIBLE);
+            tv_empty.setVisibility(View.GONE);
+        }
+
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            //LaunchActivity.getLaunchActivity().progressDialog.show();
+            if (UserUtils.isLogin()) {
+                MedicalRecordApiModel.medicalRecordPresenter = this;
+                MedicalRecordApiModel.getMedicalRecord( UserUtils.getEmail(), UserUtils.getAuth());
+
+            } else {
+                //Give error
+            }
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
+
+    }
+
+
+    @Override
+    public void medicalRecordResponse(JsonMedicalRecordList jsonMedicalRecordList) {
+        Log.d("data",jsonMedicalRecordList.toString());
+        if(null != jsonMedicalRecordList & jsonMedicalRecordList.getJsonMedicalRecords().size()>0){
+            jsonMedicalRecords = jsonMedicalRecordList.getJsonMedicalRecords();
+        }
+        MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(this, jsonMedicalRecords);
         listview.setAdapter(adapter);
-        if (notificationsList.size() <= 0) {
+        if (jsonMedicalRecords.size() <= 0) {
             listview.setVisibility(View.GONE);
             tv_empty.setVisibility(View.VISIBLE);
         } else {
@@ -64,18 +100,21 @@ public class MedicalHistoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent in = new Intent(MedicalHistoryActivity.this, MedicalHistoryDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("data", jsonMedicalRecords.get(i));
+                in.putExtras(bundle);
                 startActivity(in);
             }
         });
+    }
+
+    @Override
+    public void medicalRecordError() {
 
     }
 
-    private List<NotificationBeans> dummyData() {
-        List<NotificationBeans> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add(new NotificationBeans("title " + i, "This is medical history of the patient.", "1", ""));
-        }
-        return list;
-    }
+    @Override
+    public void authenticationFailure(int errorCode) {
 
+    }
 }

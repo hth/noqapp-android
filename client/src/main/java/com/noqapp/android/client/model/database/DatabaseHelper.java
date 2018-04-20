@@ -61,8 +61,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             new Patch(1, 2, "1.0.41") {
                 public void apply(SQLiteDatabase db) {
                     CreateTable.createTableNotification(db);
+                    CreateTable.alterTable(db);
                 }
             }
+
     };
 
 }

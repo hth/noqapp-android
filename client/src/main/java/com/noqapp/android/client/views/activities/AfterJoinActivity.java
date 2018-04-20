@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -48,7 +49,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator {
+public class AfterJoinActivity extends AppCompatActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
 
     @BindView(R.id.actionbarBack)
@@ -120,9 +121,9 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
-            jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(KEY_JSON_TOKEN_QUEUE);
+            jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE);
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
-            codeQR = bundle.getStringExtra(KEY_CODE_QR);
+            codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
             displayName = jsonTokenAndQueue.getBusinessName();
             storePhone = jsonTokenAndQueue.getStorePhone();
             queueName = jsonTokenAndQueue.getDisplayName();
@@ -154,7 +155,7 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
                 }
             });
             gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR);
-            if (bundle.getBooleanExtra(KEY_FROM_LIST, false)) {
+            if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_FROM_LIST, false)) {
                 tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
                 tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
                 tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
@@ -274,12 +275,12 @@ public class AfterJoinActivity extends NoQueueBaseActivity implements TokenPrese
         if (codeQR != null) {
             Log.d("CodeQR=", codeQR);
             if (UserUtils.isLogin()) {
-                boolean callingFromHistory = getIntent().getBooleanExtra(KEY_IS_HISTORY, false);
-                if (!callingFromHistory && getIntent().getBooleanExtra(KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
+                boolean callingFromHistory = getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false);
+                if (!callingFromHistory && getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
                     QueueApiModel.tokenPresenter = this;
                     QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                 } else if (callingFromHistory) {
-                    if (getIntent().getBooleanExtra(KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
+                    if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
                         QueueApiModel.tokenPresenter = this;
                         QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                     } else {

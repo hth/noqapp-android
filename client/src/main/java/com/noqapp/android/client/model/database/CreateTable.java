@@ -106,6 +106,18 @@ public class CreateTable {
                 ");");
     }
 
+    static void alterTable(SQLiteDatabase db){
+
+        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.BUSINESS_TYPE + " TEXT  ");
+        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.GEOHASH + " TEXT  ");
+        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.TOWN + " TEXT  ");
+        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.AREA + " TEXT  ");
+
+        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.BUSINESS_TYPE + " TEXT  ");
+        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.GEOHASH + " TEXT  ");
+        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.TOWN + " TEXT  ");
+        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.AREA + " TEXT  ");
+    }
     static void createAllTable(SQLiteDatabase db) {
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);

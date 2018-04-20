@@ -8,6 +8,7 @@ package com.noqapp.android.client.views.activities;
 import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -36,7 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter {
+public class JoinActivity extends AppCompatActivity implements QueuePresenter {
 
 
     @BindView(R.id.actionbarBack)
@@ -121,11 +122,11 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
 
         Intent bundle = getIntent();
         if (null != bundle) {
-            codeQR = bundle.getStringExtra(KEY_CODE_QR);
+            codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
             isCategoryData = bundle.getBooleanExtra("isCategoryData", true);
             JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable("object");
 
-            if (bundle.getBooleanExtra(KEY_IS_REJOIN, false)) {
+            if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_IS_REJOIN, false)) {
                 btn_joinQueue.setText(getString(R.string.yes));
                 tv_skip_msg.setVisibility(View.VISIBLE);
                 btn_no.setVisibility(View.VISIBLE);
@@ -199,7 +200,7 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
         codeQR = jsonQueue.getCodeQR();
         countryShortName = jsonQueue.getCountryShortName();
         /* Check weather join is possible or not today due to some reason */
-        JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, getContext());
+        JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, JoinActivity.this);
         if (joinQueueState.isJoinNotPossible()) {
             isJoinNotPossible = joinQueueState.isJoinNotPossible();
             joinErrorMsg = joinQueueState.getJoinErrorMsg();
@@ -210,19 +211,19 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
             Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
         } else {
             /* Auto join after scan if auto-join status is true in me screen && it is not coming from skip notification as well as history queue. */
-            if (getIntent().getBooleanExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true) && NoQueueBaseActivity.getAutoJoinStatus()) {
+            if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true) && NoQueueBaseActivity.getAutoJoinStatus()) {
                 if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
 
                     if (UserUtils.isLogin()) {
-                         joinQueue();
+                        joinQueue();
                     } else {
                         // please login to avail this feature
-                        Toast.makeText(JoinActivity.this,"please login to avail this feature",Toast.LENGTH_LONG).show();
+                        Toast.makeText(JoinActivity.this, "please login to avail this feature", Toast.LENGTH_LONG).show();
                         // Navigate to login screen
                         Intent loginIntent = new Intent(JoinActivity.this, LoginActivity.class);
                         startActivity(loginIntent);
                     }
-                }else{
+                } else {
                     // any user can join
                     joinQueue();
                 }
@@ -240,13 +241,20 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
     public void joinQueue() {
         if (isJoinNotPossible) {
             Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
+            if (joinErrorMsg.startsWith("Please login to join")) {
+                // login required
+                Intent loginIntent = new Intent(JoinActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
+            }
         } else {
-            if (getIntent().getBooleanExtra(KEY_IS_HISTORY, false)) {
+            if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false)) {
                 String errorMsg = "";
                 boolean isValid = true;
                 if (!UserUtils.isLogin()) {
                     errorMsg += getString(R.string.bullet) + getString(R.string.error_login) + "\n";
                     isValid = false;
+                    Intent loginIntent = new Intent(JoinActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
                 }
                 if (!jsonQueue.isRemoteJoinAvailable()) {
                     errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_not_available) + "\n";
@@ -259,11 +267,11 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
                 }
                 if (isValid) {
                     Intent in = new Intent(this, AfterJoinActivity.class);
-                    in.putExtra(KEY_CODE_QR, jsonQueue.getCodeQR());
-                    in.putExtra(KEY_FROM_LIST, false);
-                    in.putExtra(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-                    in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true);
-                    in.putExtra(KEY_IS_HISTORY, getIntent().getBooleanExtra(KEY_IS_HISTORY, false));
+                    in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
+                    in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);
+                    in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+                    in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true);
+                    in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
                     in.putExtra(Constants.FROM_JOIN_SCREEN, true);
                     startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
                 } else {
@@ -276,12 +284,12 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
                         callAfterJoin();
                     } else {
                         // please login to avail this feature
-                        Toast.makeText(JoinActivity.this,"please login to avail this feature",Toast.LENGTH_LONG).show();
+                        Toast.makeText(JoinActivity.this, "please login to avail this feature", Toast.LENGTH_LONG).show();
                         // Navigate to login screen
                         Intent loginIntent = new Intent(JoinActivity.this, LoginActivity.class);
                         startActivity(loginIntent);
                     }
-                }else{
+                } else {
                     // any user can join
                     callAfterJoin();
                 }
@@ -295,12 +303,12 @@ public class JoinActivity extends NoQueueBaseActivity implements QueuePresenter 
 
         //TODO(chandra) make sure jsonQueue is not null. Prevent action on join button.
         Intent in = new Intent(this, AfterJoinActivity.class);
-        in.putExtra(KEY_CODE_QR, jsonQueue.getCodeQR());
+        in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
         //TODO // previously KEY_FROM_LIST  was false need to verify
-        in.putExtra(KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
-        in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, getIntent().getBooleanExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true));
-        in.putExtra(KEY_IS_HISTORY, getIntent().getBooleanExtra(KEY_IS_HISTORY, false));
-        in.putExtra(KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+        in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
+        in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true));
+        in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
+        in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.FROM_JOIN_SCREEN, true);
         startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }
