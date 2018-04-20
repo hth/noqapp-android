@@ -228,11 +228,12 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 }
             }
         }
+        dismissProgress();
     }
 
     @Override
     public void queueResponse(BizStoreElasticList bizStoreElasticList) {
-
+      dismissProgress();
     }
 
 

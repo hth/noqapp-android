@@ -4,9 +4,6 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 
 import java.util.List;
 
-/**
- * Created by omkar on 4/1/17.
- */
 
 public interface NOQueueDBPresenterInterface {
 

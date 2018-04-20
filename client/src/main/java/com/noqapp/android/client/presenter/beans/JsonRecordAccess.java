@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @SuppressWarnings ({
@@ -21,7 +22,7 @@ import java.util.Date;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonRecordAccess extends AbstractDomain {
+public class JsonRecordAccess extends AbstractDomain implements Serializable{
 
     @JsonProperty("raq")
     private String recordAccessedQid;

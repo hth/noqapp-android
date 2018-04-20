@@ -33,12 +33,22 @@
                 android:id="@+id/tv_msg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
                 android:textColor="@color/color_btn_select"
                 android:textSize="15sp" />
+
             <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                 android:id="@+id/tv_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                android:id="@+id/tv_no_of_time_access"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"

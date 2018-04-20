@@ -9,10 +9,7 @@ import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 
 import java.util.List;
 
-/**
- * User: omkar
- * Date: 4/1/17 12:37 PM
- */
+
 public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
 
     public TokenQueueViewInterface tokenQueueViewInterface;
