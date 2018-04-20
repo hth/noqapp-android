@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.client.model.types.RadiologyEnum;
 
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -22,18 +21,18 @@ import com.noqapp.android.client.model.types.RadiologyEnum;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonMedicalRadiologyXRay extends AbstractDomain {
 
-    @JsonProperty("re")
-    private RadiologyEnum radiology;
+    @JsonProperty("na")
+    private String name;
 
     @JsonProperty("tr")
     private String testResult;
 
-    public RadiologyEnum getRadiology() {
-        return radiology;
+    public String getName() {
+        return name;
     }
 
-    public JsonMedicalRadiologyXRay setRadiology(RadiologyEnum radiology) {
-        this.radiology = radiology;
+    public JsonMedicalRadiologyXRay setName(String name) {
+        this.name = name;
         return this;
     }
 

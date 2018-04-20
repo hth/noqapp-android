@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.client.model.types.PhysicalExamEnum;
 
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -22,8 +21,8 @@ import com.noqapp.android.client.model.types.PhysicalExamEnum;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonMedicalPhysicalExamination extends AbstractDomain {
 
-    @JsonProperty("pe")
-    private PhysicalExamEnum physicalExam;
+    @JsonProperty("na")
+    private String name;
 
     @JsonProperty ("va")
     private String value;
@@ -31,12 +30,12 @@ public class JsonMedicalPhysicalExamination extends AbstractDomain {
     @JsonProperty("tr")
     private String testResult;
 
-    public PhysicalExamEnum getPhysicalExam() {
-        return physicalExam;
+    public String getName() {
+        return name;
     }
 
-    public JsonMedicalPhysicalExamination setPhysicalExam(PhysicalExamEnum physicalExam) {
-        this.physicalExam = physicalExam;
+    public JsonMedicalPhysicalExamination setName(String name) {
+        this.name = name;
         return this;
     }
 
