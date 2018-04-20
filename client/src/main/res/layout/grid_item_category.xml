@@ -36,13 +36,14 @@
                 android:layout_weight=".5"
                 android:orientation="vertical">
 
-                <TextView
+                <com.noqapp.android.client.views.customviews.TextViewRalewayBold
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
+                    android:padding="5dp"
                     android:textColor="@android:color/black"
-                    android:textSize="16sp" />
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_detail"
@@ -51,16 +52,22 @@
                     android:layout_marginTop="3dp"
                     android:paddingLeft="5dp"
                     android:text=""
+                    android:visibility="gone"
                     android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_noinq"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="3dp"
-                    android:paddingLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/custom_thumb"
+                    android:textColor="@android:color/white"
                     android:text=""
-                    android:textSize="14sp" />
+                    android:gravity="center"
+                    android:layout_gravity="right"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
 
             </LinearLayout>
         </LinearLayout>
