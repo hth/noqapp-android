@@ -27,7 +27,7 @@ public class JsonRecordAccess extends AbstractDomain {
     private String recordAccessedQid;
 
     @JsonProperty("rad")
-    private Date recordAccessedDate;
+    private String recordAccessedDate;
 
     public String getRecordAccessedQid() {
         return recordAccessedQid;
@@ -38,11 +38,11 @@ public class JsonRecordAccess extends AbstractDomain {
         return this;
     }
 
-    public Date getRecordAccessedDate() {
+    public String getRecordAccessedDate() {
         return recordAccessedDate;
     }
 
-    public JsonRecordAccess setRecordAccessedDate(Date recordAccessedDate) {
+    public JsonRecordAccess setRecordAccessedDate(String recordAccessedDate) {
         this.recordAccessedDate = recordAccessedDate;
         return this;
     }
