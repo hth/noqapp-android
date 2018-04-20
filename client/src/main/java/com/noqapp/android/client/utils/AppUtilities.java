@@ -326,10 +326,11 @@ public class AppUtilities {
     public static String getStoreOpenStatus(JsonTokenAndQueue jsonTokenAndQueue) {
 
         String additionalText;
-        DateFormat df = new SimpleDateFormat("hh:mm");
+        DateFormat df = new SimpleDateFormat("HH:mm");
         String time = df.format(Calendar.getInstance().getTime());
-        if(jsonTokenAndQueue.getStartHour()<=Integer.valueOf(time.replace(":",""))&&
-                Integer.valueOf(time.replace(":","")) <=jsonTokenAndQueue.getEndHour()){
+        int timedata = Integer.valueOf(time.replace(":",""));
+        if(jsonTokenAndQueue.getStartHour()<= timedata&&
+                timedata <=jsonTokenAndQueue.getEndHour()){
             additionalText =  "Open";
         }else{
             additionalText = "Closed";

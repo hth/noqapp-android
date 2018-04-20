@@ -49,7 +49,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity implements ProfilePresenter {
+public class LoginActivity extends BaseActivity implements ProfilePresenter {
 
 
     @BindView(R.id.actionbarBack)
@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                 //     detect the incoming verification SMS and perform verificaiton without
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:" + credential);
-                LaunchActivity.getLaunchActivity().dismissProgress();
+                dismissProgress();
                 // Update the UI and attempt sign in with the phone credential
                 updateUI(STATE_VERIFY_SUCCESS, credential);
                 signInWithPhoneAuthCredential(credential);
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                 // for instance if the the phone number format is not valid.
                 Log.w(TAG, "onVerificationFailed", e);
 
-                LaunchActivity.getLaunchActivity().dismissProgress();
+                dismissProgress();
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
 
@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         if (validate()) {
             if (isReadAndReceiveSMSPermissionAllowed()) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                    progressDialog.show();
                     //@TODO @Chandra update the country code dynamic
                     startPhoneNumberVerification("+91" + edt_phoneNo.getText().toString());
 
@@ -234,7 +234,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                             // Update UI
                             updateUI(STATE_SIGN_IN_FAILED);
                         }
-                        LaunchActivity.getLaunchActivity().dismissProgress();
+                        dismissProgress();
                     }
                 });
     }
@@ -277,7 +277,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
             finish();//close the current activity
-            LaunchActivity.getLaunchActivity().dismissProgress();
+            dismissProgress();
         } else {
             // Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
@@ -286,7 +286,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                 in.putExtra("mobile_no", verifiedMobileNo);
                 in.putExtra("country_code", "");
                 startActivity(in);
-                LaunchActivity.getLaunchActivity().dismissProgress();
+                dismissProgress();
                 finish();//close the current activity
             }
         }
@@ -294,7 +294,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
 
     @Override
     public void queueError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
 
@@ -319,7 +319,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
             return;
         }
         if (mVerificationId != null) {
-            LaunchActivity.getLaunchActivity().progressDialog.show();
+            progressDialog.show();
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
             signInWithPhoneAuthCredential(credential);
         } else {
@@ -385,7 +385,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                     callLoginAPI(user.getPhoneNumber());
                 } else {
                     ShowAlertInformation.showNetworkDialog(this);
-                    LaunchActivity.getLaunchActivity().dismissProgress();
+                    dismissProgress();
                 }
                 break;
         }

@@ -45,7 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegistrationActivity extends AppCompatActivity implements MeView, View.OnClickListener {
+public class RegistrationActivity extends BaseActivity implements MeView, View.OnClickListener {
 
 
     @BindView(R.id.actionbarBack)
@@ -138,7 +138,7 @@ public class RegistrationActivity extends AppCompatActivity implements MeView, V
             btnRegistration.setCompoundDrawablesWithIntrinsicBounds(
                     0, 0, R.drawable.arrow_white, 0);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                LaunchActivity.getLaunchActivity().progressDialog.show();
+                progressDialog.show();
                 callRegistrationAPI();
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
@@ -151,13 +151,6 @@ public class RegistrationActivity extends AppCompatActivity implements MeView, V
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
-           /* replaceFragmentWithoutBackStack(this, R.id.frame_layout, new MeFragment(), TAG);
-            //remove the login and register fragment from stack
-            List<Fragment> currentTabFragments = LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe);
-            if (currentTabFragments.size() == 3) {
-                LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
-                LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabMe).remove(currentTabFragments.size() - 1);
-            }*/
             finish();
 
         } else {
@@ -167,13 +160,13 @@ public class RegistrationActivity extends AppCompatActivity implements MeView, V
                 ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
             }
         }
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
     public void queueError() {
         Log.d(TAG, "Error");
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
