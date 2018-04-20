@@ -221,6 +221,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             }
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                             ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
+                            //TODO @CHANDRA implement it for activtiy
                             callSkipScreen(codeQR);
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {

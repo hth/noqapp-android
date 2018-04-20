@@ -16,15 +16,15 @@ import java.util.List;
 public class MedicalHistoryAdapter extends BaseAdapter {
     private static final String TAG = MedicalHistoryAdapter.class.getSimpleName();
     private Context context;
-    private List<JsonMedicalRecord> notificationsList;
+    private List<JsonMedicalRecord> jsonMedicalRecordList;
 
-    public MedicalHistoryAdapter(Context context, List<JsonMedicalRecord> notificationsList) {
+    public MedicalHistoryAdapter(Context context, List<JsonMedicalRecord> jsonMedicalRecordList) {
         this.context = context;
-        this.notificationsList = notificationsList;
+        this.jsonMedicalRecordList = jsonMedicalRecordList;
     }
 
     public int getCount() {
-        return this.notificationsList.size();
+        return this.jsonMedicalRecordList.size();
     }
 
     public Object getItem(int n) {
@@ -49,20 +49,9 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        recordHolder.tv_title.setText(notificationsList.get(position).getChiefComplain());
-        recordHolder.tv_msg.setText(notificationsList.get(position).getClinicalFinding());
+        recordHolder.tv_title.setText(jsonMedicalRecordList.get(position).getChiefComplain());
+        recordHolder.tv_msg.setText(jsonMedicalRecordList.get(position).getClinicalFinding());
 
-
-//        try {
-//            String dateString = notificationsList.get(position).getNotificationCreate();
-//            SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault());
-//            Date date = sdf.parse(dateString);
-//            long startDate = new Date().getTime() - date.getTime();
-//            recordHolder.tv_create.setText(GetTimeAgoUtils.getTimeInAgo(startDate));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            recordHolder.tv_create.setText("");
-//        }
         return view;
     }
 

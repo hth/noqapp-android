@@ -76,6 +76,9 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
     @JsonProperty("bc")
     private String bizCategory;
 
+    @JsonProperty ("c")
+    private String created;
+
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
@@ -226,6 +229,15 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
 
     public JsonMedicalRecord setBizCategory(String bizCategory) {
         this.bizCategory = bizCategory;
+        return this;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public JsonMedicalRecord setCreated(String created) {
+        this.created = created;
         return this;
     }
 }

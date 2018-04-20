@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -53,7 +52,7 @@ import butterknife.ButterKnife;
 import static com.google.common.cache.CacheBuilder.newBuilder;
 import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
 
-public class CategoryInfoActivity extends AppCompatActivity implements QueuePresenter, RecyclerViewGridAdapter.OnItemClickListener {
+public class CategoryInfoActivity extends BaseActivity implements QueuePresenter, RecyclerViewGridAdapter.OnItemClickListener {
 
 
     @BindView(R.id.tv_store_name)
@@ -156,7 +155,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
             codeQR = bundle.getString(NoQueueBaseFragment.KEY_CODE_QR);
             boolean callingFromHistory = bundle.getBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                LaunchActivity.getLaunchActivity().progressDialog.show();
+                progressDialog.show();
                 QueueModel.queuePresenter = this;
                 if (bundle.getBoolean("CallCategory", false)) {
                     QueueModel.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
@@ -209,12 +208,12 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
 
     @Override
     public void queueError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         if (errorCode == Constants.INVALID_CREDENTIAL) {
             NoQueueBaseActivity.clearPreferences();
             ShowAlertInformation.showAuthenticErrorDialog(this);
@@ -227,16 +226,13 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
 
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
-
-
+        dismissProgress();
     }
 
     @Override
     public void queueResponse(BizStoreElasticList bizStoreElasticList) {
         if (!bizStoreElasticList.getBizStoreElastics().isEmpty()) {
             populateAndSortedCache(bizStoreElasticList);
-            //queueResponse();
-
             BizStoreElastic bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             LaunchActivity.getLaunchActivity().dismissProgress();
             tv_store_name.setText(bizStoreElastic.getBusinessName());
@@ -277,6 +273,7 @@ public class CategoryInfoActivity extends AppCompatActivity implements QueuePres
                 queueMap, listener);
 
         rv_categories.setAdapter(recyclerView_Adapter);
+        dismissProgress();
     }
 
     /**

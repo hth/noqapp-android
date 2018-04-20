@@ -8,7 +8,6 @@ package com.noqapp.android.client.views.activities;
 import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class JoinActivity extends AppCompatActivity implements QueuePresenter {
+public class JoinActivity extends BaseActivity implements QueuePresenter {
 
 
     @BindView(R.id.actionbarBack)
@@ -136,7 +135,7 @@ public class JoinActivity extends AppCompatActivity implements QueuePresenter {
                 queueResponse(jsonQueue);
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    //LaunchActivity.getLaunchActivity().progressDialog.show();
+                    progressDialog.show();
                     if (UserUtils.isLogin()) {
                         QueueApiModel.queuePresenter = this;
                         QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
@@ -158,12 +157,12 @@ public class JoinActivity extends AppCompatActivity implements QueuePresenter {
     @Override
     public void queueError() {
         Log.d("TAG", "Queue=Error");
-        //LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
-        // LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         if (errorCode == Constants.INVALID_CREDENTIAL) {
             NoQueueBaseActivity.clearPreferences();
             ShowAlertInformation.showAuthenticErrorDialog(this);
@@ -330,6 +329,24 @@ public class JoinActivity extends AppCompatActivity implements QueuePresenter {
                 if (toclose) {
                     finish();
                 }
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Added to re-initialised the value if user is logged in again and comeback to join screen
+        if (null != jsonQueue) {
+            /* Check weather join is possible or not today due to some reason */
+            JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, JoinActivity.this);
+            if (joinQueueState.isJoinNotPossible()) {
+                isJoinNotPossible = joinQueueState.isJoinNotPossible();
+                joinErrorMsg = joinQueueState.getJoinErrorMsg();
+            } else {
+                isJoinNotPossible = false;
+                joinErrorMsg = "";
             }
         }
     }

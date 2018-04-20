@@ -506,9 +506,11 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         currentActivityAdapter = new CurrentActivityAdapter(currentlist, getActivity(), currentClickListner);
         rv_current_activity.setAdapter(currentActivityAdapter);
         tv_current_title.setText(getString(R.string.active_queue)+" ("+String.valueOf(currentlist.size())+")");
+        currentActivityAdapter.notifyDataSetChanged();
 
         recentActivityAdapter = new RecentActivityAdapter(historylist, getActivity(), recentClickListner);
         rv_recent_activity.setAdapter(recentActivityAdapter);
+        recentActivityAdapter.notifyDataSetChanged();
     }
 
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
@@ -522,6 +524,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
     }
+
 
 
 }

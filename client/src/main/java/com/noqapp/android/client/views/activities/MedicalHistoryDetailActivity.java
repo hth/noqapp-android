@@ -5,15 +5,21 @@ package com.noqapp.android.client.views.activities;
  */
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.JsonMedicalPhysicalExamination;
 import com.noqapp.android.client.presenter.beans.JsonMedicalRecord;
+import com.noqapp.android.client.presenter.beans.JsonMedicine;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +43,12 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity {
     protected TextView tv_known_allergy;
     @BindView(R.id.tv_clinical_finding)
     protected TextView tv_clinical_finding;
+    @BindView(R.id.tv_provisional)
+    protected TextView tv_provisional;
+    @BindView(R.id.ll_physical)
+    protected LinearLayout ll_physical;
+    @BindView(R.id.ll_medication)
+    protected LinearLayout ll_medication;
 
 
     @Override
@@ -57,6 +69,41 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity {
         tv_family_history.setText(jsonMedicalRecord.getFamilyHistory());
         tv_known_allergy.setText(jsonMedicalRecord.getKnownAllergies());
         tv_clinical_finding.setText(jsonMedicalRecord.getClinicalFinding());
+        tv_provisional.setText(jsonMedicalRecord.getProvisionalDifferentialDiagnosis());
+        List<JsonMedicalPhysicalExamination> data = jsonMedicalRecord.getMedicalPhysicalExaminations();
+        for (int j = 0; j < data.size(); j++) {
+
+            LinearLayout childLayout = new LinearLayout(this);
+            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            childLayout.setLayoutParams(linearParams);
+            TextView mType = new TextView(this);
+            mType.setTextSize(17);
+            mType.setPadding(5, 3, 0, 3);
+            mType.setTypeface(Typeface.DEFAULT_BOLD);
+            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
+            mType.setText(data.get(j).getValue() +":"+data.get(j).getTestResult());
+            childLayout.addView(mType, 0);
+            ll_physical.addView(childLayout);
+        }
+        List<JsonMedicine> medicinedata = jsonMedicalRecord.getMedicines();
+        for (int j = 0; j < medicinedata.size(); j++) {
+
+            LinearLayout childLayout = new LinearLayout(this);
+            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            childLayout.setLayoutParams(linearParams);
+            TextView mType = new TextView(this);
+            mType.setTextSize(17);
+            mType.setPadding(5, 3, 0, 3);
+            mType.setTypeface(Typeface.DEFAULT_BOLD);
+            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
+            mType.setText(medicinedata.get(j).getName() +":"+medicinedata.get(j).getStrength()+":"+medicinedata.get(j).getTimes());
+            childLayout.addView(mType, 0);
+            ll_medication.addView(childLayout);
+        }
     }
 
 }
