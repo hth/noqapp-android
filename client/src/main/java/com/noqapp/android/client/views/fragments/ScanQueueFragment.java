@@ -288,18 +288,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             storeInfoParam.setLatitude(lat);
             storeInfoParam.setLongitude(longitute);
             storeInfoParam.setFilters("xyz");
-
-            //For another location
-            //storeInfoParam.setCityName("Sunnyvale");
-            //storeInfoParam.setLatitude(String.valueOf(37.376177));
-            //storeInfoParam.setLongitude(String.valueOf(-122.0301356));
-            //storeInfoParam.setFilters("xyz");
-
-            /* New instance of progressbar because it is a new activity. */
-//            progressDialog = new ProgressDialog(ReviewActivity.this);
-//            progressDialog.setIndeterminate(true);
-//            progressDialog.setMessage("Updating...");
-//            progressDialog.show();
+            LaunchActivity.getLaunchActivity().progressDialog.show();
             NearMeModel.nearMePresenter = this;
             NearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
         } else {
@@ -317,11 +306,12 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
     public void nearMeError() {
-
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
