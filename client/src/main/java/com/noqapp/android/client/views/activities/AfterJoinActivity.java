@@ -9,9 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -40,16 +38,13 @@ import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.fragments.AfterJoinFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AfterJoinActivity extends AppCompatActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator {
+public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
 
     @BindView(R.id.actionbarBack)
@@ -163,7 +158,7 @@ public class AfterJoinActivity extends AppCompatActivity implements TokenPresent
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     if (isResumeFirst) {
-                        // LaunchActivity.getLaunchActivity().progressDialog.show();
+                        progressDialog.show();
                         callQueue();
                     }
                 } else {
@@ -190,7 +185,7 @@ public class AfterJoinActivity extends AppCompatActivity implements TokenPresent
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
         /* Update the remote join count */
         NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount() - 1);
-        //   LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
@@ -207,24 +202,24 @@ public class AfterJoinActivity extends AppCompatActivity implements TokenPresent
         }
         NoQueueMessagingService.unSubscribeTopics(topic);
         TokenAndQueueDB.deleteTokenQueue(codeQR);
-        navigateToList();
-        //  LaunchActivity.getLaunchActivity().dismissProgress();
+        onBackPressed();
+        dismissProgress();
     }
 
     @Override
     public void responsePresenterError() {
         Log.d("", "responsePresenterError");
-        // LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
     public void tokenPresenterError() {
-        //LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
-        // LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         if (errorCode == Constants.INVALID_CREDENTIAL) {
             NoQueueBaseActivity.clearPreferences();
             ShowAlertInformation.showAuthenticErrorDialog(this);
@@ -237,7 +232,7 @@ public class AfterJoinActivity extends AppCompatActivity implements TokenPresent
     @OnClick(R.id.btn_cancel_queue)
     public void cancelQueue() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            // LaunchActivity.getLaunchActivity().progressDialog.show();
+            progressDialog.show();
             if (UserUtils.isLogin()) {
                 QueueApiModel.responsePresenter = this;
                 QueueApiModel.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
@@ -248,27 +243,6 @@ public class AfterJoinActivity extends AppCompatActivity implements TokenPresent
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
-    }
-
-    private void navigateToList() {
-        try {
-            //Remove the join and after join screen from the QScan tab if the both screen having same QR code
-            List<Fragment> currentTabFragments = null;//LaunchActivity.getLaunchActivity().fragmentsStack.get(LaunchActivity.tabHome);
-            if (null != currentTabFragments && currentTabFragments.size() > 1) {
-                int size = currentTabFragments.size();
-                Fragment currentfrg = currentTabFragments.get(size - 1);
-                if (currentfrg.getClass().getSimpleName().equals(AfterJoinFragment.class.getSimpleName())) {
-                    String qcode = ((AfterJoinFragment) currentfrg).getCodeQR();
-                    if (codeQR.equals(qcode)) {
-                        currentTabFragments.remove(currentTabFragments.size() - 1);
-                        //currentTabFragments.remove(currentTabFragments.size() - 1);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage(), e);
-        }
-        onBackPressed();
     }
 
     private void callQueue() {
@@ -288,7 +262,6 @@ public class AfterJoinActivity extends AppCompatActivity implements TokenPresent
                         Toast.makeText(this, getString(R.string.error_remote_join_available), Toast.LENGTH_LONG).show();
                     }
                 }
-
             } else {
                 QueueModel.tokenPresenter = this;
                 QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
@@ -433,4 +406,6 @@ public class AfterJoinActivity extends AppCompatActivity implements TokenPresent
             }
         }
     }
+
+
 }

@@ -7,7 +7,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +29,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MedicalHistoryActivity extends AppCompatActivity implements MedicalRecordPresenter {
+public class MedicalHistoryActivity extends BaseActivity implements MedicalRecordPresenter {
 
     @BindView(R.id.listview)
     protected ListView listview;
@@ -66,10 +65,10 @@ public class MedicalHistoryActivity extends AppCompatActivity implements Medical
         }
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            //LaunchActivity.getLaunchActivity().progressDialog.show();
+            progressDialog.show();
             if (UserUtils.isLogin()) {
                 MedicalRecordApiModel.medicalRecordPresenter = this;
-                MedicalRecordApiModel.getMedicalRecord( UserUtils.getEmail(), UserUtils.getAuth());
+                MedicalRecordApiModel.getMedicalRecord(UserUtils.getEmail(), UserUtils.getAuth());
 
             } else {
                 //Give error
@@ -83,8 +82,8 @@ public class MedicalHistoryActivity extends AppCompatActivity implements Medical
 
     @Override
     public void medicalRecordResponse(JsonMedicalRecordList jsonMedicalRecordList) {
-        Log.d("data",jsonMedicalRecordList.toString());
-        if(null != jsonMedicalRecordList & jsonMedicalRecordList.getJsonMedicalRecords().size()>0){
+        Log.d("data", jsonMedicalRecordList.toString());
+        if (null != jsonMedicalRecordList & jsonMedicalRecordList.getJsonMedicalRecords().size() > 0) {
             jsonMedicalRecords = jsonMedicalRecordList.getJsonMedicalRecords();
         }
         MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(this, jsonMedicalRecords);
@@ -106,15 +105,16 @@ public class MedicalHistoryActivity extends AppCompatActivity implements Medical
                 startActivity(in);
             }
         });
+        dismissProgress();
     }
 
     @Override
     public void medicalRecordError() {
-
+        dismissProgress();
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
-
+        dismissProgress();
     }
 }

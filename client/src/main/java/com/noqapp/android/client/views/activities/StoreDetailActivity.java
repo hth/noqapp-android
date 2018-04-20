@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -41,7 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class StoreDetailActivity extends AppCompatActivity implements StorePresenter {
+public class StoreDetailActivity extends BaseActivity implements StorePresenter {
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
@@ -127,7 +126,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
         });
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            // LaunchActivity.getLaunchActivity().progressDialog.show();
+            progressDialog.show();
             StoreModel.storePresenter = this;
             StoreModel.getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
         } else {
@@ -149,6 +148,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
     @Override
     public void storeResponse(JsonStore tempjsonStore) {
         this.jsonStore = tempjsonStore;
+        dismissProgress();
         // Toast.makeText(getActivity(),"jsonStore response success",Toast.LENGTH_LONG).show();
         Log.v("jsonStore response :", jsonStore.toString());
 
@@ -256,11 +256,11 @@ public class StoreDetailActivity extends AppCompatActivity implements StorePrese
 
     @Override
     public void storeError() {
-
+        dismissProgress();
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
-
+        dismissProgress();
     }
 }

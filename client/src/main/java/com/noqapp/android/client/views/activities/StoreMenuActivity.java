@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -19,6 +18,7 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
+import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
 
@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 // Scrollview issue  https://stackoverflow.com/questions/37605545/android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
-public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrderPresenter {
+public class StoreMenuActivity extends BaseActivity implements PurchaseOrderPresenter {
     private static final String TAG = StoreMenuActivity.class.getSimpleName();
 
     @BindView(R.id.actionbarBack)
@@ -73,32 +73,37 @@ public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrde
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(UserUtils.isLogin()) {
-                    HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();
+                if (UserUtils.isLogin()) {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();
 
 
-                    List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
-                    int price = 0;
-                    for (ChildData value : getOrder.values()) {
-                        ll.add(new JsonPurchaseOrderProduct()
-                                .setProductId(value.getJsonStoreProduct().getProductId())
-                                .setProductPrice(value.getJsonStoreProduct().getProductPrice())
-                                .setProductQuantity(value.getChildInput()));
-                        price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
+                        List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
+                        int price = 0;
+                        for (ChildData value : getOrder.values()) {
+                            ll.add(new JsonPurchaseOrderProduct()
+                                    .setProductId(value.getJsonStoreProduct().getProductId())
+                                    .setProductPrice(value.getJsonStoreProduct().getProductPrice())
+                                    .setProductQuantity(value.getChildInput()));
+                            price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
+                        }
+                        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+                                .setBizStoreId(jsonQueue.getBizStoreId())
+                                .setBusinessType(jsonQueue.getBusinessType())
+                                .setQueueUserId("100000000021")
+                                // jsonPurchaseOrder.setCustomerName(jsonQueue.);
+                                .setDeliveryType(jsonQueue.getDeliveryTypes().get(0)) // need to change dynamic
+                                .setOrderPrice(String.valueOf(price))
+                                .setPaymentType(jsonQueue.getPaymentTypes().get(1)); // need to change dynamic
+                        jsonPurchaseOrder.setPurchaseOrderProducts(ll);
+
+                        Log.i(TAG, "order Place " + jsonPurchaseOrder.asJson());
+                        progressDialog.show();
+                        PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(StoreMenuActivity.this);
                     }
-                    JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                            .setBizStoreId(jsonQueue.getBizStoreId())
-                            .setBusinessType(jsonQueue.getBusinessType())
-                            .setQueueUserId("100000000021")
-                            // jsonPurchaseOrder.setCustomerName(jsonQueue.);
-                            .setDeliveryType(jsonQueue.getDeliveryTypes().get(0)) // need to change dynamic
-                            .setOrderPrice(String.valueOf(price))
-                            .setPaymentType(jsonQueue.getPaymentTypes().get(1)); // need to change dynamic
-                    jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-
-                    Log.i(TAG, "order Place " + jsonPurchaseOrder.asJson());
-                    PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                }else{
+                } else {
                     // Navigate to login screen
                     Intent loginIntent = new Intent(StoreMenuActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
@@ -119,15 +124,17 @@ public class StoreMenuActivity extends AppCompatActivity implements PurchaseOrde
         } else {
             //Show error
         }
+        dismissProgress();
     }
 
     @Override
     public void purchaseOrderError() {
-
+        dismissProgress();
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
-        Toast.makeText(this, "Error code : "+""+errorCode, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Error code : " + "" + errorCode, Toast.LENGTH_LONG).show();
+        dismissProgress();
     }
 }
