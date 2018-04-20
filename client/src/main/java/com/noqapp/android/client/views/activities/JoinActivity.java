@@ -333,4 +333,22 @@ public class JoinActivity extends AppCompatActivity implements QueuePresenter {
             }
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Added to re-initialised the value if user is logged in again and comeback to join screen
+        if(null != jsonQueue) {
+            /* Check weather join is possible or not today due to some reason */
+            JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, JoinActivity.this);
+            if (joinQueueState.isJoinNotPossible()) {
+                isJoinNotPossible = joinQueueState.isJoinNotPossible();
+                joinErrorMsg = joinQueueState.getJoinErrorMsg();
+            }else{
+                isJoinNotPossible = false;
+                joinErrorMsg = "";
+            }
+        }
+    }
 }

@@ -147,4 +147,5 @@
     <string name="scan_info">कतार में शामिल होने के लिए QR कोड स्कैन करें / मौके पर ऑर्डर</string>
     <string name="prompt_address_status">पता</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
+    <string name="medical_history_alert">You don\'t have any medical history.</string>
 </resources>

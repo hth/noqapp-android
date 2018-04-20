@@ -112,6 +112,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_physical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -124,12 +125,12 @@
                     android:text="Physical Examination: "
                     android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:padding="5dp"
-                    android:text="Physical Examination details " />
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight=".6"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:text="Physical Examination details " />-->
 
             </LinearLayout>
 
@@ -166,6 +167,29 @@
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
                     android:padding="5dp"
+                    android:text="Provisional /Differential Diagnosis"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_provisional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".6"
+                    android:padding="5dp"
+                    android:text="Provisional /Differential Diagnosis details " />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:padding="5dp"
                     android:text="Investigation Advised: "
                     android:textStyle="bold" />
 
@@ -177,7 +201,28 @@
                     android:text="Investigation Advised details " />
 
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_medication"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:padding="5dp"
+                    android:text="Treatment Advice: "
+                    android:textStyle="bold" />
+
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight=".6"-->
+                <!--android:padding="5dp"-->
+                <!--android:text="Physical Examination details " />-->
+
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

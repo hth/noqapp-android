@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="10dp"
-            android:text="@string/notification_alert"
+            android:text="@string/medical_history_alert"
             android:textSize="18sp" />
 
         <ListView

@@ -191,7 +191,7 @@
 
     <!-- strings -->
     <string name="quila_name">Chandra Sharma</string>
-    <string name="quila_tagline">I love to devlop andrdoid apps.</string>
+    <string name="quila_tagline">I love to develop andrdoid apps.</string>
     <string name="quila_name2">Chandra</string>
     <string name="lorem">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula sem a malesuada rhoncus. Pellentesque ut dolor a dui porttitor porta lacinia non libero. Nunc volutpat arcu quis quam convallis molestie. Etiam ac tristique sem, id commodo justo. Phasellus congue tincidunt lectus, at dignissim ligula maximus eu. Quisque interdum nunc eget tellus bibendum suscipit. Phasellus feugiat ultricies posuere. Nullam porta accumsan velit, ut rutrum massa fermentum eu. Nunc ac bibendum nunc. Mauris eu ultricies ipsum. Ut id dolor dui. Pellentesque dictum dui vel tempus maximus. Vivamus non nisi quis libero scelerisque pretium. Ut eu tristique justo. Sed pellentesque placerat quam, ut ultricies turpis feugiat a. Aliquam a volutpat risus.
@@ -230,6 +230,7 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="scan_info">Scan QR code to join the Queue/ place order on the spot</string>
     <string name="prompt_address_status">Address</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
+    <string name="medical_history_alert">You don\'t have any medical history.</string>
     <!-- Language select dialog -->
 
 </resources>
