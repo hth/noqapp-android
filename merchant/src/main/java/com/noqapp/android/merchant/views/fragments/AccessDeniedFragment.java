@@ -2,20 +2,13 @@ package com.noqapp.android.merchant.views.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.adapters.ViewPagerAdapter;
-import com.noqapp.android.merchant.views.customsviews.CustomViewPager;
-
-import java.util.ArrayList;
 
 public class AccessDeniedFragment extends Fragment {
 

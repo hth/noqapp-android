@@ -116,7 +116,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 //  iv_profile.setImageBitmap(bitmap);
 
                 Uri selectedImage = data.getData();
-                Bitmap bitmap = null;
+                Bitmap bitmap;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                     iv_profile.setImageBitmap(bitmap);

@@ -9,7 +9,7 @@ public enum MedicationRouteEnum {
     private final String name;
     private final String description;
 
-    private MedicationRouteEnum(String name, String description) {
+    MedicationRouteEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

@@ -36,11 +36,11 @@ public class GeoHashUtils {
     /**
      * maximum precision for geohash strings
      */
-    public static final int PRECISION = 12;
+    private static final int PRECISION = 12;
     /**
      * number of bits used for quantizing latitude and longitude values
      */
-    public static final short BITS = 31;
+    private static final short BITS = 31;
     /**
      * scaling factors to convert lat/lon into unsigned space
      */
@@ -55,7 +55,7 @@ public class GeoHashUtils {
     /**
      * Encode to a morton long value from a given geohash string
      */
-    public static final long mortonEncode(final String hash) {
+    private static long mortonEncode(final String hash) {
         int level = 11;
         long b;
         long l = 0L;
@@ -69,14 +69,14 @@ public class GeoHashUtils {
     /**
      * decode longitude value from morton encoded geo point
      */
-    public static final double decodeLongitude(final long hash) {
+    private static double decodeLongitude(final long hash) {
         return unscaleLon(BitUtil.deinterleave(hash));
     }
 
     /**
      * decode latitude value from morton encoded geo point
      */
-    public static final double decodeLatitude(final long hash) {
+    private static double decodeLatitude(final long hash) {
         return unscaleLat(BitUtil.deinterleave(hash >>> 1));
     }
 

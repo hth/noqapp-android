@@ -26,7 +26,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.client.model.types.NearMeModel;
+import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
@@ -300,9 +300,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
 
         nearMeData = new ArrayList<>();
-        for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
-            nearMeData.add(bizStoreElasticList.getBizStoreElastics().get(i));
-        }
+        nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());

@@ -21,7 +21,7 @@ package com.noqapp.android.client.utils;
  *
  * @lucene.internal
  */
-public final class BitUtil {
+final class BitUtil {
 
     // magic numbers for bit interleaving
     private static final long MAGIC[] = {
