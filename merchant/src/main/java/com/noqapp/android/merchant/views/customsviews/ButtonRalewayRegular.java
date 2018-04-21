@@ -36,7 +36,7 @@ public class ButtonRalewayRegular extends AppCompatButton {
     }
 
     public boolean setCustomFont(Context ctx, String asset) {
-        Typeface typeface = null;
+        Typeface typeface;
         try {
             typeface = Typeface.createFromAsset(ctx.getAssets(), asset);
         } catch (Exception e) {
