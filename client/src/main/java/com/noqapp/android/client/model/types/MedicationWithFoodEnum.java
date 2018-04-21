@@ -7,7 +7,7 @@ public enum MedicationWithFoodEnum {
     private final String name;
     private final String description;
 
-    private MedicationWithFoodEnum(String name, String description) {
+    MedicationWithFoodEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
