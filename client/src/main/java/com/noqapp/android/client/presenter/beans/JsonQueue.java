@@ -16,7 +16,6 @@ import com.noqapp.android.client.utils.Constants;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;

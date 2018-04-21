@@ -11,7 +11,6 @@ import com.noqapp.android.client.model.types.QueueStatusEnum;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 /**
  * User: hitender
