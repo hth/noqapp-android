@@ -36,15 +36,15 @@ android {
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.0'
     }
-    archivesBaseName = "client";
+    archivesBaseName = "client"
 
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
 
     def versionPropsFile = file('version.properties')
-    def versionMajor = 0;
-    def versionMinor = 0;
-    def versionPatch = 0;
+    def versionMajor = 0
+    def versionMinor = 0
+    def versionPatch = 0
 
     if (versionPropsFile.canRead()) {
         if (env == "release" || env == "sandbox") {
