@@ -26,7 +26,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.client.model.types.NearMeModel;
+import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
