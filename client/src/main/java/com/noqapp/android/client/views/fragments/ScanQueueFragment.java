@@ -300,9 +300,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
 
         nearMeData = new ArrayList<>();
-        for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
-            nearMeData.add(bizStoreElasticList.getBizStoreElastics().get(i));
-        }
+        nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
