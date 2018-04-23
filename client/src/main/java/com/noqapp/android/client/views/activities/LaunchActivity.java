@@ -46,11 +46,10 @@ import com.noqapp.android.client.network.VersionCheckAsync;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.NetworkStateChanged;
 import com.noqapp.android.client.utils.NetworkUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.fragments.JoinFragment;
-import com.noqapp.android.client.views.fragments.LoginFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.RegistrationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
@@ -60,6 +59,8 @@ import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 import java.util.Locale;
@@ -132,6 +133,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Answers());
+        EventBus.getDefault().register(this);
         JodaTimeAndroid.init(this);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
@@ -335,11 +337,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-        if (f instanceof ScanQueueFragment || f instanceof RegistrationFragment || f instanceof LoginFragment) {
-            f.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
     }
 
     private void initProgress() {
@@ -411,7 +408,20 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         languagepref.unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
+    @Subscribe
+    public void onEvent(NetworkStateChanged networkStateChanged) {
+        if(networkStateChanged.isInternetConnected()) {
+            Toast.makeText(this,"network available",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this,"no network available",Toast.LENGTH_LONG).show();
+        }
+    }
     @Override
     public void onBackPressed() {
         long currentTime = System.currentTimeMillis();
@@ -465,8 +475,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         b.putBoolean(NoQueueBaseFragment.KEY_IS_REJOIN, true);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_AUTOJOIN_ELIGIBLE, false);
         b.putBoolean("isCategoryData", false);
-        JoinFragment jf = new JoinFragment();
-        jf.setArguments(b);
+     //   JoinFragment jf = new JoinFragment();
+     //   jf.setArguments(b);
         // remove previous screens
         List<Fragment> currentTabFragments = null;//fragmentsStack.get(getCurrentSelectedTabTag());
         if (null != currentTabFragments && currentTabFragments.size() > 1) {
@@ -475,7 +485,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             currentTabFragments.subList(1, size).clear();
         }
         //
-        NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
+      //  NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
     }
 
     private void updateNotification(Intent intent, String codeQR, boolean isReview) {

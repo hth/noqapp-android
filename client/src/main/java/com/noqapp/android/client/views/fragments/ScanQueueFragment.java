@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -99,6 +100,16 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @BindView(R.id.spinner)
     protected Spinner spinner;
+
+
+    @BindView(R.id.pb_current)
+    protected ProgressBar pb_current;
+
+    @BindView(R.id.pb_recent)
+    protected ProgressBar pb_recent;
+
+    @BindView(R.id.pb_near)
+    protected ProgressBar pb_near;
 
     //TODO(chandra) temp code
     private String[] city = {"Mumbai", "Delhi", "Calcutta"};
@@ -232,7 +243,8 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
                 QueueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
             }
-
+            pb_current.setVisibility(View.VISIBLE);
+            pb_recent.setVisibility(View.VISIBLE);
 
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -288,7 +300,8 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             storeInfoParam.setLatitude(lat);
             storeInfoParam.setLongitude(longitute);
             storeInfoParam.setFilters("xyz");
-            LaunchActivity.getLaunchActivity().progressDialog.show();
+           // LaunchActivity.getLaunchActivity().progressDialog.show();
+            pb_near.setVisibility(View.VISIBLE);
             NearMeModel.nearMePresenter = this;
             NearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
         } else {
@@ -304,12 +317,14 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
-        LaunchActivity.getLaunchActivity().dismissProgress();
+       // LaunchActivity.getLaunchActivity().dismissProgress();
+        pb_near.setVisibility(View.GONE);
     }
 
     @Override
     public void nearMeError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        //LaunchActivity.getLaunchActivity().dismissProgress();
+        pb_near.setVisibility(View.GONE);
     }
 
     @Override
@@ -342,11 +357,28 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void currentItemClick(JsonTokenAndQueue item, View view, int pos) {
         Intent in = new Intent(getActivity(), AfterJoinActivity.class);
         in.putExtra(KEY_CODE_QR, item.getCodeQR());
-        in.putExtra(KEY_FROM_LIST, false);
+        in.putExtra(KEY_FROM_LIST, true);
         in.putExtra(KEY_JSON_TOKEN_QUEUE, item);
         in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true);
         in.putExtra(KEY_IS_HISTORY, false);
         startActivity(in);
+
+//        Bundle b = new Bundle();
+//        b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
+//        b.putBoolean(KEY_FROM_LIST, true);
+//        if (groupPosition == 0) {
+//            b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue);
+//            //  AfterJoinFragment ajf = new AfterJoinFragment();
+//            //  ajf.setArguments(b);
+//            //  replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, LaunchActivity.tabList);
+//        } else {
+//            b.putBoolean(KEY_IS_HISTORY, true);
+//            b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false);
+//            b.putBoolean("isCategoryData", false);
+//            // JoinFragment jf = new JoinFragment();
+//            // jf.setArguments(b);
+//            // replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
+//        }
     }
 
     @Override
@@ -431,6 +463,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(getActivity());
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.saveTokenQueue(tokenAndQueues, true, false);
+        pb_current.setVisibility(View.GONE);
     }
 
     @Override
@@ -438,6 +471,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(getActivity());
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.saveTokenQueue(tokenAndQueues, false, sinceBeginning);
+        pb_recent.setVisibility(View.GONE);
     }
 
     @Override
@@ -445,6 +479,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         Log.d(TAG, "Token and queue Error");
         LaunchActivity.getLaunchActivity().dismissProgress();
         passMsgToHandler(false);
+        pb_recent.setVisibility(View.GONE);
     }
 
     @Override
@@ -452,6 +487,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         Log.d(TAG, "Token and queue Error");
         LaunchActivity.getLaunchActivity().dismissProgress();
         passMsgToHandler(true);
+        pb_current.setVisibility(View.GONE);
     }
 
     @Override
