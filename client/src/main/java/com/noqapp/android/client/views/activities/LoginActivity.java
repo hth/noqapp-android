@@ -148,7 +148,6 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
 
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
-                //Toast.makeText(this,"verification code: "+mVerificationId, Toast.LENGTH_LONG).show();
                 // Update UI
                 updateUI(STATE_CODE_SENT);
 

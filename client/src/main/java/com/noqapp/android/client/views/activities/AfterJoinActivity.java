@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,10 +46,6 @@ import butterknife.OnClick;
 public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
 
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
     public JsonToken jsonToken;
 
     @BindView(R.id.tv_store_name)
@@ -105,13 +100,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_join);
         ButterKnife.bind(this);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                returnResultBack();
-                finish();
-            }
-        });
+        initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_qdetails));
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
@@ -127,7 +116,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(Formatter.getFormattedAddress(address));
-            // tv_hour_saved.setText(getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour()));
 
             String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) +
                     " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour());

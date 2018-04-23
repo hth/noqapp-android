@@ -28,7 +28,7 @@ public interface ProfileService {
     );
 
     @POST("api/c/profile/update.json")
-    Call<JsonProfile> upate(
+    Call<JsonProfile> update(
             @Header("X-R-MAIL")
             String mail,
 

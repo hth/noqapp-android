@@ -168,6 +168,13 @@
         <activity
             android:name=".views.activities.LocationActivity"
             android:screenOrientation="portrait" />
+
+        <receiver android:name="com.noqapp.android.client.utils.NetworkStateReceiver">
+            <intent-filter>
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
+                <action android:name="android.net.wifi.STATE_CHANGE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -10,30 +10,35 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ProfileModel;
+import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
-public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserProfileActivity extends BaseActivity implements View.OnClickListener,ProfilePresenter {
 
-
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
     @BindView(R.id.tv_name)
     protected TextView tv_name;
     @BindView(R.id.iv_edit)
@@ -52,18 +57,17 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     protected EditText edt_dob;
     @BindView(R.id.edt_address)
     protected EditText edt_address;
+    @BindView(R.id.btn_update)
+    protected Button btn_update;
+    @BindView(R.id.btn_migrate)
+    protected Button btn_migrate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         ButterKnife.bind(this);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+       initActionsViews(false);
         tv_toolbar_title.setText("Profile");
         iv_edit.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
@@ -82,6 +86,14 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            ProfileModel.profilePresenter = this;
+            ProfileModel.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
         }
     }
 
@@ -130,5 +142,73 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         }
+    }
+
+    @OnClick(R.id.btn_update)
+    public void updateProfile(){
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            ProfileModel.profilePresenter = this;
+
+            Registration registration = new Registration();
+            registration.setPhone("7718851893");
+            registration.setFirstName("Mohan");
+            registration.setMail("abs@gmail.com");
+            registration.setBirthday(AppUtilities.convertDOBToValidFormat("JAN 05, 1985"));
+            registration.setGender("F");
+            registration.setTimeZoneId(TimeZone.getDefault().getID());
+            registration.setCountryShortName("");
+            registration.setInviteCode("");
+
+            ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(),registration);
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
+
+
+    }    @OnClick(R.id.btn_migrate)
+    public void migrateProfile(){
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            ProfileModel.profilePresenter = this;
+
+            Registration registration = new Registration();
+            registration.setPhone("9766146936");
+            registration.setFirstName("Mohan");
+            registration.setMail("abs@gmail.com");
+            registration.setBirthday(AppUtilities.convertDOBToValidFormat("JAN 05, 1985"));
+            registration.setGender("F");
+            registration.setTimeZoneId(TimeZone.getDefault().getID());
+            registration.setCountryShortName("");
+            registration.setInviteCode("");
+
+            ProfileModel.migrateMobileNo(UserUtils.getEmail(), UserUtils.getAuth(),registration);
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
+
+
+    }
+
+    @Override
+    public void queueResponse(JsonProfile profile, String email, String auth) {
+        Log.v("JsonProfile" , profile.toString());
+        NoQueueBaseActivity.commitProfile(profile, email, auth);
+        dismissProgress();
+        updateUI();
+    }
+
+    @Override
+    public void queueError() {
+        dismissProgress();
+    }
+
+    private void updateUI( ){
+        actv_user_name.setText(NoQueueBaseActivity.getUserName());
+        tv_name.setText(NoQueueBaseActivity.getUserName());
+        actv_email.setText(NoQueueBaseActivity.getMail());
+        actv_gender.setText(NoQueueBaseActivity.getGender().equals("M")?"Male":"Female");
+        // edt_address.setText(NoQueueBaseActivity.geta);
+        edt_dob.setText(NoQueueBaseActivity.getUserDOB());
     }
 }
