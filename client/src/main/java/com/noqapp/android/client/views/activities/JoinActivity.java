@@ -12,7 +12,6 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,11 +37,6 @@ import butterknife.OnClick;
 
 public class JoinActivity extends BaseActivity implements QueuePresenter {
 
-
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
 
@@ -95,12 +89,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
         ButterKnife.bind(this);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_join));
 
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();

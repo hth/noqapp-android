@@ -13,8 +13,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -88,16 +86,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @BindView(R.id.iv_category_banner)
     protected ImageView iv_category_banner;
 
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-
-    @BindView(R.id.ll_cat_info)
-    protected LinearLayout ll_cat_info;
-
     private String codeQR;
-    private Animation animShow, animHide;
     private boolean isSliderOpen = false;
 
     //Set cache parameters
@@ -113,7 +102,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private float rating = 0;
     private int ratingCount = 0;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
-    // private CategoryListPagerAdapter mFragmentCardAdapter;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     Bundle bundle;
 
@@ -122,20 +110,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_info);
         ButterKnife.bind(this);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initActionsViews(false);
         tv_toolbar_title.setText("Categories");
         listener = this;
-
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         AppUtilities.setRatingBarColor(stars, this);
         listener = this;
-        animShow = AnimationUtils.loadAnimation(this, R.anim.popup_show);
-        animHide = AnimationUtils.loadAnimation(this, R.anim.popup_hide);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,25 +146,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 ShowAlertInformation.showNetworkDialog(this);
             }
         }
-        ll_cat_info.setFocusableInTouchMode(true);
-        ll_cat_info.requestFocus();
-        ll_cat_info.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    if (isSliderOpen) {
-                        ll_slide_view.startAnimation(animHide);
-                        ll_slide_view.setVisibility(View.GONE);
-                        isSliderOpen = false;
-                        return true;
-                    }
-                    return false;
-                }
-                return false;
-            }
-        });
-
-
         recyclerViewLayoutManager = new GridLayoutManager(this, 2);
         rv_categories.setLayoutManager(recyclerViewLayoutManager);
 
@@ -193,17 +154,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @Override
     public void onResume() {
         super.onResume();
-//        if (getArguments().getBoolean(KEY_FROM_LIST, false)) {
-//            if (getArguments().getBoolean(KEY_IS_HISTORY, false)) {
-//                LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_remote_qscan_detail));
-//            } else {
-//                LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_qscan_detail));
-//            }
-//        } else {
-//            LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_qscan_detail));
-//        }
-//
-//        LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 
     @Override

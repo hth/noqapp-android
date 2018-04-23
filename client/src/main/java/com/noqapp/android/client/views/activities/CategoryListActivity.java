@@ -2,13 +2,10 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -23,12 +20,8 @@ import butterknife.ButterKnife;
 /**
  * Created by chandra on 5/7/17.
  */
-public class CategoryListActivity extends AppCompatActivity implements CategoryListAdapter.OnItemClickListener {
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
+public class CategoryListActivity extends BaseActivity implements CategoryListAdapter.OnItemClickListener {
 
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
 
     private ArrayList<BizStoreElastic> jsonQueues;
     private CategoryListAdapter categoryListAdapter1;
@@ -43,15 +36,8 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_list);
         ButterKnife.bind(this);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
+        initActionsViews(true);
         listener = this;
-        //getString(R.string.medical_history));
         String categoryName = getIntent().getStringExtra("categoryName");
 
         tv_toolbar_title.setText(categoryName);

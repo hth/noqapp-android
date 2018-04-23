@@ -191,7 +191,7 @@
                     </android.support.design.widget.TextInputLayout>
 
                     <Button
-                        android:id="@+id/email_sign_in_button"
+                        android:id="@+id/btn_update"
                         style="?android:textAppearanceSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -199,6 +199,16 @@
                         android:layout_marginTop="16dp"
                         android:text="@string/action_update"
                         android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/btn_migrate"
+                        style="?android:textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="16dp"
+                        android:text="Migrate mobile no"
+                        android:textStyle="bold" />
+
 
                 </LinearLayout>
 

@@ -33,10 +33,6 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
 
     @BindView(R.id.listview)
     protected ListView listview;
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
     @BindView(R.id.tv_empty)
     protected TextView tv_empty;
 
@@ -47,12 +43,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
         ButterKnife.bind(this);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initActionsViews(false);
 
         tv_toolbar_title.setText(getString(R.string.medical_history));
 
