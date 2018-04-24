@@ -23,7 +23,9 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -37,7 +39,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class UserProfileActivity extends BaseActivity implements View.OnClickListener,ProfilePresenter {
+public class UserProfileActivity extends BaseActivity implements View.OnClickListener, ProfilePresenter {
 
     @BindView(R.id.tv_name)
     protected TextView tv_name;
@@ -67,19 +69,19 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         ButterKnife.bind(this);
-       initActionsViews(false);
+        initActionsViews(false);
         tv_toolbar_title.setText("Profile");
         iv_edit.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
         actv_user_name.setText(NoQueueBaseActivity.getUserName());
         tv_name.setText(NoQueueBaseActivity.getUserName());
         actv_email.setText(NoQueueBaseActivity.getMail());
-        actv_gender.setText(NoQueueBaseActivity.getGender().equals("M")?"Male":"Female");
-       // edt_address.setText(NoQueueBaseActivity.geta);
+        actv_gender.setText(NoQueueBaseActivity.getGender().equals("M") ? "Male" : "Female");
+        // edt_address.setText(NoQueueBaseActivity.geta);
         edt_dob.setText(NoQueueBaseActivity.getUserDOB());
 
         try {
-            if(!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
+            if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
                 Uri imageUri = Uri.parse(NoQueueBaseActivity.getUserProfileUri());
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                 iv_profile.setImageBitmap(bitmap);
@@ -108,9 +110,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 // selectImage();
                 break;
         }
-
     }
-
 
     private void selectImage() {
 
@@ -145,54 +145,44 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     @OnClick(R.id.btn_update)
-    public void updateProfile(){
+    public void updateProfile() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             ProfileModel.profilePresenter = this;
 
-            Registration registration = new Registration();
-            registration.setPhone("7718851893");
-            registration.setFirstName("Mohan");
-            registration.setMail("abs@gmail.com");
-            registration.setBirthday(AppUtilities.convertDOBToValidFormat("JAN 05, 1985"));
-            registration.setGender("F");
-            registration.setTimeZoneId(TimeZone.getDefault().getID());
-            registration.setCountryShortName("");
-            registration.setInviteCode("");
+            UpdateProfile updateProfile = new UpdateProfile();
+            updateProfile.setAddress("Some Address");
+            updateProfile.setFirstName("Mohan");
+            updateProfile.setBirthday(AppUtilities.convertDOBToValidFormat("JAN 05, 1985"));
+            updateProfile.setGender("F");
+            updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
 
-            ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(),registration);
+            ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
+    }
 
-
-    }    @OnClick(R.id.btn_migrate)
-    public void migrateProfile(){
+    @OnClick(R.id.btn_migrate)
+    public void migrateProfile() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             ProfileModel.profilePresenter = this;
 
-            Registration registration = new Registration();
-            registration.setPhone("9766146936");
-            registration.setFirstName("Mohan");
-            registration.setMail("abs@gmail.com");
-            registration.setBirthday(AppUtilities.convertDOBToValidFormat("JAN 05, 1985"));
-            registration.setGender("F");
-            registration.setTimeZoneId(TimeZone.getDefault().getID());
-            registration.setCountryShortName("");
-            registration.setInviteCode("");
+            MigrateProfile migrateProfile = new MigrateProfile();
+            migrateProfile.setPhone("9766146936");
+            migrateProfile.setTimeZoneId(TimeZone.getDefault().getID());
+            migrateProfile.setCountryShortName("");
 
-            ProfileModel.migrateMobileNo(UserUtils.getEmail(), UserUtils.getAuth(),registration);
+            ProfileModel.migrate(UserUtils.getEmail(), UserUtils.getAuth(), migrateProfile);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
-
-
     }
 
     @Override
     public void queueResponse(JsonProfile profile, String email, String auth) {
-        Log.v("JsonProfile" , profile.toString());
+        Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
         dismissProgress();
         updateUI();
@@ -203,11 +193,16 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         dismissProgress();
     }
 
-    private void updateUI( ){
+    @Override
+    public void authenticationFailure(int errorCode) {
+        //TODO(chandra)
+    }
+
+    private void updateUI() {
         actv_user_name.setText(NoQueueBaseActivity.getUserName());
         tv_name.setText(NoQueueBaseActivity.getUserName());
         actv_email.setText(NoQueueBaseActivity.getMail());
-        actv_gender.setText(NoQueueBaseActivity.getGender().equals("M")?"Male":"Female");
+        actv_gender.setText(NoQueueBaseActivity.getGender().equals("M") ? "Male" : "Female");
         // edt_address.setText(NoQueueBaseActivity.geta);
         edt_dob.setText(NoQueueBaseActivity.getUserDOB());
     }

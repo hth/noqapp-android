@@ -4,7 +4,6 @@ package com.noqapp.android.client.views.activities;
  * Created by chandra on 5/7/17.
  */
 
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -50,9 +49,9 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements ProfilePresenter {
 
-
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
+
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
     private final String TAG = LoginActivity.class.getSimpleName();
@@ -261,7 +260,8 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         if (requestCode == READ_AND_RECEIVE_SMS_PERMISSION_CODE) {
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startPhoneNumberVerification("+91"+edt_phoneNo.getText().toString());
+                //@TODO @Chandra update the country code dynamic
+                startPhoneNumberVerification("+91" + edt_phoneNo.getText().toString());
             } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 //No permission allowed
                 //Do nothing
@@ -295,6 +295,10 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         dismissProgress();
     }
 
+    @Override
+    public void authenticationFailure(int errorCode) {
+        //TODO(chandra)
+    }
 
     private void enableViews(View... views) {
         for (View v : views) {
@@ -388,5 +392,4 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 break;
         }
     }
-
 }
