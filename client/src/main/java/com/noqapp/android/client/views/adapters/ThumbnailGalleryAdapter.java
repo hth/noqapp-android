@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.SliderActivity;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalleryAdapter.MyViewHolder> {
     private ArrayList<String> imageUrls;
     private Context mContext;
+    private final int baseVisibleCount = 4;
 
     public ThumbnailGalleryAdapter(Context context, ArrayList<String> imageUrls) {
         mContext = context;
@@ -45,20 +47,28 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
                 .load(imageUrls.get(position))
                 .transform(new RoundedTransformation(5, 0))
                 .into(holder.iv_photo);
+        if(position<3){
+            holder.tv_title.setVisibility(View.GONE);
+        }else{
+            holder.tv_title.setVisibility(View.VISIBLE);
+            holder.tv_title.setText("+"+(imageUrls.size()- baseVisibleCount));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return (imageUrls.size());
+        return (imageUrls.size()> baseVisibleCount ? baseVisibleCount : imageUrls.size());
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView iv_photo;
+        public TextView tv_title;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             iv_photo = (ImageView) itemView.findViewById(R.id.iv_photo);
+            tv_title = (TextView) itemView.findViewById(R.id.tv_title);
             itemView.setOnClickListener(this);
         }
 

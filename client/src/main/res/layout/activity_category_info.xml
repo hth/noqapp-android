@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_cat_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#99ffffff"
-    android:id="@+id/ll_cat_info"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar_layout" />
@@ -19,74 +19,43 @@
             android:orientation="vertical"
             android:weightSum="1">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".40"
+                android:layout_height="match_parent"
                 android:background="@color/white"
-                android:gravity="center"
                 android:orientation="vertical"
                 android:weightSum="1">
 
                 <ImageView
                     android:id="@+id/iv_category_banner"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".6"
+                    android:layout_height="120dp"
+                    android:layout_alignParentTop="true"
                     android:scaleType="fitXY" />
 
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/rl_mid_content"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".4"
-                    android:orientation="vertical"
+                    android:layout_height="50dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="95dp"
+                    android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
 
-
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-                        android:id="@+id/tv_store_name"
-                        style="@style/style_join_queue_tv"
-                        android:layout_marginTop="3dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
-                        android:id="@+id/tv_queue_name"
-                        style="@style/style_join_queue_tv"
-                        android:layout_marginBottom="5dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="15sp" />
-
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                        android:id="@+id/tv_address"
-                        style="@style/style_join_queue_tv"
-                        android:layout_marginBottom="3dp"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:textColor="@color/colorAddress"
-                        android:textSize="15sp" />
-
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                        android:id="@+id/tv_hour_saved"
-                        style="@style/style_join_queue_tv"
-                        android:layout_below="@+id/tv_address"
-                        android:layout_marginBottom="3dp"
-                        android:textColor="@color/colorAddress"
-                        android:textSize="15sp" />
-
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                        android:id="@+id/tv_mobile"
-                        style="@style/style_join_queue_tv"
-                        android:layout_marginBottom="3dp"
-                        android:textColor="@color/colorMobile"
-                        android:textSize="15sp" />
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/hospital"
+                        android:tint="@color/bussiness_hospital" />
 
                     <RelativeLayout
                         android:id="@+id/rl_rating"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true">
 
                         <RatingBar
                             android:id="@+id/ratingBar"
@@ -101,66 +70,96 @@
 
                         <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                             android:id="@+id/tv_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/rating_radius"
+                            android:layout_height="@dimen/rating_radius"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
                             android:layout_toRightOf="@+id/ratingBar"
-                            android:text="     "
-                            android:textColor="@color/colorAddress"
-                            android:textSize="18sp"
-                            android:visibility="invisible" />
+                            android:background="@drawable/round_corner_hospital"
+                            android:gravity="center"
+                            android:text="0.0"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/rating_text_size" />
 
 
                         <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                             android:id="@+id/tv_rating_review"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/tv_rating"
+                            android:layout_below="@+id/ratingBar"
+                            android:layout_marginTop="10dp"
                             android:text=""
                             android:textColor="@color/colorAddress"
-                            android:textSize="18sp" />
+                            android:textSize="14sp" />
                     </RelativeLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_dep_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl_mid_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                        android:id="@+id/tv_store_name"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginTop="3dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                        android:id="@+id/tv_address"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="3dp"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="14sp" />
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                        android:id="@+id/tv_mobile"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="3dp"
+                        android:textColor="@android:color/black"
+                        android:drawablePadding="3dp"
+                        android:drawableRight="@drawable/ic_phone"
+                        android:drawableTint="@color/colorPrimary"
+                        android:textSize="14sp" />
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        android:id="@+id/tv_amenities"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                        android:id="@+id/tv_complete_address"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="5dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="14sp" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_thumb_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
                 </LinearLayout>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".60"
-                android:background="@android:color/white"
-                android:orientation="vertical">
-
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_categories"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_below="@+id/ll_dep_info"
                     android:scrollbars="vertical" />
+            </RelativeLayout>
 
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_slide_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="80dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/list_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:paddingEnd="@dimen/card_padding"
-                android:paddingLeft="@dimen/card_padding"
-                android:paddingRight="@dimen/card_padding"
-                android:paddingStart="@dimen/card_padding" />
 
         </LinearLayout>
     </FrameLayout>
