@@ -7,7 +7,8 @@ import com.noqapp.android.client.model.response.api.ProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
-import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
+import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,16 +48,21 @@ public class ProfileModel {
         });
     }
 
-    public static void updateProfile(final String mail, final String auth, Registration registration ) {
-        profileService.update(mail, auth,registration).enqueue(new Callback<JsonProfile>() {
+    public static void updateProfile(final String mail, final String auth, UpdateProfile updateProfile) {
+        profileService.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (null != response.body()) {
-                    Log.d("Response", String.valueOf(response.body()));
+                if (response.code() == 401) {
+                    profilePresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("Update profile", String.valueOf(response.body()));
                     profilePresenter.queueResponse(response.body(), mail, auth);
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Get state of queue upon scan");
+                    Log.e(TAG, "Failed updating profile " + response.body().getError());
                 }
             }
 
@@ -68,16 +74,21 @@ public class ProfileModel {
         });
     }
 
-    public static void migrateMobileNo(final String mail, final String auth, Registration registration ) {
-        profileService.migrate(mail, auth,registration).enqueue(new Callback<JsonProfile>() {
+    public static void migrate(final String mail, final String auth, MigrateProfile migrateProfile) {
+        profileService.migrate(mail, auth, migrateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (null != response.body()) {
+                if (response.code() == 401) {
+                    profilePresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.queueResponse(response.body(), mail, auth);
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Get state of queue upon scan");
+                    Log.e(TAG, "Failed migrating profile");
                 }
             }
 

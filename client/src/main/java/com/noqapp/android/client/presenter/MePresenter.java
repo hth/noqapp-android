@@ -5,7 +5,11 @@ import android.content.Context;
 import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.interfaces.MeView;
 
 
@@ -35,5 +39,10 @@ public class MePresenter implements ProfilePresenter {
     @Override
     public void queueError() {
         meView.queueError();
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
+        //TODO(chandra)
     }
 }

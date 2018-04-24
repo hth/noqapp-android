@@ -12,4 +12,6 @@ public interface ProfilePresenter {
     void queueResponse(JsonProfile profile, String email, String auth);
 
     void queueError();
+
+    void authenticationFailure(int errorCode);
 }
