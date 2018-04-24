@@ -42,7 +42,7 @@
                     android:background="@color/black_transparent"
                     android:padding="5dp">
 
-                    <TextView
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_distance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                         android:text="2.9 km"
                         android:textColor="@android:color/white" />
 
-                    <TextView
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -81,7 +81,7 @@
                     android:layout_toRightOf="@+id/iv_store_icon"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
                         android:id="@+id/tv_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -89,10 +89,10 @@
                         android:maxLines="2"
                         android:paddingLeft="5dp"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
 
-                    <TextView
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -101,9 +101,9 @@
                         android:maxLines="2"
                         android:paddingLeft="5dp"
                         android:text=""
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
-                    <TextView
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_status"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -112,9 +112,9 @@
                         android:maxLines="2"
                         android:paddingLeft="5dp"
                         android:text=""
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
-                    <TextView
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
                         android:paddingLeft="5dp"
                         android:paddingTop="2dp"
                         android:text=""
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

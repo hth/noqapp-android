@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:tag="cards main container">
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
@@ -27,8 +26,8 @@
 
                 <ImageView
                     android:id="@+id/iv_main"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_alignParentStart="true"
                     android:layout_marginBottom="3dp"
                     android:layout_marginRight="3dp"
@@ -42,37 +41,33 @@
                     android:orientation="vertical">
 
 
-                    <TextView
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
                         android:id="@+id/tv_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="fdsfgsdgdgdgdsfg"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
 
-                    <TextView
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="fhfghfgh"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
-                    <TextView
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_category"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="tutjjtyjrtjrt"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
-                    <TextView
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="tutjjtyjrtjrt"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -87,7 +82,7 @@
                 android:layout_marginBottom="2dp"
                 android:background="@color/color_invite_details" />
 
-            <TextView
+            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                 android:id="@+id/tv_store_special"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
