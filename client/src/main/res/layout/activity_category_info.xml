@@ -117,21 +117,24 @@
                         style="@style/style_join_queue_tv"
                         android:layout_marginBottom="3dp"
                         android:textColor="@color/colorAddress"
-                        android:textSize="15sp" />
+                        android:textSize="14sp" />
 
                     <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_mobile"
                         style="@style/style_join_queue_tv"
                         android:layout_marginBottom="3dp"
                         android:textColor="@android:color/black"
-                        android:textSize="15sp" />
+                        android:drawablePadding="3dp"
+                        android:drawableRight="@drawable/ic_phone"
+                        android:drawableTint="@color/colorPrimary"
+                        android:textSize="14sp" />
 
                     <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
                         android:id="@+id/tv_amenities"
                         style="@style/style_join_queue_tv"
                         android:layout_marginBottom="5dp"
                         android:textColor="@android:color/black"
-                        android:textSize="15sp" />
+                        android:textSize="14sp" />
 
                     <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_complete_address"
@@ -140,7 +143,7 @@
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:textColor="@color/colorAddress"
-                        android:textSize="15sp" />
+                        android:textSize="14sp" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_thumb_images"
