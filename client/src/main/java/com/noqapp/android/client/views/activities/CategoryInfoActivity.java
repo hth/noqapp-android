@@ -10,7 +10,9 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,6 +35,7 @@ import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
+import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.squareup.picasso.Picasso;
 
@@ -56,8 +59,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
 
-    @BindView(R.id.tv_queue_name)
-    protected TextView tv_queue_name;
+    @BindView(R.id.tv_amenities)
+    protected TextView tv_amenities;
 
     @BindView(R.id.tv_address)
     protected TextView tv_address;
@@ -65,29 +68,28 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @BindView(R.id.tv_mobile)
     protected TextView tv_mobile;
 
-    @BindView(R.id.tv_hour_saved)
-    protected TextView tv_hour_saved;
+    @BindView(R.id.tv_complete_address)
+    protected TextView tv_complete_address;
 
     @BindView(R.id.tv_rating_review)
     protected TextView tv_rating_review;
 
+    @BindView(R.id.tv_rating)
+    protected TextView tv_rating;
+
     @BindView(R.id.ratingBar)
     protected RatingBar ratingBar;
 
-    @BindView(R.id.ll_slide_view)
-    protected LinearLayout ll_slide_view;
-
-    @BindView(R.id.list_pager)
-    protected ViewPager list_pager;
-
     @BindView(R.id.rv_categories)
     protected RecyclerView rv_categories;
+
+    @BindView(R.id.rv_thumb_images)
+    protected RecyclerView rv_thumb_images;
 
     @BindView(R.id.iv_category_banner)
     protected ImageView iv_category_banner;
 
     private String codeQR;
-    private boolean isSliderOpen = false;
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
@@ -111,7 +113,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         setContentView(R.layout.activity_category_info);
         ButterKnife.bind(this);
         initActionsViews(false);
-        tv_toolbar_title.setText("Categories");
+        tv_toolbar_title.setText("Departments");
         listener = this;
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         AppUtilities.setRatingBarColor(stars, this);
@@ -186,31 +188,38 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             BizStoreElastic bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             LaunchActivity.getLaunchActivity().dismissProgress();
             tv_store_name.setText(bizStoreElastic.getBusinessName());
-            tv_queue_name.setText(bizStoreElastic.getDisplayName());
-            tv_queue_name.setVisibility(View.GONE);
-            tv_address.setText(Formatter.getFormattedAddress(bizStoreElastic.getAddress()));
+            String address = "";
+            if (!TextUtils.isEmpty(bizStoreElastic.getTown())) {
+                address = bizStoreElastic.getTown();
+            }
+            if (!TextUtils.isEmpty(bizStoreElastic.getArea())) {
+                address = bizStoreElastic.getArea() + "," + address;
+            }
+            tv_address.setText(address);
+            tv_complete_address.setText(bizStoreElastic.getAddress());
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
-            tv_mobile.setVisibility(View.GONE);
-//            if (jsonQueue.isDayClosed()) {
-//                tv_hour_saved.setText(getString(R.string.store_closed));
-//            } else {
-//                tv_hour_saved.setText(
-//                        getString(R.string.store_hour)
-//                                + " "
-//                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour())
-//                                + " - "
-//                                + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour()));
-//            }
-//            tv_hour_saved.setVisibility(View.GONE);
             ratingBar.setRating(rating);
-            // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
+            tv_rating.setText(String.valueOf(Math.round(bizStoreElastic.getRating())));
             tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
+            tv_amenities.setText("Amenities: Ambulance Service,Emergency Service 24/7,Ac/non-ac beds");
             codeQR = bizStoreElastic.getCodeQR();
 
             Picasso.with(this)
                     .load(bizStoreElastic.getDisplayImage())
                     .into(iv_category_banner);
-
+            LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            rv_thumb_images.setHasFixedSize(true);
+            rv_thumb_images.setLayoutManager(horizontalLayoutManager);
+            ArrayList<String> storeServiceImages = new ArrayList<String>();
+            storeServiceImages.add("https://www.ssdhospital.com/wp-content/uploads/2016/11/dscn0794-1024x590.jpg");
+            storeServiceImages.add("http://www.ssdhospital.in/wp-content/uploads/2016/11/dscn0783.jpg");
+            storeServiceImages.add("https://static.lybrate.com/imgs/ps/cl/b21f1285cf4e0de0ef3ec8f9c01a5d65/4444185b9b85355188138aa90c3890d7/Sai-Snehdeep-Hospital-Navi-Mumbai-a8c3fc.jpg");
+            storeServiceImages.add("http://medicaltreatmentcost.com/oc-content/uploads/0/119.jpg");
+            storeServiceImages.add("https://content1.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-2ov44bu.jpg");
+            storeServiceImages.add("https://content3.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-3zj5ots.jpg");
+                    //(ArrayList<String>) bizStoreElastic.getStoreServiceImages();
+            ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
+            rv_thumb_images.setAdapter(adapter);
 
         } else {
             //TODO(chandra) when its empty do something nice

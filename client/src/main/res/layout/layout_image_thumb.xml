@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/iv_photo"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="50dp"
-    android:layout_height="50dp"
-    android:layout_margin="3dp"
-    android:adjustViewBounds="true"
-    android:scaleType="centerCrop" />
+    android:layout_height="50dp">
 
+    <ImageView
+        android:id="@+id/iv_photo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="3dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY" />
+
+    <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+        android:id="@+id/tv_title"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="#66000000"
+        android:gravity="center"
+        android:text="+4"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        android:textSize="18sp" />
+
+</FrameLayout>

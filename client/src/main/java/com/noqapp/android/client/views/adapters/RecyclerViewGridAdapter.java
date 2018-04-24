@@ -39,16 +39,12 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_title;
-        private TextView tv_detail;
-        private TextView tv_noinq;
         private ImageView iv_main;
         private CardView card_view;
 
         public ViewHolder(View v) {
             super(v);
             tv_title = v.findViewById(R.id.tv_title);
-            tv_detail = v.findViewById(R.id.tv_detail);
-            tv_noinq = v.findViewById(R.id.tv_noinq);
             iv_main = v.findViewById(R.id.iv_main);
             card_view = v.findViewById(R.id.card_view);
         }
@@ -66,17 +62,14 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
     public void onBindViewHolder(ViewHolder Vholder, final int position) {
         final JsonCategory jsonCategory = categories.get(position);
         List<BizStoreElastic> jsonQueues = queueMap.get(jsonCategory.getBizCategoryId());
-        BizStoreElastic jsonQueue = null;
-        if (!jsonQueues.isEmpty()) {
-            jsonQueue = jsonQueues.get(0);
-        }
+//        BizStoreElastic jsonQueue = null;
+//        if (!jsonQueues.isEmpty()) {
+//            jsonQueue = jsonQueues.get(0);
+//        }
         Vholder.tv_title.setText(jsonCategory.getCategoryName());
-      //  Vholder.tv_detail.setText(AppUtilities.getAdditionalCardText(jsonQueue));
-        Vholder.tv_noinq.setText(String.valueOf(jsonQueues.size()));
-
-        Picasso.with(context)
-                .load("https://noqapp.com/imgs/240x120/a.jpeg")
-                .into(Vholder.iv_main);
+//        Picasso.with(context)
+//                .load("https://noqapp.com/imgs/240x120/a.jpeg")
+//                .into(Vholder.iv_main);
         Vholder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
