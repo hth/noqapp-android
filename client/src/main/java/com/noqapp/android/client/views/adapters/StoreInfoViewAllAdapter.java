@@ -35,7 +35,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
         private TextView tv_address;
         private TextView tv_detail;
         private TextView tv_store_rating;
-        private TextView tv_category;
+        private TextView tv_category_name;
         private TextView tv_store_special;
         private ImageView iv_main;
         private CardView card_view;
@@ -46,7 +46,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
             this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
             this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
             this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
-            this.tv_category = (TextView) itemView.findViewById(R.id.tv_category);
+            this.tv_category_name = (TextView) itemView.findViewById(R.id.tv_category_name);
             this.tv_store_special = (TextView) itemView.findViewById(R.id.tv_store_special);
             this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
             this.card_view = (CardView) itemView.findViewById(R.id.card_view);
@@ -77,7 +77,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
         if (!TextUtils.isEmpty(bizStoreElastic.getTown()))
             holder.tv_address.setText(bizStoreElastic.getTown());
         holder.tv_detail.setText(bizStoreElastic.getPhone());
-        holder.tv_category.setText(bizStoreElastic.getCategory());
+        holder.tv_category_name.setText(bizStoreElastic.getBizCategoryName());
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
         Picasso.with(context)
                 .load(bizStoreElastic.getDisplayImage())
