@@ -45,7 +45,7 @@ public class MedicalHistoryAdapter extends BaseAdapter {
             recordHolder.tv_title = (TextView) view.findViewById(R.id.tv_title);
             recordHolder.tv_create = (TextView) view.findViewById(R.id.tv_create);
             recordHolder.tv_business_name = (TextView) view.findViewById(R.id.tv_business_name);
-            recordHolder.tv_business_category = (TextView) view.findViewById(R.id.tv_business_category);
+            recordHolder.tv_business_category_name = (TextView) view.findViewById(R.id.tv_business_category_name);
             recordHolder.tv_no_of_time_access = (TextView) view.findViewById(R.id.tv_no_of_time_access);
             recordHolder.cardview = (CardView) view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
@@ -56,8 +56,8 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         recordHolder.tv_msg.setText(jsonMedicalRecordList.get(position).getChiefComplain());
         recordHolder.tv_create.setText(jsonMedicalRecordList.get(position).getCreated());
         recordHolder.tv_business_name.setText(jsonMedicalRecordList.get(position).getBusinessName());
-        recordHolder.tv_business_category.setText(jsonMedicalRecordList.get(position).getBizCategory());
-        recordHolder.tv_no_of_time_access.setText("No of time medical record accessed :"+jsonMedicalRecordList.get(position).getRecordAccess().size());
+        recordHolder.tv_business_category_name.setText(jsonMedicalRecordList.get(position).getBizCategoryName());
+        recordHolder.tv_no_of_time_access.setText("# of times accessed: " + jsonMedicalRecordList.get(position).getRecordAccess().size());
         return view;
     }
 
@@ -66,7 +66,7 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         TextView tv_msg;
         TextView tv_create;
         TextView tv_business_name;
-        TextView tv_business_category;
+        TextView tv_business_category_name;
         TextView tv_no_of_time_access;
         CardView cardview;
 

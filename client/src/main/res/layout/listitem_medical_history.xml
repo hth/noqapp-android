@@ -38,7 +38,7 @@
                 android:textSize="15sp" />
 
             <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                android:id="@+id/tv_business_category"
+                android:id="@+id/tv_business_category_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"

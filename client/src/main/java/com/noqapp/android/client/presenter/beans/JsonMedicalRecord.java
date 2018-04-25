@@ -73,8 +73,9 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
     @JsonProperty("n")
     private String businessName;
 
-    @JsonProperty("bc")
-    private String bizCategory;
+    /** Convert to Category Name instead of Id. */
+    @JsonProperty ("bc")
+    private String bizCategoryName;
 
     @JsonProperty ("c")
     private String created;
@@ -223,12 +224,12 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
         return this;
     }
 
-    public String getBizCategory() {
-        return bizCategory;
+    public String getBizCategoryName() {
+        return bizCategoryName;
     }
 
-    public JsonMedicalRecord setBizCategory(String bizCategory) {
-        this.bizCategory = bizCategory;
+    public JsonMedicalRecord setBizCategoryName(String bizCategoryName) {
+        this.bizCategoryName = bizCategoryName;
         return this;
     }
 
