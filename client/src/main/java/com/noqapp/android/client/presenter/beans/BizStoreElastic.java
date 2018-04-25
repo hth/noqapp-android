@@ -46,10 +46,10 @@ public class BizStoreElastic implements Serializable {
     private BusinessTypeEnum businessType;
 
     @JsonProperty("BC")
-    private String category;
+    private String bizCategoryName;
 
     @JsonProperty("BCI")
-    private String categoryId;
+    private String bizCategoryId;
 
     @JsonProperty("AD")
     private String address;
@@ -162,21 +162,21 @@ public class BizStoreElastic implements Serializable {
         return this;
     }
 
-    public String getCategory() {
-        return category;
+    public String getBizCategoryName() {
+        return bizCategoryName;
     }
 
-    public BizStoreElastic setCategory(String category) {
-        this.category = category;
+    public BizStoreElastic setBizCategoryName(String bizCategoryName) {
+        this.bizCategoryName = bizCategoryName;
         return this;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getBizCategoryId() {
+        return bizCategoryId;
     }
 
-    public BizStoreElastic setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public BizStoreElastic setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
         return this;
     }
 

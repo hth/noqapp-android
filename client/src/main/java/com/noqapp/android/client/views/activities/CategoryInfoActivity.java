@@ -260,13 +260,13 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         for (BizStoreElastic jsonQueue : bizStoreElasticList.getBizStoreElastics()) {
 
             //Likely hood of blank bizCategoryId
-            String categoryId = jsonQueue.getCategoryId() == null ? "" : jsonQueue.getCategoryId();
-            if (!queueMap.containsKey(categoryId)) {
+            String bizCategoryId = jsonQueue.getBizCategoryId() == null ? "" : jsonQueue.getBizCategoryId();
+            if (!queueMap.containsKey(bizCategoryId)) {
                 ArrayList<BizStoreElastic> jsonQueues = new ArrayList<>();
                 jsonQueues.add(jsonQueue);
-                queueMap.put(categoryId, jsonQueues);
+                queueMap.put(bizCategoryId, jsonQueues);
             } else {
-                ArrayList<BizStoreElastic> jsonQueues = queueMap.get(categoryId);
+                ArrayList<BizStoreElastic> jsonQueues = queueMap.get(bizCategoryId);
                 jsonQueues.add(jsonQueue);
                 // AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
             }
