@@ -44,11 +44,10 @@
                     android:paddingRight="10dp">
 
                     <ImageView
+                        android:id="@+id/iv_business_icon"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_alignParentLeft="true"
-                        android:src="@drawable/hospital"
-                        android:tint="@color/bussiness_hospital" />
+                        android:layout_alignParentLeft="true" />
 
                     <RelativeLayout
                         android:id="@+id/rl_rating"
@@ -75,7 +74,6 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="5dp"
                             android:layout_toRightOf="@+id/ratingBar"
-                            android:background="@drawable/round_corner_hospital"
                             android:gravity="center"
                             android:text="0.0"
                             android:textColor="@android:color/white"
