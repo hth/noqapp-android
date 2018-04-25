@@ -22,108 +22,68 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:padding="5dp"
-                    android:text="Chief Complaint: "
-                    android:textSize="@dimen/mhd_header_size"
-                    android:textStyle="bold" />
+                    style="@style/style_mdh_header"
+                    android:text="Chief Complaint: " />
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_complaints"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:background="@drawable/square_white_bg_drawable"
-                    android:minLines="2"
-                    android:padding="5dp"
-                    android:text="Chief Complaint details "
-                    android:textSize="@dimen/mhd_sub_header_size" />
+                    style="@style/style_mdh_details"
+                    android:text="Chief Complaint details " />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:padding="5dp"
-                    android:text="Past History: "
-                    android:textSize="@dimen/mhd_header_size"
-                    android:textStyle="bold" />
+                    style="@style/style_mdh_header"
+                    android:text="Past History: " />
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_past_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:background="@drawable/square_white_bg_drawable"
-                    android:minLines="2"
-                    android:padding="5dp"
-                    android:text="Past History details "
-                    android:textSize="@dimen/mhd_sub_header_size" />
+                    style="@style/style_mdh_details"
+                    android:text="Past History details " />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:padding="5dp"
-                    android:text="Family History: "
-                    android:textSize="@dimen/mhd_header_size"
-                    android:textStyle="bold" />
+                    style="@style/style_mdh_header"
+                    android:text="Family History: " />
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_family_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:background="@drawable/square_white_bg_drawable"
-                    android:minLines="2"
-                    android:padding="5dp"
-                    android:text="Family History details "
-                    android:textSize="@dimen/mhd_sub_header_size" />
+                    style="@style/style_mdh_details"
+                    android:text="Family History details " />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:padding="5dp"
-                    android:text="Known Allergies: "
-                    android:textSize="@dimen/mhd_header_size"
-                    android:textStyle="bold" />
+                    style="@style/style_mdh_header"
+                    android:text="Known Allergies: " />
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_known_allergy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:background="@drawable/square_white_bg_drawable"
-                    android:minLines="2"
-                    android:padding="5dp"
-                    android:text="Known Allergies details "
-                    android:textSize="@dimen/mhd_sub_header_size" />
+                    style="@style/style_mdh_details"
+                    android:text="Known Allergies details " />
 
             </LinearLayout>
 
@@ -131,107 +91,67 @@
                 android:id="@+id/ll_physical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:padding="5dp"
-                    android:text="Physical Examination: "
-                    android:textSize="@dimen/mhd_header_size"
-                    android:textStyle="bold" />
+                    style="@style/style_mdh_header"
+                    android:text="Physical Examination: " />
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:background="@drawable/square_white_bg_drawable"
-                    android:minLines="2"
-                    android:padding="5dp"
-                    android:text="Physical Examination details "
-                    android:textSize="@dimen/mhd_header_size" />
+                    style="@style/style_mdh_details"
+                    android:text="Physical Examination details " />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:padding="5dp"
-                    android:text="Clinical Findings: "
-                    android:textSize="@dimen/mhd_header_size"
-                    android:textStyle="bold" />
+                    style="@style/style_mdh_header"
+                    android:text="Clinical Findings: " />
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_clinical_finding"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:background="@drawable/square_white_bg_drawable"
-                    android:minLines="2"
-                    android:padding="5dp"
-                    android:text="Clinical Findings details "
-                    android:textSize="@dimen/mhd_sub_header_size" />
+                    style="@style/style_mdh_details"
+                    android:text="Clinical Findings details " />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:padding="5dp"
-                    android:text="Provisional /Differential Diagnosis"
-                    android:textSize="@dimen/mhd_header_size"
-                    android:textStyle="bold" />
+                    style="@style/style_mdh_header"
+                    android:text="Provisional /Differential Diagnosis" />
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_provisional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:background="@drawable/square_white_bg_drawable"
-                    android:minLines="2"
-                    android:padding="5dp"
-                    android:text="Provisional /Differential Diagnosis details "
-                    android:textSize="@dimen/mhd_sub_header_size" />
+                    style="@style/style_mdh_details"
+                    android:text="Provisional /Differential Diagnosis details " />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:padding="5dp"
-                    android:text="Investigation Advised: "
-                    android:textSize="@dimen/mhd_header_size"
-                    android:textStyle="bold" />
+                    style="@style/style_mdh_header"
+                    android:text="Investigation Advised: " />
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_investigation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:background="@drawable/square_white_bg_drawable"
-                    android:minLines="2"
-                    android:padding="5dp"
-                    android:text="Investigation Advised details "
-                    android:textSize="@dimen/mhd_sub_header_size" />
+                    style="@style/style_mdh_details"
+                    android:text="Investigation Advised details " />
 
             </LinearLayout>
 
@@ -242,23 +162,12 @@
                 android:orientation="vertical">
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:padding="5dp"
-                    android:text="Treatment Advice: "
-                    android:textSize="@dimen/mhd_header_size"
-                    android:textStyle="bold" />
+                    style="@style/style_mdh_header"
+                    android:text="Treatment Advice: " />
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:background="@drawable/square_white_bg_drawable"
-                    android:minLines="2"
-                    android:padding="5dp"
-                    android:text="Physical Examination details "
-                    android:textSize="@dimen/mhd_sub_header_size" />
+                    style="@style/style_mdh_details"
+                    android:text="Physical Examination details " />
             </LinearLayout>
         </LinearLayout>
 

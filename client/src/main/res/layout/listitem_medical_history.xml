@@ -28,6 +28,14 @@
                 android:layout_marginLeft="5dp"
                 android:textSize="20sp" />
 
+            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                android:id="@+id/tv_business_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/color_btn_select"
+                android:textSize="15sp" />
 
             <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                 android:id="@+id/tv_msg"
