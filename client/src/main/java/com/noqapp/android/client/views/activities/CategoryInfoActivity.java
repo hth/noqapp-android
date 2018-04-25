@@ -8,7 +8,9 @@ package com.noqapp.android.client.views.activities;
 import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -80,6 +82,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @BindView(R.id.ratingBar)
     protected RatingBar ratingBar;
 
+    @BindView(R.id.iv_business_icon)
+    protected ImageView iv_business_icon;
+
     @BindView(R.id.rv_categories)
     protected RecyclerView rv_categories;
 
@@ -90,7 +95,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     protected ImageView iv_category_banner;
 
     private String codeQR;
-
+    private  BizStoreElastic bizStoreElastic;
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
             .maximumSize(1)
@@ -185,7 +190,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     public void queueResponse(BizStoreElasticList bizStoreElasticList) {
         if (!bizStoreElasticList.getBizStoreElastics().isEmpty()) {
             populateAndSortedCache(bizStoreElasticList);
-            BizStoreElastic bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
+            bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             LaunchActivity.getLaunchActivity().dismissProgress();
             tv_store_name.setText(bizStoreElastic.getBusinessName());
             String address = "";
@@ -201,9 +206,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             ratingBar.setRating(rating);
             tv_rating.setText(String.valueOf(Math.round(bizStoreElastic.getRating())));
             tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
-            tv_amenities.setText("Amenities: Ambulance Service,Emergency Service 24/7,Ac/non-ac beds");
+            tv_amenities.setText("Amenities: Parking, Free Wi-Fi"); //Ambulance Service,Emergency Service 24/7,Ac/non-ac beds
             codeQR = bizStoreElastic.getCodeQR();
-
+            AppUtilities.setStoreDrawable(this,iv_business_icon,bizStoreElastic.getBusinessType(),tv_rating);
             Picasso.with(this)
                     .load(bizStoreElastic.getDisplayImage())
                     .into(iv_category_banner);
@@ -291,13 +296,26 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     @Override
     public void onCategoryItemClick(int pos, JsonCategory jsonCategory) {
-
         Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
         Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
-        Intent intent = new Intent(this, CategoryListActivity.class);
-        intent.putExtra("categoryName", categoryMap.get(jsonCategory.getBizCategoryId()).getCategoryName());
-        intent.putExtra("list", (Serializable) queueMap.get(jsonCategory.getBizCategoryId()));
-        startActivity(intent);
+        switch ( bizStoreElastic .getBusinessType()) {
+
+            case BK:
+                Intent in = new Intent(this, JoinActivity.class);
+                in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
+                in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
+                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
+                in.putExtra("isCategoryData", false);
+                startActivity(in);
+                break;
+            default:
+
+                Intent intent = new Intent(this, CategoryListActivity.class);
+                intent.putExtra("categoryName", categoryMap.get(jsonCategory.getBizCategoryId()).getCategoryName());
+                intent.putExtra("list", (Serializable) queueMap.get(jsonCategory.getBizCategoryId()));
+                startActivity(intent);
+        }
+
 
     }
 }
