@@ -11,11 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.AmenityEnum;
@@ -38,7 +40,10 @@ import com.noqapp.android.client.utils.ViewAnimationUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,6 +60,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private RecyclerView rv_thumb_images, rv_photos;
     private ImageView collapseImageView;
     private AppBarLayout appBarLayout;
+    private boolean canAddItem = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -129,11 +135,30 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.menu_favourite:
+                if(canAddItem){
+                    item.setIcon(R.drawable.heart_fill);
+                    Toast.makeText(this,"added to favourite",Toast.LENGTH_LONG).show();
+                    canAddItem = false;
+                }
+                else{
+                    item.setIcon(R.drawable.ic_heart);
+                    Toast.makeText(this,"remove from favourite",Toast.LENGTH_LONG).show();
+                    canAddItem = true;
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+
+        getMenuInflater().inflate(R.menu.menu_doc_profile, menu);
+        return true;
+    }
     @Override
     public void storeResponse(JsonStore tempjsonStore) {
         this.jsonStore = tempjsonStore;
@@ -241,7 +266,13 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 startActivity(in);
             }
         });
-
+        if(isStoreOpenToday(jsonStore)){
+            tv_menu.setClickable(true);
+            tv_menu.setText("Order Now");
+        }else{
+            tv_menu.setClickable(false);
+            tv_menu.setText("Closed");
+        }
         ll_store_open_status.removeAllViews();
         JsonHour jsonHourt = jsonStore.getJsonHours().get(6);
         tv_store_open_status.setText(Formatter.convertMilitaryTo12HourFormat(jsonHourt.getStartHour())+" - "+Formatter.convertMilitaryTo12HourFormat(jsonHourt.getEndHour()));
@@ -272,5 +303,21 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
+    }
+
+
+    private boolean isStoreOpenToday(JsonStore jsonStore) {
+        List<JsonHour> jsonHourList = jsonStore.getJsonHours();
+        JsonHour jsonHour = jsonHourList.get(//3);
+                AppUtilities.getTodayDay());
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        String time = df.format(Calendar.getInstance().getTime());
+        int timedata = Integer.valueOf(time.replace(":",""));
+        if(jsonHour.getStartHour()<= timedata&&
+                timedata <=jsonHour.getEndHour()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

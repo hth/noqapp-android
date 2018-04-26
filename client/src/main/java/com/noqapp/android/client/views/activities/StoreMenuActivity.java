@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 // Scrollview issue  https://stackoverflow.com/questions/37605545/android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
-public class StoreMenuActivity extends BaseActivity implements PurchaseOrderPresenter {
+public class StoreMenuActivity extends BaseActivity implements PurchaseOrderPresenter, CustomExpandableListAdapter.CartUpdate {
     private static final String TAG = StoreMenuActivity.class.getSimpleName();
 
     @BindView(R.id.actionbarBack)
@@ -67,7 +67,7 @@ public class StoreMenuActivity extends BaseActivity implements PurchaseOrderPres
         tv_store_name.setText(jsonQueue.getDisplayName());
         expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
         expandableListDetail = (HashMap<String, List<ChildData>>) getIntent().getExtras().getSerializable("listDataChild");
-        expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
+        expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail, this);
         expandableListView.setAdapter(expandableListAdapter);
         PurchaseApiModel.purchaseOrderPresenter = this;
         tv_place_order.setOnClickListener(new View.OnClickListener() {
@@ -87,19 +87,24 @@ public class StoreMenuActivity extends BaseActivity implements PurchaseOrderPres
                                     .setProductQuantity(value.getChildInput()));
                             price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
                         }
-                        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                                .setBizStoreId(jsonQueue.getBizStoreId())
-                                .setBusinessType(jsonQueue.getBusinessType())
-                                .setQueueUserId("100000000021")
-                                // jsonPurchaseOrder.setCustomerName(jsonQueue.);
-                                .setDeliveryType(jsonQueue.getDeliveryTypes().get(0)) // need to change dynamic
-                                .setOrderPrice(String.valueOf(price))
-                                .setPaymentType(jsonQueue.getPaymentTypes().get(1)); // need to change dynamic
-                        jsonPurchaseOrder.setPurchaseOrderProducts(ll);
+                        if (price / 100 >= jsonQueue.getMinimumDeliveryOrder()) {
+                            JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+                                    .setBizStoreId(jsonQueue.getBizStoreId())
+                                    .setBusinessType(jsonQueue.getBusinessType())
+                                    .setQueueUserId("100000000021")
+                                    // jsonPurchaseOrder.setCustomerName(jsonQueue.);
+                                    .setDeliveryType(jsonQueue.getDeliveryTypes().get(0)) // need to change dynamic
+                                    .setOrderPrice(String.valueOf(price))
+                                    .setPaymentType(jsonQueue.getPaymentTypes().get(1)); // need to change dynamic
+                            jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 
-                        Log.i(TAG, "order Place " + jsonPurchaseOrder.asJson());
-                        progressDialog.show();
-                        PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                          //  progressDialog.show();
+                            // PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            Intent intent = new Intent(StoreMenuActivity.this, OrderActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(StoreMenuActivity.this, "Minimum cart amount is " + jsonQueue.getMinimumDeliveryOrder(), Toast.LENGTH_LONG).show();
+                        }
                     } else {
                         ShowAlertInformation.showNetworkDialog(StoreMenuActivity.this);
                     }
@@ -136,5 +141,17 @@ public class StoreMenuActivity extends BaseActivity implements PurchaseOrderPres
     public void authenticationFailure(int errorCode) {
         Toast.makeText(this, "Error code : " + "" + errorCode, Toast.LENGTH_LONG).show();
         dismissProgress();
+    }
+
+
+    @Override
+    public void updateCartInfo(int amountString) {
+        if (amountString > 0) {
+            tv_place_order.setVisibility(View.VISIBLE);
+            tv_place_order.setText("Your cart amount is: " + amountString);
+        } else {
+            tv_place_order.setVisibility(View.GONE);
+            tv_place_order.setText("");
+        }
     }
 }

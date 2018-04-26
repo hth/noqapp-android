@@ -231,6 +231,7 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="prompt_address_status">Address</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
     <string name="medical_history_alert">You don\'t have any medical history.</string>
+    <string name="screen_order">Order Summary</string>
     <!-- Language select dialog -->
 
 </resources>

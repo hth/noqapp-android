@@ -194,6 +194,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             LaunchActivity.getLaunchActivity().dismissProgress();
             tv_store_name.setText(bizStoreElastic.getBusinessName());
             String address = "";
+
             if (!TextUtils.isEmpty(bizStoreElastic.getTown())) {
                 address = bizStoreElastic.getTown();
             }
@@ -225,18 +226,18 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     //(ArrayList<String>) bizStoreElastic.getStoreServiceImages();
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
             rv_thumb_images.setAdapter(adapter);
+            Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
+            RecyclerViewGridAdapter recyclerView_Adapter
+                    = new RecyclerViewGridAdapter(this,
+                    getCategoryThatArePopulated(),
+                    queueMap, listener);
 
+            rv_categories.setAdapter(recyclerView_Adapter);
         } else {
             //TODO(chandra) when its empty do something nice
         }
 
-        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
-        RecyclerViewGridAdapter recyclerView_Adapter
-                = new RecyclerViewGridAdapter(this,
-                getCategoryThatArePopulated(),
-                queueMap, listener);
 
-        rv_categories.setAdapter(recyclerView_Adapter);
         dismissProgress();
     }
 

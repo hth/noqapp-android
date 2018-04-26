@@ -31,6 +31,11 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private List<JsonStoreCategory> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<ChildData>> listDataChild;
+    public interface CartUpdate{
+        void updateCartInfo(int amountString);
+    }
+
+    private CartUpdate cartUpdate;
 
     public HashMap<String, ChildData> getOrders() {
         return orders;
@@ -39,10 +44,11 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, ChildData> orders = new HashMap<>();
 
     public CustomExpandableListAdapter(Context context, List<JsonStoreCategory> listDataHeader,
-                                       HashMap<String, List<ChildData>> listDataChild) {
+                                       HashMap<String, List<ChildData>> listDataChild, CartUpdate cartUpdate) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
+        this.cartUpdate = cartUpdate;
         orders.clear();
     }
 
@@ -112,10 +118,12 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 if (number <= 0) {
                     orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition).getJsonStoreProduct().getProductId());
+                    cartUpdate.updateCartInfo(showCartAmount());
                 } else {
                     orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition));
+                    cartUpdate.updateCartInfo(showCartAmount());
                 }
                 notifyDataSetChanged();
             }
@@ -131,10 +139,12 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 if (number <= 0) {
                     orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition).getJsonStoreProduct().getProductId());
+                    cartUpdate.updateCartInfo(showCartAmount());
                 } else {
                     orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
                             .get(childPosition));
+                    cartUpdate.updateCartInfo(showCartAmount());
                 }
                 notifyDataSetChanged();
             }
@@ -208,5 +218,13 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         double price = Double.valueOf(displayPrice);
         double discountPercentageValue = Double.valueOf(discountPercentage);
         return price - (price * discountPercentageValue) / 100;
+    }
+
+    private int showCartAmount(){
+        int price = 0;
+        for (ChildData value : getOrders().values()) {
+            price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
+        }
+        return price/100;
     }
 }
