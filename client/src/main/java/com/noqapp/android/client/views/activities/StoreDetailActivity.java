@@ -25,11 +25,13 @@ import com.noqapp.android.client.model.types.StoreModel;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.ChildData;
+import com.noqapp.android.client.presenter.beans.JsonHour;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.presenter.beans.JsonStoreProduct;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.utils.ViewAnimationUtils;
@@ -44,7 +46,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_known_for, tv_store_rating, tv_payment_mode, tv_amenities, tv_menu, tv_delivery_types, tv_store_name, tv_store_address;
+    private TextView tv_contact_no, tv_address, tv_known_for, tv_store_rating, tv_payment_mode, tv_amenities, tv_menu, tv_delivery_types, tv_store_name, tv_store_address,tv_store_open_status;
     private LinearLayout ll_store_open_status;
     private boolean isUp;
     private ImageView iv_store_open_status;
@@ -68,6 +70,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_amenities = (TextView) findViewById(R.id.tv_amenities);
         tv_delivery_types = (TextView) findViewById(R.id.tv_delivery_types);
         tv_store_rating = (TextView) findViewById(R.id.tv_store_rating);
+        tv_store_open_status = (TextView) findViewById(R.id.tv_store_open_status);
         tv_menu = (TextView) findViewById(R.id.tv_menu);
         ll_store_open_status = (LinearLayout) findViewById(R.id.ll_store_open_status);
         iv_store_open_status = (ImageView) findViewById(R.id.iv_store_open_status);
@@ -95,21 +98,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 .load(bizStoreElastic.getDisplayImage())
                 .into(collapseImageView);
 
-        for (int j = 0; j < 6; j++) {
-            LinearLayout childLayout = new LinearLayout(this);
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            childLayout.setLayoutParams(linearParams);
-            TextView mType = new TextView(this);
-            mType.setTextSize(17);
-            mType.setPadding(5, 3, 0, 3);
-            mType.setTypeface(Typeface.DEFAULT_BOLD);
-            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-            mType.setText("9:30 am - 10:30 pm");
-            childLayout.addView(mType, 0);
-            ll_store_open_status.addView(childLayout);
-        }
+
 
         iv_store_open_status.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,6 +241,27 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 startActivity(in);
             }
         });
+
+        ll_store_open_status.removeAllViews();
+        JsonHour jsonHourt = jsonStore.getJsonHours().get(6);
+        tv_store_open_status.setText(Formatter.convertMilitaryTo12HourFormat(jsonHourt.getStartHour())+" - "+Formatter.convertMilitaryTo12HourFormat(jsonHourt.getEndHour()));
+        for (int j = 0; j < 6; j++) {
+            JsonHour jsonHour = jsonStore.getJsonHours().get(j);
+            LinearLayout childLayout = new LinearLayout(this);
+            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            childLayout.setLayoutParams(linearParams);
+            TextView mType = new TextView(this);
+            mType.setTextSize(17);
+            mType.setPadding(5, 3, 0, 3);
+            mType.setTypeface(Typeface.DEFAULT_BOLD);
+            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
+            mType.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour())+" - "+Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
+            childLayout.addView(mType, 0);
+            ll_store_open_status.addView(childLayout);
+        }
+
     }
 
     @Override

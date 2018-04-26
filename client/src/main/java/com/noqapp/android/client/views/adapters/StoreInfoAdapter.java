@@ -79,6 +79,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         switch (item.getBusinessType()) {
             case DO:
             case HO:
+            case BK:
                 holder.tv_name.setText(item.getBusinessName());
                 Picasso.with(context)
                         .load(item.getDisplayImage())
@@ -102,7 +103,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
             address = item.getTown();
         }
         if (!TextUtils.isEmpty(item.getArea())) {
-            address = item.getArea() +","+address;
+            address = item.getArea() +", "+address;
         }
         holder.tv_address.setText(address);
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, item.getBusinessType(), holder.tv_store_rating);

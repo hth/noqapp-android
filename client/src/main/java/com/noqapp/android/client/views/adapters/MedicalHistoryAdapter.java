@@ -41,29 +41,30 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         if (view == null) {
             recordHolder = new RecordHolder();
             view = layoutInflater.inflate(R.layout.listitem_medical_history, null);
-            recordHolder.tv_msg = (TextView) view.findViewById(R.id.tv_msg);
-            recordHolder.tv_title = (TextView) view.findViewById(R.id.tv_title);
-            recordHolder.tv_create = (TextView) view.findViewById(R.id.tv_create);
+
+            recordHolder.tv_diagnosed_by = (TextView) view.findViewById(R.id.tv_diagnosed_by);
             recordHolder.tv_business_name = (TextView) view.findViewById(R.id.tv_business_name);
             recordHolder.tv_business_category_name = (TextView) view.findViewById(R.id.tv_business_category_name);
+            recordHolder.tv_complaints = (TextView) view.findViewById(R.id.tv_complaints);
+            recordHolder.tv_create = (TextView) view.findViewById(R.id.tv_create);
             recordHolder.tv_no_of_time_access = (TextView) view.findViewById(R.id.tv_no_of_time_access);
             recordHolder.cardview = (CardView) view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        recordHolder.tv_title.setText(jsonMedicalRecordList.get(position).getDiagnosedBy());
-        recordHolder.tv_msg.setText(jsonMedicalRecordList.get(position).getChiefComplain());
-        recordHolder.tv_create.setText(jsonMedicalRecordList.get(position).getCreated());
+        recordHolder.tv_diagnosed_by.setText(jsonMedicalRecordList.get(position).getDiagnosedBy());
         recordHolder.tv_business_name.setText(jsonMedicalRecordList.get(position).getBusinessName());
         recordHolder.tv_business_category_name.setText(jsonMedicalRecordList.get(position).getBizCategoryName());
-        recordHolder.tv_no_of_time_access.setText("# of times accessed: " + jsonMedicalRecordList.get(position).getRecordAccess().size());
+        recordHolder.tv_complaints.setText(jsonMedicalRecordList.get(position).getChiefComplain());
+        recordHolder.tv_create.setText("Visited: " + jsonMedicalRecordList.get(position).getCreated());
+        recordHolder.tv_no_of_time_access.setText("No of times record view: " + jsonMedicalRecordList.get(position).getRecordAccess().size());
         return view;
     }
 
     static class RecordHolder {
-        TextView tv_title;
-        TextView tv_msg;
+        TextView tv_diagnosed_by;
+        TextView tv_complaints;
         TextView tv_create;
         TextView tv_business_name;
         TextView tv_business_category_name;
