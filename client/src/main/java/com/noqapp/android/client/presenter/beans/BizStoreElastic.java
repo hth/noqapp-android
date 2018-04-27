@@ -11,6 +11,7 @@ import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -129,6 +130,8 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("SH")
     private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
 
+    @JsonProperty("BI")
+    private List<String> bizServiceImages = new LinkedList<>();
 
 
     public String getId() {
