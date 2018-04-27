@@ -48,6 +48,9 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("BC")
     private String bizCategoryName;
 
+    @JsonProperty("BDI")
+    private String bizCategoryDisplayImage;
+
     @JsonProperty("BCI")
     private String bizCategoryId;
 
@@ -168,6 +171,15 @@ public class BizStoreElastic implements Serializable {
 
     public BizStoreElastic setBizCategoryName(String bizCategoryName) {
         this.bizCategoryName = bizCategoryName;
+        return this;
+    }
+
+    public String getBizCategoryDisplayImage() {
+        return bizCategoryDisplayImage;
+    }
+
+    public BizStoreElastic setBizCategoryDisplayImage(String bizCategoryDisplayImage) {
+        this.bizCategoryDisplayImage = bizCategoryDisplayImage;
         return this;
     }
 

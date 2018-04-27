@@ -5,7 +5,7 @@
 
 
 
-    <item android:id="@+id/menu_share"
+    <item android:id="@+id/menu_favourite"
         android:icon="@drawable/ic_heart"
         app:showAsAction="always"
         android:title="Favorite" />

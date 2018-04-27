@@ -5,7 +5,6 @@ package com.noqapp.android.client.model.types;
  */
 public enum ProductTypeEnum {
     GE("GE", "General"),
-    ME("ME", "Medicine"),
     OR("OR", "Organic Produce (Fruits/Vegetables)"),
     FR("FR", "Fresh Produce (Fruits/Vegetables)"),
     GM("GM", "GMO Produce (Fruits/Vegetables)"),

@@ -11,11 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.AmenityEnum;
@@ -25,18 +27,23 @@ import com.noqapp.android.client.model.types.StoreModel;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.ChildData;
+import com.noqapp.android.client.presenter.beans.JsonHour;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.presenter.beans.JsonStoreProduct;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.utils.ViewAnimationUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,7 +51,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_known_for, tv_store_rating, tv_payment_mode, tv_amenities, tv_menu, tv_delivery_types, tv_store_name, tv_store_address;
+    private TextView tv_contact_no, tv_address, tv_known_for, tv_store_rating, tv_payment_mode, tv_amenities, tv_menu, tv_delivery_types, tv_store_name, tv_store_address,tv_store_open_status;
     private LinearLayout ll_store_open_status;
     private boolean isUp;
     private ImageView iv_store_open_status;
@@ -53,6 +60,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private RecyclerView rv_thumb_images, rv_photos;
     private ImageView collapseImageView;
     private AppBarLayout appBarLayout;
+    private boolean canAddItem = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +76,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_amenities = (TextView) findViewById(R.id.tv_amenities);
         tv_delivery_types = (TextView) findViewById(R.id.tv_delivery_types);
         tv_store_rating = (TextView) findViewById(R.id.tv_store_rating);
+        tv_store_open_status = (TextView) findViewById(R.id.tv_store_open_status);
         tv_menu = (TextView) findViewById(R.id.tv_menu);
         ll_store_open_status = (LinearLayout) findViewById(R.id.ll_store_open_status);
         iv_store_open_status = (ImageView) findViewById(R.id.iv_store_open_status);
@@ -95,21 +104,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 .load(bizStoreElastic.getDisplayImage())
                 .into(collapseImageView);
 
-        for (int j = 0; j < 6; j++) {
-            LinearLayout childLayout = new LinearLayout(this);
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            childLayout.setLayoutParams(linearParams);
-            TextView mType = new TextView(this);
-            mType.setTextSize(17);
-            mType.setPadding(5, 3, 0, 3);
-            mType.setTypeface(Typeface.DEFAULT_BOLD);
-            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-            mType.setText("9:30 am - 10:30 pm");
-            childLayout.addView(mType, 0);
-            ll_store_open_status.addView(childLayout);
-        }
+
 
         iv_store_open_status.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,11 +135,30 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.menu_favourite:
+                if(canAddItem){
+                    item.setIcon(R.drawable.heart_fill);
+                    Toast.makeText(this,"added to favourite",Toast.LENGTH_LONG).show();
+                    canAddItem = false;
+                }
+                else{
+                    item.setIcon(R.drawable.ic_heart);
+                    Toast.makeText(this,"remove from favourite",Toast.LENGTH_LONG).show();
+                    canAddItem = true;
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+
+        getMenuInflater().inflate(R.menu.menu_doc_profile, menu);
+        return true;
+    }
     @Override
     public void storeResponse(JsonStore tempjsonStore) {
         this.jsonStore = tempjsonStore;
@@ -252,6 +266,33 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 startActivity(in);
             }
         });
+        if(isStoreOpenToday(jsonStore)){
+            tv_menu.setClickable(true);
+            tv_menu.setText("Order Now");
+        }else{
+            tv_menu.setClickable(false);
+            tv_menu.setText("Closed");
+        }
+        ll_store_open_status.removeAllViews();
+        JsonHour jsonHourt = jsonStore.getJsonHours().get(6);
+        tv_store_open_status.setText(Formatter.convertMilitaryTo12HourFormat(jsonHourt.getStartHour())+" - "+Formatter.convertMilitaryTo12HourFormat(jsonHourt.getEndHour()));
+        for (int j = 0; j < 6; j++) {
+            JsonHour jsonHour = jsonStore.getJsonHours().get(j);
+            LinearLayout childLayout = new LinearLayout(this);
+            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            childLayout.setLayoutParams(linearParams);
+            TextView mType = new TextView(this);
+            mType.setTextSize(17);
+            mType.setPadding(5, 3, 0, 3);
+            mType.setTypeface(Typeface.DEFAULT_BOLD);
+            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
+            mType.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour())+" - "+Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
+            childLayout.addView(mType, 0);
+            ll_store_open_status.addView(childLayout);
+        }
+
     }
 
     @Override
@@ -262,5 +303,21 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
+    }
+
+
+    private boolean isStoreOpenToday(JsonStore jsonStore) {
+        List<JsonHour> jsonHourList = jsonStore.getJsonHours();
+        JsonHour jsonHour = jsonHourList.get(//3);
+                AppUtilities.getTodayDay());
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        String time = df.format(Calendar.getInstance().getTime());
+        int timedata = Integer.valueOf(time.replace(":",""));
+        if(jsonHour.getStartHour()<= timedata&&
+                timedata <=jsonHour.getEndHour()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
