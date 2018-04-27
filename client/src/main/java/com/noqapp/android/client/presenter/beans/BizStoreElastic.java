@@ -129,6 +129,8 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("SH")
     private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
 
+
+
     public String getId() {
         return id;
     }
@@ -405,6 +407,18 @@ public class BizStoreElastic implements Serializable {
 
     public BizStoreElastic setStoreHourElasticList(List<StoreHourElastic> storeHourElasticList) {
         this.storeHourElasticList = storeHourElasticList;
+        return this;
+    }
+
+    public List<String> getBizServiceImages() {
+        return bizServiceImages;
+    }
+
+    public BizStoreElastic setBizServiceImages(List<String> bizServiceImages) {
+        //TODO(hth) remove temp condition
+        if (!bizServiceImages.isEmpty()) {
+            this.bizServiceImages = bizServiceImages;
+        }
         return this;
     }
 
