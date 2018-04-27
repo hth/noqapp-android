@@ -300,7 +300,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
         Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
         switch ( bizStoreElastic .getBusinessType()) {
-
             case BK:
                 Intent in = new Intent(this, JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
@@ -310,7 +309,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 startActivity(in);
                 break;
             default:
-
                 Intent intent = new Intent(this, CategoryListActivity.class);
                 intent.putExtra("categoryName", categoryMap.get(jsonCategory.getBizCategoryId()).getCategoryName());
                 intent.putExtra("list", (Serializable) queueMap.get(jsonCategory.getBizCategoryId()));
