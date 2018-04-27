@@ -31,7 +31,8 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private List<JsonStoreCategory> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<ChildData>> listDataChild;
-    public interface CartUpdate{
+
+    public interface CartUpdate {
         void updateCartInfo(int amountString);
     }
 
@@ -64,8 +65,13 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(final int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(
+            final int groupPosition,
+            final int childPosition,
+            boolean isLastChild,
+            View convertView,
+            ViewGroup parent
+    ) {
         final ChildViewHolder childViewHolder;
         final ChildData childData = (ChildData) getChild(groupPosition, childPosition);
         if (convertView == null) {
@@ -90,9 +96,12 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
+        //TODO chandra use County Code of the store to decide on Currency type
         childViewHolder.tv_price.setText(context.getString(R.string.rupee) + " " + jsonStoreProduct.getDisplayPrice());
-        childViewHolder.tv_discounted_price.setText(context.getString(R.string.rupee) + " " + calculateDiscountPrice(
-                jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount()));
+        childViewHolder.tv_discounted_price.setText(
+                context.getString(R.string.rupee)
+                        + " "
+                        + calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount()));
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
@@ -175,8 +184,12 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(
+            int groupPosition,
+            boolean isExpanded,
+            View convertView,
+            ViewGroup parent
+    ) {
         String headerTitle = ((JsonStoreCategory) getGroup(groupPosition)).getCategoryName();
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
@@ -184,8 +197,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_group_filter, null);
         }
 
-        TextView tv_list_header = (TextView) convertView
-                .findViewById(R.id.tv_list_header);
+        TextView tv_list_header = (TextView) convertView.findViewById(R.id.tv_list_header);
         tv_list_header.setTypeface(null, Typeface.BOLD);
         tv_list_header.setText(headerTitle);
         ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
@@ -203,7 +215,6 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-
     public final class ChildViewHolder {
         TextView tv_child_title;
         TextView tv_price;
@@ -220,11 +231,11 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         return price - (price * discountPercentageValue) / 100;
     }
 
-    private int showCartAmount(){
+    private int showCartAmount() {
         int price = 0;
         for (ChildData value : getOrders().values()) {
             price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
         }
-        return price/100;
+        return price / 100;
     }
 }
