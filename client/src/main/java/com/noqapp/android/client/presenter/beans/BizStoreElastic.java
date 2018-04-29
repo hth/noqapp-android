@@ -37,9 +37,6 @@ public class BizStoreElastic implements Serializable {
     @JsonIgnore
     private String id;
 
-    @JsonProperty("SI")
-    private String scrollId;
-
     @JsonProperty("N")
     private String businessName;
 
@@ -133,22 +130,12 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("BI")
     private List<String> bizServiceImages = new LinkedList<>();
 
-
     public String getId() {
         return id;
     }
 
     public BizStoreElastic setId(String id) {
         this.id = id;
-        return this;
-    }
-
-    public String getScrollId() {
-        return scrollId;
-    }
-
-    public BizStoreElastic setScrollId(String scrollId) {
-        this.scrollId = scrollId;
         return this;
     }
 

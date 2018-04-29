@@ -30,6 +30,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BizStoreElasticList {
 
+    @JsonProperty("si")
+    private String scrollId;
+
     @JsonProperty("cityName")
     private String cityName;
 
@@ -38,6 +41,15 @@ public class BizStoreElasticList {
 
     @JsonProperty("result")
     private List<BizStoreElastic> bizStoreElastics = new LinkedList<>();
+
+    public String getScrollId() {
+        return scrollId;
+    }
+
+    public BizStoreElasticList setScrollId(String scrollId) {
+        this.scrollId = scrollId;
+        return this;
+    }
 
     public String getCityName() {
         return cityName;
