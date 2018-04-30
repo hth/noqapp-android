@@ -333,7 +333,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             case DO:
             case HO:
             case BK:
-                // open hospital profile
+                // open hospital/Bank profile
                 Bundle b = new Bundle();
                 b.putString(KEY_CODE_QR, item.getCodeQR());
                 b.putBoolean(KEY_FROM_LIST, fromList);
@@ -549,7 +549,5 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
     }
-
-
 
 }
