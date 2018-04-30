@@ -11,6 +11,7 @@ import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -35,9 +36,6 @@ public class BizStoreElastic implements Serializable {
 
     @JsonIgnore
     private String id;
-
-    @JsonProperty("SI")
-    private String scrollId;
 
     @JsonProperty("N")
     private String businessName;
@@ -129,21 +127,15 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("SH")
     private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
 
+    @JsonProperty("BI")
+    private List<String> bizServiceImages = new LinkedList<>();
+
     public String getId() {
         return id;
     }
 
     public BizStoreElastic setId(String id) {
         this.id = id;
-        return this;
-    }
-
-    public String getScrollId() {
-        return scrollId;
-    }
-
-    public BizStoreElastic setScrollId(String scrollId) {
-        this.scrollId = scrollId;
         return this;
     }
 
@@ -405,6 +397,18 @@ public class BizStoreElastic implements Serializable {
 
     public BizStoreElastic setStoreHourElasticList(List<StoreHourElastic> storeHourElasticList) {
         this.storeHourElasticList = storeHourElasticList;
+        return this;
+    }
+
+    public List<String> getBizServiceImages() {
+        return bizServiceImages;
+    }
+
+    public BizStoreElastic setBizServiceImages(List<String> bizServiceImages) {
+        //TODO(hth) remove temp condition
+        if (!bizServiceImages.isEmpty()) {
+            this.bizServiceImages = bizServiceImages;
+        }
         return this;
     }
 

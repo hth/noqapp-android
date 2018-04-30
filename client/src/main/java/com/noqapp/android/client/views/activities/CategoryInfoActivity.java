@@ -224,6 +224,11 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             storeServiceImages.add("https://content1.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-2ov44bu.jpg");
             storeServiceImages.add("https://content3.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-3zj5ots.jpg");
                     //(ArrayList<String>) bizStoreElastic.getStoreServiceImages();
+
+            if (bizStoreElastic.getBizServiceImages().size() > 0) {
+                storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
+            }
+
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
             rv_thumb_images.setAdapter(adapter);
             Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
