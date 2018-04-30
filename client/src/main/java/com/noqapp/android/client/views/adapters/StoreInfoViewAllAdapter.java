@@ -72,12 +72,29 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
         BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
-        holder.tv_name.setText(bizStoreElastic.getDisplayName());
-        holder.tv_address.setText(bizStoreElastic.getAddress());
-        if (!TextUtils.isEmpty(bizStoreElastic.getTown()))
-            holder.tv_address.setText(bizStoreElastic.getTown());
+        switch (bizStoreElastic.getBusinessType()) {
+            case DO:
+            case HO:
+            case BK:
+                holder.tv_name.setText(bizStoreElastic.getBusinessName());
+                holder.tv_store_special.setText("Emergency 24 hours");
+                holder.tv_category_name.setText("");
+                break;
+            default:
+                holder.tv_store_special.setText("Dal Tadka , Chicken tikka");
+                holder.tv_name.setText(bizStoreElastic.getDisplayName());
+                holder.tv_category_name.setText(bizStoreElastic.getBizCategoryName());
+        }
+        String address="";
+        if (!TextUtils.isEmpty(bizStoreElastic.getTown())) {
+            address = bizStoreElastic.getTown();
+        }
+        if (!TextUtils.isEmpty(bizStoreElastic.getArea())) {
+            address = bizStoreElastic.getArea() +", "+address;
+        }
+        holder.tv_address.setText(address);
         holder.tv_detail.setText(bizStoreElastic.getPhone());
-        holder.tv_category_name.setText(bizStoreElastic.getBizCategoryName());
+
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
         Picasso.with(context)
                 .load(bizStoreElastic.getDisplayImage())
@@ -89,25 +106,11 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
                 listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
             }
         });
-
-        switch (bizStoreElastic.getBusinessType()) {
-            case DO:
-            case HO:
-                holder.tv_name.setText(bizStoreElastic.getBusinessName());
-                holder.tv_store_special.setText("Emergency 24 hours");
-                break;
-            default:
-                holder.tv_store_special.setText("Dal Tadka , Chicken tikka");
-                holder.tv_name.setText(bizStoreElastic.getDisplayName());
-        }
-
-
     }
 
     @Override
     public int getItemCount() {
         return dataSet.size();
     }
-
 
 }
