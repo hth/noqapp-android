@@ -83,11 +83,55 @@
 
         </RadioGroup>
 
-        <TextView
-            android:layout_below="@+id/rg_payment"
+        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+            android:id="@+id/add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Address"/>
+            android:layout_below="@+id/rg_payment"
+            android:text="Address"
+            android:textSize="16sp" />
+
+        <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+            android:id="@+id/edt_address"
+            style="@style/style_register_edt"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/add"
+            android:hint="address"
+            android:textSize="18sp" />
+
+        <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+            android:id="@+id/edt_locality"
+            style="@style/style_register_edt"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/edt_address"
+            android:hint="Locality"
+            android:textSize="18sp" />
+
+        <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+            android:id="@+id/edt_city"
+            style="@style/style_register_edt"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/edt_locality"
+            android:hint="City"
+            android:textSize="18sp" />
+
+        <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+            android:id="@+id/edt_state"
+            style="@style/style_register_edt"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/edt_city"
+            android:hint="State"
+            android:textSize="18sp" />
+
+        <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+            android:id="@+id/edt_pin"
+            style="@style/style_register_edt"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/edt_state"
+            android:hint="Enter pin"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_place_order"
@@ -98,10 +142,11 @@
             android:drawableRight="@drawable/order_arrow"
             android:gravity="center"
             android:padding="10dp"
+            android:text="Order Now"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:visibility="gone" />
+            android:visibility="visible" />
     </RelativeLayout>
 
 </LinearLayout>

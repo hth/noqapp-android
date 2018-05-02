@@ -8,6 +8,7 @@ import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.DeliveryTypeEnum;
 import com.noqapp.android.client.model.types.PaymentTypeEnum;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonPurchaseOrder extends AbstractDomain {
+public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     @JsonProperty("bs")
     private String bizStoreId;

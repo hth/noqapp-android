@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
+
 /**
  * Created by hitender on 4/1/18.
  */
@@ -22,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonPurchaseOrderProduct extends AbstractDomain {
+public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializable{
 
     @JsonProperty("pi")
     private String productId;

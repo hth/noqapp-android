@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -17,6 +16,7 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 // Scrollview issue  https://stackoverflow.com/questions/37605545/android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
-public class StoreMenuActivity extends BaseActivity implements PurchaseOrderPresenter, CustomExpandableListAdapter.CartUpdate {
+public class StoreMenuActivity extends BaseActivity implements  CustomExpandableListAdapter.CartUpdate {
     private static final String TAG = StoreMenuActivity.class.getSimpleName();
 
     @BindView(R.id.actionbarBack)
@@ -69,7 +69,6 @@ public class StoreMenuActivity extends BaseActivity implements PurchaseOrderPres
         expandableListDetail = (HashMap<String, List<ChildData>>) getIntent().getExtras().getSerializable("listDataChild");
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail, this);
         expandableListView.setAdapter(expandableListAdapter);
-        PurchaseApiModel.purchaseOrderPresenter = this;
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +100,9 @@ public class StoreMenuActivity extends BaseActivity implements PurchaseOrderPres
                           //  progressDialog.show();
                             // PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             Intent intent = new Intent(StoreMenuActivity.this, OrderActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("data",jsonPurchaseOrder);
+                            intent.putExtras(bundle);
                             startActivity(intent);
                         } else {
                             Toast.makeText(StoreMenuActivity.this, "Minimum cart amount is " + jsonQueue.getMinimumDeliveryOrder(), Toast.LENGTH_LONG).show();
@@ -117,32 +119,6 @@ public class StoreMenuActivity extends BaseActivity implements PurchaseOrderPres
         });
 
     }
-
-    @Override
-    public void purchaseOrderResponse(JsonResponse response) {
-        if (null != response) {
-            if (response.getResponse() == 1) {
-                Toast.makeText(this, "Order placed successfully.", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
-            }
-        } else {
-            //Show error
-        }
-        dismissProgress();
-    }
-
-    @Override
-    public void purchaseOrderError() {
-        dismissProgress();
-    }
-
-    @Override
-    public void authenticationFailure(int errorCode) {
-        Toast.makeText(this, "Error code : " + "" + errorCode, Toast.LENGTH_LONG).show();
-        dismissProgress();
-    }
-
 
     @Override
     public void updateCartInfo(int amountString) {
