@@ -1,9 +1,7 @@
 package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.client.presenter.beans.JsonProfile;
-
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
-import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 
 import retrofit2.Call;

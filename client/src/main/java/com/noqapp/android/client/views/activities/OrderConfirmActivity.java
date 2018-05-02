@@ -1,12 +1,10 @@
 package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OrderConfirmActivity  extends BaseActivity {
