@@ -7,8 +7,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by hitender on 3/22/18.
@@ -40,7 +43,7 @@ public class BizStoreElasticList {
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
     @JsonProperty("result")
-    private List<BizStoreElastic> bizStoreElastics = new LinkedList<>();
+    private Set<BizStoreElastic> bizStoreElastics = new HashSet<>();
 
     public String getScrollId() {
         return scrollId;
@@ -69,11 +72,11 @@ public class BizStoreElasticList {
         return this;
     }
 
-    public List<BizStoreElastic> getBizStoreElastics() {
+    public Set<BizStoreElastic> getBizStoreElastics() {
         return bizStoreElastics;
     }
 
-    public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
+    public BizStoreElasticList setBizStoreElastics(Set<BizStoreElastic> bizStoreElastics) {
         this.bizStoreElastics = bizStoreElastics;
         return this;
     }
