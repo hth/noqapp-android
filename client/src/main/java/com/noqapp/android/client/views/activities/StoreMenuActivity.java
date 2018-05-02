@@ -2,6 +2,13 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -9,18 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.PurchaseApiModel;
 import com.noqapp.android.client.presenter.beans.ChildData;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
+import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
+import com.noqapp.android.client.views.fragments.FragmentDummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 // Scrollview issue  https://stackoverflow.com/questions/37605545/android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
-public class StoreMenuActivity extends BaseActivity implements  CustomExpandableListAdapter.CartUpdate {
+public class StoreMenuActivity extends BaseActivity implements  CustomExpandableListAdapter.CartUpdate,MenuHeaderAdapter.OnItemClickListener {
     private static final String TAG = StoreMenuActivity.class.getSimpleName();
 
     @BindView(R.id.actionbarBack)
@@ -43,11 +48,15 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
     protected TextView tv_store_name;
     @BindView(R.id.tv_store_address)
     protected TextView tv_store_address;
+    @BindView(R.id.rcv_header)
+    protected RecyclerView rcv_header;
     private ExpandableListView expandableListView;
     private CustomExpandableListAdapter expandableListAdapter;
     private List<JsonStoreCategory> expandableListTitle;
     private HashMap<String, List<ChildData>> expandableListDetail;
     private JsonQueue jsonQueue;
+    private MenuHeaderAdapter menuAdapter;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +78,40 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
         expandableListDetail = (HashMap<String, List<ChildData>>) getIntent().getExtras().getSerializable("listDataChild");
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail, this);
         expandableListView.setAdapter(expandableListAdapter);
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        for(int i = 0; i< expandableListTitle.size();i++){
+
+            adapter.addFragment(new FragmentDummy(expandableListDetail.get(expandableListTitle.get(i).getCategoryId())), "FRAG"+i);
+        }
+        rcv_header.setHasFixedSize(true);
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rcv_header.setLayoutManager(horizontalLayoutManagaer);
+        rcv_header.setItemAnimator(new DefaultItemAnimator());
+
+        menuAdapter = new MenuHeaderAdapter(expandableListTitle, this, this);
+        rcv_header.setAdapter(menuAdapter);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                rcv_header.smoothScrollToPosition(position);
+                menuAdapter.setSelected_pos(position);
+                menuAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,8 +140,6 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
                                     .setPaymentType(jsonQueue.getPaymentTypes().get(1)); // need to change dynamic
                             jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 
-                          //  progressDialog.show();
-                            // PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             Intent intent = new Intent(StoreMenuActivity.this, OrderActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("data",jsonPurchaseOrder);
@@ -128,6 +169,40 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
         } else {
             tv_place_order.setVisibility(View.GONE);
             tv_place_order.setText("");
+        }
+    }
+
+    @Override
+    public void menuHeaderClick(int pos) {
+        viewPager.setCurrentItem(pos);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 }
