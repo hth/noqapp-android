@@ -43,7 +43,7 @@ public class BizStoreElasticList {
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
     @JsonProperty("result")
-    private Set<BizStoreElastic> bizStoreElastics = new HashSet<>();
+    private List<BizStoreElastic> bizStoreElastics = new ArrayList<>();
 
     public String getScrollId() {
         return scrollId;
@@ -72,11 +72,11 @@ public class BizStoreElasticList {
         return this;
     }
 
-    public Set<BizStoreElastic> getBizStoreElastics() {
+    public List<BizStoreElastic> getBizStoreElastics() {
         return bizStoreElastics;
     }
 
-    public BizStoreElasticList setBizStoreElastics(Set<BizStoreElastic> bizStoreElastics) {
+    public BizStoreElasticList setBizStoreElastics(List<BizStoreElastic> bizStoreElastics) {
         this.bizStoreElastics = bizStoreElastics;
         return this;
     }
