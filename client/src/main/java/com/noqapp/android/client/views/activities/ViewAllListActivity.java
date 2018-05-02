@@ -63,13 +63,13 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
     }
 
-
     @Override
     public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
         switch (item.getBusinessType()) {
             case DO:
             case HO:
-                // open hospital profile
+            case BK:
+                // open hospital/Bank profile
                 Bundle b = new Bundle();
                 b.putString(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);

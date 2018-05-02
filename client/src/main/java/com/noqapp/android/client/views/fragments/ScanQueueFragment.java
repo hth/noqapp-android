@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
@@ -39,6 +40,7 @@ import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AfterJoinActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
@@ -56,6 +58,7 @@ import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -115,6 +118,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     private String[] city = {"Mumbai", "Delhi", "Calcutta"};
     private String[] lat_array = {"19.004550", "28.553399", "22.572645"};
     private String[] log_array = {"73.014529", "77.194165", "88.363892"};
+    private int city_select = 0 ;
 
     public ScanQueueFragment() {
 
@@ -216,6 +220,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 getNearMeInfo(city[position], lat_array[position], log_array[position]);
+                city_select = position;
             }
 
             @Override
@@ -314,6 +319,8 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
         nearMeData = new ArrayList<>();
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
+        //sort the list, give the Comparator the current location
+        Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat_array[city_select]),Double.parseDouble(log_array[city_select]))));
         storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
@@ -333,7 +340,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             case DO:
             case HO:
             case BK:
-                // open hospital profile
+                // open hospital/Bank profile
                 Bundle b = new Bundle();
                 b.putString(KEY_CODE_QR, item.getCodeQR());
                 b.putBoolean(KEY_FROM_LIST, fromList);
@@ -549,7 +556,5 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
     }
-
-
 
 }
