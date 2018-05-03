@@ -187,4 +187,49 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         this.purchaseOrderProducts.add(purchaseOrderProduct);
         return this;
     }
+
+    public int getServingNumber() {
+        return servingNumber;
+    }
+
+    public JsonPurchaseOrder setServingNumber(int servingNumber) {
+        this.servingNumber = servingNumber;
+        return this;
+    }
+
+    public int getToken() {
+        return token;
+    }
+
+    public JsonPurchaseOrder setToken(int token) {
+        this.token = token;
+        return this;
+    }
+
+    public String getExpectedServiceBegin() {
+        return expectedServiceBegin;
+    }
+
+    public JsonPurchaseOrder setExpectedServiceBegin(String expectedServiceBegin) {
+        this.expectedServiceBegin = expectedServiceBegin;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public JsonPurchaseOrder setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+        return this;
+    }
+
+    public PurchaseOrderStateEnum getPurchaseOrderState() {
+        return purchaseOrderState;
+    }
+
+    public JsonPurchaseOrder setPurchaseOrderState(PurchaseOrderStateEnum purchaseOrderState) {
+        this.purchaseOrderState = purchaseOrderState;
+        return this;
+    }
 }

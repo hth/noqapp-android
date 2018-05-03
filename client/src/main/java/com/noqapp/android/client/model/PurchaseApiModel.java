@@ -6,7 +6,6 @@ import android.util.Log;
 import com.noqapp.android.client.model.response.api.PurchaseOrderService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
-import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.client.utils.Constants;
 
@@ -25,9 +24,9 @@ public class PurchaseApiModel {
     }
 
     public static void placeOrder(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
-        purchaseOrderService.placeOrder(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonResponse>() {
+        purchaseOrderService.placeOrder(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
-            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
                     purchaseOrderPresenter.authenticationFailure(response.code());
                     return;
@@ -42,7 +41,7 @@ public class PurchaseApiModel {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 purchaseOrderPresenter.purchaseOrderError();
             }

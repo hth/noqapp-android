@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.PurchaseApiModel;
+import com.noqapp.android.client.model.types.PurchaseOrderStateEnum;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
@@ -70,9 +71,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     @Override
-    public void purchaseOrderResponse(JsonResponse response) {
-        if (null != response) {
-            if (response.getResponse() == 1) {
+    public void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        if (null != jsonPurchaseOrder) {
+            if (jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.PO) {
                 Toast.makeText(this, "Order placed successfully.", Toast.LENGTH_LONG).show();
                 Intent in =new Intent(OrderActivity.this, OrderConfirmActivity.class);
                 Bundle bundle = new Bundle();

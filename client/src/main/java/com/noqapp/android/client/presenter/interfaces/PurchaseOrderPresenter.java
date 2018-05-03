@@ -1,14 +1,13 @@
 package com.noqapp.android.client.presenter.interfaces;
 
 
-import com.noqapp.android.client.presenter.beans.JsonResponse;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
 
 public interface PurchaseOrderPresenter {
 
-    void purchaseOrderResponse(JsonResponse jsonResponse);
+    void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder);
 
     void purchaseOrderError();
-
 
     void authenticationFailure(int errorCode);
 }
