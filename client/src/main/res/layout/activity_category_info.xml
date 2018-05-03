@@ -29,7 +29,7 @@
                 <ImageView
                     android:id="@+id/iv_category_banner"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="220dp"
                     android:layout_alignParentTop="true"
                     android:scaleType="fitXY" />
 
@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginTop="95dp"
+                    android:layout_marginTop="195dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
@@ -121,10 +121,10 @@
                         android:id="@+id/tv_mobile"
                         style="@style/style_join_queue_tv"
                         android:layout_marginBottom="3dp"
-                        android:textColor="@android:color/black"
                         android:drawablePadding="3dp"
                         android:drawableRight="@drawable/ic_phone"
                         android:drawableTint="@color/colorPrimary"
+                        android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
                     <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
@@ -155,7 +155,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/ll_dep_info"
-                    android:scrollbars="vertical" />
+                    android:scrollbars="vertical"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn_join_queues"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rv_categories"
+                    android:layout_centerHorizontal="true"
+                    android:text="Join the Queues" />
             </RelativeLayout>
 
 

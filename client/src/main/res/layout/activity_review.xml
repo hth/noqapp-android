@@ -3,6 +3,7 @@
     xmlns:seek_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     android:background="#99ffffff"
     android:orientation="vertical">
 
@@ -16,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="10dp"
@@ -45,11 +46,11 @@
                 android:text="Your check up has been done Successfully"
                 android:textSize="18sp" />
 
-            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+            <com.noqapp.android.client.views.customviews.TextViewRalewayBold
                 style="@style/style_join_queue_tv"
                 android:layout_width="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:text="Queue Details"
                 android:textSize="18sp" />
 
@@ -106,7 +107,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_invite_details"
+                android:background="@android:color/white"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:padding="10dp">
@@ -133,8 +134,8 @@
                         android:layout_marginRight="-15dp"
                         android:isIndicator="false"
                         android:max="5"
-                        android:scaleX=".75"
-                        android:scaleY=".75"
+                        android:scaleX=".5"
+                        android:scaleY=".5"
                         android:stepSize="1"
                         android:theme="@style/RatingBar" />
 
@@ -162,6 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
+
                     android:orientation="vertical"
                     android:weightSum="1">
 
@@ -190,9 +192,7 @@
                         android:thumbOffset="8dp"
                         android:tickMark="@drawable/seekbar_seprator"
                         android:tickMarkTintMode="@android:color/transparent"
-                        seek_view:tickMarkTint="@android:color/transparent"
-
-                        />
+                        seek_view:tickMarkTint="@android:color/transparent" />
 
                     <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_hr_saved"
@@ -200,7 +200,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
                         android:gravity="center_horizontal"
-                        android:text="gdrtertyertyytrey"
+                        android:text=""
                         android:textColor="@color/colorAddress"
                         android:textSize="18sp" />
 
@@ -216,6 +216,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/square_bg_drawable"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
                         android:maxLines="4"
                         android:minLines="4" />
 

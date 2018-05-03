@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.google.common.cache.CacheBuilder.newBuilder;
 import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
@@ -88,8 +90,13 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @BindView(R.id.iv_category_banner)
     protected ImageView iv_category_banner;
 
+
+    @BindView(R.id.btn_join_queues)
+    protected Button btn_join_queues;
+
     private String codeQR;
     private  BizStoreElastic bizStoreElastic;
+    private boolean isFuture = false;
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
             .maximumSize(1)
@@ -226,12 +233,14 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
             rv_thumb_images.setAdapter(adapter);
             Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
-            RecyclerViewGridAdapter recyclerView_Adapter
-                    = new RecyclerViewGridAdapter(this,
-                    getCategoryThatArePopulated(),
-                    queueMap, listener);
 
-            rv_categories.setAdapter(recyclerView_Adapter);
+            if(isFuture) {
+                RecyclerViewGridAdapter recyclerView_Adapter
+                        = new RecyclerViewGridAdapter(this,
+                        getCategoryThatArePopulated(),
+                        queueMap, listener);
+                rv_categories.setAdapter(recyclerView_Adapter);
+            }
         } else {
             //TODO(chandra) when its empty do something nice
         }
@@ -314,6 +323,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 startActivity(intent);
         }
 
-
+    }
+    @OnClick(R.id.btn_join_queues)
+    public void joinClick(){
+       Intent in = new Intent(this,CategoryPagerActivity.class);
+       in.putExtra("list", (Serializable)getCategoryThatArePopulated());
+       in.putExtra("hashmap",(Serializable) cacheQueue.getIfPresent("queue"));
+       startActivity(in);
     }
 }

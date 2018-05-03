@@ -176,10 +176,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             //holder.tv_category.setTypeface(null, Typeface.BOLD);
             holder.tv_status.setVisibility(View.GONE);
         }
-        Picasso.with(context)
+       // commented temporary
+       /* Picasso.with(context)
                 .load(dataSet.get(listPosition).getDisplayImage())
                 .transform(new RoundedTransformation(10, 4))
-                .into(holder.iv_main);
+                .into(holder.iv_main);*/
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
