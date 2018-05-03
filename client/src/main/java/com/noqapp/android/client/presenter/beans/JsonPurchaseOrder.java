@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.DeliveryTypeEnum;
 import com.noqapp.android.client.model.types.PaymentTypeEnum;
+import com.noqapp.android.client.model.types.PurchaseOrderStateEnum;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -37,9 +38,6 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("qid")
     private String queueUserId;
 
-    @JsonProperty("n")
-    private String customerName;
-
     @JsonProperty("p")
     private String customerPhone;
 
@@ -63,6 +61,25 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     @JsonProperty("pop")
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
+
+    /* Populated from TokenQueue. */
+    @JsonProperty ("s")
+    private int servingNumber;
+
+    @JsonProperty ("t")
+    private int token;
+
+    @JsonProperty ("n")
+    private String customerName;
+
+    @JsonProperty ("e")
+    private String expectedServiceBegin;
+
+    @JsonProperty ("ti")
+    private String transactionId;
+
+    @JsonProperty ("os")
+    private PurchaseOrderStateEnum purchaseOrderState;
 
     public JsonPurchaseOrder() {
     }
