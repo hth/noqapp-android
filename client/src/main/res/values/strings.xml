@@ -78,8 +78,8 @@
 
     <!--- Join Screen -->
     <string name="you_are_after">You are after</string>
-    <string name="serving_now">Serving now</string>
-    <string name="your_token">Your Token</string>
+    <string name="serving_now">Now Serving </string>
+    <string name="your_token">Your Token No</string>
     <string name="remotejoin">Remote QJoin</string>
     <string name="re_join">Re-Join</string>
 

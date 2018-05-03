@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.ChildData;
+import com.noqapp.android.client.views.activities.StoreMenuActivity;
 import com.noqapp.android.client.views.adapters.MenuAdapter;
 
 import java.util.List;
@@ -19,12 +20,16 @@ public class FragmentDummy extends Fragment {
     private View view;
     private List<ChildData> childData;
     private ListView listView;
+    private StoreMenuActivity storeMenuActivity;
+    private MenuAdapter.CartOrderUpdate cartOrderUpdate;
     public FragmentDummy() {
         // Required empty public constructor
     }
 
-    public FragmentDummy(List<ChildData> childData) {
+    public FragmentDummy(List<ChildData> childData, StoreMenuActivity storeMenuActivity,MenuAdapter.CartOrderUpdate cartOrderUpdate) {
         this.childData = childData;
+        this.storeMenuActivity = storeMenuActivity;
+        this.cartOrderUpdate =cartOrderUpdate;
     }
 
     @Override
@@ -42,7 +47,7 @@ public class FragmentDummy extends Fragment {
         }
         view = inflater.inflate(R.layout.fragment_dummy, container, false);
         listView = (ListView) view.findViewById(R.id.listView);
-        MenuAdapter menuAdapter = new MenuAdapter(getActivity(),childData);
+        MenuAdapter menuAdapter = new MenuAdapter(getActivity(),childData,storeMenuActivity,cartOrderUpdate);
         listView.setAdapter(menuAdapter);
         return view;
     }

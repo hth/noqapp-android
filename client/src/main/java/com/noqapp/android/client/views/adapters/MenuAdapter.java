@@ -13,21 +13,30 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.ChildData;
 import com.noqapp.android.client.presenter.beans.JsonStoreProduct;
+import com.noqapp.android.client.views.activities.StoreMenuActivity;
 
 import java.util.List;
 
 public class MenuAdapter extends BaseAdapter {
-    private static final String TAG = MenuAdapter.class.getSimpleName();
     private Context context;
-    private List<ChildData> notificationsList;
+    private List<ChildData> menuItemsList;
+    private StoreMenuActivity storeMenuActivity;
 
-    public MenuAdapter(Context context, List<ChildData> notificationsList) {
+    public MenuAdapter(Context context, List<ChildData> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate) {
         this.context = context;
-        this.notificationsList = notificationsList;
+        this.menuItemsList = menuItemsList;
+        this.storeMenuActivity = storeMenuActivity;
+        this.cartOrderUpdate = cartOrderUpdate;
     }
 
+    public interface CartOrderUpdate {
+        void updateCartOrderInfo(int amountString);
+    }
+
+    private CartOrderUpdate cartOrderUpdate;
+
     public int getCount() {
-        return this.notificationsList.size();
+        return this.menuItemsList.size();
     }
 
     public Object getItem(int n) {
@@ -40,7 +49,7 @@ public class MenuAdapter extends BaseAdapter {
 
     public View getView(final int position, View convertView, ViewGroup viewGroup) {
         final ChildViewHolder childViewHolder;
-        final ChildData childData = notificationsList.get(position);
+        final ChildData childData = menuItemsList.get(position);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -60,7 +69,7 @@ public class MenuAdapter extends BaseAdapter {
             childViewHolder = (ChildViewHolder) convertView
                     .getTag(R.layout.list_item_filter);
         }
-        JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
+        final JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
         //TODO chandra use County Code of the store to decide on Currency type
@@ -89,18 +98,16 @@ public class MenuAdapter extends BaseAdapter {
                 String val = childViewHolder.tv_value.getText().toString();
                 int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
                 childViewHolder.tv_value.setText("" + number);
-                notificationsList
+                menuItemsList
                         .get(position).setChildInput(number);
-//                if (number <= 0) {
-//                    orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-//                            .get(childPosition).getJsonStoreProduct().getProductId());
-//                    cartUpdate.updateCartInfo(showCartAmount());
-//                } else {
-//                    orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-//                            .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-//                            .get(childPosition));
-//                    cartUpdate.updateCartInfo(showCartAmount());
-//                }
+                if (number <= 0) {
+                    storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
+                    cartOrderUpdate.updateCartOrderInfo(showCartAmount());
+                } else {
+                    storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
+                            .get(position));
+                    cartOrderUpdate.updateCartOrderInfo(showCartAmount());
+                }
                 notifyDataSetChanged();
             }
         });
@@ -110,18 +117,16 @@ public class MenuAdapter extends BaseAdapter {
                 String val = childViewHolder.tv_value.getText().toString();
                 int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
                 childViewHolder.tv_value.setText("" + number);
-                notificationsList
+                menuItemsList
                         .get(position).setChildInput(number);
-//                if (number <= 0) {
-//                    orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-//                            .get(childPosition).getJsonStoreProduct().getProductId());
-//                    cartUpdate.updateCartInfo(showCartAmount());
-//                } else {
-//                    orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-//                            .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-//                            .get(childPosition));
-//                    cartUpdate.updateCartInfo(showCartAmount());
-//                }
+                if (number <= 0) {
+                    storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
+                    cartOrderUpdate.updateCartOrderInfo(showCartAmount());
+                } else {
+                    storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
+                            .get(position));
+                    cartOrderUpdate.updateCartOrderInfo(showCartAmount());
+                }
                 notifyDataSetChanged();
             }
         });
@@ -145,11 +150,11 @@ public class MenuAdapter extends BaseAdapter {
         return price - (price * discountPercentageValue) / 100;
     }
 
-//    private int showCartAmount() {
-//        int price = 0;
-//        for (ChildData value : getOrders().values()) {
-//            price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
-//        }
-//        return price / 100;
-//    }
+    private int showCartAmount() {
+        int price = 0;
+        for (ChildData value : storeMenuActivity.getOrders().values()) {
+            price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
+        }
+        return price / 100;
+    }
 }

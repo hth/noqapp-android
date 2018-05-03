@@ -24,6 +24,7 @@ import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
+import com.noqapp.android.client.views.adapters.MenuAdapter;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.fragments.FragmentDummy;
 
@@ -35,7 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 // Scrollview issue  https://stackoverflow.com/questions/37605545/android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
-public class StoreMenuActivity extends BaseActivity implements  CustomExpandableListAdapter.CartUpdate,MenuHeaderAdapter.OnItemClickListener {
+public class StoreMenuActivity extends BaseActivity implements  CustomExpandableListAdapter.CartUpdate,MenuHeaderAdapter.OnItemClickListener , MenuAdapter.CartOrderUpdate{
     private static final String TAG = StoreMenuActivity.class.getSimpleName();
 
     @BindView(R.id.actionbarBack)
@@ -79,11 +80,11 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail, this);
         expandableListView.setAdapter(expandableListAdapter);
 
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = findViewById(R.id.pager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         for(int i = 0; i< expandableListTitle.size();i++){
 
-            adapter.addFragment(new FragmentDummy(expandableListDetail.get(expandableListTitle.get(i).getCategoryId())), "FRAG"+i);
+            adapter.addFragment(new FragmentDummy(expandableListDetail.get(expandableListTitle.get(i).getCategoryId()),this,this), "FRAG"+i);
         }
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
@@ -94,6 +95,7 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
         menuAdapter = new MenuHeaderAdapter(expandableListTitle, this, this);
         rcv_header.setAdapter(menuAdapter);
         viewPager.setAdapter(adapter);
+        orders.clear();
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -117,7 +119,8 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
             public void onClick(View v) {
                 if (UserUtils.isLogin()) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();
+                        //HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();  old one
+                        HashMap<String, ChildData> getOrder = getOrders();
 
 
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
@@ -177,6 +180,17 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
         viewPager.setCurrentItem(pos);
     }
 
+    @Override
+    public void updateCartOrderInfo(int amountString) {
+        if (amountString > 0) {
+            tv_place_order.setVisibility(View.VISIBLE);
+            tv_place_order.setText("Your cart amount is: " + amountString);
+        } else {
+            tv_place_order.setVisibility(View.GONE);
+            tv_place_order.setText("");
+        }
+    }
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -205,4 +219,10 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
             return mFragmentTitleList.get(position);
         }
     }
+
+    public HashMap<String, ChildData> getOrders() {
+        return orders;
+    }
+
+    private HashMap<String, ChildData> orders = new HashMap<>();
 }
