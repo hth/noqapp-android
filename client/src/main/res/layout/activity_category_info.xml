@@ -86,7 +86,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/ratingBar"
                             android:layout_marginTop="10dp"
-                            android:text=""
+                            android:padding="5dp"
                             android:textColor="@color/colorAddress"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -131,13 +131,41 @@
                         android:id="@+id/tv_amenities"
                         style="@style/style_join_queue_tv"
                         android:layout_marginBottom="5dp"
+                        android:text="Amenities"
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_amenities"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/amenities"
+                            android:padding="5dp"
+                            android:text="Parking"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="14sp" />
+
+                        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/amenities"
+                            android:padding="5dp"
+                            android:text="Free Wi-Fi"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="14sp" />
+                    </LinearLayout>
 
                     <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_complete_address"
                         style="@style/style_join_queue_tv"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="10dp"
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:textColor="@color/colorAddress"
@@ -154,17 +182,22 @@
                     android:id="@+id/rv_categories"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_above="@+id/btn_join_queues"
                     android:layout_below="@+id/ll_dep_info"
                     android:scrollbars="vertical"
                     android:visibility="gone" />
 
-                <Button
+                <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
                     android:id="@+id/btn_join_queues"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rv_categories"
+                    android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:text="Join the Queues" />
+                    android:background="@drawable/button_drawable"
+                    android:padding="10dp"
+                    android:textAllCaps="false"
+                    android:layout_margin="10dp"
+                    android:textSize="15sp" />
             </RelativeLayout>
 
 

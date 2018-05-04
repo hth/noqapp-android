@@ -169,7 +169,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         this.jsonQueue = jsonQueue;
         tv_store_name.setText(jsonQueue.getBusinessName());
         tv_queue_name.setText(jsonQueue.getDisplayName());
-        tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
+        tv_address.setText(jsonQueue.getStoreAddress());
         tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
         tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
         tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));

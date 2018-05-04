@@ -17,7 +17,6 @@ import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
-import com.noqapp.android.client.views.customviews.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,7 +25,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     private final Context context;
     private List<BizStoreElastic> dataSet;
 
-    //private List<JsonQueue> dataSet;
     public interface OnItemClickListener {
         void onCategoryItemClick(BizStoreElastic item, View view, int pos);
     }

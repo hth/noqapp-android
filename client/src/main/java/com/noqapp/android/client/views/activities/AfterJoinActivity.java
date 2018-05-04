@@ -115,7 +115,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             topic = jsonTokenAndQueue.getTopic();
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
-            tv_address.setText(Formatter.getFormattedAddress(address));
+            tv_address.setText(address);
 
             String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) +
                     " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour());
@@ -279,7 +279,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     public void setBackGround(int pos) {
         tv_after.setTextColor(Color.WHITE);
         tv_how_long.setTextColor(Color.WHITE);
-        tv_estimated_time.setTextColor(Color.WHITE);
+       // tv_estimated_time.setTextColor(Color.WHITE);
         tv_after.setText("Soon is your turn! You are:");
         //tv_after.setVisibility(View.VISIBLE);
         switch (pos) {
@@ -310,7 +310,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_after.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 ll_change_bg.setBackgroundResource(R.drawable.square_bg_drawable);
-                tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
+               // tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 break;
 
         }
@@ -350,6 +350,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             Log.e("", "Error setting data reason=" + e.getLocalizedMessage(), e);
             tv_estimated_time.setVisibility(View.INVISIBLE);
         }
+
+        tv_estimated_time.setText("30 Min *");
+        tv_estimated_time.setVisibility(View.VISIBLE);
     }
 
 

@@ -13,69 +13,123 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="1">
+        android:padding="10dp">
 
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".45"
-            android:background="@drawable/home_top_bg"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight=".5"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    android:id="@+id/tv_total_value"
+                    style="@style/style_join_queue_tv"
+                    android:gravity="center"
+                    android:textColor="@color/color_total_val"
+                    android:textSize="36sp" />
+
+                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    android:id="@+id/tv_total"
+                    style="@style/style_join_queue_tv"
+                    android:gravity="center"
+                    android:text="@string/currently_serving"
+                    android:textColor="@color/colorAddress"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight=".5"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    android:id="@+id/tv_current_value"
+                    style="@style/style_join_queue_tv"
+                    android:gravity="center"
+                    android:textColor="@color/colorMobile"
+                    android:textSize="36sp" />
+
+                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    android:id="@+id/tv_current"
+                    style="@style/style_join_queue_tv"
+                    android:gravity="center"
+                    android:text="@string/people_in_queue"
+                    android:textColor="@color/colorAddress"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@color/color_invite_details"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp">
 
             <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                android:id="@+id/tv_store_name"
                 style="@style/style_join_queue_tv"
-                android:textColor="@color/colorActionbar"
-                android:textSize="24sp" />
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Queue Details"
+                android:textColor="@color/colorAddress"
+                android:textSize="18sp" />
 
             <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
                 android:id="@+id/tv_queue_name"
                 style="@style/style_join_queue_tv"
-                android:layout_below="@+id/tv_store_name"
                 android:layout_marginBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
 
-            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                android:id="@+id/tv_address"
-                style="@style/style_join_queue_tv"
-                android:layout_below="@+id/tv_queue_name"
-                android:layout_marginBottom="5dp"
-                android:ellipsize="end"
-                android:gravity="center_horizontal"
-                android:maxLines="2"
-                android:textColor="@color/colorAddress"
-                android:textSize="18sp" />
-
-            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                 android:id="@+id/tv_hour_saved"
                 style="@style/style_join_queue_tv"
-                android:layout_below="@+id/tv_address"
                 android:layout_marginBottom="5dp"
-                android:gravity="center_horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:textColor="@color/colorAddress"
                 android:textSize="18sp" />
 
-            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                 android:id="@+id/tv_mobile"
                 style="@style/style_join_queue_tv"
-                android:layout_below="@+id/tv_hour_saved"
                 android:layout_marginBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:textColor="@color/colorMobile"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/rl_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_mobile"
                 android:gravity="center"
-
-
-                >
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
                 <RatingBar
                     android:id="@+id/ratingBar"
@@ -88,7 +142,7 @@
                     android:rating="0.0"
                     android:stepSize=".5" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                     android:id="@+id/tv_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -99,7 +153,7 @@
                     android:visibility="invisible" />
 
 
-                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                     android:id="@+id/tv_rating_review"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -108,151 +162,100 @@
                     android:textColor="@color/colorAddress"
                     android:textSize="18sp" />
             </RelativeLayout>
-        </RelativeLayout>
 
-        <LinearLayout
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/white" />
+
+            <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                android:id="@+id/tv_store_name"
+                style="@style/style_join_queue_tv"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/colorAddress"
+                android:textSize="20sp" />
+
+
+            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                android:id="@+id/tv_address"
+                style="@style/style_join_queue_tv"
+                android:layout_marginBottom="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/colorAddress"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".60"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="visible">
 
-            <RelativeLayout
+            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                android:id="@+id/tv_skip_msg"
+                style="@style/style_join_queue_tv"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:text="You were skiped. \nPress yes to join the queue again."
+                android:textColor="@color/colorAddress"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".30">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_skip_msg"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <View
-                        android:id="@+id/strut"
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@color/color_separator" />
-                    />
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignRight="@id/strut"
-                        android:gravity="center">
-
-                        <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                            android:id="@+id/tv_current"
-                            style="@style/style_join_queue_tv"
-                            android:text="@string/people_in_queue"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="15sp" />
-
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                            android:id="@+id/tv_current_value"
-                            style="@style/style_join_queue_tv"
-                            android:layout_below="@+id/tv_current"
-                            android:textColor="@color/colorMobile"
-                            android:textSize="36sp" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignLeft="@id/strut"
-                        android:layout_alignParentRight="true"
-                        android:gravity="center">
-
-                        <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                            android:id="@+id/tv_total"
-                            style="@style/style_join_queue_tv"
-                            android:text="@string/currently_serving"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="15sp" />
-
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                            android:id="@+id/tv_total_value"
-                            style="@style/style_join_queue_tv"
-                            android:layout_below="@+id/tv_total"
-                            android:textColor="@color/color_total_val"
-                            android:textSize="36sp" />
-                    </RelativeLayout>
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="10dp"
+                <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
+                    android:id="@+id/btn_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/color_separator" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".70">
-
-                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                    android:id="@+id/tv_skip_msg"
-                    style="@style/style_join_queue_tv"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_horizontal"
-                    android:text="You were skiped. \nPress yes to join the queue again."
-                    android:textColor="@color/colorAddress"
-                    android:textSize="18sp"
+                    android:background="@drawable/button_drawable"
+                    android:drawableLeft="@mipmap/join_button"
+                    android:drawablePadding="5dp"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp"
+                    android:text="@string/no"
+                    android:textColor="@color/colorMobile"
+                    android:textSize="15sp"
                     android:visibility="gone" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
+                    android:id="@+id/btn_joinQueue"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_skip_msg"
                     android:layout_centerInParent="true"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/button_drawable"
+                    android:drawableLeft="@mipmap/join_button"
+                    android:drawablePadding="5dp"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp"
+                    android:text="@string/join"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorMobile"
+                    android:textSize="15sp" />
 
-                    <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
-                        android:id="@+id/btn_no"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/button_drawable"
-                        android:drawableLeft="@mipmap/join_button"
-                        android:drawablePadding="5dp"
-                        android:gravity="left|center_vertical"
-                        android:paddingLeft="50dp"
-                        android:paddingRight="50dp"
-                        android:text="@string/no"
-                        android:textColor="@color/colorMobile"
-                        android:textSize="15sp"
-                        android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
 
-                    <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
-                        android:id="@+id/btn_joinQueue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/button_drawable"
-                        android:drawableLeft="@mipmap/join_button"
-                        android:drawablePadding="5dp"
-                        android:gravity="left|center_vertical"
-                        android:paddingLeft="50dp"
-                        android:paddingRight="50dp"
-                        android:text="@string/join"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorMobile"
-                        android:textSize="15sp" />
 
-                </LinearLayout>
-            </RelativeLayout>
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

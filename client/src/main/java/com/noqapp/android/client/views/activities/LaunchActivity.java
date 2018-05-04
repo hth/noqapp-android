@@ -416,9 +416,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @Subscribe
     public void onEvent(NetworkStateChanged networkStateChanged) {
         if(networkStateChanged.isInternetConnected()) {
-            Toast.makeText(this,"network available",Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,"network available",Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this,"no network available",Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,"no network available",Toast.LENGTH_LONG).show();
         }
     }
     @Override

@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.views.customviews.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -98,7 +97,6 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
         Picasso.with(context)
                 .load(bizStoreElastic.getDisplayImage())
-                .transform(new RoundedTransformation(10, 4))
                 .into(holder.iv_main);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override

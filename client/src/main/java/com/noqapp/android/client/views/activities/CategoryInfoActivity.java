@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -93,6 +94,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     @BindView(R.id.btn_join_queues)
     protected Button btn_join_queues;
+
+    @BindView(R.id.ll_amenities)
+    protected LinearLayout ll_amenities;
 
     private String codeQR;
     private  BizStoreElastic bizStoreElastic;
@@ -208,7 +212,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             ratingBar.setRating(rating);
             tv_rating.setText(String.valueOf(Math.round(bizStoreElastic.getRating())));
             tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
-            tv_amenities.setText("Amenities: Parking, Free Wi-Fi"); //Ambulance Service,Emergency Service 24/7,Ac/non-ac beds
             codeQR = bizStoreElastic.getCodeQR();
             AppUtilities.setStoreDrawable(this,iv_business_icon,bizStoreElastic.getBusinessType(),tv_rating);
             Picasso.with(this)
@@ -217,15 +220,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             rv_thumb_images.setHasFixedSize(true);
             rv_thumb_images.setLayoutManager(horizontalLayoutManager);
-            ArrayList<String> storeServiceImages = new ArrayList<String>();
-            storeServiceImages.add("https://www.ssdhospital.com/wp-content/uploads/2016/11/dscn0794-1024x590.jpg");
-            storeServiceImages.add("http://www.ssdhospital.in/wp-content/uploads/2016/11/dscn0783.jpg");
-            storeServiceImages.add("https://static.lybrate.com/imgs/ps/cl/b21f1285cf4e0de0ef3ec8f9c01a5d65/4444185b9b85355188138aa90c3890d7/Sai-Snehdeep-Hospital-Navi-Mumbai-a8c3fc.jpg");
-            storeServiceImages.add("http://medicaltreatmentcost.com/oc-content/uploads/0/119.jpg");
-            storeServiceImages.add("https://content1.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-2ov44bu.jpg");
-            storeServiceImages.add("https://content3.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-3zj5ots.jpg");
-                    //(ArrayList<String>) bizStoreElastic.getStoreServiceImages();
-
+            ArrayList<String> storeServiceImages = dummyUrls();
+            // initialize list if we are receiving urls from server
             if (bizStoreElastic.getBizServiceImages().size() > 0) {
                 storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
             }
@@ -240,6 +236,18 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                         getCategoryThatArePopulated(),
                         queueMap, listener);
                 rv_categories.setAdapter(recyclerView_Adapter);
+            }
+
+            switch (bizStoreElastic.getBusinessType()) {
+                case DO:
+                case HO:
+                    btn_join_queues.setText("View Departments");
+                    break;
+                case BK:
+                    btn_join_queues.setText("View Services");
+                    break;
+                default:
+                    btn_join_queues.setText("Join the Queue");
             }
         } else {
             //TODO(chandra) when its empty do something nice
@@ -330,5 +338,18 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
        in.putExtra("list", (Serializable)getCategoryThatArePopulated());
        in.putExtra("hashmap",(Serializable) cacheQueue.getIfPresent("queue"));
        startActivity(in);
+    }
+
+
+    //TODO: @Chandra remove later when the image urls are fixed at server
+    private ArrayList<String> dummyUrls() {
+        ArrayList<String> storeServiceImages = new ArrayList<>();
+        storeServiceImages.add("https://content.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-3w3dboj.jpg");
+        storeServiceImages.add("https://content.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-1steuoh.jpg");
+        storeServiceImages.add("https://content.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-wek9js.jpg");
+        storeServiceImages.add("https://content.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-2xu2p72.jpg");
+        storeServiceImages.add("https://content1.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-2ov44bu.jpg");
+        storeServiceImages.add("https://content3.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-3zj5ots.jpg");
+        return storeServiceImages;
     }
 }
