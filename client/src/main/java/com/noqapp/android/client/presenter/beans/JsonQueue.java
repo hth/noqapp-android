@@ -140,9 +140,6 @@ public class JsonQueue implements Serializable {
     @JsonProperty("bc")
     private String bizCategoryId;
 
-    @JsonProperty("di")
-    private String displayImage;
-
     @JsonProperty("ff")
     private String famousFor;
 
@@ -461,15 +458,6 @@ public class JsonQueue implements Serializable {
 
     public JsonQueue setBizCategoryId(String bizCategoryId) {
         this.bizCategoryId = bizCategoryId;
-        return this;
-    }
-
-    public String getDisplayImage() {
-        return displayImage;
-    }
-
-    public JsonQueue setDisplayImage(String displayImage) {
-        this.displayImage = displayImage;
         return this;
     }
 
