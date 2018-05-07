@@ -62,7 +62,6 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
     public void onCategoryItemClick(BizStoreElastic item, View view, int pos) {
         switch (item.getBusinessType()) {
             case DO:
-            case HO:
                 // open hospital profile
                 Intent in = new Intent(this, JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());

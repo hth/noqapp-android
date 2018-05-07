@@ -78,7 +78,6 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         BizStoreElastic item = dataSet.get(listPosition);
         switch (item.getBusinessType()) {
             case DO:
-            case HO:
             case BK:
                 holder.tv_name.setText(item.getBusinessName());
                 Picasso.with(context)

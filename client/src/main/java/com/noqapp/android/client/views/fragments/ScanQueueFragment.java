@@ -338,7 +338,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
         switch (item.getBusinessType()) {
             case DO:
-            case HO:
             case BK:
                 // open hospital/Bank profile
                 Bundle b = new Bundle();

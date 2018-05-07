@@ -157,6 +157,8 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         // Inflate the menu; this adds items to the action bar if it is present.
 
         getMenuInflater().inflate(R.menu.menu_doc_profile, menu);
+        //@TODO Chandra enable when the feature add on server
+        menu.findItem(R.id.menu_favourite).setVisible(false);
         return true;
     }
     @Override
@@ -167,7 +169,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         Log.v("jsonStore response :", jsonStore.toString());
 
         switch (jsonStore.getJsonQueue().getBusinessType()) {
-            case HO:
             case DO:
                 // open hospital profile
                 break;

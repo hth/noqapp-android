@@ -221,7 +221,6 @@ public class AppUtilities {
 
     public static void setStoreDrawable(Context context, ImageView iv, BusinessTypeEnum bussinessType, TextView tv_store_rating) {
         switch (bussinessType) {
-            case HO:
             case DO:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.hospital));
                 iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));

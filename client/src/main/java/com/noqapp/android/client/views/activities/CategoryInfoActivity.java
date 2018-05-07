@@ -240,7 +240,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
-                case HO:
                     btn_join_queues.setText("View Departments");
                     break;
                 case BK:

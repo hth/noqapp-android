@@ -69,7 +69,6 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
     public void onCategoryItemClick(BizStoreElastic item, View view, int pos) {
         switch (item.getBusinessType()) {
             case DO:
-            case HO:
             case BK:
                 // open hospital profile
                 Intent in = new Intent(getActivity(), JoinActivity.class);

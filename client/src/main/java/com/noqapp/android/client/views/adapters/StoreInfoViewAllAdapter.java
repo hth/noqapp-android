@@ -73,7 +73,6 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
         BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
         switch (bizStoreElastic.getBusinessType()) {
             case DO:
-            case HO:
             case BK:
                 holder.tv_name.setText(bizStoreElastic.getBusinessName());
                 holder.tv_store_special.setText("Emergency 24 hours");
