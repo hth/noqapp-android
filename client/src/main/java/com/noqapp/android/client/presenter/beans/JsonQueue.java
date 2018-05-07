@@ -17,8 +17,10 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 /**
@@ -150,10 +152,10 @@ public class JsonQueue implements Serializable {
     private int minimumDeliveryOrder;
 
     @JsonProperty("si")
-    private List<String> storeServiceImages = new LinkedList<>();
+    private Set<String> storeServiceImages = new LinkedHashSet<>();
 
     @JsonProperty("ii")
-    private List<String> storeInteriorImages = new LinkedList<>();
+    private Set<String> storeInteriorImages = new LinkedHashSet<>();
 
     @JsonProperty("pm")
     private List<PaymentTypeEnum> paymentTypes = new LinkedList<>();
@@ -488,20 +490,20 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
-    public List<String> getStoreServiceImages() {
+    public Set<String> getStoreServiceImages() {
         return storeServiceImages;
     }
 
-    public JsonQueue setStoreServiceImages(List<String> storeServiceImages) {
+    public JsonQueue setStoreServiceImages(Set<String> storeServiceImages) {
         this.storeServiceImages = storeServiceImages;
         return this;
     }
 
-    public List<String> getStoreInteriorImages() {
+    public Set<String> getStoreInteriorImages() {
         return storeInteriorImages;
     }
 
-    public JsonQueue setStoreInteriorImages(List<String> storeInteriorImages) {
+    public JsonQueue setStoreInteriorImages(Set<String> storeInteriorImages) {
         this.storeInteriorImages = storeInteriorImages;
         return this;
     }
