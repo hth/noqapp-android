@@ -45,10 +45,6 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
     protected TextView tv_toolbar_title;
     @BindView(R.id.tv_place_order)
     protected TextView tv_place_order;
-    @BindView(R.id.tv_store_name)
-    protected TextView tv_store_name;
-    @BindView(R.id.tv_store_address)
-    protected TextView tv_store_address;
     @BindView(R.id.rcv_header)
     protected RecyclerView rcv_header;
     private ExpandableListView expandableListView;
@@ -73,8 +69,6 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
         tv_toolbar_title.setText("Menu");
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
         jsonQueue = (JsonQueue) getIntent().getSerializableExtra("jsonQueue");
-        tv_store_address.setText(jsonQueue.getStoreAddress());
-        tv_store_name.setText(jsonQueue.getDisplayName());
         expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
         expandableListDetail = (HashMap<String, List<ChildData>>) getIntent().getExtras().getSerializable("listDataChild");
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail, this);

@@ -80,17 +80,11 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
             case DO:
             case BK:
                 holder.tv_name.setText(item.getBusinessName());
-                Picasso.with(context)
-                        .load(item.getDisplayImage())
-                        .into(holder.iv_main);
                 holder.tv_status.setText("");
                 holder.tv_detail.setText("");
                 break;
             default:
                 holder.tv_name.setText(item.getDisplayName());
-                Picasso.with(context)
-                        .load(item.getDisplayImage())
-                        .into(holder.iv_main);
                 holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
                 StoreHourElastic storeHourElastic = item.getStoreHourElasticList().get(AppUtilities.getTodayDay());
                 String time =  Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()) +
@@ -103,6 +97,16 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         }
         if (!TextUtils.isEmpty(item.getArea())) {
             address = item.getArea() +", "+address;
+        }
+        if(!TextUtils.isEmpty(item.getDisplayImage()))
+            Picasso.with(context)
+                    .load(item.getDisplayImage())
+                    .into(holder.iv_main);
+        else{
+//            Picasso.with(context)
+//                    .load(item.getDisplayImage())
+//                    .into(holder.iv_main);
+            // TODO add default images
         }
         holder.tv_address.setText(address);
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, item.getBusinessType(), holder.tv_store_rating);
