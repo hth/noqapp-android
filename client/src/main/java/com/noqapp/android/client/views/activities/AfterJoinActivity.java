@@ -60,11 +60,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @BindView(R.id.tv_mobile)
     protected TextView tv_mobile;
 
-    @BindView(R.id.tv_total_value)
-    protected TextView tv_total_value;
+    @BindView(R.id.tv_serving_no)
+    protected TextView tv_serving_no;
 
-    @BindView(R.id.tv_current_value)
-    protected TextView tv_current_value;
+    @BindView(R.id.tv_token)
+    protected TextView tv_token;
 
     @BindView(R.id.tv_how_long)
     protected TextView tv_how_long;
@@ -115,7 +115,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             topic = jsonTokenAndQueue.getTopic();
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
-            tv_address.setText(Formatter.getFormattedAddress(address));
+            tv_address.setText(address);
 
             String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) +
                     " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour());
@@ -139,8 +139,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             });
             gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR);
             if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_FROM_LIST, false)) {
-                tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
-                tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+                tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
+                tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
                 tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
                 setBackGround(jsonTokenAndQueue.afterHowLong());
             } else {
@@ -161,8 +161,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     public void tokenPresenterResponse(JsonToken token) {
         Log.d(TAG, token.toString());
         this.jsonToken = token;
-        tv_total_value.setText(String.valueOf(token.getServingNumber()));
-        tv_current_value.setText(String.valueOf(token.getToken()));
+        tv_serving_no.setText(String.valueOf(token.getServingNumber()));
+        tv_token.setText(String.valueOf(token.getToken()));
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
         setBackGround(token.afterHowLong());
         NoQueueMessagingService.subscribeTopics(topic);
@@ -279,7 +279,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     public void setBackGround(int pos) {
         tv_after.setTextColor(Color.WHITE);
         tv_how_long.setTextColor(Color.WHITE);
-        tv_estimated_time.setTextColor(Color.WHITE);
+       // tv_estimated_time.setTextColor(Color.WHITE);
         tv_after.setText("Soon is your turn! You are:");
         //tv_after.setVisibility(View.VISIBLE);
         switch (pos) {
@@ -310,7 +310,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_after.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 ll_change_bg.setBackgroundResource(R.drawable.square_bg_drawable);
-                tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
+               // tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 break;
 
         }
@@ -321,8 +321,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         // jsonTokenAndQueue = jq; removed to avoided the override of the data
         jsonTokenAndQueue.setServingNumber(jq.getServingNumber());
         jsonTokenAndQueue.setToken(jq.getToken());
-        tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
-        tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+        tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
+        tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
         tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
         updateEstimatedTime();
         setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);
@@ -350,6 +350,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             Log.e("", "Error setting data reason=" + e.getLocalizedMessage(), e);
             tv_estimated_time.setVisibility(View.INVISIBLE);
         }
+
+        tv_estimated_time.setText("30 Min *");
+        tv_estimated_time.setVisibility(View.VISIBLE);
     }
 
 

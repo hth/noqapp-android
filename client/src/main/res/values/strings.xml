@@ -78,8 +78,8 @@
 
     <!--- Join Screen -->
     <string name="you_are_after">You are after</string>
-    <string name="serving_now">Serving now</string>
-    <string name="your_token">Your Token</string>
+    <string name="serving_now">Now Serving </string>
+    <string name="your_token">Your Token No</string>
     <string name="remotejoin">Remote QJoin</string>
     <string name="re_join">Re-Join</string>
 
@@ -232,6 +232,7 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="prompt_dob">DD-MM-YYYY</string>
     <string name="medical_history_alert">You don\'t have any medical history.</string>
     <string name="screen_order">Order Summary</string>
+    <string name="screen_order_confirm">Order Confirmation</string>
     <!-- Language select dialog -->
 
 </resources>

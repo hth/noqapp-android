@@ -1,16 +1,20 @@
-package com.noqapp.android.client.views.activities;
+package com.noqapp.android.client.views.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.views.activities.JoinActivity;
+import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.adapters.CategoryListAdapter;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
 import java.util.ArrayList;
 
@@ -20,7 +24,7 @@ import butterknife.ButterKnife;
 /**
  * Created by chandra on 5/7/17.
  */
-public class CategoryListActivity extends BaseActivity implements CategoryListAdapter.OnItemClickListener {
+public class CategoryListFragment extends Fragment implements CategoryListAdapter.OnItemClickListener {
 
 
     private ArrayList<BizStoreElastic> jsonQueues;
@@ -29,41 +33,45 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
     @BindView(R.id.rv_category_list)
     protected RecyclerView rv_category_list;
 
+    private View view;
+
     private CategoryListAdapter.OnItemClickListener listener;
 
+
+    public CategoryListFragment(ArrayList<BizStoreElastic> jsonQueues) {
+        this.jsonQueues = jsonQueues;
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category_list);
-        ButterKnife.bind(this);
-        initActionsViews(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        view = inflater.inflate(R.layout.fragment_category_list, container, false);
+        ButterKnife.bind(this, view);
         listener = this;
-        String categoryName = getIntent().getStringExtra("categoryName");
-
-        tv_toolbar_title.setText(categoryName);
-        try {
-            jsonQueues = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
-        } catch (Exception e) {
-            e.printStackTrace();
-            jsonQueues = new ArrayList<>();
-        }
-
-        categoryListAdapter = new CategoryListAdapter(jsonQueues, this, listener);
+        categoryListAdapter = new CategoryListAdapter(jsonQueues, getActivity(), listener);
         rv_category_list.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv_category_list.setLayoutManager(horizontalLayoutManagaer);
         rv_category_list.setItemAnimator(new DefaultItemAnimator());
-        // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
         rv_category_list.setAdapter(categoryListAdapter);
+        return view;
     }
 
     @Override
     public void onCategoryItemClick(BizStoreElastic item, View view, int pos) {
         switch (item.getBusinessType()) {
             case DO:
+            case BK:
                 // open hospital profile
-                Intent in = new Intent(this, JoinActivity.class);
+                Intent in = new Intent(getActivity(), JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
                 in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
@@ -72,7 +80,7 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
                 break;
             default:
                 // open order screen
-                in = new Intent(this, StoreDetailActivity.class);
+                in = new Intent(getActivity(), StoreDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("BizStoreElastic", item);
                 in.putExtras(bundle);

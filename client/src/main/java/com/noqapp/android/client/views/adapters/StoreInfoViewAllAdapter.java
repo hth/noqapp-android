@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.views.customviews.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -74,14 +73,11 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
         BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
         switch (bizStoreElastic.getBusinessType()) {
             case DO:
-            case HO:
             case BK:
                 holder.tv_name.setText(bizStoreElastic.getBusinessName());
-                holder.tv_store_special.setText("Emergency 24 hours");
                 holder.tv_category_name.setText("");
                 break;
             default:
-                holder.tv_store_special.setText("Dal Tadka , Chicken tikka");
                 holder.tv_name.setText(bizStoreElastic.getDisplayName());
                 holder.tv_category_name.setText(bizStoreElastic.getBizCategoryName());
         }
@@ -94,12 +90,15 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter<StoreInfoViewA
         }
         holder.tv_address.setText(address);
         holder.tv_detail.setText(bizStoreElastic.getPhone());
-
+        holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
+        if(!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
         Picasso.with(context)
                 .load(bizStoreElastic.getDisplayImage())
-                .transform(new RoundedTransformation(10, 4))
                 .into(holder.iv_main);
+        else{
+            //TODO load default image
+        }
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

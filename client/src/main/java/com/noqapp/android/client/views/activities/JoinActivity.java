@@ -49,11 +49,11 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     @BindView(R.id.tv_mobile)
     protected TextView tv_mobile;
 
-    @BindView(R.id.tv_total_value)
-    protected TextView tv_total_value;
+    @BindView(R.id.tv_serving_no)
+    protected TextView tv_serving_no;
 
-    @BindView(R.id.tv_current_value)
-    protected TextView tv_current_value;
+    @BindView(R.id.tv_people_in_q)
+    protected TextView tv_people_in_q;
 
     @BindView(R.id.tv_hour_saved)
     protected TextView tv_hour_saved;
@@ -169,10 +169,10 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         this.jsonQueue = jsonQueue;
         tv_store_name.setText(jsonQueue.getBusinessName());
         tv_queue_name.setText(jsonQueue.getDisplayName());
-        tv_address.setText(Formatter.getFormattedAddress(jsonQueue.getStoreAddress()));
+        tv_address.setText(jsonQueue.getStoreAddress());
         tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
-        tv_total_value.setText(String.valueOf(jsonQueue.getServingNumber()));
-        tv_current_value.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
+        tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
+        tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
         String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) +
                 " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour());
         if (jsonQueue.getDelayedInMinutes() > 0) {

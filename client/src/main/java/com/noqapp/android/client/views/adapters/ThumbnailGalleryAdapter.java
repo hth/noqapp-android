@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.SliderActivity;
-import com.noqapp.android.client.views.customviews.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,7 +44,6 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
 
         Picasso.with(mContext)
                 .load(imageUrls.get(position))
-                .transform(new RoundedTransformation(5, 0))
                 .into(holder.iv_photo);
         if(position<3){
             holder.tv_title.setVisibility(View.GONE);

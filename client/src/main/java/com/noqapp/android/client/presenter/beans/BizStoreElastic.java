@@ -121,6 +121,9 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("WL")
     private String webLocation;
 
+    @JsonProperty("FF")
+    private String famousFor;
+
     @JsonProperty("DI")
     private String displayImage;
 
@@ -379,6 +382,15 @@ public class BizStoreElastic implements Serializable {
 
     public BizStoreElastic setWebLocation(String webLocation) {
         this.webLocation = webLocation;
+        return this;
+    }
+
+    public String getFamousFor() {
+        return famousFor;
+    }
+
+    public BizStoreElastic setFamousFor(String famousFor) {
+        this.famousFor = famousFor;
         return this;
     }
 

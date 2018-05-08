@@ -1,191 +1,235 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:seek_view="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#99ffffff"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar_layout" />
 
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:background="@android:color/white"-->
-    <!--android:overScrollMode="never">-->
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="1">
+        android:background="@android:color/white"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".38"
-            android:background="@drawable/home_top_bg"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:weightSum="1">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/round_corner_business"
+                android:src="@drawable/ic_check" />
+
+            <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Great !"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                android:id="@+id/tv_store_name"
                 style="@style/style_join_queue_tv"
                 android:layout_gravity="center_horizontal"
-                android:paddingTop="20dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Your check up has been done Successfully"
+                android:textSize="18sp" />
+
+            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                style="@style/style_join_queue_tv"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Queue Details"
+                android:textColor="@color/colorAddress"
+                android:textSize="18sp" />
+
+            <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                android:id="@+id/tv_store_name"
+                style="@style/style_join_queue_tv"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Costco"
-                android:textColor="@color/colorActionbar"
-                android:textSize="24sp" />
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
 
             <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
                 android:id="@+id/tv_queue_name"
                 style="@style/style_join_queue_tv"
-                android:layout_below="@+id/tv_store_name"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:text="Name"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Queue Name"
                 android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
 
-            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                 android:id="@+id/tv_address"
                 style="@style/style_join_queue_tv"
-                android:layout_below="@+id/tv_queue_name"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:ellipsize="end"
-                android:gravity="center_horizontal"
                 android:maxLines="2"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Location: Address is Station \n Railway station"
                 android:textColor="@color/colorAddress"
                 android:textSize="18sp" />
 
-            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                 android:id="@+id/tv_mobile"
                 style="@style/style_join_queue_tv"
-                android:layout_below="@+id/tv_address"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
-                android:drawableLeft="@mipmap/date"
-                android:drawablePadding="4dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Date of service: Today"
-                android:textColor="@color/colorMobile"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".22"
-            android:background="@drawable/review_center"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingTop="5dp">
-
-            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                android:id="@+id/tv_service"
-                style="@style/style_join_queue_tv"
-                android:layout_below="@+id/tv_address"
-                android:layout_gravity="center_horizontal"
-                android:text="How was your service?"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="-15dp"
-                    android:layout_marginRight="-15dp"
-                    android:isIndicator="false"
-                    android:max="5"
-                    android:scaleX=".75"
-                    android:scaleY=".75"
-                    android:stepSize="1"
-                    android:theme="@style/RatingBar" />
-
-                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                    android:id="@+id/tv_rating_value"
-                    style="@style/style_join_queue_tv"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/ratingBar"
-                    android:text="0.0"
-                    android:textColor="@android:color/black"
-                    android:visibility="gone"
-                    android:textSize="20sp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".40"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                style="@style/style_join_queue_tv"
-                android:layout_below="@+id/tv_queue_name"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="5dp"
-                android:gravity="center_horizontal"
-                android:text="@string/text_time_saved"
                 android:textColor="@color/colorAddress"
                 android:textSize="18sp" />
 
-            <LinearLayout
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical"
-                android:weightSum="1">
+                android:layout_margin="5dp"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="4dp">
 
-                <com.noqapp.android.client.views.customviews.SeekbarWithIntervals
-                    android:id="@+id/seekbarWithIntervals"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_centerInParent="true" />
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                        android:id="@+id/tv_service"
+                        style="@style/style_join_queue_tv"
+                        android:gravity="center"
+                        android:text="Share your experience to serve you better"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <RatingBar
+                            android:id="@+id/ratingBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginLeft="-15dp"
+                            android:layout_marginRight="-15dp"
+                            android:isIndicator="false"
+                            android:max="5"
+                            android:scaleX=".5"
+                            android:scaleY=".5"
+                            android:stepSize="1"
+                            android:theme="@style/RatingBar" />
+
+                        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                            android:id="@+id/tv_rating_value"
+                            style="@style/style_join_queue_tv"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/ratingBar"
+                            android:text="0.0"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                        style="@style/style_join_queue_tv"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/text_time_saved"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+
+                        android:orientation="vertical"
+                        android:weightSum="1">
+
+                        <com.noqapp.android.client.views.customviews.SeekbarWithIntervals
+                            android:id="@+id/seekbarWithIntervals"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:visibility="gone" />
 
 
-                <android.support.v7.widget.AppCompatSeekBar
+                        <android.support.v7.widget.AppCompatSeekBar
 
-                    android:id="@+id/seekbarAppCompact"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:max="4"
-                    android:maxHeight="15dp"
-                    android:minHeight="15dp"
-                    android:progress="0"
-                    android:progressDrawable="@drawable/seek_style"
-                    android:scaleY="-0.55"
-                    android:splitTrack="false"
-                    android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
-                    android:thumb="@drawable/circle_bg_drawable"
-                    android:thumbOffset="8dp"
-                    android:tickMark="@drawable/seekbar_seprator"
-                    android:tickMarkTintMode="@android:color/transparent"
-                    seek_view:tickMarkTint="@android:color/transparent"
+                            android:id="@+id/seekbarAppCompact"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:max="4"
+                            android:maxHeight="15dp"
+                            android:minHeight="15dp"
+                            android:progress="0"
+                            android:progressDrawable="@drawable/seek_style"
+                            android:scaleY="-0.55"
+                            android:splitTrack="false"
+                            android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+                            android:thumb="@drawable/circle_bg_drawable"
+                            android:thumbOffset="8dp"
+                            android:tickMark="@drawable/seekbar_seprator"
+                            android:tickMarkTintMode="@android:color/transparent"
+                            seek_view:tickMarkTint="@android:color/transparent" />
 
-                    />
+                        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                            android:id="@+id/tv_hr_saved"
+                            style="@style/style_join_queue_tv"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_horizontal"
+                            android:text=""
+                            android:textColor="@color/colorAddress"
+                            android:textSize="18sp" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                    android:id="@+id/tv_hr_saved"
-                    style="@style/style_join_queue_tv"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_horizontal"
-                    android:text=""
-                    android:textColor="@color/colorAddress"
-                    android:textSize="18sp" />
+                        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                            style="@style/style_join_queue_tv"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:text="Comments/ Suggestions"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="18sp" />
 
-            </LinearLayout>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/square_bg_drawable"
+                            android:gravity="top"
+                            android:inputType="textMultiLine"
+                            android:maxLines="4"
+                            android:minLines="4" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
             <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
                 android:id="@+id/btn_submit"
@@ -206,7 +250,6 @@
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>
-    </LinearLayout>
-    <!--</ScrollView>-->
+    </ScrollView>
 
 </LinearLayout>

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -36,7 +35,7 @@ public class JsonCategory implements Serializable {
     private String categoryName;
 
     @JsonProperty("di")
-    private String displayImage = "https://noqapp.com/imgs/240x120/f.jpeg";
+    private String displayImage;
 
     public String getBizCategoryId() {
         return bizCategoryId;
@@ -61,10 +60,7 @@ public class JsonCategory implements Serializable {
     }
 
     public JsonCategory setDisplayImage(String displayImage) {
-        //TODO(hth) remove the check
-        if (StringUtils.isNotBlank(displayImage)) {
-            this.displayImage = displayImage;
-        }
+        this.displayImage = displayImage;
         return this;
     }
 

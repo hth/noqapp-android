@@ -11,97 +11,233 @@
     <RelativeLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
-
-        <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-            android:id="@+id/tv_user_name"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/header_cover_image"
-            android:layout_marginBottom="5dp"
-            android:gravity="left"
-            android:maxLines="2"
-            android:text=""
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:layout_above="@+id/tv_place_order"
+            android:layout_alignParentTop="true">
 
-
-        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-            android:id="@+id/tv_user_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_user_name"
-            android:layout_marginBottom="5dp"
-            android:gravity="left"
-            android:text="Seawood, Navi Mumbai"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="@dimen/store_info" />
-
-        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
-            android:id="@+id/tv_payment_mode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_user_address"
-
-            android:gravity="left"
-            android:text="Payment mode"
-            android:textSize="@dimen/store_info" />
-
-        <RadioGroup
-            android:id="@+id/rg_payment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_payment_mode"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.AppCompatRadioButton
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cash"
-                app:buttonTint="#e13e3e" />
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
 
-            <android.support.v7.widget.AppCompatRadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Wallet"
-                app:buttonTint="#e13e3e" />
+                <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                    android:id="@+id/tv_user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="left"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-            <android.support.v7.widget.AppCompatRadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Credit/Debit Card"
-                app:buttonTint="#e13e3e" />
 
-            <android.support.v7.widget.AppCompatRadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Online"
-                app:buttonTint="#e13e3e" />
+                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="Delivery Address"
+                    android:textSize="16sp" />
 
-        </RadioGroup>
+                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                    android:id="@+id/edt_address"
+                    style="@style/style_register_edt"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="Add address"
+                    android:textSize="18sp" />
 
-        <TextView
-            android:layout_below="@+id/rg_payment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Address"/>
+                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                    android:id="@+id/edt_phone"
+                    style="@style/style_register_edt"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="Mobile no"
+                    android:inputType="phone"
+                    android:maxLength="12"
+                    android:textSize="18sp" />
+
+                <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                    android:id="@+id/tv_payment_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="left"
+                    android:text="Payment mode"
+                    android:textSize="@dimen/store_info" />
+
+                <RadioGroup
+                    android:id="@+id/rg_payment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Cash"
+                        app:buttonTint="#e13e3e" />
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="Wallet"
+                        app:buttonTint="#e13e3e" />
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="Credit/Debit Card"
+                        app:buttonTint="#e13e3e" />
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="Online"
+                        app:buttonTint="#e13e3e" />
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/ll_order_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/color_invite_details"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="5dp">
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="left"
+                        android:text="Order details"
+                        android:textSize="@dimen/store_info" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="Total Amount: "
+                        android:textSize="@dimen/store_info" />
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        android:id="@+id/tv_total_order_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:textSize="@dimen/store_info" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="Total Tax: "
+                        android:textSize="@dimen/store_info" />
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        android:id="@+id/tv_tax_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:textSize="@dimen/store_info" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="Payment Due: "
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        android:id="@+id/tv_due_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
 
         <TextView
             android:id="@+id/tv_place_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
             android:background="@android:color/holo_green_dark"
             android:drawableRight="@drawable/order_arrow"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="3dp"
+            android:text="Order Now"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:textStyle="bold" />
     </RelativeLayout>
 
 </LinearLayout>

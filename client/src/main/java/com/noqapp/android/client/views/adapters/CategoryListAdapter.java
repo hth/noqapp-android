@@ -17,9 +17,6 @@ import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.PhoneFormatterUtil;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.customviews.RoundedTransformation;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -27,7 +24,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     private final Context context;
     private List<BizStoreElastic> dataSet;
 
-    //private List<JsonQueue> dataSet;
     public interface OnItemClickListener {
         void onCategoryItemClick(BizStoreElastic item, View view, int pos);
     }
@@ -177,10 +173,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             //holder.tv_category.setTypeface(null, Typeface.BOLD);
             holder.tv_status.setVisibility(View.GONE);
         }
-        Picasso.with(context)
+       // commented temporary
+       /* Picasso.with(context)
                 .load(dataSet.get(listPosition).getDisplayImage())
                 .transform(new RoundedTransformation(10, 4))
-                .into(holder.iv_main);
+                .into(holder.iv_main);*/
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

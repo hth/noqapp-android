@@ -1,9 +1,12 @@
 package com.noqapp.android.client.presenter.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.io.Serializable;
 
 /**
  * Created by hitender on 4/1/18.
@@ -22,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonPurchaseOrderProduct extends AbstractDomain {
+public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializable{
 
     @JsonProperty("pi")
     private String productId;
@@ -35,6 +38,9 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
 
     @JsonProperty("pq")
     private int productQuantity;
+
+    @JsonIgnore
+    private JsonStoreProduct jsonStoreProduct;
 
     public String getProductId() {
         return productId;
@@ -69,6 +75,15 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
 
     public JsonPurchaseOrderProduct setProductQuantity(int productQuantity) {
         this.productQuantity = productQuantity;
+        return this;
+    }
+
+    public JsonStoreProduct getJsonStoreProduct() {
+        return jsonStoreProduct;
+    }
+
+    public JsonPurchaseOrderProduct setJsonStoreProduct(JsonStoreProduct jsonStoreProduct) {
+        this.jsonStoreProduct = jsonStoreProduct;
         return this;
     }
 }

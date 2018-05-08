@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -16,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,11 +51,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+
 public class StoreDetailActivity extends BaseActivity implements StorePresenter {
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_known_for, tv_store_rating, tv_payment_mode, tv_amenities, tv_menu, tv_delivery_types, tv_store_name, tv_store_address,tv_store_open_status;
+    private TextView tv_contact_no, tv_address, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_open_status;
     private LinearLayout ll_store_open_status;
     private boolean isUp;
     private ImageView iv_store_open_status;
@@ -60,50 +66,76 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private RecyclerView rv_thumb_images, rv_photos;
     private ImageView collapseImageView;
     private AppBarLayout appBarLayout;
+    private ImageView iv_business_icon;
     private boolean canAddItem = true;
+    private RelativeLayout rl_mid_content;
+    private RatingBar ratingBar;
+    private TextView tv_rating, tv_rating_review;
+    private SegmentedControl sc_amenities, sc_delivery_types, sc_payment_mode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_detail);
 
-        tv_address = (TextView) findViewById(R.id.tv_address);
-        tv_store_name = (TextView) findViewById(R.id.tv_store_name);
-        tv_store_address = (TextView) findViewById(R.id.tv_store_address);
-        tv_contact_no = (TextView) findViewById(R.id.tv_contact_no);
-        tv_known_for = (TextView) findViewById(R.id.tv_known_for);
-        tv_payment_mode = (TextView) findViewById(R.id.tv_payment_mode);
-        tv_amenities = (TextView) findViewById(R.id.tv_amenities);
-        tv_delivery_types = (TextView) findViewById(R.id.tv_delivery_types);
-        tv_store_rating = (TextView) findViewById(R.id.tv_store_rating);
-        tv_store_open_status = (TextView) findViewById(R.id.tv_store_open_status);
-        tv_menu = (TextView) findViewById(R.id.tv_menu);
-        ll_store_open_status = (LinearLayout) findViewById(R.id.ll_store_open_status);
-        iv_store_open_status = (ImageView) findViewById(R.id.iv_store_open_status);
-        collapseImageView = (ImageView) findViewById(R.id.backdrop);
-        appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        tv_address = findViewById(R.id.tv_address);
+        tv_store_name = findViewById(R.id.tv_store_name);
+        tv_store_address = findViewById(R.id.tv_store_address);
+        tv_contact_no = findViewById(R.id.tv_contact_no);
+        tv_known_for = findViewById(R.id.tv_known_for);
+        tv_store_open_status = findViewById(R.id.tv_store_open_status);
+        tv_menu = findViewById(R.id.tv_menu);
+        tv_rating_review = findViewById(R.id.tv_rating_review);
+        tv_rating = findViewById(R.id.tv_rating);
+
+        sc_payment_mode = findViewById(R.id.sc_payment_mode);
+        sc_delivery_types = findViewById(R.id.sc_delivery_types);
+        sc_amenities = findViewById(R.id.sc_amenities);
+
+        ll_store_open_status = findViewById(R.id.ll_store_open_status);
+        iv_store_open_status = findViewById(R.id.iv_store_open_status);
+        collapseImageView = findViewById(R.id.backdrop);
+        rl_mid_content = findViewById(R.id.rl_mid_content);
+        iv_business_icon = findViewById(R.id.iv_business_icon);
+        appBarLayout = findViewById(R.id.appbar);
+        ratingBar = findViewById(R.id.ratingBar);
+        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset == 0) {
+                    rl_mid_content.setVisibility(View.VISIBLE);
+                } else {
+                    rl_mid_content.setVisibility(View.GONE);
+                }
+            }
+        });
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        AppUtilities.setRatingBarColor(stars, this);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collapsingToolbar.setTitle(" ");
         bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rv_thumb_images = (RecyclerView) findViewById(R.id.rv_thumb_images);
+        rv_thumb_images = findViewById(R.id.rv_thumb_images);
         rv_thumb_images.setHasFixedSize(true);
         rv_thumb_images.setLayoutManager(horizontalLayoutManager);
 
         LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rv_photos = (RecyclerView) findViewById(R.id.rv_photos);
+        rv_photos = findViewById(R.id.rv_photos);
         rv_photos.setHasFixedSize(true);
         rv_photos.setLayoutManager(horizontalLayoutManager1);
 
-        Picasso.with(this)
-                .load(bizStoreElastic.getDisplayImage())
-                .into(collapseImageView);
-
+        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
+            Picasso.with(this)
+                    .load(bizStoreElastic.getDisplayImage())
+                    .into(collapseImageView);
+        else {
+            //TODO show some default image
+        }
 
 
         iv_store_open_status.setOnClickListener(new View.OnClickListener() {
@@ -136,14 +168,13 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 finish();
                 return true;
             case R.id.menu_favourite:
-                if(canAddItem){
+                if (canAddItem) {
                     item.setIcon(R.drawable.heart_fill);
-                    Toast.makeText(this,"added to favourite",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "added to favourite", Toast.LENGTH_LONG).show();
                     canAddItem = false;
-                }
-                else{
+                } else {
                     item.setIcon(R.drawable.ic_heart);
-                    Toast.makeText(this,"remove from favourite",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "remove from favourite", Toast.LENGTH_LONG).show();
                     canAddItem = true;
                 }
                 return true;
@@ -157,8 +188,11 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         // Inflate the menu; this adds items to the action bar if it is present.
 
         getMenuInflater().inflate(R.menu.menu_doc_profile, menu);
+        //@TODO Chandra enable when the feature add on server
+        menu.findItem(R.id.menu_favourite).setVisible(false);
         return true;
     }
+
     @Override
     public void storeResponse(JsonStore tempjsonStore) {
         this.jsonStore = tempjsonStore;
@@ -167,7 +201,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         Log.v("jsonStore response :", jsonStore.toString());
 
         switch (jsonStore.getJsonQueue().getBusinessType()) {
-            case HO:
             case DO:
                 // open hospital profile
                 break;
@@ -183,14 +216,15 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_address.setText(jsonQueue.getStoreAddress());
         tv_store_address.setText(jsonQueue.getStoreAddress());
         tv_store_name.setText(jsonQueue.getDisplayName());
-        tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
         tv_known_for.setText(jsonQueue.getFamousFor());
         List<PaymentTypeEnum> temp = jsonQueue.getPaymentTypes();
+        ArrayList<String> payment_data = new ArrayList<>();
         StringBuilder paymentMode = new StringBuilder();
         for (int i = 0; i < temp.size(); i++) {
             paymentMode.append(temp.get(i).getDescription()).append(i < (temp.size() - 1) ? ", " : "");
+            payment_data.add(temp.get(i).getDescription());
         }
-        tv_payment_mode.setText(paymentMode.toString());
+        sc_payment_mode.addSegments(payment_data);
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;
@@ -210,28 +244,39 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 }
             }
         });
+
+
+        //
+
+        tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
+        tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount()) + " Reviews");
+        AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);
+        //
         List<AmenityEnum> amenities = jsonQueue.getAmenities();
         StringBuilder amenity = new StringBuilder();
+        ArrayList<String> data = new ArrayList<>();
         for (int j = 0; j < amenities.size(); j++) {
             amenity.append(amenities.get(j).getDescription()).append(j < (amenities.size() - 1) ? ", " : "");
+            data.add(amenities.get(j).getDescription());
         }
-        tv_amenities.setText(amenity.toString());
-
+        sc_amenities.addSegments(data);
 
         List<DeliveryTypeEnum> deliveryTypes = jsonQueue.getDeliveryTypes();
+        ArrayList<String> data1 = new ArrayList<>();
         StringBuilder deliveryMode = new StringBuilder();
         for (int j = 0; j < deliveryTypes.size(); j++) {
             deliveryMode.append(deliveryTypes.get(j).getDescription()).append(j < (deliveryTypes.size() - 1) ? ", " : "");
+            data1.add(deliveryTypes.get(j).getDescription());
         }
-        tv_delivery_types.setText(deliveryMode.toString());
+        sc_delivery_types.addSegments(data1);
 
 
         //
-        ArrayList<String> storeServiceImages = (ArrayList<String>) jsonQueue.getStoreServiceImages();
+        ArrayList<String> storeServiceImages = new ArrayList<>(jsonQueue.getStoreServiceImages());
         ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
         rv_thumb_images.setAdapter(adapter);
         //
-        ArrayList<String> storeInteriorImages = (ArrayList<String>) jsonQueue.getStoreInteriorImages();
+        ArrayList<String> storeInteriorImages = new ArrayList<>(jsonQueue.getStoreInteriorImages());
         ThumbnailGalleryAdapter adapter1 = new ThumbnailGalleryAdapter(this, storeInteriorImages);
         rv_photos.setAdapter(adapter1);
         //
@@ -266,16 +311,16 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 startActivity(in);
             }
         });
-        if(isStoreOpenToday(jsonStore)){
+        if (isStoreOpenToday(jsonStore)) {
             tv_menu.setClickable(true);
             tv_menu.setText("Order Now");
-        }else{
+        } else {
             tv_menu.setClickable(false);
             tv_menu.setText("Closed");
         }
         ll_store_open_status.removeAllViews();
         JsonHour jsonHourt = jsonStore.getJsonHours().get(6);
-        tv_store_open_status.setText(Formatter.convertMilitaryTo12HourFormat(jsonHourt.getStartHour())+" - "+Formatter.convertMilitaryTo12HourFormat(jsonHourt.getEndHour()));
+        tv_store_open_status.setText(Formatter.convertMilitaryTo12HourFormat(jsonHourt.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHourt.getEndHour()));
         for (int j = 0; j < 6; j++) {
             JsonHour jsonHour = jsonStore.getJsonHours().get(j);
             LinearLayout childLayout = new LinearLayout(this);
@@ -288,7 +333,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             mType.setPadding(5, 3, 0, 3);
             mType.setTypeface(Typeface.DEFAULT_BOLD);
             mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-            mType.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour())+" - "+Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
+            mType.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
             childLayout.addView(mType, 0);
             ll_store_open_status.addView(childLayout);
         }
@@ -312,11 +357,11 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 AppUtilities.getTodayDay());
         DateFormat df = new SimpleDateFormat("HH:mm");
         String time = df.format(Calendar.getInstance().getTime());
-        int timedata = Integer.valueOf(time.replace(":",""));
-        if(jsonHour.getStartHour()<= timedata&&
-                timedata <=jsonHour.getEndHour()){
+        int timedata = Integer.valueOf(time.replace(":", ""));
+        if (jsonHour.getStartHour() <= timedata &&
+                timedata <= jsonHour.getEndHour()) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

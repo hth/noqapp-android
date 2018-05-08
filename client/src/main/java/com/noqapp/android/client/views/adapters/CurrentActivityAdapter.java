@@ -115,7 +115,6 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType(), holder.tv_store_rating);
         switch (jsonTokenAndQueue.getBusinessType()) {
             case DO:
-            case HO:
                 Picasso.with(context)
                         .load("https://noqapp.com/imgs/240x120/f.jpeg")
                         .into(holder.iv_main);
