@@ -123,23 +123,22 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
                             ll.add(new JsonPurchaseOrderProduct()
                                     .setProductId(value.getJsonStoreProduct().getProductId())
                                     .setProductPrice(value.getJsonStoreProduct().getProductPrice())
-                                    .setProductQuantity(value.getChildInput()));
+                                    .setProductQuantity(value.getChildInput())
+                            .setJsonStoreProduct(value.getJsonStoreProduct()));
                             price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
                         }
                         if (price / 100 >= jsonQueue.getMinimumDeliveryOrder()) {
                             JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
                                     .setBizStoreId(jsonQueue.getBizStoreId())
                                     .setBusinessType(jsonQueue.getBusinessType())
-                                    .setQueueUserId("100000000021")
-                                    // jsonPurchaseOrder.setCustomerName(jsonQueue.);
-                                    .setDeliveryType(jsonQueue.getDeliveryTypes().get(0)) // need to change dynamic
-                                    .setOrderPrice(String.valueOf(price))
-                                    .setPaymentType(jsonQueue.getPaymentTypes().get(1)); // need to change dynamic
+                                    .setOrderPrice(String.valueOf(price));
                             jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 
                             Intent intent = new Intent(StoreMenuActivity.this, OrderActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("data",jsonPurchaseOrder);
+                            bundle.putString("storeName",jsonQueue.getDisplayName());
+                            bundle.putString("storeAddress",jsonQueue.getStoreAddress());
                             intent.putExtras(bundle);
                             startActivity(intent);
                         } else {

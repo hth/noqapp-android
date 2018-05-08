@@ -30,7 +30,6 @@ import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.customviews.SeekbarWithIntervals;

@@ -48,10 +48,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 

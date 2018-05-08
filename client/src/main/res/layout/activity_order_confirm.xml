@@ -32,18 +32,20 @@
 
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                    android:id="@+id/tv_current_value1"
+                    android:id="@+id/tv_serving_no"
                     style="@style/style_join_queue_tv"
-                    android:layout_below="@+id/tv_current"
-                    android:text="230"
+                    android:gravity="center"
+                    android:text=""
                     android:textColor="@android:color/black"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                    android:id="@+id/tv_current1"
                     style="@style/style_join_queue_tv"
-                    android:text="Now Serving"
+                    android:gravity="center"
+                    android:text="@string/serving_now"
+                    android:textColor="@color/colorAddress"
                     android:textSize="15sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -56,17 +58,19 @@
                 android:weightSum="1">
 
                 <TextView
+                    android:id="@+id/tv_token"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="@drawable/round_corner_business"
                     android:gravity="center"
-                    android:text="234"
+                    android:text=""
                     android:textColor="@android:color/black"
                     android:textSize="24sp" />
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                    android:id="@+id/tv_current12"
                     style="@style/style_join_queue_tv"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
                     android:text="Your Token no"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -81,15 +85,15 @@
                 android:weightSum="1">
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                    android:id="@+id/tv_current_value"
+                    android:id="@+id/tv_estimated_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="5 min : 10 sec"
+                    android:gravity="center"
+                    android:text=""
                     android:textColor="@android:color/black"
                     android:textSize="24sp" />
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                    android:id="@+id/tv_current"
                     style="@style/style_join_queue_tv"
                     android:text="will be served in"
                     android:textColor="@color/colorAddress"
@@ -101,68 +105,126 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_order_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="5dp"
+            android:background="@color/color_invite_details"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
-            <TextView
+            <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Queue Details"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dr Sudhakar Sharma"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="MBBS, Orthopedics"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="12 years of experience" />
-
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="Order details"
+                android:textSize="@dimen/store_info" />
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:background="@android:color/darker_gray"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
+            <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Apollo Hospital"
+                android:layout_alignParentLeft="true"
+                android:gravity="left"
+                android:text="Total Amount: "
+                android:textSize="@dimen/store_info" />
+
+            <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                android:id="@+id/tv_total_order_amt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:textSize="@dimen/store_info" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:gravity="left"
+                android:text="Total Tax: "
+                android:textSize="@dimen/store_info" />
+
+            <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                android:id="@+id/tv_tax_amt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:textSize="@dimen/store_info" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:gravity="left"
+                android:text="Payment Due: "
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="match_parent"
+            <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                android:id="@+id/tv_due_amt"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CBD, Belapur"
-                android:textSize="16sp" />
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+        </RelativeLayout>
 
+        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+            android:id="@+id/tv_store_name"
+            style="@style/style_join_queue_tv"
+            android:background="@color/color_invite_details"
+            android:padding="10dp"
+            android:textColor="@color/colorAddress"
+            android:textStyle="bold"
+            android:textSize="20sp" />
 
-        </LinearLayout>
+        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+            android:id="@+id/tv_address"
+            style="@style/style_join_queue_tv"
+            android:layout_marginBottom="5dp"
+            android:background="@color/color_invite_details"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorAddress"
+            android:textSize="16sp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Cancel Queue" />
     </LinearLayout>
 </LinearLayout>
 

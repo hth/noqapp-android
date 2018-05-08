@@ -60,11 +60,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @BindView(R.id.tv_mobile)
     protected TextView tv_mobile;
 
-    @BindView(R.id.tv_total_value)
-    protected TextView tv_total_value;
+    @BindView(R.id.tv_serving_no)
+    protected TextView tv_serving_no;
 
-    @BindView(R.id.tv_current_value)
-    protected TextView tv_current_value;
+    @BindView(R.id.tv_token)
+    protected TextView tv_token;
 
     @BindView(R.id.tv_how_long)
     protected TextView tv_how_long;
@@ -139,8 +139,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             });
             gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR);
             if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_FROM_LIST, false)) {
-                tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
-                tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+                tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
+                tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
                 tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
                 setBackGround(jsonTokenAndQueue.afterHowLong());
             } else {
@@ -161,8 +161,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     public void tokenPresenterResponse(JsonToken token) {
         Log.d(TAG, token.toString());
         this.jsonToken = token;
-        tv_total_value.setText(String.valueOf(token.getServingNumber()));
-        tv_current_value.setText(String.valueOf(token.getToken()));
+        tv_serving_no.setText(String.valueOf(token.getServingNumber()));
+        tv_token.setText(String.valueOf(token.getToken()));
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
         setBackGround(token.afterHowLong());
         NoQueueMessagingService.subscribeTopics(topic);
@@ -321,8 +321,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         // jsonTokenAndQueue = jq; removed to avoided the override of the data
         jsonTokenAndQueue.setServingNumber(jq.getServingNumber());
         jsonTokenAndQueue.setToken(jq.getToken());
-        tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
-        tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+        tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
+        tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
         tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
         updateEstimatedTime();
         setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);

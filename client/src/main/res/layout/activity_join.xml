@@ -31,14 +31,13 @@
                 android:orientation="vertical">
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                    android:id="@+id/tv_total_value"
+                    android:id="@+id/tv_serving_no"
                     style="@style/style_join_queue_tv"
                     android:gravity="center"
                     android:textColor="@color/color_total_val"
                     android:textSize="36sp" />
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                    android:id="@+id/tv_total"
                     style="@style/style_join_queue_tv"
                     android:gravity="center"
                     android:text="@string/currently_serving"
@@ -56,14 +55,13 @@
                 android:orientation="vertical">
 
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                    android:id="@+id/tv_current_value"
+                    android:id="@+id/tv_people_in_q"
                     style="@style/style_join_queue_tv"
                     android:gravity="center"
                     android:textColor="@color/colorMobile"
                     android:textSize="36sp" />
 
                 <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                    android:id="@+id/tv_current"
                     style="@style/style_join_queue_tv"
                     android:gravity="center"
                     android:text="@string/people_in_queue"

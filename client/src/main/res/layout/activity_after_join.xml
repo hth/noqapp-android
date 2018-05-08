@@ -41,15 +41,14 @@
                         android:orientation="vertical">
 
                         <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                            android:id="@+id/tv_total_value"
+                            android:id="@+id/tv_serving_no"
                             style="@style/style_join_queue_tv"
                             android:gravity="center"
-                            android:text="45"
+                            android:text=""
                             android:textColor="@android:color/black"
                             android:textSize="20sp" />
 
                         <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                            android:id="@+id/tv_total"
                             style="@style/style_join_queue_tv"
                             android:gravity="center"
                             android:text="@string/serving_now"
@@ -67,25 +66,22 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                            android:id="@+id/tv_current_value"
-                            style="@style/style_join_queue_tv"
+                        <TextView
+                            android:id="@+id/tv_token"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
-                            android:layout_marginBottom="5dp"
                             android:background="@drawable/round_corner_business"
                             android:gravity="center"
-                            android:text="25"
+                            android:text=""
                             android:textColor="@android:color/black"
-                            android:textSize="36sp" />
+                            android:textSize="24sp" />
 
                         <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                            android:id="@+id/tv_current"
                             style="@style/style_join_queue_tv"
+                            android:layout_marginTop="5dp"
                             android:gravity="center"
-                            android:text="@string/your_token"
-                            android:textColor="@android:color/black"
-                            android:textSize="16sp" />
+                            android:text="Your Token no"
+                            android:textSize="15sp" />
 
 
                     </LinearLayout>
@@ -100,16 +96,16 @@
 
                         <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                             android:id="@+id/tv_estimated_time"
-                            style="@style/style_join_queue_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="30 Min"
+                            android:text=""
                             android:textColor="@android:color/black"
-                            android:textSize="20sp" />
+                            android:textSize="24sp" />
 
                         <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                             style="@style/style_join_queue_tv"
-                            android:gravity="center"
-                            android:text="Will be served in"
+                            android:text="will be served in"
                             android:textColor="@color/colorAddress"
                             android:textSize="15sp" />
 
