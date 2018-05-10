@@ -301,6 +301,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 } else {
                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                     startActivity(loginIntent);
+
+//                    Intent loginIntent = new Intent(launchActivity, RegistrationActivity.class);
+//                    loginIntent.putExtra("mobile_no", "9766146936");
+//                    loginIntent.putExtra("country_code", "");
+//                    startActivity(loginIntent);
+
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 break;

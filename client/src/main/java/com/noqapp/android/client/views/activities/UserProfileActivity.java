@@ -5,19 +5,26 @@ package com.noqapp.android.client.views.activities;
  */
 
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.widget.AppCompatRadioButton;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
@@ -31,6 +38,10 @@ import com.noqapp.android.client.utils.UserUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import butterknife.BindView;
@@ -48,14 +59,8 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     protected ImageView iv_profile;
     private final int SELECT_PICTURE = 110;
 
-    @BindView(R.id.actv_user_name)
-    protected AutoCompleteTextView actv_user_name;
-    @BindView(R.id.actv_email)
-    protected AutoCompleteTextView actv_email;
-    @BindView(R.id.actv_gender)
-    protected AutoCompleteTextView actv_gender;
-    @BindView(R.id.edt_dob)
-    protected EditText edt_dob;
+    @BindView(R.id.edt_birthday)
+    protected EditText edt_birthday;
     @BindView(R.id.edt_address)
     protected EditText edt_address;
     @BindView(R.id.btn_update)
@@ -63,6 +68,32 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.btn_migrate)
     protected Button btn_migrate;
 
+
+
+    public String gender = "";
+
+    @BindView(R.id.edt_phone)
+    protected EditText edt_phoneNo;
+
+    @BindView(R.id.edt_name)
+    protected EditText edt_Name;
+
+    @BindView(R.id.edt_email)
+    protected EditText edt_Mail;
+
+
+    @BindView(R.id.tv_male)
+    protected EditText tv_male;
+
+    @BindView(R.id.tv_female)
+    protected EditText tv_female;
+
+    @BindView(R.id.ll_gender)
+    protected LinearLayout ll_gender;
+
+
+    private DatePickerDialog fromDatePickerDialog;
+    private SimpleDateFormat dateFormatter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,13 +103,30 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         tv_toolbar_title.setText("Profile");
         iv_edit.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
-        actv_user_name.setText(NoQueueBaseActivity.getUserName());
-        tv_name.setText(NoQueueBaseActivity.getUserName());
-        actv_email.setText(NoQueueBaseActivity.getMail());
-        actv_gender.setText(NoQueueBaseActivity.getGender().equals("M") ? "Male" : "Female");
-        // edt_address.setText(NoQueueBaseActivity.geta);
-        edt_dob.setText(NoQueueBaseActivity.getUserDOB());
 
+        updateUI();
+        dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+        edt_birthday.setInputType(InputType.TYPE_NULL);
+        edt_birthday.setOnClickListener(this);
+        Calendar newCalendar = Calendar.getInstance();
+        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                Date current = newDate.getTime();
+                int date_diff = new Date().compareTo(current);
+
+                if (date_diff < 0) {
+                    Toast.makeText(UserProfileActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
+                    edt_birthday.setText("");
+                } else {
+                    edt_birthday.setText(dateFormatter.format(newDate.getTime()));
+                }
+
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
                 Uri imageUri = Uri.parse(NoQueueBaseActivity.getUserProfileUri());
@@ -108,6 +156,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             case R.id.iv_edit:
                 // selectImage();
                 break;
+            case R.id.edt_birthday:
+                fromDatePickerDialog.show();
+            break;
         }
     }
 
@@ -198,11 +249,18 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void updateUI() {
-        actv_user_name.setText(NoQueueBaseActivity.getUserName());
+        edt_Name.setText(NoQueueBaseActivity.getUserName());
         tv_name.setText(NoQueueBaseActivity.getUserName());
-        actv_email.setText(NoQueueBaseActivity.getMail());
-        actv_gender.setText(NoQueueBaseActivity.getGender().equals("M") ? "Male" : "Female");
+        edt_phoneNo.setText(NoQueueBaseActivity.getPhoneNo());
+        edt_Mail.setText(NoQueueBaseActivity.getMail());
+        edt_phoneNo.setEnabled(false);
+        edt_Mail.setEnabled(false);
+        if(NoQueueBaseActivity.getGender().equals("M")){
+            onClick(tv_male);
+        }else{
+            onClick(tv_female);
+        }
         // edt_address.setText(NoQueueBaseActivity.geta);
-        edt_dob.setText(NoQueueBaseActivity.getUserDOB());
+        edt_birthday.setText(NoQueueBaseActivity.getUserDOB());
     }
 }

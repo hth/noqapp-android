@@ -25,8 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
                 android:scaleType="centerCrop"
-                android:src="@color/colorPrimary"
-              />
+                android:src="@color/colorPrimary" />
 
             <de.hdodenhof.circleimageview.CircleImageView
 
@@ -93,9 +92,7 @@
                 android:paddingBottom="20dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:paddingTop="20dp"
-
-                >
+                android:paddingTop="20dp">
 
 
                 <LinearLayout
@@ -103,92 +100,126 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <android.support.design.widget.TextInputLayout
+
+
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        style="@style/style_register_tv"
+                        android:text="@string/phone" />
+
+
+                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                        android:id="@+id/edt_phone"
+                        style="@style/style_register_edt"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:inputType="phone"
+                        android:maxLength="15" />
 
-                        <AutoCompleteTextView
-                            android:id="@+id/actv_user_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/prompt_user_name"
-                            android:inputType="textEmailAddress"
-                            android:editable="false"
-                            android:maxLines="1"
-                            android:text="Guest User"
-                            android:singleLine="true" />
 
-                    </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        style="@style/style_register_tv"
+                        android:text="@string/name" />
+
+
+                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                        android:id="@+id/edt_name"
+                        style="@style/style_register_edt"
+                        android:inputType="text"
+
+
+                        />
+
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        style="@style/style_register_tv"
+                        android:text="@string/mail" />
+
+
+                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                        android:id="@+id/edt_email"
+                        style="@style/style_register_edt"
+                        android:inputType="textEmailAddress" />
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/actv_email"
-                            android:layout_width="match_parent"
+
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:hint="@string/prompt_email"
-                            android:inputType="textEmailAddress"
-                            android:editable="false"
-                            android:maxLines="1"
-                            android:text="abc.cbz@gmail.com"
-                            android:singleLine="true" />
+                            android:layout_weight=".50"
+                            android:orientation="vertical"
+                            android:paddingRight="10dp">
 
-                    </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                                style="@style/style_register_tv"
+                                android:text="@string/birthday" />
 
-                        <AutoCompleteTextView
-                            android:id="@+id/actv_gender"
-                            android:layout_width="match_parent"
+                            <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                                android:id="@+id/edt_birthday"
+                                style="@style/style_register_edt" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:hint="@string/prompt_gender"
-                            android:editable="false"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:text="Male"
-                            android:singleLine="true" />
+                            android:layout_weight=".50"
+                            android:orientation="vertical">
 
-                    </android.support.design.widget.TextInputLayout>
+                            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                                style="@style/style_register_tv"
+                                android:text="@string/gender" />
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:id="@+id/ll_gender"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:weightSum="1">
 
-                        <EditText
-                            android:id="@+id/edt_address"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/prompt_address_status"
-                            android:editable="false"
-                            android:imeActionId="6"
-                            android:imeOptions="actionUnspecified"
-                            android:inputType="text"
-                            android:text="Address"
-                            android:maxLines="1"
-                            android:singleLine="true" />
+                                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                                    android:id="@+id/tv_male"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center_horizontal|center_vertical"
+                                    android:layout_weight=".5"
+                                    android:focusable="false"
+                                    android:gravity="center_horizontal|center_vertical"
+                                    android:paddingBottom="10dp"
+                                    android:paddingTop="10dp"
+                                    android:text="male "
+                                    android:textSize="14sp" />
 
-                    </android.support.design.widget.TextInputLayout>
+                                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                                    android:id="@+id/tv_female"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center_horizontal|center_vertical"
+                                    android:layout_weight=".5"
+                                    android:focusable="false"
+                                    android:gravity="center_horizontal|center_vertical"
+                                    android:paddingBottom="10dp"
+                                    android:paddingTop="10dp"
+                                    android:text="female "
+                                    android:textSize="14sp" />
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
 
-                        <EditText
-                            android:id="@+id/edt_dob"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Date of Birth"
-                            android:editable="false"
-                            android:imeActionId="6"
-                            android:imeOptions="actionUnspecified"
-                            android:inputType="text"
-                            android:text="@string/prompt_dob"
-                            android:maxLines="1"
-                            android:singleLine="true" />
 
-                    </android.support.design.widget.TextInputLayout>
+
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        style="@style/style_register_tv"
+                        android:text="@string/prompt_address_status" />
+
+
+                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                        android:id="@+id/edt_address"
+                        style="@style/style_register_edt"
+                        android:inputType="textEmailAddress" />
+
+
 
                     <Button
                         android:id="@+id/btn_update"
@@ -199,6 +230,7 @@
                         android:layout_marginTop="16dp"
                         android:text="@string/action_update"
                         android:textStyle="bold" />
+
                     <Button
                         android:id="@+id/btn_migrate"
                         style="?android:textAppearanceSmall"
@@ -211,7 +243,6 @@
 
 
                 </LinearLayout>
-
 
             </android.support.constraint.ConstraintLayout>
         </RelativeLayout>
