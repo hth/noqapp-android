@@ -251,6 +251,7 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
         registration.setPhone(phoneNo);
         registration.setFirstName(name);
         registration.setMail(mail);
+        registration.setPassword("");
         registration.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
         registration.setGender(gender);
         registration.setTimeZoneId(tz.getID());

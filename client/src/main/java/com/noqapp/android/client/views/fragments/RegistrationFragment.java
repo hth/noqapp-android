@@ -254,6 +254,7 @@ public class RegistrationFragment extends NoQueueBaseFragment implements MeView,
         registration.setPhone(phoneNo);
         registration.setFirstName(name);
         registration.setMail(mail);
+        registration.setPassword("");
         registration.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
         registration.setGender(gender);
         registration.setTimeZoneId(tz.getID());
