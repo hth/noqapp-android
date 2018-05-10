@@ -1,10 +1,12 @@
 package com.noqapp.android.client.model.types;
 
+import java.io.Serializable;
+
 /**
  * Created by hitender on 3/27/18.
  */
 
-public enum FacilityEnum {
+public enum FacilityEnum implements Serializable{
     EM("EM", "Emergency Medicine"),
     IC("IC", "High End ICU"),
     IU("IU", "ICCU"),
