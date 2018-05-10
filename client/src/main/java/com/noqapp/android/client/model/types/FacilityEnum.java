@@ -20,7 +20,9 @@ public enum FacilityEnum {
     GY("GY", "Dentistry"),
     DE("DE", "Cashless Treatment"),
     AH("AH", "Health Checkup Plans"),
-    SO("SO", "Sunday OPD");
+    SO("SO", "Sunday OPD"),
+    DEL("DEL", "Delivery"),
+    FRS("FRS", "Fresh Food");
 
     private final String description;
     private final String name;
