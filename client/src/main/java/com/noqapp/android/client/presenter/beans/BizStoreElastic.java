@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.BusinessTypeEnum;
+import com.noqapp.android.client.model.types.FacilityEnum;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -132,6 +134,12 @@ public class BizStoreElastic implements Serializable {
 
     @JsonProperty("BI")
     private List<String> bizServiceImages = new LinkedList<>();
+
+    @JsonProperty("AM")
+    private List<AmenityEnum> amenities = new LinkedList<>();
+
+    @JsonProperty ("FA")
+    private List<FacilityEnum> facilities = new LinkedList<>();
 
     public String getId() {
         return id;
@@ -417,10 +425,25 @@ public class BizStoreElastic implements Serializable {
     }
 
     public BizStoreElastic setBizServiceImages(List<String> bizServiceImages) {
-        //TODO(hth) remove temp condition
-        if (!bizServiceImages.isEmpty()) {
-            this.bizServiceImages = bizServiceImages;
-        }
+        this.bizServiceImages = bizServiceImages;
+        return this;
+    }
+
+    public List<AmenityEnum> getAmenities() {
+        return amenities;
+    }
+
+    public BizStoreElastic setAmenities(List<AmenityEnum> amenities) {
+        this.amenities = amenities;
+        return this;
+    }
+
+    public List<FacilityEnum> getFacilities() {
+        return facilities;
+    }
+
+    public BizStoreElastic setFacilities(List<FacilityEnum> facilities) {
+        this.facilities = facilities;
         return this;
     }
 

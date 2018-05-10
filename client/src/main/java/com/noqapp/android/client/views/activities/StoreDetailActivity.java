@@ -219,9 +219,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_known_for.setText(jsonQueue.getFamousFor());
         List<PaymentTypeEnum> temp = jsonQueue.getPaymentTypes();
         ArrayList<String> payment_data = new ArrayList<>();
-        StringBuilder paymentMode = new StringBuilder();
         for (int i = 0; i < temp.size(); i++) {
-            paymentMode.append(temp.get(i).getDescription()).append(i < (temp.size() - 1) ? ", " : "");
             payment_data.add(temp.get(i).getDescription());
         }
         sc_payment_mode.addSegments(payment_data);
@@ -253,22 +251,18 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);
         //
         List<AmenityEnum> amenities = jsonQueue.getAmenities();
-        StringBuilder amenity = new StringBuilder();
-        ArrayList<String> data = new ArrayList<>();
+        ArrayList<String> amenitiesdata = new ArrayList<>();
         for (int j = 0; j < amenities.size(); j++) {
-            amenity.append(amenities.get(j).getDescription()).append(j < (amenities.size() - 1) ? ", " : "");
-            data.add(amenities.get(j).getDescription());
+            amenitiesdata.add(amenities.get(j).getDescription());
         }
-        sc_amenities.addSegments(data);
+        sc_amenities.addSegments(amenitiesdata);
 
         List<DeliveryTypeEnum> deliveryTypes = jsonQueue.getDeliveryTypes();
-        ArrayList<String> data1 = new ArrayList<>();
-        StringBuilder deliveryMode = new StringBuilder();
+        ArrayList<String> deliveryTypesdata = new ArrayList<>();
         for (int j = 0; j < deliveryTypes.size(); j++) {
-            deliveryMode.append(deliveryTypes.get(j).getDescription()).append(j < (deliveryTypes.size() - 1) ? ", " : "");
-            data1.add(deliveryTypes.get(j).getDescription());
+            deliveryTypesdata.add(deliveryTypes.get(j).getDescription());
         }
-        sc_delivery_types.addSegments(data1);
+        sc_delivery_types.addSegments(deliveryTypesdata);
 
 
         //

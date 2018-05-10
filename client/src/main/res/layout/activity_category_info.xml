@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_cat_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -135,32 +136,46 @@
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
-                    <LinearLayout
-                        android:id="@+id/ll_amenities"
+                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                        android:id="@+id/sc_amenities"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="horizontal">
+                        android:layout_height="match_parent"
+                        app:distributeEvenly="false"
+                        app:radius="6dp"
+                        app:radiusForEverySegment="true"
+                        app:segmentHorizontalMargin="4dp"
+                        app:segmentVerticalMargin="4dp"
+                        app:selectedBackgroundColor="@color/color_invite_details"
+                        app:selectedStrokeColor="@color/color_invite_details"
+                        app:selectedTextColor="@android:color/black"
+                        app:textVerticalPadding="3dp"
+                        app:unSelectedBackgroundColor="@color/color_invite_details"
+                        app:unSelectedStrokeColor="@color/color_invite_details"
+                        app:unSelectedTextColor="@android:color/black" />
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        android:id="@+id/tv_facilities"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="5dp"
+                        android:text="Facility"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
 
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:background="@drawable/amenities"
-                            android:padding="5dp"
-                            android:text="Parking"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="14sp" />
-
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/amenities"
-                            android:padding="5dp"
-                            android:text="Free Wi-Fi"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                        android:id="@+id/sc_facility"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:distributeEvenly="false"
+                        app:radius="6dp"
+                        app:radiusForEverySegment="true"
+                        app:segmentHorizontalMargin="4dp"
+                        app:segmentVerticalMargin="4dp"
+                        app:selectedBackgroundColor="@color/color_invite_details"
+                        app:selectedStrokeColor="@color/color_invite_details"
+                        app:selectedTextColor="@android:color/black"
+                        app:textVerticalPadding="3dp"
+                        app:unSelectedBackgroundColor="@color/color_invite_details"
+                        app:unSelectedStrokeColor="@color/color_invite_details"
+                        app:unSelectedTextColor="@android:color/black" />
 
                     <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_complete_address"

@@ -22,6 +22,8 @@ import android.widget.TextView;
 import com.google.common.cache.Cache;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.model.types.AmenityEnum;
+import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -48,6 +50,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 import static com.google.common.cache.CacheBuilder.newBuilder;
 import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
@@ -95,8 +98,11 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @BindView(R.id.btn_join_queues)
     protected Button btn_join_queues;
 
-    @BindView(R.id.ll_amenities)
-    protected LinearLayout ll_amenities;
+    @BindView(R.id.sc_amenities)
+    protected SegmentedControl sc_amenities;
+
+    @BindView(R.id.sc_facility)
+    protected SegmentedControl sc_facility;
 
     private String codeQR;
     private  BizStoreElastic bizStoreElastic;
@@ -214,6 +220,21 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
             codeQR = bizStoreElastic.getCodeQR();
             AppUtilities.setStoreDrawable(this,iv_business_icon,bizStoreElastic.getBusinessType(),tv_rating);
+
+            List<AmenityEnum> amenities = bizStoreElastic.getAmenities();
+            ArrayList<String> amenitiesdata = new ArrayList<>();
+            for (int j = 0; j < amenities.size(); j++) {
+                amenitiesdata.add(amenities.get(j).getDescription());
+            }
+            sc_amenities.addSegments(amenitiesdata);
+
+            List<FacilityEnum> faclities = bizStoreElastic.getFacilities();
+            ArrayList<String> data = new ArrayList<>();
+            for (int j = 0; j < faclities.size(); j++) {
+                data.add(faclities.get(j).getDescription());
+            }
+            sc_facility.addSegments(data);
+
             Picasso.with(this)
                     .load(bizStoreElastic.getDisplayImage())
                     .into(iv_category_banner);
