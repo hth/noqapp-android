@@ -208,7 +208,6 @@
                     </LinearLayout>
 
 
-
                     <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                         style="@style/style_register_tv"
                         android:text="@string/prompt_address_status" />
@@ -220,27 +219,50 @@
                         android:inputType="textEmailAddress" />
 
 
-
-                    <Button
+                    <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
                         android:id="@+id/btn_update"
-                        style="?android:textAppearanceSmall"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="16dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/button_drawable"
+                        android:drawableEnd="@drawable/arrow_small"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@drawable/arrow_small"
+                        android:gravity="center"
+                        android:paddingLeft="90dp"
+                        android:paddingRight="90dp"
                         android:text="@string/action_update"
-                        android:textStyle="bold" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorMobile"
+                        android:textSize="15sp"
 
-                    <Button
+                        />
+
+                    <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
                         android:id="@+id/btn_migrate"
-                        style="?android:textAppearanceSmall"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="16dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/button_drawable"
+                        android:drawableEnd="@drawable/arrow_small"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@drawable/arrow_small"
+                        android:gravity="center"
+                        android:paddingLeft="90dp"
+                        android:paddingRight="90dp"
                         android:text="Migrate mobile no"
-                        android:textStyle="bold" />
+                        android:visibility="gone"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorMobile"
+                        android:textSize="15sp"
 
+                        />
 
                 </LinearLayout>
 

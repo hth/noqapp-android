@@ -8,12 +8,18 @@ package com.noqapp.android.client.views.activities;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -38,6 +44,7 @@ import com.noqapp.android.client.utils.UserUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -103,11 +110,12 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         tv_toolbar_title.setText("Profile");
         iv_edit.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
-
-        updateUI();
         dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+        updateUI();
         edt_birthday.setInputType(InputType.TYPE_NULL);
         edt_birthday.setOnClickListener(this);
+        tv_male.setOnClickListener(this);
+        tv_female.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
@@ -158,6 +166,35 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.edt_birthday:
                 fromDatePickerDialog.show();
+
+            case R.id.tv_male:
+                gender = "M";
+                tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_male.setBackgroundResource(R.drawable.gender_redbg);
+                SpannableString ss = new SpannableString("Male  ");
+                Drawable d = getResources().getDrawable(R.drawable.check_white);
+                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
+                ss.setSpan(span, 5, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                tv_male.setText(ss);
+                tv_male.setTextColor(Color.WHITE);
+                tv_female.setTextColor(Color.BLACK);
+                tv_female.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                break;
+            case R.id.tv_female:
+                gender = "F";
+                tv_female.setBackgroundResource(R.drawable.gender_redbg);
+                tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_female.setCompoundDrawablePadding(0);
+                tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                tv_male.setTextColor(Color.BLACK);
+                tv_female.setTextColor(Color.WHITE);
+                SpannableString ss1 = new SpannableString("Female  ");
+                Drawable d1 = getResources().getDrawable(R.drawable.check_white);
+                d1.setBounds(0, 0, d1.getIntrinsicWidth(), d1.getIntrinsicHeight());
+                ImageSpan span1 = new ImageSpan(d1, ImageSpan.ALIGN_BASELINE);
+                ss1.setSpan(span1, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                tv_female.setText(ss1);
             break;
         }
     }
@@ -196,21 +233,32 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
 
     @OnClick(R.id.btn_update)
     public void updateProfile() {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
-            ProfileModel.profilePresenter = this;
 
-            UpdateProfile updateProfile = new UpdateProfile();
-            updateProfile.setAddress("Some Address");
-            updateProfile.setFirstName("Mohan");
-            updateProfile.setBirthday(AppUtilities.convertDOBToValidFormat("JAN 05, 1985"));
-            updateProfile.setGender("F");
-            updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
-
-            ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
-        } else {
-            ShowAlertInformation.showNetworkDialog(this);
+        if (validate()) {
+            btn_update.setBackgroundResource(R.drawable.button_drawable_red);
+            btn_update.setTextColor(Color.WHITE);
+            btn_update.setCompoundDrawablesWithIntrinsicBounds(
+                    0, 0, R.drawable.arrow_white, 0);
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.show();
+                ProfileModel.profilePresenter = this;
+                //   String phoneNo = edt_phoneNo.getText().toString();
+                String name = edt_Name.getText().toString();
+                //   String mail = edt_Mail.getText().toString();
+                String birthday = edt_birthday.getText().toString();
+                String address = edt_address.getText().toString();
+                UpdateProfile updateProfile = new UpdateProfile();
+                updateProfile.setAddress(address);
+                updateProfile.setFirstName(name);
+                updateProfile.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
+                updateProfile.setGender(gender);
+                updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
+                ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+            } else {
+                ShowAlertInformation.showNetworkDialog(this);
+            }
         }
+
     }
 
     @OnClick(R.id.btn_migrate)
@@ -261,6 +309,51 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             onClick(tv_female);
         }
         // edt_address.setText(NoQueueBaseActivity.geta);
-        edt_birthday.setText(NoQueueBaseActivity.getUserDOB());
+        try {
+            SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd");
+            String reformattedStr = dateFormatter.format(fromUser.parse(NoQueueBaseActivity.getUserDOB()));
+            edt_birthday.setText(reformattedStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private boolean isValidEmail(CharSequence target) {
+        if (TextUtils.isEmpty(target)) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
+    }
+
+    private boolean validate() {
+        btn_update.setBackgroundResource(R.drawable.button_drawable);
+        btn_update.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
+        btn_update.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
+        boolean isValid = true;
+        edt_Name.setError(null);
+        edt_Mail.setError(null);
+        edt_birthday.setError(null);
+        new AppUtilities().hideKeyBoard(this);
+
+        if (TextUtils.isEmpty(edt_Name.getText())) {
+            edt_Name.setError(getString(R.string.error_name_blank));
+            isValid = false;
+        }
+        if (!TextUtils.isEmpty(edt_Name.getText()) && edt_Name.getText().length() < 4) {
+            edt_Name.setError(getString(R.string.error_name_length));
+            isValid = false;
+        }
+        if (!TextUtils.isEmpty(edt_Mail.getText()) && !isValidEmail(edt_Mail.getText())) {
+            edt_Mail.setError(getString(R.string.error_invalid_email));
+            isValid = false;
+        }
+        if (TextUtils.isEmpty(edt_birthday.getText())) {
+            edt_birthday.setError(getString(R.string.error_dob_blank));
+            isValid = false;
+        }
+        return isValid;
     }
 }

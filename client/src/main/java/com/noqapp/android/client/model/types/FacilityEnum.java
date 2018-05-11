@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model.types;
 
+
 /**
  * Created by hitender on 3/27/18.
  */
