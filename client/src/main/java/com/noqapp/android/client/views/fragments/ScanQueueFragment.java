@@ -48,6 +48,7 @@ import com.noqapp.android.client.views.activities.DoctorProfile1Activity;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.client.views.activities.SearchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.activities.ViewAllListActivity;
 import com.noqapp.android.client.views.adapters.CurrentActivityAdapter;
@@ -562,4 +563,12 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
     }
 
+    public void callSearch() {
+        Intent in_search = new Intent(getActivity(), SearchActivity.class);
+        in_search.putExtra("scrollId","");
+        in_search.putExtra("lat",lat_array[0]);
+        in_search.putExtra("long",log_array[0]);
+        in_search.putExtra("city",city[0]);
+        startActivity(in_search);
+    }
 }

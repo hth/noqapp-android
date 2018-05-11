@@ -100,6 +100,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
 
+    @BindView(R.id.iv_search)
+    protected ImageView iv_search;
+
+
     @BindView(R.id.iv_notification)
     protected ImageView iv_notification;
     @BindView(R.id.fl_notification)
@@ -165,10 +169,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             language = "en_US";
         }
 
-
+        iv_search.setOnClickListener(this);
         actionbarBack.setOnClickListener(this);
         iv_notification.setOnClickListener(this);
         fl_notification.setVisibility(View.VISIBLE);
+        iv_search.setVisibility(View.VISIBLE);
         actionbarBack.setVisibility(View.GONE);
         initProgress();
         setCurrentSelectedTabTag(tabHome);
@@ -272,6 +277,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         switch (id) {
             case R.id.actionbarBack:
                 onBackPressed();
+                break;
+            case R.id.iv_search:
+                scanfragment.callSearch();
+
                 break;
             case R.id.iv_notification:
                 Intent in = new Intent(launchActivity, NotificationActivity.class);

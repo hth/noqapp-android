@@ -55,4 +55,25 @@ public class NearMeModel {
         });
     }
 
+    public static void search(String did, StoreInfoParam storeInfoParam) {
+        nearmeService.search(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
+            @Override
+            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
+                if (response.body() != null) {
+                    Log.d("Response NearMe", String.valueOf(response.body()));
+                    nearMePresenter.nearMeResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Empty history");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                nearMePresenter.nearMeError();
+            }
+        });
+    }
+
 }

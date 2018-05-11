@@ -1,14 +1,16 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +25,6 @@ import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
@@ -36,14 +37,14 @@ import butterknife.ButterKnife;
 /**
  * Created by chandra on 5/7/17.
  */
-public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener,NearMePresenter {
+public class SearchActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener,NearMePresenter {
 
 
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
-    private ArrayList<BizStoreElastic> listData;
+    private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
     @BindView(R.id.rv_merchant_around_you)
     protected RecyclerView rv_merchant_around_you;
@@ -52,12 +53,14 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
     private String city = "";
     private String lat = "";
     private String longitute = "";
+    @BindView(R.id.edt_search)
+    protected EditText edt_search;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_all);
+        setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,11 +68,10 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
                 finish();
             }
         });
-        tv_toolbar_title.setText("View All");
+        tv_toolbar_title.setText("Search");
         listener = this;
         //getString(R.string.medical_history));
         NearMeModel.nearMePresenter = this;
-        listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         longitute = getIntent().getStringExtra("long");
@@ -101,13 +103,50 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
                             storeInfoParam.setLongitude(longitute);
                             storeInfoParam.setFilters("xyz");
                             storeInfoParam.setScrollId(scrollId);
-                            NearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
+                            NearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
                         } else {
-                            ShowAlertInformation.showNetworkDialog(ViewAllListActivity.this);
+                            ShowAlertInformation.showNetworkDialog(SearchActivity.this);
                         }
             }
         });
+        edt_search.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_LEFT = 0;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (edt_search.getRight() - edt_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // your action here
+                        hideAndReset();
+                        return true;
+                    }
+                    if (event.getRawX() <= (edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
+                        // your action here
 
+                        Toast.makeText(SearchActivity.this,"left",Toast.LENGTH_LONG).show();
+                        if(edt_search.getText().toString().equals("")){
+
+                        }else{
+                            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                StoreInfoParam storeInfoParam = new StoreInfoParam();
+                                storeInfoParam.setCityName(city);
+                                storeInfoParam.setLatitude(lat);
+                                storeInfoParam.setLongitude(longitute);
+                                storeInfoParam.setQuery(edt_search.getText().toString());
+                                storeInfoParam.setFilters("");
+                                storeInfoParam.setScrollId(scrollId);
+                                NearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
+                            } else {
+                                ShowAlertInformation.showNetworkDialog(SearchActivity.this);
+                            }
+                        }
+                        hideAndReset();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -145,12 +184,12 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         //sort the list, give the Comparator the current location
         Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat),Double.parseDouble(longitute))));
         //   remove progress item
-        listData.remove(listData.size() - 1);
-        storeInfoViewAllAdapter.notifyItemRemoved(listData.size());
-        //add all items
+//        listData.remove(listData.size() - 1);
+//        storeInfoViewAllAdapter.notifyItemRemoved(listData.size());
+//        //add all items
         listData.addAll(nearMeData);
         storeInfoViewAllAdapter.notifyDataSetChanged();
-        storeInfoViewAllAdapter.setLoaded();
+//        storeInfoViewAllAdapter.setLoaded();
         //or you can add all at once but do not forget to call storeInfoViewAllAdapter.notifyDataSetChanged();
 
     }
@@ -159,5 +198,11 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
     public void nearMeError() {
         //LaunchActivity.getLaunchActivity().dismissProgress();
 
+    }
+
+    private void hideAndReset() {
+        edt_search.setText("");
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(edt_search.getWindowToken(), 0);
     }
 }
