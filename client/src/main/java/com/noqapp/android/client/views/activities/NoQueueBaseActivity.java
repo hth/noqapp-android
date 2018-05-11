@@ -23,6 +23,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_NAME = "name";
     public static final String PREKEY_MAIL = "mail";
     public static final String PREKEY_DOB = "dateOfBirth";
+    public static final String PREKEY_ADD = "address";
     public static final String PREKEY_PROFILE_IMAGE = "imageUri";
     //TODO add address from profile
     public static final String PREKEY_GENDER = "gender";
@@ -95,6 +96,10 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedPreferences.getString(PREKEY_INVITECODE, "");
     }
 
+    public static String getAddress() {
+        return sharedPreferences.getString(PREKEY_ADD, "");
+    }
+
     public static String getCountryShortName() {
         return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, "US");
     }
@@ -126,6 +131,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putBoolean(PREKEY_AUTOJOIN, true);
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
+        editor.putString(PREKEY_ADD,profile.getAddress());
         editor.putString(APIConstant.Key.XR_MAIL, email);
         editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();

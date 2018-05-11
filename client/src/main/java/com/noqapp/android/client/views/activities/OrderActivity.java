@@ -7,6 +7,8 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -15,20 +17,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.model.PurchaseApiModel;
 import com.noqapp.android.client.model.types.DeliveryTypeEnum;
 import com.noqapp.android.client.model.types.PaymentTypeEnum;
 import com.noqapp.android.client.model.types.PurchaseOrderStateEnum;
+import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
+import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter {
+public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter ,ProfilePresenter {
 
     @BindView(R.id.tv_user_name)
     protected TextView tv_user_name;
@@ -60,6 +69,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_toolbar_title.setText(getString(R.string.screen_order));
         tv_user_name.setText(NoQueueBaseActivity.getUserName());
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
+        edt_address.setText(NoQueueBaseActivity.getAddress());
         PurchaseApiModel.purchaseOrderPresenter = this;
         tv_tax_amt.setText(getString(R.string.rupee)+""+"0.0");
         tv_due_amt.setText(getString(R.string.rupee)+""+Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/100);
@@ -122,14 +132,29 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         if (null != jsonPurchaseOrder) {
             if (jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.PO) {
                 Toast.makeText(this, "Order placed successfully.", Toast.LENGTH_LONG).show();
-                Intent in =new Intent(OrderActivity.this, OrderConfirmActivity.class);
+                Intent in = new Intent(OrderActivity.this, OrderConfirmActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("data",jsonPurchaseOrder);
-                bundle.putSerializable("oldData",this.jsonPurchaseOrder);
-                bundle.putString("storeName",getIntent().getExtras().getString("storeName"));
-                bundle.putString("storeAddress",getIntent().getExtras().getString("storeAddress"));
+                bundle.putSerializable("data", jsonPurchaseOrder);
+                bundle.putSerializable("oldData", this.jsonPurchaseOrder);
+                bundle.putString("storeName", getIntent().getExtras().getString("storeName"));
+                bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
                 in.putExtras(bundle);
                 startActivity(in);
+
+
+                if (TextUtils.isEmpty(NoQueueBaseActivity.getAddress())) {
+                    ProfileModel.profilePresenter = this;
+                    String address = edt_address.getText().toString();
+                    UpdateProfile updateProfile = new UpdateProfile();
+                    updateProfile.setAddress(address);
+                    updateProfile.setFirstName(NoQueueBaseActivity.getUserName());
+                    updateProfile.setBirthday(NoQueueBaseActivity.getUserDOB());
+                    updateProfile.setGender(NoQueueBaseActivity.getGender());
+                    updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
+                    ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                }
+
+
             } else {
                 Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
             }
@@ -149,4 +174,17 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         Toast.makeText(this, "Error code : " + "" + errorCode, Toast.LENGTH_LONG).show();
         dismissProgress();
     }
+
+    @Override
+    public void queueResponse(JsonProfile profile, String email, String auth) {
+        Log.v("JsonProfile", profile.toString());
+        NoQueueBaseActivity.commitProfile(profile, email, auth);
+    }
+
+    @Override
+    public void queueError() {
+        dismissProgress();
+    }
+
+
 }
