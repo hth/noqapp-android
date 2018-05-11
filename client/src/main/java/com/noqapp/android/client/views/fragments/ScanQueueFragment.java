@@ -97,7 +97,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected TextView tv_near_view_all;
 
     private static QueueHandler mHandler;
-
     @BindView(R.id.btn_temp)
     protected Button btn_temp;
 
@@ -119,6 +118,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     private String[] lat_array = {"19.004550", "28.553399", "22.572645"};
     private String[] log_array = {"73.014529", "77.194165", "88.363892"};
     private int city_select = 0 ;
+    private String scrollId = "";
 
     public ScanQueueFragment() {
 
@@ -305,6 +305,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             storeInfoParam.setLatitude(lat);
             storeInfoParam.setLongitude(longitute);
             storeInfoParam.setFilters("xyz");
+            storeInfoParam.setScrollId("");
            // LaunchActivity.getLaunchActivity().progressDialog.show();
             pb_near.setVisibility(View.VISIBLE);
             NearMeModel.nearMePresenter = this;
@@ -324,6 +325,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
+        scrollId = bizStoreElasticList.getScrollId();
        // LaunchActivity.getLaunchActivity().dismissProgress();
         pb_near.setVisibility(View.GONE);
     }
@@ -403,6 +405,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void nearClick() {
         Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
         intent.putExtra("list", (Serializable) nearMeData);
+        intent.putExtra("scrollId",scrollId);
+        intent.putExtra("lat",lat_array[0]);
+        intent.putExtra("long",log_array[0]);
+        intent.putExtra("city",city[0]);
         startActivity(intent);
 
     }

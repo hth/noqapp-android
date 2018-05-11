@@ -28,7 +28,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     private final int VIEW_PROG = 0;
     // The minimum amount of items to have below your current scroll position
 // before loading more.
-    private int visibleThreshold = 2;
+    private int visibleThreshold = 3;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
     private OnLoadMoreListener onLoadMoreListener;
@@ -72,7 +72,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
 
         public ProgressViewHolder(View v) {
             super(v);
-            progressBar = (ProgressBar) v.findViewById(R.id.progressBar1);
+            progressBar = v.findViewById(R.id.progressBar);
         }
     }
 

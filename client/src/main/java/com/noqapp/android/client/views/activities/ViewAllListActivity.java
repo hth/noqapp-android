@@ -7,17 +7,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.NearMeModel;
+import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
+import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.SortPlaces;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +36,7 @@ import butterknife.ButterKnife;
 /**
  * Created by chandra on 5/7/17.
  */
-public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener {
+public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener,NearMePresenter {
 
 
     @BindView(R.id.actionbarBack)
@@ -37,7 +48,11 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
     @BindView(R.id.rv_merchant_around_you)
     protected RecyclerView rv_merchant_around_you;
     private StoreInfoViewAllAdapter.OnItemClickListener listener;
-    protected Handler handler;
+    private String scrollId = "";
+    private String city = "";
+    private String lat = "";
+    private String longitute = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +68,12 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         tv_toolbar_title.setText("View All");
         listener = this;
         //getString(R.string.medical_history));
-
+        NearMeModel.nearMePresenter = this;
         listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
-        handler = new Handler();
+        city = getIntent().getStringExtra("city");
+        lat = getIntent().getStringExtra("lat");
+        longitute = getIntent().getStringExtra("long");
+
         rv_merchant_around_you.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -69,27 +87,24 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
             public void onLoadMore() {
                 //add null , so the adapter will check view_type and show progress bar at bottom
                 listData.add(null);
-                storeInfoViewAllAdapter.notifyItemInserted(listData.size() - 1);
-
-                handler.postDelayed(new Runnable() {
-                    @Override
+                rv_merchant_around_you.post(new Runnable() {
                     public void run() {
-                        //   remove progress item
-                        listData.remove(listData.size() - 1);
-                        storeInfoViewAllAdapter.notifyItemRemoved(listData.size());
-                        //add items one by one
-                        int start = listData.size();
-                        int end = start + 2;
-
-                        for (int i = start + 1; i <= end; i++) {
-                            listData.add(listData.get(0));
-                            storeInfoViewAllAdapter.notifyItemInserted(listData.size());
-                        }
-                        storeInfoViewAllAdapter.setLoaded();
-                        //or you can add all at once but do not forget to call storeInfoViewAllAdapter.notifyDataSetChanged();
+                        storeInfoViewAllAdapter.notifyItemInserted(listData.size() - 1);
+                        storeInfoViewAllAdapter.notifyDataSetChanged();
                     }
-                }, 2000);
+                });
 
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            StoreInfoParam storeInfoParam = new StoreInfoParam();
+                            storeInfoParam.setCityName(city);
+                            storeInfoParam.setLatitude(lat);
+                            storeInfoParam.setLongitude(longitute);
+                            storeInfoParam.setFilters("xyz");
+                            storeInfoParam.setScrollId(scrollId);
+                            NearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(ViewAllListActivity.this);
+                        }
             }
         });
 
@@ -121,5 +136,28 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
                 startActivity(intent);
         }
     }
+    @Override
+    public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
 
+        ArrayList<BizStoreElastic> nearMeData = new ArrayList<>();
+        nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
+        scrollId = bizStoreElasticList.getScrollId();
+        //sort the list, give the Comparator the current location
+        Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat),Double.parseDouble(longitute))));
+        //   remove progress item
+        listData.remove(listData.size() - 1);
+        storeInfoViewAllAdapter.notifyItemRemoved(listData.size());
+        //add all items
+        listData.addAll(nearMeData);
+        storeInfoViewAllAdapter.notifyDataSetChanged();
+        storeInfoViewAllAdapter.setLoaded();
+        //or you can add all at once but do not forget to call storeInfoViewAllAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void nearMeError() {
+        //LaunchActivity.getLaunchActivity().dismissProgress();
+
+    }
 }
