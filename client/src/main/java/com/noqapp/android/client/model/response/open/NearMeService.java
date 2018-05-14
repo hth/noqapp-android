@@ -15,6 +15,18 @@ import retrofit2.http.POST;
 public interface NearMeService {
 
 
+    @POST("open/search.json")
+    Call<BizStoreElasticList> search(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Body
+            StoreInfoParam storeInfoParam
+    );
+
     @POST("open/search/nearMe.json")
     Call<BizStoreElasticList> nearMe(
             @Header("X-R-DID")

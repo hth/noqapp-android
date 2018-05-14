@@ -303,6 +303,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         edt_Mail.setText(NoQueueBaseActivity.getMail());
         edt_phoneNo.setEnabled(false);
         edt_Mail.setEnabled(false);
+        edt_address.setText(NoQueueBaseActivity.getAddress());
         if(NoQueueBaseActivity.getGender().equals("M")){
             onClick(tv_male);
         }else{

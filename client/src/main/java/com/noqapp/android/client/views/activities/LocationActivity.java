@@ -209,7 +209,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
     }
 
 
-    private void getAddress(double lat, double lng) {
+    public void getAddress(double lat, double lng) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);

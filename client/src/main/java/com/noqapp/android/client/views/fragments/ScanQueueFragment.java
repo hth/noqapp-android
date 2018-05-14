@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -16,7 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -48,6 +52,7 @@ import com.noqapp.android.client.views.activities.DoctorProfile1Activity;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.client.views.activities.SearchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.activities.ViewAllListActivity;
 import com.noqapp.android.client.views.adapters.CurrentActivityAdapter;
@@ -56,7 +61,17 @@ import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -97,7 +112,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected TextView tv_near_view_all;
 
     private static QueueHandler mHandler;
-
     @BindView(R.id.btn_temp)
     protected Button btn_temp;
 
@@ -119,6 +133,18 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     private String[] lat_array = {"19.004550", "28.553399", "22.572645"};
     private String[] log_array = {"73.014529", "77.194165", "88.363892"};
     private int city_select = 0 ;
+    private String scrollId = "";
+
+
+
+    private static final String LOG_TAG = "ExampleApp";
+
+    private final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
+    private final String TYPE_AUTOCOMPLETE = "/autocomplete";
+    private final String OUT_JSON = "/json";
+    private final String COUNTRY_CODE = "IN";
+    private final String API_KEY = "AIzaSyA9eHl3SHvjXmHFq9q5yPjRy0uqBd5awSc";
+
 
     public ScanQueueFragment() {
 
@@ -162,6 +188,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
         ButterKnife.bind(this, view);
+        AutoCompleteTextView autoCompView = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
+
+        autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
+       // autoCompView.setOnItemClickListener(this);
         return view;
     }
 
@@ -305,6 +335,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             storeInfoParam.setLatitude(lat);
             storeInfoParam.setLongitude(longitute);
             storeInfoParam.setFilters("xyz");
+            storeInfoParam.setScrollId("");
            // LaunchActivity.getLaunchActivity().progressDialog.show();
             pb_near.setVisibility(View.VISIBLE);
             NearMeModel.nearMePresenter = this;
@@ -324,6 +355,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
+        scrollId = bizStoreElasticList.getScrollId();
        // LaunchActivity.getLaunchActivity().dismissProgress();
         pb_near.setVisibility(View.GONE);
     }
@@ -403,6 +435,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void nearClick() {
         Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
         intent.putExtra("list", (Serializable) nearMeData);
+        intent.putExtra("scrollId",scrollId);
+        intent.putExtra("lat",lat_array[0]);
+        intent.putExtra("long",log_array[0]);
+        intent.putExtra("city",city[0]);
         startActivity(intent);
 
     }
@@ -556,4 +592,114 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
     }
 
+    public void callSearch() {
+        Intent in_search = new Intent(getActivity(), SearchActivity.class);
+        in_search.putExtra("scrollId","");
+        in_search.putExtra("lat",lat_array[0]);
+        in_search.putExtra("long",log_array[0]);
+        in_search.putExtra("city",city[0]);
+        startActivity(in_search);
+    }
+
+    public ArrayList<String> autocomplete(String input) {
+        ArrayList<String> resultList = null;
+
+        HttpURLConnection conn = null;
+        StringBuilder jsonResults = new StringBuilder();
+        try {
+            StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
+            sb.append("?key=" + API_KEY);
+            sb.append("&components=country:"+COUNTRY_CODE);
+            sb.append("&input=" + URLEncoder.encode(input, "utf8"));
+
+            URL url = new URL(sb.toString());
+
+            System.out.println("URL: "+url);
+            conn = (HttpURLConnection) url.openConnection();
+            InputStreamReader in = new InputStreamReader(conn.getInputStream());
+
+            // Load the results into a StringBuilder
+            int read;
+            char[] buff = new char[1024];
+            while ((read = in.read(buff)) != -1) {
+                jsonResults.append(buff, 0, read);
+            }
+        } catch (MalformedURLException e) {
+            Log.e(LOG_TAG, "Error processing Places API URL", e);
+            return resultList;
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error connecting to Places API", e);
+            return resultList;
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+
+        try {
+
+            // Create a JSON object hierarchy from the results
+            JSONObject jsonObj = new JSONObject(jsonResults.toString());
+            JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
+
+            // Extract the Place descriptions from the results
+            resultList = new ArrayList<String>(predsJsonArray.length());
+            for (int i = 0; i < predsJsonArray.length(); i++) {
+                System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
+                System.out.println("============================================================");
+                resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
+            }
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "Cannot process JSON results", e);
+        }
+
+        return resultList;
+    }
+
+    class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Filterable {
+        private ArrayList<String> resultList;
+
+        public GooglePlacesAutocompleteAdapter(Context context, int textViewResourceId) {
+            super(context, textViewResourceId);
+        }
+
+        @Override
+        public int getCount() {
+            return resultList.size();
+        }
+
+        @Override
+        public String getItem(int index) {
+            return resultList.get(index);
+        }
+
+        @Override
+        public Filter getFilter() {
+            Filter filter = new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    FilterResults filterResults = new FilterResults();
+                    if (constraint != null) {
+                        // Retrieve the autocomplete results.
+                        resultList = autocomplete(constraint.toString());
+
+                        // Assign the data to the FilterResults
+                        filterResults.values = resultList;
+                        filterResults.count = resultList.size();
+                    }
+                    return filterResults;
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+                    if (results != null && results.count > 0) {
+                        notifyDataSetChanged();
+                    } else {
+                        notifyDataSetInvalidated();
+                    }
+                }
+            };
+            return filter;
+        }
+    }
 }

@@ -37,9 +37,14 @@ public class StoreInfoParam {
     @JsonProperty("lng")
     private String longitude;
 
+    @JsonProperty("scrollId")
+    private String scrollId;
+
     /* Apply specific filter on fields set on app, like city. */
     @JsonProperty("filters")
     private String filters;
+
+
 
     public String getQuery() {
         return query;
@@ -79,6 +84,16 @@ public class StoreInfoParam {
 
     public String getFilters() {
         return filters;
+    }
+
+
+    public String getScrollId() {
+        return scrollId;
+    }
+
+    public StoreInfoParam setScrollId(String scrollId) {
+        this.scrollId = scrollId;
+        return this;
     }
 
     public StoreInfoParam setFilters(String filters) {

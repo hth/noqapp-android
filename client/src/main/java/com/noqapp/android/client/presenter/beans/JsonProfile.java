@@ -179,6 +179,7 @@ public class JsonProfile implements Serializable {
                 "name='" + name + '\'' +
                 ", mail='" + mail + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
+                ", address='" + address + '\'' +
                 ", phoneRaw='" + phoneRaw + '\'' +
                 ", timeZone='" + timeZone + '\'' +
                 ", inviteCode='" + inviteCode + '\'' +
