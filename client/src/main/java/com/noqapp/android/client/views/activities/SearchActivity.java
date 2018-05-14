@@ -44,6 +44,8 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
     protected ImageView actionbarBack;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
+    @BindView(R.id.edt_find_location)
+    protected EditText edt_find_location;
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
     @BindView(R.id.rv_merchant_around_you)
@@ -76,6 +78,7 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
         lat = getIntent().getStringExtra("lat");
         longitute = getIntent().getStringExtra("long");
         scrollId = getIntent().getStringExtra("scrollId");
+        edt_find_location.setText(LaunchActivity.getLaunchActivity().cityName);
         rv_merchant_around_you.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -141,6 +144,20 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
                             }
                         }
                         hideAndReset();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+        edt_find_location.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (edt_find_location.getRight() - edt_find_location.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        LaunchActivity.getLaunchActivity().getAddress(LaunchActivity.getLaunchActivity().latitute,LaunchActivity.getLaunchActivity().longitute);
+                        edt_find_location.setText(LaunchActivity.getLaunchActivity().cityName);
                         return true;
                     }
                 }
