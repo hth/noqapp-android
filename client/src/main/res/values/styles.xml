@@ -1,4 +1,4 @@
-<resources>
+<resources  xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Base application theme. -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -97,5 +97,24 @@
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">20sp</item>
     </style>
+
+
+    <!--<style name="style_segment_control" parent="segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl">-->
+        <!--<item name="android:layout_width">match_parent</item>-->
+        <!--<item name="android:layout_height">wrap_content</item>-->
+        <!--<item name="app:distributeEvenly">false</item>-->
+        <!--<item name="app:radius">6dp</item>-->
+        <!--<item name="app:radiusForEverySegment">true</item>-->
+        <!--<item name="app:segmentHorizontalMargin">4dp</item>-->
+        <!--<item name="app:segmentVerticalMargin">4dp</item>-->
+        <!--<item name="app:selectedBackgroundColor">@color/segment_bg_color</item>-->
+        <!--<item name="app:selectedStrokeColor">@color/segment_bg_color</item>-->
+        <!--<item name="app:selectedTextColor">@android:color/black</item>-->
+        <!--<item name="app:textVerticalPadding">3dp</item>-->
+        <!--<item name="app:unSelectedBackgroundColor">@color/segment_bg_color</item>-->
+        <!--<item name="app:unSelectedStrokeColor">@color/segment_bg_color</item>-->
+        <!--<item name="app:unSelectedTextColor">@android:color/black</item>-->
+    <!--</style>-->
+
 
 </resources>

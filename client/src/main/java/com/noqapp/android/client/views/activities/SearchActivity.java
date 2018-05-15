@@ -37,7 +37,7 @@ import butterknife.ButterKnife;
 /**
  * Created by chandra on 5/7/17.
  */
-public class SearchActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener,NearMePresenter {
+public class SearchActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener, NearMePresenter {
 
 
     @BindView(R.id.actionbarBack)
@@ -85,7 +85,7 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
         rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
         // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
-        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, listener,rv_merchant_around_you);
+        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, listener, rv_merchant_around_you);
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
         storeInfoViewAllAdapter.setOnLoadMoreListener(new StoreInfoViewAllAdapter.OnLoadMoreListener() {
             @Override
@@ -99,17 +99,17 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
                     }
                 });
 
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            StoreInfoParam storeInfoParam = new StoreInfoParam();
-                            storeInfoParam.setCityName(city);
-                            storeInfoParam.setLatitude(lat);
-                            storeInfoParam.setLongitude(longitute);
-                            storeInfoParam.setFilters("xyz");
-                            storeInfoParam.setScrollId(scrollId);
-                            NearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(SearchActivity.this);
-                        }
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    StoreInfoParam storeInfoParam = new StoreInfoParam();
+                    storeInfoParam.setCityName(city);
+                    storeInfoParam.setLatitude(lat);
+                    storeInfoParam.setLongitude(longitute);
+                    storeInfoParam.setFilters("xyz");
+                    storeInfoParam.setScrollId(scrollId);
+                    NearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(SearchActivity.this);
+                }
             }
         });
         edt_search.setOnTouchListener(new View.OnTouchListener() {
@@ -126,10 +126,10 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
                     if (event.getRawX() <= (edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
                         // your action here
 
-                        Toast.makeText(SearchActivity.this,"left",Toast.LENGTH_LONG).show();
-                        if(edt_search.getText().toString().equals("")){
+                        Toast.makeText(SearchActivity.this, "left", Toast.LENGTH_LONG).show();
+                        if (edt_search.getText().toString().equals("")) {
 
-                        }else{
+                        } else {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 StoreInfoParam storeInfoParam = new StoreInfoParam();
                                 storeInfoParam.setCityName(city);
@@ -156,7 +156,7 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
                 final int DRAWABLE_RIGHT = 2;
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() >= (edt_find_location.getRight() - edt_find_location.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        LaunchActivity.getLaunchActivity().getAddress(LaunchActivity.getLaunchActivity().latitute,LaunchActivity.getLaunchActivity().longitute);
+                        LaunchActivity.getLaunchActivity().getAddress(LaunchActivity.getLaunchActivity().latitute, LaunchActivity.getLaunchActivity().longitute);
                         edt_find_location.setText(LaunchActivity.getLaunchActivity().cityName);
                         return true;
                     }
@@ -192,6 +192,7 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
                 startActivity(intent);
         }
     }
+
     @Override
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
 
@@ -199,7 +200,7 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         scrollId = bizStoreElasticList.getScrollId();
         //sort the list, give the Comparator the current location
-        Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat),Double.parseDouble(longitute))));
+        Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));
         //   remove progress item
 //        listData.remove(listData.size() - 1);
 //        storeInfoViewAllAdapter.notifyItemRemoved(listData.size());

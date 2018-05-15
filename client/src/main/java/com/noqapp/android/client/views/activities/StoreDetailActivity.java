@@ -214,7 +214,15 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         jsonQueue = jsonStore.getJsonQueue();
         tv_contact_no.setText(jsonQueue.getStorePhone());
         tv_address.setText(jsonQueue.getStoreAddress());
-        tv_store_address.setText(jsonQueue.getStoreAddress());
+        String address = "";
+
+        if (!TextUtils.isEmpty(jsonQueue.getTown())) {
+            address = jsonQueue.getTown();
+        }
+        if (!TextUtils.isEmpty(jsonQueue.getArea())) {
+            address = jsonQueue.getArea() + "," + address;
+        }
+        tv_store_address.setText(address);
         tv_store_name.setText(jsonQueue.getDisplayName());
         tv_known_for.setText(jsonQueue.getFamousFor());
         List<PaymentTypeEnum> temp = jsonQueue.getPaymentTypes();
@@ -322,15 +330,16 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             childLayout.setLayoutParams(linearParams);
-            TextView mType = new TextView(this);
-            mType.setTextSize(17);
-            mType.setPadding(5, 3, 0, 3);
-            mType.setTypeface(Typeface.DEFAULT_BOLD);
-            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-            mType.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
-            childLayout.addView(mType, 0);
+            com.noqapp.android.client.views.customviews.TextViewRobotoLight textView = new com.noqapp.android.client.views.customviews.TextViewRobotoLight(this);
+            textView.setTextSize(17);
+            textView.setPadding(5, 3, 0, 3);
+            textView.setGravity(Gravity.LEFT | Gravity.CENTER);
+            textView.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            textView.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
+            childLayout.addView(textView, 0);
             ll_store_open_status.addView(childLayout);
         }
+        iv_store_open_status.performClick();// to collapse the view on start
 
     }
 

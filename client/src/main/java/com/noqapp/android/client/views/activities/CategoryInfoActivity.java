@@ -261,7 +261,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
-                    btn_join_queues.setText("View Departments");
+                    btn_join_queues.setText("Book an appointment");
                     break;
                 case BK:
                     btn_join_queues.setText("View Services");
