@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".views.activities.MyApplication"
@@ -159,6 +160,10 @@
             android:name=".views.activities.CategoryPagerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".views.activities.BlinkerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".views.activities.BarcodeCaptureActivity"
             android:configChanges="orientation|keyboardHidden"

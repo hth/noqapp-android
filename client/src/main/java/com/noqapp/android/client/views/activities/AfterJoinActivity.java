@@ -363,11 +363,16 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     }
 
     @Override
-    public void updateUI(String qrCode, JsonTokenAndQueue jq, String go_to) {
+    public boolean updateUI(String qrCode, JsonTokenAndQueue jq, String go_to) {
         if (codeQR.equals(qrCode)) {
             //updating the serving status
             setObject(jq, go_to);
-        }
+            if(jq.afterHowLong() > 0)
+                return  false;
+            else
+                return true;
+        }else
+            return false;
     }
 
     @Override
