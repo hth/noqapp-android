@@ -230,7 +230,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_margin="10dp"
-            android:background="@android:color/holo_green_dark"
+            android:background="@android:color/black"
             android:drawableRight="@drawable/order_arrow"
             android:gravity="center"
             android:padding="3dp"
