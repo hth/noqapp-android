@@ -77,7 +77,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_filter, null);
+            convertView = infalInflater.inflate(R.layout.list_item_menu_child, null);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_child_title = (TextView) convertView
                     .findViewById(R.id.tv_child_title);
@@ -88,10 +88,10 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             childViewHolder.btn_increase = (Button) convertView.findViewById(R.id.btn_increase);
             childViewHolder.btn_decrease = (Button) convertView.findViewById(R.id.btn_decrease);
             childViewHolder.tv_cat = (TextView) convertView.findViewById(R.id.tv_cat);
-            convertView.setTag(R.layout.list_item_filter, childViewHolder);
+            convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder) convertView
-                    .getTag(R.layout.list_item_filter);
+                    .getTag(R.layout.list_item_menu_child);
         }
         JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
@@ -194,7 +194,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group_filter, null);
+            convertView = infalInflater.inflate(R.layout.list_item_menu_group, null);
         }
 
         TextView tv_list_header = (TextView) convertView.findViewById(R.id.tv_list_header);

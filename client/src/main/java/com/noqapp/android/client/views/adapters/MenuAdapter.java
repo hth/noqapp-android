@@ -53,7 +53,7 @@ public class MenuAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_filter, null);
+            convertView = infalInflater.inflate(R.layout.list_item_menu_child, null);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_child_title = (TextView) convertView
                     .findViewById(R.id.tv_child_title);
@@ -64,10 +64,10 @@ public class MenuAdapter extends BaseAdapter {
             childViewHolder.btn_increase = (Button) convertView.findViewById(R.id.btn_increase);
             childViewHolder.btn_decrease = (Button) convertView.findViewById(R.id.btn_decrease);
             childViewHolder.tv_cat = (TextView) convertView.findViewById(R.id.tv_cat);
-            convertView.setTag(R.layout.list_item_filter, childViewHolder);
+            convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder) convertView
-                    .getTag(R.layout.list_item_filter);
+                    .getTag(R.layout.list_item_menu_child);
         }
         final JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());

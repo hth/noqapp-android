@@ -524,7 +524,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
 
         if (activityCommunicator != null) {
-            activityCommunicator.updateUI(codeQR, jtk, go_to);
+           boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
+           if(isUpdated){
+               Intent blinker = new Intent(this, BlinkerActivity.class);
+               startActivity(blinker);
+           }
         }
         try {
             scanfragment.updateListFromNotification(jtk, go_to);
