@@ -41,7 +41,7 @@ public class OrderConfirmActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirm);
         ButterKnife.bind(this);
-        initActionsViews(true);
+        initActionsViews(false);
 
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
