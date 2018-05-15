@@ -121,6 +121,7 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
                     if (event.getRawX() >= (edt_search.getRight() - edt_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         // your action here
                         hideAndReset();
+                        edt_search.setText("");
                         return true;
                     }
                     if (event.getRawX() <= (edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
@@ -219,7 +220,6 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
     }
 
     private void hideAndReset() {
-        edt_search.setText("");
         InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(edt_search.getWindowToken(), 0);
     }
