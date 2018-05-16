@@ -60,6 +60,13 @@
                     android:layout_marginRight="10dp"
                     android:hint="Add address"
                     android:textSize="18sp" />
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spinner"
+                    android:dividerHeight="1px"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="10dip"
+                    android:visibility="gone"/>
 
                 <com.noqapp.android.client.views.customviews.TextEditRobotoLight
                     android:id="@+id/edt_phone"

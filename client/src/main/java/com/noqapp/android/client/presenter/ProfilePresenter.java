@@ -1,6 +1,7 @@
 package com.noqapp.android.client.presenter;
 
 import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 
 /**
  * User: hitender
@@ -10,6 +11,8 @@ import com.noqapp.android.client.presenter.beans.JsonProfile;
 public interface ProfilePresenter {
 
     void queueResponse(JsonProfile profile, String email, String auth);
+
+    void profileAddressResponse(JsonUserAddressList jsonUserAddressList);
 
     void queueError();
 
