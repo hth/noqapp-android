@@ -151,6 +151,9 @@ public class JsonQueue implements Serializable {
     @JsonProperty("md")
     private int minimumDeliveryOrder;
 
+    @JsonProperty ("dr")
+    private int deliveryRange;
+
     @JsonProperty("si")
     private Set<String> storeServiceImages = new LinkedHashSet<>();
 
@@ -487,6 +490,15 @@ public class JsonQueue implements Serializable {
 
     public JsonQueue setMinimumDeliveryOrder(int minimumDeliveryOrder) {
         this.minimumDeliveryOrder = minimumDeliveryOrder;
+        return this;
+    }
+
+    public int getDeliveryRange() {
+        return deliveryRange;
+    }
+
+    public JsonQueue setDeliveryRange(int deliveryRange) {
+        this.deliveryRange = deliveryRange;
         return this;
     }
 
