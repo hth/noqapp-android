@@ -76,9 +76,17 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
 
         viewPager = findViewById(R.id.pager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ArrayList<Integer> removeEmptyData = new ArrayList<>();
         for(int i = 0; i< expandableListTitle.size();i++){
-
-            adapter.addFragment(new FragmentDummy(expandableListDetail.get(expandableListTitle.get(i).getCategoryId()),this,this), "FRAG"+i);
+            if(expandableListDetail.get(expandableListTitle.get(i).getCategoryId()).size()>0)
+             adapter.addFragment(new FragmentDummy(expandableListDetail.get(expandableListTitle.get(i).getCategoryId()),this,this), "FRAG"+i);
+            else
+                removeEmptyData.add(i);
+        }
+        // Remove the categories which having zero items
+        for(int j = removeEmptyData.size()-1 ; j>=0;j--)
+        {
+            expandableListTitle.remove((int)removeEmptyData.get(j));
         }
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer

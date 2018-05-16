@@ -141,12 +141,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             }
         });
 
-        tv_address.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
-            }
-        });
+
 
         bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
@@ -214,6 +209,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             }
             tv_address.setText(address);
             tv_complete_address.setText(bizStoreElastic.getAddress());
+            tv_complete_address.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
+                }
+            });
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             ratingBar.setRating(rating);
             tv_rating.setText(String.valueOf(Math.round(bizStoreElastic.getRating())));
