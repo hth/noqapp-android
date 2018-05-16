@@ -1,6 +1,8 @@
 package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.JsonUserAddress;
+import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 
@@ -49,5 +51,38 @@ public interface ProfileService {
 
             @Body
             MigrateProfile migrateProfile
+    );
+
+    @GET("api/c/profile/address.json")
+    Call<JsonUserAddressList> address(
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth
+    );
+
+    @POST("api/c/profile/address/add.json")
+    Call<JsonUserAddressList> addressAdd(
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonUserAddress jsonUserAddress
+    );
+
+    @POST("api/c/profile/address/delete.json")
+    Call<JsonUserAddressList> addressDelete(
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonUserAddress jsonUserAddress
     );
 }
