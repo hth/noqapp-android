@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
