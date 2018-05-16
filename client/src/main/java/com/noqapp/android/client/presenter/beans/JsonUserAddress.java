@@ -33,6 +33,12 @@ public class JsonUserAddress extends AbstractDomain {
     @JsonProperty ("ad")
     private String address;
 
+    @JsonProperty("gh")
+    private String geoHash;
+
+    @JsonProperty("cs")
+    private String countryShortName;
+
     public String getId() {
         return id;
     }
@@ -48,6 +54,24 @@ public class JsonUserAddress extends AbstractDomain {
 
     public JsonUserAddress setAddress(String address) {
         this.address = address;
+        return this;
+    }
+
+    public String getGeoHash() {
+        return geoHash;
+    }
+
+    public JsonUserAddress setGeoHash(String geoHash) {
+        this.geoHash = geoHash;
+        return this;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public JsonUserAddress setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
         return this;
     }
 }
