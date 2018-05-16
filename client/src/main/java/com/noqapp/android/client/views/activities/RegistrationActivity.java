@@ -255,7 +255,7 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
         registration.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
         registration.setGender(gender);
         registration.setTimeZoneId(tz.getID());
-        registration.setCountryShortName("");
+        registration.setCountryShortName(getIntent().getStringExtra("countryShortName"));
         registration.setInviteCode("");
 
         MePresenter mePresenter = new MePresenter(this);
