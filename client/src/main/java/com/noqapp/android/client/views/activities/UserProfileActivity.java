@@ -33,6 +33,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -280,6 +281,11 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         NoQueueBaseActivity.commitProfile(profile, email, auth);
         dismissProgress();
         updateUI();
+    }
+
+    @Override
+    public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
+
     }
 
     @Override

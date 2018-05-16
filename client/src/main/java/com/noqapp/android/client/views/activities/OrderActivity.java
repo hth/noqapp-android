@@ -7,10 +7,13 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,11 +29,15 @@ import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
+import com.noqapp.android.client.presenter.beans.JsonUserAddress;
+import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.SpinAdapter;
 
+import java.util.List;
 import java.util.TimeZone;
 
 import butterknife.BindView;
@@ -46,8 +53,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     protected TextView tv_tax_amt;
     @BindView(R.id.tv_due_amt)
     protected TextView tv_due_amt;
-
-
+    @BindView(R.id.spinner)
+    protected AppCompatSpinner spinner;
     @BindView(R.id.edt_address)
     protected EditText edt_address;
     @BindView(R.id.edt_phone)
@@ -105,6 +112,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 }
             }
         });
+        if (LaunchActivity.getLaunchActivity().isOnline() ){//&& !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
+            ProfileModel.profilePresenter = this;
+            ProfileModel.getProfileAllAddress(UserUtils.getEmail(), UserUtils.getAuth());
+        }
     }
 
     private boolean validateForm() {
@@ -152,7 +163,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                     ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
-
+                if (LaunchActivity.getLaunchActivity().isOnline() && !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
+                    ProfileModel.profilePresenter = this;
+                    ProfileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(),new JsonUserAddress().setAddress(edt_address.getText().toString()).setId(""));
+                }
 
             } else {
                 Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
@@ -178,6 +192,34 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     public void queueResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
+    }
+
+    @Override
+    public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
+        Toast.makeText(this,""+jsonUserAddressList.getJsonUserAddresses().size(),Toast.LENGTH_LONG).show();
+        final List<JsonUserAddress> notificationsList = jsonUserAddressList.getJsonUserAddresses();
+
+
+        ArrayAdapter adapter = new SpinAdapter(OrderActivity.this,
+                android.R.layout.simple_spinner_item,
+                notificationsList);
+        spinner.setAdapter(adapter);
+        spinner.setVisibility(View.VISIBLE);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String addressId = notificationsList.get(i).getId();
+                String addressName = notificationsList.get(i).getAddress();
+                Toast.makeText(OrderActivity.this, "Address Name: " + addressName, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
     }
 
     @Override

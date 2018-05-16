@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.MeView;
@@ -30,6 +31,11 @@ public class MePresenter implements ProfilePresenter {
         // } else {
         //TODO show error message
         // }
+    }
+
+    @Override
+    public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
+
     }
 
     @Override
