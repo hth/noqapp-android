@@ -5,12 +5,14 @@ package com.noqapp.android.client.views.activities;
  */
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
@@ -74,12 +77,16 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     protected Button btn_verify_phone;
     @BindView(R.id.edt_verification_code)
     protected EditText edt_verification_code;
+    @BindView(R.id.edt_phone_code)
+    protected EditText edt_phone_code;
     @BindView(R.id.tv_detail)
     protected TextView tv_detail;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private String mVerificationId;
     private String verifiedMobileNo;
     private FirebaseAuth mAuth;
+    private String countryCode ="";
+    private String countryShortName = "";
 
 
     @Override
@@ -97,6 +104,16 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         RegisterModel.profilePresenter = this;
         mAuth = FirebaseAuth.getInstance();
         updateUI(STATE_INITIALIZED);
+
+        TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        String c_codeValue = tm.getNetworkCountryIso();
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        int c_code = phoneUtil.getCountryCodeForRegion(c_codeValue.toUpperCase());
+        Log.v("country code", ""+c_code);
+        countryCode = "+"+c_code;
+        countryShortName = c_codeValue.toUpperCase();
+        edt_phone_code.setText(countryCode);
+
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             @Override
@@ -161,7 +178,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.show();
                     //@TODO @Chandra update the country code dynamic
-                    startPhoneNumberVerification("+91" + edt_phoneNo.getText().toString());
+                    startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 
                     Answers.getInstance().logLogin(new LoginEvent()
                             .putMethod("Phone")
@@ -261,7 +278,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //@TODO @Chandra update the country code dynamic
-                startPhoneNumberVerification("+91" + edt_phoneNo.getText().toString());
+                startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
             } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 //No permission allowed
                 //Do nothing
@@ -282,7 +299,8 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
             if (null != eej && eej.getSystemErrorCode().equals("412")) {
                 Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
                 in.putExtra("mobile_no", verifiedMobileNo);
-                in.putExtra("country_code", "");
+                in.putExtra("country_code", countryCode);
+                in.putExtra("countryShortName",countryShortName);
                 startActivity(in);
                 dismissProgress();
                 finish();//close the current activity

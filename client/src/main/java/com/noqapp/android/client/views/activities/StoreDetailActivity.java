@@ -72,6 +72,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private RatingBar ratingBar;
     private TextView tv_rating, tv_rating_review;
     private SegmentedControl sc_amenities, sc_delivery_types, sc_payment_mode;
+    private String defaultCategory = "Un-Categorized";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -214,6 +215,12 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         jsonQueue = jsonStore.getJsonQueue();
         tv_contact_no.setText(jsonQueue.getStorePhone());
         tv_address.setText(jsonQueue.getStoreAddress());
+        tv_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
+            }
+        });
         String address = "";
 
         if (!TextUtils.isEmpty(jsonQueue.getTown())) {
@@ -297,7 +304,16 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
             } else {
                 //TODO(hth) when product without category else it will drop
+                if(null == listDataChild.get(defaultCategory))
+                {
+                    listDataChild.put(defaultCategory, new ArrayList<ChildData>());
+                }
+                listDataChild.get(defaultCategory).add(new ChildData(0, jsonStoreProducts.get(k)));
             }
+        }
+
+        if(null != listDataChild.get(defaultCategory)){
+            jsonStoreCategories.add(new JsonStoreCategory().setCategoryName(defaultCategory).setCategoryId(defaultCategory));
         }
         //  }
 
