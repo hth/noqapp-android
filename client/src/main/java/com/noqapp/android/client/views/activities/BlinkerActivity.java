@@ -18,10 +18,11 @@ import com.noqapp.android.client.R;
 
 public class BlinkerActivity extends Activity {
 
-    RelativeLayout rl_blinker1;
+    RelativeLayout rl_blinker;
     private TextView tv_close;
     private Thread thread;
     private Vibrator vibrator;
+    private boolean stopVibrate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +34,16 @@ public class BlinkerActivity extends Activity {
         view.loadUrl("file:///android_asset/temp.gif");
         view.getSettings().setLoadWithOverviewMode(true);
         view.getSettings().setUseWideViewPort(true);
-        rl_blinker1 = findViewById(R.id.rl_blinker1);
+        rl_blinker = findViewById(R.id.rl_blinker);
         tv_close = findViewById(R.id.tv_close);
         tv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != vibrator)
                     vibrator.cancel();
+                if(null != thread)
+                    thread.interrupt();
+                stopVibrate = true;
                 finish();
             }
         });
@@ -49,41 +53,40 @@ public class BlinkerActivity extends Activity {
         animation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
         animation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
         animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the layout will fade back in
-        rl_blinker1.startAnimation(animation);
+        rl_blinker.startAnimation(animation);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            v.vibrate(VibrationEffect.createOneShot(500,VibrationEffect.DEFAULT_AMPLITUDE));
-//        }else{
-//            //deprecated in API 26
-//            v.vibrate(500);
-//        }
-
 
         if (vibrator.hasVibrator()) {
             final long[] pattern = {0, 1000, 1000, 1000, 1000};
-            new Thread() {
+            Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    for (int i = 0; i < 5; i++) { //repeat the pattern 1 times
-                        vibrator.vibrate(pattern, -1);
-                        try {
-                            Thread.sleep(4000); //the time, the complete pattern needs
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    for (int i = 0; i < 5; i++) {
+                       if(!stopVibrate) {
+                           vibrator.vibrate(pattern, -1);
+                           try {
+                               Thread.sleep(4000); //the time, the complete pattern needs
+                           } catch (Exception e) {
+                               e.printStackTrace();
+                           }
+                       }else{
+                           return;
+                       }
                     }
                 }
-            }.start();
-
-
+            };
+            thread = new Thread(runnable);
+            thread.start();
         }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onBackPressed() {
+        super.onBackPressed();
         if (null != vibrator)
             vibrator.cancel();
+        if(null != thread)
+            thread.interrupt();
+        stopVibrate = true;
     }
 }
