@@ -233,6 +233,7 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="medical_history_alert">You don\'t have any medical history.</string>
     <string name="screen_order">Order Summary</string>
     <string name="screen_order_confirm">Order Confirmation</string>
+    <string name="transaction_history">Transactions</string>
     <!-- Language select dialog -->
 
 </resources>

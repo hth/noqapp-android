@@ -5,12 +5,23 @@
 
 
     <group
-        android:id="@+id/menu_bottom"
+        android:id="@+id/menu_top"
         android:checkableBehavior="none">
         <item
             android:id="@+id/nav_medical"
             android:icon="@drawable/medical_history"
             android:title="@string/medical_history" />
+        <item
+            android:id="@+id/nav_transaction"
+            android:icon="@drawable/transaction"
+            android:title="@string/transaction_history" />
+
+    </group>
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
+
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_share"
