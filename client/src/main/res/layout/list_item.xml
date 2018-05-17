@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:padding="8dp"
-    android:text="dsfdsgfsd"
+    android:text=""
     android:textColor="@android:color/black"
-    android:inputType="textMultiLine"
+    android:clickable="false"
+    android:focusable="false"
     android:textSize="16sp" />

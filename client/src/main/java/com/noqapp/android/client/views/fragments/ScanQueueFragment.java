@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -128,6 +129,9 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     @BindView(R.id.pb_near)
     protected ProgressBar pb_near;
 
+    @BindView(R.id.autoCompleteTextView)
+    protected AutoCompleteTextView autoCompleteTextView;
+
     //TODO(chandra) temp code
     private String[] city = {"Mumbai", "Delhi", "Calcutta"};
     private String[] lat_array = {"19.004550", "28.553399", "22.572645"};
@@ -188,10 +192,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
         ButterKnife.bind(this, view);
-        AutoCompleteTextView autoCompView = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
-
-        autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
-       // autoCompView.setOnItemClickListener(this);
         return view;
     }
 
@@ -215,6 +215,37 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spinner.setAdapter(aa);
+
+
+        autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String str = (String) parent.getItemAtPosition(position);
+                Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+            }
+        });
+        autoCompleteTextView.setThreshold(3);
+        autoCompleteTextView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_LEFT = 0;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (autoCompleteTextView.getRight() - autoCompleteTextView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        autoCompleteTextView.setText("");
+                        return true;
+                    }
+                    if (event.getRawX() <= (autoCompleteTextView.getLeft() + autoCompleteTextView.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
+                        // your action here
+                        autoCompleteTextView.setText(city_select);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
         tokenQueueViewInterface = this;
         currentClickListner = this;
         recentClickListner = this;
@@ -610,6 +641,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + API_KEY);
             sb.append("&components=country:"+COUNTRY_CODE);
+            sb.append("&types=(regions)");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
             URL url = new URL(sb.toString());
@@ -659,8 +691,8 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Filterable {
         private ArrayList<String> resultList;
 
-        public GooglePlacesAutocompleteAdapter(Context context, int textViewResourceId) {
-            super(context, textViewResourceId);
+        public GooglePlacesAutocompleteAdapter(Context context, int resource) {
+            super(context, resource);
         }
 
         @Override
@@ -673,6 +705,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             return resultList.get(index);
         }
 
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return super.getView(position, convertView, parent);
+        }
         @Override
         public Filter getFilter() {
             Filter filter = new Filter() {
