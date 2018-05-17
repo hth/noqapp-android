@@ -252,7 +252,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Override
     public void updateLocationUI() {
-        Toast.makeText(launchActivity, "Location : " + cityName, Toast.LENGTH_LONG).show();
+        //  Toast.makeText(launchActivity, "Location : " + cityName, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -430,12 +430,13 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Subscribe
     public void onEvent(NetworkStateChanged networkStateChanged) {
-        if(networkStateChanged.isInternetConnected()) {
+        if (networkStateChanged.isInternetConnected()) {
             //Toast.makeText(this,"network available",Toast.LENGTH_LONG).show();
         } else {
             //Toast.makeText(this,"no network available",Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     public void onBackPressed() {
         long currentTime = System.currentTimeMillis();
@@ -489,8 +490,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         b.putBoolean(NoQueueBaseFragment.KEY_IS_REJOIN, true);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_AUTOJOIN_ELIGIBLE, false);
         b.putBoolean("isCategoryData", false);
-     //   JoinFragment jf = new JoinFragment();
-     //   jf.setArguments(b);
+        //   JoinFragment jf = new JoinFragment();
+        //   jf.setArguments(b);
         // remove previous screens
         List<Fragment> currentTabFragments = null;//fragmentsStack.get(getCurrentSelectedTabTag());
         if (null != currentTabFragments && currentTabFragments.size() > 1) {
@@ -499,7 +500,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             currentTabFragments.subList(1, size).clear();
         }
         //
-      //  NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
+        //  NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
     }
 
     private void updateNotification(Intent intent, String codeQR, boolean isReview) {
@@ -524,11 +525,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
 
         if (activityCommunicator != null) {
-           boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
-           if(isUpdated){
-               Intent blinker = new Intent(this, BlinkerActivity.class);
-               startActivity(blinker);
-           }
+            boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
+            if (isUpdated) {
+                Intent blinker = new Intent(this, BlinkerActivity.class);
+                startActivity(blinker);
+            }
         }
         try {
             scanfragment.updateListFromNotification(jtk, go_to);
@@ -594,6 +595,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 startActivity(in);
                 break;
             }
+            case R.id.nav_transaction:
+                Toast.makeText(launchActivity, "Comming soon... ", Toast.LENGTH_LONG).show();
+                break;
+
             case R.id.nav_change_language:
                 showChangeLangDialog();
                 break;

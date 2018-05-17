@@ -147,6 +147,7 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
                             bundle.putSerializable("data",jsonPurchaseOrder);
                             bundle.putString("storeName",jsonQueue.getDisplayName());
                             bundle.putString("storeAddress",jsonQueue.getStoreAddress());
+                            bundle.putInt("deliveryRange",jsonQueue.getDeliveryRange());
                             intent.putExtras(bundle);
                             startActivity(intent);
                         } else {

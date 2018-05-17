@@ -5,7 +5,10 @@ package com.noqapp.android.client.views.activities;
  */
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
@@ -19,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.model.PurchaseApiModel;
@@ -33,10 +38,13 @@ import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.SpinAdapter;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -133,7 +141,24 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         if(edt_address.getText().toString().equals("")){
             edt_address.setError("Please enter delivery address.");
             isValid = false;
+        }else{
+            LatLng latLng_d = getLocationFromAddress(this,edt_address.getText().toString());
+            LatLng latLng_s = getLocationFromAddress(this,getIntent().getExtras().getString("storeAddress"));
+            if(null != latLng_d){
+                float distance = (float)AppUtilities.calculateDistance(
+                        (float) latLng_s.latitude,
+                        (float) latLng_s.longitude,
+                        (float) latLng_d.latitude,
+                        (float) latLng_d.longitude);
+                if(distance>getIntent().getExtras().getInt("deliveryRange")){
+                    edt_address.setError("Please change the address. This address is very far from the store");
+                    isValid = false;
+
+                }
+                Toast.makeText(this,"distance is:" +distance,Toast.LENGTH_LONG).show();
+            }
         }
+
         return isValid;
     }
 
@@ -228,4 +253,23 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
 
+
+    public LatLng getLocationFromAddress(Context context, String strAddress) {
+
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+        LatLng p1 = null;
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return p1;
+    }
 }
