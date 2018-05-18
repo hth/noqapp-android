@@ -120,6 +120,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private DrawerLayout drawer;
     private double old_latitute = 0;
     private double old_longitute = 0;
+
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
@@ -253,9 +254,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Override
     public void updateLocationUI() {
-        if(null != scanfragment && Double.compare(old_latitute , latitute)!=0){
+        if (null != scanfragment && Double.compare(old_latitute, latitute) != 0) {
             try {
-                scanfragment.updateUIwithNewLocation(latitute,longitute,cityName);
+                scanfragment.updateUIwithNewLocation(latitute, longitute, cityName);
             } catch (Exception e) {
                 e.printStackTrace();
             }

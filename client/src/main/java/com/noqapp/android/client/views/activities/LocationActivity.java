@@ -216,7 +216,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
             Address obj = addresses.get(0);
             cityName = addresses.get(0).getAddressLine(0);
             if (!TextUtils.isEmpty(obj.getLocality()) && !TextUtils.isEmpty(obj.getSubLocality())) {
-                cityName = obj.getSubLocality() + "," + obj.getLocality();
+                cityName = obj.getSubLocality() + ", " + obj.getLocality();
             } else {
                 if (!TextUtils.isEmpty(obj.getSubLocality())) {
                     cityName = obj.getSubLocality();

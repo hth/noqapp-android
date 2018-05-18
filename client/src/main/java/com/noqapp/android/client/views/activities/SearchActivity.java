@@ -1,19 +1,16 @@
 package com.noqapp.android.client.views.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.R;
@@ -22,9 +19,11 @@ import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
@@ -37,15 +36,9 @@ import butterknife.ButterKnife;
 /**
  * Created by chandra on 5/7/17.
  */
-public class SearchActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener, NearMePresenter {
+public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdapter.OnItemClickListener, NearMePresenter {
 
 
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-    @BindView(R.id.edt_find_location)
-    protected EditText edt_find_location;
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
     @BindView(R.id.rv_merchant_around_you)
@@ -57,6 +50,10 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
     private String longitute = "";
     @BindView(R.id.edt_search)
     protected EditText edt_search;
+    @BindView(R.id.tv_auto)
+    protected TextView tv_auto;
+    @BindView(R.id.autoCompleteTextView)
+    protected AutoCompleteTextView autoCompleteTextView;
 
 
     @Override
@@ -64,12 +61,7 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initActionsViews(false);
         tv_toolbar_title.setText("Search");
         listener = this;
         //getString(R.string.medical_history));
@@ -77,8 +69,8 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         longitute = getIntent().getStringExtra("long");
-        scrollId = getIntent().getStringExtra("scrollId");
-        edt_find_location.setText(LaunchActivity.getLaunchActivity().cityName);
+        scrollId = "";
+        AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
         rv_merchant_around_you.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -100,12 +92,14 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
                 });
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    progressDialog.show();
                     StoreInfoParam storeInfoParam = new StoreInfoParam();
                     storeInfoParam.setCityName(city);
                     storeInfoParam.setLatitude(lat);
                     storeInfoParam.setLongitude(longitute);
                     storeInfoParam.setFilters("xyz");
                     storeInfoParam.setScrollId(scrollId);
+                    storeInfoParam.setQuery(edt_search.getText().toString());
                     NearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
                 } else {
                     ShowAlertInformation.showNetworkDialog(SearchActivity.this);
@@ -119,19 +113,16 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
                 final int DRAWABLE_LEFT = 0;
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() >= (edt_search.getRight() - edt_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        // your action here
-                        hideAndReset();
+                        new AppUtilities().hideKeyBoard(SearchActivity.this);
                         edt_search.setText("");
                         return true;
                     }
-                    if (event.getRawX() <= (edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-                        // your action here
-
-                        Toast.makeText(SearchActivity.this, "left", Toast.LENGTH_LONG).show();
+                    if (event.getRawX() <= (20+edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
                         if (edt_search.getText().toString().equals("")) {
 
                         } else {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                progressDialog.show();
                                 StoreInfoParam storeInfoParam = new StoreInfoParam();
                                 storeInfoParam.setCityName(city);
                                 storeInfoParam.setLatitude(lat);
@@ -144,21 +135,7 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
                                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
                             }
                         }
-                        hideAndReset();
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-        edt_find_location.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_RIGHT = 2;
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (edt_find_location.getRight() - edt_find_location.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        LaunchActivity.getLaunchActivity().getAddress(LaunchActivity.getLaunchActivity().latitute, LaunchActivity.getLaunchActivity().longitute);
-                        edt_find_location.setText(LaunchActivity.getLaunchActivity().cityName);
+                        new AppUtilities().hideKeyBoard(SearchActivity.this);
                         return true;
                     }
                 }
@@ -166,6 +143,46 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
             }
         });
 
+        tv_auto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lat = String.valueOf(LaunchActivity.getLaunchActivity().latitute);
+                longitute = String.valueOf(LaunchActivity.getLaunchActivity().longitute);
+                city = LaunchActivity.getLaunchActivity().cityName;
+                AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
+
+                new AppUtilities().hideKeyBoard(SearchActivity.this);
+            }
+        });
+
+        autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String city_name = (String) parent.getItemAtPosition(position);
+                //Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+                LatLng latLng = AppUtilities.getLocationFromAddress(SearchActivity.this, city_name);
+                lat = String.valueOf(latLng.latitude);
+                longitute = String.valueOf(latLng.longitude);
+                city = city_name;
+                new AppUtilities().hideKeyBoard(SearchActivity.this);
+
+            }
+        });
+        autoCompleteTextView.setThreshold(3);
+        autoCompleteTextView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (autoCompleteTextView.getRight() - autoCompleteTextView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        autoCompleteTextView.setText("");
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -210,6 +227,7 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
         storeInfoViewAllAdapter.notifyDataSetChanged();
 //        storeInfoViewAllAdapter.setLoaded();
         //or you can add all at once but do not forget to call storeInfoViewAllAdapter.notifyDataSetChanged();
+        dismissProgress();
 
     }
 
@@ -219,8 +237,4 @@ public class SearchActivity extends AppCompatActivity implements StoreInfoViewAl
 
     }
 
-    private void hideAndReset() {
-        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(edt_search.getWindowToken(), 0);
-    }
 }

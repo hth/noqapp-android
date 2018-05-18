@@ -89,7 +89,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
             address = jsonTokenAndQueue.getTown();
         }
         if (!TextUtils.isEmpty(jsonTokenAndQueue.getArea())) {
-            address = jsonTokenAndQueue.getArea() + "," + address;
+            address = jsonTokenAndQueue.getArea() + ", " + address;
         }
         holder.tv_address.setText(address);
         holder.tv_detail.setText("Last visit " + jsonTokenAndQueue.getServiceEndTime());
