@@ -118,6 +118,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private TextView tv_login, tv_name, tv_email;
     private ScanQueueFragment scanfragment;
     private DrawerLayout drawer;
+    private double old_latitute = 0;
+    private double old_longitute = 0;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -252,7 +254,13 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Override
     public void updateLocationUI() {
-        //  Toast.makeText(launchActivity, "Location : " + cityName, Toast.LENGTH_LONG).show();
+        if (null != scanfragment && Double.compare(old_latitute, latitute) != 0) {
+            try {
+                scanfragment.updateUIwithNewLocation(latitute, longitute, cityName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

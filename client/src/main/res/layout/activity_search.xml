@@ -19,32 +19,59 @@
         android:padding="10dp"
         card_view:cardCornerRadius="4dp">
 
-        <EditText
-            android:id="@+id/edt_search"
-            android:layout_width="fill_parent"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/ic_search"
-            android:drawablePadding="10dp"
-            android:drawableRight="@drawable/ic_cancel"
-            android:hint="Search"
-            android:maxLines="1"
-            android:minLines="1"
-            android:padding="10dp" />
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edt_search"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/places_ic_search"
+                android:drawablePadding="20dp"
+                android:drawableRight="@drawable/cancel_grey"
+                android:inputType="textNoSuggestions"
+                android:hint="Search Store/Queue"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="@android:color/transparent"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/cancel_grey"
+                android:ems="10"
+                android:hint="Search location..."
+                android:maxLines="1"
+                android:minLines="1"
+                android:inputType="textNoSuggestions"
+                android:padding="10dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_gps_location"
+                android:gravity="center_vertical"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="Auto-detect Location"
+                android:textSize="14sp" />
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
-
-    <EditText
-        android:id="@+id/edt_find_location"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:drawablePadding="10dp"
-        android:drawableRight="@drawable/ic_gps_location"
-        android:hint="Auto detect your location"
-        android:maxLines="1"
-        android:minLines="1"
-        android:padding="10dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_merchant_around_you"

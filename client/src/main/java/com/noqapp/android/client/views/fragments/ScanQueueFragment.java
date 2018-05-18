@@ -1,8 +1,6 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,15 +15,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -57,22 +50,13 @@ import com.noqapp.android.client.views.activities.SearchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.activities.ViewAllListActivity;
 import com.noqapp.android.client.views.adapters.CurrentActivityAdapter;
+import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.RecentActivityAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -93,6 +77,9 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected RecyclerView rv_current_activity;
     @BindView(R.id.tv_current_title)
     protected TextView tv_current_title;
+    @BindView(R.id.tv_auto)
+    protected TextView tv_auto;
+
     private static final int MSG_CURRENT_QUEUE = 0;
     private static final int MSG_HISTORY_QUEUE = 1;
     private static TokenQueueViewInterface tokenQueueViewInterface;
@@ -116,10 +103,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     @BindView(R.id.btn_temp)
     protected Button btn_temp;
 
-    @BindView(R.id.spinner)
-    protected Spinner spinner;
-
-
     @BindView(R.id.pb_current)
     protected ProgressBar pb_current;
 
@@ -132,26 +115,24 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     @BindView(R.id.autoCompleteTextView)
     protected AutoCompleteTextView autoCompleteTextView;
 
-    //TODO(chandra) temp code
-    private String[] city = {"Mumbai", "Delhi", "Calcutta"};
-    private String[] lat_array = {"19.004550", "28.553399", "22.572645"};
-    private String[] log_array = {"73.014529", "77.194165", "88.363892"};
-    private int city_select = 0 ;
     private String scrollId = "";
+    private double lat, log;
+    private String city = "";
 
 
-
-    private static final String LOG_TAG = "ExampleApp";
-
-    private final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
-    private final String TYPE_AUTOCOMPLETE = "/autocomplete";
-    private final String OUT_JSON = "/json";
-    private final String COUNTRY_CODE = "IN";
-    private final String API_KEY = "AIzaSyA9eHl3SHvjXmHFq9q5yPjRy0uqBd5awSc";
 
 
     public ScanQueueFragment() {
 
+    }
+
+    public void updateUIwithNewLocation(double latitute, double longitute, String cityName) {
+
+        getNearMeInfo(cityName, "" + latitute, "" + longitute);
+        lat = latitute;
+        log = longitute;
+        AppUtilities.setAutoCompleteText(autoCompleteTextView ,cityName);
+        city = cityName;
     }
 
     private static class QueueHandler extends Handler {
@@ -210,19 +191,19 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             // commented due to last discussion that barcode should not start automatically
         }
 
-
-        ArrayAdapter aa = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, city);
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        spinner.setAdapter(aa);
-
-
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String str = (String) parent.getItemAtPosition(position);
-                Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+                String city_name = (String) parent.getItemAtPosition(position);
+                //Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+                LatLng latLng = AppUtilities.getLocationFromAddress(getActivity(), city_name);
+                lat = latLng.latitude;
+                log = latLng.longitude;
+                city = city_name;
+                getNearMeInfo(city_name, String.valueOf(lat), String.valueOf(log));
+                new AppUtilities().hideKeyBoard(getActivity());
+
             }
         });
         autoCompleteTextView.setThreshold(3);
@@ -236,16 +217,31 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                         autoCompleteTextView.setText("");
                         return true;
                     }
-                    if (event.getRawX() <= (autoCompleteTextView.getLeft() + autoCompleteTextView.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-                        // your action here
-                        autoCompleteTextView.setText(city_select);
-                        return true;
-                    }
+//                    if (event.getRawX() <= (10+autoCompleteTextView.getLeft() + autoCompleteTextView.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
+//                        // your action here
+//                        lat = LaunchActivity.getLaunchActivity().latitute;
+//                        log = LaunchActivity.getLaunchActivity().longitute;
+//                        city = LaunchActivity.getLaunchActivity().cityName;
+//                        autoCompleteTextView.setText(city);
+//                        getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
+//                        new AppUtilities().hideKeyBoard(getActivity());
+//                        return true;
+//                    }
                 }
                 return false;
             }
         });
-
+        tv_auto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lat = LaunchActivity.getLaunchActivity().latitute;
+                log = LaunchActivity.getLaunchActivity().longitute;
+                city = LaunchActivity.getLaunchActivity().cityName;
+                AppUtilities.setAutoCompleteText(autoCompleteTextView ,city);
+                getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
+                new AppUtilities().hideKeyBoard(getActivity());
+            }
+        });
         tokenQueueViewInterface = this;
         currentClickListner = this;
         recentClickListner = this;
@@ -275,20 +271,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         // rv_merchant_around_you.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL));
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
 
-
-        getNearMeInfo(city[0], lat_array[0], log_array[0]);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                getNearMeInfo(city[position], lat_array[position], log_array[position]);
-                city_select = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             mHandler = new QueueHandler();
 
@@ -367,7 +349,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             storeInfoParam.setLongitude(longitute);
             storeInfoParam.setFilters("xyz");
             storeInfoParam.setScrollId("");
-           // LaunchActivity.getLaunchActivity().progressDialog.show();
             pb_near.setVisibility(View.VISIBLE);
             NearMeModel.nearMePresenter = this;
             NearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
@@ -382,13 +363,16 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         nearMeData = new ArrayList<>();
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         //sort the list, give the Comparator the current location
-        Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat_array[city_select]),Double.parseDouble(log_array[city_select]))));
-        storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener);
+        Collections.sort(nearMeData, new SortPlaces(new LatLng(lat, log)));
+        storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener, lat, log);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
         scrollId = bizStoreElasticList.getScrollId();
-       // LaunchActivity.getLaunchActivity().dismissProgress();
         pb_near.setVisibility(View.GONE);
+        if (null != recentActivityAdapter) {
+            recentActivityAdapter.updateLatLong(lat, log);
+            recentActivityAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -466,10 +450,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void nearClick() {
         Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
         intent.putExtra("list", (Serializable) nearMeData);
-        intent.putExtra("scrollId",scrollId);
-        intent.putExtra("lat",lat_array[0]);
-        intent.putExtra("long",log_array[0]);
-        intent.putExtra("city",city[0]);
+        intent.putExtra("scrollId", scrollId);
+        intent.putExtra("lat", "" + lat);
+        intent.putExtra("long", "" + log);
+        intent.putExtra("city", city);
         startActivity(intent);
 
     }
@@ -487,19 +471,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void tempClick() {
         Intent intent = new Intent(getActivity(), DoctorProfile1Activity.class);
         // startActivity(intent);
-
-        Location mylocation = new Location("");
-        Location dest_location = new Location("");
-
-        dest_location.setLatitude(19.077065);
-        dest_location.setLongitude(72.998993);
-        mylocation.setLatitude(19.0068);
-        mylocation.setLongitude(73.0147);
-        float distance = mylocation.distanceTo(dest_location);//in meters
-        Toast.makeText(getActivity(), "Distance" + Double.toString(distance / 1000),
-                Toast.LENGTH_LONG).show();
-
-        Log.v("distance :", AppUtilities.calculateDistanceInKm(19.0068f, 73.0147f, 19.077065f, 72.998993f));
 //
 //        // Extract Bitmap from ImageView drawable
 //        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.mipmap.launcher);
@@ -603,10 +574,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
         currentActivityAdapter = new CurrentActivityAdapter(currentlist, getActivity(), currentClickListner);
         rv_current_activity.setAdapter(currentActivityAdapter);
-        tv_current_title.setText(getString(R.string.active_queue)+" ("+String.valueOf(currentlist.size())+")");
+        tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentlist.size()) + ")");
         currentActivityAdapter.notifyDataSetChanged();
 
-        recentActivityAdapter = new RecentActivityAdapter(historylist, getActivity(), recentClickListner);
+        recentActivityAdapter = new RecentActivityAdapter(historylist, getActivity(), recentClickListner, lat, log);
         rv_recent_activity.setAdapter(recentActivityAdapter);
         recentActivityAdapter.notifyDataSetChanged();
     }
@@ -625,117 +596,11 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     public void callSearch() {
         Intent in_search = new Intent(getActivity(), SearchActivity.class);
-        in_search.putExtra("scrollId","");
-        in_search.putExtra("lat",lat_array[0]);
-        in_search.putExtra("long",log_array[0]);
-        in_search.putExtra("city",city[0]);
+        in_search.putExtra("scrollId", "");
+        in_search.putExtra("lat", "" + lat);
+        in_search.putExtra("long", "" + log);
+        in_search.putExtra("city", city);
         startActivity(in_search);
     }
 
-    public ArrayList<String> autocomplete(String input) {
-        ArrayList<String> resultList = null;
-
-        HttpURLConnection conn = null;
-        StringBuilder jsonResults = new StringBuilder();
-        try {
-            StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
-            sb.append("?key=" + API_KEY);
-            sb.append("&components=country:"+COUNTRY_CODE);
-            sb.append("&types=(regions)");
-            sb.append("&input=" + URLEncoder.encode(input, "utf8"));
-
-            URL url = new URL(sb.toString());
-
-            System.out.println("URL: "+url);
-            conn = (HttpURLConnection) url.openConnection();
-            InputStreamReader in = new InputStreamReader(conn.getInputStream());
-
-            // Load the results into a StringBuilder
-            int read;
-            char[] buff = new char[1024];
-            while ((read = in.read(buff)) != -1) {
-                jsonResults.append(buff, 0, read);
-            }
-        } catch (MalformedURLException e) {
-            Log.e(LOG_TAG, "Error processing Places API URL", e);
-            return resultList;
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Error connecting to Places API", e);
-            return resultList;
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
-        }
-
-        try {
-
-            // Create a JSON object hierarchy from the results
-            JSONObject jsonObj = new JSONObject(jsonResults.toString());
-            JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-
-            // Extract the Place descriptions from the results
-            resultList = new ArrayList<String>(predsJsonArray.length());
-            for (int i = 0; i < predsJsonArray.length(); i++) {
-                System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
-                System.out.println("============================================================");
-                resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
-            }
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, "Cannot process JSON results", e);
-        }
-
-        return resultList;
-    }
-
-    class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Filterable {
-        private ArrayList<String> resultList;
-
-        public GooglePlacesAutocompleteAdapter(Context context, int resource) {
-            super(context, resource);
-        }
-
-        @Override
-        public int getCount() {
-            return resultList.size();
-        }
-
-        @Override
-        public String getItem(int index) {
-            return resultList.get(index);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return super.getView(position, convertView, parent);
-        }
-        @Override
-        public Filter getFilter() {
-            Filter filter = new Filter() {
-                @Override
-                protected FilterResults performFiltering(CharSequence constraint) {
-                    FilterResults filterResults = new FilterResults();
-                    if (constraint != null) {
-                        // Retrieve the autocomplete results.
-                        resultList = autocomplete(constraint.toString());
-
-                        // Assign the data to the FilterResults
-                        filterResults.values = resultList;
-                        filterResults.count = resultList.size();
-                    }
-                    return filterResults;
-                }
-
-                @Override
-                protected void publishResults(CharSequence constraint, FilterResults results) {
-                    if (results != null && results.count > 0) {
-                        notifyDataSetChanged();
-                    } else {
-                        notifyDataSetInvalidated();
-                    }
-                }
-            };
-            return filter;
-        }
-    }
 }

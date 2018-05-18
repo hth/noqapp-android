@@ -14,7 +14,6 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.GeoHashUtils;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -23,6 +22,7 @@ import java.util.List;
 public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAdapter.MyViewHolder> {
     private final Context context;
     private List<JsonTokenAndQueue> dataSet;
+    private double lat, log;
 
     public interface OnItemClickListener {
         void recentItemClick(JsonTokenAndQueue item, View view, int pos);
@@ -56,10 +56,12 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
         }
     }
 
-    public RecentActivityAdapter(List<JsonTokenAndQueue> data, Context context, OnItemClickListener listener) {
+    public RecentActivityAdapter(List<JsonTokenAndQueue> data, Context context, OnItemClickListener listener, double lat, double log) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
+        this.lat = lat;
+        this.log = log;
     }
 
     @Override
@@ -77,8 +79,8 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
         JsonTokenAndQueue jsonTokenAndQueue = dataSet.get(listPosition);
         holder.tv_name.setText(jsonTokenAndQueue.getDisplayName());
         holder.tv_distance.setText(AppUtilities.calculateDistanceInKm(
-                (float) LaunchActivity.getLaunchActivity().latitute,
-                (float) LaunchActivity.getLaunchActivity().longitute,
+                (float) lat,
+                (float) log,
                 (float) GeoHashUtils.decodeLatitude(jsonTokenAndQueue.getGeoHash()),
                 (float) GeoHashUtils.decodeLongitude(jsonTokenAndQueue.getGeoHash())));
         //   holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
@@ -87,10 +89,10 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
             address = jsonTokenAndQueue.getTown();
         }
         if (!TextUtils.isEmpty(jsonTokenAndQueue.getArea())) {
-            address = jsonTokenAndQueue.getArea() + "," + address;
+            address = jsonTokenAndQueue.getArea() + ", " + address;
         }
         holder.tv_address.setText(address);
-        holder.tv_detail.setText("Last visit "+jsonTokenAndQueue.getServiceEndTime());
+        holder.tv_detail.setText("Last visit " + jsonTokenAndQueue.getServiceEndTime());
         holder.tv_status.setText(AppUtilities.getStoreOpenStatus(jsonTokenAndQueue));
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType(), holder.tv_store_rating);
         switch (jsonTokenAndQueue.getBusinessType()) {
@@ -118,4 +120,8 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
     }
 
 
+    public void updateLatLong(double lat, double log) {
+        this.lat = lat;
+        this.log = log;
+    }
 }
