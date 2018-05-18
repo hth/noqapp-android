@@ -41,7 +41,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
     private long FASTEST_INTERVAL = 2000; /* 2 sec */
 
     private LocationManager locationManager;
-    protected String cityName = "";
+    public String cityName = "";
 
 
     // TODO @Chandra

@@ -16,7 +16,6 @@ import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.GeoHashUtils;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ import java.util.ArrayList;
 public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyViewHolder> {
     private final Context context;
     private ArrayList<BizStoreElastic> dataSet;
+    private double lat,log;
 
     public interface OnItemClickListener {
         void onStoreItemClick(BizStoreElastic item, View view, int pos);
@@ -58,10 +58,12 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         }
     }
 
-    public StoreInfoAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener) {
+    public StoreInfoAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener, double lat, double log) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
+        this.lat = lat;
+        this.log = log;
     }
 
     @Override
@@ -111,8 +113,8 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         holder.tv_address.setText(address);
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, item.getBusinessType(), holder.tv_store_rating);
         holder.tv_distance.setText(AppUtilities.calculateDistanceInKm(
-                (float) LaunchActivity.getLaunchActivity().latitute,
-                (float) LaunchActivity.getLaunchActivity().longitute,
+                (float) lat,
+                (float) log,
                 (float) GeoHashUtils.decodeLatitude(item.getGeoHash()),
                 (float) GeoHashUtils.decodeLongitude(item.getGeoHash())));
 
