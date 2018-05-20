@@ -204,7 +204,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 address = bizStoreElastic.getTown();
             }
             if (!TextUtils.isEmpty(bizStoreElastic.getArea())) {
-                address = bizStoreElastic.getArea() + "," + address;
+                address = bizStoreElastic.getArea() + ", " + address;
             }
             tv_address.setText(address);
             tv_complete_address.setText(bizStoreElastic.getAddress());
@@ -261,13 +261,13 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
-                    btn_join_queues.setText("Book an appointment");
+                    btn_join_queues.setText("Book An Appointment");
                     break;
                 case BK:
                     btn_join_queues.setText("View Services");
                     break;
                 default:
-                    btn_join_queues.setText("Join the Queue");
+                    btn_join_queues.setText("Join Queue");
             }
         } else {
             //TODO(chandra) when its empty do something nice
