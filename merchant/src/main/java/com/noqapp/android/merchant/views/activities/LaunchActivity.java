@@ -84,7 +84,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     private long lastPress;
     private Toast backpressToast;
     private BroadcastReceiver broadcastReceiver;
-    private ImageView actionbarBack;
+    private ImageView actionbarBack,iv_chart;
     private TextView tv_name;
     private FrameLayout fl_notification;
     private TextView tv_badge;
@@ -117,6 +117,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         iv_logout = (ImageView) findViewById(R.id.iv_logout);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
+        iv_chart = (ImageView) findViewById(R.id.iv_chart);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tv_name = (TextView) findViewById(R.id.tv_name);
         tv_badge = (TextView) findViewById(R.id.tv_badge);
@@ -138,6 +139,14 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             @Override
             public void onClick(View v) {
                 showLogoutDialog();
+            }
+        });
+
+        iv_chart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(launchActivity,ChartActivity.class);
+                startActivity(in);
             }
         });
 
