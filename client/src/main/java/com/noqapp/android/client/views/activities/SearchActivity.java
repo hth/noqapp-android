@@ -129,7 +129,7 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
                                 storeInfoParam.setLongitude(longitute);
                                 storeInfoParam.setQuery(edt_search.getText().toString());
                                 storeInfoParam.setFilters("");
-                                storeInfoParam.setScrollId(scrollId);
+                                storeInfoParam.setScrollId(""); //Scroll id - fresh search pass blank
                                 NearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
                             } else {
                                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
@@ -217,6 +217,8 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
         ArrayList<BizStoreElastic> nearMeData = new ArrayList<>();
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         scrollId = bizStoreElasticList.getScrollId();
+        if(scrollId == null)
+            scrollId = "";
         //sort the list, give the Comparator the current location
         Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));
         //   remove progress item

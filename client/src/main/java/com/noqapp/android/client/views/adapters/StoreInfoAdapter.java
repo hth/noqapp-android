@@ -105,9 +105,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
                     .load(item.getDisplayImage())
                     .into(holder.iv_main);
         else{
-//            Picasso.with(context)
-//                    .load(item.getDisplayImage())
-//                    .into(holder.iv_main);
+            Picasso.with(context).load(R.drawable.store_default).into(holder.iv_main);
             // TODO add default images
         }
         holder.tv_address.setText(address);
