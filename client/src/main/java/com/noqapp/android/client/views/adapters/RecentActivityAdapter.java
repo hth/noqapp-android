@@ -102,9 +102,8 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
                         .into(holder.iv_main);
                 break;
             default:
-                Picasso.with(context)
-                        .load("https://noqapp.com/imgs/240x120/b.jpeg")
-                        .into(holder.iv_main);
+                Picasso.with(context).load(R.drawable.store_default).into(holder.iv_main);
+                // TODO add default images
         }
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
