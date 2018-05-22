@@ -26,11 +26,23 @@ public class JsonTopic extends JsonToken implements Serializable {
     @JsonProperty("o")
     private String topic;
 
+    @JsonProperty("hour")
+    private JsonHour hour;
+
     public String getTopic() {
         return topic;
     }
 
     public void setTopic(String topic) {
         this.topic = topic;
+    }
+
+    public JsonHour getHour() {
+        return hour;
+    }
+
+    public JsonTopic setHour(JsonHour hour) {
+        this.hour = hour;
+        return this;
     }
 }
