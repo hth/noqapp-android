@@ -45,7 +45,7 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
         Picasso.with(mContext)
                 .load(imageUrls.get(position))
                 .into(holder.iv_photo);
-        if(position<3){
+        if(position<3 || imageUrls.size()==4){
             holder.tv_title.setVisibility(View.GONE);
         }else{
             holder.tv_title.setVisibility(View.VISIBLE);

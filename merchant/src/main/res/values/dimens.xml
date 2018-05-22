@@ -9,5 +9,6 @@
     <dimen name="screen_padding">20dp</dimen>
     <dimen name="tab_screen_padding">400dp</dimen>
     <dimen name="edit_icon_size">24dp</dimen>
-
+    <dimen name="mhd_header_size">16sp</dimen>
+    <dimen name="mhd_sub_header_size">14dp</dimen>
 </resources>

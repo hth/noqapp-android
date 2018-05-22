@@ -29,13 +29,14 @@
 
         <com.noqapp.android.client.views.customviews.TextViewRobotoLight
             android:id="@+id/tv_toolbar_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/rl_right"
             android:layout_toRightOf="@+id/actionbarBack"
             android:padding="5dp"
-            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:gravity="left"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
