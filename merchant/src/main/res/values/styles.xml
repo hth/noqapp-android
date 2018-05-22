@@ -29,4 +29,22 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:text">""</item>
     </style>
+
+    <style name="style_mdh_details">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">@dimen/mhd_sub_header_size</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:minLines">2</item>
+        <item name="android:background">@drawable/square_white_bg_drawable</item>
+    </style>
+
+    <style name="style_mdh_header">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">@dimen/mhd_header_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

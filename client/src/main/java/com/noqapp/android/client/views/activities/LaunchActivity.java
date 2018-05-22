@@ -465,7 +465,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     }
 
     public void enableDisableBack(boolean isShown) {
-        actionbarBack.setVisibility(isShown ? View.VISIBLE : View.INVISIBLE);
+        actionbarBack.setVisibility(isShown ? View.VISIBLE : View.GONE);
     }
 
     public String getDeviceID() {

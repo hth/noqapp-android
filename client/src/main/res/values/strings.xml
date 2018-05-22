@@ -5,7 +5,7 @@
 
 
     <!--Screen Name-->
-    <string name="tab_scan">QScan</string>
+    <string name="tab_scan">NoQueue</string>
     <string name="tab_list">QList</string>
     <string name="tab_me">Me</string>
     <string name="screen_qdetails">QDetails</string>
