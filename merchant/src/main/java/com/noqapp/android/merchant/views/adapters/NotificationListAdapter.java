@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.presenter.beans.NotificationBeans;
