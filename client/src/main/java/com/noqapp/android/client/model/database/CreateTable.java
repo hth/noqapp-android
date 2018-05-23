@@ -20,66 +20,76 @@ public class CreateTable {
     }
 
     private static void createTableTokenQueue(SQLiteDatabase db) {
-        Log.d(TAG, "executing createTableTokenQueue");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TokenQueue.TABLE_NAME + "("
-                + TokenQueue.CODE_QR + " TEXT , "
-                + TokenQueue.BUSINESS_NAME + " TEXT ,"
-                + TokenQueue.DISPLAY_NAME + " TEXT , "
-                + TokenQueue.STORE_ADDRESS + " TEXT ,"
-                + TokenQueue.COUNTRY_SHORT_NAME + " TEXT , "
-                + TokenQueue.STORE_PHONE + " TEXT , "
-                + TokenQueue.TOKEN_AVAILABLE_FROM + " TEXT , "
-                + TokenQueue.START_HOUR + " TEXT , "
-                + TokenQueue.END_HOUR + " TEXT , "
-                + TokenQueue.TOPIC + " TEXT , "
-                + TokenQueue.SERVING_NUMBER + " TEXT , "
-                + TokenQueue.LAST_NUMBER + " TEXT , "
-                + TokenQueue.TOKEN + " TEXT , "
-                + TokenQueue.QUEUE_STATUS + " TEXT , "
-                + TokenQueue.SERVICE_END_TIME + " TEXT , "
-                + TokenQueue.RATING_COUNT + " TEXT , "
-                + TokenQueue.HOURS_SAVED + " TEXT , "
-                + TokenQueue.CREATE_DATE + " TEXT , "
-                + TokenQueue.BUSINESS_TYPE + " TEXT , "
-                + TokenQueue.GEOHASH + " TEXT , "
-                + TokenQueue.TOWN + " TEXT , "
-                + TokenQueue.AREA + " TEXT , "
-                + TokenQueue.DISPLAY_IMAGE + " TEXT , "
+        try {
+            Log.d(TAG, "executing createTableTokenQueue");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TokenQueue.TABLE_NAME + "("
+                    + TokenQueue.CODE_QR + " TEXT , "
+                    + TokenQueue.BUSINESS_NAME + " TEXT ,"
+                    + TokenQueue.DISPLAY_NAME + " TEXT , "
+                    + TokenQueue.STORE_ADDRESS + " TEXT ,"
+                    + TokenQueue.COUNTRY_SHORT_NAME + " TEXT , "
+                    + TokenQueue.STORE_PHONE + " TEXT , "
+                    + TokenQueue.TOKEN_AVAILABLE_FROM + " TEXT , "
+                    + TokenQueue.START_HOUR + " TEXT , "
+                    + TokenQueue.END_HOUR + " TEXT , "
+                    + TokenQueue.TOPIC + " TEXT , "
+                    + TokenQueue.SERVING_NUMBER + " TEXT , "
+                    + TokenQueue.LAST_NUMBER + " TEXT , "
+                    + TokenQueue.TOKEN + " TEXT , "
+                    + TokenQueue.QUEUE_STATUS + " TEXT , "
+                    + TokenQueue.SERVICE_END_TIME + " TEXT , "
+                    + TokenQueue.RATING_COUNT + " TEXT , "
+                    + TokenQueue.HOURS_SAVED + " TEXT , "
+                    + TokenQueue.CREATE_DATE + " TEXT , "
+                    + TokenQueue.BUSINESS_TYPE + " TEXT , "
+                    + TokenQueue.GEOHASH + " TEXT , "
+                    + TokenQueue.TOWN + " TEXT , "
+                    + TokenQueue.AREA + " TEXT , "
+                    + TokenQueue.DISPLAY_IMAGE + " TEXT , "
 
-                + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
+                    + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
-                ");");
+                    ");");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private static void createTableTokenQueueHistory(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableTokenQueue");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TokenQueueHistory.TABLE_NAME + "("
-                + TokenQueue.CODE_QR + " TEXT , "
-                + TokenQueue.BUSINESS_NAME + " TEXT , "
-                + TokenQueue.DISPLAY_NAME + " TEXT , "
-                + TokenQueue.STORE_ADDRESS + " TEXT , "
-                + TokenQueue.COUNTRY_SHORT_NAME + " TEXT , "
-                + TokenQueue.STORE_PHONE + " TEXT , "
-                + TokenQueue.TOKEN_AVAILABLE_FROM + " TEXT , "
-                + TokenQueue.START_HOUR + " TEXT , "
-                + TokenQueue.END_HOUR + " TEXT , "
-                + TokenQueue.TOPIC + " TEXT , "
-                + TokenQueue.SERVING_NUMBER + " TEXT , "
-                + TokenQueue.LAST_NUMBER + " TEXT , "
-                + TokenQueue.TOKEN + " TEXT , "
-                + TokenQueue.QUEUE_STATUS + " TEXT , "
-                + TokenQueue.SERVICE_END_TIME + " TEXT , "
-                + TokenQueue.RATING_COUNT + " TEXT , "
-                + TokenQueue.HOURS_SAVED + " TEXT , "
-                + TokenQueue.CREATE_DATE + " TEXT , "
-                + TokenQueue.BUSINESS_TYPE + " TEXT , "
-                + TokenQueue.GEOHASH + " TEXT , "
-                + TokenQueue.TOWN + " TEXT , "
-                + TokenQueue.AREA + " TEXT , "
-                + TokenQueue.DISPLAY_IMAGE + " TEXT , "
-                + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
+        try {
 
-                ");");
+
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TokenQueueHistory.TABLE_NAME + "("
+                    + TokenQueue.CODE_QR + " TEXT , "
+                    + TokenQueue.BUSINESS_NAME + " TEXT , "
+                    + TokenQueue.DISPLAY_NAME + " TEXT , "
+                    + TokenQueue.STORE_ADDRESS + " TEXT , "
+                    + TokenQueue.COUNTRY_SHORT_NAME + " TEXT , "
+                    + TokenQueue.STORE_PHONE + " TEXT , "
+                    + TokenQueue.TOKEN_AVAILABLE_FROM + " TEXT , "
+                    + TokenQueue.START_HOUR + " TEXT , "
+                    + TokenQueue.END_HOUR + " TEXT , "
+                    + TokenQueue.TOPIC + " TEXT , "
+                    + TokenQueue.SERVING_NUMBER + " TEXT , "
+                    + TokenQueue.LAST_NUMBER + " TEXT , "
+                    + TokenQueue.TOKEN + " TEXT , "
+                    + TokenQueue.QUEUE_STATUS + " TEXT , "
+                    + TokenQueue.SERVICE_END_TIME + " TEXT , "
+                    + TokenQueue.RATING_COUNT + " TEXT , "
+                    + TokenQueue.HOURS_SAVED + " TEXT , "
+                    + TokenQueue.CREATE_DATE + " TEXT , "
+                    + TokenQueue.BUSINESS_TYPE + " TEXT , "
+                    + TokenQueue.GEOHASH + " TEXT , "
+                    + TokenQueue.TOWN + " TEXT , "
+                    + TokenQueue.AREA + " TEXT , "
+                    + TokenQueue.DISPLAY_IMAGE + " TEXT , "
+                    + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
+
+                    ");");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private static void createTableReview(SQLiteDatabase db) {
