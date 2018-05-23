@@ -44,6 +44,7 @@ public class CreateTable {
                 + TokenQueue.GEOHASH + " TEXT , "
                 + TokenQueue.TOWN + " TEXT , "
                 + TokenQueue.AREA + " TEXT , "
+                + TokenQueue.DISPLAY_IMAGE + " TEXT , "
 
                 + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
@@ -75,6 +76,7 @@ public class CreateTable {
                 + TokenQueue.GEOHASH + " TEXT , "
                 + TokenQueue.TOWN + " TEXT , "
                 + TokenQueue.AREA + " TEXT , "
+                + TokenQueue.DISPLAY_IMAGE + " TEXT , "
                 + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                 ");");
@@ -112,11 +114,13 @@ public class CreateTable {
         db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.GEOHASH + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.TOWN + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.AREA + " TEXT  ");
+        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.DISPLAY_IMAGE + " TEXT  ");
 
         db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.BUSINESS_TYPE + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.GEOHASH + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.TOWN + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.AREA + " TEXT  ");
+        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.DISPLAY_IMAGE + " TEXT  ");
     }
 
     static void updateBusinessType(SQLiteDatabase db){

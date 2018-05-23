@@ -542,6 +542,9 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             NoQueueBaseActivity.clearPreferences();
             ShowAlertInformation.showAuthenticErrorDialog(getActivity());
         }
+        pb_current.setVisibility(View.GONE);
+        pb_recent.setVisibility(View.GONE);
+        pb_near.setVisibility(View.GONE);
     }
 
     @Override
