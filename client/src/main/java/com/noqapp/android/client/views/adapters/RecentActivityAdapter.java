@@ -95,15 +95,14 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
         holder.tv_detail.setText("Last visit " + jsonTokenAndQueue.getServiceEndTime());
         holder.tv_status.setText(AppUtilities.getStoreOpenStatus(jsonTokenAndQueue));
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType(), holder.tv_store_rating);
-        switch (jsonTokenAndQueue.getBusinessType()) {
-            case DO:
-                Picasso.with(context)
-                        .load("https://noqapp.com/imgs/240x120/f.jpeg")
-                        .into(holder.iv_main);
-                break;
-            default:
-                Picasso.with(context).load(R.drawable.store_default).into(holder.iv_main);
-                // TODO add default images
+
+        if(!TextUtils.isEmpty(jsonTokenAndQueue.getDisplayImage()))
+            Picasso.with(context)
+                    .load(jsonTokenAndQueue.getDisplayImage())
+                    .into(holder.iv_main);
+        else{
+            Picasso.with(context).load(R.drawable.store_default).into(holder.iv_main);
+            // TODO add default images
         }
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override

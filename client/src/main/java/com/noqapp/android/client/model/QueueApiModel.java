@@ -73,6 +73,9 @@ public class QueueApiModel {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
                     tokenAndQueuePresenter.authenticationFailure(response.code());
                     return;
+                }else if (response.code() == 500) {
+                    tokenAndQueuePresenter.currentQueueError();
+                    return;
                 }
                 if (null != response.body() && null == response.body().getError()) {
                     /// if (response.body().getTokenAndQueues().size() > 0) {

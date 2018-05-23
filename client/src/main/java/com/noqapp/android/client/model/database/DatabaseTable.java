@@ -30,6 +30,7 @@ public class DatabaseTable {
         public static final String GEOHASH = "geohash";
         public static final String TOWN = "town";
         public static final String AREA = "area";
+        public static final String DISPLAY_IMAGE = "displayImage";
 
         private TokenQueue() {
         }
