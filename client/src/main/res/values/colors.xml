@@ -19,8 +19,8 @@
     <color name="rating_select">#e92270</color>
     <color name="rating_unselect">#80e92270</color>
     <color name="progress_unselect">#4de92270</color>
-    <color name="open_queue">#095053</color>
-    <color name="before_opening_queue">#ae6b3f</color>
+    <color name="open_queue">@android:color/black</color>
+    <color name="before_opening_queue">@android:color/black</color>
     <!--65 % transparent -->
     <color name="black_transparent">#A6000000</color>
 

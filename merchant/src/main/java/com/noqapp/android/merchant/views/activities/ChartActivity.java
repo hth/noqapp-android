@@ -5,6 +5,8 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
+import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,31 +27,45 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MerchantStatsModel;
+import com.noqapp.android.merchant.presenter.beans.stats.DoctorStats;
+import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.DayAxisValueFormatter;
+import com.noqapp.android.merchant.utils.MyValueFormatter;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class ChartActivity extends AppCompatActivity implements OnChartValueSelectedListener {
+public class ChartActivity extends AppCompatActivity implements OnChartValueSelectedListener, ChartPresenter {
 
-    protected String[] mParties = new String[] {
-            "New patient", "Old patient"
-    };
     private FrameLayout fl_notification;
     private TextView tv_toolbar_title;
     private ImageView actionbarBack;
-    private PieChart mChart;
+    private PieChart pieChart;
     private BarChart bar_chart;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (!new AppUtils().isTablet(getApplicationContext())) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
+        initProgress();
         bar_chart = findViewById(R.id.bar_chart);
         fl_notification = (FrameLayout) findViewById(R.id.fl_notification);
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
@@ -62,51 +78,49 @@ public class ChartActivity extends AppCompatActivity implements OnChartValueSele
             }
         });
         tv_toolbar_title.setText("Charts");
-        mChart = findViewById(R.id.chart1);
-        mChart.setUsePercentValues(true);
-        mChart.getDescription().setEnabled(false);
-        mChart.setExtraOffsets(5, 10, 5, 5);
-        mChart.setEntryLabelColor(Color.BLACK);
-        mChart.setDragDecelerationFrictionCoef(0.95f);
-
-      //  mChart.setCenterText(generateCenterSpannableText());
-
-        mChart.setDrawHoleEnabled(false);
-        //mChart.setHoleColor(Color.WHITE);
-
-        mChart.setTransparentCircleColor(Color.BLACK);
-        mChart.setTransparentCircleAlpha(110);
-
-        mChart.setHoleRadius(58f);
-        mChart.setTransparentCircleRadius(61f);
-
-        mChart.setDrawCenterText(true);
-
-        mChart.setRotationAngle(0);
+        pieChart = findViewById(R.id.pieChart);
+        pieChart.setUsePercentValues(false);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setExtraOffsets(5, 10, 5, 5);
+        pieChart.setEntryLabelColor(Color.BLACK);
+        // pieChart.setEntryLabelTextSize(16f);
+        pieChart.setDragDecelerationFrictionCoef(0.95f);
+        //  pieChart.setCenterText(generateCenterSpannableText());
+        pieChart.setDrawHoleEnabled(false);
+        //pieChart.setHoleColor(Color.WHITE);
+        pieChart.setTransparentCircleColor(Color.BLACK);
+        pieChart.setTransparentCircleAlpha(110);
+        pieChart.setHoleRadius(58f);
+        pieChart.setTransparentCircleRadius(61f);
+        pieChart.setDrawCenterText(true);
+        pieChart.setRotationAngle(0);
         // enable rotation of the chart by touch
-        mChart.setRotationEnabled(false);
-        mChart.setHighlightPerTapEnabled(true);
-
-        // mChart.setUnit(" €");
-        // mChart.setDrawUnitsInChart(true);
+        pieChart.setRotationEnabled(false);
+        pieChart.setHighlightPerTapEnabled(false);
+        // pieChart.setUnit(" €");
+        // pieChart.setDrawUnitsInChart(true);
 
         // add a selection listener
-        mChart.setOnChartValueSelectedListener(this);
-
-        setData(2, 100);
+        pieChart.setOnChartValueSelectedListener(this);
 
 
-
-
-        //mChart.animateY(1400, Easing.EaseInOutQuad);
         bar_chart.getDescription().setEnabled(false);
         bar_chart.setDrawGridBackground(false);
         bar_chart.setDrawBarShadow(false);
-
+        bar_chart.setDoubleTapToZoomEnabled(false);
+        bar_chart.setPinchZoom(false);
+        bar_chart.setFitBars(true);
+        // to disable the pnch & zoom vertical/horizontal
+        // bar_chart.setScaleEnabled(false);
+        //bar_chart.setHighlightPerTapEnabled(false);
+        bar_chart.setTouchEnabled(false);
         XAxis xAxis = bar_chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(true);
+        xAxis.setLabelCount(12);
+        xAxis.setValueFormatter(new DayAxisValueFormatter());
+
 
         YAxis leftAxis = bar_chart.getAxisLeft();
         leftAxis.setLabelCount(5, false);
@@ -119,14 +133,23 @@ public class ChartActivity extends AppCompatActivity implements OnChartValueSele
         rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
 
-
         // set data
-        bar_chart.setData((BarData) generateDataBar(7));
+        //  bar_chart.setData((BarData) generateDataBar(12));
         bar_chart.setFitBars(true);
 
         // do not forget to refresh the chart
 //        bar_chart.invalidate();
         bar_chart.animateY(700);
+
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            MerchantStatsModel.chartPresenter = this;
+            MerchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), "SN_5ad2022db85cb75a156d65b2");
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
+
+
     }
 
 
@@ -145,21 +168,13 @@ public class ChartActivity extends AppCompatActivity implements OnChartValueSele
         Log.i("PieChart", "nothing selected");
     }
 
-    private void setData(int count, float range) {
 
-        float mult = range;
+    private void setData(ArrayList<PieEntry> entries1) {
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+        entries.addAll(entries1);
 
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
-        // the chart.
-        for (int i = 0; i < count ; i++) {
-            entries.add(new PieEntry((float) ((Math.random() * mult) + mult / 5),
-                    mParties[i % mParties.length],
-                    getResources().getDrawable(R.drawable.cross)));
-        }
-
-        PieDataSet dataSet = new PieDataSet(entries, "Election Results");
+        PieDataSet dataSet = new PieDataSet(entries, "");
 
         dataSet.setDrawIcons(false);
 
@@ -192,31 +207,66 @@ public class ChartActivity extends AppCompatActivity implements OnChartValueSele
         //dataSet.setSelectionShift(0f);
 
         PieData data = new PieData(dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
-        mChart.setData(data);
+        data.setValueFormatter(new MyValueFormatter());
+        data.setValueTextSize(16f);
+        data.setValueTextColor(Color.BLACK);
+        pieChart.setData(data);
 
         // undo all highlights
-        mChart.highlightValues(null);
+        pieChart.highlightValues(null);
 
-        mChart.invalidate();
+        pieChart.invalidate();
     }
 
-    private BarData generateDataBar(int cnt) {
 
+    private void generateDataBar(List<YearlyData> yearlyData) {
+        int cnt = yearlyData.size();
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-
         for (int i = 0; i < cnt; i++) {
-            entries.add(new BarEntry(i+1, (int) (Math.random() * 70) + 30));
+            entries.add(new BarEntry(yearlyData.get(i).getYearMonth(), yearlyData.get(i).getValue()));
         }
-
-        BarDataSet d = new BarDataSet(entries, "New DataSet " + (cnt+1));
+        BarDataSet d = new BarDataSet(entries, "");
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setHighLightAlpha(255);
-
         BarData cd = new BarData(d);
+        d.setValueFormatter(new MyValueFormatter());
         cd.setBarWidth(0.9f);
-        return cd;
+        bar_chart.setData(cd);
+        bar_chart.invalidate();
+    }
+
+    @Override
+    public void chartError() {
+        dismissProgress();
+    }
+
+    @Override
+    public void chartResponse(DoctorStats doctorStats) {
+        Log.v("Chart data :", doctorStats.toString());
+        if (null != doctorStats) {
+            int new_count = doctorStats.getRepeatCustomers().getCustomerNew();
+            int old_count = doctorStats.getRepeatCustomers().getCustomerRepeat();
+            String[] mParties = new String[]{
+                    "New patient", "Repeat patient"};
+            ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+            entries.add(new PieEntry((float) new_count, mParties[0]));
+            entries.add(new PieEntry((float) old_count, mParties[1]));
+            setData(entries);
+            //set the bar data
+            generateDataBar(doctorStats.getTwelveMonths());
+        }
+        dismissProgress();
+    }
+
+    private void initProgress() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+    }
+
+    private void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 }

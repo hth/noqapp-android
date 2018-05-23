@@ -156,28 +156,27 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             // When between Token Not Available From and End Hour
             if (timeIn24HourFormat >= storeHourElastic.getTokenNotAvailableFrom() && timeIn24HourFormat < storeHourElastic.getEndHour()) {
                 holder.tv_status.setText("Closing soon");
-                holder.tv_status.setTextColor(context.getResources().getColor(R.color.before_opening_queue));
+                holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
 
             // When after End Hour
             if (timeIn24HourFormat >= storeHourElastic.getEndHour()) {
                 holder.tv_status.setText("Closed now");
-                holder.tv_status.setTextColor(context.getResources().getColor(R.color.color_btn_select));
+                holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
 
-            holder.tv_status.setTypeface(null, Typeface.BOLD);
+
         } else {
             //TODO(hth) Show when will this be open next. For now hide it.
-            //holder.tv_category.setText("Show some smart message");
-            //holder.tv_category.setTextColor(Color.DKGRAY);
-            //holder.tv_category.setTypeface(null, Typeface.BOLD);
-            holder.tv_status.setVisibility(View.GONE);
+            holder.tv_status.setText("Closed Today");
+            holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         }
        // commented temporary
        /* Picasso.with(context)
                 .load(dataSet.get(listPosition).getDisplayImage())
                 .transform(new RoundedTransformation(10, 4))
                 .into(holder.iv_main);*/
+        holder.tv_store_special.setText(dataSet.get(listPosition).getFamousFor());
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
