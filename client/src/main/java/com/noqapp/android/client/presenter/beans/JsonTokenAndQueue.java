@@ -43,6 +43,9 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("n")
     private String businessName;
 
+    @JsonProperty("di")
+    private String displayImage;
+
     @JsonProperty("d")
     private String displayName;
 
@@ -134,6 +137,15 @@ public class JsonTokenAndQueue implements Serializable {
 
     public void setBusinessName(String businessName) {
         this.businessName = businessName;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
+    }
+
+    public JsonTokenAndQueue setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
+        return this;
     }
 
     public String getDisplayName() {
