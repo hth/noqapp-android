@@ -34,6 +34,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.Formatter;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -122,6 +123,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         TextView tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
         TextView tv_title = (TextView) itemView.findViewById(R.id.tv_title);
         TextView tv_serving_customer = (TextView) itemView.findViewById(R.id.tv_serving_customer);
+        TextView tv_timing = (TextView) itemView.findViewById(R.id.tv_timing);
 
         final TextView tv_counter_name = (TextView) itemView.findViewById(R.id.tv_counter_name);
 
@@ -131,7 +133,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             tv_counter_name.setText("");
         else
             tv_counter_name.setText(cName);
-
+        tv_timing.setText("Timing: "+Formatter.convertMilitaryTo12HourFormat(lq.getHour().getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(lq.getHour().getEndHour()));
         //
         Button btn_skip = (Button) itemView.findViewById(R.id.btn_skip);
         Button btn_next = (Button) itemView.findViewById(R.id.btn_next);

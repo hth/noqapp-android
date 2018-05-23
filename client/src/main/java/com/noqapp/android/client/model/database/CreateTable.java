@@ -118,6 +118,12 @@ public class CreateTable {
         db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.TOWN + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.AREA + " TEXT  ");
     }
+
+    static void updateBusinessType(SQLiteDatabase db){
+        db.execSQL("UPDATE "+TokenQueue.TABLE_NAME +" SET " + TokenQueue.BUSINESS_TYPE+ " = DO WHERE "+TokenQueue.BUSINESS_TYPE+ " = HO");
+        db.execSQL("UPDATE "+TokenQueueHistory.TABLE_NAME +" SET " + TokenQueue.BUSINESS_TYPE+ " = DO WHERE "+TokenQueue.BUSINESS_TYPE+ " = HO");
+    }
+
     static void createAllTable(SQLiteDatabase db) {
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);
