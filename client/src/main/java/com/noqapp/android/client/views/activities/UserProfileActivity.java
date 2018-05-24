@@ -303,6 +303,11 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
+    public void queueError(String error) {
+
+    }
+
+    @Override
     public void authenticationFailure(int errorCode) {
         //TODO(chandra)
     }
@@ -367,5 +372,11 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             isValid = false;
         }
         return isValid;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUI();
     }
 }

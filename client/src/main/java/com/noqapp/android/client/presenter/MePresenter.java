@@ -44,6 +44,11 @@ public class MePresenter implements ProfilePresenter {
     }
 
     @Override
+    public void queueError(String error) {
+
+    }
+
+    @Override
     public void authenticationFailure(int errorCode) {
         //TODO(chandra)
     }

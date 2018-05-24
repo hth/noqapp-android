@@ -87,10 +87,12 @@ public class ProfileModel {
 
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.queueResponse(response.body(), mail, auth);
+                    profilePresenter.queueResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                            response.headers().get(APIConstant.Key.XR_AUTH));
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed migrating profile");
+                    profilePresenter.queueError(response.body().getError().getReason());
                 }
             }
 

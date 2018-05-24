@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
@@ -326,6 +327,12 @@ public class MigrateActivity extends BaseActivity implements ProfilePresenter {
     }
 
     @Override
+    public void queueError(String error) {
+        dismissProgress();
+        Toast.makeText(this,error,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void authenticationFailure(int errorCode) {
         //TODO(chandra)
     }
@@ -352,6 +359,7 @@ public class MigrateActivity extends BaseActivity implements ProfilePresenter {
         }
         if (mVerificationId != null) {
             progressDialog.show();
+            new AppUtilities().hideKeyBoard(this);
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
             signInWithPhoneAuthCredential(credential);
         } else {
