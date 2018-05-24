@@ -69,10 +69,6 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     protected EditText edt_address;
     @BindView(R.id.btn_update)
     protected Button btn_update;
-    @BindView(R.id.btn_migrate)
-    protected Button btn_migrate;
-
-
 
     public String gender = "";
 
@@ -265,23 +261,6 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             }
         }
 
-    }
-
-    @OnClick(R.id.btn_migrate)
-    public void migrateProfile() {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
-            ProfileModel.profilePresenter = this;
-
-            MigrateProfile migrateProfile = new MigrateProfile();
-            migrateProfile.setPhone("9766146936");
-            migrateProfile.setTimeZoneId(TimeZone.getDefault().getID());
-            migrateProfile.setCountryShortName("");
-
-            ProfileModel.migrate(UserUtils.getEmail(), UserUtils.getAuth(), migrateProfile);
-        } else {
-            ShowAlertInformation.showNetworkDialog(this);
-        }
     }
 
     @Override
