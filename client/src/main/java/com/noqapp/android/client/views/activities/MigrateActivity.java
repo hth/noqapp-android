@@ -6,7 +6,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,30 +35,34 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.Login;
+import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity implements ProfilePresenter {
+public class MigrateActivity extends BaseActivity implements ProfilePresenter {
 
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
 
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
-    private final String TAG = LoginActivity.class.getSimpleName();
+    private final String TAG = MigrateActivity.class.getSimpleName();
     private final int READ_AND_RECEIVE_SMS_PERMISSION_CODE = 101;
     private final String[] READ_AND_RECEIVE_SMS_PERMISSION_PERMS = {
             Manifest.permission.RECEIVE_SMS,
@@ -102,7 +105,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 finish();
             }
         });
-        tv_toolbar_title.setText("Login");
+        tv_toolbar_title.setText("Migrate No");
         RegisterModel.profilePresenter = this;
         mAuth = FirebaseAuth.getInstance();
         updateUI(STATE_INITIALIZED);
@@ -115,7 +118,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         countryCode = "+"+c_code;
         countryShortName = c_codeValue.toUpperCase();
         edt_phone_code.setText(countryCode);
-
+        btn_login.setText("Start Migrate");
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             @Override
@@ -194,11 +197,17 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         }
     }
 
-    private void callLoginAPI(String phoneNumber) {
-        Login login = new Login();
-        login.setPhone(phoneNumber);
-        login.setCountryShortName("");
-        RegisterModel.login(UserUtils.getDeviceId(), login);
+    private void callMigrateAPI(String phoneNumber) {
+
+        TimeZone tz = TimeZone.getDefault();
+        Log.d(TAG, "TimeZone=" + tz.getDisplayName(false, TimeZone.SHORT) + " TimezoneId=" + tz.getID());
+
+        MigrateProfile migrateProfile = new MigrateProfile();
+        migrateProfile.setCountryShortName(countryShortName);
+        migrateProfile.setTimeZoneId(tz.getID());
+        migrateProfile.setPhone(phoneNumber);
+        ProfileModel.profilePresenter = this;
+        ProfileModel.migrate(UserUtils.getEmail(),UserUtils.getAuth(),migrateProfile);
     }
 
     private boolean validate() {
@@ -208,6 +217,12 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         if (TextUtils.isEmpty(edt_phoneNo.getText())) {
             edt_phoneNo.setError(getString(R.string.error_mobile_blank));
             isValid = false;
+        }else{
+            if(PhoneFormatterUtil.phoneNumberWithCountryCode( edt_phoneNo.getText().toString(),countryShortName).
+                    equals(PhoneFormatterUtil.phoneNumberWithCountryCode( NoQueueBaseActivity.getPhoneNo(),NoQueueBaseActivity.getCountryShortName()))){
+                edt_phoneNo.setError(getString(R.string.error_mobile_no_same));
+                isValid = false;
+            }
         }
 
         return isValid;
@@ -298,16 +313,8 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         } else {
             // Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
-            if (null != eej && eej.getSystemErrorCode().equals("412")) {
-                Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
-                in.putExtra("mobile_no", verifiedMobileNo);
-                in.putExtra("country_code", countryCode);
-                in.putExtra("countryShortName",countryShortName);
-                startActivity(in);
-                dismissProgress();
-                finish();//close the current activity
-            }
         }
+        dismissProgress();
     }
 
     @Override
@@ -416,7 +423,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 // Np-op, handled by sign-in check
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    callLoginAPI(user.getPhoneNumber());
+                    callMigrateAPI(user.getPhoneNumber());
                 } else {
                     ShowAlertInformation.showNetworkDialog(this);
                     dismissProgress();

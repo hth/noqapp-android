@@ -70,6 +70,7 @@ public final class RegisterModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history" + response.body().getError());
+                    profilePresenter.queueError(response.body().getError().getReason());
                 }
             }
 

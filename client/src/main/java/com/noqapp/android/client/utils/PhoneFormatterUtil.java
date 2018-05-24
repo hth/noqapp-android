@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.i18n.phonenumbers.AsYouTypeFormatter;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 
 import static com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
@@ -55,5 +56,17 @@ public class PhoneFormatterUtil {
      */
     public static int findCountryCodeFromCountryShortCode(String countryShortCode) {
         return phoneUtil.getCountryCodeForRegion(countryShortCode.toUpperCase());
+    }
+
+    public static String phoneNumberWithCountryCode(String phone, String countryShortName) {
+        try {
+            Phonenumber.PhoneNumber phoneNumber = phoneUtil.parse(phone, countryShortName);
+            Log.i(TAG, "PhoneNumber with phone=" + phone + " countryShortName=" + countryShortName + " countryCode=" + phoneNumber.getCountryCode() + " nationalNumber=" + phoneNumber.getNationalNumber() + " leadingZeros=" + phoneNumber.getNumberOfLeadingZeros());
+
+            return phoneNumber.getCountryCode() + String.valueOf(phoneNumber.getNationalNumber());
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to parse phone= " + phone + " countryShortName=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
+            throw new RuntimeException("Failed parsing country code");
+        }
     }
 }
