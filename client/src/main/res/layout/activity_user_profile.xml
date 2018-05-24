@@ -106,14 +106,34 @@
                         style="@style/style_register_tv"
                         android:text="@string/phone" />
 
-
-                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                        android:id="@+id/edt_phone"
-                        style="@style/style_register_edt"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:inputType="phone"
-                        android:maxLength="15" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
+                        <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                            android:id="@+id/edt_phone"
+                            style="@style/style_register_edt"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
+                            android:inputType="phone"
+                            android:maxLength="15" />
+
+                        <TextView
+                            android:id="@+id/tv_migrate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Change Number"
+                            android:gravity="center"
+                            android:layout_weight=".4"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:background="@drawable/gender_redbg"
+                            android:padding="10dp" />
+                    </LinearLayout>
 
                     <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                         style="@style/style_register_tv"
@@ -216,12 +236,12 @@
                     <com.noqapp.android.client.views.customviews.TextEditRobotoLight
                         android:id="@+id/edt_address"
                         style="@style/style_register_edt"
-                        android:inputType="textMultiLine"
-                        android:singleLine="false"
                         android:gravity="top|left"
+                        android:inputType="textMultiLine"
                         android:lines="2"
                         android:maxLines="2"
-                        android:minLines="2"/>
+                        android:minLines="2"
+                        android:singleLine="false" />
 
 
                     <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
@@ -262,10 +282,10 @@
                         android:paddingLeft="90dp"
                         android:paddingRight="90dp"
                         android:text="Migrate mobile no"
-                        android:visibility="gone"
                         android:textAllCaps="false"
                         android:textColor="@color/colorMobile"
                         android:textSize="15sp"
+                        android:visibility="gone"
 
                         />
 

@@ -234,6 +234,7 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="screen_order">Order Summary</string>
     <string name="screen_order_confirm">Order Confirmation</string>
     <string name="transaction_history">Transactions</string>
+    <string name="error_mobile_no_same">Please enter new mobile no</string>
     <!-- Language select dialog -->
 
 </resources>

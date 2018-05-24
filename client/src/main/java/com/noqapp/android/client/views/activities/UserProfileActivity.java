@@ -92,6 +92,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.tv_female)
     protected EditText tv_female;
 
+    @BindView(R.id.tv_migrate)
+    protected TextView tv_migrate;
+
     @BindView(R.id.ll_gender)
     protected LinearLayout ll_gender;
 
@@ -113,6 +116,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         edt_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
+        tv_migrate.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
@@ -193,6 +197,11 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 ss1.setSpan(span1, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 tv_female.setText(ss1);
             break;
+
+            case R.id.tv_migrate:
+                Intent migrate = new Intent(this,MigrateActivity.class);
+                startActivity(migrate);
+                break;
         }
     }
 
