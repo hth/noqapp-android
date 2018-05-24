@@ -218,7 +218,8 @@ public class MigrateActivity extends BaseActivity implements ProfilePresenter {
             edt_phoneNo.setError(getString(R.string.error_mobile_blank));
             isValid = false;
         }else{
-            if(PhoneFormatterUtil.formatNumber(countryShortName, edt_phoneNo.getText().toString()).equals(NoQueueBaseActivity.getPhoneNo())){
+            if(PhoneFormatterUtil.phoneNumberWithCountryCode( edt_phoneNo.getText().toString(),countryShortName).
+                    equals(PhoneFormatterUtil.phoneNumberWithCountryCode( NoQueueBaseActivity.getPhoneNo(),NoQueueBaseActivity.getCountryShortName()))){
                 edt_phoneNo.setError(getString(R.string.error_mobile_no_same));
                 isValid = false;
             }
