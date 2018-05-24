@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -32,11 +34,17 @@ import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+
 public class LoginFragment extends Fragment implements LoginPresenter, MerchantPresenter {
 
     private Button btn_login;
-    private EditText edt_email, edt_pwd;
+    private EditText  edt_pwd;
+    private AutoCompleteTextView actv_email;
     private String email, pwd;
+
+    private ArrayList<String> userList = new ArrayList<>();
+
 
     public LoginFragment() {
         super();
@@ -47,10 +55,18 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
         View view = inflater.inflate(R.layout.frag_login, container, false);
         btn_login = (Button) view.findViewById(R.id.btn_login);
-        edt_email = (EditText) view.findViewById(R.id.edt_email);
+        actv_email = (AutoCompleteTextView) view.findViewById(R.id.actv_email);
         edt_pwd = (EditText) view.findViewById(R.id.edt_pwd);
+        userList = LaunchActivity.getLaunchActivity().getUserList();
         LoginModel.loginPresenter = this;
         MerchantProfileModel.merchantPresenter = this;
+        //Creating the instance of ArrayAdapter containing list of fruit names
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (getActivity(), android.R.layout.select_dialog_item, userList);
+        //Getting the instance of AutoCompleteTextView
+
+        actv_email.setThreshold(1);//will start working from first character
+        actv_email.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
         btn_login.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -97,6 +113,16 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(auth)) {
             LaunchActivity.getLaunchActivity().setUserInformation("", "", email, auth, true);
             MerchantProfileModel.fetch(email, auth);
+            if(!userList.contains(email)){
+                userList.add(email);
+                LaunchActivity.getLaunchActivity().setUserList(userList);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                        (getActivity(), android.R.layout.select_dialog_item, userList);
+                //Getting the instance of AutoCompleteTextView
+
+                actv_email.setThreshold(1);//will start working from first character
+                actv_email.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+            }
         } else {
             LaunchActivity.getLaunchActivity().dismissProgress();
             Toast.makeText(getActivity(), getString(R.string.error_login), Toast.LENGTH_LONG).show();
@@ -164,18 +190,18 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
     private boolean isValidInput() {
         boolean isValid = true;
-        email = edt_email.getText().toString().trim();
+        email = actv_email.getText().toString().trim();
         pwd = edt_pwd.getText().toString().trim();
-        edt_email.setError(null);
+        actv_email.setError(null);
         edt_pwd.setError(null);
         btn_login.setBackgroundResource(R.drawable.button_drawable);
         btn_login.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
         if (TextUtils.isEmpty(email)) {
-            edt_email.setError(getString(R.string.error_email_blank));
+            actv_email.setError(getString(R.string.error_email_blank));
             isValid = false;
         }
         if (!TextUtils.isEmpty(email) && !isValidEmail(email)) {
-            edt_email.setError(getString(R.string.error_email_invalid));
+            actv_email.setError(getString(R.string.error_email_invalid));
             isValid = false;
         }
         if (pwd.equals("")) {

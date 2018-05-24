@@ -42,7 +42,6 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 

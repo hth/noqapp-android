@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.DeviceModel;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -51,6 +53,8 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.fabric.sdk.android.Fabric;
@@ -72,6 +76,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     private final String KEY_USER_LEVEL = "userLevel";
     private final String KEY_MERCHANT_COUNTER_NAME = "counterName";
     private final String KEY_USER_ID = "userID";
+    private final String KEY_USER_LIST = "userList";
     private final String KEY_USER_AUTH = "auth";
     private final String KEY_LAST_UPDATE = "last_update";
     public FragmentCommunicator fragmentCommunicator;
@@ -250,6 +255,23 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         sharedpreferences.edit().putString(KEY_USER_NAME, name).apply();
     }
 
+    public void setUserList(ArrayList<String> userList){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(userList);
+        editor.putString(KEY_USER_LIST, json);
+        editor.commit();
+    }
+
+    public ArrayList<String> getUserList(){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Gson gson = new Gson();
+        String json = sharedPrefs.getString(KEY_USER_LIST, null);
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        ArrayList<String> arrayList = gson.fromJson(json, type);
+        return arrayList==null ? new ArrayList<String>():arrayList;
+    }
     public String getCounterName() {
         return sharedpreferences.getString(KEY_MERCHANT_COUNTER_NAME, "");
     }
