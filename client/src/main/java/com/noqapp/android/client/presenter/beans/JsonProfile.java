@@ -29,6 +29,9 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonProfile implements Serializable {
+    @JsonProperty ("pi")
+    private String profileImage;
+
     @JsonProperty("nm")
     private String name;
 
@@ -64,6 +67,15 @@ public class JsonProfile implements Serializable {
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public JsonProfile setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+        return this;
+    }
 
     public String getName() {
         return name;
