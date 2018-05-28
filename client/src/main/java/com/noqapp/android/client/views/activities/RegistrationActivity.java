@@ -10,10 +10,12 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
@@ -67,6 +69,12 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
     @BindView(R.id.edt_birthday)
     protected EditText edt_birthday;
 
+    @BindView(R.id.edt_pwd)
+    protected EditText edt_pwd;
+
+    @BindView(R.id.edt_confirm_pwd)
+    protected EditText edt_confirm_pwd;
+
     @BindView(R.id.tv_male)
     protected EditText tv_male;
 
@@ -75,6 +83,9 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
 
     @BindView(R.id.ll_gender)
     protected LinearLayout ll_gender;
+
+    @BindView(R.id.ll_pwd)
+    protected LinearLayout ll_pwd;
 
     @BindView(R.id.btnRegistration)
     protected Button btnRegistration;
@@ -126,6 +137,32 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
             edt_phoneNo.setEnabled(false);
             edt_phoneNo.setText(phno);
         }
+
+        edt_Mail.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if (s.length() == 0) {
+                    ll_pwd.setVisibility(View.GONE);
+                    edt_pwd.setText("");
+                    edt_confirm_pwd.setText("");
+                }
+                else {
+                    ll_pwd.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
     }
 
 
@@ -219,6 +256,7 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
         edt_Name.setError(null);
         edt_Mail.setError(null);
         edt_birthday.setError(null);
+        edt_pwd.setError(null);
         new AppUtilities().hideKeyBoard(this);
 
         if (TextUtils.isEmpty(edt_Name.getText())) {
@@ -229,9 +267,24 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
             edt_Name.setError(getString(R.string.error_name_length));
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Mail.getText()) && !isValidEmail(edt_Mail.getText())) {
-            edt_Mail.setError(getString(R.string.error_invalid_email));
-            isValid = false;
+        if (!TextUtils.isEmpty(edt_Mail.getText())) {
+
+            if (!isValidEmail(edt_Mail.getText())) {
+                edt_Mail.setError(getString(R.string.error_invalid_email));
+                isValid = false;
+            }
+            if (TextUtils.isEmpty(edt_pwd.getText())) {
+                edt_pwd.setError(getString(R.string.error_pwd_blank));
+                isValid = false;
+            } else {
+                if (edt_pwd.getText().length() < 6) {
+                    edt_pwd.setError(getString(R.string.error_pwd_length));
+                    isValid = false;
+                } else if (!edt_pwd.getText().toString().equals(edt_confirm_pwd.getText().toString())) {
+                    edt_pwd.setError(getString(R.string.error_pwd_not_match));
+                    isValid = false;
+                }
+            }
         }
         if (TextUtils.isEmpty(edt_birthday.getText())) {
             edt_birthday.setError(getString(R.string.error_dob_blank));
@@ -252,7 +305,7 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
         registration.setPhone(phoneNo);
         registration.setFirstName(name);
         registration.setMail(mail);
-        registration.setPassword("qwer@123");
+        registration.setPassword(edt_pwd.getText().toString());
         registration.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
         registration.setGender(gender);
         registration.setTimeZoneId(tz.getID());

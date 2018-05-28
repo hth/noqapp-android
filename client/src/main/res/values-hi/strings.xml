@@ -152,4 +152,8 @@
     <string name="screen_order_confirm">Order Confirmation</string>
     <string name="transaction_history">लेन-देन</string>
     <string name="error_mobile_no_same">Please enter new mobile no</string>
+    <string name="password">Password <font color='red'>\u2731</font></string>
+    <string name="error_pwd_blank">Please enter password</string>
+    <string name="error_pwd_not_match">Both password should match</string>
+    <string name="error_pwd_length">Password should contains more than 6 characters</string>
 </resources>

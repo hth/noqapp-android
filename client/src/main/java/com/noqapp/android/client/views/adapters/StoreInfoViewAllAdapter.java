@@ -163,7 +163,8 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                         .load(bizStoreElastic.getDisplayImage())
                         .into(holder.iv_main);
             else {
-                //TODO load default image
+                Picasso.with(context).load(R.drawable.store_default).into(holder.iv_main);
+                // TODO add default images
             }
             holder.card_view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -174,89 +175,6 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
 
             // holder.tv_store_special.setText();
             StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(AppUtilities.getDayOfWeek());
-            if (storeHourElastic.isDayClosed()) {
-                holder.tv_status.setText(context.getString(R.string.store_closed));
-            } else {
-                holder.tv_status.setText(
-                        context.getString(R.string.store_hour)
-                                + " "
-                                + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
-                                + " - "
-                                + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour()));
-            }
-
-
-            int timeIn24HourFormat = AppUtilities.getTimeIn24HourFormat();
-            if (!storeHourElastic.isDayClosed()) {
-                // Before Token Available Time
-                if (timeIn24HourFormat < storeHourElastic.getTokenAvailableFrom()) {
-                    if (bizStoreElastic.getBusinessType() != null) {
-                        switch (bizStoreElastic.getBusinessType()) {
-                            case DO:
-                                holder.tv_status.setText("Closed Now. Appointment booking starts at " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
-                                break;
-                            default:
-                                holder.tv_status.setText("Closed Now. You can join queue at " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
-                                break;
-                        }
-                    } else {
-                        holder.tv_status.setText("Closed Now. You can join queue at " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
-                    }
-                }
-
-                // Between Token Available and Start Hour
-                if (timeIn24HourFormat >= storeHourElastic.getTokenAvailableFrom() && timeIn24HourFormat < storeHourElastic.getStartHour()) {
-                    if (bizStoreElastic.getBusinessType() != null) {
-                        switch (bizStoreElastic.getBusinessType()) {
-                            case DO:
-                                holder.tv_status.setText("Now accepting appointments for today");
-                                break;
-                            default:
-                                holder.tv_status.setText("Now you can join queue. Queue service will begin at " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
-                                break;
-                        }
-                    } else {
-                        holder.tv_status.setText("Now you can join queue. Queue service will begin at " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
-                    }
-                    holder.tv_status.setTextColor(context.getResources().getColor(R.color.before_opening_queue));
-                }
-
-                // After Start Hour and Before Token Not Available From
-                if (timeIn24HourFormat >= storeHourElastic.getStartHour() && timeIn24HourFormat < storeHourElastic.getTokenNotAvailableFrom()) {
-                    if (bizStoreElastic.getBusinessType() != null) {
-                        switch (bizStoreElastic.getBusinessType()) {
-                            case DO:
-                                holder.tv_status.setText("Open now. Book your appointment for today.");
-                                break;
-                            default:
-                                holder.tv_status.setText("Open now. Join the queue.");
-                                break;
-                        }
-                    } else {
-                        holder.tv_status.setText("Open Now. Join the queue.");
-                    }
-                    holder.tv_status.setTextColor(context.getResources().getColor(R.color.open_queue));
-                }
-
-                // When between Token Not Available From and End Hour
-                if (timeIn24HourFormat >= storeHourElastic.getTokenNotAvailableFrom() && timeIn24HourFormat < storeHourElastic.getEndHour()) {
-                    holder.tv_status.setText("Closing soon");
-                    holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                }
-
-                // When after End Hour
-                if (timeIn24HourFormat >= storeHourElastic.getEndHour()) {
-                    holder.tv_status.setText("Closed now");
-                    holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                }
-
-
-            } else {
-                //TODO(hth) Show when will this be open next. For now hide it.
-                holder.tv_status.setText("Closed Today");
-                holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-            }
-
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
                 case BK:
@@ -264,11 +182,13 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     holder.tv_status.setVisibility(View.GONE);
                     holder.tv_category_name.setText("");
                     holder.tv_name.setText(bizStoreElastic.getBusinessName());
+                    holder.tv_status.setText("");
                     break;
                 default:
-                    holder.tv_store_special.setVisibility(View.VISIBLE);
+                    holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.VISIBLE);
-                    String time =  Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()) +
+                    holder.tv_status.setText(AppUtilities.getStoreOpenStatus(bizStoreElastic));
+                    String time = Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()) +
                             " - " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour());
                     holder.tv_category_name.setText(time);
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());

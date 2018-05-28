@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
-                android:text="@string/register"
+                android:text=" "
                 android:textColor="@color/colorActionbar"
                 android:textSize="20sp" />
 
@@ -48,10 +48,7 @@
             <com.noqapp.android.client.views.customviews.TextEditRobotoLight
                 android:id="@+id/edt_name"
                 style="@style/style_register_edt"
-                android:inputType="text"
-
-
-                />
+                android:inputType="text" />
 
             <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                 style="@style/style_register_tv"
@@ -62,6 +59,45 @@
                 android:id="@+id/edt_email"
                 style="@style/style_register_edt"
                 android:inputType="textEmailAddress" />
+
+            <LinearLayout
+                android:id="@+id/ll_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    style="@style/style_register_tv"
+                    android:text="@string/password" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                        android:id="@+id/edt_pwd"
+                        style="@style/style_register_edt"
+                        android:inputType="textVisiblePassword"
+                        android:layout_width="0dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight=".5"
+                        android:hint="Password"/>
+
+                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                        android:id="@+id/edt_confirm_pwd"
+                        style="@style/style_register_edt"
+                        android:inputType="textPassword"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="0dp"
+                        android:layout_weight=".5"
+                        android:hint="Confirm Password"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
