@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -88,7 +87,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             }
         });
         // holder.tv_store_special.setText();
-        StoreHourElastic storeHourElastic = jsonQueue.getStoreHourElasticList().get(AppUtilities.getTodayDay());
+        StoreHourElastic storeHourElastic = jsonQueue.getStoreHourElasticList().get(AppUtilities.getDayOfWeek());
         if (storeHourElastic.isDayClosed()) {
             holder.tv_status.setText(context.getString(R.string.store_closed));
         } else {

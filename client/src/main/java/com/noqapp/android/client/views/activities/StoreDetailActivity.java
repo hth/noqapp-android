@@ -372,7 +372,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private boolean isStoreOpenToday(JsonStore jsonStore) {
         List<JsonHour> jsonHourList = jsonStore.getJsonHours();
         JsonHour jsonHour = jsonHourList.get(//3);
-                AppUtilities.getTodayDay());
+                AppUtilities.getDayOfWeek());
         DateFormat df = new SimpleDateFormat("HH:mm");
         String time = df.format(Calendar.getInstance().getTime());
         int timedata = Integer.valueOf(time.replace(":", ""));

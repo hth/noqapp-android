@@ -104,7 +104,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     protected SegmentedControl sc_facility;
 
     private String codeQR;
-    private  BizStoreElastic bizStoreElastic;
+    private BizStoreElastic bizStoreElastic;
     private boolean isFuture = false;
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
@@ -121,6 +121,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     Bundle bundle;
+    private String title = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +129,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         setContentView(R.layout.activity_category_info);
         ButterKnife.bind(this);
         initActionsViews(false);
-        tv_toolbar_title.setText("Departments");
         listener = this;
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         AppUtilities.setRatingBarColor(stars, this);
@@ -139,7 +139,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
             }
         });
-
 
 
         bundle = getIntent().getBundleExtra("bundle");
@@ -219,7 +218,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_rating.setText(String.valueOf(Math.round(bizStoreElastic.getRating())));
             tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
             codeQR = bizStoreElastic.getCodeQR();
-            AppUtilities.setStoreDrawable(this,iv_business_icon,bizStoreElastic.getBusinessType(),tv_rating);
+            AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);
 
             List<AmenityEnum> amenities = bizStoreElastic.getAmenities();
             ArrayList<String> amenitiesdata = new ArrayList<>();
@@ -251,7 +250,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             rv_thumb_images.setAdapter(adapter);
             Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
 
-            if(isFuture) {
+            if (isFuture) {
                 RecyclerViewGridAdapter recyclerView_Adapter
                         = new RecyclerViewGridAdapter(this,
                         getCategoryThatArePopulated(),
@@ -261,13 +260,19 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
-                    btn_join_queues.setText("Book An Appointment");
+                    btn_join_queues.setText("Find a Doctor");
+                    tv_toolbar_title.setText("Medical");
+                    title = "Select a Doctor";
                     break;
                 case BK:
                     btn_join_queues.setText("View Services");
+                    tv_toolbar_title.setText("Bank");
+                    title = "Select a Service";
                     break;
                 default:
-                    btn_join_queues.setText("Join Queue");
+                    btn_join_queues.setText("Join a Queue");
+                    tv_toolbar_title.setText("Departments");
+                    title = "Select a Queue";
             }
         } else {
             //TODO(chandra) when its empty do something nice
@@ -335,7 +340,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     public void onCategoryItemClick(int pos, JsonCategory jsonCategory) {
         Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
         Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
-        switch ( bizStoreElastic .getBusinessType()) {
+        switch (bizStoreElastic.getBusinessType()) {
             case BK:
                 Intent in = new Intent(this, JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
@@ -352,12 +357,14 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         }
 
     }
+
     @OnClick(R.id.btn_join_queues)
-    public void joinClick(){
-       Intent in = new Intent(this,CategoryPagerActivity.class);
-       in.putExtra("list", (Serializable)getCategoryThatArePopulated());
-       in.putExtra("hashmap",(Serializable) cacheQueue.getIfPresent("queue"));
-       startActivity(in);
+    public void joinClick() {
+        Intent in = new Intent(this, CategoryPagerActivity.class);
+        in.putExtra("list", (Serializable) getCategoryThatArePopulated());
+        in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
+        in.putExtra("title", title);
+        startActivity(in);
     }
 
 

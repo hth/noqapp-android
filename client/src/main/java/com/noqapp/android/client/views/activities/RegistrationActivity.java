@@ -171,6 +171,7 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
     @Override
     public void onClick(View v) {
         if (v == edt_birthday) {
+            new AppUtilities().hideKeyBoard(this);
             fromDatePickerDialog.show();
         } else if (v == tv_male) {
             gender = "M";
@@ -251,7 +252,7 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
         registration.setPhone(phoneNo);
         registration.setFirstName(name);
         registration.setMail(mail);
-        registration.setPassword("");
+        registration.setPassword("qwer@123");
         registration.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
         registration.setGender(gender);
         registration.setTimeZoneId(tz.getID());

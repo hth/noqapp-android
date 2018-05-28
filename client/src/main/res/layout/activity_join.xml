@@ -125,7 +125,7 @@
                 android:id="@+id/rl_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
@@ -156,6 +156,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tv_rating"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"
                     android:text=""
                     android:textColor="@color/colorAddress"
                     android:textSize="18sp" />

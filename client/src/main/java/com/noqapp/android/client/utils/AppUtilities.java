@@ -59,6 +59,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -269,8 +270,9 @@ public class AppUtilities {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         float dist = (float) (earthRadius * c);
 
-        return String.valueOf(calculateDistance(lat1,lng1,lat2,lng2)) + " km";// distance in km
+        return String.valueOf(calculateDistance(lat1, lng1, lat2, lng2)) + " km";// distance in km
     }
+
     public static double calculateDistance(float lat1, float lng1, float lat2, float lng2) {
         double earthRadius = 6371000; //meters
         double dLat = Math.toRadians(lat2 - lat1);
@@ -285,8 +287,6 @@ public class AppUtilities {
     }
 
 
-
-
     public static void changeLanguage(String language) {
 
         if (!language.equals("")) {
@@ -297,7 +297,8 @@ public class AppUtilities {
                         .putString("pref_language", "en").apply();
             } else {
                 LaunchActivity.language = "hi";
-                LaunchActivity.locale = new Locale("hi");;
+                LaunchActivity.locale = new Locale("hi");
+                ;
                 LaunchActivity.languagepref.edit()
                         .putString("pref_language", "hi").apply();
             }
@@ -311,7 +312,7 @@ public class AppUtilities {
     }
 
     public static String getAdditionalCardText(BizStoreElastic bizStoreElastic) {
-        StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(getTodayDay());
+        StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(getDayOfWeek());
         String additionalText;
         if (storeHourElastic.isDayClosed()) {
             //Fetch for tomorrow when closed
@@ -336,41 +337,38 @@ public class AppUtilities {
         }
         return additionalText;
     }
+
     public static String getStoreOpenStatus(BizStoreElastic bizStoreElastic) {
 
-        StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(getTodayDay());
+        StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(getDayOfWeek());
         String additionalText;
         if (storeHourElastic.isDayClosed()) {
             additionalText = "Closed";
         } else {
-            additionalText =  "Open";
+            additionalText = "Open";
         }
         return additionalText;
     }
+
     public static String getStoreOpenStatus(JsonTokenAndQueue jsonTokenAndQueue) {
 
         String additionalText;
         DateFormat df = new SimpleDateFormat("HH:mm");
         String time = df.format(Calendar.getInstance().getTime());
-        int timedata = Integer.valueOf(time.replace(":",""));
-        if(jsonTokenAndQueue.getStartHour()<= timedata&&
-                timedata <=jsonTokenAndQueue.getEndHour()){
-            additionalText =  "Open";
-        }else{
+        int timedata = Integer.valueOf(time.replace(":", ""));
+        if (jsonTokenAndQueue.getStartHour() <= timedata &&
+                timedata <= jsonTokenAndQueue.getEndHour()) {
+            additionalText = "Open";
+        } else {
             additionalText = "Closed";
         }
         return additionalText;
     }
 
-    public static int getTodayDay(){
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        Date dateobj = new Date();
-        System.out.println(df.format(dateobj));
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        return  c.get(Calendar.DAY_OF_WEEK)-1;
+    public static int getDayOfWeek() {
+        Calendar mondayFirst = new GregorianCalendar();
+        return mondayFirst.getFirstDayOfWeek() - 1;
     }
-
 
 
     public static LatLng getLocationFromAddress(Context context, String strAddress) {
@@ -385,7 +383,7 @@ public class AppUtilities {
                 return null;
             }
             Address location = address.get(0);
-            latLng = new LatLng(location.getLatitude(), location.getLongitude() );
+            latLng = new LatLng(location.getLatitude(), location.getLongitude());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -452,7 +450,7 @@ public class AppUtilities {
      * Method add to hide the dropdown while setting the
      * AutoCompleteTextView
      */
-    public static void setAutoCompleteText(AutoCompleteTextView autoCompleteTextView,String text) {
+    public static void setAutoCompleteText(AutoCompleteTextView autoCompleteTextView, String text) {
         autoCompleteTextView.setFocusable(false);
         autoCompleteTextView.setFocusableInTouchMode(false);
         autoCompleteTextView.setText(text);
