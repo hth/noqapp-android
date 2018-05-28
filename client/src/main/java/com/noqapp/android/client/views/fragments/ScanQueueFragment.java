@@ -37,6 +37,7 @@ import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
@@ -57,8 +58,11 @@ import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoratio
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -579,6 +583,20 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         rv_current_activity.setAdapter(currentActivityAdapter);
         tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentlist.size()) + ")");
         currentActivityAdapter.notifyDataSetChanged();
+
+
+        Collections.sort(historylist, new Comparator<JsonTokenAndQueue>() {
+            DateFormat f = Formatter.formatRFC822;
+            @Override
+            public int compare(JsonTokenAndQueue o1, JsonTokenAndQueue o2) {
+                try {
+                    return f.parse(o2.getServiceEndTime()).compareTo(f.parse(o1.getServiceEndTime()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
 
         recentActivityAdapter = new RecentActivityAdapter(historylist, getActivity(), recentClickListner, lat, log);
         rv_recent_activity.setAdapter(recentActivityAdapter);

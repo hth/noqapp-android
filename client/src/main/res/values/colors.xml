@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#c62828</color>
-    <color name="colorPrimaryDark">#b71c1c</color>
+    <color name="colorPrimary">#CD334E</color>
+    <color name="colorPrimaryDark">#b82d46</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorActionbar">#c62828</color>a
+    <color name="colorActionbar">#CD334E</color>a
     <color name="colorAddress">#403648</color>
     <color name="colorMobile">#e92270</color>
     <color name="color_separator">#EAEAEA</color>

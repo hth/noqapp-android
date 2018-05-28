@@ -39,6 +39,7 @@
                 android:layout_width="60dp"
                 android:inputType="numberSigned"
                 android:maxLength="3"
+                android:layout_marginRight="5dp"
                 android:textSize="18sp" />
 
             <com.noqapp.android.client.views.customviews.TextEditRobotoLight

@@ -25,16 +25,14 @@ import butterknife.ButterKnife;
 /**
  * Created by chandra on 5/7/17.
  */
-public class CategoryPagerActivity extends BaseActivity  implements CategoryHeaderAdapter.OnItemClickListener {
-
-
+public class CategoryPagerActivity extends BaseActivity implements CategoryHeaderAdapter.OnItemClickListener {
 
 
     @BindView(R.id.rcv_header)
     protected RecyclerView rcv_header;
     private ViewPager viewPager;
-    List<JsonCategory> categoryMap ;
-    Map<String, ArrayList<BizStoreElastic>> queueMap ;
+    List<JsonCategory> categoryMap;
+    Map<String, ArrayList<BizStoreElastic>> queueMap;
     private CategoryHeaderAdapter.OnItemClickListener listener;
     private CategoryHeaderAdapter categoryHeaderAdapter;
 
@@ -45,10 +43,12 @@ public class CategoryPagerActivity extends BaseActivity  implements CategoryHead
         ButterKnife.bind(this);
         initActionsViews(true);
         listener = this;
-        tv_toolbar_title.setText("Select Queue");
+
         try {
             categoryMap = (List<JsonCategory>) getIntent().getExtras().getSerializable("list");
-            queueMap = (Map<String, ArrayList<BizStoreElastic>> ) getIntent().getExtras().getSerializable("hashmap");
+            queueMap = (Map<String, ArrayList<BizStoreElastic>>) getIntent().getExtras().getSerializable("hashmap");
+            String title = getIntent().getExtras().getString("title", "Select Queue");
+            tv_toolbar_title.setText(title);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -61,8 +61,8 @@ public class CategoryPagerActivity extends BaseActivity  implements CategoryHead
         rcv_header.setItemAnimator(new DefaultItemAnimator());
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        for(int i = 0; i< categoryMap.size();i++){
-            adapter.addFragment(new CategoryListFragment(queueMap.get(categoryMap.get(i).getBizCategoryId())), "FRAG"+i);
+        for (int i = 0; i < categoryMap.size(); i++) {
+            adapter.addFragment(new CategoryListFragment(queueMap.get(categoryMap.get(i).getBizCategoryId())), "FRAG" + i);
         }
         viewPager.setAdapter(adapter);
         categoryHeaderAdapter = new CategoryHeaderAdapter(this, categoryMap,
@@ -90,7 +90,7 @@ public class CategoryPagerActivity extends BaseActivity  implements CategoryHead
 
     @Override
     public void onCategoryItemClick(int pos, JsonCategory jsonCategory) {
-            viewPager.setCurrentItem(pos);
+        viewPager.setCurrentItem(pos);
     }
 
 //    @Override
