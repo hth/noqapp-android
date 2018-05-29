@@ -606,7 +606,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
-        if (isUpdated && isCurrentActivityLaunchActivity()) {
+        if (isUpdated && LaunchActivity.getLaunchActivity().isCurrentActivityLaunchActivity()) {
             Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
             startActivity(blinker);
         }
@@ -627,21 +627,5 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         in_search.putExtra("long", "" + log);
         in_search.putExtra("city", city);
         startActivity(in_search);
-    }
-
-    private boolean isCurrentActivityLaunchActivity() {
-        boolean isCurrentActivity = false;
-        try {
-            ActivityManager am = (ActivityManager) getActivity().getSystemService(Activity.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-            Log.d("topActivity", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName());
-            if(taskInfo.get(0).topActivity.getClassName().equals("com.noqapp.android.client.views.activities.LaunchActivity"))
-                isCurrentActivity = true;
-            else
-                isCurrentActivity = false;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return isCurrentActivity;
     }
 }

@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -678,5 +679,22 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         dialogBuilder.setTitle("");
         AlertDialog b = dialogBuilder.create();
         b.show();
+    }
+
+
+    public boolean isCurrentActivityLaunchActivity() {
+        boolean isCurrentActivity = false;
+        try {
+            ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+            Log.d("topActivity", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName());
+            if(taskInfo.get(0).topActivity.getClassName().equals(LaunchActivity.class.getCanonicalName()))
+                isCurrentActivity = true;
+            else
+                isCurrentActivity = false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isCurrentActivity;
     }
 }
