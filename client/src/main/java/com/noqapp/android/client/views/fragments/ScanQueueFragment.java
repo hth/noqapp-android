@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,6 +44,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AfterJoinActivity;
+import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.DoctorProfile1Activity;
 import com.noqapp.android.client.views.activities.JoinActivity;
@@ -59,7 +62,6 @@ import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -459,7 +461,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         intent.putExtra("long", "" + log);
         intent.putExtra("city", city);
         startActivity(intent);
-
     }
 
     @OnClick(R.id.tv_recent_view_all)
@@ -604,7 +605,11 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
-        TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
+        boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
+        if (isUpdated && LaunchActivity.getLaunchActivity().isCurrentActivityLaunchActivity()) {
+            Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
+            startActivity(blinker);
+        }
         //fetch the
         fetchCurrentAndHistoryList();
     }
@@ -623,5 +628,4 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         in_search.putExtra("city", city);
         startActivity(in_search);
     }
-
 }
