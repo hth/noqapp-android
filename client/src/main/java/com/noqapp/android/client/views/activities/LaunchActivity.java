@@ -602,7 +602,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 break;
             }
             case R.id.nav_transaction:
-                Toast.makeText(launchActivity, "Comming soon... ", Toast.LENGTH_LONG).show();
+                Toast.makeText(launchActivity, "Coming soon... ", Toast.LENGTH_LONG).show();
                 break;
 
             case R.id.nav_change_language:
