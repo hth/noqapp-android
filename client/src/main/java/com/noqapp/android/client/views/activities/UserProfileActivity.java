@@ -4,15 +4,25 @@ package com.noqapp.android.client.views.activities;
  * Created by chandra on 10/4/18.
  */
 
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,9 +30,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.ImagePathReader;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
 
+import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,12 +51,12 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     protected TextView tv_name;
     @BindView(R.id.iv_edit)
     protected ImageView iv_edit;
-    @BindView(R.id.iv_profile)
-    protected ImageView iv_profile;
+    public static ImageView iv_profile;
     private final int SELECT_PICTURE = 110;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private LoadTabs loadTabs;
 
 
     @Override
@@ -53,21 +66,41 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         ButterKnife.bind(this);
         initActionsViews(false);
         tv_toolbar_title.setText("Profile");
+        iv_profile = findViewById(R.id.iv_profile);
         iv_edit.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
-                Uri imageUri = Uri.parse(NoQueueBaseActivity.getUserProfileUri());
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                iv_profile.setImageBitmap(bitmap);
+                Uri imageUri = Uri.fromFile(new File(NoQueueBaseActivity.getUserProfileUri()));
+                Bitmap bm = BitmapFactory.decodeStream(
+                        getContentResolver().openInputStream(imageUri));
+                iv_profile.setImageBitmap(bm);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        loadTabs =new LoadTabs();
+        loadTabs.execute();
+
+    }
+
+    private class LoadTabs extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            return null;
+        }
+        protected void onPostExecute(String result) {
+            try {
+                setupViewPager(viewPager);
+                tabLayout.setupWithViewPager(viewPager);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -103,7 +136,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                     iv_profile.setImageBitmap(bitmap);
-                    NoQueueBaseActivity.setUserProfileUri(selectedImage.toString());
+
+                   String convertedPath = new ImagePathReader().getPathFromUri(this,selectedImage);
+                    NoQueueBaseActivity.setUserProfileUri(convertedPath);
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -150,5 +185,12 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(null != loadTabs)
+            loadTabs.cancel(true);
     }
 }

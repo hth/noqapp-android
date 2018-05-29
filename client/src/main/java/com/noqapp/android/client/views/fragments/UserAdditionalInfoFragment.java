@@ -7,6 +7,7 @@ package com.noqapp.android.client.views.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
@@ -57,11 +58,15 @@ public class UserAdditionalInfoFragment extends Fragment implements View.OnClick
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_additional_info, container, false);
         ButterKnife.bind(this, view);
-
         updateUI();
         edt_birthday.setInputType(InputType.TYPE_NULL);
         edt_birthday.setOnClickListener(this);
+        return view;
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             //progressDialog.show();
             ProfileModel.profilePresenter = this;
@@ -69,9 +74,7 @@ public class UserAdditionalInfoFragment extends Fragment implements View.OnClick
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
-        return view;
     }
-
 
     @Override
     public void onClick(View v) {
