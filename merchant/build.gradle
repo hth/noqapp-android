@@ -197,6 +197,10 @@ android {
 
             buildConfigField STRING, "NOQAPP_MOBILE", endpointSandbox
             buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityStaging
+            buildConfigField STRING, "AWSS3", sandboxEndpointAwsS3
+            buildConfigField STRING, "AWSS3_BUCKET", sandboxBucket
+            buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
+            buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
         }
 
         sandbox {
@@ -229,6 +233,10 @@ android {
 
             buildConfigField STRING, "NOQAPP_MOBILE", endpointSandbox
             buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityLive
+            buildConfigField STRING, "AWSS3", sandboxEndpointAwsS3
+            buildConfigField STRING, "AWSS3_BUCKET", sandboxBucket
+            buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
+            buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
         }
 
         release {
@@ -261,6 +269,10 @@ android {
 
             buildConfigField STRING, "NOQAPP_MOBILE", endpointLive
             buildConfigField STRING, "PROVIDER_AUTHORITY", providerAuthorityLive
+            buildConfigField STRING, "AWSS3", releaseEndpointAwsS3
+            buildConfigField STRING, "AWSS3_BUCKET", releaseBucket
+            buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
+            buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
         }
     }
 

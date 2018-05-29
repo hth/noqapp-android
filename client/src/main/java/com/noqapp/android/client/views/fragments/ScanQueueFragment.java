@@ -1,7 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
