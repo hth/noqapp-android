@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
@@ -28,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
@@ -40,6 +42,8 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.MigrateActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.client.views.activities.UserProfileActivity;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -112,6 +116,13 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             //progressDialog.show();
             ProfileModel.profilePresenter = this;
@@ -119,9 +130,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
-        return view;
     }
-
 
     @Override
     public void onClick(View v) {
@@ -203,6 +212,14 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     public void queueResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
+
+        if(!TextUtils.isEmpty(profile.getProfileImage()))
+            Picasso.with(getActivity())
+                    .load(BuildConfig.AWSS3+BuildConfig.PROFILE_BUCKET+profile.getProfileImage())
+                    .into(UserProfileActivity.iv_profile);
+        else{
+            Picasso.with(getActivity()).load(R.drawable.profile_avatar).into(UserProfileActivity.iv_profile);
+        }
        // dismissProgress();
         updateUI();
     }
