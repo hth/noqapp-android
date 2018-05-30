@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.GenderEnum;
 import com.noqapp.android.client.model.types.UserLevelEnum;
 import com.noqapp.android.client.presenter.beans.medical.JsonUserMedicalProfile;
+import com.noqapp.library.beans.ErrorEncounteredJson;
 
 import java.io.Serializable;
 

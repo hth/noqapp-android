@@ -6,10 +6,10 @@ import android.util.Log;
 import com.noqapp.android.client.model.response.open.DeviceService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.beans.DeviceRegistered;
-import com.noqapp.android.client.presenter.beans.JsonLatestAppVersion;
 import com.noqapp.android.client.presenter.beans.body.DeviceToken;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
+import com.noqapp.library.beans.JsonLatestAppVersion;
 
 import retrofit2.Call;
 import retrofit2.Callback;

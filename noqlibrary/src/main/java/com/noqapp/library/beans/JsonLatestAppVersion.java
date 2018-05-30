@@ -1,4 +1,4 @@
-package com.noqapp.android.client.presenter.beans;
+package com.noqapp.library.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

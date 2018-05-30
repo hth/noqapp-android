@@ -28,7 +28,6 @@ import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.android.merchant.model.types.UserLevelEnum;
-import com.noqapp.android.merchant.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
@@ -45,6 +44,7 @@ import com.noqapp.android.merchant.views.activities.SettingDialogActivity;
 import com.noqapp.android.merchant.views.fragments.MerchantViewPagerFragment;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
+import com.noqapp.library.beans.ErrorEncounteredJson;
 
 import org.apache.commons.lang3.StringUtils;
 

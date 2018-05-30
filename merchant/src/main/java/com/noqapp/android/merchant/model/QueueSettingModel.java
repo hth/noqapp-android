@@ -5,10 +5,10 @@ import android.util.Log;
 
 import com.noqapp.android.merchant.model.response.api.QueueSettingService;
 import com.noqapp.android.merchant.network.RetrofitClient;
-import com.noqapp.android.merchant.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
+import com.noqapp.library.beans.ErrorEncounteredJson;
 
 import org.apache.commons.lang3.StringUtils;
 
