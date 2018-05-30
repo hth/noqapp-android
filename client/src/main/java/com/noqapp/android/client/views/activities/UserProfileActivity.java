@@ -267,5 +267,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 STORAGE_PERMISSION_CODE);
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tv_name.setText(NoQueueBaseActivity.getUserName());
+    }
 }
