@@ -1,20 +1,23 @@
-package com.noqapp.android.client.model.types;
+package com.noqapp.android.client.model.types.medical;
 
 /**
- * Created by hitender on 3/27/18.
+ * hitender
+ * 5/30/18 12:04 AM
  */
-public enum AmenityEnum {
-
-    AC("AC", "Air Condition"),
-    FW("FW", "Free Wifi"),
-    FP("FP", "Free Parking"),
-    WA("WA", "Wheelchair Access"),
-    ME("ME", "Meeting Room");
+public enum BloodTypeEnum {
+    AP("AP", "A+"),
+    AN("AN", "A-"),
+    BP("BP", "B+"),
+    BN("BN", "B-"),
+    OP("OP", "O+"),
+    ON("ON", "O-"),
+    ABP("ABP", "AB+"),
+    ABN("ABN", "AB-");
 
     private final String description;
     private final String name;
 
-    AmenityEnum(String name, String description) {
+    BloodTypeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.GenderEnum;
 import com.noqapp.android.client.model.types.UserLevelEnum;
+import com.noqapp.android.client.presenter.beans.medical.JsonUserMedicalProfile;
 
 import java.io.Serializable;
 
@@ -64,6 +65,9 @@ public class JsonProfile implements Serializable {
 
     @JsonProperty("ul")
     private UserLevelEnum userLevel;
+
+    @JsonProperty ("mp")
+    private JsonUserMedicalProfile jsonUserMedicalProfile;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -173,6 +177,15 @@ public class JsonProfile implements Serializable {
 
     public JsonProfile setUserLevel(UserLevelEnum userLevel) {
         this.userLevel = userLevel;
+        return this;
+    }
+
+    public JsonUserMedicalProfile getJsonUserMedicalProfile() {
+        return jsonUserMedicalProfile;
+    }
+
+    public JsonProfile setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
+        this.jsonUserMedicalProfile = jsonUserMedicalProfile;
         return this;
     }
 
