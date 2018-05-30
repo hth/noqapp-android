@@ -7,11 +7,14 @@ import com.noqapp.android.client.model.response.api.ProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
+import com.noqapp.android.client.utils.Constants;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -179,6 +182,31 @@ public class ProfileModel {
 
             @Override
             public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                profilePresenter.queueError();
+            }
+        });
+    }
+
+    public static void uploadImage(String did, String mail, String auth, MultipartBody.Part file) {
+        profileService.upload(did, Constants.DEVICE_TYPE, mail, auth, file).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    profilePresenter.authenticationFailure(response.code());
+                    return;
+                }
+                if (null != response.body()) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    profilePresenter.imageUploadResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Failed abort queue");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 profilePresenter.queueError();
             }

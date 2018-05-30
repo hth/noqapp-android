@@ -34,6 +34,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -119,6 +120,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
         return view;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -210,9 +212,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void queueResponse(JsonProfile profile, String email, String auth) {
-        Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
-
         if(!TextUtils.isEmpty(profile.getProfileImage()))
             Picasso.with(getActivity())
                     .load(BuildConfig.AWSS3+BuildConfig.PROFILE_BUCKET+profile.getProfileImage())
@@ -226,6 +226,11 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
+
+    }
+
+    @Override
+    public void imageUploadResponse(JsonResponse jsonResponse) {
 
     }
 

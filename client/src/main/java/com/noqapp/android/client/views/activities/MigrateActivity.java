@@ -40,6 +40,7 @@ import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -318,6 +319,11 @@ public class MigrateActivity extends BaseActivity implements ProfilePresenter {
 
     @Override
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
+
+    }
+
+    @Override
+    public void imageUploadResponse(JsonResponse jsonResponse) {
 
     }
 

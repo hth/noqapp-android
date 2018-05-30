@@ -23,6 +23,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -67,13 +68,13 @@ public class UserAdditionalInfoFragment extends Fragment implements View.OnClick
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            //progressDialog.show();
-            ProfileModel.profilePresenter = this;
-            ProfileModel.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
-        } else {
-            ShowAlertInformation.showNetworkDialog(getActivity());
-        }
+//        if (LaunchActivity.getLaunchActivity().isOnline()) {
+//            //progressDialog.show();
+//            ProfileModel.profilePresenter = this;
+//            ProfileModel.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
+//        } else {
+//            ShowAlertInformation.showNetworkDialog(getActivity());
+//        }
     }
 
     @Override
@@ -126,6 +127,11 @@ public class UserAdditionalInfoFragment extends Fragment implements View.OnClick
 
     @Override
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
+
+    }
+
+    @Override
+    public void imageUploadResponse(JsonResponse jsonResponse) {
 
     }
 

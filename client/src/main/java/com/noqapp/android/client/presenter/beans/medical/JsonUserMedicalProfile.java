@@ -37,4 +37,11 @@ public class JsonUserMedicalProfile {
         this.bloodType = bloodType;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonUserMedicalProfile{" +
+                "bloodType=" + bloodType +
+                '}';
+    }
 }
