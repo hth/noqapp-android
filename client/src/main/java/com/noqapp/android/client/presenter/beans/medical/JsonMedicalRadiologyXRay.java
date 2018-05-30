@@ -1,9 +1,10 @@
-package com.noqapp.android.client.presenter.beans;
+package com.noqapp.android.client.presenter.beans.medical;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.client.presenter.beans.AbstractDomain;
 
 import java.io.Serializable;
 
@@ -21,7 +22,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonPathology extends AbstractDomain implements Serializable {
+public class JsonMedicalRadiologyXRay extends AbstractDomain implements Serializable {
 
     @JsonProperty("na")
     private String name;
@@ -33,7 +34,7 @@ public class JsonPathology extends AbstractDomain implements Serializable {
         return name;
     }
 
-    public JsonPathology setName(String name) {
+    public JsonMedicalRadiologyXRay setName(String name) {
         this.name = name;
         return this;
     }
@@ -42,9 +43,8 @@ public class JsonPathology extends AbstractDomain implements Serializable {
         return testResult;
     }
 
-    public JsonPathology setTestResult(String testResult) {
+    public JsonMedicalRadiologyXRay setTestResult(String testResult) {
         this.testResult = testResult;
         return this;
     }
 }
-

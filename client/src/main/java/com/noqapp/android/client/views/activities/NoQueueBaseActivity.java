@@ -132,6 +132,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
         editor.putString(PREKEY_ADD,profile.getAddress());
+        editor.putString(PREKEY_PROFILE_IMAGE,profile.getProfileImage());
         editor.putString(APIConstant.Key.XR_MAIL, email);
         editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();

@@ -5,13 +5,17 @@ import android.util.Log;
 
 import com.noqapp.android.client.model.response.api.ProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.presenter.ImageUploadPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
+import com.noqapp.android.client.utils.Constants;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,6 +26,7 @@ public class ProfileModel {
 
     private static final ProfileService profileService;
     public static ProfilePresenter profilePresenter;
+    public static ImageUploadPresenter imageUploadPresenter;
 
     static {
         profileService = RetrofitClient.getClient().create(ProfileService.class);
@@ -181,6 +186,31 @@ public class ProfileModel {
             public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 profilePresenter.queueError();
+            }
+        });
+    }
+
+    public static void uploadImage(String did, String mail, String auth, MultipartBody.Part file) {
+        profileService.upload(did, Constants.DEVICE_TYPE, mail, auth, file).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    imageUploadPresenter.authenticationFailure(response.code());
+                    return;
+                }
+                if (null != response.body()) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    imageUploadPresenter.imageUploadResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Failed image upload");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                imageUploadPresenter.imageUploadError();
             }
         });
     }

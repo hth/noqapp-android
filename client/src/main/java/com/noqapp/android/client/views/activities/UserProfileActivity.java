@@ -4,38 +4,42 @@ package com.noqapp.android.client.views.activities;
  * Created by chandra on 10/4/18.
  */
 
-import android.content.ContentUris;
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.ParcelFileDescriptor;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.CursorLoader;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ProfileModel;
+import com.noqapp.android.client.presenter.ImageUploadPresenter;
+import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.utils.ImagePathReader;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,9 +47,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 
-public class UserProfileActivity extends BaseActivity implements View.OnClickListener {
+public class UserProfileActivity extends BaseActivity implements View.OnClickListener,ImageUploadPresenter {
 
     @BindView(R.id.tv_name)
     protected TextView tv_name;
@@ -53,10 +60,15 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     protected ImageView iv_edit;
     public static ImageView iv_profile;
     private final int SELECT_PICTURE = 110;
-
+    private final int STORAGE_PERMISSION_CODE = 102;
+    private final String[] STORAGE_PERMISSION_PERMS = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private LoadTabs loadTabs;
+    private UserProfileFragment userProfileFragment;
+    private UserAdditionalInfoFragment userAdditionalInfoFragment;
 
 
     @Override
@@ -69,21 +81,36 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         iv_profile = findViewById(R.id.iv_profile);
         iv_edit.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
+        Picasso.with(this).load(R.drawable.profile_avatar).into(UserProfileActivity.iv_profile);
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
-                Uri imageUri = Uri.fromFile(new File(NoQueueBaseActivity.getUserProfileUri()));
-                Bitmap bm = BitmapFactory.decodeStream(
-                        getContentResolver().openInputStream(imageUri));
-                iv_profile.setImageBitmap(bm);
+                Picasso.with(this)
+                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + NoQueueBaseActivity.getUserProfileUri())
+                        .into(UserProfileActivity.iv_profile);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         loadTabs =new LoadTabs();
         loadTabs.execute();
+
+    }
+
+
+    @Override
+    public void imageUploadResponse(JsonResponse jsonResponse) {
+        Log.v("Image upload", ""+jsonResponse.getResponse());
+    }
+
+    @Override
+    public void imageUploadError() {
+
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
 
     }
 
@@ -117,11 +144,18 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void selectImage() {
-
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+        if (isExternalStoragePermissionAllowed()) {
+            try {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            requestStoragePermission();
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -137,8 +171,16 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                     iv_profile.setImageBitmap(bitmap);
 
-                   String convertedPath = new ImagePathReader().getPathFromUri(this,selectedImage);
+                    String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
                     NoQueueBaseActivity.setUserProfileUri(convertedPath);
+
+                    if (!TextUtils.isEmpty(convertedPath)) {
+                        String type = getMimeType(this, selectedImage);
+                        File file = new File(convertedPath);
+                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+                        ProfileModel.imageUploadPresenter = this;
+                        ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
+                    }
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -150,11 +192,24 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    private String getMimeType(Context context, Uri uri) {
+        String mimeType;
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            ContentResolver cr = context.getContentResolver();
+            mimeType = cr.getType(uri);
+        } else {
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
+        }
+        return mimeType;
+    }
 
     private void setupViewPager(ViewPager viewPager) {
+        userProfileFragment = new UserProfileFragment();
+        userAdditionalInfoFragment = new UserAdditionalInfoFragment();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new UserProfileFragment(), "Profile");
-        adapter.addFragment(new UserAdditionalInfoFragment(), "Additional Details");
+        adapter.addFragment(userProfileFragment, "Profile");
+        adapter.addFragment(userAdditionalInfoFragment, "Additional Details");
         viewPager.setAdapter(adapter);
     }
 
@@ -193,4 +248,24 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         if(null != loadTabs)
             loadTabs.cancel(true);
     }
+
+    private boolean isExternalStoragePermissionAllowed() {
+        //Getting the permission status
+        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //If permission is granted returning true
+        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
+            return true;
+        //If permission is not granted returning false
+        return false;
+    }
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(
+                this,
+                STORAGE_PERMISSION_PERMS,
+                STORAGE_PERMISSION_CODE);
+    }
+
+
 }

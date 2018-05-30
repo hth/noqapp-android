@@ -1,6 +1,6 @@
 package com.noqapp.android.client.presenter;
 
-import com.noqapp.android.client.presenter.beans.JsonMedicalRecordList;
+import com.noqapp.android.client.presenter.beans.medical.JsonMedicalRecordList;
 
 
 public interface MedicalRecordPresenter {

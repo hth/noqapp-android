@@ -1,16 +1,20 @@
 package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  * Registered client APIs.
@@ -84,5 +88,24 @@ public interface ProfileService {
 
             @Body
             JsonUserAddress jsonUserAddress
+    );
+
+    @Multipart
+    @POST("api/c/profile/upload.json")
+    Call<JsonResponse> upload(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Part
+            MultipartBody.Part file
     );
 }

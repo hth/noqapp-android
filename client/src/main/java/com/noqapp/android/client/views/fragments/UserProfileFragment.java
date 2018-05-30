@@ -18,7 +18,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,6 +119,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         return view;
     }
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -210,9 +210,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void queueResponse(JsonProfile profile, String email, String auth) {
-        Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
-
         if(!TextUtils.isEmpty(profile.getProfileImage()))
             Picasso.with(getActivity())
                     .load(BuildConfig.AWSS3+BuildConfig.PROFILE_BUCKET+profile.getProfileImage())
