@@ -171,11 +171,13 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                     String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
                     NoQueueBaseActivity.setUserProfileUri(convertedPath);
 
-
-                    File file = new File(NoQueueBaseActivity.getUserProfileUri());
-                    MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
-                    ProfileModel.imageUploadPresenter = this;
-                    ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
+                    if(!TextUtils.isEmpty(convertedPath)) {
+                        File file = new File(convertedPath);
+                        String extension = convertedPath.substring(convertedPath.lastIndexOf(".")+1);
+                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("image/"+extension), file));
+                        ProfileModel.imageUploadPresenter = this;
+                        ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
+                    }
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
