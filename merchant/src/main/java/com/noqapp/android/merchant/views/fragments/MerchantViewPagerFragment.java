@@ -132,7 +132,6 @@ public class MerchantViewPagerFragment extends Fragment {
         } else {
             LaunchActivity.getLaunchActivity().enableDisableBack(true);
         }
-        LaunchActivity.getLaunchActivity().enableLogout();
     }
 
     public void updateListData(final ArrayList<JsonTopic> jsonTopics) {
