@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.presenter.beans;
+package com.noqapp.library.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

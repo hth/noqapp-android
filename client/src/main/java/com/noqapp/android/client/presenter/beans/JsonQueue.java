@@ -12,6 +12,7 @@ import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.client.model.types.PaymentTypeEnum;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.library.beans.ErrorEncounteredJson;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 

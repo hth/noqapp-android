@@ -206,7 +206,7 @@ android {
             debuggable false
             minifyEnabled true
             zipAlignEnabled true
-
+            matchingFallbacks = ['debug', 'release']
             proguardFile '../library-proguard/proguard-butterknife-7.pro'
             proguardFile '../library-proguard/proguard-crashlytics.pro'
             proguardFile '../library-proguard/proguard-facebook.pro'
@@ -339,13 +339,11 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.0.2'
     implementation 'com.android.support:design:27.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.4.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation 'net.danlew:android.joda:2.9.9.3'
-
     implementation 'com.google.guava:guava:23.6-android'
     implementation 'com.google.firebase:firebase-core:12.0.1'
     implementation 'com.google.firebase:firebase-messaging:12.0.1'
@@ -363,11 +361,12 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     testImplementation 'org.hamcrest:hamcrest-library:1.3'
     testImplementation 'org.mockito:mockito-core:2.15.0'
     androidTestImplementation 'org.mockito:mockito-android:2.7.22'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    implementation project(':noqlibrary')
+
 }
 
 apply plugin: 'com.google.gms.google-services'

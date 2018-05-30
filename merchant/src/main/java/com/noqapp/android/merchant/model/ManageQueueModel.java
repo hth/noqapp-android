@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.noqapp.android.merchant.model.response.api.ManageQueueService;
 import com.noqapp.android.merchant.network.RetrofitClient;
-import com.noqapp.android.merchant.presenter.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
@@ -14,6 +13,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
+import com.noqapp.library.beans.ErrorEncounteredJson;
 
 import org.apache.commons.lang3.StringUtils;
 
