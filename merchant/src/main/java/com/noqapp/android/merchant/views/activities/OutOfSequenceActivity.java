@@ -39,7 +39,6 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
 
     private ProgressDialog progressDialog;
     private TextView tv_toolbar_title;
-    private ImageView iv_logout;
     protected ImageView actionbarBack;
     private TextView tv_title;
     private String codeQR;
@@ -72,7 +71,6 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
             getWindow().setLayout(screenWidth, height);
         }
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
-        iv_logout = (ImageView) findViewById(R.id.iv_logout);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         initProgress();
         tv_title = (TextView) findViewById(R.id.tv_title);
@@ -90,7 +88,6 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
                 onBackPressed();
             }
         });
-        iv_logout.setVisibility(View.INVISIBLE);
         tv_toolbar_title.setText(getString(R.string.screen_out_of_sequence));
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();

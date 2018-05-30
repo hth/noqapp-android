@@ -45,7 +45,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
     private ProgressDialog progressDialog;
     private TextView tv_toolbar_title;
-    private ImageView iv_logout;
     protected ImageView actionbarBack;
     private TextView tv_title;
     private ToggleButton toggleDayClosed, togglePreventJoin;
@@ -74,7 +73,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             getWindow().setLayout(screenWidth, height);
         }
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
-        iv_logout = (ImageView) findViewById(R.id.iv_logout);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         initProgress();
         tv_title = (TextView) findViewById(R.id.tv_title);
@@ -93,7 +91,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 onBackPressed();
             }
         });
-        iv_logout.setVisibility(View.INVISIBLE);
         tv_toolbar_title.setText(getString(R.string.screen_settings));
 
         cb_limit = (CheckBox) findViewById(R.id.cb_limit);

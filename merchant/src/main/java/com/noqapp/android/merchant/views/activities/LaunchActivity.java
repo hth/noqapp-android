@@ -13,16 +13,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,11 +42,13 @@ import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.network.VersionCheckAsync;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
+import com.noqapp.android.merchant.presenter.beans.NavigationBean;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.NetworkUtil;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.NavigationDrawerAdapter;
 import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
@@ -85,22 +91,21 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
     public Toolbar toolbar;
     public FrameLayout list_fragment, list_detail_fragment;
     protected TextView tv_toolbar_title;
-    private ImageView iv_logout;
     private long lastPress;
     private Toast backpressToast;
     private BroadcastReceiver broadcastReceiver;
-    private ImageView actionbarBack,iv_chart,iv_history;
+    private ImageView actionbarBack;
     private TextView tv_name;
     private FrameLayout fl_notification;
     private TextView tv_badge;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
 
-    public static SharedPreferences getSharePreferance() {
-        return sharedpreferences;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,16 +119,15 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         Fabric.with(this, new Answers());
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
+        setSupportActionBar(toolbar);
+     //   getSupportActionBar().setDisplayShowTitleEnabled(false);
         launchActivity = this;
         DeviceModel.appBlacklistPresenter = this;
         Log.v("device id check", getDeviceID());
         networkUtil = new NetworkUtil(this);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
-        iv_logout = (ImageView) findViewById(R.id.iv_logout);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
-        iv_chart = (ImageView) findViewById(R.id.iv_chart);
-        iv_history = (ImageView) findViewById(R.id.iv_history);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tv_name = (TextView) findViewById(R.id.tv_name);
         tv_badge = (TextView) findViewById(R.id.tv_badge);
@@ -141,38 +145,69 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             list_detail_fragment = (FrameLayout) findViewById(R.id.list_detail_fragment);
         }
         initProgress();
-        iv_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLogoutDialog();
-            }
-        });
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.drawer_list);
+        NavigationBean[] drawerItem = new NavigationBean[4];
+        if (isLoggedIn()) {
+            drawerItem = new NavigationBean[4];
+            drawerItem[3] = new NavigationBean(R.mipmap.logout, "Logout");
+        } else {
+            drawerItem = new NavigationBean[3];
+        }
+        drawerItem[0] = new NavigationBean(R.drawable.pie_chart, "Charts");
+        drawerItem[1] = new NavigationBean(R.drawable.medical_history, "Medical History");
+        drawerItem[2] = new NavigationBean(R.drawable.ic_notification, "Notifications");
 
-        iv_chart.setOnClickListener(new View.OnClickListener() {
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this, R.layout.listitem_navigation_drawer, drawerItem);
+        mDrawerList.setAdapter(adapter);
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent in = new Intent(launchActivity,ChartActivity.class);
-                startActivity(in);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int selectedPosition = position;
+                switch (selectedPosition) {
+                    case 0:
+                        Intent in1 = new Intent(launchActivity, ChartActivity.class);
+                        startActivity(in1);
+                        break;
+                    case 1:
+                        Intent in2 = new Intent(launchActivity, MedicalHistoryDetailActivity.class);
+                        startActivity(in2);
+                        break;
+                    case 2:
+                        Intent in = new Intent(launchActivity, NotificationActivity.class);
+                        startActivity(in);
+                        break;
+                    case 3:
+                        showLogoutDialog();
+                        break;
+                    default:
+                }
+                mDrawerLayout.closeDrawer(mDrawerList);
             }
         });
-        iv_chart.setVisibility(View.VISIBLE);
-        iv_history.setVisibility(View.VISIBLE);
-        iv_history.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(launchActivity,MedicalHistoryDetailActivity.class);
-                startActivity(in);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            public void onDrawerClosed(View view) {
             }
-        });
 
+            public void onDrawerOpened(View drawerView) {
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+
+
+
+
+
+
         if (isLoggedIn()) {
             if (isAccessGrant()) {
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 if (!new AppUtils().isTablet(getApplicationContext())) {
                     merchantListFragment = new MerchantListFragment();
                     replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
@@ -208,6 +243,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             }
 
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -234,7 +270,6 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(container, fragment).commit();
-        enableLogout();
     }
 
     public void replaceFragmentWithBackStack(int container, Fragment fragment, String tag) {
@@ -332,13 +367,7 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
         editor.apply();
     }
 
-    public void enableLogout() {
-        if (isLoggedIn()) {
-            iv_logout.setVisibility(View.VISIBLE);
-        } else {
-            iv_logout.setVisibility(View.INVISIBLE);
-        }
-    }
+
 
     @Override
     public void onBackPressed() {
@@ -523,7 +552,6 @@ public class LaunchActivity extends AppCompatActivity implements AppBlacklistPre
             }
         }
     }
-
 
     @Override
     public void appBlacklistError() {

@@ -179,7 +179,6 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue));
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
-        LaunchActivity.getLaunchActivity().enableLogout();
         isFragmentVisible = true;
         updateSnackbarTxt();
     }

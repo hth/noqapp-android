@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -29,10 +29,10 @@
                     style="@style/style_mdh_header"
                     android:text="Chief Complaint: " />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                     android:id="@+id/tv_complaints"
                     style="@style/style_mdh_details"
-                    android:text="Chief Complaint details " />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -46,10 +46,10 @@
                     style="@style/style_mdh_header"
                     android:text="Past History: " />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                     android:id="@+id/tv_past_history"
                     style="@style/style_mdh_details"
-                    android:text="Past History details " />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -63,10 +63,10 @@
                     style="@style/style_mdh_header"
                     android:text="Family History: " />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                     android:id="@+id/tv_family_history"
                     style="@style/style_mdh_details"
-                    android:text="Family History details " />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -80,10 +80,10 @@
                     style="@style/style_mdh_header"
                     android:text="Known Allergies: " />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                     android:id="@+id/tv_known_allergy"
                     style="@style/style_mdh_details"
-                    android:text="Known Allergies details " />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -98,9 +98,9 @@
                     style="@style/style_mdh_header"
                     android:text="Physical Examination: " />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                     style="@style/style_mdh_details"
-                    android:text="Physical Examination details " />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -114,10 +114,10 @@
                     style="@style/style_mdh_header"
                     android:text="Clinical Findings: " />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                     android:id="@+id/tv_clinical_finding"
                     style="@style/style_mdh_details"
-                    android:text="Clinical Findings details " />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -131,10 +131,10 @@
                     style="@style/style_mdh_header"
                     android:text="Provisional /Differential Diagnosis" />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                     android:id="@+id/tv_provisional"
                     style="@style/style_mdh_details"
-                    android:text="Provisional /Differential Diagnosis details " />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -148,10 +148,10 @@
                     style="@style/style_mdh_header"
                     android:text="Investigation Advised: " />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                     android:id="@+id/tv_investigation"
                     style="@style/style_mdh_details"
-                    android:text="Investigation Advised details " />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -165,9 +165,9 @@
                     style="@style/style_mdh_header"
                     android:text="Treatment Advice: " />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                     style="@style/style_mdh_details"
-                    android:text="Physical Examination details " />
+                    android:text="" />
             </LinearLayout>
         </LinearLayout>
 
