@@ -40,72 +40,33 @@
                     tools:layout_editor_absoluteX="5dp"
                     tools:layout_editor_absoluteY="20dp">
 
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="@string/additional_info_legal"
+                        android:textSize="18sp" />
 
                     <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
                         style="@style/style_register_tv"
-                        android:text="@string/phone" />
+                        android:text="@string/blood_type" />
 
 
                     <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                        android:id="@+id/edt_phone"
-                        style="@style/style_register_edt"
-                        android:inputType="phone"
-                        android:maxLength="15" />
-
-
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                        style="@style/style_register_tv"
-                        android:text="@string/name" />
-
-
-                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                        android:id="@+id/edt_name"
-                        style="@style/style_register_edt"
-                        android:inputType="text"
-
-
-                        />
-
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                        style="@style/style_register_tv"
-                        android:text="@string/mail" />
-
-
-                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                        android:id="@+id/edt_email"
-                        style="@style/style_register_edt"
-                        android:inputType="textEmailAddress" />
-
-
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                        style="@style/style_register_tv"
-                        android:text="@string/birthday" />
-
-                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                        android:id="@+id/edt_birthday"
+                        android:id="@+id/edt_blood_group"
                         style="@style/style_register_edt" />
 
 
-                    <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
-                        android:id="@+id/btn_update"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/button_drawable"
-                        android:drawableEnd="@drawable/arrow_small"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/arrow_small"
-                        android:gravity="center"
-                        android:paddingLeft="90dp"
-                        android:paddingRight="90dp"
-                        android:text="@string/action_update_additional"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorMobile"
-                        android:textSize="15sp" />
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        style="@style/style_register_tv"
+                        android:text="@string/height" />
 
+
+                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                        android:id="@+id/edt_height"
+                        style="@style/style_register_edt"
+                        android:inputType="text" />
                 </LinearLayout>
 
             </android.support.constraint.ConstraintLayout>
