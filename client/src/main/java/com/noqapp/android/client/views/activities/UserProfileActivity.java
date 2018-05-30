@@ -5,6 +5,8 @@ package com.noqapp.android.client.views.activities;
  */
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -22,6 +24,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -171,10 +174,10 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                     String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
                     NoQueueBaseActivity.setUserProfileUri(convertedPath);
 
-                    if(!TextUtils.isEmpty(convertedPath)) {
+                    if (!TextUtils.isEmpty(convertedPath)) {
+                        String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
-                        String extension = convertedPath.substring(convertedPath.lastIndexOf(".")+1);
-                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("image/"+extension), file));
+                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         ProfileModel.imageUploadPresenter = this;
                         ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
                     }
@@ -189,6 +192,17 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    private String getMimeType(Context context, Uri uri) {
+        String mimeType;
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            ContentResolver cr = context.getContentResolver();
+            mimeType = cr.getType(uri);
+        } else {
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
+        }
+        return mimeType;
+    }
 
     private void setupViewPager(ViewPager viewPager) {
         userProfileFragment = new UserProfileFragment();
