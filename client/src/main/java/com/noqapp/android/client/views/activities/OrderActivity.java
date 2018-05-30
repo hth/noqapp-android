@@ -243,11 +243,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     @Override
-    public void imageUploadResponse(JsonResponse jsonResponse) {
-
-    }
-
-    @Override
     public void queueError() {
         dismissProgress();
     }

@@ -230,11 +230,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public void imageUploadResponse(JsonResponse jsonResponse) {
-
-    }
-
-    @Override
     public void queueError() {
         //dismissProgress();
     }

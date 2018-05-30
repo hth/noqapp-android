@@ -323,11 +323,6 @@ public class MigrateActivity extends BaseActivity implements ProfilePresenter {
     }
 
     @Override
-    public void imageUploadResponse(JsonResponse jsonResponse) {
-
-    }
-
-    @Override
     public void queueError() {
         dismissProgress();
     }

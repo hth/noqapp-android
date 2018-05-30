@@ -40,11 +40,6 @@ public class MePresenter implements ProfilePresenter {
     }
 
     @Override
-    public void imageUploadResponse(JsonResponse jsonResponse) {
-
-    }
-
-    @Override
     public void queueError() {
         meView.queueError();
     }

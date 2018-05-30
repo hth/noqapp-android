@@ -37,6 +37,7 @@ import android.widget.TextView;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
+import com.noqapp.android.client.presenter.ImageUploadPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
@@ -61,7 +62,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 
-public class UserProfileActivity extends BaseActivity implements View.OnClickListener,ProfilePresenter {
+public class UserProfileActivity extends BaseActivity implements View.OnClickListener,ImageUploadPresenter {
 
     @BindView(R.id.tv_name)
     protected TextView tv_name;
@@ -107,15 +108,6 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
 
     }
 
-    @Override
-    public void queueResponse(JsonProfile profile, String email, String auth) {
-
-    }
-
-    @Override
-    public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
-
-    }
 
     @Override
     public void imageUploadResponse(JsonResponse jsonResponse) {
@@ -123,12 +115,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void queueError() {
-
-    }
-
-    @Override
-    public void queueError(String error) {
+    public void imageUploadError() {
 
     }
 
@@ -200,7 +187,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
 
                     File file = new File(NoQueueBaseActivity.getUserProfileUri());
                     MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
-                    ProfileModel.profilePresenter = this;
+                    ProfileModel.imageUploadPresenter = this;
                     ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block

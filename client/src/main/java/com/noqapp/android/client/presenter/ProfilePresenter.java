@@ -15,9 +15,8 @@ public interface ProfilePresenter {
 
     void profileAddressResponse(JsonUserAddressList jsonUserAddressList);
 
-    void imageUploadResponse(JsonResponse jsonResponse);
-
     void queueError();
+
     void queueError(String error);
 
     void authenticationFailure(int errorCode);

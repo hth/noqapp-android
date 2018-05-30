@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.noqapp.android.client.model.response.api.ProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.presenter.ImageUploadPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.JsonResponse;
@@ -25,6 +26,7 @@ public class ProfileModel {
 
     private static final ProfileService profileService;
     public static ProfilePresenter profilePresenter;
+    public static ImageUploadPresenter imageUploadPresenter;
 
     static {
         profileService = RetrofitClient.getClient().create(ProfileService.class);
@@ -193,22 +195,22 @@ public class ProfileModel {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    profilePresenter.authenticationFailure(response.code());
+                    imageUploadPresenter.authenticationFailure(response.code());
                     return;
                 }
                 if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.imageUploadResponse(response.body());
+                    imageUploadPresenter.imageUploadResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Failed abort queue");
+                    Log.e(TAG, "Failed image upload");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                imageUploadPresenter.imageUploadError();
             }
         });
     }

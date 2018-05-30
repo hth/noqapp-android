@@ -131,11 +131,6 @@ public class UserAdditionalInfoFragment extends Fragment implements View.OnClick
     }
 
     @Override
-    public void imageUploadResponse(JsonResponse jsonResponse) {
-
-    }
-
-    @Override
     public void queueError() {
         //dismissProgress();
     }
