@@ -1,8 +1,8 @@
 package com.noqapp.android.merchant.model.response.api;
 
-import com.noqapp.android.merchant.presenter.beans.DeviceRegistered;
-import com.noqapp.android.merchant.presenter.beans.body.DeviceToken;
+import com.noqapp.library.beans.DeviceRegistered;
 import com.noqapp.library.beans.JsonLatestAppVersion;
+import com.noqapp.library.beans.body.DeviceToken;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

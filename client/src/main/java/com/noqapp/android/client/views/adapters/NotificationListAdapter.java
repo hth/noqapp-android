@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
-import com.noqapp.android.client.presenter.beans.NotificationBeans;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
+import com.noqapp.library.beans.NotificationBeans;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
