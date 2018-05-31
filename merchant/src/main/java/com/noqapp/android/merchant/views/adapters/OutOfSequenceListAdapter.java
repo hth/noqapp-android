@@ -16,9 +16,9 @@ import android.widget.TextView;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.library.utils.PhoneFormatterUtil;
 
 import java.util.List;
 

@@ -25,11 +25,11 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.JoinQueueUtil;
-import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.library.utils.Formatter;
+import com.noqapp.library.utils.PhoneFormatterUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

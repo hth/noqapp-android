@@ -32,12 +32,12 @@ import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
-import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
+import com.noqapp.library.utils.Formatter;
+import com.noqapp.library.utils.PhoneFormatterUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -33,7 +33,6 @@ import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.Formatter;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -45,6 +44,7 @@ import com.noqapp.android.merchant.views.fragments.MerchantViewPagerFragment;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.library.beans.ErrorEncounteredJson;
+import com.noqapp.library.utils.Formatter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -133,7 +133,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             tv_counter_name.setText("");
         else
             tv_counter_name.setText(cName);
-        tv_timing.setText("Timing: "+Formatter.convertMilitaryTo12HourFormat(lq.getHour().getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(lq.getHour().getEndHour()));
+        tv_timing.setText("Timing: "+ Formatter.convertMilitaryTo12HourFormat(lq.getHour().getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(lq.getHour().getEndHour()));
         //
         Button btn_skip = (Button) itemView.findViewById(R.id.btn_skip);
         Button btn_next = (Button) itemView.findViewById(R.id.btn_next);

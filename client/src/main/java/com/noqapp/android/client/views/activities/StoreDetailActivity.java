@@ -35,12 +35,12 @@ import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.presenter.beans.JsonStoreProduct;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.utils.ViewAnimationUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.library.beans.JsonHour;
+import com.noqapp.library.utils.Formatter;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
