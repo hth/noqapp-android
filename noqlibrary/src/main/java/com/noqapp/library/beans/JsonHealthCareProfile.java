@@ -46,8 +46,8 @@ public class JsonHealthCareProfile {
     @JsonProperty("aw")
     private List<JsonNameDatePair> awards = new LinkedList<>();
 
-    @JsonProperty("md")
-    private String medicalDictionary;
+    @JsonProperty("pd")
+    private String prescriptionDictionary;
 
     public String getCodeQR() {
         return codeQR;
@@ -94,12 +94,12 @@ public class JsonHealthCareProfile {
         return this;
     }
 
-    public String getMedicalDictionary() {
-        return medicalDictionary;
+    public String getPrescriptionDictionary() {
+        return prescriptionDictionary;
     }
 
-    public JsonHealthCareProfile setPrescriptionDictionary(String medicalDictionary) {
-        this.medicalDictionary = medicalDictionary;
+    public JsonHealthCareProfile setPrescriptionDictionary(String prescriptionDictionary) {
+        this.prescriptionDictionary = prescriptionDictionary;
         return this;
     }
 }
