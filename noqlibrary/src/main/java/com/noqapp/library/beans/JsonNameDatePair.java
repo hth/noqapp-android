@@ -1,4 +1,4 @@
-package com.noqapp.android.client.presenter.beans.body;
+package com.noqapp.library.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * User: hitender
- * Date: 4/2/17 6:37 PM
+ * hitender
+ * 5/31/18 5:13 PM
  */
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
@@ -23,12 +23,29 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DeviceToken {
+public class JsonNameDatePair {
 
-    @JsonProperty("tk")
-    private String fcmToken;
+    @JsonProperty("n")
+    private String name;
 
-    public DeviceToken(String fcmToken) {
-        this.fcmToken = fcmToken;
+    @JsonProperty("d")
+    private String monthYear;
+
+    public String getName() {
+        return name;
+    }
+
+    public JsonNameDatePair setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getMonthYear() {
+        return monthYear;
+    }
+
+    public JsonNameDatePair setMonthYear(String monthYear) {
+        this.monthYear = monthYear;
+        return this;
     }
 }

@@ -33,7 +33,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.model.RegisterModel;
@@ -42,10 +41,10 @@ import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.PhoneFormatterUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.library.beans.ErrorEncounteredJson;
+import com.noqapp.library.utils.PhoneFormatterUtil;
 
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -111,8 +110,8 @@ public class MigrateActivity extends BaseActivity implements ProfilePresenter {
 
         TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         String c_codeValue = tm.getNetworkCountryIso();
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        int c_code = phoneUtil.getCountryCodeForRegion(c_codeValue.toUpperCase());
+
+        int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
         Log.v("country code", ""+c_code);
         countryCode = "+"+c_code;
         countryShortName = c_codeValue.toUpperCase();

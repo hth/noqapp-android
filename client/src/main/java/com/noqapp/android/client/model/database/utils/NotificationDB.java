@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.noqapp.android.client.model.database.DatabaseTable;
-import com.noqapp.android.client.presenter.beans.NotificationBeans;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.library.beans.NotificationBeans;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

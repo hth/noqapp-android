@@ -14,8 +14,8 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Formatter;
 import com.noqapp.android.client.utils.GeoHashUtils;
+import com.noqapp.library.utils.Formatter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -28,10 +28,10 @@ import com.noqapp.android.merchant.model.QueueSettingModel;
 import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.Formatter;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
+import com.noqapp.library.utils.Formatter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;

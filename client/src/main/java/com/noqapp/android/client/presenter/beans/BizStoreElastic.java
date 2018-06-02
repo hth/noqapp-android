@@ -138,8 +138,12 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("AM")
     private List<AmenityEnum> amenities = new LinkedList<>();
 
-    @JsonProperty ("FA")
+    @JsonProperty("FA")
     private List<FacilityEnum> facilities = new LinkedList<>();
+
+    /** MCQ is populated when the BT is of type BusinessTypeEnum.DO. */
+    @JsonProperty("MCQ")
+    private String managerCodeQR;
 
     public String getId() {
         return id;

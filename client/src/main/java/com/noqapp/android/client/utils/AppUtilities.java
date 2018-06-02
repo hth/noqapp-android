@@ -35,6 +35,7 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.library.utils.Formatter;
 
 import org.joda.time.LocalDateTime;
 import org.json.JSONArray;
