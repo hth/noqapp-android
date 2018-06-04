@@ -1,1 +1,1 @@
-include ':client', ':merchant', ':noqlibrary'
+include ':client', ':merchant', ':common'
