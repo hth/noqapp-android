@@ -165,6 +165,11 @@
             android:name=".views.activities.CategoryPagerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
+
+        <activity
+            android:name=".views.activities.ManagerProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
         <activity
             android:name=".views.activities.BlinkerActivity"
             android:screenOrientation="portrait"

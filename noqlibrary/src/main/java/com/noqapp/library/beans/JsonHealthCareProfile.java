@@ -102,4 +102,16 @@ public class JsonHealthCareProfile {
         this.prescriptionDictionary = prescriptionDictionary;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonHealthCareProfile{" +
+                "codeQR='" + codeQR + '\'' +
+                ", practiceStart=" + practiceStart +
+                ", education=" + education +
+                ", licenses=" + licenses +
+                ", awards=" + awards +
+                ", prescriptionDictionary='" + prescriptionDictionary + '\'' +
+                '}';
+    }
 }

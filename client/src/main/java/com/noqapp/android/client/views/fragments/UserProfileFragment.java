@@ -39,9 +39,9 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.android.client.views.activities.MigrateActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
-import com.noqapp.android.client.views.activities.UserProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -214,9 +214,9 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         if(!TextUtils.isEmpty(profile.getProfileImage()))
             Picasso.with(getActivity())
                     .load(BuildConfig.AWSS3+BuildConfig.PROFILE_BUCKET+profile.getProfileImage())
-                    .into(UserProfileActivity.iv_profile);
+                    .into(ManagerProfileActivity.iv_profile);
         else{
-            Picasso.with(getActivity()).load(R.drawable.profile_avatar).into(UserProfileActivity.iv_profile);
+            Picasso.with(getActivity()).load(R.drawable.profile_avatar).into(ManagerProfileActivity.iv_profile);
         }
        // dismissProgress();
         updateUI();

@@ -160,4 +160,6 @@
     <string name="additional_info_legal">Below information will be capture only if you visit a doctor.</string>
     <string name="blood_type">Blood Group</string>
     <string name="height">Height</string>
+    <string name="education">Education</string>
+    <string name="experience">Experience</string>
 </resources>
