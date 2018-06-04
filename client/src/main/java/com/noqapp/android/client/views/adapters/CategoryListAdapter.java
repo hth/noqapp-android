@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         private TextView tv_store_special;
         private TextView tv_store_review;
         private TextView tv_status;
+        private TextView tv_join;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -57,6 +59,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             this.tv_store_review = (TextView) itemView.findViewById(R.id.tv_store_review);
             this.tv_status = (TextView) itemView.findViewById(R.id.tv_status);
             this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
+            this.tv_join =  itemView.findViewById(R.id.tv_join);
             this.card_view = (CardView) itemView.findViewById(R.id.card_view);
         }
     }
@@ -180,7 +183,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 .transform(new RoundedTransformation(10, 4))
                 .into(holder.iv_main);*/
         holder.tv_store_special.setText(dataSet.get(listPosition).getFamousFor());
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
+        holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onCategoryItemClick(dataSet.get(listPosition), v, listPosition);
