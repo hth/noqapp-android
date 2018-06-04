@@ -245,6 +245,7 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="height">Height</string>
     <string name="education">Education</string>
     <string name="experience">Experience</string>
+    <string name="available_other_place">Avaliable at other places</string>
     <!-- Language select dialog -->
 
 </resources>

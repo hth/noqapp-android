@@ -38,7 +38,7 @@
                     android:visibility="visible">
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayBold
                         style="@style/style_register_tv"
                         android:text="@string/education" />
 
@@ -49,7 +49,7 @@
                         android:layout_width="match_parent" />
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayBold
                         style="@style/style_register_tv"
                         android:text="@string/experience" />
 
@@ -57,7 +57,8 @@
                     <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                         android:id="@+id/tv_experience"
                         style="@style/style_register_tv"
-                        android:inputType="text" />
+                        android:inputType="text|textMultiLine"
+                        />
                 </LinearLayout>
 
             </android.support.constraint.ConstraintLayout>

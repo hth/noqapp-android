@@ -72,7 +72,6 @@ public class ManagerProfileActivity extends BaseActivity implements View.OnClick
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
     private String managerQrcode = "";
     private String managerName = "";
-    private JsonHealthCareProfile jsonHealthCareProfile;
 
 
     @Override
@@ -120,7 +119,7 @@ public class ManagerProfileActivity extends BaseActivity implements View.OnClick
     @Override
     public void queueManagerResponse(JsonHealthCareProfile jsonHealthCareProfile) {
         Log.v("queueManagerResponse",jsonHealthCareProfile.toString());
-        this.jsonHealthCareProfile =jsonHealthCareProfile;
+        userAdditionalInfoFragment.updateUI(jsonHealthCareProfile);
     }
 
     @Override

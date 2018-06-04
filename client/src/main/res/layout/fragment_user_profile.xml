@@ -34,171 +34,37 @@
                     android:id="@+id/email_login_form"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible">
+                    android:orientation="vertical">
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayBold
                         style="@style/style_register_tv"
-                        android:text="@string/phone" />
+                        android:text="@string/available_other_place" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
 
-                        <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                            android:id="@+id/edt_phone"
-                            style="@style/style_register_edt"
-                            android:layout_width="0dp"
-                            android:layout_weight=".6"
-                            android:inputType="phone"
-                            android:maxLength="15" />
-
-                        <TextView
-                            android:id="@+id/tv_migrate"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight=".4"
-                            android:background="@drawable/gender_redbg"
-                            android:gravity="center"
-                            android:padding="10dp"
-                            android:text="Change Number"
-                            android:textColor="@color/white"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
                         style="@style/style_register_tv"
-                        android:text="@string/name" />
+                        android:paddingTop="5dp"
+                        android:text="DayNight Care Center" />
 
 
-                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                        android:id="@+id/edt_name"
-                        style="@style/style_register_edt"
-                        android:inputType="text"
-
-
-                        />
-
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                        android:id="@+id/tv_available_other_place"
                         style="@style/style_register_tv"
-                        android:text="@string/mail" />
-
-
-                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                        android:id="@+id/edt_email"
-                        style="@style/style_register_edt"
-                        android:inputType="textEmailAddress" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".50"
-                            android:orientation="vertical"
-                            android:paddingRight="10dp">
-
-                            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                                style="@style/style_register_tv"
-                                android:text="@string/birthday" />
-
-                            <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                                android:id="@+id/edt_birthday"
-                                style="@style/style_register_edt" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".50"
-                            android:orientation="vertical">
-
-                            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                                style="@style/style_register_tv"
-                                android:text="@string/gender" />
-
-                            <LinearLayout
-                                android:id="@+id/ll_gender"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:weightSum="1">
-
-                                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                                    android:id="@+id/tv_male"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center_horizontal|center_vertical"
-                                    android:layout_weight=".5"
-                                    android:focusable="false"
-                                    android:gravity="center_horizontal|center_vertical"
-                                    android:paddingBottom="10dp"
-                                    android:paddingTop="10dp"
-                                    android:text="male "
-                                    android:textSize="14sp" />
-
-                                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                                    android:id="@+id/tv_female"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center_horizontal|center_vertical"
-                                    android:layout_weight=".5"
-                                    android:focusable="false"
-                                    android:gravity="center_horizontal|center_vertical"
-                                    android:paddingBottom="10dp"
-                                    android:paddingTop="10dp"
-                                    android:text="female "
-                                    android:textSize="14sp" />
-
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-
-
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
-                        style="@style/style_register_tv"
-                        android:text="@string/prompt_address_status" />
-
-
-                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
-                        android:id="@+id/edt_address"
-                        style="@style/style_register_edt"
-                        android:gravity="top|left"
                         android:inputType="textMultiLine"
-                        android:lines="2"
-                        android:maxLines="2"
-                        android:minLines="2"
-                        android:singleLine="false" />
+                        android:text="C-32, HiraKunj Apartments, Near Maha Lakshmi Temple,Mumbai" />
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        style="@style/style_register_tv"
+                        android:paddingTop="5dp"
+                        android:text="Child Helth Care Center" />
 
 
-                    <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
-                        android:id="@+id/btn_update"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/button_drawable"
-                        android:drawableEnd="@drawable/arrow_small"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/arrow_small"
-                        android:gravity="center"
-                        android:paddingLeft="90dp"
-                        android:paddingRight="90dp"
-                        android:text="@string/action_update"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorMobile"
-                        android:textSize="15sp" />
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                        style="@style/style_register_tv"
+                        android:inputType="textMultiLine"
+                        android:text="A-92, Radha Swami Apartments, Near Maha Gym Khana,Mumbai" />
+
 
                 </LinearLayout>
 
