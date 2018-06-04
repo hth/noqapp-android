@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.common.beans.JsonHealthCareProfile;
+import com.noqapp.android.client.presenter.beans.JsonHealthCareProfile;
 import com.noqapp.common.beans.JsonNameDatePair;
 
 import java.util.List;

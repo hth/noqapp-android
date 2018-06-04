@@ -1,10 +1,12 @@
-package com.noqapp.common.beans;
+package com.noqapp.android.client.presenter.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.common.beans.JsonNameDatePair;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,6 +47,9 @@ public class JsonHealthCareProfile {
 
     @JsonProperty("aw")
     private List<JsonNameDatePair> awards = new LinkedList<>();
+
+    @JsonProperty("st")
+    private List<JsonStore> stores = new ArrayList<>();
 
     @JsonProperty("pd")
     private String prescriptionDictionary;
@@ -91,6 +96,15 @@ public class JsonHealthCareProfile {
 
     public JsonHealthCareProfile setAwards(List<JsonNameDatePair> awards) {
         this.awards = awards;
+        return this;
+    }
+
+    public List<JsonStore> getStores() {
+        return stores;
+    }
+
+    public JsonHealthCareProfile setStores(List<JsonStore> stores) {
+        this.stores = stores;
         return this;
     }
 
