@@ -39,8 +39,8 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.utils.ViewAnimationUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
-import com.noqapp.library.beans.JsonHour;
-import com.noqapp.library.utils.Formatter;
+import com.noqapp.common.beans.JsonHour;
+import com.noqapp.common.utils.Formatter;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;

@@ -34,7 +34,7 @@ import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.interfaces.MeView;
-import com.noqapp.library.beans.ErrorEncounteredJson;
+import com.noqapp.common.beans.ErrorEncounteredJson;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

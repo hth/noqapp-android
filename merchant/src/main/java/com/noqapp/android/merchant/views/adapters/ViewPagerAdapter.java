@@ -43,8 +43,8 @@ import com.noqapp.android.merchant.views.activities.SettingDialogActivity;
 import com.noqapp.android.merchant.views.fragments.MerchantViewPagerFragment;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
-import com.noqapp.library.beans.ErrorEncounteredJson;
-import com.noqapp.library.utils.Formatter;
+import com.noqapp.common.beans.ErrorEncounteredJson;
+import com.noqapp.common.utils.Formatter;
 
 import org.apache.commons.lang3.StringUtils;
 

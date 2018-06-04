@@ -28,8 +28,8 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.library.utils.Formatter;
-import com.noqapp.library.utils.PhoneFormatterUtil;
+import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.PhoneFormatterUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

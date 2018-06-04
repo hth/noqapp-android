@@ -1,4 +1,4 @@
-package com.noqapp.library.beans.body;
+package com.noqapp.common.beans.body;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

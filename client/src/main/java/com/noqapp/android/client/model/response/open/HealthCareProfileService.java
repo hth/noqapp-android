@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model.response.open;
 
-import com.noqapp.library.beans.JsonHealthCareProfile;
+import com.noqapp.android.client.presenter.beans.JsonHealthCareProfile;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

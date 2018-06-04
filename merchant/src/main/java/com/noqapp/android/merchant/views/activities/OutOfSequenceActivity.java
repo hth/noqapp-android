@@ -30,7 +30,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.OutOfSequenceListAdapter;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
-import com.noqapp.library.beans.ErrorEncounteredJson;
+import com.noqapp.common.beans.ErrorEncounteredJson;
 
 import java.util.Collections;
 import java.util.List;

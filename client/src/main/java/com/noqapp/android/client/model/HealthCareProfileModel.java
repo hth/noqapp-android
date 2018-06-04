@@ -6,7 +6,7 @@ import android.util.Log;
 import com.noqapp.android.client.model.response.open.HealthCareProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
-import com.noqapp.library.beans.JsonHealthCareProfile;
+import com.noqapp.android.client.presenter.beans.JsonHealthCareProfile;
 
 import retrofit2.Call;
 import retrofit2.Callback;

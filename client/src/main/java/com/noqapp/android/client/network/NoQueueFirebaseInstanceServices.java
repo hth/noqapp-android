@@ -8,7 +8,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.noqapp.android.client.model.DeviceModel;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
-import com.noqapp.library.beans.body.DeviceToken;
+import com.noqapp.common.beans.body.DeviceToken;
 
 import org.apache.commons.lang3.StringUtils;
 

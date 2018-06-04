@@ -53,7 +53,7 @@ import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
-import com.noqapp.library.utils.NetworkUtil;
+import com.noqapp.common.utils.NetworkUtil;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 

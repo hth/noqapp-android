@@ -364,7 +364,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.15.0'
     androidTestImplementation 'org.mockito:mockito-android:2.7.22'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-    implementation project(':noqlibrary')
+    implementation project(':common')
 
 }
 

@@ -43,8 +43,8 @@ import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.library.beans.ErrorEncounteredJson;
-import com.noqapp.library.utils.PhoneFormatterUtil;
+import com.noqapp.common.beans.ErrorEncounteredJson;
+import com.noqapp.common.utils.PhoneFormatterUtil;
 
 import java.util.concurrent.TimeUnit;
 
