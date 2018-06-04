@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,8 +17,8 @@ import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
-import com.noqapp.library.utils.Formatter;
-import com.noqapp.library.utils.PhoneFormatterUtil;
+import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.PhoneFormatterUtil;
 
 import java.util.List;
 

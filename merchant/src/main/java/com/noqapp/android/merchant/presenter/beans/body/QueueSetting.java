@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.library.beans.ErrorEncounteredJson;
+import com.noqapp.common.beans.ErrorEncounteredJson;
 
 /**
  * Created by chandra on 7/15/17.

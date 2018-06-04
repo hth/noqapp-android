@@ -37,7 +37,7 @@ import com.noqapp.android.client.utils.ImagePathReader;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
-import com.noqapp.library.beans.JsonHealthCareProfile;
+import com.noqapp.common.beans.JsonHealthCareProfile;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

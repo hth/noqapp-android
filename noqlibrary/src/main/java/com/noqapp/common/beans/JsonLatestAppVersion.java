@@ -1,13 +1,13 @@
-package com.noqapp.library.beans;
+package com.noqapp.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * User: hitender
- * Date: 4/2/17 6:44 PM
+ * Created by chandra on 11/4/17.
  */
+
 
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
@@ -18,20 +18,20 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class DeviceRegistered {
+public class JsonLatestAppVersion {
 
-    @JsonProperty("r")
-    private int registered;
+    @JsonProperty("av")
+    private String latestAppVersion;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public int getRegistered() {
-        return registered;
+    public String getLatestAppVersion() {
+        return latestAppVersion;
     }
 
-    public void setRegistered(int registered) {
-        this.registered = registered;
+    public void setLatestAppVersion(String latestAppVersion) {
+        this.latestAppVersion = latestAppVersion;
     }
 
     public ErrorEncounteredJson getError() {
@@ -44,10 +44,9 @@ public class DeviceRegistered {
 
     @Override
     public String toString() {
-        return "DeviceRegistered{" +
-                "registered=" + registered +
+        return "JsonLatestAppVersion{" +
+                "latestAppVersion='" + latestAppVersion + '\'' +
                 ", error=" + error +
                 '}';
     }
 }
-

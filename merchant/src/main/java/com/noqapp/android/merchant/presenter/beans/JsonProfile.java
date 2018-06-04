@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.merchant.model.types.GenderEnum;
 import com.noqapp.android.merchant.model.types.UserLevelEnum;
-import com.noqapp.library.beans.ErrorEncounteredJson;
+import com.noqapp.common.beans.ErrorEncounteredJson;
 
 import java.io.Serializable;
 

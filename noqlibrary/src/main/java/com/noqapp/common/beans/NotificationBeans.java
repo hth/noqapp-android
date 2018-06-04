@@ -1,4 +1,4 @@
-package com.noqapp.library.beans;
+package com.noqapp.common.beans;
 
 /**
  * Created by chandra on 3/16/18.

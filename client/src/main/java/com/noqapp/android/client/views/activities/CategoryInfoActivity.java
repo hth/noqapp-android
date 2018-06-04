@@ -35,7 +35,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
-import com.noqapp.library.utils.PhoneFormatterUtil;
+import com.noqapp.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;

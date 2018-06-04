@@ -1,6 +1,6 @@
 package com.noqapp.android.client.presenter;
 
-import com.noqapp.library.beans.JsonHealthCareProfile;
+import com.noqapp.common.beans.JsonHealthCareProfile;
 
 /**
  * User: chandra
