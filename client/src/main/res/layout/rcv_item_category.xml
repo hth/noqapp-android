@@ -34,9 +34,9 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="5dp"
                     android:scaleType="fitXY"
-                    android:visibility="visible"
+                    android:src="@drawable/profile_avatar"
                     android:tint="@color/colorPrimary"
-                    android:src="@drawable/profile_avatar"/>
+                    android:visibility="visible" />
 
                 <LinearLayout
                     android:id="@+id/ll_side"
@@ -85,14 +85,14 @@
                         android:textSize="12sp"
                         android:visibility="gone" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayBold
-                        android:id="@+id/tv_status"
-                        android:layout_width="match_parent"
+
+                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                        android:id="@+id/tv_store_special"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
                         android:layout_marginTop="3dp"
-                        android:gravity="center_vertical"
-                        android:text=""
-                        android:textColor="@color/colorPrimaryDark"
+                        android:text="6 years exp *Consult fees Rs 200"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -127,16 +127,40 @@
 
             </RelativeLayout>
 
-            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                android:id="@+id/tv_store_special"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rl_top"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="3dp"
-                android:text="6 years exp *Consult fees Rs 200"
-                android:textSize="14sp" />
+                android:layout_below="@+id/rl_top">
 
+                <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                    android:id="@+id/tv_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="3dp"
+                    android:layout_toLeftOf="@+id/tv_join"
+                    android:gravity="center_vertical"
+                    android:paddingRight="10dp"
+                    android:text=""
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14sp" />
+
+                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    android:id="@+id/tv_join"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/colorActionbar"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:paddingTop="10dp"
+                    android:text="Walk-in"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+            </RelativeLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

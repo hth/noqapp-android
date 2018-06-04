@@ -2,11 +2,13 @@ package com.noqapp.android.client.views.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +16,8 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.library.utils.Formatter;
 import com.noqapp.library.utils.PhoneFormatterUtil;
 
@@ -27,6 +31,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         void onCategoryItemClick(BizStoreElastic item, View view, int pos);
     }
 
+
     private final OnItemClickListener listener;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -39,6 +44,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         private TextView tv_store_special;
         private TextView tv_store_review;
         private TextView tv_status;
+        private TextView tv_join;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -53,6 +59,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             this.tv_store_review = (TextView) itemView.findViewById(R.id.tv_store_review);
             this.tv_status = (TextView) itemView.findViewById(R.id.tv_status);
             this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
+            this.tv_join =  itemView.findViewById(R.id.tv_join);
             this.card_view = (CardView) itemView.findViewById(R.id.card_view);
         }
     }
@@ -176,10 +183,22 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 .transform(new RoundedTransformation(10, 4))
                 .into(holder.iv_main);*/
         holder.tv_store_special.setText(dataSet.get(listPosition).getFamousFor());
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
+        holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onCategoryItemClick(dataSet.get(listPosition), v, listPosition);
+            }
+        });
+
+        holder.iv_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ManagerProfileActivity.class);
+                intent.putExtra(Constants.QRCODE,jsonQueue.getManagerCodeQR());
+                intent.putExtra("managerName",dataSet.get(listPosition).getDisplayName());
+                context.startActivity(intent);
+
+
             }
         });
     }

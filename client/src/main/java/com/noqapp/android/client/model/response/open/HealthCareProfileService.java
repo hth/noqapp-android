@@ -14,7 +14,7 @@ import retrofit2.http.Path;
 public interface HealthCareProfileService {
 
     @GET("open/healthCare/profile/{codeQR}.json")
-    Call<JsonHealthCareProfile> getAllQueueState(
+    Call<JsonHealthCareProfile> getQueueManagerProfile(
             @Header("X-R-DID")
             String did,
 

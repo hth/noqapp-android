@@ -451,12 +451,27 @@ public class BizStoreElastic implements Serializable {
         return this;
     }
 
+
+    public String getManagerCodeQR() {
+        return managerCodeQR;
+    }
+
+    public BizStoreElastic setManagerCodeQR(String managerCodeQR) {
+        this.managerCodeQR = managerCodeQR;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "BizStoreElastic{" +
                 "id='" + id + '\'' +
                 ", businessName='" + businessName + '\'' +
+                ", businessType=" + businessType +
+                ", bizCategoryName='" + bizCategoryName + '\'' +
+                ", bizCategoryDisplayImage='" + bizCategoryDisplayImage + '\'' +
+                ", bizCategoryId='" + bizCategoryId + '\'' +
                 ", address='" + address + '\'' +
+                ", area='" + area + '\'' +
                 ", town='" + town + '\'' +
                 ", district='" + district + '\'' +
                 ", state='" + state + '\'' +
@@ -475,6 +490,15 @@ public class BizStoreElastic implements Serializable {
                 ", displayName='" + displayName + '\'' +
                 ", codeQR='" + codeQR + '\'' +
                 ", timeZone='" + timeZone + '\'' +
+                ", geoHash='" + geoHash + '\'' +
+                ", webLocation='" + webLocation + '\'' +
+                ", famousFor='" + famousFor + '\'' +
+                ", displayImage='" + displayImage + '\'' +
+                ", storeHourElasticList=" + storeHourElasticList +
+                ", bizServiceImages=" + bizServiceImages +
+                ", amenities=" + amenities +
+                ", facilities=" + facilities +
+                ", managerCodeQR='" + managerCodeQR + '\'' +
                 '}';
     }
 }

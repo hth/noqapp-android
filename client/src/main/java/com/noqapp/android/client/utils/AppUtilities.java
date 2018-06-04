@@ -458,5 +458,18 @@ public class AppUtilities {
         autoCompleteTextView.setFocusable(true);
         autoCompleteTextView.setFocusableInTouchMode(true);
     }
+
+    public static String getYearFromDate(String dateValue){
+        try {
+            DateFormat sdf = Formatter.formatRFC822;
+            Date parse = sdf.parse(dateValue);
+            Calendar c = Calendar.getInstance();
+            c.setTime(parse);
+            return String.valueOf(c.get(Calendar.YEAR));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }
 

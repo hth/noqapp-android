@@ -11,8 +11,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/layout"
@@ -49,7 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/header_cover_image"
                 android:background="@color/colorPrimary"
-                android:elevation="0dp">
+                android:elevation="0dp"
+                android:paddingBottom="24dp">
 
 
                 <ImageView
@@ -61,7 +61,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
                     android:clickable="true"
-                    android:visibility="invisible"
+
                     android:src="@android:drawable/ic_menu_edit" />
 
                 <TextView
@@ -69,22 +69,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="70dp"
                     android:text="Chandra Sharma"
                     android:textColor="#fff"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_name"
-                    app:tabGravity="fill"
-                    app:tabMode="fixed"
-                    app:tabSelectedTextColor="@android:color/white"
-                    app:tabTextColor="@android:color/darker_gray" />
 
             </RelativeLayout>
 
@@ -100,20 +90,181 @@
                 android:orientation="vertical"
                 android:paddingBottom="20dp"
                 android:paddingLeft="5dp"
-                android:paddingRight="5dp">
+                android:paddingRight="5dp"
+                android:paddingTop="20dp">
+
 
                 <LinearLayout
+                    android:id="@+id/email_login_form"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
 
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/viewpager"
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        style="@style/style_register_tv"
+                        android:text="@string/phone" />
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="500dp" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                            android:id="@+id/edt_phone"
+                            style="@style/style_register_edt"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
+                            android:inputType="phone"
+                            android:maxLength="15" />
+
+                        <TextView
+                            android:id="@+id/tv_migrate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Change Number"
+                            android:gravity="center"
+                            android:layout_weight=".4"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:background="@drawable/gender_redbg"
+                            android:padding="10dp" />
+                    </LinearLayout>
+
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        style="@style/style_register_tv"
+                        android:text="@string/name" />
+
+
+                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                        android:id="@+id/edt_name"
+                        style="@style/style_register_edt"
+                        android:inputType="text"
+
+
+                        />
+
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        style="@style/style_register_tv"
+                        android:text="@string/mail" />
+
+
+                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                        android:id="@+id/edt_email"
+                        style="@style/style_register_edt"
+                        android:inputType="textEmailAddress" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".50"
+                            android:orientation="vertical"
+                            android:paddingRight="10dp">
+
+                            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                                style="@style/style_register_tv"
+                                android:text="@string/birthday" />
+
+                            <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                                android:id="@+id/edt_birthday"
+                                style="@style/style_register_edt" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".50"
+                            android:orientation="vertical">
+
+                            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                                style="@style/style_register_tv"
+                                android:text="@string/gender" />
+
+                            <LinearLayout
+                                android:id="@+id/ll_gender"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:weightSum="1">
+
+                                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                                    android:id="@+id/tv_male"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center_horizontal|center_vertical"
+                                    android:layout_weight=".5"
+                                    android:focusable="false"
+                                    android:gravity="center_horizontal|center_vertical"
+                                    android:paddingBottom="10dp"
+                                    android:paddingTop="10dp"
+                                    android:text="male "
+                                    android:textSize="14sp" />
+
+                                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                                    android:id="@+id/tv_female"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center_horizontal|center_vertical"
+                                    android:layout_weight=".5"
+                                    android:focusable="false"
+                                    android:gravity="center_horizontal|center_vertical"
+                                    android:paddingBottom="10dp"
+                                    android:paddingTop="10dp"
+                                    android:text="female "
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        style="@style/style_register_tv"
+                        android:text="@string/prompt_address_status" />
+
+
+                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                        android:id="@+id/edt_address"
+                        style="@style/style_register_edt"
+                        android:gravity="top|left"
+                        android:inputType="textMultiLine"
+                        android:lines="2"
+                        android:maxLines="2"
+                        android:minLines="2"
+                        android:singleLine="false" />
+
+
+                    <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
+                        android:id="@+id/btn_update"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/button_drawable"
+                        android:drawableEnd="@drawable/arrow_small"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@drawable/arrow_small"
+                        android:gravity="center"
+                        android:paddingLeft="90dp"
+                        android:paddingRight="90dp"
+                        android:text="@string/action_update"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorMobile"
+                        android:textSize="15sp"/>
 
                 </LinearLayout>
+
             </android.support.constraint.ConstraintLayout>
         </RelativeLayout>
     </ScrollView>

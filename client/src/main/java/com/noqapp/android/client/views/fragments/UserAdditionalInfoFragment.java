@@ -7,12 +7,18 @@ package com.noqapp.android.client.views.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.library.beans.JsonHealthCareProfile;
+import com.noqapp.library.beans.JsonNameDatePair;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,33 +27,43 @@ import butterknife.ButterKnife;
 public class UserAdditionalInfoFragment extends Fragment {
 
 
-    @BindView(R.id.edt_height)
-    protected EditText edt_height;
+    @BindView(R.id.tv_education)
+    protected TextView tv_education;
 
-    @BindView(R.id.edt_blood_group)
-    protected EditText edt_blood_group;
+    @BindView(R.id.tv_experience)
+    protected TextView tv_experience;
+
+    private JsonHealthCareProfile jsonHealthCareProfile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_additional_info, container, false);
         ButterKnife.bind(this, view);
-        updateUI();
+        if (null != jsonHealthCareProfile)
+            updateUI(jsonHealthCareProfile);
         return view;
     }
 
 
-    private void updateUI() {
-        edt_blood_group.setText("B RhD positive (B+)");
-        edt_height.setText("172 cm");
-        edt_blood_group.setEnabled(false);
-        edt_height.setEnabled(false);
-    }
+    public void updateUI(JsonHealthCareProfile jsonHealthCareProfile) {
+        this.jsonHealthCareProfile = jsonHealthCareProfile;
+        List<JsonNameDatePair> experience = jsonHealthCareProfile.getAwards();
+        List<JsonNameDatePair> education = jsonHealthCareProfile.getEducation();
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateUI();
+        StringBuilder text_edu = new StringBuilder();
+        for (int i = 0; i < education.size(); i++) {
+            text_edu.append(education.get(i).getName());
+            text_edu.append(TextUtils.isEmpty(education.get(i).getMonthYear()) ? "" : ", " + AppUtilities.getYearFromDate(education.get(i).getMonthYear()) + "\n");
+        }
+
+        StringBuilder text_exp = new StringBuilder();
+        for (int i = 0; i < experience.size(); i++) {
+            text_exp.append(experience.get(i).getName());
+            text_exp.append(TextUtils.isEmpty(experience.get(i).getMonthYear()) ? "" : ", " + AppUtilities.getYearFromDate(experience.get(i).getMonthYear()) + "\n");
+        }
+        tv_experience.setText(text_exp);
+        tv_education.setText(text_edu);
     }
 
 }
