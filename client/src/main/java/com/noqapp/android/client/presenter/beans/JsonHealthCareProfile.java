@@ -34,6 +34,9 @@ public class JsonHealthCareProfile {
     @JsonProperty("qr")
     private String codeQR;
 
+    @JsonProperty ("pi")
+    private String profileImage;
+
     @JsonProperty("ps")
     private Date practiceStart;
 
@@ -60,6 +63,15 @@ public class JsonHealthCareProfile {
 
     public JsonHealthCareProfile setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public JsonHealthCareProfile setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
         return this;
     }
 
