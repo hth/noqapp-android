@@ -115,7 +115,6 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     public Object instantiateItem(final ViewGroup container, int position) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.viewpager_item, container, false);
-        ManageQueueModel.manageQueuePresenter = this;
         final JsonTopic lq = topics.get(position);
         final QueueStatusEnum queueStatus = lq.getQueueStatus();
         RelativeLayout rl_left = (RelativeLayout) itemView.findViewById(R.id.rl_left);
@@ -346,6 +345,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                         served.setQueueUserState(QueueUserStateEnum.S);
                         served.setServedNumber(lq.getServingNumber());
                         served.setGoTo(tv_counter_name.getText().toString());
+                        setPresenter();
                         ManageQueueModel.served(
                                 LaunchActivity.getLaunchActivity().getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
@@ -373,6 +373,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                             served.setQueueUserState(QueueUserStateEnum.N);
                             served.setServedNumber(lq.getServingNumber());
                             served.setGoTo(tv_counter_name.getText().toString());
+                            setPresenter();
                             ManageQueueModel.served(
                                     LaunchActivity.getLaunchActivity().getDeviceID(),
                                     LaunchActivity.getLaunchActivity().getEmail(),
@@ -431,6 +432,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                                         served.setQueueStatus(QueueStatusEnum.P);
                                         served.setServedNumber(lq.getServingNumber());
                                         served.setGoTo(tv_counter_name.getText().toString());
+                                        setPresenter();
                                         ManageQueueModel.served(
                                                 LaunchActivity.getLaunchActivity().getDeviceID(),
                                                 LaunchActivity.getLaunchActivity().getEmail(),
@@ -462,6 +464,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
                                 served.setQueueStatus(lq.getQueueStatus());
                                 served.setServedNumber(lq.getServingNumber());
                                 served.setGoTo(tv_counter_name.getText().toString());
+                                setPresenter();
                                 ManageQueueModel.served(
                                         LaunchActivity.getLaunchActivity().getDeviceID(),
                                         LaunchActivity.getLaunchActivity().getEmail(),
@@ -605,6 +608,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
             public void onClick(View v) {
                 if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
+                    setPresenter();
                     ManageQueueModel.dispenseToken(
                             LaunchActivity.getLaunchActivity().getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
@@ -629,5 +633,9 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
     private void saveCounterNames(String codeQR, String name) {
         mHashmap.put(codeQR, name);
         LaunchActivity.getLaunchActivity().setCounterName(mHashmap);
+    }
+
+    private void setPresenter(){
+        ManageQueueModel.manageQueuePresenter = this;
     }
 }
