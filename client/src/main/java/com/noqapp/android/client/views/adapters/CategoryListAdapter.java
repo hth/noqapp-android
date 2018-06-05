@@ -213,7 +213,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         return dataSet.size();
     }
 
-
 }
 
 
