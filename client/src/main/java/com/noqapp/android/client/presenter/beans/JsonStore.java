@@ -76,4 +76,14 @@ public class JsonStore implements Serializable {
         this.jsonStoreProducts = jsonStoreProducts;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonStore{" +
+                "jsonQueue=" + jsonQueue +
+                ", jsonHours=" + jsonHours +
+                ", jsonStoreCategories=" + jsonStoreCategories +
+                ", jsonStoreProducts=" + jsonStoreProducts +
+                '}';
+    }
 }
