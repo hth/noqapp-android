@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
@@ -19,6 +21,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.PhoneFormatterUtil;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -176,11 +179,13 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_status.setText("Closed Today");
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         }
-       // commented temporary
-       /* Picasso.with(context)
-                .load(dataSet.get(listPosition).getDisplayImage())
-                .transform(new RoundedTransformation(10, 4))
-                .into(holder.iv_main);*/
+        if (!TextUtils.isEmpty(dataSet.get(listPosition).getDisplayImage())) {
+            Picasso.with(context)
+                    .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + dataSet.get(listPosition).getDisplayImage())
+                    .into(holder.iv_main);
+        }else{
+            Picasso.with(context).load(R.drawable.profile_avatar).into(holder.iv_main);
+        }
         holder.tv_store_special.setText(dataSet.get(listPosition).getFamousFor());
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,6 +200,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 Intent intent = new Intent(context, ManagerProfileActivity.class);
                 intent.putExtra(Constants.QRCODE,jsonQueue.getManagerCodeQR());
                 intent.putExtra("managerName",dataSet.get(listPosition).getDisplayName());
+                intent.putExtra("managerImage",dataSet.get(listPosition).getDisplayImage());
                 context.startActivity(intent);
 
 

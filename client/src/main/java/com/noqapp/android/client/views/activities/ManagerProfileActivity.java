@@ -59,7 +59,7 @@ public class ManagerProfileActivity extends BaseActivity implements View.OnClick
     protected TextView tv_name;
     @BindView(R.id.iv_edit)
     protected ImageView iv_edit;
-    public static ImageView iv_profile;
+    private ImageView iv_profile;
     private final int SELECT_PICTURE = 110;
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
@@ -72,6 +72,7 @@ public class ManagerProfileActivity extends BaseActivity implements View.OnClick
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
     private String managerQrcode = "";
     private String managerName = "";
+    private String managerImageUrl="";
 
 
     @Override
@@ -86,13 +87,14 @@ public class ManagerProfileActivity extends BaseActivity implements View.OnClick
         iv_profile.setOnClickListener(this);
         managerQrcode = getIntent().getStringExtra(Constants.QRCODE);
         managerName = getIntent().getStringExtra("managerName");
+        managerImageUrl = getIntent().getStringExtra("managerImage");
 
-        Picasso.with(this).load(R.drawable.profile_avatar).into(ManagerProfileActivity.iv_profile);
+        Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
         try {
-            if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
+            if (!TextUtils.isEmpty(managerImageUrl)) {
                 Picasso.with(this)
-                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + NoQueueBaseActivity.getUserProfileUri())
-                        .into(ManagerProfileActivity.iv_profile);
+                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + managerImageUrl)
+                        .into(iv_profile);
             }
         } catch (Exception e) {
             e.printStackTrace();
