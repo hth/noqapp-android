@@ -330,6 +330,30 @@ android {
             java.srcDirs = ['androidTest/java']
         }
     }
+
+
+    flavorDimensions "version"
+
+    productFlavors {
+        medical {
+            //select the dimension of flavor
+            dimension "version"
+
+            //configure applicationId for app published to Play store
+            applicationId "com.noqapp.android.merchant.healthcare"
+
+            //Configure this flavor specific app name published in Play Store
+            resValue "string", "flavored_app_name", "Merchant HealthCare App"
+
+        }
+
+        queue {
+            dimension "version"
+
+            applicationId "com.noqapp.android.merchant"
+            resValue "string", "flavored_app_name", "Merchant Queue App"
+        }
+    }
 }
 
 dependencies {
