@@ -3,9 +3,11 @@ package com.noqapp.android.client.views.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.PhoneFormatterUtil;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -180,12 +183,15 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         }
         if (!TextUtils.isEmpty(dataSet.get(listPosition).getDisplayImage())) {
-            Picasso.with(context)
-                    .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + dataSet.get(listPosition).getDisplayImage())
-                    .into(holder.iv_main);
+
+            Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + dataSet.get(listPosition).getDisplayImage()).
+                    placeholder(context.getResources().getDrawable(R.drawable.profile_red)).
+                    error(context.getResources().getDrawable(R.drawable.profile_red)).into(holder.iv_main);
         }else{
-            Picasso.with(context).load(R.drawable.profile_avatar).into(holder.iv_main);
+            Picasso.with(context).load(R.drawable.profile_red).into(holder.iv_main);
         }
+
+
         holder.tv_store_special.setText(dataSet.get(listPosition).getFamousFor());
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override

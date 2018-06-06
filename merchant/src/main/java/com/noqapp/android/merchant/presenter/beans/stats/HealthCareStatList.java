@@ -6,12 +6,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * hitender
- * 5/15/18 8:58 AM
+ * 6/6/18 3:26 PM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -28,37 +28,22 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DoctorStats implements Serializable {
+public class HealthCareStatList {
 
-    @JsonProperty("yearly")
-    private List<YearlyData> twelveMonths;
+    @JsonProperty("hcs")
+    private List<HealthCareStat> healthCareStat = new ArrayList<>();
 
-    @JsonProperty("rc")
-    private NewRepeatCustomers repeatCustomers;
-
-    public List<YearlyData> getTwelveMonths() {
-        return twelveMonths;
+    public List<HealthCareStat> getHealthCareStat() {
+        return healthCareStat;
     }
 
-    public DoctorStats setTwelveMonths(List<YearlyData> twelveMonths) {
-        this.twelveMonths = twelveMonths;
+    public HealthCareStatList setHealthCareStat(List<HealthCareStat> healthCareStat) {
+        this.healthCareStat = healthCareStat;
         return this;
     }
 
-    public NewRepeatCustomers getRepeatCustomers() {
-        return repeatCustomers;
-    }
-
-    public DoctorStats setRepeatCustomers(NewRepeatCustomers repeatCustomers) {
-        this.repeatCustomers = repeatCustomers;
+    public HealthCareStatList addHealthCareStat(HealthCareStat healthCareStat) {
+        this.healthCareStat.add(healthCareStat);
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return "DoctorStats{" +
-                "twelveMonths=" + twelveMonths +
-                ", repeatCustomers=" + repeatCustomers +
-                '}';
     }
 }
