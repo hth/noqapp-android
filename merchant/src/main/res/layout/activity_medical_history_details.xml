@@ -29,8 +29,8 @@
                     style="@style/style_mdh_header"
                     android:text="Chief Complaint: " />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                    android:id="@+id/tv_complaints"
+                <AutoCompleteTextView
+                    android:id="@+id/edt_complaints"
                     style="@style/style_mdh_details"
                     android:text="" />
 
@@ -46,8 +46,8 @@
                     style="@style/style_mdh_header"
                     android:text="Past History: " />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                    android:id="@+id/tv_past_history"
+                <AutoCompleteTextView
+                    android:id="@+id/edt_past_history"
                     style="@style/style_mdh_details"
                     android:text="" />
 
@@ -63,7 +63,7 @@
                     style="@style/style_mdh_header"
                     android:text="Family History: " />
 
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                <AutoCompleteTextView
                     android:id="@+id/tv_family_history"
                     style="@style/style_mdh_details"
                     android:text="" />

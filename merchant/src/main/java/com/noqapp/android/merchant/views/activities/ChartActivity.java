@@ -33,7 +33,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantStatsModel;
-import com.noqapp.android.merchant.presenter.beans.stats.DoctorStats;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.DayAxisValueFormatter;
@@ -143,7 +143,7 @@ public class ChartActivity extends AppCompatActivity implements OnChartValueSele
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             MerchantStatsModel.chartPresenter = this;
-            MerchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), "SN_5ad2022db85cb75a156d65b2");
+            MerchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -240,22 +240,28 @@ public class ChartActivity extends AppCompatActivity implements OnChartValueSele
     }
 
     @Override
-    public void chartResponse(DoctorStats doctorStats) {
-        Log.v("Chart data :", doctorStats.toString());
-        if (null != doctorStats) {
-            int new_count = doctorStats.getRepeatCustomers().getCustomerNew();
-            int old_count = doctorStats.getRepeatCustomers().getCustomerRepeat();
-            String[] mParties = new String[]{
-                    "New patient", "Repeat patient"};
-            ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
-            entries.add(new PieEntry((float) new_count, mParties[0]));
-            entries.add(new PieEntry((float) old_count, mParties[1]));
-            setData(entries);
-            //set the bar data
-            generateDataBar(doctorStats.getTwelveMonths());
-        }
-        dismissProgress();
+    public void chartResponse(HealthCareStatList healthCareStatList) {
+
+
     }
+
+//    @Override
+//    public void chartResponse(DoctorStats doctorStats) {
+//        Log.v("Chart data :", doctorStats.toString());
+//        if (null != doctorStats) {
+//            int new_count = doctorStats.getRepeatCustomers().getCustomerNew();
+//            int old_count = doctorStats.getRepeatCustomers().getCustomerRepeat();
+//            String[] mParties = new String[]{
+//                    "New patient", "Repeat patient"};
+//            ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+//            entries.add(new PieEntry((float) new_count, mParties[0]));
+//            entries.add(new PieEntry((float) old_count, mParties[1]));
+//            setData(entries);
+//            //set the bar data
+//            generateDataBar(doctorStats.getTwelveMonths());
+//        }
+//        dismissProgress();
+//    }
 
     private void initProgress() {
         progressDialog = new ProgressDialog(this);

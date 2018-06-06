@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.noqapp.android.merchant.model.response.api.MerchantStatsService;
 import com.noqapp.android.merchant.network.RetrofitClient;
-import com.noqapp.android.merchant.presenter.beans.stats.DoctorStats;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.ChartPresenter;

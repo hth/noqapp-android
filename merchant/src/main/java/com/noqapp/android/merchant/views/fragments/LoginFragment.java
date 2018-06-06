@@ -155,6 +155,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                 Bundle b = new Bundle();
                 b.putSerializable("jsonMerchant", jsonMerchant);
                 mlf.setArguments(b);
+                LaunchActivity.setMerchantListFragment(mlf);
                 LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, mlf);
             }else{
                 // unauthorised to see the screen

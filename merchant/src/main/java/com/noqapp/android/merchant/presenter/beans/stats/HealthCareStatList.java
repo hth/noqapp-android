@@ -46,4 +46,11 @@ public class HealthCareStatList {
         this.healthCareStat.add(healthCareStat);
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "HealthCareStatList{" +
+                "healthCareStat=" + healthCareStat +
+                '}';
+    }
 }

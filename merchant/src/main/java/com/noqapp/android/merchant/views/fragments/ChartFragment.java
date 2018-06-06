@@ -31,7 +31,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantStatsModel;
-import com.noqapp.android.merchant.presenter.beans.stats.DoctorStats;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
@@ -135,7 +134,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             MerchantStatsModel.chartPresenter = this;
-            MerchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), qrCode);
+            MerchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

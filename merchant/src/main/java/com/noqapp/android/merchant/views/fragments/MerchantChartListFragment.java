@@ -31,7 +31,7 @@ public class MerchantChartListFragment extends Fragment implements    MerchantCh
     private MerchantChartListAdapter adapter;
     private AutocompleteAdapter temp_adapter;
 
-    private Runnable updater, run;
+    private Runnable  run;
 
     private ArrayList<JsonTopic> topics = new ArrayList<>();
     private ListView listview;
