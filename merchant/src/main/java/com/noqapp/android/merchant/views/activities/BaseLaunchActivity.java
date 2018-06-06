@@ -68,6 +68,8 @@ public class BaseLaunchActivity extends AppCompatActivity implements AppBlacklis
     protected final String KEY_USER_LIST = "userList";
     protected final String KEY_USER_AUTH = "auth";
     protected final String KEY_LAST_UPDATE = "last_update";
+    protected final String KEY_SUGGESTION = "suggestions";
+
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
     public ProgressDialog progressDialog;
@@ -141,6 +143,16 @@ public class BaseLaunchActivity extends AppCompatActivity implements AppBlacklis
         Gson gson = new Gson();
         String strInput = gson.toJson(mHashmap);
         sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, strInput).apply();
+    }
+
+    public String getSuggestions() {
+        return sharedpreferences.getString(KEY_SUGGESTION ,"");
+    }
+
+    public void setSuggestions(HashMap<String, ArrayList<String>> mHashmap) {
+        Gson gson = new Gson();
+        String strInput = gson.toJson(mHashmap);
+        sharedpreferences.edit().putString(KEY_SUGGESTION, strInput).apply();
     }
 
     public UserLevelEnum getUserLevel() {

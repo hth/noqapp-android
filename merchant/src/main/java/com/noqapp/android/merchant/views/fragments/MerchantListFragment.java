@@ -52,6 +52,11 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private Handler timerHandler;
     private MerchantListAdapter adapter;
     private AutocompleteAdapter temp_adapter;
+
+    public ArrayList<JsonTopic> getTopics() {
+        return topics;
+    }
+
     private ArrayList<JsonTopic> topics = new ArrayList<>();
     private ListView listview;
     private RelativeLayout rl_empty_screen;

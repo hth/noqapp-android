@@ -12,24 +12,48 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.merchant.R;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class MedicalHistoryDetailActivity extends AppCompatActivity {
     private final String packageName = "com.google.android.apps.handwriting.ime";
     private ImageView actionbarBack;
+    private HashMap<String, ArrayList<String>> mHashmapTemp = null;
+
+    private AutoCompleteTextView edt_complaints;
+    protected AutoCompleteTextView edt_past_history;
+      private final  String xray = "X-ray";
+      private final  String medicine = "Medicine";
+      private final  String mri = "MRI";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history_details);
         TextView  tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
+
+        edt_complaints = (AutoCompleteTextView) findViewById(R.id.edt_complaints);
+        edt_past_history = (AutoCompleteTextView) findViewById(R.id.edt_past_history);
+
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,8 +103,50 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity {
             btn_no.setText("Cancel");
             tv_msg.setText("Download the Scribble writer app to make your life easy.");
             tv_title.setText("Scribble app missing");
-
         }
+
+//        HashMap<String, ArrayList<String>> mHashmap = new HashMap<>();
+//        ArrayList<String> aa =new ArrayList<>();
+//        aa.add("lower elbow");
+//        aa.add("upper hand");
+//        ArrayList<String> bb =new ArrayList<>();
+//        bb.add("Amoxo");
+//        bb.add("Paracetamol");
+//
+//        ArrayList<String> cc =new ArrayList<>();
+//        cc.add("qwerty");
+//        cc.add("ytrewq");
+//        mHashmap.put("X-ray",aa);
+//        mHashmap.put("Medicine",bb);
+//        mHashmap.put("MRI",cc);
+
+//        LaunchActivity.getLaunchActivity().setSuggestions(mHashmap);
+//
+
+        String strOutput = LaunchActivity.getLaunchActivity().getSuggestions();
+        Type type = new TypeToken<HashMap<String, ArrayList<String>>>() {}.getType();
+        Gson gson = new Gson();
+        if (StringUtils.isBlank(strOutput)) {
+            Log.v("JSON","empty json");
+        } else {
+            try {
+                mHashmapTemp = gson.fromJson(strOutput, type);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                        (this,android.R.layout.simple_list_item_1,mHashmapTemp.get(xray));
+                edt_past_history.setAdapter(adapter);
+
+                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                        (this,android.R.layout.simple_list_item_1,mHashmapTemp.get(medicine));
+                edt_complaints.setAdapter(adapter1);
+                edt_complaints.setThreshold(1);
+                edt_past_history.setThreshold(1);
+                Log.v("JSON",mHashmapTemp.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     private boolean appInstalledOrNot(String uri) {
@@ -92,5 +158,20 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(!edt_past_history.getText().toString().equals(""))
+        if(!mHashmapTemp.get(xray).contains(edt_past_history.getText().toString())){
+            mHashmapTemp.get(xray).add(edt_past_history.getText().toString());
+        }
+        if(!edt_complaints.getText().toString().equals(""))
+        if(!mHashmapTemp.get(medicine).contains(edt_complaints.getText().toString())){
+            mHashmapTemp.get(medicine).add(edt_complaints.getText().toString());
+        }
+        LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
+
     }
 }
