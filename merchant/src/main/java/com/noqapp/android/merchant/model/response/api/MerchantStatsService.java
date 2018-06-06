@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.model.response.api;
 
 import com.noqapp.android.merchant.presenter.beans.stats.DoctorStats;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -13,8 +14,8 @@ import retrofit2.http.Path;
  */
 public interface MerchantStatsService {
 
-    @GET("api/m/stats/doctor/{codeQR}.json")
-    Call<DoctorStats> doctor(
+    @GET("api/m/stats/healthCare.json")
+    Call<HealthCareStatList> doctor(
             @Header("X-R-DID")
             String did,
 
@@ -25,9 +26,6 @@ public interface MerchantStatsService {
             String mail,
 
             @Header("X-R-AUTH")
-            String auth,
-
-            @Path("codeQR")
-            String codeQR
+            String auth
     );
 }

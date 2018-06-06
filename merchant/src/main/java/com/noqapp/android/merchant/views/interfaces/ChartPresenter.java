@@ -1,12 +1,11 @@
 package com.noqapp.android.merchant.views.interfaces;
 
-
-import com.noqapp.android.merchant.presenter.beans.stats.DoctorStats;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 
 public interface ChartPresenter {
 
 
     void chartError();
 
-    void chartResponse(DoctorStats doctorStats);
+    void chartResponse(HealthCareStatList healthCareStatList);
 }

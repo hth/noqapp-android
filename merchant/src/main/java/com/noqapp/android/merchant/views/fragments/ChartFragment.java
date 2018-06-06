@@ -32,6 +32,8 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantStatsModel;
 import com.noqapp.android.merchant.presenter.beans.stats.DoctorStats;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
 import com.noqapp.android.merchant.utils.DayAxisValueFormatter;
 import com.noqapp.android.merchant.utils.MyValueFormatter;
@@ -231,11 +233,12 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     }
 
     @Override
-    public void chartResponse(DoctorStats doctorStats) {
-        Log.v("Chart data :", doctorStats.toString());
-        if (null != doctorStats) {
-            int new_count = doctorStats.getRepeatCustomers().getCustomerNew();
-            int old_count = doctorStats.getRepeatCustomers().getCustomerRepeat();
+    public void chartResponse(HealthCareStatList healthCareStatList) {
+        Log.v("Chart data :", healthCareStatList.getHealthCareStat().toString());
+        for(HealthCareStat healthCareStat : healthCareStatList.getHealthCareStat()) {
+
+            int new_count = healthCareStat.getRepeatCustomers().getCustomerNew();
+            int old_count = healthCareStat.getRepeatCustomers().getCustomerRepeat();
             String[] mParties = new String[]{
                     "New patient", "Repeat patient"};
             ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
@@ -243,7 +246,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             entries.add(new PieEntry((float) old_count, mParties[1]));
             setData(entries);
             //set the bar data
-            generateDataBar(doctorStats.getTwelveMonths());
+            generateDataBar(healthCareStat.getTwelveMonths());
         }
         dismissProgress();
     }
