@@ -52,4 +52,12 @@ public class YearlyData implements Serializable {
         this.value = value;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "YearlyData{" +
+                "yearMonth=" + yearMonth +
+                ", value=" + value +
+                '}';
+    }
 }

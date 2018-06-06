@@ -30,6 +30,7 @@ public class MerchantStatsModel {
             @Override
             public void onResponse(Call<DoctorStats> call, Response<DoctorStats> response) {
                 chartPresenter.chartResponse(response.body());
+                Log.v("Chart Response ",response.body().toString());
             }
 
             @Override

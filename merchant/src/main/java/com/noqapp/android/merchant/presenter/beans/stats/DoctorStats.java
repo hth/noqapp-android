@@ -53,4 +53,12 @@ public class DoctorStats implements Serializable {
         this.repeatCustomers = repeatCustomers;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "DoctorStats{" +
+                "twelveMonths=" + twelveMonths +
+                ", repeatCustomers=" + repeatCustomers +
+                '}';
+    }
 }

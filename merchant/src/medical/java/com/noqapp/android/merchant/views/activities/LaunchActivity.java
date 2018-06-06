@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.merchant.R;
@@ -36,6 +37,8 @@ import com.noqapp.common.utils.NetworkUtil;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import java.io.Serializable;
+
 import io.fabric.sdk.android.Fabric;
 
 public class LaunchActivity extends BaseLaunchActivity {
@@ -54,8 +57,6 @@ public class LaunchActivity extends BaseLaunchActivity {
         Fabric.with(this, new Answers());
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
-        setSupportActionBar(toolbar);
-        //   getSupportActionBar().setDisplayShowTitleEnabled(false);
         launchActivity = this;
         DeviceModel.appBlacklistPresenter = this;
         Log.v("device id check", getDeviceID());
@@ -64,6 +65,8 @@ public class LaunchActivity extends BaseLaunchActivity {
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         tv_name = (TextView) findViewById(R.id.tv_name);
         tv_badge = (TextView) findViewById(R.id.tv_badge);
         fl_notification = (FrameLayout) findViewById(R.id.fl_notification);
@@ -101,8 +104,13 @@ public class LaunchActivity extends BaseLaunchActivity {
                 int selectedPosition = position;
                 switch (selectedPosition) {
                     case 0:
-                        Intent in1 = new Intent(launchActivity, ChartActivity.class);
-                        startActivity(in1);
+                        if(merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size()>0) {
+                            Intent in1 = new Intent(launchActivity, ChartSampleActivity.class);
+                            in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+                            startActivity(in1);
+                        }else{
+                            Toast.makeText(launchActivity,"No queue available",Toast.LENGTH_LONG).show();
+                        }
                         break;
                     case 1:
                         Intent in2 = new Intent(launchActivity, MedicalHistoryDetailActivity.class);
