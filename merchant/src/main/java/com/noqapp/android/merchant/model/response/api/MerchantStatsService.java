@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.model.response.api;
 
-import com.noqapp.android.merchant.presenter.beans.stats.DoctorStats;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 
 import retrofit2.Call;

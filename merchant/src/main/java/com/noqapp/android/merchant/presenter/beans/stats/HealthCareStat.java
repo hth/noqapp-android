@@ -64,4 +64,13 @@ public class HealthCareStat {
         this.repeatCustomers = repeatCustomers;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "HealthCareStat{" +
+                "codeQR='" + codeQR + '\'' +
+                ", twelveMonths=" + twelveMonths +
+                ", repeatCustomers=" + repeatCustomers +
+                '}';
+    }
 }

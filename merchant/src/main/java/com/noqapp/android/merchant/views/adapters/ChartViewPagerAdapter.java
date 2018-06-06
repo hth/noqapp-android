@@ -1,26 +1,14 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.text.Html;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -37,67 +25,35 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ManageQueueModel;
-import com.noqapp.android.merchant.model.MerchantStatsModel;
-import com.noqapp.android.merchant.model.types.QueueStatusEnum;
-import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
-import com.noqapp.android.merchant.model.types.UserLevelEnum;
-import com.noqapp.android.merchant.presenter.beans.JsonToken;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.presenter.beans.body.Served;
-import com.noqapp.android.merchant.presenter.beans.stats.DoctorStats;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
 import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.DayAxisValueFormatter;
 import com.noqapp.android.merchant.utils.MyValueFormatter;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.OutOfSequenceActivity;
-import com.noqapp.android.merchant.views.activities.OutOfSequenceDialogActivity;
-import com.noqapp.android.merchant.views.activities.SettingActivity;
-import com.noqapp.android.merchant.views.activities.SettingDialogActivity;
-import com.noqapp.android.merchant.views.fragments.MerchantViewPagerFragment;
-import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
-import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
-import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
-import com.noqapp.common.beans.ErrorEncounteredJson;
-import com.noqapp.common.utils.Formatter;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * User: chandra
  * Date: 4/16/17 4:02 PM
  */
-public class ChartViewPagerAdapter extends PagerAdapter implements OnChartValueSelectedListener, ChartPresenter {
+public class ChartViewPagerAdapter extends PagerAdapter implements OnChartValueSelectedListener {
 
     private Context context;
-    private List<JsonTopic> topics;
+    private List<HealthCareStat> healthCareStatList;
     private LayoutInflater inflater;
-   // private ProgressDialog progressDialog;
-    private BarChart bar_chart;
-    private PieChart pieChart;
 
-    public ChartViewPagerAdapter(Context context, List<JsonTopic> topics) {
+
+    public ChartViewPagerAdapter(Context context, List<HealthCareStat> healthCareStatList) {
         this.context = context;
-        this.topics = topics;
+        this.healthCareStatList = healthCareStatList;
     }
 
 
     @Override
     public int getCount() {
-        return topics.size();
+        return healthCareStatList.size();
     }
 
     @Override
@@ -112,19 +68,14 @@ public class ChartViewPagerAdapter extends PagerAdapter implements OnChartValueS
 
     @Override
     public Object instantiateItem(final ViewGroup container, int position) {
-        final JsonTopic lq = topics.get(position);
+        HealthCareStat healthCareStat = healthCareStatList.get(position);
+
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.fragment_chart, container, false);
         TextView tv_queue_name = itemView.findViewById(R.id.tv_queue_name);
-        tv_queue_name.setText(lq.getDisplayName());
-       // initProgress();
-
-        //PieChart pieChart;
-       // BarChart bar_chart;
-        String qrCode = lq.getCodeQR();
-        bar_chart = itemView.findViewById(R.id.bar_chart);
-
-        pieChart = itemView.findViewById(R.id.pieChart);
+        tv_queue_name.setText(healthCareStat.getCodeQR());
+        BarChart bar_chart = itemView.findViewById(R.id.bar_chart);
+        PieChart pieChart = itemView.findViewById(R.id.pieChart);
         pieChart.setUsePercentValues(false);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
@@ -187,14 +138,19 @@ public class ChartViewPagerAdapter extends PagerAdapter implements OnChartValueS
 //        bar_chart.invalidate();
         bar_chart.animateY(700);
 
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-          //  progressDialog.show();
-            MerchantStatsModel.chartPresenter = this;
-            MerchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), qrCode);
-        } else {
-            ShowAlertInformation.showNetworkDialog(context);
-        }
 
+        if (null != healthCareStat) {
+            int new_count = healthCareStat.getRepeatCustomers().getCustomerNew();
+            int old_count = healthCareStat.getRepeatCustomers().getCustomerRepeat();
+            String[] mParties = new String[]{
+                    "New patient", "Repeat patient"};
+            ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+            entries.add(new PieEntry((float) new_count, mParties[0]));
+            entries.add(new PieEntry((float) old_count, mParties[1]));
+            setData(entries, pieChart);
+            //set the bar data
+            generateDataBar(healthCareStat.getTwelveMonths(), bar_chart);
+        }
 
 
         ((ViewPager) container).addView(itemView);
@@ -206,6 +162,7 @@ public class ChartViewPagerAdapter extends PagerAdapter implements OnChartValueS
         // Remove viewpager_item.xml from ViewPager
         ((ViewPager) container).removeView((View) object);
     }
+
     @Override
     public void onValueSelected(Entry e, Highlight h) {
 
@@ -222,7 +179,7 @@ public class ChartViewPagerAdapter extends PagerAdapter implements OnChartValueS
     }
 
 
-    private void setData(ArrayList<PieEntry> entries1,PieChart pieChart) {
+    private void setData(ArrayList<PieEntry> entries1, PieChart pieChart) {
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
         entries.addAll(entries1);
@@ -272,7 +229,7 @@ public class ChartViewPagerAdapter extends PagerAdapter implements OnChartValueS
     }
 
 
-    private void generateDataBar(List<YearlyData> yearlyData,BarChart bar_chart) {
+    private void generateDataBar(List<YearlyData> yearlyData, BarChart bar_chart) {
         int cnt = yearlyData.size();
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
         for (int i = 0; i < cnt; i++) {
@@ -288,38 +245,5 @@ public class ChartViewPagerAdapter extends PagerAdapter implements OnChartValueS
         bar_chart.invalidate();
     }
 
-    @Override
-    public void chartError() {
-       // dismissProgress();
-    }
 
-    @Override
-    public void chartResponse(DoctorStats doctorStats) {
-        Log.v("Chart data :", doctorStats.toString());
-        if (null != doctorStats) {
-            int new_count = doctorStats.getRepeatCustomers().getCustomerNew();
-            int old_count = doctorStats.getRepeatCustomers().getCustomerRepeat();
-            String[] mParties = new String[]{
-                    "New patient", "Repeat patient"};
-            ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
-            entries.add(new PieEntry((float) new_count, mParties[0]));
-            entries.add(new PieEntry((float) old_count, mParties[1]));
-            setData(entries,pieChart);
-            //set the bar data
-            generateDataBar(doctorStats.getTwelveMonths(),bar_chart);
-        }
-      //  dismissProgress();
-    }
-
-//    private void initProgress() {
-//        progressDialog = new ProgressDialog(context);
-//        progressDialog.setIndeterminate(true);
-//        progressDialog.setMessage("Loading...");
-//    }
-//
-//    private void dismissProgress() {
-//        if (null != progressDialog && progressDialog.isShowing()) {
-//            progressDialog.dismiss();
-//        }
-//    }
 }

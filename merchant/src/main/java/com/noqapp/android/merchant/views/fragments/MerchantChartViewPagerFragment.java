@@ -1,23 +1,32 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MerchantStatsModel;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.ChartViewPagerAdapter;
 import com.noqapp.android.merchant.views.customsviews.CustomViewPager;
+import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MerchantChartViewPagerFragment extends Fragment {
+public class MerchantChartViewPagerFragment extends Fragment implements ChartPresenter {
 
     public static int pagercurrrentpos = 0;
     private static int pos = 0;
@@ -25,6 +34,7 @@ public class MerchantChartViewPagerFragment extends Fragment {
     private CustomViewPager viewPager;
     private ImageView leftNav, rightNav;
     private ArrayList<JsonTopic> topicsList;
+    private ArrayList<HealthCareStat> healthCareStat = new ArrayList<>();
     private static UpdateListColorCallBack updateListColorCallBack;
 
     public interface UpdateListColorCallBack {
@@ -34,7 +44,7 @@ public class MerchantChartViewPagerFragment extends Fragment {
     public static void setUpdateListColorCallBack(UpdateListColorCallBack updateListColorBack) {
         updateListColorCallBack = updateListColorBack;
     }
-
+    private ProgressDialog progressDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantviewpager, container, false);
@@ -45,8 +55,8 @@ public class MerchantChartViewPagerFragment extends Fragment {
             topicsList = (ArrayList<JsonTopic>) bundle.getSerializable("jsonMerchant");
             pagercurrrentpos = pos = bundle.getInt("position");
         }
-        adapter = new ChartViewPagerAdapter(getActivity(),topicsList);
-
+        adapter = new ChartViewPagerAdapter(getActivity(),healthCareStat);
+        initProgress();
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(pos);
         leftNav = (ImageView) view.findViewById(R.id.left_nav);
@@ -119,6 +129,13 @@ public class MerchantChartViewPagerFragment extends Fragment {
 
             }
         });
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            MerchantStatsModel.chartPresenter = this;
+            MerchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+        } else {
+            ShowAlertInformation.showNetworkDialog(getActivity());
+        }
         return view;
     }
 
@@ -156,5 +173,32 @@ public class MerchantChartViewPagerFragment extends Fragment {
             leftNav.setVisibility(View.VISIBLE);
             rightNav.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void initProgress() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+    }
+
+    private void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+    @Override
+    public void chartError() {
+        dismissProgress();
+    }
+
+    @Override
+    public void chartResponse(HealthCareStatList healthCareStatList) {
+        if (null != healthCareStatList) {
+            adapter = new ChartViewPagerAdapter(getActivity(), healthCareStatList.getHealthCareStat());
+            viewPager.setAdapter(adapter);
+            viewPager.setCurrentItem(pos);
+        }
+        dismissProgress();
+        Log.v("Chart data",healthCareStatList.toString());
     }
 }

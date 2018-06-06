@@ -57,6 +57,11 @@ public class BaseLaunchActivity extends AppCompatActivity implements AppBlacklis
     public static final String XR_DID = "X-R-DID";
     public static final String MyPREFERENCES = "AppPref";
     protected static SharedPreferences sharedpreferences;
+
+    public static void setMerchantListFragment(MerchantListFragment merchantListFragment) {
+        BaseLaunchActivity.merchantListFragment = merchantListFragment;
+    }
+
     protected static MerchantListFragment merchantListFragment;
     protected final String IS_LOGIN = "IsLoggedIn";
     protected final String KEY_USER_EMAIL = "userEmail";
