@@ -52,4 +52,12 @@ public class NewRepeatCustomers implements Serializable {
         this.customerRepeat = customerRepeat;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "NewRepeatCustomers{" +
+                "customerNew=" + customerNew +
+                ", customerRepeat=" + customerRepeat +
+                '}';
+    }
 }

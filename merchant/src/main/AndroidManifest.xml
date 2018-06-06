@@ -89,6 +89,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.noqapp.android.merchant.views.activities.ChartSampleActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/BaseTheme">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <service android:name="com.noqapp.android.merchant.network.NoQueueFirebaseInstanceServices">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
