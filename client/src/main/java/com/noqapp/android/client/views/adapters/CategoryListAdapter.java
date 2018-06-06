@@ -182,33 +182,16 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_status.setText("Closed Today");
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         }
-        final Picasso.Builder builder = new Picasso.Builder(context);
-        builder.listener(new Picasso.Listener()
-        {
-            @Override
-            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception)
-            {
-                Log.v("error picasso", exception.getLocalizedMessage());
-                builder.build().load(R.drawable.profile_red).into(holder.iv_main);
-            }
-        });
         if (!TextUtils.isEmpty(dataSet.get(listPosition).getDisplayImage())) {
-            builder.build()
-                    .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + dataSet.get(listPosition).getDisplayImage())
-                    .into(holder.iv_main, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                        }
 
-                        @Override
-                        public void onError() {
-                            Picasso.with(context).load(R.drawable.profile_red).into(holder.iv_main);
-                            Log.v("error picasso", "error picasso");
-                        }
-                    });
+            Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + dataSet.get(listPosition).getDisplayImage()).
+                    placeholder(context.getResources().getDrawable(R.drawable.profile_red)).
+                    error(context.getResources().getDrawable(R.drawable.profile_red)).into(holder.iv_main);
         }else{
-            builder.build().load(R.drawable.profile_red).into(holder.iv_main);
+            Picasso.with(context).load(R.drawable.profile_red).into(holder.iv_main);
         }
+
+
         holder.tv_store_special.setText(dataSet.get(listPosition).getFamousFor());
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override
