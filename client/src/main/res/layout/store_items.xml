@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/tv_opening_date"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+
+            android:textSize="18sp" />
+
+        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+            android:id="@+id/tv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:layout_marginTop="3dp"
+            android:textSize="14sp" />
+
+
+        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+            android:id="@+id/tv_category_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+        android:id="@+id/tv_opening_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="3dp"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray" />
+</RelativeLayout>
+
+
+
+
+

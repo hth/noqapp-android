@@ -10,9 +10,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.JsonStore;
+import com.noqapp.common.beans.JsonHour;
+import com.noqapp.common.utils.Formatter;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,13 +26,10 @@ import butterknife.ButterKnife;
 
 public class UserProfileFragment extends Fragment {
 
+    @BindView(R.id.ll_multiple_store)
+    protected LinearLayout ll_multiple_store;
 
-
-
-    @BindView(R.id.tv_available_other_place)
-    protected TextView tv_available_other_place;
-
-
+    private String [] days= new String[]{"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
 
 
     @Override
@@ -35,21 +38,37 @@ public class UserProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         ButterKnife.bind(this, view);
 
-        updateUI();
 
         return view;
     }
 
-    private void updateUI() {
-        //tv_available_other_place.setText("");
+    public void updateUI(List<JsonStore> stores) {
+        if(null != stores && stores.size()>0){
+            for (int i=0; i<stores.size();i++) {
+                LayoutInflater inflater = LayoutInflater.from(getActivity());
+                View inflatedLayout = inflater.inflate(R.layout.store_items, null, false);
+                TextView tv_name = (TextView) inflatedLayout.findViewById(R.id.tv_name);
+                TextView tv_address = (TextView) inflatedLayout.findViewById(R.id.tv_address);
+                TextView tv_opening_date = (TextView) inflatedLayout.findViewById(R.id.tv_opening_date);
+                tv_name.setText(stores.get(i).getJsonQueue().getBusinessName());
+
+                tv_address.setText(stores.get(i).getJsonQueue().getStoreAddress());
+                String timing = "";
+                 for (int j = 0; j < 7; j++) {
+                    JsonHour jsonHour = stores.get(i).getJsonHours().get(j);
+
+                    timing += days[j]+" - "+Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - "
+                            + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour())+"\n";
+
+                }
+                tv_opening_date.setText(timing);
+                ll_multiple_store.addView(inflatedLayout);
+            }
+
+        }
 
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateUI();
-    }
 
 }
