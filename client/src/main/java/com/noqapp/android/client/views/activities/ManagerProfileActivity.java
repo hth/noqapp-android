@@ -122,6 +122,10 @@ public class ManagerProfileActivity extends BaseActivity implements View.OnClick
     public void queueManagerResponse(JsonHealthCareProfile jsonHealthCareProfile) {
         Log.v("queueManagerResponse",jsonHealthCareProfile.toString());
         userAdditionalInfoFragment.updateUI(jsonHealthCareProfile);
+        userProfileFragment.updateUI(jsonHealthCareProfile.getStores());
+
+
+
     }
 
     @Override

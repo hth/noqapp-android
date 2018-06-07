@@ -12,7 +12,7 @@
         <RelativeLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
 
             <android.support.constraint.ConstraintLayout
@@ -31,7 +31,7 @@
 
 
                 <LinearLayout
-                    android:id="@+id/email_login_form"
+                    android:id="@+id/ll_multiple_store"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -39,31 +39,10 @@
 
                     <com.noqapp.android.client.views.customviews.TextViewRalewayBold
                         style="@style/style_register_tv"
-                        android:text="@string/available_other_place" />
+                        android:text="@string/available_other_place"
+                        android:layout_marginBottom="10dp"/>
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
-                        style="@style/style_register_tv"
-                        android:paddingTop="5dp"
-                        android:text="DayNight Care Center" />
-
-
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                        android:id="@+id/tv_available_other_place"
-                        style="@style/style_register_tv"
-                        android:inputType="textMultiLine"
-                        android:text="C-32, HiraKunj Apartments, Near Maha Lakshmi Temple,Mumbai" />
-
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
-                        style="@style/style_register_tv"
-                        android:paddingTop="5dp"
-                        android:text="Child Helth Care Center" />
-
-
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                        style="@style/style_register_tv"
-                        android:inputType="textMultiLine"
-                        android:text="A-92, Radha Swami Apartments, Near Maha Gym Khana,Mumbai" />
 
 
                 </LinearLayout>
