@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,6 +32,7 @@ import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.android.merchant.model.types.UserLevelEnum;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
@@ -49,6 +54,7 @@ import com.noqapp.common.utils.Formatter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -124,7 +130,45 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
         TextView tv_serving_customer = (TextView) itemView.findViewById(R.id.tv_serving_customer);
         TextView tv_timing = (TextView) itemView.findViewById(R.id.tv_timing);
 
+        final TextView tv_display = (TextView) itemView.findViewById(R.id.tv_display);
+        tv_display.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    long maxTimeInMilliseconds = 300000;// in your case
+
+
+
+
+                    CountDownTimer t = new CountDownTimer(maxTimeInMilliseconds, 1000) {
+
+                        public void onTick(long millisUntilFinished) {
+                            long remainedSecs = millisUntilFinished / 1000;
+                            tv_display.setText("" + (remainedSecs / 60) + ":" + (remainedSecs % 60));// manage it accordign to you
+                        }
+
+                        public void onFinish() {
+                            tv_display.setText("00:00:00");
+                            Toast.makeText(context, "Finish", Toast.LENGTH_SHORT).show();
+
+                            cancel();
+                        }
+                    }.start();
+
+            }
+        });
+        RecyclerView rv_queue_people = (RecyclerView) itemView.findViewById(R.id.rv_queue_people);
         final TextView tv_counter_name = (TextView) itemView.findViewById(R.id.tv_counter_name);
+        rv_queue_people.setHasFixedSize(true);
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        rv_queue_people.setLayoutManager(horizontalLayoutManagaer);
+        rv_queue_people.setItemAnimator(new DefaultItemAnimator());
+
+        PeopleInQAdapter peopleInQAdapter = new PeopleInQAdapter(fillitems(), context);
+        rv_queue_people.setAdapter(peopleInQAdapter);
+
+
 
         // update counter name
         String cName = mHashmap.get(lq.getCodeQR());
@@ -637,5 +681,20 @@ public class ViewPagerAdapter extends PagerAdapter implements ManageQueuePresent
 
     private void setPresenter(){
         ManageQueueModel.manageQueuePresenter = this;
+    }
+
+
+    private List<JsonQueuedPerson> fillitems(){
+        List<JsonQueuedPerson> items = new ArrayList<>();
+        items.add(new JsonQueuedPerson().setCustomerName("Chandra").setCustomerPhone("2323232323").setToken(15).setQueueUserState(QueueUserStateEnum.Q));
+        items.add(new JsonQueuedPerson().setCustomerName("Hitender").setCustomerPhone("1231231231").setToken(16).setQueueUserState(QueueUserStateEnum.A));
+        items.add(new JsonQueuedPerson().setCustomerName("Soumya Aarya").setCustomerPhone("4535433456").setToken(17).setQueueUserState(QueueUserStateEnum.A));
+        items.add(new JsonQueuedPerson().setCustomerName("Pawan Singh").setCustomerPhone("7655678765").setToken(18).setQueueUserState(QueueUserStateEnum.Q));
+        items.add(new JsonQueuedPerson().setCustomerName("Priya Ghosh").setCustomerPhone("8765678786").setToken(19).setQueueUserState(QueueUserStateEnum.A));
+        items.add(new JsonQueuedPerson().setCustomerName("Rishabh Jaisawal").setCustomerPhone("9456734678").setToken(11).setQueueUserState(QueueUserStateEnum.Q));
+        items.add(new JsonQueuedPerson().setCustomerName("R Chandran").setCustomerPhone("9785433321").setToken(12).setQueueUserState(QueueUserStateEnum.A));
+
+
+        return items;
     }
 }
