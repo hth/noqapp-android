@@ -33,6 +33,7 @@ import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 import com.noqapp.common.beans.ErrorEncounteredJson;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class OutOfSequenceActivity extends AppCompatActivity implements QueuePersonListPresenter, ManageQueuePresenter {
@@ -91,7 +92,7 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
         tv_toolbar_title.setText(getString(R.string.screen_out_of_sequence));
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            ManageQueueModel.getQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            ManageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(OutOfSequenceActivity.this);
         }
@@ -120,7 +121,27 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
         if (null != jsonQueuePersonList) {
             jsonQueuedPersonArrayList = jsonQueuePersonList.getQueuedPeople();
-            Collections.reverse(jsonQueuedPersonArrayList);
+           // Collections.reverse(jsonQueuedPersonArrayList);
+            Collections.sort(
+                    jsonQueuedPersonArrayList,
+                    new Comparator<JsonQueuedPerson>()
+                    {
+                        public int compare(JsonQueuedPerson lhs, JsonQueuedPerson rhs)
+                        {
+                            int returnVal = 0;
+
+                            if(lhs.getToken() < rhs.getToken()){
+                                returnVal =  -1;
+                            }else if(lhs.getToken() < rhs.getToken()){
+                                returnVal =  1;
+                            }else if(lhs.getToken() < rhs.getToken()){
+                                returnVal =  0;
+                            }
+                            return returnVal;
+                        }
+                    }
+            );
+
             adapter = new OutOfSequenceListAdapter(context, jsonQueuedPersonArrayList);
             listview.setAdapter(adapter);
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

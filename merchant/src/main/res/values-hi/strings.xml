@@ -79,4 +79,6 @@
 
     <string name="notification_alert">You don\'t have any notifications.</string>
     <string name="screen_queue_chart_detail">Charts</string>
+    <string name="msg_merchant_served">Serviced</string>
+    <string name="msg_merchant_skip">Skipped</string>
 </resources>

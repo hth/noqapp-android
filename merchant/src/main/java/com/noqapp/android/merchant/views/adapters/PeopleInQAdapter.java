@@ -13,14 +13,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.common.utils.PhoneFormatterUtil;
-
 
 import java.util.List;
 
@@ -101,6 +99,18 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
                 recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
                         context, R.color.disable_list));
                 recordHolder.tv_status_msg.setText(context.getString(R.string.msg_client_left_queue));
+                break;
+            case N:
+                recordHolder.iv_info.setBackgroundResource(R.drawable.acquire_cancel_by_user);
+                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
+                        context, R.color.disable_list));
+                recordHolder.tv_status_msg.setText(context.getString(R.string.msg_merchant_skip));
+                break;
+            case S:
+                recordHolder.iv_info.setBackgroundResource(R.drawable.acquire_cancel_by_user);
+                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
+                        context, R.color.disable_list));
+                recordHolder.tv_status_msg.setText(context.getString(R.string.msg_merchant_served));
                 break;
             default:
                 Log.e(TAG, "Reached unsupported condition state=" + jsonQueuedPerson.getQueueUserState());
