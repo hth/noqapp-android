@@ -204,7 +204,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ManagerProfileActivity.class);
-                intent.putExtra(Constants.QRCODE,jsonQueue.getManagerCodeQR());
+                intent.putExtra("webProfileId",jsonQueue.getWebProfileId());
                 intent.putExtra("managerName",dataSet.get(listPosition).getDisplayName());
                 intent.putExtra("managerImage",dataSet.get(listPosition).getDisplayImage());
                 context.startActivity(intent);

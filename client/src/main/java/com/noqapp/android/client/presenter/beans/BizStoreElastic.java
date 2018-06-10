@@ -141,9 +141,9 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("FA")
     private List<FacilityEnum> facilities = new LinkedList<>();
 
-    /** MCQ is populated when the BT is of type BusinessTypeEnum.DO. */
-    @JsonProperty("MCQ")
-    private String managerCodeQR;
+    /** WP is populated when the BT is of type BusinessTypeEnum.DO. */
+    @JsonProperty("WP")
+    private String webProfileId;
 
     public String getId() {
         return id;
@@ -451,13 +451,12 @@ public class BizStoreElastic implements Serializable {
         return this;
     }
 
-
-    public String getManagerCodeQR() {
-        return managerCodeQR;
+    public String getWebProfileId() {
+        return webProfileId;
     }
 
-    public BizStoreElastic setManagerCodeQR(String managerCodeQR) {
-        this.managerCodeQR = managerCodeQR;
+    public BizStoreElastic setWebProfileId(String webProfileId) {
+        this.webProfileId = webProfileId;
         return this;
     }
 
@@ -498,7 +497,7 @@ public class BizStoreElastic implements Serializable {
                 ", bizServiceImages=" + bizServiceImages +
                 ", amenities=" + amenities +
                 ", facilities=" + facilities +
-                ", managerCodeQR='" + managerCodeQR + '\'' +
+                ", webProfileId='" + webProfileId + '\'' +
                 '}';
     }
 }

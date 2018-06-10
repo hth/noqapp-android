@@ -70,7 +70,7 @@ public class ManagerProfileActivity extends BaseActivity implements View.OnClick
     private LoadTabs loadTabs;
     private UserProfileFragment userProfileFragment;
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
-    private String managerQrcode = "";
+    private String webProfileId = "";
     private String managerName = "";
     private String managerImageUrl="";
 
@@ -85,7 +85,7 @@ public class ManagerProfileActivity extends BaseActivity implements View.OnClick
         iv_profile = findViewById(R.id.iv_profile);
         iv_edit.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
-        managerQrcode = getIntent().getStringExtra(Constants.QRCODE);
+        webProfileId = getIntent().getStringExtra("webProfileId");
         managerName = getIntent().getStringExtra("managerName");
         managerImageUrl = getIntent().getStringExtra("managerImage");
 
@@ -106,7 +106,7 @@ public class ManagerProfileActivity extends BaseActivity implements View.OnClick
 
         if(LaunchActivity.getLaunchActivity().isOnline()){
             HealthCareProfileModel.queueManagerPresenter = this;
-            HealthCareProfileModel.getQueueManagerProfile(UserUtils.getDeviceId(),managerQrcode);
+            HealthCareProfileModel.getQueueManagerProfile(UserUtils.getDeviceId(),webProfileId);
         }
 
     }
