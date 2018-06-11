@@ -60,7 +60,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MerchantDetailFragment extends Fragment implements ManageQueuePresenter, QueuePersonListPresenter {
+public class MerchantDetailFragment extends Fragment implements ManageQueuePresenter, QueuePersonListPresenter,PeopleInQAdapter.PeopleInQAdapterClick {
 
     private Context context;
     private TextView tv_create_token;
@@ -85,6 +85,8 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private Button btn_start;
     private ImageView iv_edit;
     private ImageView iv_out_of_sequence;
+    private boolean queueStatusOuter = false;
+    private int lastSelectedPos = -1;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -104,6 +106,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         itemView = inflater.inflate(R.layout.viewpager_item, container, false);
         context = getActivity();
         ManageQueueModel.queuePersonListPresenter = this;
+        ManageQueueModel.manageQueuePresenter = this;
         jsonTopic = topicsList.get(currrentpos);
 
 
@@ -221,6 +224,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     @Override
     public void manageQueueResponse(JsonToken token) {
         LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         if (null != token) {
             JsonTopic jt = topicsList.get(currrentpos);
             if (token.getCodeQR().equalsIgnoreCase(jt.getCodeQR())) {
@@ -243,6 +247,15 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     @Override
     public void manageQueueError(ErrorEncounteredJson errorEncounteredJson) {
         LaunchActivity.getLaunchActivity().dismissProgress();
+        if (null != errorEncounteredJson && errorEncounteredJson.getSystemErrorCode().equals("350")) {
+            Toast.makeText(context, getString(R.string.error_client_just_acquired), Toast.LENGTH_LONG).show();
+            if (lastSelectedPos >= 0) {
+                jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
+                lastSelectedPos = -1;
+                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context,this);
+                rv_queue_people.setAdapter(peopleInQAdapter);
+            }
+        }
     }
 
     @Override
@@ -388,40 +401,9 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                     }
             );
 
-            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context);
+            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context,this);
             rv_queue_people.setAdapter(peopleInQAdapter);
 
-//            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    if (queueStatus) {
-//                        if (jsonQueuedPersonArrayList.get(position).getQueueUserState() == QueueUserStateEnum.A) {
-//                            Toast.makeText(context, getString(R.string.error_client_left_queue), Toast.LENGTH_LONG).show();
-//                        } else {
-//                            if (TextUtils.isEmpty(jsonQueuedPersonArrayList.get(position).getServerDeviceId())) {
-//                                if (LaunchActivity.getLaunchActivity().isOnline()) {
-//                                    progressDialog.show();
-//                                    lastSelectedPos = position;
-//                                    served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
-//                                    ManageQueueModel.acquire(
-//                                            LaunchActivity.getLaunchActivity().getDeviceID(),
-//                                            LaunchActivity.getLaunchActivity().getEmail(),
-//                                            LaunchActivity.getLaunchActivity().getAuth(),
-//                                            served);
-//                                } else {
-//                                    ShowAlertInformation.showNetworkDialog(OutOfSequenceActivity.this);
-//                                }
-//                            } else if (jsonQueuedPersonArrayList.get(position).getServerDeviceId().equals(UserUtils.getDeviceId())) {
-//                                Toast.makeText(context, getString(R.string.error_client_acquired_by_you), Toast.LENGTH_LONG).show();
-//                            } else {
-//                                Toast.makeText(context, getString(R.string.error_client_acquired), Toast.LENGTH_LONG).show();
-//                            }
-//                        }
-//                    } else {
-//                        ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
-//                    }
-//                }
-//            });
         }
         dismissProgress();
     }
@@ -442,6 +424,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private void updateUI() {
 
         final QueueStatusEnum queueStatus = jsonTopic.getQueueStatus();
+        queueStatusOuter = queueStatus == QueueStatusEnum.N;
         String cName = mAdapterCallback.getNameList().get(jsonTopic.getCodeQR());
         if (TextUtils.isEmpty(cName))
             tv_counter_name.setText("");
@@ -757,8 +740,44 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
     private void resetList() {
         jsonQueuedPersonArrayList = new ArrayList<>();
-        peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context);
+        peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context,this);
         rv_queue_people.setAdapter(peopleInQAdapter);
     }
 
+    @Override
+    public void PeopleInQClick(int position) {
+        if (queueStatusOuter) {
+            if (jsonQueuedPersonArrayList.get(position).getQueueUserState() == QueueUserStateEnum.A) {
+                Toast.makeText(context, getString(R.string.error_client_left_queue), Toast.LENGTH_LONG).show();
+            } else {
+                if (TextUtils.isEmpty(jsonQueuedPersonArrayList.get(position).getServerDeviceId())) {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        progressDialog.setVisibility(View.VISIBLE);
+                        lastSelectedPos = position;
+                        Served served = new Served();
+                        served.setCodeQR(jsonTopic.getCodeQR());
+                        served.setQueueStatus(jsonTopic.getQueueStatus());
+                        // served.setQueueUserState(QueueUserStateEnum.N); don't send for time being
+                        //served.setServedNumber(jsonTopic.getServingNumber());
+                        served.setGoTo(tv_counter_name.getText().toString());
+                        served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
+                        ManageQueueModel.acquire(
+                                LaunchActivity.getLaunchActivity().getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                served);
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(getActivity());
+                    }
+                } else if (jsonQueuedPersonArrayList.get(position).getServerDeviceId().equals(UserUtils.getDeviceId())) {
+                    Toast.makeText(context, getString(R.string.error_client_acquired_by_you), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, getString(R.string.error_client_acquired), Toast.LENGTH_LONG).show();
+                }
+            }
+        } else {
+            ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
+        }
+
+    }
 }
