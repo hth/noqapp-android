@@ -462,10 +462,10 @@ public class AppUtilities {
     public static String getYearFromDate(String dateValue){
         try {
             DateFormat sdf = Formatter.formatRFC822;
-            Date parse = sdf.parse(dateValue);
-            Calendar c = Calendar.getInstance();
-            c.setTime(parse);
-            return String.valueOf(c.get(Calendar.YEAR));
+            SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+            Date date = sdf.parse(dateValue);
+            String month_year = month_date.format(date);
+            return month_year;
         } catch (ParseException e) {
             e.printStackTrace();
             return "";

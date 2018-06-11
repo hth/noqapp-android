@@ -87,14 +87,13 @@ public class LaunchActivity extends BaseLaunchActivity {
         mDrawerList = (ListView) findViewById(R.id.drawer_list);
         NavigationBean[] drawerItem = null;
         if (isLoggedIn()) {
-            drawerItem = new NavigationBean[4];
-            drawerItem[3] = new NavigationBean(R.mipmap.logout, "Logout");
-        } else {
             drawerItem = new NavigationBean[3];
+            drawerItem[2] = new NavigationBean(R.mipmap.logout, "Logout");
+        } else {
+            drawerItem = new NavigationBean[2];
         }
         drawerItem[0] = new NavigationBean(R.drawable.pie_chart, "Charts");
         drawerItem[1] = new NavigationBean(R.drawable.medical_history, "Medical History");
-        drawerItem[2] = new NavigationBean(R.drawable.ic_notification, "Notifications");
 
         NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this, R.layout.listitem_navigation_drawer, drawerItem);
         mDrawerList.setAdapter(adapter);
@@ -117,10 +116,6 @@ public class LaunchActivity extends BaseLaunchActivity {
                         startActivity(in2);
                         break;
                     case 2:
-                        Intent in = new Intent(launchActivity, NotificationActivity.class);
-                        startActivity(in);
-                        break;
-                    case 3:
                         showLogoutDialog();
                         break;
                     default:

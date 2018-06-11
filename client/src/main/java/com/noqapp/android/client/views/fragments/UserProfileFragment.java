@@ -57,8 +57,14 @@ public class UserProfileFragment extends Fragment {
                  for (int j = 0; j < 7; j++) {
                     JsonHour jsonHour = stores.get(i).getJsonHours().get(j);
 
-                    timing += days[j]+" - "+Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - "
-                            + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour())+"\n";
+                    if(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()).equals("12:01 AM") &&
+                            Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()).equals("11:59 PM")){
+                        timing += days[j] + " - "
+                                + getString(R.string.whole_day) + "\n";
+                    }else {
+                        timing += days[j] + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - "
+                                + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()) + "\n";
+                    }
 
                 }
                 tv_opening_date.setText(timing);

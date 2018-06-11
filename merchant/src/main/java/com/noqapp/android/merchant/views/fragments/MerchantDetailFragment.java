@@ -86,6 +86,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private ImageView iv_edit;
     private boolean queueStatusOuter = false;
     private int lastSelectedPos = -1;
+    private LinearLayoutManager horizontalLayoutManagaer;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -121,7 +122,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         rv_queue_people = (RecyclerView) itemView.findViewById(R.id.rv_queue_people);
         tv_counter_name = (TextView) itemView.findViewById(R.id.tv_counter_name);
         rv_queue_people.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer
+        horizontalLayoutManagaer
                 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         rv_queue_people.setLayoutManager(horizontalLayoutManagaer);
         rv_queue_people.setItemAnimator(new DefaultItemAnimator());
@@ -206,8 +207,11 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         //update UI
         currrentpos = pos;
         jsonTopic = topicsList.get(pos);
+        chronometer.stop();
+        chronometer.setBase(SystemClock.elapsedRealtime());
         resetList();
         updateUI();
+
     }
 
     @Override
@@ -258,6 +262,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     @Override
     public void dispenseTokenResponse(JsonToken token) {
         LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         if (null != token && null != tv_create_token) {
             switch (token.getQueueStatus()) {
                 case C:
@@ -390,8 +395,9 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                     }
             );
 
-            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this);
+            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this,jsonTopic.getServingNumber());
             rv_queue_people.setAdapter(peopleInQAdapter);
+            rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber());
 
         }
         dismissProgress();
@@ -514,6 +520,8 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                 btn_next.setBackgroundResource(R.mipmap.next_inactive);
                 btn_skip.setEnabled(false);
                 btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
+                chronometer.stop();
+                chronometer.setBase(SystemClock.elapsedRealtime());
                 break;
             case C:
                 tv_start.setText(context.getString(R.string.closed));
@@ -593,6 +601,8 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                                     LaunchActivity.getLaunchActivity().getEmail(),
                                     LaunchActivity.getLaunchActivity().getAuth(),
                                     served);
+                            chronometer.stop();
+                            chronometer.setBase(SystemClock.elapsedRealtime());
                         } else {
                             ShowAlertInformation.showNetworkDialog(context);
                         }
@@ -672,7 +682,9 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                                         LaunchActivity.getLaunchActivity().getEmail(),
                                         LaunchActivity.getLaunchActivity().getAuth(),
                                         served);
-                                // startChronometer(chronometer);
+                                chronometer.stop();
+                                chronometer.setBase(SystemClock.elapsedRealtime());
+                                chronometer.start();
                             } else {
                                 ShowAlertInformation.showNetworkDialog(context);
                             }
