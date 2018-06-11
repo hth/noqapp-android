@@ -66,7 +66,7 @@ public class LaunchActivity extends BaseLaunchActivity {
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false); // to hide the default action bar title
         tv_name = (TextView) findViewById(R.id.tv_name);
         tv_badge = (TextView) findViewById(R.id.tv_badge);
         fl_notification = (FrameLayout) findViewById(R.id.fl_notification);
@@ -85,7 +85,7 @@ public class LaunchActivity extends BaseLaunchActivity {
         initProgress();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.drawer_list);
-        NavigationBean[] drawerItem = new NavigationBean[4];
+        NavigationBean[] drawerItem = null;
         if (isLoggedIn()) {
             drawerItem = new NavigationBean[4];
             drawerItem[3] = new NavigationBean(R.mipmap.logout, "Logout");
@@ -136,6 +136,7 @@ public class LaunchActivity extends BaseLaunchActivity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
