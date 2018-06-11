@@ -5,7 +5,6 @@ import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Path;
 
 /**
  * User: hitender

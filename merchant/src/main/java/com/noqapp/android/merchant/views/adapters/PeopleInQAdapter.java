@@ -28,6 +28,13 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
     private final Context context;
     private List<JsonQueuedPerson> dataSet;
 
+    public interface PeopleInQAdapterClick{
+
+        void PeopleInQClick(int position);
+    }
+
+    private PeopleInQAdapterClick peopleInQAdapterClick;
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_customer_name;
         TextView tv_customer_mobile;
@@ -47,10 +54,10 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         }
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context) {
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,PeopleInQAdapterClick peopleInQAdapterClick) {
         this.dataSet = data;
         this.context = context;
-
+        this.peopleInQAdapterClick = peopleInQAdapterClick;
     }
 
     @Override
@@ -79,7 +86,12 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
                     new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
             }
         });
-
+        recordHolder.cardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                peopleInQAdapterClick.PeopleInQClick(position);
+            }
+        });
         switch (jsonQueuedPerson.getQueueUserState()) {
             case Q:
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId())) {

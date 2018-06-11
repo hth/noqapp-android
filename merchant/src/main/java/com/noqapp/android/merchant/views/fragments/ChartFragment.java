@@ -5,7 +5,6 @@ package com.noqapp.android.merchant.views.fragments;
  */
 
 
-import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,42 +29,28 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MerchantStatsModel;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
-import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
 import com.noqapp.android.merchant.utils.DayAxisValueFormatter;
 import com.noqapp.android.merchant.utils.MyValueFormatter;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChartFragment extends Fragment implements OnChartValueSelectedListener, ChartPresenter {
+public class ChartFragment extends Fragment implements OnChartValueSelectedListener {
 
 
     private PieChart pieChart;
     private BarChart bar_chart;
-    private ProgressDialog progressDialog;
-    private String qrCode = "";
 
-    public static ChartFragment newInstance(String qrCode) {
-        ChartFragment chartFragment = new ChartFragment();
-        Bundle args = new Bundle();
-        args.putString("qrCode", qrCode);
-        chartFragment.setArguments(args);
-        return chartFragment;
-    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
 
         View view = inflater.inflate(R.layout.fragment_chart, container, false);
-        initProgress();
-        qrCode = getArguments().getString("qrCode");
+
+
         bar_chart = view.findViewById(R.id.bar_chart);
 
         pieChart = view.findViewById(R.id.pieChart);
@@ -131,13 +116,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 //        bar_chart.invalidate();
         bar_chart.animateY(700);
 
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
-            MerchantStatsModel.chartPresenter = this;
-            MerchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
-        } else {
-            ShowAlertInformation.showNetworkDialog(getActivity());
-        }
 
         return view;
     }
@@ -226,16 +204,15 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         bar_chart.invalidate();
     }
 
-    @Override
-    public void chartError() {
-        dismissProgress();
-    }
 
-    @Override
-    public void chartResponse(HealthCareStatList healthCareStatList) {
-        Log.v("Chart data :", healthCareStatList.getHealthCareStat().toString());
-        for(HealthCareStat healthCareStat : healthCareStatList.getHealthCareStat()) {
 
+
+
+    public void setPage(int page, ArrayList<HealthCareStat> healthCareStatList) {
+       // this.pos = page;
+       // this.healthCareStatList = healthCareStatList;
+        HealthCareStat healthCareStat = healthCareStatList.get(page);
+        if (null != healthCareStat) {
             int new_count = healthCareStat.getRepeatCustomers().getCustomerNew();
             int old_count = healthCareStat.getRepeatCustomers().getCustomerRepeat();
             String[] mParties = new String[]{
@@ -247,18 +224,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             //set the bar data
             generateDataBar(healthCareStat.getTwelveMonths());
         }
-        dismissProgress();
-    }
 
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading...");
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
     }
 }
