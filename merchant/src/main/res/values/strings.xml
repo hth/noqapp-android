@@ -97,5 +97,6 @@
     <string name="screen_queue_chart_detail">Charts</string>
     <string name="msg_merchant_served">Serviced</string>
     <string name="msg_merchant_skip">Skipped</string>
+    <string name="service_time">Current Patient \n Service time</string>
 
 </resources>
