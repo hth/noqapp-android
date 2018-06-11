@@ -102,93 +102,117 @@
             </RelativeLayout>
 
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".20"
-                android:background="@drawable/square_white_bg_drawable">
+                android:background="@drawable/square_white_bg_drawable"
+                android:weightSum="1">
+
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/rl_left"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33">
 
-                    <View
-                        android:id="@+id/strut"
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/color_separator" />
-                    />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:id="@+id/rl_left"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignRight="@id/strut">
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            android:id="@+id/tv_current"
+                            style="@style/style_join_queue_tv"
+                            android:text="@string/serving"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="15sp" />
 
-                        <ImageView
-                            android:id="@+id/iv_out_of_sequence"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_margin="5dp"
-                            android:src="@drawable/info" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:orientation="vertical">
-
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                                android:id="@+id/tv_current"
-                                style="@style/style_join_queue_tv"
-                                android:text="@string/serving"
-                                android:textColor="@color/colorAddress"
-                                android:textSize="15sp" />
-
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
-                                android:id="@+id/tv_current_value"
-                                style="@style/style_join_queue_tv"
-                                android:layout_below="@+id/tv_current"
-                                android:textColor="@color/colorMobile"
-                                android:textSize="36sp" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignLeft="@id/strut"
-                        android:layout_alignParentRight="true">
-
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:orientation="vertical">
-
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                                android:id="@+id/tv_total"
-                                style="@style/style_join_queue_tv"
-                                android:text="@string/in_Queue"
-                                android:textColor="@color/colorAddress"
-                                android:textSize="15sp" />
-
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
-                                android:id="@+id/tv_total_value"
-                                style="@style/style_join_queue_tv"
-                                android:layout_below="@+id/tv_total"
-                                android:textColor="@color/color_total_val"
-                                android:textSize="36sp" />
-                        </LinearLayout>
-                    </RelativeLayout>
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+                            android:id="@+id/tv_current_value"
+                            style="@style/style_join_queue_tv"
+                            android:layout_below="@+id/tv_current"
+                            android:textColor="@color/colorMobile"
+                            android:textSize="36sp" />
+                    </LinearLayout>
                 </RelativeLayout>
 
-            </RelativeLayout>
+
+                <View
+                    android:id="@+id/strut"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_separator" />
+                />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33">
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            android:id="@+id/tv_total"
+                            style="@style/style_join_queue_tv"
+                            android:text="@string/in_Queue"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="15sp" />
+
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+                            android:id="@+id/tv_total_value"
+                            style="@style/style_join_queue_tv"
+                            android:layout_below="@+id/tv_total"
+                            android:textColor="@color/color_total_val"
+                            android:textSize="36sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_separator" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33">
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            android:id="@+id/tv_label"
+                            style="@style/style_join_queue_tv"
+                            android:text="@string/service_time"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="15sp" />
+
+                        <Chronometer
+                            android:id="@+id/chronometer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_label"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:textColor="@android:color/black"
+                            android:textSize="40sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -217,19 +241,6 @@
                         android:textColor="@color/colorAddress"
                         android:textSize="18sp" />
 
-                    <Chronometer
-                        android:id="@+id/chronometer"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignRight="@+id/tv_serving_customer"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@android:color/darker_gray"
-                        android:padding="10dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="28sp" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -416,7 +427,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
                     </FrameLayout>
 
                 </LinearLayout>

@@ -60,7 +60,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MerchantDetailFragment extends Fragment implements ManageQueuePresenter, QueuePersonListPresenter,PeopleInQAdapter.PeopleInQAdapterClick {
+public class MerchantDetailFragment extends Fragment implements ManageQueuePresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick {
 
     private Context context;
     private TextView tv_create_token;
@@ -84,7 +84,6 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private Button btn_next;
     private Button btn_start;
     private ImageView iv_edit;
-    private ImageView iv_out_of_sequence;
     private boolean queueStatusOuter = false;
     private int lastSelectedPos = -1;
 
@@ -133,11 +132,9 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         tv_deviceId.setText(UserUtils.getDeviceId());
         tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
 
-        TextView tv_skip = (TextView) itemView.findViewById(R.id.tv_skip);
         tv_next = (TextView) itemView.findViewById(R.id.tv_next);
         tv_start = (TextView) itemView.findViewById(R.id.tv_start);
         iv_edit = (ImageView) itemView.findViewById(R.id.iv_edit);
-        iv_out_of_sequence = (ImageView) itemView.findViewById(R.id.iv_out_of_sequence);
         ImageView iv_settings = (ImageView) itemView.findViewById(R.id.iv_settings);
         iv_settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,14 +175,6 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                 showCounterEditDialog(context, tv_counter_name, jsonTopic.getCodeQR());
             }
         });
-        chronometer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chronometer.setBase(SystemClock.elapsedRealtime());
-                chronometer.start();
-            }
-        });
-
         updateUI();
         return itemView;
     }
@@ -252,7 +241,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
             if (lastSelectedPos >= 0) {
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
                 lastSelectedPos = -1;
-                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context,this);
+                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this);
                 rv_queue_people.setAdapter(peopleInQAdapter);
             }
         }
@@ -401,7 +390,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                     }
             );
 
-            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context,this);
+            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this);
             rv_queue_people.setAdapter(peopleInQAdapter);
 
         }
@@ -469,43 +458,6 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 //                }
             }
         });
-        iv_out_of_sequence.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //if (queueStatus == QueueStatusEnum.N) {
-                mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
-                if (tv_counter_name.getText().toString().trim().equals("")) {
-                    Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
-                } else {
-                    Served served = new Served();
-                    served.setCodeQR(jsonTopic.getCodeQR());
-                    served.setQueueStatus(jsonTopic.getQueueStatus());
-                    // served.setQueueUserState(QueueUserStateEnum.N); don't send for time being
-                    //served.setServedNumber(jsonTopic.getServingNumber());
-                    served.setGoTo(tv_counter_name.getText().toString());
-                    if (new AppUtils().isTablet(context)) {
-                        Intent in = new Intent(context, OutOfSequenceDialogActivity.class);
-                        in.putExtra("codeQR", jsonTopic.getCodeQR());
-                        in.putExtra("data", served);
-                        in.putExtra("queueStatus", queueStatus == QueueStatusEnum.N);
-                        ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
-                    } else {
-                        Intent in = new Intent(context, OutOfSequenceActivity.class);
-                        in.putExtra("codeQR", jsonTopic.getCodeQR());
-                        in.putExtra("data", served);
-                        in.putExtra("queueStatus", queueStatus == QueueStatusEnum.N);
-                        ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
-                        ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
-
-                    }
-                }
-//                } else {
-//                    ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
-//                }
-            }
-        });
-
-
         tv_current_value.setText(String.valueOf(jsonTopic.getServingNumber()));
         /* Add to show only remaining people in queue */
         tv_total_value.setText(String.valueOf(jsonTopic.getToken() - jsonTopic.getServingNumber()));
@@ -740,7 +692,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
     private void resetList() {
         jsonQueuedPersonArrayList = new ArrayList<>();
-        peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context,this);
+        peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this);
         rv_queue_people.setAdapter(peopleInQAdapter);
     }
 
