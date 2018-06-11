@@ -1,9 +1,11 @@
 package com.noqapp.android.merchant.views.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,29 +16,33 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MerchantStatsModel;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.AutocompleteAdapter;
 import com.noqapp.android.merchant.views.adapters.MerchantChartListAdapter;
+import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MerchantChartListFragment extends Fragment implements    MerchantChartViewPagerFragment.UpdateListColorCallBack {
+public class MerchantChartListFragment extends Fragment implements  ChartPresenter{
 
     public static int selected_pos = 0;
-    public MerchantChartViewPagerFragment merchantChartViewPagerFragment;
-
+    public ChartFragment chartFragment;
     private MerchantChartListAdapter adapter;
     private AutocompleteAdapter temp_adapter;
-
     private Runnable  run;
-
     private ArrayList<JsonTopic> topics = new ArrayList<>();
     private ListView listview;
     private AutoCompleteTextView auto_complete_search;
-
+    private ArrayList<HealthCareStat> healthCareStatList = new ArrayList<>();
+    private ProgressDialog progressDialog;
     public MerchantChartListFragment() {
 
     }
@@ -63,7 +69,7 @@ public class MerchantChartListFragment extends Fragment implements    MerchantCh
                 return false;
             }
         });
-
+        initProgress();
         auto_complete_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -84,7 +90,6 @@ public class MerchantChartListFragment extends Fragment implements    MerchantCh
         });
 
         Bundle bundle = getArguments();
-        MerchantChartViewPagerFragment.setUpdateListColorCallBack(this);
         run = new Runnable() {
             public void run() {
                 adapter.notifyDataSetChanged();
@@ -96,6 +101,15 @@ public class MerchantChartListFragment extends Fragment implements    MerchantCh
             ArrayList<JsonTopic> jsonTopics = (ArrayList<JsonTopic>) bundle.getSerializable("jsonTopic");
             updateListData(jsonTopics);
             initListView();
+        }
+
+
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            MerchantStatsModel.chartPresenter = this;
+            MerchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+        } else {
+            ShowAlertInformation.showNetworkDialog(getActivity());
         }
         return view;
     }
@@ -131,14 +145,14 @@ public class MerchantChartListFragment extends Fragment implements    MerchantCh
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!new AppUtils().isTablet(getActivity())) {
-                    merchantChartViewPagerFragment = new MerchantChartViewPagerFragment();
+                    chartFragment = new ChartFragment();
                     Bundle b = new Bundle();
-                    b.putSerializable("jsonMerchant", topics);
+                    b.putSerializable("healthCareStatList", healthCareStatList);
                     b.putInt("position", position);
-                    merchantChartViewPagerFragment.setArguments(b);
-                    LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, merchantChartViewPagerFragment, "MerchantViewPagerFragment");
+                    chartFragment.setArguments(b);
+                    LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, chartFragment, "MerchantViewPagerFragment");
                 } else {
-                    merchantChartViewPagerFragment.setPage(position);
+                    chartFragment.setPage(position, healthCareStatList);
                     //set page for view pager
                 }
                 selected_pos = position;
@@ -150,13 +164,13 @@ public class MerchantChartListFragment extends Fragment implements    MerchantCh
 
 
         if (new AppUtils().isTablet(getActivity())) {
-            merchantChartViewPagerFragment = new MerchantChartViewPagerFragment();
+            chartFragment = new ChartFragment();
             Bundle b = new Bundle();
             b.putSerializable("jsonMerchant", topics);
             b.putInt("position", selected_pos);
-            merchantChartViewPagerFragment.setArguments(b);
+            chartFragment.setArguments(b);
             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.list_detail_fragment, merchantChartViewPagerFragment);
+            fragmentTransaction.replace(R.id.list_detail_fragment, chartFragment);
             //  fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
@@ -169,9 +183,30 @@ public class MerchantChartListFragment extends Fragment implements    MerchantCh
 
 
     @Override
-    public void onUpdateListColorCallBack(int pos) {
-        selected_pos = pos;
-        // to set the selected cell color
-        getActivity().runOnUiThread(run);
+    public void chartError() {
+        dismissProgress();
+    }
+
+    @Override
+    public void chartResponse(HealthCareStatList healthCareStatListTemp) {
+        if (null != healthCareStatListTemp) {
+            healthCareStatList= new ArrayList<>(healthCareStatListTemp.getHealthCareStat());
+
+            chartFragment.setPage(selected_pos,healthCareStatList);
+        }
+        dismissProgress();
+        Log.v("Chart data",healthCareStatList.toString());
+    }
+
+    private void initProgress() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+    }
+
+    private void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 }

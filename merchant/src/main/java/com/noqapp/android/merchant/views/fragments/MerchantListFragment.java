@@ -20,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
@@ -35,24 +37,25 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.AutocompleteAdapter;
 import com.noqapp.android.merchant.views.adapters.MerchantListAdapter;
-import com.noqapp.android.merchant.views.adapters.ViewPagerAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener, MerchantViewPagerFragment.UpdateListColorCallBack {
+public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener {
 
     public static int selected_pos = 0;
-    public MerchantViewPagerFragment merchantViewPagerFragment;
+    public MerchantDetailFragment merchantDetailFragment;
     private Handler timerHandler;
     private MerchantListAdapter adapter;
     private AutocompleteAdapter temp_adapter;
-
+    private HashMap<String, String> mHashmap = new HashMap<>();
     public ArrayList<JsonTopic> getTopics() {
         return topics;
     }
@@ -81,6 +84,25 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantlist, container, false);
+
+        String strOutput = LaunchActivity.getLaunchActivity().getCounterName();
+        Type type = new TypeToken<HashMap<String, String>>() {}.getType();
+        Gson gson = new Gson();
+        if (StringUtils.isBlank(strOutput)) {
+            mHashmap.clear();
+        } else {
+            try {
+                mHashmap = gson.fromJson(strOutput, type);
+            } catch (Exception e) {
+                e.printStackTrace();
+                mHashmap = new HashMap<>();
+            }
+        }
+        if (mHashmap.size() == 0) {
+            for (int i = 0; i < topics.size(); i++) {
+                mHashmap.put(topics.get(i).getCodeQR(), "");
+            }
+        }
         listview = (ListView) view.findViewById(R.id.listview);
         rl_empty_screen = (RelativeLayout) view.findViewById(R.id.rl_empty_screen);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
@@ -122,8 +144,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
 
         swipeRefreshLayout.setOnRefreshListener(this);
         Bundle bundle = getArguments();
-        ViewPagerAdapter.setAdapterCallBack(this);
-        MerchantViewPagerFragment.setUpdateListColorCallBack(this);
+        MerchantDetailFragment.setAdapterCallBack(this);
         snackbar = Snackbar.make(listview, "", Snackbar.LENGTH_INDEFINITE);
         snackbar.getView().setBackgroundResource(R.drawable.red_gredient);
         snackbar.addCallback(new Snackbar.Callback() {
@@ -245,14 +266,14 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!new AppUtils().isTablet(getActivity())) {
-                    merchantViewPagerFragment = new MerchantViewPagerFragment();
+                    merchantDetailFragment = new MerchantDetailFragment();
                     Bundle b = new Bundle();
                     b.putSerializable("jsonMerchant", topics);
                     b.putInt("position", position);
-                    merchantViewPagerFragment.setArguments(b);
-                    LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, merchantViewPagerFragment, "MerchantViewPagerFragment");
+                    merchantDetailFragment.setArguments(b);
+                    LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, merchantDetailFragment, "MerchantViewPagerFragment");
                 } else {
-                    merchantViewPagerFragment.setPage(position);
+                    merchantDetailFragment.setPage(position);
                 }
                 selected_pos = position;
                 // to set the selected cell color
@@ -267,13 +288,13 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
 
 
         if (new AppUtils().isTablet(getActivity())) {
-            merchantViewPagerFragment = new MerchantViewPagerFragment();
+            merchantDetailFragment = new MerchantDetailFragment();
             Bundle b = new Bundle();
             b.putSerializable("jsonMerchant", topics);
             b.putInt("position", selected_pos);
-            merchantViewPagerFragment.setArguments(b);
+            merchantDetailFragment.setArguments(b);
             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.list_detail_fragment, merchantViewPagerFragment);
+            fragmentTransaction.replace(R.id.list_detail_fragment, merchantDetailFragment);
             //  fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
@@ -334,8 +355,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                             temp_adapter = null;
                             temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
                             auto_complete_search.setAdapter(temp_adapter);
-                            if (null != merchantViewPagerFragment) {
-                                merchantViewPagerFragment.updateListData(topics);
+                            if (null != merchantDetailFragment) {
+                                merchantDetailFragment.updateListData(topics);
                             }
                             LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
                             updateSnackbarTxt();
@@ -353,13 +374,13 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     public void acquireCustomer(JsonToken token) {
         try {
             if (null != token) {
-                JsonTopic jt = topics.get(MerchantViewPagerFragment.pagercurrrentpos);
+                JsonTopic jt = topics.get(selected_pos);
                 if (token.getCodeQR().equalsIgnoreCase(jt.getCodeQR())) {
                     jt.setServingNumber(token.getServingNumber());
-                    topics.set(MerchantViewPagerFragment.pagercurrrentpos, jt);
+                    topics.set(selected_pos, jt);
                     adapter.notifyDataSetChanged();
-                    if (null != merchantViewPagerFragment) {
-                        merchantViewPagerFragment.updateListData(topics);
+                    if (null != merchantDetailFragment) {
+                        merchantDetailFragment.updateListData(topics);
                     }
                     temp_adapter = null;
                     temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
@@ -418,10 +439,13 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             snackbar.setText(getString(R.string.last_update) + " " + GetTimeAgoUtils.getTimeAgo(LaunchActivity.getLaunchActivity().getLastUpdateTime()));
     }
 
+    public void saveCounterNames(String codeQR, String name) {
+          mHashmap.put(codeQR, name);
+          LaunchActivity.getLaunchActivity().setCounterName(mHashmap);
+    }
+
     @Override
-    public void onUpdateListColorCallBack(int pos) {
-        selected_pos = pos;
-        // to set the selected cell color
-        getActivity().runOnUiThread(run);
+    public HashMap<String, String> getNameList() {
+        return mHashmap;
     }
 }
