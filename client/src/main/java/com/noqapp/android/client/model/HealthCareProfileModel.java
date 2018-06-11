@@ -27,10 +27,10 @@ public class HealthCareProfileModel {
 
     /**
      * @param did
-     * @param codeQr
+     * @param webProfileId
      */
-    public static void getQueueManagerProfile(String did, String codeQr) {
-        healthCareProfileService.getQueueManagerProfile(did, DEVICE_TYPE, codeQr).enqueue(new Callback<JsonHealthCareProfile>() {
+    public static void getQueueManagerProfile(String did, String webProfileId) {
+        healthCareProfileService.getQueueManagerProfile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonHealthCareProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonHealthCareProfile> call, @NonNull Response<JsonHealthCareProfile> response) {
                 if (response.body() != null) {

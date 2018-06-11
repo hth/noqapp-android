@@ -31,8 +31,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonHealthCareProfile {
 
-    @JsonProperty("qr")
-    private String codeQR;
+    @JsonProperty ("wp")
+    private String webProfileId;
 
     @JsonProperty("ps")
     private Date practiceStart;
@@ -54,12 +54,12 @@ public class JsonHealthCareProfile {
     @JsonProperty("pd")
     private String prescriptionDictionary;
 
-    public String getCodeQR() {
-        return codeQR;
+    public String getWebProfileId() {
+        return webProfileId;
     }
 
-    public JsonHealthCareProfile setCodeQR(String codeQR) {
-        this.codeQR = codeQR;
+    public JsonHealthCareProfile setWebProfileId(String webProfileId) {
+        this.webProfileId = webProfileId;
         return this;
     }
 
@@ -120,7 +120,7 @@ public class JsonHealthCareProfile {
     @Override
     public String toString() {
         return "JsonHealthCareProfile{" +
-                "codeQR='" + codeQR + '\'' +
+                "webProfileId='" + webProfileId + '\'' +
                 ", practiceStart=" + practiceStart +
                 ", education=" + education +
                 ", licenses=" + licenses +

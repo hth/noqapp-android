@@ -13,7 +13,7 @@ import retrofit2.http.Path;
  */
 public interface HealthCareProfileService {
 
-    @GET("open/healthCare/profile/{codeQR}.json")
+    @GET("open/healthCare/profile/{webProfileId}.json")
     Call<JsonHealthCareProfile> getQueueManagerProfile(
             @Header("X-R-DID")
             String did,
@@ -21,8 +21,8 @@ public interface HealthCareProfileService {
             @Header("X-R-DT")
             String dt,
 
-            @Path("codeQR")
-            String codeQR
+            @Path("webProfileId")
+            String webProfileId
     );
 
 }

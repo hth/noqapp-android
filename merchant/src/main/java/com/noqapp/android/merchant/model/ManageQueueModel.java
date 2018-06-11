@@ -177,6 +177,34 @@ public class ManageQueueModel {
         });
     }
 
+    public static void getAllQueuePersonList(String did, String mail, String auth, String codeQR) {
+        manageQueueService.getAllQueuePersonList(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
+                if (response.code() == 401) {
+                    queuePersonListPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("Get queue setting", String.valueOf(response.body()));
+                    queuePersonListPresenter.queuePersonListResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Found error while get queue setting");
+                    queuePersonListPresenter.queuePersonListError();
+                }
+            }
+
+
+            @Override
+            public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                queuePersonListPresenter.queuePersonListError();
+            }
+        });
+    }
+
     /**
      * Get setting for a specific queue.
      *
