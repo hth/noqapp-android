@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,7 +30,7 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
     private static final String TAG = PeopleInQAdapter.class.getSimpleName();
     private final Context context;
     private List<JsonQueuedPerson> dataSet;
-
+    private int glowPostion = -1;
     public interface PeopleInQAdapterClick{
 
         void PeopleInQClick(int position);
@@ -58,6 +61,13 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
+    }
+
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,PeopleInQAdapterClick peopleInQAdapterClick, int glowPostion) {
+        this.dataSet = data;
+        this.context = context;
+        this.peopleInQAdapterClick = peopleInQAdapterClick;
+        this.glowPostion = glowPostion;
     }
 
     @Override
@@ -128,11 +138,26 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
                 Log.e(TAG, "Reached unsupported condition state=" + jsonQueuedPerson.getQueueUserState());
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
+
+        if(glowPostion > 0 && glowPostion - 1 == position){
+            setViewAnimation(recordHolder.cardview);
+        }
     }
 
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+
+
+
+    public void setViewAnimation( View view ){
+        AlphaAnimation  blinkanimation= new AlphaAnimation(1, 0.5f); // Change alpha from fully visible to invisible
+        blinkanimation.setDuration(300); // duration - half a second
+        blinkanimation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+        blinkanimation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
+        blinkanimation.setRepeatMode(Animation.REVERSE);
+        view.setAnimation(blinkanimation);
     }
 
 }
