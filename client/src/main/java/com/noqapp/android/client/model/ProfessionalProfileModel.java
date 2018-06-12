@@ -18,11 +18,11 @@ public class ProfessionalProfileModel {
 
     private static final String TAG = ProfessionalProfileModel.class.getSimpleName();
 
-    private static final ProfessionalProfileService PROFESSIONAL_PROFILE_SERVICE;
+    private static final ProfessionalProfileService professionalProfileService;
     public static QueueManagerPresenter queueManagerPresenter;
 
     static {
-        PROFESSIONAL_PROFILE_SERVICE = RetrofitClient.getClient().create(ProfessionalProfileService.class);
+        professionalProfileService = RetrofitClient.getClient().create(ProfessionalProfileService.class);
     }
 
     /**
@@ -30,7 +30,7 @@ public class ProfessionalProfileModel {
      * @param webProfileId
      */
     public static void profile(String did, String webProfileId) {
-        PROFESSIONAL_PROFILE_SERVICE.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
+        professionalProfileService.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfile> call, @NonNull Response<JsonProfessionalProfile> response) {
                 if (response.body() != null) {
