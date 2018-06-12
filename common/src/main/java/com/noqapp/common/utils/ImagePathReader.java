@@ -1,4 +1,4 @@
-package com.noqapp.android.client.utils;
+package com.noqapp.common.utils;
 
 import android.content.ContentUris;
 import android.content.Context;

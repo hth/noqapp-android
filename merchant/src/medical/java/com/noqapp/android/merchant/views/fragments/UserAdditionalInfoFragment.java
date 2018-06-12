@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.common.beans.JsonProfile;
 
 
 public class UserAdditionalInfoFragment extends Fragment {
@@ -36,7 +37,7 @@ public class UserAdditionalInfoFragment extends Fragment {
     }
 
 
-//    public void updateUI(JsonHealthCareProfile jsonHealthCareProfile) {
+    public void updateUI(JsonProfile jsonHealthCareProfile) {
 //        this.jsonHealthCareProfile = jsonHealthCareProfile;
 //        List<JsonNameDatePair> experience = jsonHealthCareProfile.getAwards();
 //        List<JsonNameDatePair> education = jsonHealthCareProfile.getEducation();
@@ -54,6 +55,6 @@ public class UserAdditionalInfoFragment extends Fragment {
 //        }
 //        tv_experience.setText(text_exp);
 //        tv_education.setText(text_edu);
-//    }
+    }
 
 }

@@ -195,6 +195,9 @@ public class LaunchActivity extends BaseLaunchActivity {
         }
     }
 
+    public void enableDrawer(){
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
 
     @Override
     protected void onResume() {

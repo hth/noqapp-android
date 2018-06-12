@@ -99,4 +99,23 @@
     <string name="msg_merchant_skip">Skipped</string>
     <string name="service_time">Current Patient \n Service time</string>
 
+    <!-- Strings related to login -->
+    <string name="error_field_required">This field is required</string>
+    <string name="prompt_user_name">User Name</string>
+    <string name="prompt_gender">Gender</string>
+    <string name="prompt_marital_status">marital status</string>
+    <string name="action_update">update profile</string>
+    <string name="phone">Phone <font color='red'>\u2731</font></string>
+    <string name="name">Name <font color='red'>\u2731</font></string>
+    <string name="birthday">Birthday <font color='red'>\u2731</font></string>
+    <string name="mail">Mail </string>
+    <string name="gender">Gender <font color='red'>\u2731</font></string>
+    <string name="prompt_address_status">Address</string>
+
+
+    <string name="error_name_blank">Please enter name</string>
+    <string name="error_name_length">Name length should be at least 4 or higher</string>
+    <string name="error_invalid_email">Please enter valid email</string>
+    <string name="error_invalid_date">Please select a valid date</string>
+    <string name="error_dob_blank">Please enter date of birth</string>
 </resources>

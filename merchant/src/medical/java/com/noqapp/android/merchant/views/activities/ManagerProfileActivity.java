@@ -24,19 +24,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MerchantProfileModel;
+import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.merchant.views.fragments.UserProfileFragment;
+import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ManagerProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class ManagerProfileActivity extends AppCompatActivity implements View.OnClickListener,MerchantPresenter {
 
-//    @BindView(R.id.tv_name)
-//    protected TextView tv_name;
+
+    private TextView tv_profile_name;
 //    @BindView(R.id.iv_edit)
 //    protected ImageView iv_edit;
     private ImageView iv_profile;
@@ -66,6 +71,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
                 finish();
             }
         });
+        tv_profile_name = (TextView)findViewById(R.id.tv_profile_name);
 //        ButterKnife.bind(this);
 //        initActionsViews(false);
 //        tv_toolbar_title.setText("Doctor Profile");
@@ -91,34 +97,41 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         loadTabs =new LoadTabs();
         loadTabs.execute();
 
-//        if(LaunchActivity.getLaunchActivity().isOnline()){
-//            HealthCareProfileModel.queueManagerPresenter = this;
-//            HealthCareProfileModel.getQueueManagerProfile(UserUtils.getDeviceId(),webProfileId);
-//        }
+        if(LaunchActivity.getLaunchActivity().isOnline()){
+            MerchantProfileModel.merchantPresenter = this;
+            MerchantProfileModel.fetch( LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth());
+        }
 
     }
 
 
+    @Override
+    public void merchantResponse(JsonMerchant jsonMerchant) {
+        if (null != jsonMerchant) {
+            LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
+            LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
+            LaunchActivity.getLaunchActivity().setUserName();
+            tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
+            userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfile());
+            userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
+        }
+        LaunchActivity.getLaunchActivity().dismissProgress();
+    }
 
-//    @Override
-//    public void authenticationFailure(int errorCode) {
-//
-//    }
-//
-//    @Override
-//    public void queueManagerResponse(JsonHealthCareProfile jsonHealthCareProfile) {
-//        Log.v("queueManagerResponse",jsonHealthCareProfile.toString());
-//        userAdditionalInfoFragment.updateUI(jsonHealthCareProfile);
-//        userProfileFragment.updateUI(jsonHealthCareProfile.getStores());
-//
-//
-//
-//    }
-//
-//    @Override
-//    public void queueManagerError() {
-//
-//    }
+    @Override
+    public void merchantError() {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        if (errorCode == Constants.INVALID_CREDENTIAL) {
+            LaunchActivity.getLaunchActivity().clearLoginData(true);
+        }
+    }
+
 
     private class LoadTabs extends AsyncTask<String, String, String> {
 
@@ -215,7 +228,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         userAdditionalInfoFragment = new UserAdditionalInfoFragment();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(userProfileFragment, "Profile");
-        adapter.addFragment(userAdditionalInfoFragment, "Additional Infos");
+        adapter.addFragment(userAdditionalInfoFragment, "Professional Profile");
         viewPager.setAdapter(adapter);
     }
 
@@ -276,6 +289,6 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     @Override
     protected void onResume() {
         super.onResume();
-       // tv_name.setText(managerName);
+       //tv_name.setText(LaunchActivity.getLaunchActivity().getUserName());
     }
 }
