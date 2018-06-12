@@ -13,6 +13,7 @@
 
     <color name="pressed_color">#ef649a</color>
     <color name="default_color">#ffffff</color>
+    <color name="white">#ffffff</color>
 
     <color name="pager_top_bg">#80F2F2F2</color>
     <color name="default_bg_color">#F2F2F2</color>

@@ -51,12 +51,10 @@ public class UserProfileFragment extends Fragment {
                 TextView tv_address = (TextView) inflatedLayout.findViewById(R.id.tv_address);
                 TextView tv_opening_date = (TextView) inflatedLayout.findViewById(R.id.tv_opening_date);
                 tv_name.setText(stores.get(i).getJsonQueue().getBusinessName());
-
                 tv_address.setText(stores.get(i).getJsonQueue().getStoreAddress());
                 String timing = "";
                  for (int j = 0; j < 7; j++) {
                     JsonHour jsonHour = stores.get(i).getJsonHours().get(j);
-
                     if(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()).equals("12:01 AM") &&
                             Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()).equals("11:59 PM")){
                         timing += days[j] + " - "
@@ -65,16 +63,10 @@ public class UserProfileFragment extends Fragment {
                         timing += days[j] + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - "
                                 + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()) + "\n";
                     }
-
                 }
                 tv_opening_date.setText(timing);
                 ll_multiple_store.addView(inflatedLayout);
             }
-
         }
-
-
     }
-
-
 }

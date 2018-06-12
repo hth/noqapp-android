@@ -7,6 +7,9 @@ import com.noqapp.android.merchant.model.response.api.MerchantProfileService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
+import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
+import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.common.beans.body.UpdateProfile;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,6 +24,8 @@ public class MerchantProfileModel {
 
     private static final MerchantProfileService merchantProfileService;
     public static MerchantPresenter merchantPresenter;
+    public static ProfilePresenter profilePresenter;
+
 
     static {
         merchantProfileService = RetrofitClient.getClient().create(MerchantProfileService.class);
@@ -51,6 +56,32 @@ public class MerchantProfileModel {
             @Override
             public void onFailure(@NonNull Call<JsonMerchant> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
+            }
+        });
+    }
+
+    public static void updateProfile(final String mail, final String auth, UpdateProfile updateProfile) {
+        merchantProfileService.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
+                if (response.code() == 401) {
+                    profilePresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("Update profile", String.valueOf(response.body()));
+                    profilePresenter.profileResponse(response.body(), mail, auth);
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Failed updating profile " + response.body().getError());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                profilePresenter.profileError();
             }
         });
     }

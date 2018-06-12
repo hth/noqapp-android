@@ -38,7 +38,7 @@ public interface MerchantProfileService {
                     String auth,
 
             @Body
-                    UpdateProfile updateProfile
+            UpdateProfile updateProfile
     );
 
     @Multipart
@@ -57,6 +57,6 @@ public interface MerchantProfileService {
                     String auth,
 
             @Part
-                    MultipartBody.Part file
+            MultipartBody.Part file
     );
 }
