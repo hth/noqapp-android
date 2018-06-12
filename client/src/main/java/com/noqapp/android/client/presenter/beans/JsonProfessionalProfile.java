@@ -29,7 +29,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonHealthCareProfile {
+public class JsonProfessionalProfile {
 
     @JsonProperty ("wp")
     private String webProfileId;
@@ -51,14 +51,14 @@ public class JsonHealthCareProfile {
     @JsonProperty("st")
     private List<JsonStore> stores = new ArrayList<>();
 
-    @JsonProperty("pd")
-    private String prescriptionDictionary;
+    @JsonProperty("dd")
+    private String dataDictionary;
 
     public String getWebProfileId() {
         return webProfileId;
     }
 
-    public JsonHealthCareProfile setWebProfileId(String webProfileId) {
+    public JsonProfessionalProfile setWebProfileId(String webProfileId) {
         this.webProfileId = webProfileId;
         return this;
     }
@@ -67,7 +67,7 @@ public class JsonHealthCareProfile {
         return practiceStart;
     }
 
-    public JsonHealthCareProfile setPracticeStart(Date practiceStart) {
+    public JsonProfessionalProfile setPracticeStart(Date practiceStart) {
         this.practiceStart = practiceStart;
         return this;
     }
@@ -76,7 +76,7 @@ public class JsonHealthCareProfile {
         return education;
     }
 
-    public JsonHealthCareProfile setEducation(List<JsonNameDatePair> education) {
+    public JsonProfessionalProfile setEducation(List<JsonNameDatePair> education) {
         this.education = education;
         return this;
     }
@@ -85,7 +85,7 @@ public class JsonHealthCareProfile {
         return licenses;
     }
 
-    public JsonHealthCareProfile setLicenses(List<JsonNameDatePair> licenses) {
+    public JsonProfessionalProfile setLicenses(List<JsonNameDatePair> licenses) {
         this.licenses = licenses;
         return this;
     }
@@ -94,7 +94,7 @@ public class JsonHealthCareProfile {
         return awards;
     }
 
-    public JsonHealthCareProfile setAwards(List<JsonNameDatePair> awards) {
+    public JsonProfessionalProfile setAwards(List<JsonNameDatePair> awards) {
         this.awards = awards;
         return this;
     }
@@ -103,29 +103,29 @@ public class JsonHealthCareProfile {
         return stores;
     }
 
-    public JsonHealthCareProfile setStores(List<JsonStore> stores) {
+    public JsonProfessionalProfile setStores(List<JsonStore> stores) {
         this.stores = stores;
         return this;
     }
 
-    public String getPrescriptionDictionary() {
-        return prescriptionDictionary;
+    public String getDataDictionary() {
+        return dataDictionary;
     }
 
-    public JsonHealthCareProfile setPrescriptionDictionary(String prescriptionDictionary) {
-        this.prescriptionDictionary = prescriptionDictionary;
+    public JsonProfessionalProfile setDataDictionary(String dataDictionary) {
+        this.dataDictionary = dataDictionary;
         return this;
     }
 
     @Override
     public String toString() {
-        return "JsonHealthCareProfile{" +
+        return "JsonProfessionalProfile{" +
                 "webProfileId='" + webProfileId + '\'' +
                 ", practiceStart=" + practiceStart +
                 ", education=" + education +
                 ", licenses=" + licenses +
                 ", awards=" + awards +
-                ", prescriptionDictionary='" + prescriptionDictionary + '\'' +
+                ", dataDictionary='" + dataDictionary + '\'' +
                 '}';
     }
 }

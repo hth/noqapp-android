@@ -3,10 +3,10 @@ package com.noqapp.android.client.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.noqapp.android.client.model.response.open.HealthCareProfileService;
+import com.noqapp.android.client.model.response.open.ProfessionalProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
-import com.noqapp.android.client.presenter.beans.JsonHealthCareProfile;
+import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,25 +14,25 @@ import retrofit2.Response;
 
 import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
-public class HealthCareProfileModel {
+public class ProfessionalProfileModel {
 
-    private static final String TAG = HealthCareProfileModel.class.getSimpleName();
+    private static final String TAG = ProfessionalProfileModel.class.getSimpleName();
 
-    private static final HealthCareProfileService healthCareProfileService;
+    private static final ProfessionalProfileService PROFESSIONAL_PROFILE_SERVICE;
     public static QueueManagerPresenter queueManagerPresenter;
 
     static {
-        healthCareProfileService = RetrofitClient.getClient().create(HealthCareProfileService.class);
+        PROFESSIONAL_PROFILE_SERVICE = RetrofitClient.getClient().create(ProfessionalProfileService.class);
     }
 
     /**
      * @param did
      * @param webProfileId
      */
-    public static void getQueueManagerProfile(String did, String webProfileId) {
-        healthCareProfileService.getQueueManagerProfile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonHealthCareProfile>() {
+    public static void profile(String did, String webProfileId) {
+        PROFESSIONAL_PROFILE_SERVICE.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
             @Override
-            public void onResponse(@NonNull Call<JsonHealthCareProfile> call, @NonNull Response<JsonHealthCareProfile> response) {
+            public void onResponse(@NonNull Call<JsonProfessionalProfile> call, @NonNull Response<JsonProfessionalProfile> response) {
                 if (response.body() != null) {
                     Log.d("QueueManagerProfile", String.valueOf(response.body()));
                     queueManagerPresenter.queueManagerResponse(response.body());
@@ -43,7 +43,7 @@ public class HealthCareProfileModel {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonHealthCareProfile> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonProfessionalProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 queueManagerPresenter.queueManagerError();
             }
