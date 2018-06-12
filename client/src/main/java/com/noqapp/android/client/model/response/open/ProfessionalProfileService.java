@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model.response.open;
 
-import com.noqapp.android.client.presenter.beans.JsonHealthCareProfile;
+import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -11,10 +11,10 @@ import retrofit2.http.Path;
  * User: hitender
  * Date: 6/4/18 11:00 AM
  */
-public interface HealthCareProfileService {
+public interface ProfessionalProfileService {
 
-    @GET("open/healthCare/profile/{webProfileId}.json")
-    Call<JsonHealthCareProfile> getQueueManagerProfile(
+    @GET("open/professional/profile/{webProfileId}.json")
+    Call<JsonProfessionalProfile> profile(
             @Header("X-R-DID")
             String did,
 

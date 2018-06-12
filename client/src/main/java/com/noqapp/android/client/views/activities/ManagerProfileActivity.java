@@ -30,12 +30,12 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.HealthCareProfileModel;
+import com.noqapp.android.client.model.ProfessionalProfileModel;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
+import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
-import com.noqapp.android.client.presenter.beans.JsonHealthCareProfile;
 import com.noqapp.common.utils.ImagePathReader;
 import com.squareup.picasso.Picasso;
 
@@ -104,8 +104,8 @@ public class ManagerProfileActivity extends BaseActivity implements View.OnClick
         loadTabs.execute();
 
         if(LaunchActivity.getLaunchActivity().isOnline()){
-            HealthCareProfileModel.queueManagerPresenter = this;
-            HealthCareProfileModel.getQueueManagerProfile(UserUtils.getDeviceId(),webProfileId);
+            ProfessionalProfileModel.queueManagerPresenter = this;
+            ProfessionalProfileModel.profile(UserUtils.getDeviceId(),webProfileId);
         }
 
     }
@@ -118,10 +118,10 @@ public class ManagerProfileActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void queueManagerResponse(JsonHealthCareProfile jsonHealthCareProfile) {
-        Log.v("queueManagerResponse",jsonHealthCareProfile.toString());
-        userAdditionalInfoFragment.updateUI(jsonHealthCareProfile);
-        userProfileFragment.updateUI(jsonHealthCareProfile.getStores());
+    public void queueManagerResponse(JsonProfessionalProfile jsonProfessionalProfile) {
+        Log.v("queueManagerResponse", jsonProfessionalProfile.toString());
+        userAdditionalInfoFragment.updateUI(jsonProfessionalProfile);
+        userProfileFragment.updateUI(jsonProfessionalProfile.getStores());
 
 
 

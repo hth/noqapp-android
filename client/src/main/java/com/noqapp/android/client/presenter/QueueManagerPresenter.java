@@ -1,6 +1,6 @@
 package com.noqapp.android.client.presenter;
 
-import com.noqapp.android.client.presenter.beans.JsonHealthCareProfile;
+import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 
 /**
  * User: chandra
@@ -9,7 +9,7 @@ import com.noqapp.android.client.presenter.beans.JsonHealthCareProfile;
 
 public interface QueueManagerPresenter {
 
-    void queueManagerResponse(JsonHealthCareProfile jsonHealthCareProfile);
+    void queueManagerResponse(JsonProfessionalProfile jsonProfessionalProfile);
 
     void queueManagerError();
 

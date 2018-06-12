@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.presenter.beans.JsonHealthCareProfile;
+import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.common.beans.JsonNameDatePair;
 
 import java.util.List;
@@ -33,23 +33,23 @@ public class UserAdditionalInfoFragment extends Fragment {
     @BindView(R.id.tv_experience)
     protected TextView tv_experience;
 
-    private JsonHealthCareProfile jsonHealthCareProfile;
+    private JsonProfessionalProfile jsonProfessionalProfile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_additional_info, container, false);
         ButterKnife.bind(this, view);
-        if (null != jsonHealthCareProfile)
-            updateUI(jsonHealthCareProfile);
+        if (null != jsonProfessionalProfile)
+            updateUI(jsonProfessionalProfile);
         return view;
     }
 
 
-    public void updateUI(JsonHealthCareProfile jsonHealthCareProfile) {
-        this.jsonHealthCareProfile = jsonHealthCareProfile;
-        List<JsonNameDatePair> experience = jsonHealthCareProfile.getAwards();
-        List<JsonNameDatePair> education = jsonHealthCareProfile.getEducation();
+    public void updateUI(JsonProfessionalProfile jsonProfessionalProfile) {
+        this.jsonProfessionalProfile = jsonProfessionalProfile;
+        List<JsonNameDatePair> experience = jsonProfessionalProfile.getAwards();
+        List<JsonNameDatePair> education = jsonProfessionalProfile.getEducation();
 
         StringBuilder text_edu = new StringBuilder();
         for (int i = 0; i < education.size(); i++) {
