@@ -31,7 +31,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
-import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.network.VersionCheckAsync;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -41,6 +40,7 @@ import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
+import com.noqapp.common.model.types.UserLevelEnum;
 import com.noqapp.common.utils.NetworkUtil;
 
 import org.apache.commons.lang3.text.WordUtils;

@@ -81,6 +81,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.noqapp.android.merchant.views.activities.ManagerProfileActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/BaseTheme">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.noqapp.android.merchant.views.activities.ChartActivity"
             android:windowSoftInputMode="stateAlwaysHidden"

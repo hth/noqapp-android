@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.interfaces;
 
-import com.noqapp.android.client.presenter.beans.JsonProfile;
 
+import com.noqapp.common.beans.JsonProfile;
 
 public interface MeView {
 

@@ -31,7 +31,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
-import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
@@ -51,6 +50,7 @@ import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 import com.noqapp.common.beans.ErrorEncounteredJson;
+import com.noqapp.common.model.types.UserLevelEnum;
 import com.noqapp.common.utils.Formatter;
 
 import org.apache.commons.lang3.StringUtils;

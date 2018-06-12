@@ -6,10 +6,10 @@ import android.util.Log;
 import com.noqapp.android.client.model.response.open.RegisterService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.common.beans.JsonProfile;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -6,8 +6,8 @@ import android.util.Log;
 import com.noqapp.android.client.model.response.open.ReviewService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ReviewPresenter;
-import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
+import com.noqapp.common.beans.JsonResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

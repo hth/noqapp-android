@@ -1,15 +1,15 @@
-package com.noqapp.android.client.presenter.beans;
+package com.noqapp.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.common.model.types.medical.BloodTypeEnum;
 
 /**
- * User: hitender
- * Date: 4/1/17 4:21 PM
+ * hitender
+ * 5/30/18 5:35 AM
  */
-
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
@@ -24,23 +24,24 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonResponse {
+public class JsonUserMedicalProfile {
 
-    @JsonProperty("r")
-    private int response;
+    @JsonProperty("bt")
+    private BloodTypeEnum bloodType;
 
-    public int getResponse() {
-        return response;
+    public BloodTypeEnum getBloodType() {
+        return bloodType;
     }
 
-    public void setResponse(int response) {
-        this.response = response;
+    public JsonUserMedicalProfile setBloodType(BloodTypeEnum bloodType) {
+        this.bloodType = bloodType;
+        return this;
     }
 
     @Override
     public String toString() {
-        return "JsonResponse{" +
-                "response=" + response +
+        return "JsonUserMedicalProfile{" +
+                "bloodType=" + bloodType +
                 '}';
     }
 }

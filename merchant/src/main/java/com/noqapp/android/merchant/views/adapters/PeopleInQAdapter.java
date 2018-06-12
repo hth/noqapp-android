@@ -1,8 +1,11 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -140,7 +143,7 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         }
 
         if(glowPostion > 0 && glowPostion - 1 == position){
-            setViewAnimation(recordHolder.cardview);
+            setAnim(recordHolder.cardview);
         }
     }
 
@@ -159,5 +162,39 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         blinkanimation.setRepeatMode(Animation.REVERSE);
         view.setAnimation(blinkanimation);
     }
+
+    private void setAnim(final CardView view){
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.5f, 1.0f);
+        valueAnimator.setDuration(1000);
+        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        valueAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                float fractionAnim = (float) valueAnimator.getAnimatedValue();
+
+                view.setCardBackgroundColor(ColorUtils.blendARGB(Color.parseColor("#CD334E")
+                        , Color.parseColor("#FFFFFF")
+                        , fractionAnim));
+            }
+        });
+        valueAnimator.start();
+    }
+
+    private void setAnimationOfView(final View view ){
+        int colorFrom = context.getResources().getColor(R.color.color_action_bar);
+        int colorTo = context.getResources().getColor(R.color.color_separator);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(250); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                view.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();}
 
 }

@@ -87,13 +87,16 @@ public class LaunchActivity extends BaseLaunchActivity {
         mDrawerList = (ListView) findViewById(R.id.drawer_list);
         NavigationBean[] drawerItem = null;
         if (isLoggedIn()) {
-            drawerItem = new NavigationBean[3];
-            drawerItem[2] = new NavigationBean(R.mipmap.logout, "Logout");
+            drawerItem = new NavigationBean[4];
+            drawerItem[2] = new NavigationBean(R.drawable.profile_red, "Profile");
+            drawerItem[3] = new NavigationBean(R.mipmap.logout, "Logout");
+
         } else {
             drawerItem = new NavigationBean[2];
         }
         drawerItem[0] = new NavigationBean(R.drawable.pie_chart, "Charts");
         drawerItem[1] = new NavigationBean(R.drawable.medical_history, "Medical History");
+
 
         NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this, R.layout.listitem_navigation_drawer, drawerItem);
         mDrawerList.setAdapter(adapter);
@@ -103,12 +106,12 @@ public class LaunchActivity extends BaseLaunchActivity {
                 int selectedPosition = position;
                 switch (selectedPosition) {
                     case 0:
-                        if(merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size()>0) {
+                        if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
                             Intent in1 = new Intent(launchActivity, ChartSampleActivity.class);
                             in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
                             startActivity(in1);
-                        }else{
-                            Toast.makeText(launchActivity,"No queue available",Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(launchActivity, "No queue available", Toast.LENGTH_LONG).show();
                         }
                         break;
                     case 1:
@@ -116,6 +119,10 @@ public class LaunchActivity extends BaseLaunchActivity {
                         startActivity(in2);
                         break;
                     case 2:
+                        Intent in3 = new Intent(launchActivity, ManagerProfileActivity.class);
+                        startActivity(in3);
+                        break;
+                    case 3:
                         showLogoutDialog();
                         break;
                     default:

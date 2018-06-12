@@ -39,14 +39,14 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.ImageUploadPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.presenter.beans.JsonProfile;
-import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
-import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImagePathReader;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.common.beans.JsonResponse;
+import com.noqapp.common.beans.body.UpdateProfile;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
