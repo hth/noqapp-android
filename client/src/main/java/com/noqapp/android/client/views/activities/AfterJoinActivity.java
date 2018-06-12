@@ -27,7 +27,6 @@ import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
-import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -36,6 +35,7 @@ import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
+import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.PhoneFormatterUtil;
 

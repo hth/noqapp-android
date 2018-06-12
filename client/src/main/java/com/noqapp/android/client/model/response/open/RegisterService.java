@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model.response.open;
+import com.noqapp.common.beans.JsonProfile;
 
-import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 

@@ -1,11 +1,11 @@
 package com.noqapp.android.client.model.response.api;
 
-import com.noqapp.android.client.presenter.beans.JsonProfile;
-import com.noqapp.android.client.presenter.beans.JsonResponse;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
-import com.noqapp.android.client.presenter.beans.body.UpdateProfile;
+import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.common.beans.JsonResponse;
+import com.noqapp.common.beans.body.UpdateProfile;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;

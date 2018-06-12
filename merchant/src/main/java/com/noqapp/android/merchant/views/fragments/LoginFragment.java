@@ -23,7 +23,6 @@ import com.crashlytics.android.answers.LoginEvent;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.LoginModel;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
-import com.noqapp.android.merchant.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -31,6 +30,7 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
+import com.noqapp.common.model.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
 

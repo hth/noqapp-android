@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.database.DatabaseTable;
-import com.noqapp.android.client.presenter.beans.JsonProfile;
+import com.noqapp.common.beans.JsonProfile;
 
 /**
  * This Class is created to store the information which data need to be final(Consistent)

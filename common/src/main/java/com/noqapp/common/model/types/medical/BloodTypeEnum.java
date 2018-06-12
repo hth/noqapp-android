@@ -1,4 +1,4 @@
-package com.noqapp.android.client.model.types.medical;
+package com.noqapp.common.model.types.medical;
 
 /**
  * hitender

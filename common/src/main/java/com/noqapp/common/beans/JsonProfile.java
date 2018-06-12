@@ -1,20 +1,25 @@
-package com.noqapp.android.merchant.presenter.beans;
+package com.noqapp.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.merchant.model.types.GenderEnum;
-import com.noqapp.android.merchant.model.types.UserLevelEnum;
-import com.noqapp.common.beans.ErrorEncounteredJson;
+import com.noqapp.common.model.types.GenderEnum;
+import com.noqapp.common.model.types.UserLevelEnum;
 
 import java.io.Serializable;
 
 /**
  * User: hitender
- * Date: 4/22/17 11:47 AM
+ * Date: 4/8/17 8:25 PM
  */
+@SuppressWarnings({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable",
+        "unused"
+})
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
@@ -22,7 +27,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonProfile implements Serializable {
     @JsonProperty ("pi")
     private String profileImage;
@@ -35,6 +40,9 @@ public class JsonProfile implements Serializable {
 
     @JsonProperty("cs")
     private String countryShortName;
+
+    @JsonProperty("ad")
+    private String address;
 
     @JsonProperty("pr")
     private String phoneRaw;
@@ -56,6 +64,9 @@ public class JsonProfile implements Serializable {
 
     @JsonProperty("ul")
     private UserLevelEnum userLevel;
+
+    @JsonProperty ("mp")
+    private JsonUserMedicalProfile jsonUserMedicalProfile;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -93,6 +104,15 @@ public class JsonProfile implements Serializable {
 
     public JsonProfile setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
+        return this;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public JsonProfile setAddress(String address) {
+        this.address = address;
         return this;
     }
 
@@ -159,6 +179,15 @@ public class JsonProfile implements Serializable {
         return this;
     }
 
+    public JsonUserMedicalProfile getJsonUserMedicalProfile() {
+        return jsonUserMedicalProfile;
+    }
+
+    public JsonProfile setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
+        this.jsonUserMedicalProfile = jsonUserMedicalProfile;
+        return this;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -171,9 +200,11 @@ public class JsonProfile implements Serializable {
     @Override
     public String toString() {
         return "JsonProfile{" +
-                "name='" + name + '\'' +
+                "profileImage='" + profileImage + '\'' +
+                ", name='" + name + '\'' +
                 ", mail='" + mail + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
+                ", address='" + address + '\'' +
                 ", phoneRaw='" + phoneRaw + '\'' +
                 ", timeZone='" + timeZone + '\'' +
                 ", inviteCode='" + inviteCode + '\'' +
@@ -181,6 +212,7 @@ public class JsonProfile implements Serializable {
                 ", birthday='" + birthday + '\'' +
                 ", gender=" + gender +
                 ", userLevel=" + userLevel +
+                ", jsonUserMedicalProfile=" + jsonUserMedicalProfile +
                 ", error=" + error +
                 '}';
     }

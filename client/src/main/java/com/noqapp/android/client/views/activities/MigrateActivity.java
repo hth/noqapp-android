@@ -37,13 +37,13 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.presenter.beans.JsonProfile;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.common.beans.ErrorEncounteredJson;
+import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.utils.PhoneFormatterUtil;
 
 import java.util.TimeZone;

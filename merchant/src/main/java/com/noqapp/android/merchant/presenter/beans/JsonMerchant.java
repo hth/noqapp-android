@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.beans.ErrorEncounteredJson;
+import com.noqapp.common.beans.JsonProfile;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
