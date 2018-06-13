@@ -51,7 +51,7 @@ import java.util.HashMap;
 
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
-public class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter {
+public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter {
     public static DatabaseHelper dbHandler;
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
@@ -88,6 +88,7 @@ public class BaseLaunchActivity extends AppCompatActivity implements AppBlacklis
     protected TextView tv_toolbar_title;
     protected ImageView actionbarBack;
 
+    public abstract void enableDisableDrawer(boolean isEnable);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!new AppUtils().isTablet(getApplicationContext())) {

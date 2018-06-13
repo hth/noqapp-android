@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -28,20 +30,26 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonQueuedPerson implements Serializable {
 
-    @JsonProperty("t")
+    @JsonProperty ("t")
     private int token;
 
-    @JsonProperty("n")
+    @JsonProperty("qid")
+    private String queueUserId;
+
+    @JsonProperty ("n")
     private String customerName = "";
 
-    @JsonProperty("p")
+    @JsonProperty ("p")
     private String customerPhone = "";
 
-    @JsonProperty("qu")
+    @JsonProperty ("qu")
     private QueueUserStateEnum queueUserState;
 
-    @JsonProperty("sid")
+    @JsonProperty ("sid")
     private String serverDeviceId = "";
+
+    @JsonProperty ("min")
+    private List<JsonQueuedMinorPerson> minors = new ArrayList<>();
 
     public int getToken() {
         return token;

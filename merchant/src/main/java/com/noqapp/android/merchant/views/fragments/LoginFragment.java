@@ -149,7 +149,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                     LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
                     LaunchActivity.getLaunchActivity().list_fragment.setLayoutParams(lp1);
                     LaunchActivity.getLaunchActivity().list_detail_fragment.setLayoutParams(lp2);
-                    LaunchActivity.getLaunchActivity().enableDrawer();
+                    LaunchActivity.getLaunchActivity().enableDisableDrawer(true);
                 }
                 LaunchActivity.getLaunchActivity().setAccessGrant(true);
                 MerchantListFragment mlf = new MerchantListFragment();
