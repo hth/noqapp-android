@@ -33,10 +33,11 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.medical.JsonMedicalRecord;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 
 public class MedicalHistoryDetailActivity extends AppCompatActivity implements MedicalRecordPresenter{
     private final String packageName = "com.google.android.apps.handwriting.ime";
@@ -77,11 +78,17 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                     if(validate()){
                         JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                         jsonMedicalRecord.setCodeQR(qCodeQR);
+                        if (StringUtils.isBlank(jsonQueuedPerson.getQueueUserId())) {
+                            throw new RuntimeException("Need QID");
+                            //TODO better error handling
+                        }
                         jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
                         jsonMedicalRecord.setChiefComplain(edt_complaints.getText().toString());
                         jsonMedicalRecord.setPastHistory(edt_past_history.getText().toString());
                         jsonMedicalRecord.setFamilyHistory(actv_family_history.getText().toString());
                         jsonMedicalRecord.setKnownAllergies(edt_known_allergy.getText().toString());
+                        jsonMedicalRecord.setClinicalFinding(edt_clinical_finding.getText().toString());
+                        jsonMedicalRecord.setProvisionalDifferentialDiagnosis(edt_provisional.getText().toString());
                         MedicalHistoryModel.add( LaunchActivity.getLaunchActivity().getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),jsonMedicalRecord);

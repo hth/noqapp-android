@@ -397,7 +397,8 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
             peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(),jsonTopic.getServingNumber());
             rv_queue_people.setAdapter(peopleInQAdapter);
-            rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber());
+            if(jsonTopic.getServingNumber() > 0)
+             rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber()-1);
 
         }
         dismissProgress();
