@@ -245,7 +245,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
             if (lastSelectedPos >= 0) {
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
                 lastSelectedPos = -1;
-                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this);
+                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR());
                 rv_queue_people.setAdapter(peopleInQAdapter);
             }
         }
@@ -395,7 +395,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                     }
             );
 
-            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this,jsonTopic.getServingNumber());
+            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(),jsonTopic.getServingNumber());
             rv_queue_people.setAdapter(peopleInQAdapter);
             rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber());
 
@@ -704,7 +704,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
     private void resetList() {
         jsonQueuedPersonArrayList = new ArrayList<>();
-        peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this);
+        peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR());
         rv_queue_people.setAdapter(peopleInQAdapter);
     }
 

@@ -36,6 +36,7 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
     private final Context context;
     private List<JsonQueuedPerson> dataSet;
     private int glowPostion = -1;
+    private String qCodeQR = "";
     public interface PeopleInQAdapterClick{
 
         void PeopleInQClick(int position);
@@ -64,16 +65,18 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         }
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,PeopleInQAdapterClick peopleInQAdapterClick) {
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
+        this.qCodeQR = qCodeQR;
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,PeopleInQAdapterClick peopleInQAdapterClick, int glowPostion) {
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context,PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
+        this.qCodeQR = qCodeQR;
         this.glowPostion = glowPostion;
     }
 
@@ -88,7 +91,7 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
 
     @Override
     public void onBindViewHolder(final MyViewHolder recordHolder, final int position) {
-        JsonQueuedPerson jsonQueuedPerson = dataSet.get(position);
+        final JsonQueuedPerson jsonQueuedPerson = dataSet.get(position);
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
 
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
@@ -150,6 +153,8 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MedicalHistoryDetailActivity.class);
+                intent.putExtra("qCodeQR",qCodeQR);
+                intent.putExtra("data",jsonQueuedPerson);
                 context.startActivity(intent);
             }
         });
