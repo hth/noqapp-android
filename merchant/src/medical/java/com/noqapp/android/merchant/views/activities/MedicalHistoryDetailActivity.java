@@ -3,8 +3,6 @@ package com.noqapp.android.merchant.views.activities;
 /**
  * Created by chandra on 5/7/17.
  */
-
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
