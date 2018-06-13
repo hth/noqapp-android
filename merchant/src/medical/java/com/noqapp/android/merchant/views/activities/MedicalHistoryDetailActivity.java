@@ -82,6 +82,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                         jsonMedicalRecord.setPastHistory(edt_past_history.getText().toString());
                         jsonMedicalRecord.setFamilyHistory(actv_family_history.getText().toString());
                         jsonMedicalRecord.setKnownAllergies(edt_known_allergy.getText().toString());
+                        jsonMedicalRecord.setClinicalFinding(edt_clinical_finding.getText().toString());
+                        jsonMedicalRecord.setProvisionalDifferentialDiagnosis(edt_provisional.getText().toString());
                         MedicalHistoryModel.add( LaunchActivity.getLaunchActivity().getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),jsonMedicalRecord);
