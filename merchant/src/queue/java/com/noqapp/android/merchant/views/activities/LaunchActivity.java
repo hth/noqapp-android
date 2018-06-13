@@ -39,6 +39,11 @@ public class LaunchActivity extends BaseLaunchActivity {
 
 
     @Override
+    public void enableDisableDrawer(boolean isEnable) {
+        // do nothing here
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());

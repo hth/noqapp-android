@@ -51,6 +51,11 @@ public class LaunchActivity extends BaseLaunchActivity {
 
 
     @Override
+    public void enableDisableDrawer(boolean isEnable) {
+        mDrawerLayout.setDrawerLockMode(isEnable?DrawerLayout.LOCK_MODE_UNLOCKED:DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
@@ -195,9 +200,6 @@ public class LaunchActivity extends BaseLaunchActivity {
         }
     }
 
-    public void enableDrawer(){
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
 
     @Override
     protected void onResume() {
