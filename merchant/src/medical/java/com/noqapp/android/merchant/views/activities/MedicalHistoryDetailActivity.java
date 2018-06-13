@@ -78,7 +78,11 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                     if(validate()){
                         JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                         jsonMedicalRecord.setCodeQR(qCodeQR);
-                        jsonMedicalRecord.setQueueUserId(StringUtils.isBlank(jsonQueuedPerson.getQueueUserId()) ? "100000000032" : jsonQueuedPerson.getQueueUserId());
+                        if (StringUtils.isBlank(jsonQueuedPerson.getQueueUserId())) {
+                            throw new RuntimeException("Need QID");
+                            //TODO better error handling
+                        }
+                        jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
                         jsonMedicalRecord.setChiefComplain(edt_complaints.getText().toString());
                         jsonMedicalRecord.setPastHistory(edt_past_history.getText().toString());
                         jsonMedicalRecord.setFamilyHistory(actv_family_history.getText().toString());
