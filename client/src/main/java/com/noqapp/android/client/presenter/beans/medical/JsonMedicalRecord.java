@@ -79,8 +79,11 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
     @JsonProperty ("bc")
     private String bizCategoryName;
 
+    @JsonProperty ("u")
+    private String createDate;
+
     @JsonProperty ("c")
-    private String created;
+    private String codeQR;
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
@@ -235,12 +238,21 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
         return this;
     }
 
-    public String getCreated() {
-        return created;
+    public String getCreateDate() {
+        return createDate;
     }
 
-    public JsonMedicalRecord setCreated(String created) {
-        this.created = created;
+    public JsonMedicalRecord setCreateDate(String createDate) {
+        this.createDate = createDate;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonMedicalRecord setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
         return this;
     }
 }
