@@ -8,169 +8,194 @@
     <include layout="@layout/toolbar_layout" />
 
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/ll_main"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn_update"
+            android:overScrollMode="never"
+            android:layout_alignParentTop="true">
+
+            <LinearLayout
+                android:id="@+id/ll_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        style="@style/style_mdh_header"
+                        android:text="Chief Complaint: " />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/edt_complaints"
+                        style="@style/style_mdh_details"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        style="@style/style_mdh_header"
+                        android:text="Past History: " />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/edt_past_history"
+                        style="@style/style_mdh_details"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        style="@style/style_mdh_header"
+                        android:text="Family History: " />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_family_history"
+                        style="@style/style_mdh_details"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        style="@style/style_mdh_header"
+                        android:text="Known Allergies: " />
+
+                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                        android:id="@+id/edt_known_allergy"
+                        style="@style/style_mdh_details"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_physical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        style="@style/style_mdh_header"
+                        android:text="Physical Examination: " />
+
+                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                        style="@style/style_mdh_details"
+                        android:id="@+id/edt_physical_exam"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        style="@style/style_mdh_header"
+                        android:text="Clinical Findings: " />
+
+                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                        android:id="@+id/edt_clinical_finding"
+                        style="@style/style_mdh_details"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        style="@style/style_mdh_header"
+                        android:text="Provisional /Differential Diagnosis" />
+
+                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                        android:id="@+id/edt_provisional"
+                        style="@style/style_mdh_details"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        style="@style/style_mdh_header"
+                        android:text="Investigation Advised: " />
+
+                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                        android:id="@+id/edt_investigation"
+                        style="@style/style_mdh_details"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_medication"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        style="@style/style_mdh_header"
+                        android:text="Treatment Advice: " />
+
+                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                        style="@style/style_mdh_details"
+                        android:id="@+id/edt_treatment"
+                        android:text="" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+        <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+            android:id="@+id/btn_update"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="15dp">
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_drawable"
+            android:text="@string/update"
+            android:textAllCaps="false"
+            android:textColor="@color/colorMobile"
+            android:textSize="18sp" />
+    </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                    style="@style/style_mdh_header"
-                    android:text="Chief Complaint: " />
-
-                <AutoCompleteTextView
-                    android:id="@+id/edt_complaints"
-                    style="@style/style_mdh_details"
-                    android:text="" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                    style="@style/style_mdh_header"
-                    android:text="Past History: " />
-
-                <AutoCompleteTextView
-                    android:id="@+id/edt_past_history"
-                    style="@style/style_mdh_details"
-                    android:text="" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                    style="@style/style_mdh_header"
-                    android:text="Family History: " />
-
-                <AutoCompleteTextView
-                    android:id="@+id/tv_family_history"
-                    style="@style/style_mdh_details"
-                    android:text="" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                    style="@style/style_mdh_header"
-                    android:text="Known Allergies: " />
-
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                    android:id="@+id/tv_known_allergy"
-                    style="@style/style_mdh_details"
-                    android:text="" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_physical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                    style="@style/style_mdh_header"
-                    android:text="Physical Examination: " />
-
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                    style="@style/style_mdh_details"
-                    android:text="" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                    style="@style/style_mdh_header"
-                    android:text="Clinical Findings: " />
-
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                    android:id="@+id/tv_clinical_finding"
-                    style="@style/style_mdh_details"
-                    android:text="" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                    style="@style/style_mdh_header"
-                    android:text="Provisional /Differential Diagnosis" />
-
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                    android:id="@+id/tv_provisional"
-                    style="@style/style_mdh_details"
-                    android:text="" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                    style="@style/style_mdh_header"
-                    android:text="Investigation Advised: " />
-
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                    android:id="@+id/tv_investigation"
-                    style="@style/style_mdh_details"
-                    android:text="" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_medication"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                    style="@style/style_mdh_header"
-                    android:text="Treatment Advice: " />
-
-                <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                    style="@style/style_mdh_details"
-                    android:text="" />
-            </LinearLayout>
-        </LinearLayout>
-
-    </ScrollView>
 
 </LinearLayout>

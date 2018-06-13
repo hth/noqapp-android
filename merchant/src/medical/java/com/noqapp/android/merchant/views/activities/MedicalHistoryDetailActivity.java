@@ -8,40 +8,48 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-
-import org.apache.commons.lang3.StringUtils;
+import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.common.beans.JsonResponse;
+import com.noqapp.common.beans.medical.JsonMedicalRecord;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class MedicalHistoryDetailActivity extends AppCompatActivity {
+public class MedicalHistoryDetailActivity extends AppCompatActivity implements MedicalRecordPresenter{
     private final String packageName = "com.google.android.apps.handwriting.ime";
     private ImageView actionbarBack;
     private HashMap<String, ArrayList<String>> mHashmapTemp = null;
     private String qCodeQR = "";
-    private AutoCompleteTextView edt_complaints;
-    protected AutoCompleteTextView edt_past_history;
+    private AutoCompleteTextView edt_complaints,actv_family_history,edt_past_history;
+    private EditText edt_known_allergy,edt_physical_exam,edt_clinical_finding,edt_provisional,edt_investigation,edt_treatment;
     private final String xray = "X-ray";
     private final String medicine = "Medicine";
     private final String mri = "MRI";
     private JsonQueuedPerson jsonQueuedPerson;
+    private Button btn_update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +57,39 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_medical_history_details);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
-
+        MedicalHistoryModel.medicalRecordPresenter = this;
         edt_complaints = (AutoCompleteTextView) findViewById(R.id.edt_complaints);
         edt_past_history = (AutoCompleteTextView) findViewById(R.id.edt_past_history);
+        actv_family_history = (AutoCompleteTextView) findViewById(R.id.actv_family_history);
+
+        edt_known_allergy = (EditText) findViewById(R.id.edt_known_allergy);
+        edt_physical_exam = (EditText) findViewById(R.id.edt_physical_exam);
+        edt_clinical_finding = (EditText) findViewById(R.id.edt_clinical_finding);
+        edt_provisional = (EditText) findViewById(R.id.edt_provisional);
+        edt_investigation = (EditText) findViewById(R.id.edt_investigation);
+        edt_treatment = (EditText) findViewById(R.id.edt_treatment);
         qCodeQR = getIntent().getStringExtra("qCodeQR");
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
+        btn_update = (Button) findViewById(R.id.btn_update);
+        btn_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    if(validate()){
+                        JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
+                        jsonMedicalRecord.setCodeQR(qCodeQR);
+                        jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
+                        jsonMedicalRecord.setChiefComplain(edt_complaints.getText().toString());
+                        jsonMedicalRecord.setPastHistory(edt_past_history.getText().toString());
+                        jsonMedicalRecord.setFamilyHistory(actv_family_history.getText().toString());
+                        jsonMedicalRecord.setKnownAllergies(edt_known_allergy.getText().toString());
+                        MedicalHistoryModel.add( LaunchActivity.getLaunchActivity().getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),jsonMedicalRecord);
+                    }else{
+                        Toast.makeText(MedicalHistoryDetailActivity.this,"Please fill atleast one field",Toast.LENGTH_LONG).show();
+                    }
+            }
+        });
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,30 +141,18 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity {
             tv_title.setText("Scribble app missing");
         }
 
-//        HashMap<String, ArrayList<String>> mHashmap = new HashMap<>();
-//        ArrayList<String> aa =new ArrayList<>();
-//        aa.add("lower elbow");
-//        aa.add("upper hand");
-//        ArrayList<String> bb =new ArrayList<>();
-//        bb.add("Amoxo");
-//        bb.add("Paracetamol");
-//
-//        ArrayList<String> cc =new ArrayList<>();
-//        cc.add("qwerty");
-//        cc.add("ytrewq");
-//        mHashmap.put("X-ray",aa);
-//        mHashmap.put("Medicine",bb);
-//        mHashmap.put("MRI",cc);
-
-//        LaunchActivity.getLaunchActivity().setSuggestions(mHashmap);
-//
 
         String strOutput = LaunchActivity.getLaunchActivity().getSuggestions();
         Type type = new TypeToken<HashMap<String, ArrayList<String>>>() {
         }.getType();
         Gson gson = new Gson();
-        if (StringUtils.isBlank(strOutput)) {
+        if (TextUtils.isEmpty(strOutput) || strOutput.equalsIgnoreCase("null")) {
             Log.v("JSON", "empty json");
+            mHashmapTemp = new HashMap<>();
+            mHashmapTemp.put(xray, new ArrayList<String>());
+            mHashmapTemp.put(medicine, new ArrayList<String>());
+            mHashmapTemp.put(mri, new ArrayList<String>());
+            LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
         } else {
             try {
                 mHashmapTemp = gson.fromJson(strOutput, type);
@@ -173,6 +197,49 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity {
                 mHashmapTemp.get(medicine).add(edt_complaints.getText().toString());
             }
         LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
+
+    }
+
+    private boolean validate() {
+        btn_update.setBackgroundResource(R.drawable.button_drawable);
+        btn_update.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
+        btn_update.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
+        boolean isValid = true;
+        new AppUtils().hideKeyBoard(this);
+
+        if (TextUtils.isEmpty(edt_complaints.getText())&&
+                TextUtils.isEmpty(edt_past_history.getText())&&
+                TextUtils.isEmpty(actv_family_history.getText())&&
+                TextUtils.isEmpty(edt_known_allergy.getText())&&
+                TextUtils.isEmpty(edt_physical_exam.getText())&&
+                TextUtils.isEmpty(edt_clinical_finding.getText())&&
+                TextUtils.isEmpty(edt_provisional.getText())&&
+                TextUtils.isEmpty(edt_investigation.getText())&&
+                TextUtils.isEmpty(edt_treatment.getText())) {
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    @Override
+    public void medicalRecordResponse(JsonResponse jsonResponse) {
+        if(jsonResponse.getResponse() ==1){
+            Toast.makeText(this,"Medical History updated Successfully",Toast.LENGTH_LONG).show();
+            finish();
+        }else{
+            Toast.makeText(this,"Failed to update",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    @Override
+    public void medicalRecordError() {
+        Toast.makeText(this,"Failed to update",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
 
     }
 }

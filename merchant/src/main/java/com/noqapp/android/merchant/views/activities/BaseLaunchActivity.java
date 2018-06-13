@@ -152,7 +152,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     public String getSuggestions() {
-        return sharedpreferences.getString(KEY_SUGGESTION ,"");
+        return sharedpreferences.getString(KEY_SUGGESTION ,null);
     }
 
     public void setSuggestions(HashMap<String, ArrayList<String>> mHashmap) {

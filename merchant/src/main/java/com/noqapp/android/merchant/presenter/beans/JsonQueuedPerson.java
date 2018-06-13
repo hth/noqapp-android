@@ -30,25 +30,25 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonQueuedPerson implements Serializable {
 
-    @JsonProperty ("t")
+    @JsonProperty("t")
     private int token;
 
     @JsonProperty("qid")
     private String queueUserId;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String customerName = "";
 
-    @JsonProperty ("p")
+    @JsonProperty("p")
     private String customerPhone = "";
 
-    @JsonProperty ("qu")
+    @JsonProperty("qu")
     private QueueUserStateEnum queueUserState;
 
-    @JsonProperty ("sid")
+    @JsonProperty("sid")
     private String serverDeviceId = "";
 
-    @JsonProperty ("min")
+    @JsonProperty("min")
     private List<JsonQueuedMinorPerson> minors = new ArrayList<>();
 
     public int getToken() {
@@ -57,6 +57,15 @@ public class JsonQueuedPerson implements Serializable {
 
     public JsonQueuedPerson setToken(int token) {
         this.token = token;
+        return this;
+    }
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public JsonQueuedPerson setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
         return this;
     }
 
@@ -93,6 +102,15 @@ public class JsonQueuedPerson implements Serializable {
 
     public JsonQueuedPerson setServerDeviceId(String serverDeviceId) {
         this.serverDeviceId = serverDeviceId;
+        return this;
+    }
+
+    public List<JsonQueuedMinorPerson> getMinors() {
+        return minors;
+    }
+
+    public JsonQueuedPerson setMinors(List<JsonQueuedMinorPerson> minors) {
+        this.minors = minors;
         return this;
     }
 }
