@@ -1,4 +1,4 @@
-package com.noqapp.android.client.model.types;
+package com.noqapp.common.model.types;
 
 public enum MedicationRouteEnum {
     OR("OR", "Oral"),

@@ -1,4 +1,4 @@
-package com.noqapp.android.client.model.types;
+package com.noqapp.common.model.types;
 
 /**
  * Created by hitender on 1/2/18.

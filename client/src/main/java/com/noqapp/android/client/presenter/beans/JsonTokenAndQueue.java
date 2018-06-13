@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.client.model.types.BusinessTypeEnum;
+import com.noqapp.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
