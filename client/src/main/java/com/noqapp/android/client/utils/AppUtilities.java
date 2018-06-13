@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.types.BusinessTypeEnum;
+import com.noqapp.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;

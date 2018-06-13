@@ -37,7 +37,6 @@ import android.widget.Toast;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
-import com.noqapp.android.client.presenter.ImageUploadPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -46,6 +45,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.body.UpdateProfile;
+import com.noqapp.common.presenter.ImageUploadPresenter;
 import com.noqapp.common.utils.ImagePathReader;
 import com.squareup.picasso.Picasso;
 

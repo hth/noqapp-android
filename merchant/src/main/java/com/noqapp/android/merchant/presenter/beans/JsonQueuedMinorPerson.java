@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.common.model.types.GenderEnum;
 
+import java.io.Serializable;
 import java.util.Base64;
 
 /**
@@ -27,7 +28,7 @@ import java.util.Base64;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonQueuedMinorPerson {
+public class JsonQueuedMinorPerson implements Serializable {
 
     @JsonProperty("t")
     private int token;

@@ -1,4 +1,4 @@
-package com.noqapp.android.client.presenter;
+package com.noqapp.common.presenter;
 
 import com.noqapp.common.beans.JsonResponse;
 

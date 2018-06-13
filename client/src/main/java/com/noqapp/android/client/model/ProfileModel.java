@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.noqapp.android.client.model.response.api.ProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.ImageUploadPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
@@ -14,6 +13,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.body.UpdateProfile;
+import com.noqapp.common.presenter.ImageUploadPresenter;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;

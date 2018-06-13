@@ -1,12 +1,12 @@
-package com.noqapp.android.client.presenter.beans.medical;
+package com.noqapp.common.beans.medical;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.client.model.types.BusinessTypeEnum;
-import com.noqapp.android.client.presenter.beans.AbstractDomain;
-import com.noqapp.android.client.presenter.beans.JsonRecordAccess;
+import com.noqapp.common.beans.AbstractDomain;
+import com.noqapp.common.beans.JsonRecordAccess;
+import com.noqapp.common.model.types.BusinessTypeEnum;
 
 import java.io.Serializable;
 import java.util.List;

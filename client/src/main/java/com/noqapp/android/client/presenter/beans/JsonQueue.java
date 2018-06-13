@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.google.common.base.Objects;
 import com.noqapp.android.client.model.types.AmenityEnum;
-import com.noqapp.android.client.model.types.BusinessTypeEnum;
+import com.noqapp.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.DeliveryTypeEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.client.model.types.PaymentTypeEnum;

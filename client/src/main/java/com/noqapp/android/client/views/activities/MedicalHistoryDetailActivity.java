@@ -12,9 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.medical.JsonMedicalPhysicalExamination;
-import com.noqapp.android.client.presenter.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.client.presenter.beans.medical.JsonMedicine;
+import com.noqapp.common.beans.medical.JsonMedicalPhysicalExamination;
+import com.noqapp.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.common.beans.medical.JsonMedicine;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@ import android.util.Log;
 import com.noqapp.android.client.model.response.api.MedicalRecordService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.MedicalRecordPresenter;
-import com.noqapp.android.client.presenter.beans.medical.JsonMedicalRecordList;
+import com.noqapp.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.client.utils.Constants;
 
 import retrofit2.Call;
