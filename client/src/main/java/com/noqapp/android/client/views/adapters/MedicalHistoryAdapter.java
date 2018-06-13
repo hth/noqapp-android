@@ -57,7 +57,7 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         recordHolder.tv_business_name.setText(jsonMedicalRecordList.get(position).getBusinessName());
         recordHolder.tv_business_category_name.setText(jsonMedicalRecordList.get(position).getBizCategoryName());
         recordHolder.tv_complaints.setText(jsonMedicalRecordList.get(position).getChiefComplain());
-        recordHolder.tv_create.setText("Visited: " + jsonMedicalRecordList.get(position).getCreated());
+        recordHolder.tv_create.setText("Visited: " + jsonMedicalRecordList.get(position).getCreateDate());
         recordHolder.tv_no_of_time_access.setText("No of times record view: " + jsonMedicalRecordList.get(position).getRecordAccess().size());
         return view;
     }

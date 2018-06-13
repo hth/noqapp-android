@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.adapters;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
@@ -24,6 +25,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.MedicalHistoryDetailActivity;
 import com.noqapp.common.utils.PhoneFormatterUtil;
 
 import java.util.List;
@@ -46,6 +48,7 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         TextView tv_customer_mobile;
         TextView tv_sequence_number;
         TextView tv_status_msg;
+        TextView tv_create_case;
         ImageView iv_info;
         CardView cardview;
 
@@ -55,6 +58,7 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
             this.tv_customer_mobile = (TextView) itemView.findViewById(R.id.tv_customer_mobile);
             this.tv_sequence_number = (TextView) itemView.findViewById(R.id.tv_sequence_number);
             this.tv_status_msg = (TextView) itemView.findViewById(R.id.tv_status_msg);
+            this.tv_create_case = (TextView) itemView.findViewById(R.id.tv_create_case);
             this.iv_info = (ImageView) itemView.findViewById(R.id.iv_info);
             this.cardview = (CardView) itemView.findViewById(R.id.cardview);
         }
@@ -141,6 +145,14 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
                 Log.e(TAG, "Reached unsupported condition state=" + jsonQueuedPerson.getQueueUserState());
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
+
+        recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MedicalHistoryDetailActivity.class);
+                context.startActivity(intent);
+            }
+        });
 
         if(glowPostion > 0 && glowPostion - 1 == position){
             setAnim(recordHolder.cardview);

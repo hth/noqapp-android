@@ -82,4 +82,5 @@
     <string name="msg_merchant_served">Serviced</string>
     <string name="msg_merchant_skip">Skipped</string>
     <string name="service_time">Current Patient \n Service time</string>
+    <string name="create_case">Case History</string>
 </resources>

@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -21,24 +22,40 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.merchant.views.fragments.UserProfileFragment;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
+import com.noqapp.common.beans.JsonResponse;
+import com.noqapp.common.presenter.ImageUploadPresenter;
+import com.noqapp.common.utils.ImagePathReader;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
-public class ManagerProfileActivity extends AppCompatActivity implements View.OnClickListener,MerchantPresenter {
+
+public class ManagerProfileActivity extends AppCompatActivity implements View.OnClickListener,MerchantPresenter,ImageUploadPresenter {
 
 
     private TextView tv_profile_name;
@@ -75,9 +92,9 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
 //        ButterKnife.bind(this);
 //        initActionsViews(false);
 //        tv_toolbar_title.setText("Doctor Profile");
-//        iv_profile = findViewById(R.id.iv_profile);
+        iv_profile = findViewById(R.id.iv_profile);
 //        iv_edit.setOnClickListener(this);
-//        iv_profile.setOnClickListener(this);
+        iv_profile.setOnClickListener(this);
 //        webProfileId = getIntent().getStringExtra("webProfileId");
 //        managerName = getIntent().getStringExtra("managerName");
 //        managerImageUrl = getIntent().getStringExtra("managerImage");
@@ -115,6 +132,8 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
             userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfile());
             userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
+            Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
+            loadProfilePic(jsonMerchant.getJsonProfile().getProfileImage());
         }
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
@@ -148,6 +167,19 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             }
         }
     }
+    private void loadProfilePic(String imageUrl) {
+        Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
+        try {
+            if (!TextUtils.isEmpty(imageUrl)) {
+                Picasso.with(this)
+                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageUrl)
+                        .into(iv_profile);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -181,32 +213,29 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SELECT_PICTURE) {
             if (resultCode == RESULT_OK) {
-                //  Bitmap bitmap = getPath(data.getData());
-                //  iv_profile.setImageBitmap(bitmap);
-
                 Uri selectedImage = data.getData();
                 Bitmap bitmap;
-                /*try {
+                try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                     iv_profile.setImageBitmap(bitmap);
 
                     String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
-                    NoQueueBaseActivity.setUserProfileUri(convertedPath);
+                   // NoQueueBaseActivity.setUserProfileUri(convertedPath);
 
                     if (!TextUtils.isEmpty(convertedPath)) {
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                     //   ProfileModel.imageUploadPresenter = this;
-                      //  ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
+                        MerchantProfileModel.imageUploadPresenter = this;
+                        MerchantProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
                     }
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                }*/
+                }
             }
         }
     }
@@ -290,5 +319,15 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     protected void onResume() {
         super.onResume();
        //tv_name.setText(LaunchActivity.getLaunchActivity().getUserName());
+    }
+
+    @Override
+    public void imageUploadResponse(JsonResponse jsonResponse) {
+        Log.v("Image upload", "" + jsonResponse.getResponse());
+    }
+
+    @Override
+    public void imageUploadError() {
+
     }
 }

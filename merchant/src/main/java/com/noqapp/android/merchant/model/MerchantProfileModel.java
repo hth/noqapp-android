@@ -6,11 +6,15 @@ import android.util.Log;
 import com.noqapp.android.merchant.model.response.api.MerchantProfileService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.body.UpdateProfile;
+import com.noqapp.common.presenter.ImageUploadPresenter;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,6 +29,7 @@ public class MerchantProfileModel {
     private static final MerchantProfileService merchantProfileService;
     public static MerchantPresenter merchantPresenter;
     public static ProfilePresenter profilePresenter;
+    public static ImageUploadPresenter imageUploadPresenter;
 
 
     static {
@@ -82,6 +87,31 @@ public class MerchantProfileModel {
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 profilePresenter.profileError();
+            }
+        });
+    }
+
+    public static void uploadImage(String did, String mail, String auth, MultipartBody.Part file) {
+        merchantProfileService.upload(did, Constants.DEVICE_TYPE, mail, auth, file).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    imageUploadPresenter.authenticationFailure(response.code());
+                    return;
+                }
+                if (null != response.body()) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    imageUploadPresenter.imageUploadResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Failed image upload");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                imageUploadPresenter.imageUploadError();
             }
         });
     }
