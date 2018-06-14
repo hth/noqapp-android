@@ -575,12 +575,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 break;
             }
             case R.id.nav_share:
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,
-                        "Hey check out my app at: https://play.google.com/store/apps/details?id=" + this.getPackageName());
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
+                AppUtilities.shareTheApp(launchActivity);
                 break;
             case R.id.nav_legal:
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -609,17 +604,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 showChangeLangDialog();
                 break;
             case R.id.nav_rate_app:
-                Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
-                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                try {
-                    startActivity(goToMarket);
-                } catch (ActivityNotFoundException e) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
-                }
+                AppUtilities.openPlayStore(launchActivity);
                 break;
         }
 

@@ -92,9 +92,12 @@ public class LaunchActivity extends BaseLaunchActivity {
         mDrawerList = (ListView) findViewById(R.id.drawer_list);
         NavigationBean[] drawerItem = null;
         if (isLoggedIn()) {
-            drawerItem = new NavigationBean[3];
+            drawerItem = new NavigationBean[6];
             drawerItem[1] = new NavigationBean(R.drawable.profile_red, "Profile");
             drawerItem[2] = new NavigationBean(R.mipmap.logout, "Logout");
+            drawerItem[3] = new NavigationBean(R.drawable.ic_menu_share, "Share the app");
+            drawerItem[4] = new NavigationBean(R.drawable.ic_star, "Rate the app");
+            drawerItem[5] = new NavigationBean(R.drawable.ic_star, "Change language");
 
         } else {
             drawerItem = new NavigationBean[1];
@@ -124,6 +127,15 @@ public class LaunchActivity extends BaseLaunchActivity {
                         break;
                     case 2:
                         showLogoutDialog();
+                        break;
+                    case 3:
+                        AppUtils.shareTheApp(launchActivity);
+                        break;
+                    case 4:
+                        AppUtils.openPlayStore(launchActivity);
+                        break;
+                    case 5:
+                        showChangeLangDialog();
                         break;
                     default:
                 }
@@ -216,5 +228,7 @@ public class LaunchActivity extends BaseLaunchActivity {
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
     }
+
+
 
 }

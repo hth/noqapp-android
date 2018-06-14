@@ -16,12 +16,17 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.common.utils.CommonHelper;
+
+import java.util.Locale;
+
 /**
  * User: hitender
  * Date: 4/24/17 11:13 PM
  */
 
-public class AppUtils {
+public class AppUtils extends CommonHelper {
     private final String TAG = AppUtils.class.getSimpleName();
 
     public static ApkVersionModel parseVersion(String version) {
@@ -43,14 +48,6 @@ public class AppUtils {
         return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    static void openPlayStore(Context context) {
-        final String appPackageName = context.getPackageName(); // getPackageName() from Context or Activity object
-        try {
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-        } catch (android.content.ActivityNotFoundException anfe) {
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-        }
-    }
 
     //TODO(chandra) conditioned to call when permission available
     public void makeCall(Activity context, String phoneNumber) {
@@ -74,11 +71,27 @@ public class AppUtils {
         }
     }
 
-    public void hideKeyBoard(Activity activity) {
-        View view = activity.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    public static void changeLanguage(String language) {
+
+        if (!language.equals("")) {
+            if (language.equals("en")) {
+                LaunchActivity.language = "en_US";
+                LaunchActivity.locale = Locale.ENGLISH;
+                LaunchActivity.languagepref.edit()
+                        .putString("pref_language", "en").apply();
+            } else {
+                LaunchActivity.language = "hi";
+                LaunchActivity.locale = new Locale("hi");
+                ;
+                LaunchActivity.languagepref.edit()
+                        .putString("pref_language", "hi").apply();
+            }
+        } else {
+            LaunchActivity.language = "en_US";
+            LaunchActivity.locale = Locale.ENGLISH;
+            LaunchActivity.languagepref.edit()
+                    .putString("pref_language", "en").apply();
         }
+
     }
 }
