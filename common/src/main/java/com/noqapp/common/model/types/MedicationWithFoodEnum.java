@@ -1,5 +1,8 @@
 package com.noqapp.common.model.types;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum MedicationWithFoodEnum {
     BF("BF", "Before Food"),
     AF("AF", "After Food");
@@ -18,6 +21,11 @@ public enum MedicationWithFoodEnum {
 
     public String getDescription() {
         return this.description;
+    }
+
+    public static List<MedicationWithFoodEnum> asList() {
+        MedicationWithFoodEnum[] all = MedicationWithFoodEnum.values();
+        return Arrays.asList(all);
     }
 
     public String toString() {

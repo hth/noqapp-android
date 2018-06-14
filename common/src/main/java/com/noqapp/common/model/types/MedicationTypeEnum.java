@@ -1,5 +1,8 @@
 package com.noqapp.common.model.types;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * hitender
  * 6/14/18 1:49 PM
@@ -24,6 +27,11 @@ public enum MedicationTypeEnum {
 
     public String getDescription() {
         return description;
+    }
+
+    public static List<MedicationTypeEnum> asList() {
+        MedicationTypeEnum[] all = MedicationTypeEnum.values();
+        return Arrays.asList(all);
     }
 
     @Override
