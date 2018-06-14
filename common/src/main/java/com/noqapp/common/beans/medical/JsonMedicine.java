@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.beans.AbstractDomain;
-import com.noqapp.common.model.types.MedicationRouteEnum;
+import com.noqapp.common.model.types.MedicationTypeEnum;
 import com.noqapp.common.model.types.MedicationWithFoodEnum;
 
 import java.io.Serializable;
@@ -30,16 +30,19 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
     private String name;
 
     @JsonProperty("st")
-    private int strength;
+    private String strength;
 
-    @JsonProperty("ti")
-    private int times;
+    @JsonProperty("df")
+    private String dailyFrequency;
+
+    @JsonProperty("co")
+    private String course;
 
     @JsonProperty("mf")
     private MedicationWithFoodEnum medicationWithFood;
 
-    @JsonProperty ("mr")
-    private MedicationRouteEnum medicationRoute;
+    @JsonProperty("mt")
+    private MedicationTypeEnum medicationType;
 
     public String getName() {
         return name;
@@ -50,21 +53,30 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public int getStrength() {
+    public String getStrength() {
         return strength;
     }
 
-    public JsonMedicine setStrength(int strength) {
+    public JsonMedicine setStrength(String strength) {
         this.strength = strength;
         return this;
     }
 
-    public int getTimes() {
-        return times;
+    public String getDailyFrequency() {
+        return dailyFrequency;
     }
 
-    public JsonMedicine setTimes(int times) {
-        this.times = times;
+    public JsonMedicine setDailyFrequency(String dailyFrequency) {
+        this.dailyFrequency = dailyFrequency;
+        return this;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public JsonMedicine setCourse(String course) {
+        this.course = course;
         return this;
     }
 
@@ -77,12 +89,12 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public MedicationRouteEnum getMedicationRoute() {
-        return medicationRoute;
+    public MedicationTypeEnum getMedicationType() {
+        return medicationType;
     }
 
-    public JsonMedicine setMedicationRoute(MedicationRouteEnum medicationRoute) {
-        this.medicationRoute = medicationRoute;
+    public JsonMedicine setMedicationType(MedicationTypeEnum medicationType) {
+        this.medicationType = medicationType;
         return this;
     }
 }

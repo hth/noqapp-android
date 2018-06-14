@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorAccent"
                 android:padding="10dp"
                 android:text="@string/create_case"
                 android:textColor="@color/white" />

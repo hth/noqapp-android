@@ -97,7 +97,7 @@ public class LaunchActivity extends BaseLaunchActivity {
             drawerItem[2] = new NavigationBean(R.mipmap.logout, "Logout");
             drawerItem[3] = new NavigationBean(R.drawable.ic_menu_share, "Share the app");
             drawerItem[4] = new NavigationBean(R.drawable.ic_star, "Rate the app");
-            drawerItem[5] = new NavigationBean(R.drawable.ic_star, "Change language");
+            drawerItem[5] = new NavigationBean(R.drawable.language, "Change language");
 
         } else {
             drawerItem = new NavigationBean[1];

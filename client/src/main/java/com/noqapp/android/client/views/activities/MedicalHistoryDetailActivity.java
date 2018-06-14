@@ -92,7 +92,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             mType.setPadding(5, 3, 0, 3);
             mType.setTypeface(Typeface.DEFAULT_BOLD);
             mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-            mType.setText(medicinedata.get(j).getName() + ":" + medicinedata.get(j).getStrength() + ":" + medicinedata.get(j).getTimes());
+            mType.setText(medicinedata.get(j).getName() + ":" + medicinedata.get(j).getStrength() + ":" + medicinedata.get(j).getCourse());
             childLayout.addView(mType, 0);
             ll_medication.addView(childLayout);
         }

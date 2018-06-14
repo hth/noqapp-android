@@ -16,8 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/btn_update"
-            android:overScrollMode="never"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:id="@+id/ll_main"
@@ -25,6 +25,37 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="15dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_medicines"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                            style="@style/style_mdh_header"
+                            android:layout_width="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="Medication: " />
+
+                        <Button
+                            android:id="@+id/btn_add"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:background="@android:color/transparent"
+                            android:drawableRight="@drawable/add_medic"
+                            android:drawablePadding="5dp"
+                            android:padding="10dp"
+                            android:text="add new Medicine" />
+                    </RelativeLayout>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -106,8 +137,8 @@
                         android:text="Physical Examination: " />
 
                     <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                        style="@style/style_mdh_details"
                         android:id="@+id/edt_physical_exam"
+                        style="@style/style_mdh_details"
                         android:text="" />
 
                 </LinearLayout>
@@ -174,8 +205,8 @@
                         android:text="Treatment Advice: " />
 
                     <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                        style="@style/style_mdh_details"
                         android:id="@+id/edt_treatment"
+                        style="@style/style_mdh_details"
                         android:text="" />
                 </LinearLayout>
 
