@@ -1,7 +1,15 @@
 package com.noqapp.common.model.types;
 
+import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -29,10 +37,25 @@ public enum MedicationTypeEnum {
         return description;
     }
 
-    public static List<MedicationTypeEnum> asList() {
+    public static List<String> asList() {
         MedicationTypeEnum[] all = MedicationTypeEnum.values();
-        return Arrays.asList(all);
+        ArrayList<String> dataList = new ArrayList<>();
+        for (MedicationTypeEnum num : all) {
+            dataList.add(num.description);
+        }
+        return dataList;
     }
+
+    public static MedicationTypeEnum get(String name) {
+        Map<String, MedicationTypeEnum> map = new ConcurrentHashMap<String, MedicationTypeEnum>();
+        for (MedicationTypeEnum instance : MedicationTypeEnum.values()) {
+            map.put(instance.getDescription(), instance);
+        }
+        Map<String, MedicationTypeEnum> ENUM_MAP = Collections.unmodifiableMap(map);
+        Log.v("MedicationTypeEnum",ENUM_MAP.get(name).toString());
+        return ENUM_MAP.get(name);
+    }
+
 
     @Override
     public String toString() {
