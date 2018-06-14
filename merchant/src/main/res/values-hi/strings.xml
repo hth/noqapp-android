@@ -83,4 +83,9 @@
     <string name="msg_merchant_skip">Skipped</string>
     <string name="service_time">Current Patient \n Service time</string>
     <string name="create_case">Case History</string>
+
+    <string name="language_setting">भाषा बदलें</string>
+    <string name="lang_dialog_title">भाषा बदलें</string>
+    <string name="hindi"> हिंदी</string>
+    <string name="english">अंग्रेज़ी</string>
 </resources>

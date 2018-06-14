@@ -35,6 +35,7 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.common.utils.CommonHelper;
 import com.noqapp.common.utils.Formatter;
 
 import org.joda.time.LocalDateTime;
@@ -66,22 +67,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class AppUtilities {
+public class AppUtilities extends CommonHelper{
     private static final String TAG = AppUtilities.class.getSimpleName();
-
-    private static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
-    private static final SimpleDateFormat SDF_DOB = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
     private static Map<String, Locale> localeMap;
-
-    public static String convertDOBToValidFormat(String dob) {
-        try {
-            Date date = SDF_DOB_FROM_UI.parse(dob);
-            return SDF_DOB.format(date);
-        } catch (ParseException e) {
-            Log.e(TAG, "Error parsing DOB={}" + e.getLocalizedMessage(), e);
-            return "";
-        }
-    }
 
     public static String iso3CountryCodeToIso2CountryCode(String iso3CountryCode) {
         if (null == localeMap) {
@@ -132,37 +120,6 @@ public class AppUtilities {
         }
     }
 
-    public static void exportDatabase(Context context) {
-        try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
-
-            if (sd.canWrite()) {
-                String currentDBPath = "//data//" + context.getPackageName() + "//databases//" + "noqueue.db" + "";
-                String backupDBPath = System.currentTimeMillis() + "-noQueue.db";
-                File currentDB = new File(data, currentDBPath);
-                File backupDB = new File(sd, backupDBPath);
-
-                if (currentDB.exists()) {
-                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                    dst.transferFrom(src, 0, src.size());
-                    src.close();
-                    dst.close();
-                }
-            }
-        } catch (Exception e) {
-
-        }
-    }
-
-    public void hideKeyBoard(Activity activity) {
-        View view = activity.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
 
     static void setRatingStarColor(Drawable drawable, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -181,14 +138,6 @@ public class AppUtilities {
         setRatingStarColor(stars.getDrawable(0), ContextCompat.getColor(context, R.color.rating_unselect));
     }
 
-    static void openPlayStore(Context context) {
-        final String appPackageName = context.getPackageName(); // getPackageName() from Context or Activity object
-        try {
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-        } catch (android.content.ActivityNotFoundException anfe) {
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-        }
-    }
 
     public static int getTimeIn24HourFormat() {
         // To make sure minute in time 11:06 AM is not represented as 116 but as 1106.

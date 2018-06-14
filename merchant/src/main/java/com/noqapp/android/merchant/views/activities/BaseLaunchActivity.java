@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,10 +49,11 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
-public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter {
+public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter,SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
@@ -88,6 +90,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected TextView tv_toolbar_title;
     protected ImageView actionbarBack;
 
+    public static Locale locale;
+    public static SharedPreferences languagepref;
+    public static String language;
+
     public abstract void enableDisableDrawer(boolean isEnable);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +103,25 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         super.onCreate(savedInstanceState);
+        languagepref = PreferenceManager.getDefaultSharedPreferences(this);
+        languagepref.registerOnSharedPreferenceChangeListener(this);
+        language = languagepref.getString(
+                "pref_language", "");
 
+
+        if (!language.equals("")) {
+            if (language.equals("hi")) {
+                language = "hi";
+                locale = new Locale("hi");
+            } else {
+                locale = Locale.ENGLISH;
+                language = "en_US";
+            }
+
+        } else {
+            locale = Locale.ENGLISH;
+            language = "en_US";
+        }
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -406,5 +430,57 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 }
             }
         }
+    }
+
+    public void showChangeLangDialog() {
+        android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_language, null);
+        dialogBuilder.setView(dialogView);
+
+        final LinearLayout ll_hindi = (LinearLayout) dialogView.findViewById(R.id.ll_hindi);
+        final LinearLayout ll_english = (LinearLayout) dialogView.findViewById(R.id.ll_english);
+        final RadioButton rb_hi = (RadioButton) dialogView.findViewById(R.id.rb_hi);
+        final RadioButton rb_en = (RadioButton) dialogView.findViewById(R.id.rb_en);
+
+        if (language.equals("hi")) {
+            rb_hi.setChecked(true);
+            rb_en.setChecked(false);
+        } else {
+            rb_en.setChecked(true);
+            rb_hi.setChecked(false);
+        }
+
+
+        ll_hindi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppUtils.changeLanguage("hi");
+            }
+        });
+        ll_english.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppUtils.changeLanguage("en");
+            }
+        });
+        dialogBuilder.setTitle("");
+        android.app.AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                                          String key) {
+        if (key.equals("pref_language")) {
+            ((MyApplication) getApplication()).setLocale();
+            restartActivity();
+        }
+    }
+
+    private void restartActivity() {
+        Intent intent = getIntent();
+        startActivity(intent);
+        finish();
     }
 }

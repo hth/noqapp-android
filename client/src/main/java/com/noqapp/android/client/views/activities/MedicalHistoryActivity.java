@@ -23,6 +23,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MedicalHistoryAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -76,6 +77,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
         if (null != jsonMedicalRecordList & jsonMedicalRecordList.getJsonMedicalRecords().size() > 0) {
             jsonMedicalRecords = jsonMedicalRecordList.getJsonMedicalRecords();
         }
+        Collections.reverse(jsonMedicalRecords);
         MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(this, jsonMedicalRecords);
         listview.setAdapter(adapter);
         if (jsonMedicalRecords.size() <= 0) {

@@ -119,4 +119,10 @@
     <string name="error_invalid_date">Please select a valid date</string>
     <string name="error_dob_blank">Please enter date of birth</string>
     <string name="create_case">Case History</string>
+
+    <string name="language_setting">Change Language</string>
+    <string name="lang_dialog_title">Change Language</string>
+    <string name="hindi">Hindi</string>
+    <string name="english">English</string>
+
 </resources>
