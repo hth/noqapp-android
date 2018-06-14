@@ -30,13 +30,13 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
     private String name;
 
     @JsonProperty("st")
-    private int strength;
+    private String strength;
 
     @JsonProperty("df")
     private int dailyFrequency;
 
-    @JsonProperty("du")
-    private int duration;
+    @JsonProperty("co")
+    private int course;
 
     @JsonProperty("mf")
     private MedicationWithFoodEnum medicationWithFood;
@@ -53,11 +53,11 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public int getStrength() {
+    public String getStrength() {
         return strength;
     }
 
-    public JsonMedicine setStrength(int strength) {
+    public JsonMedicine setStrength(String strength) {
         this.strength = strength;
         return this;
     }
@@ -71,12 +71,12 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public int getDuration() {
-        return duration;
+    public int getCourse() {
+        return course;
     }
 
-    public JsonMedicine setDuration(int duration) {
-        this.duration = duration;
+    public JsonMedicine setCourse(int course) {
+        this.course = course;
         return this;
     }
 
