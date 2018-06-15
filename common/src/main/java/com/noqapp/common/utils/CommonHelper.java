@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,4 +57,17 @@ public class CommonHelper {
     }
 
 
+    /*
+     * Method add to hide the dropdown while setting the
+     * AutoCompleteTextView
+     */
+    public static void setAutoCompleteText(AutoCompleteTextView autoCompleteTextView, String text) {
+        autoCompleteTextView.setFocusable(false);
+        autoCompleteTextView.setFocusableInTouchMode(false);
+        autoCompleteTextView.setText(text);
+        autoCompleteTextView.setSelection(text.length()); // to make the cursor at end of the text
+        autoCompleteTextView.setFocusable(true);
+        autoCompleteTextView.setFocusableInTouchMode(true);
+        autoCompleteTextView.dismissDropDown();
+    }
 }

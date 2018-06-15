@@ -396,17 +396,6 @@ public class AppUtilities extends CommonHelper{
         return resultList;
     }
 
-    /*
-     * Method add to hide the dropdown while setting the
-     * AutoCompleteTextView
-     */
-    public static void setAutoCompleteText(AutoCompleteTextView autoCompleteTextView, String text) {
-        autoCompleteTextView.setFocusable(false);
-        autoCompleteTextView.setFocusableInTouchMode(false);
-        autoCompleteTextView.setText(text);
-        autoCompleteTextView.setFocusable(true);
-        autoCompleteTextView.setFocusableInTouchMode(true);
-    }
 
     public static String getYearFromDate(String dateValue){
         try {
