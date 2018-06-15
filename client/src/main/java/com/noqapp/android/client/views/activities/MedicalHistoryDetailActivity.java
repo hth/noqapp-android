@@ -3,8 +3,6 @@ package com.noqapp.android.client.views.activities;
 /**
  * Created by chandra on 5/7/17.
  */
-
-
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,7 +12,7 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.common.beans.medical.JsonMedicalPhysicalExamination;
 import com.noqapp.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.common.beans.medical.JsonMedicine;
+import com.noqapp.common.beans.medical.JsonMedicalMedicine;
 
 import java.util.List;
 
@@ -45,7 +43,6 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
     @BindView(R.id.ll_medication)
     protected LinearLayout ll_medication;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +59,8 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         tv_provisional.setText(jsonMedicalRecord.getProvisionalDifferentialDiagnosis());
         //  tv_investigation.setText(jsonMedicalRecord.get);
 
-        List<JsonMedicalPhysicalExamination> data = jsonMedicalRecord.getMedicalPhysicalExaminations();
-        for (int j = 0; j < data.size(); j++) {
+        List<JsonMedicalPhysicalExamination> jsonMedicalPhysicalExaminations = jsonMedicalRecord.getMedicalPhysicalExaminations();
+        for (int j = 0; j < jsonMedicalPhysicalExaminations.size(); j++) {
 
             LinearLayout childLayout = new LinearLayout(this);
             LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
@@ -75,12 +72,13 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             mType.setPadding(5, 3, 0, 3);
             mType.setTypeface(Typeface.DEFAULT_BOLD);
             mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-            mType.setText(data.get(j).getValue() + ":" + data.get(j).getTestResult());
+            mType.setText(jsonMedicalPhysicalExaminations.get(j).getValue() + ":" + jsonMedicalPhysicalExaminations.get(j).getTestResult());
             childLayout.addView(mType, 0);
             ll_physical.addView(childLayout);
         }
-        List<JsonMedicine> medicinedata = jsonMedicalRecord.getMedicines();
-        for (int j = 0; j < medicinedata.size(); j++) {
+
+        List<JsonMedicalMedicine> jsonMedicalMedicine = jsonMedicalRecord.getMedicalMedicines();
+        for (int j = 0; j < jsonMedicalMedicine.size(); j++) {
 
             LinearLayout childLayout = new LinearLayout(this);
             LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
@@ -92,7 +90,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             mType.setPadding(5, 3, 0, 3);
             mType.setTypeface(Typeface.DEFAULT_BOLD);
             mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-            mType.setText(medicinedata.get(j).getName() + ":" + medicinedata.get(j).getStrength() + ":" + medicinedata.get(j).getCourse());
+            mType.setText(jsonMedicalMedicine.get(j).getName() + ":" + jsonMedicalMedicine.get(j).getStrength() + ":" + jsonMedicalMedicine.get(j).getCourse());
             childLayout.addView(mType, 0);
             ll_medication.addView(childLayout);
         }

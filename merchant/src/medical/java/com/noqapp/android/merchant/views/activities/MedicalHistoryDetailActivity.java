@@ -23,7 +23,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,9 +38,6 @@ import com.noqapp.android.merchant.views.beans.MedicalRecord;
 import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.medical.JsonMedicalPhysicalExamination;
 import com.noqapp.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.common.beans.medical.JsonMedicine;
-import com.noqapp.common.model.types.MedicationTypeEnum;
-import com.noqapp.common.model.types.MedicationWithFoodEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -279,7 +275,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                     jsonMedicalPhysicalExaminationArrayList.add(new JsonMedicalPhysicalExamination().setName("B.P (Blood Pressure)").setValue(edt_bp.getText().toString()).setTestResult(""));
                     jsonMedicalPhysicalExaminationArrayList.add(new JsonMedicalPhysicalExamination().setName("Weight").setValue(edt_weight.getText().toString()).setTestResult(""));
                     jsonMedicalRecord.setMedicalPhysicalExaminations(jsonMedicalPhysicalExaminationArrayList);
-                    jsonMedicalRecord.setMedicines(adapter.getJsonMedicineList());
+                    jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
 
                     MedicalHistoryModel.add(LaunchActivity.getLaunchActivity().getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),

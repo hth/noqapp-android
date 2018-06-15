@@ -2,9 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +12,11 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.beans.MedicalRecord;
-import com.noqapp.common.beans.medical.JsonMedicine;
+import com.noqapp.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.common.model.types.MedicationTypeEnum;
 import com.noqapp.common.model.types.MedicationWithFoodEnum;
 
@@ -101,7 +97,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
                 // your code here
                 if (sp_position > 0) {
                     medicalRecordList.get(position).setFrequency(sp_position);
-                    medicalRecordList.get(position).getJsonMedicine().setDailyFrequency(recordHolder.sp_frequency.getSelectedItem().toString());
+                    medicalRecordList.get(position).getJsonMedicalMedicine().setDailyFrequency(recordHolder.sp_frequency.getSelectedItem().toString());
                 }
             }
 
@@ -117,7 +113,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
                 // your code here
                 if (sp_position > 0) {
                     medicalRecordList.get(position).setDose_size(sp_position);
-                    medicalRecordList.get(position).getJsonMedicine().setStrength(recordHolder.sp_dose.getSelectedItem().toString());
+                    medicalRecordList.get(position).getJsonMedicalMedicine().setStrength(recordHolder.sp_dose.getSelectedItem().toString());
                 }
             }
 
@@ -133,7 +129,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
                 // your code here
                 if (sp_position > 0) {
                     medicalRecordList.get(position).setCourse(sp_position);
-                    medicalRecordList.get(position).getJsonMedicine().setCourse(recordHolder.sp_course.getSelectedItem().toString());
+                    medicalRecordList.get(position).getJsonMedicalMedicine().setCourse(recordHolder.sp_course.getSelectedItem().toString());
                 }
             }
 
@@ -149,7 +145,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int sp_position, long id) {
                 // your code here
                 medicalRecordList.get(position).setBefore_after_food(sp_position);
-                medicalRecordList.get(position).getJsonMedicine().setMedicationWithFood(MedicationWithFoodEnum.get(recordHolder.sp_dose_timing.getSelectedItem().toString()));
+                medicalRecordList.get(position).getJsonMedicalMedicine().setMedicationWithFood(MedicationWithFoodEnum.get(recordHolder.sp_dose_timing.getSelectedItem().toString()));
             }
 
             @Override
@@ -163,7 +159,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int sp_position, long id) {
                 // your code here
                 medicalRecordList.get(position).setMedication_type(sp_position);
-                medicalRecordList.get(position).getJsonMedicine().setMedicationType(MedicationTypeEnum.get(recordHolder.sp_medication.getSelectedItem().toString()));
+                medicalRecordList.get(position).getJsonMedicalMedicine().setMedicationType(MedicationTypeEnum.get(recordHolder.sp_medication.getSelectedItem().toString()));
             }
 
             @Override
@@ -249,14 +245,14 @@ public class MedicalRecordAdapter extends BaseAdapter {
     }
 
 
-    public List<JsonMedicine> getJsonMedicineList() {
-        ArrayList<JsonMedicine> jsonMedicineArrayList = new ArrayList<>();
+    public List<JsonMedicalMedicine> getJsonMedicineList() {
+        ArrayList<JsonMedicalMedicine> jsonMedicalMedicines = new ArrayList<>();
         for (int i = 0; i < medicalRecordList.size(); i++) {
             MedicalRecord medicalRecord = medicalRecordList.get(i);
-            JsonMedicine jsonMedicine = medicalRecord.getJsonMedicine();
-            jsonMedicine.setName(medicalRecord.getMedicName());
-            jsonMedicineArrayList.add(jsonMedicine);
+            JsonMedicalMedicine jsonMedicalMedicine = medicalRecord.getJsonMedicalMedicine();
+            jsonMedicalMedicine.setName(medicalRecord.getMedicName());
+            jsonMedicalMedicines.add(jsonMedicalMedicine);
         }
-        return jsonMedicineArrayList;
+        return jsonMedicalMedicines;
     }
 }

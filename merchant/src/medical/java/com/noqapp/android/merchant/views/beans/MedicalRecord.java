@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.views.beans;
 
-import com.noqapp.common.beans.medical.JsonMedicine;
+import com.noqapp.common.beans.medical.JsonMedicalMedicine;
 
 public class MedicalRecord {
 
@@ -10,7 +10,7 @@ public class MedicalRecord {
     private int frequency = 0;
     private int course = 0;
     private int before_after_food = 0;
-    private JsonMedicine jsonMedicine = new JsonMedicine();
+    private JsonMedicalMedicine jsonMedicalMedicine = new JsonMedicalMedicine();
 
 
     public String getMedicName() {
@@ -67,12 +67,12 @@ public class MedicalRecord {
         return this;
     }
 
-    public JsonMedicine getJsonMedicine() {
-        return jsonMedicine;
+    public JsonMedicalMedicine getJsonMedicalMedicine() {
+        return jsonMedicalMedicine;
     }
 
-    public MedicalRecord setJsonMedicine(JsonMedicine jsonMedicine) {
-        this.jsonMedicine = jsonMedicine;
+    public MedicalRecord setJsonMedicalMedicine(JsonMedicalMedicine jsonMedicalMedicine) {
+        this.jsonMedicalMedicine = jsonMedicalMedicine;
         return this;
     }
 }

@@ -64,7 +64,7 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
     private List<JsonMedicalRadiologyXRay> medicalRadiologyXRays;
 
     @JsonProperty("me")
-    private List<JsonMedicine> medicines;
+    private List<JsonMedicalMedicine> medicalMedicines;
 
     @JsonProperty("dbi")
     private String diagnosedById;
@@ -193,12 +193,12 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
         return this;
     }
 
-    public List<JsonMedicine> getMedicines() {
-        return medicines;
+    public List<JsonMedicalMedicine> getMedicalMedicines() {
+        return medicalMedicines;
     }
 
-    public JsonMedicalRecord setMedicines(List<JsonMedicine> medicines) {
-        this.medicines = medicines;
+    public JsonMedicalRecord setMedicalMedicines(List<JsonMedicalMedicine> medicalMedicines) {
+        this.medicalMedicines = medicalMedicines;
         return this;
     }
 
