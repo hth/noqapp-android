@@ -5,15 +5,6 @@
     android:orientation="horizontal"
     android:weightSum="1">
 
-    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-        android:id="@+id/edt_medicine_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_weight=".25"
-        android:background="@drawable/square_white_bg_drawable"
-        android:hint="Medicine name"
-        android:padding="10dp" />
 
     <Spinner
         android:id="@+id/sp_medication"
@@ -22,6 +13,16 @@
         android:layout_margin="5dp"
         android:layout_weight=".15"
         android:background="@drawable/spinner_border"
+        android:padding="10dp" />
+
+    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+        android:id="@+id/edt_medicine_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_weight=".25"
+        android:background="@drawable/square_white_bg_drawable"
+        android:hint="Medicine name"
         android:padding="10dp" />
 
     <Spinner
@@ -47,6 +48,15 @@
         android:prompt="@string/frequency_prompt" />
 
     <Spinner
+        android:id="@+id/sp_dose_timing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_weight=".15"
+        android:background="@drawable/spinner_border"
+        android:padding="10dp" />
+
+    <Spinner
         android:id="@+id/sp_course"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -57,22 +67,14 @@
         android:padding="10dp"
         android:prompt="@string/course_prompt" />
 
-    <Spinner
-        android:id="@+id/sp_dose_timing"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_weight=".15"
-        android:background="@drawable/spinner_border"
-        android:padding="10dp" />
 
-
-    <TextView
-        android:id="@+id/tv_delete"
+    <Button
+        android:id="@+id/tv_add_delete"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_margin="5dp"
         android:background="@drawable/delete_medic"
+        android:textColor="@android:color/transparent"
         android:padding="10dp" />
 
 </LinearLayout>

@@ -32,29 +32,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <RelativeLayout
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        style="@style/style_mdh_header"
+                        android:layout_width="wrap_content"
+                        android:text="Medication: " />
+
+
+                    <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                        android:id="@+id/listview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                            style="@style/style_mdh_header"
-                            android:layout_width="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:text="Medication: " />
-
-                        <Button
-                            android:id="@+id/btn_add"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:background="@android:color/transparent"
-                            android:drawableRight="@drawable/add_medic"
-                            android:drawablePadding="5dp"
-                            android:padding="10dp"
-                            android:text="add new Medicine" />
-                    </RelativeLayout>
-
+                        android:divider="@null" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -136,10 +125,97 @@
                         style="@style/style_mdh_header"
                         android:text="Physical Examination: " />
 
-                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                        android:id="@+id/edt_physical_exam"
-                        style="@style/style_mdh_details"
-                        android:text="" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight=".33"
+                            android:orientation="vertical">
+
+                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:padding="5dp"
+                                android:text="Pulse"
+                                android:textSize="15sp" />
+
+                            <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                                android:id="@+id/edt_pulse"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="10dp"
+                                android:text="" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight=".33"
+                            android:orientation="vertical">
+
+                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:padding="5dp"
+                                android:text="B.P (Blood Pressure)"
+                                android:textSize="15sp" />
+
+                            <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                                android:id="@+id/edt_bp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="10dp"
+                                android:text="" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight=".33"
+                            android:orientation="vertical">
+
+                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:padding="5dp"
+                                android:text="Weight"
+                                android:textSize="15sp" />
+
+                            <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                                android:id="@+id/edt_weight"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="10dp"
+                                android:text="" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
