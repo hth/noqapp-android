@@ -76,6 +76,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_USER_AUTH = "auth";
     protected final String KEY_LAST_UPDATE = "last_update";
     protected final String KEY_SUGGESTION = "suggestions";
+    protected final String KEY_COUNTER_NAME_LIST = "counterNames";
 
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
@@ -184,6 +185,21 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         String strInput = gson.toJson(mHashmap);
         sharedpreferences.edit().putString(KEY_SUGGESTION, strInput).apply();
     }
+    public ArrayList<String>  getCounterNames() {
+        //Retrieve the values
+        Gson gson = new Gson();
+        String jsonText = sharedpreferences.getString(KEY_COUNTER_NAME_LIST, null);
+        ArrayList<String> nameList = gson.fromJson(jsonText, ArrayList.class);
+        return null != nameList? nameList : new ArrayList<String>();
+    }
+
+    public void setCounterNames( ArrayList<String> mHashmap) {
+        Gson gson = new Gson();
+        String strInput = gson.toJson(mHashmap);
+        sharedpreferences.edit().putString(KEY_COUNTER_NAME_LIST, strInput).apply();
+    }
+
+
 
     public UserLevelEnum getUserLevel() {
         return UserLevelEnum.valueOf(sharedpreferences.getString(KEY_USER_LEVEL, ""));

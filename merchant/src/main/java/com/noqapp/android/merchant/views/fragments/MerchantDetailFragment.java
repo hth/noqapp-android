@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
@@ -294,9 +296,13 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_edit_counter, null, false);
-        final EditText edt_counter = (EditText) customDialogView.findViewById(R.id.edt_counter);
-        edt_counter.setText(textView.getText().toString().trim());
-        edt_counter.setSelection(textView.getText().toString().length());
+        final AutoCompleteTextView actv_counter =  customDialogView.findViewById(R.id.actv_counter);
+        final ArrayList<String> names = LaunchActivity.getLaunchActivity().getCounterNames();
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                (mContext, android.R.layout.simple_list_item_1, names);
+        actv_counter.setAdapter(adapter1);
+        actv_counter.setThreshold(1);
+        AppUtils.setAutoCompleteText(actv_counter,textView.getText().toString().trim());
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -312,12 +318,17 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
             @Override
             public void onClick(View v) {
-                edt_counter.setError(null);
-                if (edt_counter.getText().toString().equals("")) {
-                    edt_counter.setError(mContext.getString(R.string.empty_counter));
+                actv_counter.setError(null);
+                if (actv_counter.getText().toString().equals("")) {
+                    actv_counter.setError(mContext.getString(R.string.empty_counter));
                 } else {
-                    textView.setText(edt_counter.getText().toString());
-                    mAdapterCallback.saveCounterNames(codeQR, edt_counter.getText().toString().trim());
+                    new AppUtils().hideKeyBoard(getActivity());
+                    textView.setText(actv_counter.getText().toString());
+                    mAdapterCallback.saveCounterNames(codeQR, actv_counter.getText().toString().trim());
+                        if (!names.contains(actv_counter.getText().toString())) {
+                             names.add(actv_counter.getText().toString());
+                             LaunchActivity.getLaunchActivity().setCounterNames(names);
+                        }
                     mAlertDialog.dismiss();
                 }
             }

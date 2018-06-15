@@ -23,8 +23,8 @@
             android:textColor="@color/color_action_bar"
             android:textSize="24sp" />
 
-        <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-            android:id="@+id/edt_counter"
+        <AutoCompleteTextView
+            android:id="@+id/actv_counter"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@+id/tvtitle"
@@ -33,22 +33,23 @@
             android:layout_marginRight="20dp"
             android:textSize="18sp"
             android:background="@drawable/edt_roun_rect"
-            android:inputType="textCapSentences"
+            android:inputType="textNoSuggestions|textCapSentences"
             android:gravity="center"
             android:maxLength="20"
             android:maxLines="1"
+            android:minLines="1"
             android:singleLine="true" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/edt_counter"
+            android:layout_below="@+id/actv_counter"
             android:background="@color/color_grey_bg" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_counter"
+            android:layout_below="@+id/actv_counter"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:weightSum="1">
