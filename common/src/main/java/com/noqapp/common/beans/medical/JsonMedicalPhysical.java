@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.beans.AbstractDomain;
 
-import java.io.Serializable;
-
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
@@ -22,41 +20,41 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonMedicalPhysicalExamination extends AbstractDomain implements Serializable {
+public class JsonMedicalPhysical extends AbstractDomain {
 
-    @JsonProperty("na")
-    private String name;
+    @JsonProperty("pl")
+    private String pluse;
 
-    @JsonProperty ("va")
-    private String value;
+    @JsonProperty("bp")
+    private String[] bloodPressure;
 
-    @JsonProperty("tr")
-    private String testResult;
+    @JsonProperty("wt")
+    private String weight;
 
-    public String getName() {
-        return name;
+    public String getPluse() {
+        return pluse;
     }
 
-    public JsonMedicalPhysicalExamination setName(String name) {
-        this.name = name;
+    public JsonMedicalPhysical setPluse(String pluse) {
+        this.pluse = pluse;
         return this;
     }
 
-    public String getValue() {
-        return value;
+    public String[] getBloodPressure() {
+        return bloodPressure;
     }
 
-    public JsonMedicalPhysicalExamination setValue(String value) {
-        this.value = value;
+    public JsonMedicalPhysical setBloodPressure(String[] bloodPressure) {
+        this.bloodPressure = bloodPressure;
         return this;
     }
 
-    public String getTestResult() {
-        return testResult;
+    public String getWeight() {
+        return weight;
     }
 
-    public JsonMedicalPhysicalExamination setTestResult(String testResult) {
-        this.testResult = testResult;
+    public JsonMedicalPhysical setWeight(String weight) {
+        this.weight = weight;
         return this;
     }
 }

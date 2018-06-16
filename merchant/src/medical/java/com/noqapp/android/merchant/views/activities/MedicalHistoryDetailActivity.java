@@ -36,7 +36,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.beans.MedicalRecord;
 import com.noqapp.common.beans.JsonResponse;
-import com.noqapp.common.beans.medical.JsonMedicalPhysicalExamination;
+import com.noqapp.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.common.beans.medical.JsonMedicalRecord;
 
 import org.apache.commons.lang3.StringUtils;
@@ -270,11 +270,12 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                     jsonMedicalRecord.setClinicalFinding(edt_clinical_finding.getText().toString());
                     jsonMedicalRecord.setProvisionalDifferentialDiagnosis(edt_provisional.getText().toString());
 
-                    ArrayList<JsonMedicalPhysicalExamination> jsonMedicalPhysicalExaminationArrayList = new ArrayList<>();
-                    jsonMedicalPhysicalExaminationArrayList.add(new JsonMedicalPhysicalExamination().setName("Pulse").setValue(edt_pulse.getText().toString()).setTestResult(""));
-                    jsonMedicalPhysicalExaminationArrayList.add(new JsonMedicalPhysicalExamination().setName("B.P (Blood Pressure)").setValue(edt_bp.getText().toString()).setTestResult(""));
-                    jsonMedicalPhysicalExaminationArrayList.add(new JsonMedicalPhysicalExamination().setName("Weight").setValue(edt_weight.getText().toString()).setTestResult(""));
-                    jsonMedicalRecord.setMedicalPhysicalExaminations(jsonMedicalPhysicalExaminationArrayList);
+                    JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical()
+                            .setBloodPressure(new String[] {edt_bp.getText().toString()})
+                            .setPluse(edt_pulse.getText().toString())
+                            .setWeight(edt_weight.getText().toString());
+
+                    jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                     jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
 
                     MedicalHistoryModel.add(LaunchActivity.getLaunchActivity().getDeviceID(),
