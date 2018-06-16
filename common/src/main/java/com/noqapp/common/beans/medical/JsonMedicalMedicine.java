@@ -24,7 +24,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonMedicine extends AbstractDomain implements Serializable {
+public class JsonMedicalMedicine extends AbstractDomain implements Serializable {
 
     @JsonProperty("na")
     private String name;
@@ -48,7 +48,7 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
         return name;
     }
 
-    public JsonMedicine setName(String name) {
+    public JsonMedicalMedicine setName(String name) {
         this.name = name;
         return this;
     }
@@ -57,7 +57,7 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
         return strength;
     }
 
-    public JsonMedicine setStrength(String strength) {
+    public JsonMedicalMedicine setStrength(String strength) {
         this.strength = strength;
         return this;
     }
@@ -66,7 +66,7 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
         return dailyFrequency;
     }
 
-    public JsonMedicine setDailyFrequency(String dailyFrequency) {
+    public JsonMedicalMedicine setDailyFrequency(String dailyFrequency) {
         this.dailyFrequency = dailyFrequency;
         return this;
     }
@@ -75,7 +75,7 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
         return course;
     }
 
-    public JsonMedicine setCourse(String course) {
+    public JsonMedicalMedicine setCourse(String course) {
         this.course = course;
         return this;
     }
@@ -84,7 +84,7 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
         return medicationWithFood;
     }
 
-    public JsonMedicine setMedicationWithFood(MedicationWithFoodEnum medicationWithFood) {
+    public JsonMedicalMedicine setMedicationWithFood(MedicationWithFoodEnum medicationWithFood) {
         this.medicationWithFood = medicationWithFood;
         return this;
     }
@@ -93,7 +93,7 @@ public class JsonMedicine extends AbstractDomain implements Serializable {
         return medicationType;
     }
 
-    public JsonMedicine setMedicationType(MedicationTypeEnum medicationType) {
+    public JsonMedicalMedicine setMedicationType(MedicationTypeEnum medicationType) {
         this.medicationType = medicationType;
         return this;
     }

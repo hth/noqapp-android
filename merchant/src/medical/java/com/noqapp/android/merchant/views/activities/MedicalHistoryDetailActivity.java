@@ -22,7 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,11 +33,11 @@ import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
+import com.noqapp.android.merchant.views.beans.MedicalRecord;
 import com.noqapp.common.beans.JsonResponse;
+import com.noqapp.common.beans.medical.JsonMedicalPhysicalExamination;
 import com.noqapp.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.common.beans.medical.JsonMedicine;
-import com.noqapp.common.model.types.MedicationTypeEnum;
-import com.noqapp.common.model.types.MedicationWithFoodEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -53,14 +53,16 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private String qCodeQR = "";
     private AutoCompleteTextView edt_complaints, actv_family_history, edt_past_history;
     private EditText edt_known_allergy, edt_physical_exam, edt_clinical_finding, edt_provisional, edt_investigation, edt_treatment;
+    private EditText edt_weight,edt_bp,edt_pulse;
     private final String xray = "X-ray";
     private final String medicine = "Medicine";
     private final String mri = "MRI";
     private JsonQueuedPerson jsonQueuedPerson;
     private LinearLayout ll_medicines;
-    private Button btn_update, btn_add;
-    ArrayList<View> ll_list = new ArrayList<>();
-
+    private Button btn_update;
+    private ListView listview;
+    private List<MedicalRecord> medicalRecordList = new ArrayList<>();
+    private MedicalRecordAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,21 +71,26 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         MedicalHistoryModel.medicalRecordPresenter = this;
-        ll_medicines = findViewById(R.id.ll_medicines);
-        btn_add = (Button) findViewById(R.id.btn_add);
-        btn_add.setOnClickListener(this);
-
-
+        listview = findViewById(R.id.listview);
+        medicalRecordList.add(new MedicalRecord());
+        adapter = new MedicalRecordAdapter(this, medicalRecordList);
+        listview.setAdapter(adapter);
         edt_complaints = (AutoCompleteTextView) findViewById(R.id.edt_complaints);
         edt_past_history = (AutoCompleteTextView) findViewById(R.id.edt_past_history);
         actv_family_history = (AutoCompleteTextView) findViewById(R.id.actv_family_history);
 
         edt_known_allergy = (EditText) findViewById(R.id.edt_known_allergy);
-        edt_physical_exam = (EditText) findViewById(R.id.edt_physical_exam);
+       // edt_physical_exam = (EditText) findViewById(R.id.edt_physical_exam);
         edt_clinical_finding = (EditText) findViewById(R.id.edt_clinical_finding);
         edt_provisional = (EditText) findViewById(R.id.edt_provisional);
         edt_investigation = (EditText) findViewById(R.id.edt_investigation);
         edt_treatment = (EditText) findViewById(R.id.edt_treatment);
+
+
+        edt_weight = (EditText) findViewById(R.id.edt_weight);
+        edt_bp = (EditText) findViewById(R.id.edt_bp);
+        edt_pulse = (EditText) findViewById(R.id.edt_pulse);
+
         qCodeQR = getIntent().getStringExtra("qCodeQR");
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         btn_update = (Button) findViewById(R.id.btn_update);
@@ -209,7 +216,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                 TextUtils.isEmpty(edt_past_history.getText()) &&
                 TextUtils.isEmpty(actv_family_history.getText()) &&
                 TextUtils.isEmpty(edt_known_allergy.getText()) &&
-                TextUtils.isEmpty(edt_physical_exam.getText()) &&
+               // TextUtils.isEmpty(edt_physical_exam.getText()) &&
                 TextUtils.isEmpty(edt_clinical_finding.getText()) &&
                 TextUtils.isEmpty(edt_provisional.getText()) &&
                 TextUtils.isEmpty(edt_investigation.getText()) &&
@@ -245,9 +252,6 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.btn_add:
-                addMedicineView();
-                break;
             case R.id.btn_update:
                 if (validate()) {
                     JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
@@ -266,27 +270,13 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                     jsonMedicalRecord.setClinicalFinding(edt_clinical_finding.getText().toString());
                     jsonMedicalRecord.setProvisionalDifferentialDiagnosis(edt_provisional.getText().toString());
 
-                    if (ll_list.size() > 1) {
-                        List<JsonMedicine> jsonMedicines = new ArrayList<>();
-                        for (int i = 0; i < ll_list.size(); i++) {
-                            LinearLayout ll = (LinearLayout) ll_list.get(i);
-                            EditText edt_medicine_name = ll.findViewById(R.id.edt_medicine_name);
-                            Spinner sp_medication = ll_medicines.findViewById(R.id.sp_medication);
-                            Spinner sp_dose = ll_medicines.findViewById(R.id.sp_dose);
-                            Spinner sp_frequency = ll_medicines.findViewById(R.id.sp_frequency);
-                            Spinner sp_dose_timing = ll_medicines.findViewById(R.id.sp_dose_timing);
-                            Spinner sp_course = ll_medicines.findViewById(R.id.sp_course);
-                            JsonMedicine jsonMedicine = new JsonMedicine();
-                            jsonMedicine.setMedicationType(MedicationTypeEnum.get(sp_medication.getSelectedItem().toString()));
-                            jsonMedicine.setCourse(sp_course.getSelectedItem().toString());
-                            jsonMedicine.setDailyFrequency(sp_frequency.getSelectedItem().toString());
-                            jsonMedicine.setName(edt_medicine_name.getText().toString());
-                            jsonMedicine.setStrength(sp_dose.getSelectedItem().toString());
-                            jsonMedicine.setMedicationWithFood(MedicationWithFoodEnum.get(sp_dose_timing.getSelectedItem().toString()));
-                            jsonMedicines.add(jsonMedicine);
-                        }
-                        jsonMedicalRecord.setMedicines(jsonMedicines);
-                    }
+                    ArrayList<JsonMedicalPhysicalExamination> jsonMedicalPhysicalExaminationArrayList = new ArrayList<>();
+                    jsonMedicalPhysicalExaminationArrayList.add(new JsonMedicalPhysicalExamination().setName("Pulse").setValue(edt_pulse.getText().toString()).setTestResult(""));
+                    jsonMedicalPhysicalExaminationArrayList.add(new JsonMedicalPhysicalExamination().setName("B.P (Blood Pressure)").setValue(edt_bp.getText().toString()).setTestResult(""));
+                    jsonMedicalPhysicalExaminationArrayList.add(new JsonMedicalPhysicalExamination().setName("Weight").setValue(edt_weight.getText().toString()).setTestResult(""));
+                    jsonMedicalRecord.setMedicalPhysicalExaminations(jsonMedicalPhysicalExaminationArrayList);
+                    jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
+
                     MedicalHistoryModel.add(LaunchActivity.getLaunchActivity().getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
@@ -297,39 +287,4 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         }
     }
 
-    private void addMedicineView() {
-
-        LayoutInflater inflater = LayoutInflater.from(this);
-        final View medical_item = inflater.inflate(R.layout.medical_item, null);
-        medical_item.setId(ll_list.size());
-        ll_medicines.addView(medical_item);
-        ll_list.add(medical_item);
-
-        Spinner sp_medication = medical_item.findViewById(R.id.sp_medication);
-       // sp_medication.setId((int)System.currentTimeMillis());
-
-        Spinner sp_dose_timing = medical_item.findViewById(R.id.sp_dose_timing);
-        ArrayAdapter<String> sp_medication_adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_spinner_item,
-                        MedicationTypeEnum.asList()); //selected item will look like a spinner set from XML
-        sp_medication_adapter.setDropDownViewResource(android.R.layout
-                .simple_spinner_dropdown_item);
-        sp_medication.setAdapter(sp_medication_adapter);
-
-        ArrayAdapter<String> sp_dose_timing_adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_spinner_item,
-                        MedicationWithFoodEnum.asList()); //selected item will look like a spinner set from XML
-        sp_dose_timing_adapter.setDropDownViewResource(android.R.layout
-                .simple_spinner_dropdown_item);
-        sp_dose_timing.setAdapter(sp_dose_timing_adapter);
-
-        TextView tv_delete = medical_item.findViewById(R.id.tv_delete);
-        tv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ll_medicines.removeView(medical_item);
-            }
-        });
-    }
 }
