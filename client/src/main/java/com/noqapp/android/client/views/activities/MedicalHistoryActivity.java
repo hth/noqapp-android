@@ -16,11 +16,11 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.MedicalRecordApiModel;
 import com.noqapp.android.client.presenter.MedicalRecordPresenter;
-import com.noqapp.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MedicalHistoryAdapter;
+import com.noqapp.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.common.beans.medical.JsonMedicalRecordList;
 
 import java.util.ArrayList;
 import java.util.Collections;

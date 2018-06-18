@@ -110,7 +110,7 @@ public interface ManageQueueService {
             String codeQR
     );
 
-    @POST("api/m/mq/dispenseTokenWithoutClientInfo/{codeQR}.json")
+    @POST("api/m/mq/dispenseToken/{codeQR}.json")
     Call<JsonToken> dispenseTokenWithoutClientInfo(
             @Header("X-R-DID")
             String did,
@@ -128,7 +128,7 @@ public interface ManageQueueService {
             String codeQR
     );
 
-    @POST("api/m/mq/dispenseTokenWithoutClientInfo.json")
+    @POST("api/m/mq/dispenseToken.json")
     Call<JsonToken> dispenseTokenWithClientInfo(
             @Header("X-R-DID")
             String did,

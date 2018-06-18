@@ -12,11 +12,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -24,6 +26,8 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +37,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
@@ -43,17 +48,21 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.LoginActivity;
 import com.noqapp.android.merchant.views.activities.OutOfSequenceActivity;
 import com.noqapp.android.merchant.views.activities.OutOfSequenceDialogActivity;
+import com.noqapp.android.merchant.views.activities.RegistrationActivity;
 import com.noqapp.android.merchant.views.activities.SettingActivity;
 import com.noqapp.android.merchant.views.activities.SettingDialogActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
+import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 import com.noqapp.common.beans.ErrorEncounteredJson;
 import com.noqapp.common.model.types.UserLevelEnum;
 import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.PhoneFormatterUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -62,7 +71,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MerchantDetailFragment extends Fragment implements ManageQueuePresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick {
+public class MerchantDetailFragment extends Fragment implements ManageQueuePresenter,DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,RegistrationActivity.RegisterCallBack,LoginActivity.LoginCallBack {
 
     private Context context;
     private TextView tv_create_token;
@@ -89,6 +98,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private boolean queueStatusOuter = false;
     private int lastSelectedPos = -1;
     private LinearLayoutManager horizontalLayoutManagaer;
+    private EditText edt_mobile_or_id;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -160,7 +170,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
             @Override
             public void onClick(View view) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    showCreateTokenDialog(context, jsonTopic.getCodeQR());
+                    showCreateTokenDialogWithMobile(context, jsonTopic.getCodeQR());
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
                 }
@@ -254,6 +264,20 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     }
 
     @Override
+    public void dispenseTokenError(ErrorEncounteredJson errorEncounteredJson) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
+        if(errorEncounteredJson.getSystemErrorCode().equalsIgnoreCase("412")){
+            Toast.makeText(context,errorEncounteredJson.getReason(),Toast.LENGTH_LONG).show();
+            Intent in = new Intent(getActivity(), LoginActivity.class);
+            in.putExtra("phone_no",edt_mobile_or_id.getText().toString());
+            context.startActivity(in);
+            RegistrationActivity.registerCallBack = this;
+            LoginActivity.loginCallBack = this;
+        }
+    }
+
+    @Override
     public void authenticationFailure(int errorCode) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         if (errorCode == Constants.INVALID_CREDENTIAL) {
@@ -266,6 +290,8 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
         if (null != token && null != tv_create_token) {
+            if(null != edt_mobile_or_id)
+                edt_mobile_or_id.setText("");
             switch (token.getQueueStatus()) {
                 case C:
                     tv_create_token.setText("Queue is closed. Cannot generate token.");
@@ -306,6 +332,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
+        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         Button btn_update = (Button) customDialogView.findViewById(R.id.btn_update);
         Button btn_cancel = (Button) customDialogView.findViewById(R.id.btn_cancel);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -336,7 +363,6 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         mAlertDialog.show();
     }
 
-
     private void showCreateTokenDialog(final Context mContext, final String codeQR) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -356,7 +382,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
             public void onClick(View v) {
                 if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
-                    setPresenter();
+                    setDispensePresenter();
                     ManageQueueModel.dispenseToken(
                             LaunchActivity.getLaunchActivity().getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
@@ -379,8 +405,97 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     }
 
 
+    private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_create_token_with_mobile, null, false);
+        ImageView actionbarBack = (ImageView) customDialogView.findViewById(R.id.actionbarBack);
+        tv_create_token = (TextView) customDialogView.findViewById(R.id.tvtitle);
+        iv_banner = (ImageView) customDialogView.findViewById(R.id.iv_banner);
+        tvcount = (TextView) customDialogView.findViewById(R.id.tvcount);
+        edt_mobile_or_id = customDialogView.findViewById(R.id.edt_mobile_or_id);
+        final RadioGroup rg_user_id = customDialogView.findViewById(R.id.rg_user_id);
+        final RadioButton rb_mobile = customDialogView.findViewById(R.id.rb_mobile);
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        edt_mobile_or_id.setInputType(InputType.TYPE_CLASS_NUMBER);
+        rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rb_mobile) {
+                    edt_mobile_or_id.setInputType(InputType.TYPE_CLASS_NUMBER);
+                } else {
+                    edt_mobile_or_id.setInputType(InputType.TYPE_CLASS_TEXT);
+                }
+            }
+        });
+        btn_create_token = (Button) customDialogView.findViewById(R.id.btn_create_token);
+        btn_create_token.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                boolean isValid = true;
+                edt_mobile_or_id.setError(null);
+                new AppUtils().hideKeyBoard(getActivity());
+                // get selected radio button from radioGroup
+                int selectedId = rg_user_id.getCheckedRadioButtonId();
+                if(selectedId == R.id.rb_mobile){
+                    if (TextUtils.isEmpty(edt_mobile_or_id.getText())) {
+                        edt_mobile_or_id.setError(getString(R.string.error_mobile_blank));
+                        isValid = false;
+                    }
+                }else{
+                    if (TextUtils.isEmpty(edt_mobile_or_id.getText())) {
+                        edt_mobile_or_id.setError(getString(R.string.error_customer_id));
+                        isValid = false;
+                    }
+                }
+
+
+                if(isValid) {
+                if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
+                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                    setDispensePresenter();
+                    String phone = "";
+                    String cid = "";
+                    if(rb_mobile.isChecked()){
+                        phone = edt_mobile_or_id.getText().toString();
+                    }else{
+                        cid = edt_mobile_or_id.getText().toString();
+                        edt_mobile_or_id.setText("");// set blank so that wrong phone no not pass to login screen
+                    }
+                    ManageQueueModel.dispenseTokenWithClientInfo(
+                            LaunchActivity.getLaunchActivity().getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                    btn_create_token.setClickable(false);
+                    mAlertDialog.dismiss();
+                } else {
+                    mAlertDialog.dismiss();
+                }
+                }
+            }
+        });
+
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertDialog.dismiss();
+            }
+        });
+        mAlertDialog.show();
+    }
+
+
     private void setPresenter() {
         ManageQueueModel.manageQueuePresenter = this;
+    }
+
+    private void setDispensePresenter() {
+        ManageQueueModel.dispenseTokenPresenter =this;
     }
 
     @Override
@@ -755,5 +870,17 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
             ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
         }
 
+    }
+
+    @Override
+    public void passPhoneNo(String phoneNo, String countryShortName) {
+        LaunchActivity.getLaunchActivity().progressDialog.show();
+        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(phoneNo,  countryShortName);
+        setDispensePresenter();
+        ManageQueueModel.dispenseTokenWithClientInfo(
+                LaunchActivity.getLaunchActivity().getDeviceID(),
+                LaunchActivity.getLaunchActivity().getEmail(),
+                LaunchActivity.getLaunchActivity().getAuth(),
+                new JsonBusinessCustomerLookup().setCodeQR(topicsList.get(currrentpos).getCodeQR()).setCustomerPhone(phoneNoWithCode));
     }
 }

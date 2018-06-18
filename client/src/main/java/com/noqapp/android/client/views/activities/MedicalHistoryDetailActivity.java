@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.activities;
 /**
  * Created by chandra on 5/7/17.
  */
+
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -10,9 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.common.model.types.medical.PhysicalExamEnum;
 
 import java.util.List;

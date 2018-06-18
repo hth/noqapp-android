@@ -1,7 +1,8 @@
-package com.noqapp.android.client.model.response.open;
+package com.noqapp.android.merchant.model.response.api;
 
-import com.noqapp.android.client.presenter.beans.body.Login;
-import com.noqapp.android.client.presenter.beans.body.Registration;
+
+import com.noqapp.android.merchant.presenter.beans.body.Login;
+import com.noqapp.android.merchant.presenter.beans.body.Registration;
 import com.noqapp.common.beans.JsonProfile;
 
 import retrofit2.Call;
@@ -18,24 +19,24 @@ public interface RegisterService {
     @POST("open/client/registration.json")
     Call<JsonProfile> register(
             @Header("X-R-DID")
-            String did,
+                    String did,
 
             @Header("X-R-DT")
-            String dt,
+                    String dt,
 
             @Body
-            Registration registration
+                    Registration registration
     );
 
     @POST("open/client/login.json")
     Call<JsonProfile> login(
             @Header("X-R-DID")
-            String did,
+                    String did,
 
             @Header("X-R-DT")
-            String dt,
+                    String dt,
 
             @Body
-            Login login
+                    Login login
     );
 }

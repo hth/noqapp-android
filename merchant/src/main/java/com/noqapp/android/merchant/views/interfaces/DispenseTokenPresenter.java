@@ -5,12 +5,12 @@ import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.common.beans.ErrorEncounteredJson;
 
 
-public interface ManageQueuePresenter {
+public interface DispenseTokenPresenter {
 
-    void manageQueueResponse(JsonToken token);
 
-    void manageQueueError(ErrorEncounteredJson errorEncounteredJson);
+    void dispenseTokenError(ErrorEncounteredJson errorEncounteredJson);
 
     void authenticationFailure(int errorCode);
 
+    void dispenseTokenResponse(JsonToken token);
 }
