@@ -2,7 +2,9 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -180,19 +182,52 @@ public class MedicalRecordAdapter extends BaseAdapter {
 
 
         recordHolder.edt_medicine_name.setId(position);
-        recordHolder.edt_medicine_name.setOnFocusChangeListener(
-                new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if (!hasFocus) {
-                            final int id = v.getId();
-                            final EditText field = ((EditText) v);
-                            medicalRecordList.get(id).setMedicName(field.getText().toString());
-                        }
-                    }
+//        recordHolder.edt_medicine_name.setOnFocusChangeListener(
+//                new View.OnFocusChangeListener() {
+//                    @Override
+//                    public void onFocusChange(View v, boolean hasFocus) {
+//                        if (!hasFocus) {
+//                            final int id = v.getId();
+//                            final EditText field = ((EditText) v);
+//                            medicalRecordList.get(id).setMedicName(field.getText().toString());
+//                        }
+//                    }
+//                }
+//        );
+
+        recordHolder.edt_medicine_name.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                recordHolder.edt_medicine_name.removeTextChangedListener(this);
+
+                try {
+                    String givenstring = s.toString();
+                    medicalRecordList.get(position).setMedicName(givenstring);
+                } catch (NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-        );
-        
+
+                recordHolder.edt_medicine_name.addTextChangedListener(this);
+
+            }
+        });
         if (null != medicalRecord && TextUtils.isEmpty(medicalRecord.getMedicName())) {
             recordHolder.tv_add_delete.setBackground(context.getResources().getDrawable(R.drawable.add_medic));
             recordHolder.tv_add_delete.setText(ADD);

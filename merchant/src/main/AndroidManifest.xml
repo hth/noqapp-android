@@ -7,16 +7,21 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BILLING" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.telephony" android:required="false" />
-    
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
     <application
         android:name=".views.activities.MyApplication"
         android:allowBackup="false"
-        android:label="@string/flavored_app_name"
         android:icon="@drawable/launcher"
+        android:label="@string/flavored_app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
@@ -45,19 +50,19 @@
         </activity>
         <activity
             android:name="com.noqapp.android.merchant.views.activities.SettingActivity"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/BaseTheme">
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.noqapp.android.merchant.views.activities.SettingDialogActivity"
-            android:excludeFromRecents="true"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/myDialog"/>
+            android:excludeFromRecents="true"
+            android:theme="@style/myDialog"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name="com.noqapp.android.merchant.views.activities.OutOfSequenceActivity"
             android:theme="@style/BaseTheme">
@@ -68,7 +73,7 @@
         <activity
             android:name="com.noqapp.android.merchant.views.activities.OutOfSequenceDialogActivity"
             android:excludeFromRecents="true"
-            android:theme="@style/myDialog"/>
+            android:theme="@style/myDialog" />
         <activity
             android:name="com.noqapp.android.merchant.views.activities.NotificationActivity"
             android:theme="@style/BaseTheme">
@@ -78,8 +83,8 @@
         </activity>
         <activity
             android:name="com.noqapp.android.merchant.views.activities.MedicalHistoryDetailActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/BaseTheme">
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -87,28 +92,45 @@
 
         <activity
             android:name="com.noqapp.android.merchant.views.activities.ManagerProfileActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/BaseTheme">
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.noqapp.android.merchant.views.activities.RegistrationActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.noqapp.android.merchant.views.activities.LoginActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.noqapp.android.merchant.views.activities.ChartActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/BaseTheme">
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.noqapp.android.merchant.views.activities.ChartSampleActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/BaseTheme">
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <service android:name="com.noqapp.android.merchant.network.NoQueueFirebaseInstanceServices">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

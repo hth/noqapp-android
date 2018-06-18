@@ -230,8 +230,4 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
         }
     }
 
-    @Override
-    public void dispenseTokenResponse(JsonToken token) {
-
-    }
 }

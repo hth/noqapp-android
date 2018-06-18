@@ -57,7 +57,7 @@
                         android:text="Chief Complaint: " />
 
                     <AutoCompleteTextView
-                        android:id="@+id/edt_complaints"
+                        android:id="@+id/actv_complaints"
                         style="@style/style_mdh_details"
                         android:text="" />
 
@@ -74,7 +74,7 @@
                         android:text="Past History: " />
 
                     <AutoCompleteTextView
-                        android:id="@+id/edt_past_history"
+                        android:id="@+id/actv_past_history"
                         style="@style/style_mdh_details"
                         android:text="" />
 
@@ -107,8 +107,8 @@
                         style="@style/style_mdh_header"
                         android:text="Known Allergies: " />
 
-                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                        android:id="@+id/edt_known_allergy"
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_known_allergy"
                         style="@style/style_mdh_details"
                         android:text="" />
 
@@ -229,8 +229,8 @@
                         style="@style/style_mdh_header"
                         android:text="Clinical Findings: " />
 
-                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                        android:id="@+id/edt_clinical_finding"
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_clinical_finding"
                         style="@style/style_mdh_details"
                         android:text="" />
 
@@ -246,8 +246,8 @@
                         style="@style/style_mdh_header"
                         android:text="Provisional /Differential Diagnosis" />
 
-                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                        android:id="@+id/edt_provisional"
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_provisional"
                         style="@style/style_mdh_details"
                         android:text="" />
 
@@ -263,8 +263,8 @@
                         style="@style/style_mdh_header"
                         android:text="Investigation Advised: " />
 
-                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                        android:id="@+id/edt_investigation"
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_investigation"
                         style="@style/style_mdh_details"
                         android:text="" />
 
@@ -280,8 +280,8 @@
                         style="@style/style_mdh_header"
                         android:text="Treatment Advice: " />
 
-                    <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                        android:id="@+id/edt_treatment"
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_treatment"
                         style="@style/style_mdh_details"
                         android:text="" />
                 </LinearLayout>

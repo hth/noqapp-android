@@ -27,7 +27,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonQueuedMinorPerson implements Serializable {
+public class JsonQueuedDependent implements Serializable {
 
     @JsonProperty("t")
     private int token;
@@ -57,7 +57,7 @@ public class JsonQueuedMinorPerson implements Serializable {
         return token;
     }
 
-    public JsonQueuedMinorPerson setToken(int token) {
+    public JsonQueuedDependent setToken(int token) {
         this.token = token;
         return this;
     }
@@ -66,7 +66,7 @@ public class JsonQueuedMinorPerson implements Serializable {
         return queueUserId;
     }
 
-    public JsonQueuedMinorPerson setQueueUserId(String queueUserId) {
+    public JsonQueuedDependent setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
         return this;
     }
@@ -75,7 +75,7 @@ public class JsonQueuedMinorPerson implements Serializable {
         return customerName;
     }
 
-    public JsonQueuedMinorPerson setCustomerName(String customerName) {
+    public JsonQueuedDependent setCustomerName(String customerName) {
         this.customerName = customerName;
         return this;
     }
@@ -84,7 +84,7 @@ public class JsonQueuedMinorPerson implements Serializable {
         return guardianPhone;
     }
 
-    public JsonQueuedMinorPerson setGuardianPhone(String guardianPhone) {
+    public JsonQueuedDependent setGuardianPhone(String guardianPhone) {
         this.guardianPhone = guardianPhone;
         return this;
     }
@@ -93,7 +93,7 @@ public class JsonQueuedMinorPerson implements Serializable {
         return guardianQueueUserId;
     }
 
-    public JsonQueuedMinorPerson setGuardianQueueUserId(String guardianQueueUserId) {
+    public JsonQueuedDependent setGuardianQueueUserId(String guardianQueueUserId) {
         this.guardianQueueUserId = guardianQueueUserId;
         return this;
     }
@@ -102,7 +102,7 @@ public class JsonQueuedMinorPerson implements Serializable {
         return queueUserState;
     }
 
-    public JsonQueuedMinorPerson setQueueUserState(QueueUserStateEnum queueUserState) {
+    public JsonQueuedDependent setQueueUserState(QueueUserStateEnum queueUserState) {
         this.queueUserState = queueUserState;
         return this;
     }
@@ -111,7 +111,7 @@ public class JsonQueuedMinorPerson implements Serializable {
         return age;
     }
 
-    public JsonQueuedMinorPerson setAge(long age) {
+    public JsonQueuedDependent setAge(long age) {
         this.age = age;
         return this;
     }
@@ -120,7 +120,7 @@ public class JsonQueuedMinorPerson implements Serializable {
         return gender;
     }
 
-    public JsonQueuedMinorPerson setGender(GenderEnum gender) {
+    public JsonQueuedDependent setGender(GenderEnum gender) {
         this.gender = gender;
         return this;
     }

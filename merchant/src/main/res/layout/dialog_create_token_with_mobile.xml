@@ -1,0 +1,145 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_action_bar">
+
+        <ImageView
+            android:id="@+id/actionbarBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/cross"
+            android:padding="10dp" />
+
+
+        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+            android:id="@+id/tv_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/create_token"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_top"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/iv_banner"
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:layout_marginLeft="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="100dp"
+            android:background="@drawable/before_token_generated" />
+
+        <LinearLayout
+            android:id="@+id/ll_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_banner"
+            android:layout_marginBottom="25dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                android:id="@+id/tvtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Click button to create token"
+                android:layout_marginTop="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                android:id="@+id/tvcount"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/button_drawable_red"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="36sp"
+                android:visibility="invisible" />
+
+            <RadioGroup
+                android:id="@+id/rg_user_id"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:layout_marginBottom="5dp">
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/rb_mobile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="Mobile No"
+                    android:textSize="14dp"
+                    app:buttonTint="#e13e3e"/>
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/rb_customer_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:text="Customer ID"
+                    android:textSize="14dp"
+                    app:buttonTint="#e13e3e"/>
+            </RadioGroup>
+
+            <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                android:id="@+id/edt_mobile_or_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:maxLength="15"
+                android:background="@drawable/edt_roun_rect"
+                android:padding="10dp" />
+        </LinearLayout>
+
+        <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+            android:id="@+id/btn_create_token"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_center"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/button_drawable_red"
+            android:text="@string/create_token"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

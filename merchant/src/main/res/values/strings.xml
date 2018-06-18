@@ -125,4 +125,20 @@
     <string name="hindi">Hindi</string>
     <string name="english">English</string>
 
+    <string name="error_mobile_blank">Please enter phone number</string>
+    <string name="error_customer_id">Please enter Customer ID</string>
+
+    <string name="login_hint">Phone no. without country code</string>
+    <string name="verify_phone_auth">Verify</string>
+    <string name="hint_verification_code">Verification Code</string>
+    <string name="status_code_sent">Code Sent</string>
+    <string name="status_verification_failed">Verification failed</string>
+    <string name="status_verification_succeeded">Verification succeeded</string>
+    <string name="status_sign_in_failed">Sign-in failed</string>
+    <string name="instant_validation">Enter OTP</string>
+    <string name="login">Login</string>
+    <string name="invitecode">Invite code</string>
+    <string name="btnregister">Continue Register</string>
+    <string name="error_pwd_not_match">Both password should match</string>
+    <string name="password">Password <font color='red'>\u2731</font></string>
 </resources>

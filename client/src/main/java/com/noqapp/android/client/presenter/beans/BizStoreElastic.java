@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.AmenityEnum;
-import com.noqapp.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
+import com.noqapp.common.model.types.BusinessTypeEnum;
 
 import java.io.Serializable;
 import java.util.ArrayList;

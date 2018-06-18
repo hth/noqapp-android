@@ -201,7 +201,10 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         //updateUI();
     }
 
+    @Override
+    public void queueResponse(JsonProfile profile, String email, String auth) {
 
+    }
 
 
     @Override
@@ -209,6 +212,10 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
        // dismissProgress();
     }
 
+    @Override
+    public void profileError(String error) {
+
+    }
 
 
     @Override

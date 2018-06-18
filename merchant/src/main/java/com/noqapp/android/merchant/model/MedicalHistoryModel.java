@@ -14,13 +14,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class MedicalHistoryModel {
     private static final String TAG = MedicalHistoryModel.class.getSimpleName();
 
     private static final MedicalRecordService medicalRecordService;
     public static MedicalRecordPresenter medicalRecordPresenter;
-
 
     static {
         medicalRecordService = RetrofitClient.getClient().create(MedicalRecordService.class);

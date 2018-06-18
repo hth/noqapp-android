@@ -8,6 +8,8 @@ import com.noqapp.common.model.types.GenderEnum;
 import com.noqapp.common.model.types.UserLevelEnum;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -67,6 +69,10 @@ public class JsonProfile implements Serializable {
 
     @JsonProperty ("mp")
     private JsonUserMedicalProfile jsonUserMedicalProfile;
+
+    /* Dependents can be anyone minor or other elderly family members. */
+    @JsonProperty ("dp")
+    private List<JsonProfile> dependents = new ArrayList<>();
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -185,6 +191,15 @@ public class JsonProfile implements Serializable {
 
     public JsonProfile setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
         this.jsonUserMedicalProfile = jsonUserMedicalProfile;
+        return this;
+    }
+
+    public List<JsonProfile> getDependents() {
+        return dependents;
+    }
+
+    public JsonProfile setDependents(List<JsonProfile> dependents) {
+        this.dependents = dependents;
         return this;
     }
 

@@ -50,7 +50,6 @@
     <string name="version_no">App version: %1$s</string>
 
     <!--Register Screen-->
-
     <string name="phonenumber">Phone Number</string>
     <string name="freeRemoteJoin">Get Free Remote Join</string>
     <string name="register">Register</string>

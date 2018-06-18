@@ -5,11 +5,13 @@ import android.util.Log;
 
 import com.noqapp.android.merchant.model.response.api.ManageQueueService;
 import com.noqapp.android.merchant.network.RetrofitClient;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
@@ -30,6 +32,7 @@ public class ManageQueueModel {
 
     private static final ManageQueueService manageQueueService;
     public static ManageQueuePresenter manageQueuePresenter;
+    public static DispenseTokenPresenter dispenseTokenPresenter;
     public static TopicPresenter topicPresenter;
     public static QueuePersonListPresenter queuePersonListPresenter;
 
@@ -205,30 +208,24 @@ public class ManageQueueModel {
         });
     }
 
-    /**
-     * Get setting for a specific queue.
-     *
-     * @param did
-     * @param mail
-     * @param auth
-     */
+
     public static void dispenseToken(String did, String mail, String auth, String codeQR) {
-        manageQueueService.dispenseToken(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
+        manageQueueService.dispenseTokenWithoutClientInfo(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == 401) {
-                    manageQueuePresenter.authenticationFailure(response.code());
+                    dispenseTokenPresenter.authenticationFailure(response.code());
                     return;
                 }
 
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Get queue setting", String.valueOf(response.body()));
-                    manageQueuePresenter.dispenseTokenResponse(response.body());
+                    dispenseTokenPresenter.dispenseTokenResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
-                    manageQueuePresenter.manageQueueError(errorEncounteredJson);
+                    dispenseTokenPresenter.dispenseTokenError(errorEncounteredJson);
                 }
             }
 
@@ -236,7 +233,37 @@ public class ManageQueueModel {
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                manageQueuePresenter.manageQueueError(null);
+                dispenseTokenPresenter.dispenseTokenError(null);
+            }
+        });
+    }
+
+
+    public static void dispenseTokenWithClientInfo(String did, String mail, String auth, JsonBusinessCustomerLookup jsonBusinessCustomerLookup) {
+        manageQueueService.dispenseTokenWithClientInfo(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomerLookup).enqueue(new Callback<JsonToken>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
+                if (response.code() == 401) {
+                    dispenseTokenPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("Get queue setting", String.valueOf(response.body()));
+                    dispenseTokenPresenter.dispenseTokenResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Found error while get queue setting");
+                    ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                    dispenseTokenPresenter.dispenseTokenError(errorEncounteredJson);
+                }
+            }
+
+
+            @Override
+            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                dispenseTokenPresenter.dispenseTokenError(null);
             }
         });
     }
