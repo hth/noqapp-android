@@ -21,7 +21,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,14 +50,18 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private ImageView actionbarBack;
     private HashMap<String, ArrayList<String>> mHashmapTemp = null;
     private String qCodeQR = "";
-    private AutoCompleteTextView edt_complaints, actv_family_history, edt_past_history;
-    private EditText edt_known_allergy, edt_physical_exam, edt_clinical_finding, edt_provisional, edt_investigation, edt_treatment;
+    private AutoCompleteTextView actv_complaints, actv_family_history, actv_past_history,actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation, actv_treatment;
     private EditText edt_weight,edt_bp,edt_pulse;
-    private final String xray = "X-ray";
-    private final String medicine = "Medicine";
-    private final String mri = "MRI";
+    private final String CHIEF = "chief_complaint";
+    private final String PAST_HISTORY = "past_history";
+    private final String FAMILY_HISTORY = "family_history";
+    private final String CLINICAL_FINDINGS = "clinical_findings";
+    private final String PROVISIONAL_DIAGNOSIS = "provisional_diagnosis";
+    private final String INVESTIGATION = "investigation";
+    private final String TREATMENT = "treatment_advice";
+    private final String KNOWN_ALLERGIES = "known_allergies";
+
     private JsonQueuedPerson jsonQueuedPerson;
-    private LinearLayout ll_medicines;
     private Button btn_update;
     private ListView listview;
     private List<MedicalRecord> medicalRecordList = new ArrayList<>();
@@ -75,17 +78,15 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         medicalRecordList.add(new MedicalRecord());
         adapter = new MedicalRecordAdapter(this, medicalRecordList);
         listview.setAdapter(adapter);
-        edt_complaints = (AutoCompleteTextView) findViewById(R.id.edt_complaints);
-        edt_past_history = (AutoCompleteTextView) findViewById(R.id.edt_past_history);
-        actv_family_history = (AutoCompleteTextView) findViewById(R.id.actv_family_history);
+        actv_complaints =  findViewById(R.id.actv_complaints);
+        actv_past_history = findViewById(R.id.actv_past_history);
+        actv_family_history = findViewById(R.id.actv_family_history);
 
-        edt_known_allergy = (EditText) findViewById(R.id.edt_known_allergy);
-       // edt_physical_exam = (EditText) findViewById(R.id.edt_physical_exam);
-        edt_clinical_finding = (EditText) findViewById(R.id.edt_clinical_finding);
-        edt_provisional = (EditText) findViewById(R.id.edt_provisional);
-        edt_investigation = (EditText) findViewById(R.id.edt_investigation);
-        edt_treatment = (EditText) findViewById(R.id.edt_treatment);
-
+        actv_known_allergy =  findViewById(R.id.actv_known_allergy);
+        actv_clinical_finding =  findViewById(R.id.actv_clinical_finding);
+        actv_provisional =  findViewById(R.id.actv_provisional);
+        actv_investigation =  findViewById(R.id.actv_investigation);
+        actv_treatment =  findViewById(R.id.actv_treatment);
 
         edt_weight = (EditText) findViewById(R.id.edt_weight);
         edt_bp = (EditText) findViewById(R.id.edt_bp);
@@ -154,23 +155,28 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         if (TextUtils.isEmpty(strOutput) || strOutput.equalsIgnoreCase("null")) {
             Log.v("JSON", "empty json");
             mHashmapTemp = new HashMap<>();
-            mHashmapTemp.put(xray, new ArrayList<String>());
-            mHashmapTemp.put(medicine, new ArrayList<String>());
-            mHashmapTemp.put(mri, new ArrayList<String>());
+            mHashmapTemp.put(CHIEF, new ArrayList<String>());
+            mHashmapTemp.put(PAST_HISTORY, new ArrayList<String>());
+            mHashmapTemp.put(FAMILY_HISTORY, new ArrayList<String>());
+            mHashmapTemp.put(CLINICAL_FINDINGS, new ArrayList<String>());
+            mHashmapTemp.put(PROVISIONAL_DIAGNOSIS, new ArrayList<String>());
+            mHashmapTemp.put(INVESTIGATION, new ArrayList<String>());
+            mHashmapTemp.put(TREATMENT, new ArrayList<String>());
+            mHashmapTemp.put(KNOWN_ALLERGIES, new ArrayList<String>());
+
             LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
         } else {
             try {
                 mHashmapTemp = gson.fromJson(strOutput, type);
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                        (this, android.R.layout.simple_list_item_1, mHashmapTemp.get(xray));
-                edt_past_history.setAdapter(adapter);
-
-                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
-                        (this, android.R.layout.simple_list_item_1, mHashmapTemp.get(medicine));
-                edt_complaints.setAdapter(adapter1);
-                edt_complaints.setThreshold(1);
-                edt_past_history.setThreshold(1);
+                setSuggetions(actv_complaints,CHIEF);
+                setSuggetions(actv_past_history,PAST_HISTORY);
+                setSuggetions(actv_family_history,FAMILY_HISTORY);
+                setSuggetions(actv_known_allergy,KNOWN_ALLERGIES);
+                setSuggetions(actv_clinical_finding,CLINICAL_FINDINGS);
+                setSuggetions(actv_provisional,PROVISIONAL_DIAGNOSIS);
+                setSuggetions(actv_investigation,INVESTIGATION);
+                setSuggetions(actv_treatment,TREATMENT);
                 Log.v("JSON", mHashmapTemp.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -178,6 +184,23 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         }
 
     }
+
+    private void setSuggetions(AutoCompleteTextView actv, String key) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_list_item_1, mHashmapTemp.get(key));
+        actv.setAdapter(adapter);
+        actv.setThreshold(1);
+        actv.setThreshold(1);
+    }
+     private void updateSuggetions(AutoCompleteTextView actv, String key) {
+         if (!actv.getText().toString().equals(""))
+             if (!mHashmapTemp.get(key).contains(actv.getText().toString())) {
+                 mHashmapTemp.get(key).add(actv.getText().toString());
+             }
+    }
+
+
+
 
     private boolean appInstalledOrNot(String uri) {
         PackageManager pm = getPackageManager();
@@ -193,14 +216,14 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     @Override
     protected void onStop() {
         super.onStop();
-        if (!edt_past_history.getText().toString().equals(""))
-            if (!mHashmapTemp.get(xray).contains(edt_past_history.getText().toString())) {
-                mHashmapTemp.get(xray).add(edt_past_history.getText().toString());
-            }
-        if (!edt_complaints.getText().toString().equals(""))
-            if (!mHashmapTemp.get(medicine).contains(edt_complaints.getText().toString())) {
-                mHashmapTemp.get(medicine).add(edt_complaints.getText().toString());
-            }
+        updateSuggetions(actv_complaints,CHIEF);
+        updateSuggetions(actv_past_history,PAST_HISTORY);
+        updateSuggetions(actv_family_history,FAMILY_HISTORY);
+        updateSuggetions(actv_known_allergy,KNOWN_ALLERGIES);
+        updateSuggetions(actv_clinical_finding,CLINICAL_FINDINGS);
+        updateSuggetions(actv_provisional,PROVISIONAL_DIAGNOSIS);
+        updateSuggetions(actv_investigation,INVESTIGATION);
+        updateSuggetions(actv_treatment,TREATMENT);
         LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
 
     }
@@ -212,15 +235,14 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         boolean isValid = true;
         new AppUtils().hideKeyBoard(this);
 
-        if (TextUtils.isEmpty(edt_complaints.getText()) &&
-                TextUtils.isEmpty(edt_past_history.getText()) &&
+        if (TextUtils.isEmpty(actv_complaints.getText()) &&
+                TextUtils.isEmpty(actv_past_history.getText()) &&
                 TextUtils.isEmpty(actv_family_history.getText()) &&
-                TextUtils.isEmpty(edt_known_allergy.getText()) &&
-               // TextUtils.isEmpty(edt_physical_exam.getText()) &&
-                TextUtils.isEmpty(edt_clinical_finding.getText()) &&
-                TextUtils.isEmpty(edt_provisional.getText()) &&
-                TextUtils.isEmpty(edt_investigation.getText()) &&
-                TextUtils.isEmpty(edt_treatment.getText())) {
+                TextUtils.isEmpty(actv_known_allergy.getText()) &&
+                TextUtils.isEmpty(actv_clinical_finding.getText()) &&
+                TextUtils.isEmpty(actv_provisional.getText()) &&
+                TextUtils.isEmpty(actv_investigation.getText()) &&
+                TextUtils.isEmpty(actv_treatment.getText())) {
             isValid = false;
         }
 
@@ -263,12 +285,12 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
 //                        //TODO better error handling
 //                    }
                     jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
-                    jsonMedicalRecord.setChiefComplain(edt_complaints.getText().toString());
-                    jsonMedicalRecord.setPastHistory(edt_past_history.getText().toString());
+                    jsonMedicalRecord.setChiefComplain(actv_complaints.getText().toString());
+                    jsonMedicalRecord.setPastHistory(actv_past_history.getText().toString());
                     jsonMedicalRecord.setFamilyHistory(actv_family_history.getText().toString());
-                    jsonMedicalRecord.setKnownAllergies(edt_known_allergy.getText().toString());
-                    jsonMedicalRecord.setClinicalFinding(edt_clinical_finding.getText().toString());
-                    jsonMedicalRecord.setProvisionalDifferentialDiagnosis(edt_provisional.getText().toString());
+                    jsonMedicalRecord.setKnownAllergies(actv_known_allergy.getText().toString());
+                    jsonMedicalRecord.setClinicalFinding(actv_clinical_finding.getText().toString());
+                    jsonMedicalRecord.setProvisionalDifferentialDiagnosis(actv_provisional.getText().toString());
 
                     JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical()
                             .setBloodPressure(new String[] {edt_bp.getText().toString()})
