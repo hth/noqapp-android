@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model.response.api;
 
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
@@ -109,8 +110,8 @@ public interface ManageQueueService {
             String codeQR
     );
 
-    @POST("api/m/mq/dispenseToken/{codeQR}.json")
-    Call<JsonToken> dispenseToken(
+    @POST("api/m/mq/dispenseTokenWithoutClientInfo/{codeQR}.json")
+    Call<JsonToken> dispenseTokenWithoutClientInfo(
             @Header("X-R-DID")
             String did,
 
@@ -125,5 +126,23 @@ public interface ManageQueueService {
 
             @Path("codeQR")
             String codeQR
+    );
+
+    @POST("api/m/mq/dispenseTokenWithoutClientInfo.json")
+    Call<JsonToken> dispenseTokenWithClientInfo(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonBusinessCustomerLookup jsonBusinessCustomerLookup
     );
 }

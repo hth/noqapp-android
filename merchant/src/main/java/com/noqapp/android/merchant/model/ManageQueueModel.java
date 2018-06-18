@@ -213,7 +213,7 @@ public class ManageQueueModel {
      * @param auth
      */
     public static void dispenseToken(String did, String mail, String auth, String codeQR) {
-        manageQueueService.dispenseToken(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
+        manageQueueService.dispenseTokenWithoutClientInfo(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == 401) {
