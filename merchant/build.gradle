@@ -40,19 +40,10 @@ android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
 
-    dexOptions {
-        javaMaxHeapSize "4g"
-    }
-
     def versionPropsFile = file('version.properties')
     def versionMajor = 0
     def versionMinor = 0
     def versionPatch = 0
-
-    def versionPropsFileH = file('version-healthCare.properties')
-    def versionMajorH = 0
-    def versionMinorH = 0
-    def versionPatchH = 0
 
     if (versionPropsFile.canRead()) {
         if (env == "release" || env == "sandbox") {
@@ -66,112 +57,45 @@ android {
         throw new GradleException("Could not read version.properties!")
     }
 
-    if (versionPropsFileH.canRead()) {
-        if (env == "release" || env == "sandbox") {
-            def Properties versionProps = new Properties()
-            versionProps.load(new FileInputStream(versionPropsFileH))
-            versionMajorH = versionProps['VERSION_MAJOR'].toInteger()
-            versionMinorH = versionProps['VERSION_MINOR'].toInteger()
-            versionPatchH = versionProps['VERSION_PATCH'].toInteger()
+    def versionBuildPropsFile = file('version.build.properties')
+    def versionBuild = 0;
+
+    if (env == "release" || env == "sandbox") {
+        if (versionBuildPropsFile.canRead()) {
+            def Properties versionBuildProps = new Properties()
+            versionBuildProps.load(new FileInputStream(versionBuildPropsFile))
+
+            if (versionBuildProps['VERSION_MAJOR'].toInteger() != versionMajor ||
+                    versionBuildProps['VERSION_MINOR'].toInteger() != versionMinor) {
+
+                println "versionPatch: " + 0.toString() +
+                        " versionBuild: " + versionBuildProps['VERSION_BUILD']
+                versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
+
+                versionBuildProps['VERSION_MAJOR'] = versionMajor.toString()
+                versionBuildProps['VERSION_MINOR'] = versionMinor.toString()
+                versionBuildProps['VERSION_PATCH'] = versionPatch.toString()
+                versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
+                versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
+            } else {
+                println "versionPatch: " + versionBuildProps['VERSION_PATCH'] +
+                        " versionBuild: " + versionBuildProps['VERSION_BUILD']
+                versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
+                versionPatch = versionBuildProps['VERSION_PATCH'].toInteger() + 1
+
+                versionBuildProps['VERSION_MAJOR'] = versionMajor.toString()
+                versionBuildProps['VERSION_MINOR'] = versionMinor.toString()
+                versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
+                versionBuildProps['VERSION_PATCH'] = versionPatch.toString()
+                versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
+            }
+        } else {
+            throw new GradleException("Could not read version.build.properties!")
         }
-    } else {
-        throw new GradleException("Could not read version-healthCare.properties!")
     }
 
-    def versionBuildPropsFile = file('version.build.properties')
-    def versionBuild = 0
-
-    def versionBuildPropsFileH = file('version-healthCare.build.properties')
-    def versionBuildH = 0
-
-    flavorDimensions "version"
-
-    productFlavors {
-        medical {
-            //select the dimension of flavor
-            dimension "version"
-
-            //configure applicationId for app published to Play store
-            applicationId "com.noqapp.android.merchant.healthcare"
-
-            //Configure this flavor specific app name published in Play Store
-            resValue "string", "flavored_app_name", "Merchant HealthCare App"
-
-            if (env == "release" || env == "sandbox") {
-                if (versionBuildPropsFileH.canRead()) {
-                    def Properties versionBuildProps = new Properties()
-                    versionBuildProps.load(new FileInputStream(versionBuildPropsFileH))
-
-                    if (versionBuildProps['VERSION_MAJOR'].toInteger() != versionMajor ||
-                            versionBuildProps['VERSION_MINOR'].toInteger() != versionMinor) {
-
-                        println "versionPatch: " + 0.toString() +
-                                " versionBuild: " + versionBuildProps['VERSION_BUILD']
-                        versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
-
-                        versionBuildProps['VERSION_MAJOR'] = versionMajorH.toString()
-                        versionBuildProps['VERSION_MINOR'] = versionMinorH.toString()
-                        versionBuildProps['VERSION_PATCH'] = versionPatchH.toString()
-                        versionBuildProps['VERSION_BUILD'] = versionBuildH.toString()
-                        versionBuildProps.store(versionBuildPropsFileH.newWriter(), null)
-                    } else {
-                        println "versionPatch: " + versionBuildProps['VERSION_PATCH'] +
-                                " versionBuild: " + versionBuildProps['VERSION_BUILD']
-                        versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
-                        versionPatch = versionBuildProps['VERSION_PATCH'].toInteger() + 1
-
-                        versionBuildProps['VERSION_MAJOR'] = versionMajorH.toString()
-                        versionBuildProps['VERSION_MINOR'] = versionMinorH.toString()
-                        versionBuildProps['VERSION_PATCH'] = versionPatchH.toString()
-                        versionBuildProps['VERSION_BUILD'] = versionBuildH.toString()
-                        versionBuildProps.store(versionBuildPropsFileH.newWriter(), null)
-                    }
-                } else {
-                    throw new GradleException("Could not read version-healthCare.build.properties!")
-                }
-            }
-        }
-
-        queue {
-            dimension "version"
-
-            applicationId "com.noqapp.android.merchant"
-            resValue "string", "flavored_app_name", "Merchant Queue App"
-
-            if (env == "release" || env == "sandbox") {
-                if (versionBuildPropsFile.canRead()) {
-                    def Properties versionBuildProps = new Properties()
-                    versionBuildProps.load(new FileInputStream(versionBuildPropsFile))
-
-                    if (versionBuildProps['VERSION_MAJOR'].toInteger() != versionMajor ||
-                            versionBuildProps['VERSION_MINOR'].toInteger() != versionMinor) {
-
-                        println "versionPatch: " + 0.toString() +
-                                " versionBuild: " + versionBuildProps['VERSION_BUILD']
-                        versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
-
-                        versionBuildProps['VERSION_MAJOR'] = versionMajor.toString()
-                        versionBuildProps['VERSION_MINOR'] = versionMinor.toString()
-                        versionBuildProps['VERSION_PATCH'] = versionPatch.toString()
-                        versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
-                        versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
-                    } else {
-                        println "versionPatch: " + versionBuildProps['VERSION_PATCH'] +
-                                " versionBuild: " + versionBuildProps['VERSION_BUILD']
-                        versionBuild = versionBuildProps['VERSION_BUILD'].toInteger() + 1
-                        versionPatch = versionBuildProps['VERSION_PATCH'].toInteger() + 1
-
-                        versionBuildProps['VERSION_MAJOR'] = versionMajor.toString()
-                        versionBuildProps['VERSION_MINOR'] = versionMinor.toString()
-                        versionBuildProps['VERSION_PATCH'] = versionPatch.toString()
-                        versionBuildProps['VERSION_BUILD'] = versionBuild.toString()
-                        versionBuildProps.store(versionBuildPropsFile.newWriter(), null)
-                    }
-                } else {
-                    throw new GradleException("Could not read version.build.properties!")
-                }
-            }
-        }
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
 
     defaultConfig {
@@ -404,6 +328,30 @@ android {
     sourceSets {
         androidTest {
             java.srcDirs = ['androidTest/java']
+        }
+    }
+
+
+    flavorDimensions "version"
+
+    productFlavors {
+        medical {
+            //select the dimension of flavor
+            dimension "version"
+
+            //configure applicationId for app published to Play store
+            applicationId "com.noqapp.android.merchant.healthcare"
+
+            //Configure this flavor specific app name published in Play Store
+            resValue "string", "flavored_app_name", "Merchant HealthCare App"
+
+        }
+
+        queue {
+            dimension "version"
+
+            applicationId "com.noqapp.android.merchant"
+            resValue "string", "flavored_app_name", "Merchant Queue App"
         }
     }
 }
