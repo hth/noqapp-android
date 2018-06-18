@@ -48,8 +48,12 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty("sid")
     private String serverDeviceId = "";
 
-    @JsonProperty("min")
-    private List<JsonQueuedMinorPerson> minors = new ArrayList<>();
+    /* Dependents can be anyone minor or other elderly family members. */
+    @JsonProperty ("dp")
+    private List<JsonQueuedDependent> dependents = new ArrayList<>();
+
+    @JsonProperty("bc")
+    private String businessCustomerId;
 
     public int getToken() {
         return token;
@@ -105,12 +109,21 @@ public class JsonQueuedPerson implements Serializable {
         return this;
     }
 
-    public List<JsonQueuedMinorPerson> getMinors() {
-        return minors;
+    public List<JsonQueuedDependent> getDependents() {
+        return dependents;
     }
 
-    public JsonQueuedPerson setMinors(List<JsonQueuedMinorPerson> minors) {
-        this.minors = minors;
+    public JsonQueuedPerson setDependents(List<JsonQueuedDependent> dependents) {
+        this.dependents = dependents;
+        return this;
+    }
+
+    public String getBusinessCustomerId() {
+        return businessCustomerId;
+    }
+
+    public JsonQueuedPerson setBusinessCustomerId(String businessCustomerId) {
+        this.businessCustomerId = businessCustomerId;
         return this;
     }
 }
