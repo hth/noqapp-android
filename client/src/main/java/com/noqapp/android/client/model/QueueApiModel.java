@@ -16,6 +16,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.body.DeviceToken;
+import com.noqapp.common.beans.body.JoinQueue;
 
 import java.util.List;
 
@@ -138,8 +139,8 @@ public class QueueApiModel {
         });
     }
 
-    public static void joinQueue(String did, String mail, String auth, String codeQR) {
-        queueService.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
+    public static void joinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
+        queueService.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
