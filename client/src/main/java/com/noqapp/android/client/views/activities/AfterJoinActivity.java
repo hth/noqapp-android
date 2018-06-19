@@ -241,17 +241,16 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             if (UserUtils.isLogin()) {
                 QueueApiModel.tokenPresenter = this;
                 JsonProfile jsonProfile = LaunchActivity.getLaunchActivity().getUserProfile();
-                String queueUserID = "";
-                String guardianID = "";
-                Log.v("dependent size: ",""+jsonProfile.getDependents().size());
-                if(jsonProfile.getDependents().size()>0){
-                    queueUserID = jsonProfile.getDependents().get(0).getQueueUserId();
-                    guardianID = jsonProfile.getQueueUserId();
-                }else{
-                    queueUserID = jsonProfile.getQueueUserId();
-                    guardianID = "";
+                String queueUserId;
+                String guardianId = null;
+                Log.v("dependent size: ", "" + jsonProfile.getDependents().size());
+                if (jsonProfile.getDependents().size() > 0) {
+                    queueUserId = jsonProfile.getDependents().get(0).getQueueUserId();
+                    guardianId = jsonProfile.getQueueUserId();
+                } else {
+                    queueUserId = jsonProfile.getQueueUserId();
                 }
-                JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserID).setGuardianQid(guardianID);
+                JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserId).setGuardianQid(guardianId);
                 QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
 //                boolean callingFromHistory = getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false);
 //                if (!callingFromHistory && getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
