@@ -174,7 +174,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
         /* Update the remote join count */
-        NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount() - 1);
+//        NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount() - 1);
         dismissProgress();
     }
 

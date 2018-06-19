@@ -194,11 +194,16 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             joinErrorMsg = joinQueueState.getJoinErrorMsg();
         }
         /* Update the remote join count */
-        NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
-        if (isJoinNotPossible) {
+//        NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
+
+
+        /**
+        * Below code block is commented to avoid false joining
+        * **/
+       /* if (isJoinNotPossible) {
             Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
         } else {
-            /* Auto join after scan if auto-join status is true in me screen && it is not coming from skip notification as well as history queue. */
+            *//* Auto join after scan if auto-join status is true in me screen && it is not coming from skip notification as well as history queue. *//*
           //  if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true) && NoQueueBaseActivity.getAutoJoinStatus()) {
                 if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
 
@@ -216,7 +221,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     joinQueue();
                 }
            // }
-        }
+        }*/
         dismissProgress();
     }
 

@@ -28,7 +28,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_PROFILE_IMAGE = "imageUri";
     //TODO add address from profile
     public static final String PREKEY_GENDER = "gender";
-    public static final String PREKEY_REMOTE_JOIN = "remoteJoin";
+   // public static final String PREKEY_REMOTE_JOIN = "remoteJoin";
     //public static final String PREKEY_AUTOJOIN = "autojoin";
     public static final String PREKEY_INVITECODE = "invitecode";
     public static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
@@ -53,13 +53,13 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedPreferences.edit();
     }
 
-    public static int getRemoteJoinCount() {
-        return sharedPreferences.getInt(PREKEY_REMOTE_JOIN, 0);
-    }
-
-    public static void setRemoteJoinCount(int remoteJoinCount) {
-        sharedPreferences.edit().putInt(PREKEY_REMOTE_JOIN, remoteJoinCount < 0 ? 0 : remoteJoinCount).commit();
-    }
+//    public static int getRemoteJoinCount() {
+//        return sharedPreferences.getInt(PREKEY_REMOTE_JOIN, 0);
+//    }
+//
+//    public static void setRemoteJoinCount(int remoteJoinCount) {
+//        sharedPreferences.edit().putInt(PREKEY_REMOTE_JOIN, remoteJoinCount < 0 ? 0 : remoteJoinCount).commit();
+//    }
 
 //    public static boolean getAutoJoinStatus() {
 //        return sharedPreferences.getBoolean(PREKEY_AUTOJOIN, true);
@@ -129,7 +129,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(PREKEY_GENDER, profile.getGender().name());
         editor.putString(PREKEY_DOB, profile.getBirthday());
         editor.putString(PREKEY_MAIL, profile.getMail());
-        editor.putInt(PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
+       // editor.putInt(PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
        // editor.putBoolean(PREKEY_AUTOJOIN, true);
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
