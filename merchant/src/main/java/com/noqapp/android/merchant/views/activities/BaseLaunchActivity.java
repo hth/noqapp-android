@@ -41,6 +41,7 @@ import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
+import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.model.types.UserLevelEnum;
 import com.noqapp.common.utils.NetworkUtil;
 
@@ -77,6 +78,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_LAST_UPDATE = "last_update";
     protected final String KEY_SUGGESTION = "suggestions";
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
+    protected final String KEY_USER_PROFILE = "userProfile";
 
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
@@ -249,6 +251,21 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         editor.putString(KEY_USER_AUTH, auth);
         editor.putBoolean(IS_LOGIN, isLogin);
         editor.apply();
+    }
+
+    public void setUserProfile(JsonProfile jsonProfile){
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(jsonProfile);
+        editor.putString(KEY_USER_PROFILE, json);
+        editor.apply();
+    }
+
+    public JsonProfile getUserProfile(){
+        Gson gson = new Gson();
+        String json = sharedpreferences.getString(KEY_USER_PROFILE, "");
+        JsonProfile obj = gson.fromJson(json, JsonProfile.class);
+        return obj;
     }
 
     public String getDeviceID() {

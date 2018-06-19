@@ -152,6 +152,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                     LaunchActivity.getLaunchActivity().enableDisableDrawer(true);
                 }
                 LaunchActivity.getLaunchActivity().setAccessGrant(true);
+                LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
                 MerchantListFragment mlf = new MerchantListFragment();
                 Bundle b = new Bundle();
                 b.putSerializable("jsonMerchant", jsonMerchant);

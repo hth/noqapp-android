@@ -179,6 +179,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.show();
                     //@TODO @Chandra update the country code dynamic
+                    countryCode = edt_phone_code.getText().toString();
                     startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 
                     Answers.getInstance().logLogin(new LoginEvent()
