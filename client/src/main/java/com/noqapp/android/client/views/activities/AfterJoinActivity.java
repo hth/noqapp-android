@@ -35,7 +35,9 @@ import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
+import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.beans.JsonResponse;
+import com.noqapp.common.beans.body.JoinQueue;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.PhoneFormatterUtil;
 
@@ -172,7 +174,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
         /* Update the remote join count */
-        NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount() - 1);
+//        NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount() - 1);
         dismissProgress();
     }
 
@@ -237,19 +239,29 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (codeQR != null) {
             Log.d("CodeQR=", codeQR);
             if (UserUtils.isLogin()) {
-                boolean callingFromHistory = getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false);
-                if (!callingFromHistory && getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
-                    QueueApiModel.tokenPresenter = this;
-                    QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-                } else if (callingFromHistory) {
-                    if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
-                        QueueApiModel.tokenPresenter = this;
-                        QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-                    } else {
-                        //Failure
-                        Toast.makeText(this, getString(R.string.error_remote_join_available), Toast.LENGTH_LONG).show();
-                    }
+                QueueApiModel.tokenPresenter = this;
+                JsonProfile jsonProfile = LaunchActivity.getLaunchActivity().getUserProfile();
+                String queueUserId;
+                String guardianId = null;
+                Log.v("dependent size: ", "" + jsonProfile.getDependents().size());
+                if (jsonProfile.getDependents().size() > 0) {
+                    queueUserId = jsonProfile.getDependents().get(0).getQueueUserId();
+                    guardianId = jsonProfile.getQueueUserId();
+                } else {
+                    queueUserId = jsonProfile.getQueueUserId();
                 }
+                JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserId).setGuardianQid(guardianId);
+                QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+//                boolean callingFromHistory = getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false);
+//                if (!callingFromHistory && getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
+//                    QueueApiModel.tokenPresenter = this;
+//                    QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+//                } else if (callingFromHistory) {
+//                    if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
+//                        QueueApiModel.tokenPresenter = this;
+//                        QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+//                    }
+//                }
             } else {
                 QueueModel.tokenPresenter = this;
                 QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);

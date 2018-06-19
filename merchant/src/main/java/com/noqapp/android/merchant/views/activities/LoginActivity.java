@@ -118,8 +118,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         mAuth = FirebaseAuth.getInstance();
         updateUI(STATE_INITIALIZED);
         initProgress();
-        TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        String c_codeValue = tm.getNetworkCountryIso();
+        String c_codeValue =LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
         int c_code =  PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
         Log.v("country code", ""+c_code);
         countryCode = "+"+c_code;
@@ -189,7 +188,6 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
             if (isReadAndReceiveSMSPermissionAllowed()) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.show();
-                    countryCode = "+91";
                     //@TODO @Chandra update the country code dynamic
                     startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 

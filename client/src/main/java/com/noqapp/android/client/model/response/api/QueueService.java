@@ -5,6 +5,7 @@ import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.body.DeviceToken;
+import com.noqapp.common.beans.body.JoinQueue;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -72,7 +73,7 @@ public interface QueueService {
             DeviceToken deviceToken
     );
 
-    @POST("api/c/token/queue/{codeQR}.json")
+    @POST("api/c/token/queue.json")
     Call<JsonToken> joinQueue(
             @Header("X-R-DID")
             String did,
@@ -86,8 +87,8 @@ public interface QueueService {
             @Header("X-R-AUTH")
             String auth,
 
-            @Path("codeQR")
-            String codeQR
+            @Body
+            JoinQueue joinQueue
     );
 
     @POST("api/c/token/abort/{codeQR}.json")
@@ -126,21 +127,21 @@ public interface QueueService {
             String codeQR
     );
 
-    @POST("api/c/token/remote/queue/{codeQR}.json")
-    Call<JsonToken> remoteJoinQueue(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Path("codeQR")
-            String codeQR
-    );
+//    @POST("api/c/token/remote/queue/{codeQR}.json")
+//    Call<JsonToken> remoteJoinQueue(
+//            @Header("X-R-DID")
+//            String did,
+//
+//            @Header("X-R-DT")
+//            String dt,
+//
+//            @Header("X-R-MAIL")
+//            String mail,
+//
+//            @Header("X-R-AUTH")
+//            String auth,
+//
+//            @Path("codeQR")
+//            String codeQR
+//    );
 }

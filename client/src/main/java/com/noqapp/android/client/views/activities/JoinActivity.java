@@ -194,12 +194,17 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             joinErrorMsg = joinQueueState.getJoinErrorMsg();
         }
         /* Update the remote join count */
-        NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
-        if (isJoinNotPossible) {
+//        NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
+
+
+        /**
+        * Below code block is commented to avoid false joining
+        * **/
+       /* if (isJoinNotPossible) {
             Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
         } else {
-            /* Auto join after scan if auto-join status is true in me screen && it is not coming from skip notification as well as history queue. */
-            if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true) && NoQueueBaseActivity.getAutoJoinStatus()) {
+            *//* Auto join after scan if auto-join status is true in me screen && it is not coming from skip notification as well as history queue. *//*
+          //  if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true) && NoQueueBaseActivity.getAutoJoinStatus()) {
                 if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
 
                     if (UserUtils.isLogin()) {
@@ -215,8 +220,8 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     // any user can join
                     joinQueue();
                 }
-            }
-        }
+           // }
+        }*/
         dismissProgress();
     }
 
@@ -259,7 +264,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
                     in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);
                     in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-                    in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true);
+               //     in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true);
                     in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
                     in.putExtra(Constants.FROM_JOIN_SCREEN, true);
                     startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
@@ -295,7 +300,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
         //TODO // previously KEY_FROM_LIST  was false need to verify
         in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
-        in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true));
+        //in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true));
         in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
         in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.FROM_JOIN_SCREEN, true);

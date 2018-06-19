@@ -30,7 +30,11 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class JsonProfile implements Serializable {
+public final class JsonProfile implements Serializable {
+
+    @JsonProperty ("qid")
+    private String queueUserId;
+
     @JsonProperty ("pi")
     private String profileImage;
 
@@ -76,6 +80,15 @@ public class JsonProfile implements Serializable {
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public JsonProfile setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
+    }
 
     public String getProfileImage() {
         return profileImage;
@@ -215,7 +228,8 @@ public class JsonProfile implements Serializable {
     @Override
     public String toString() {
         return "JsonProfile{" +
-                "profileImage='" + profileImage + '\'' +
+                "queueUserId='" + queueUserId + '\'' +
+                ", profileImage='" + profileImage + '\'' +
                 ", name='" + name + '\'' +
                 ", mail='" + mail + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
@@ -228,6 +242,7 @@ public class JsonProfile implements Serializable {
                 ", gender=" + gender +
                 ", userLevel=" + userLevel +
                 ", jsonUserMedicalProfile=" + jsonUserMedicalProfile +
+                ", dependents=" + dependents +
                 ", error=" + error +
                 '}';
     }

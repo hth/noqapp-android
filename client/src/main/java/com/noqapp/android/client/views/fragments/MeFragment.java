@@ -80,21 +80,21 @@ public class MeFragment extends NoQueueBaseFragment {
         String name = NoQueueBaseActivity.getUserName();
         String phone = NoQueueBaseActivity.getPhoneNo();
         String gender = NoQueueBaseActivity.getGender();
-        int remoteScanCount = NoQueueBaseActivity.getRemoteJoinCount();
-        boolean isAutoScanAvail = NoQueueBaseActivity.getAutoJoinStatus();
+      //  int remoteScanCount = NoQueueBaseActivity.getRemoteJoinCount();
+       // boolean isAutoScanAvail = NoQueueBaseActivity.getAutoJoinStatus();
         inviteCode = NoQueueBaseActivity.getInviteCode();
         tv_firstName.setText(name);
         if (!phone.equals("")) {
             tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(NoQueueBaseActivity.getCountryShortName(), phone));
         }
-        tv_scanCount.setText(String.valueOf(remoteScanCount) + " ");
-        toggleAutoJoin.setChecked(isAutoScanAvail);
-        toggleAutoJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
-                NoQueueBaseActivity.setAutoJoinStatus(isChecked);
-            }
-        });
+      //  tv_scanCount.setText(String.valueOf(remoteScanCount) + " ");
+//        toggleAutoJoin.setChecked(isAutoScanAvail);
+//        toggleAutoJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton toggleButton, boolean isChecked) {
+//                NoQueueBaseActivity.setAutoJoinStatus(isChecked);
+//            }
+//        });
 
         if (!phone.equals("")) {
             btn_register_login_logout.setText(getString(R.string.logout));

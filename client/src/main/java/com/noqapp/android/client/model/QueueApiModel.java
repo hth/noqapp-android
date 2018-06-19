@@ -16,6 +16,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.body.DeviceToken;
+import com.noqapp.common.beans.body.JoinQueue;
 
 import java.util.List;
 
@@ -138,8 +139,8 @@ public class QueueApiModel {
         });
     }
 
-    public static void joinQueue(String did, String mail, String auth, String codeQR) {
-        queueService.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
+    public static void joinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
+        queueService.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
@@ -216,29 +217,29 @@ public class QueueApiModel {
         });
     }
 
-    public static void remoteJoinQueue(String did, String mail, String auth, String codeQR) {
-        queueService.remoteJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    tokenPresenter.authenticationFailure(response.code());
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", response.body().toString());
-                    tokenPresenter.tokenPresenterResponse(response.body());
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed to join queue" + response.body().getError());
-                    tokenPresenter.tokenPresenterError();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
-                tokenPresenter.tokenPresenterError();
-            }
-        });
-    }
+//    public static void remoteJoinQueue(String did, String mail, String auth, String codeQR) {
+//        queueService.remoteJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
+//            @Override
+//            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
+//                if (response.code() == Constants.INVALID_CREDENTIAL) {
+//                    tokenPresenter.authenticationFailure(response.code());
+//                    return;
+//                }
+//                if (null != response.body() && null == response.body().getError()) {
+//                    Log.d("Response", response.body().toString());
+//                    tokenPresenter.tokenPresenterResponse(response.body());
+//                } else {
+//                    //TODO something logical
+//                    Log.e(TAG, "Failed to join queue" + response.body().getError());
+//                    tokenPresenter.tokenPresenterError();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
+//                Log.e("Response", t.getLocalizedMessage(), t);
+//                tokenPresenter.tokenPresenterError();
+//            }
+//        });
+//    }
 }

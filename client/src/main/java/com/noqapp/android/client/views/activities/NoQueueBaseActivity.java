@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.common.beans.JsonProfile;
@@ -27,8 +28,8 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_PROFILE_IMAGE = "imageUri";
     //TODO add address from profile
     public static final String PREKEY_GENDER = "gender";
-    public static final String PREKEY_REMOTE_JOIN = "remoteJoin";
-    public static final String PREKEY_AUTOJOIN = "autojoin";
+   // public static final String PREKEY_REMOTE_JOIN = "remoteJoin";
+    //public static final String PREKEY_AUTOJOIN = "autojoin";
     public static final String PREKEY_INVITECODE = "invitecode";
     public static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
     public static final int ACCOUNTKIT_REQUEST_CODE = 99;
@@ -39,9 +40,9 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String KEY_FROM_LIST = "fromList";
     public static final String KEY_IS_HISTORY = "isHistory";
     public static final String KEY_IS_REJOIN = "isRejoin";
-    public static final String KEY_IS_AUTOJOIN_ELIGIBLE = "autoJoinEligible";
+  //  public static final String KEY_IS_AUTOJOIN_ELIGIBLE = "autoJoinEligible";
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
-
+    protected static final String KEY_USER_PROFILE = "userProfile";
     /* Secured Shared Preference. */
     public static final String APP_PREF = "shared_pref";
     public static String XR_DID = "X-R-DID";
@@ -52,21 +53,21 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedPreferences.edit();
     }
 
-    public static int getRemoteJoinCount() {
-        return sharedPreferences.getInt(PREKEY_REMOTE_JOIN, 0);
-    }
+//    public static int getRemoteJoinCount() {
+//        return sharedPreferences.getInt(PREKEY_REMOTE_JOIN, 0);
+//    }
+//
+//    public static void setRemoteJoinCount(int remoteJoinCount) {
+//        sharedPreferences.edit().putInt(PREKEY_REMOTE_JOIN, remoteJoinCount < 0 ? 0 : remoteJoinCount).commit();
+//    }
 
-    public static void setRemoteJoinCount(int remoteJoinCount) {
-        sharedPreferences.edit().putInt(PREKEY_REMOTE_JOIN, remoteJoinCount < 0 ? 0 : remoteJoinCount).commit();
-    }
-
-    public static boolean getAutoJoinStatus() {
-        return sharedPreferences.getBoolean(PREKEY_AUTOJOIN, true);
-    }
-
-    public static void setAutoJoinStatus(boolean autoJoinStatus) {
-        sharedPreferences.edit().putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, autoJoinStatus).commit();
-    }
+//    public static boolean getAutoJoinStatus() {
+//        return sharedPreferences.getBoolean(PREKEY_AUTOJOIN, true);
+//    }
+//
+//    public static void setAutoJoinStatus(boolean autoJoinStatus) {
+//        sharedPreferences.edit().putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, autoJoinStatus).commit();
+//    }
 
     public static String getUserName() {
         return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_NAME, "Guest User");
@@ -121,14 +122,15 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static void commitProfile(JsonProfile profile, String email, String auth) {
+        setUserProfile(profile);
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(PREKEY_PHONE, profile.getPhoneRaw());
         editor.putString(PREKEY_NAME, profile.getName());
         editor.putString(PREKEY_GENDER, profile.getGender().name());
         editor.putString(PREKEY_DOB, profile.getBirthday());
         editor.putString(PREKEY_MAIL, profile.getMail());
-        editor.putInt(PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
-        editor.putBoolean(PREKEY_AUTOJOIN, true);
+       // editor.putInt(PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
+       // editor.putBoolean(PREKEY_AUTOJOIN, true);
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
         editor.putString(PREKEY_ADD,profile.getAddress());
@@ -137,7 +139,20 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();
     }
+    public static void setUserProfile(JsonProfile jsonProfile){
+        SharedPreferences.Editor editor = getSharedPreferencesEditor();
+        Gson gson = new Gson();
+        String json = gson.toJson(jsonProfile);
+        editor.putString(KEY_USER_PROFILE, json);
+        editor.apply();
+    }
 
+    public JsonProfile getUserProfile(){
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_USER_PROFILE, "");
+        JsonProfile obj = gson.fromJson(json, JsonProfile.class);
+        return obj;
+    }
     public static void clearPreferences() {
         getSharedPreferencesEditor().clear().commit();
     }

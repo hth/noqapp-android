@@ -512,36 +512,38 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         String current_serving = intent.getStringExtra(Constants.CurrentlyServing);
         String go_to = intent.getStringExtra(Constants.GoTo_Counter);
         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-        //update DB & after join screen
-        jtk.setServingNumber(Integer.parseInt(current_serving));
-        /*
-         * Save codeQR of goto & show it in after join screen on app
-         * Review DB for review key && current serving == token no.
-         */
-        if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
-            ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
-        }
-
-        if (jtk.isTokenExpired()) {
-            //un subscribe the topic
-            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-        }
-        TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-
-        if (activityCommunicator != null) {
-            boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
-            if (isUpdated) {
-                Intent blinker = new Intent(this, BlinkerActivity.class);
-                startActivity(blinker);
+        if (null != jtk) {
+            //update DB & after join screen
+            jtk.setServingNumber(Integer.parseInt(current_serving));
+            /*
+             * Save codeQR of goto & show it in after join screen on app
+             * Review DB for review key && current serving == token no.
+             */
+            if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
+                ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
             }
-        }
-        try {
-            scanfragment.updateListFromNotification(jtk, go_to);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+            if (jtk.isTokenExpired()) {
+                //un subscribe the topic
+                NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+            }
+            TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
 
+            if (activityCommunicator != null) {
+                boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
+                if (isUpdated) {
+                    Intent blinker = new Intent(this, BlinkerActivity.class);
+                    startActivity(blinker);
+                }
+            }
+            try {
+                scanfragment.updateListFromNotification(jtk, go_to);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e(TAG, "codeQR=" + codeQR + " current_serving=" + current_serving + " goTo=" + go_to);
+        }
     }
 
     @Override
