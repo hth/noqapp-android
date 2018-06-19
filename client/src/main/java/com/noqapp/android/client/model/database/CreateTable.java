@@ -46,8 +46,7 @@ public class CreateTable {
                     + TokenQueue.TOWN + " TEXT , "
                     + TokenQueue.AREA + " TEXT , "
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
-
-                    + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
+                    + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`"+ TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                     ");");
         }catch (Exception e){
@@ -84,7 +83,7 @@ public class CreateTable {
                     + TokenQueue.TOWN + " TEXT , "
                     + TokenQueue.AREA + " TEXT , "
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
-                    + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.CREATE_DATE + "`)" +
+                    + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`"+ TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                     ");");
         }catch (Exception e){
@@ -137,6 +136,15 @@ public class CreateTable {
         db.execSQL("UPDATE "+TokenQueue.TABLE_NAME +" SET " + TokenQueue.BUSINESS_TYPE+ " = DO WHERE "+TokenQueue.BUSINESS_TYPE+ " = HO");
         db.execSQL("UPDATE "+TokenQueueHistory.TABLE_NAME +" SET " + TokenQueue.BUSINESS_TYPE+ " = DO WHERE "+TokenQueue.BUSINESS_TYPE+ " = HO");
     }
+
+    static void dropAndCreateTable(SQLiteDatabase db){
+
+        db.execSQL("DROP TABLE IF EXISTS '" + TokenQueue.TABLE_NAME + "'");
+        db.execSQL("DROP TABLE IF EXISTS '" + TokenQueueHistory.TABLE_NAME  + "'");
+        createTableTokenQueue(db);
+        createTableTokenQueueHistory(db);
+    }
+
 
     static void createAllTable(SQLiteDatabase db) {
         createTableTokenQueue(db);

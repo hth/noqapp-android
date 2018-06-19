@@ -381,7 +381,8 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         edt_Name.setText(NoQueueBaseActivity.getUserName());
         tv_name.setText(NoQueueBaseActivity.getUserName());
         edt_phoneNo.setText(NoQueueBaseActivity.getPhoneNo());
-        edt_Mail.setText(NoQueueBaseActivity.getMail());
+        edt_Mail.setText(NoQueueBaseActivity.getMail().toString().contains("noqapp.com")? "":
+                NoQueueBaseActivity.getMail());
         edt_phoneNo.setEnabled(false);
         edt_Mail.setEnabled(false);
         edt_address.setText(NoQueueBaseActivity.getAddress());

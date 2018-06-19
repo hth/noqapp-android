@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,12 +35,15 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.body.JoinQueue;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.PhoneFormatterUtil;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,8 +87,14 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @BindView(R.id.tv_estimated_time)
     protected TextView tv_estimated_time;
 
+    @BindView(R.id.tv_add)
+    protected TextView tv_add;
+
     @BindView(R.id.ll_change_bg)
     protected LinearLayout ll_change_bg;
+
+    @BindView(R.id.sp_name_list)
+    protected Spinner sp_name_list;
 
     private JsonTokenAndQueue jsonTokenAndQueue;
     private String codeQR;
@@ -95,6 +105,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private String topic;
     private boolean isResumeFirst = true;
     private String gotoPerson = "";
+    private int profile_pos;
 
 
     @Override
@@ -118,7 +129,16 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(address);
-
+            profile_pos = bundle.getIntExtra("profile_pos",1);
+            List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
+            profileList.add(0,LaunchActivity.getLaunchActivity().getUserProfile());
+            profileList.add(0,new JsonProfile().setName("Select Patient"));
+            DependentAdapter adapter = new DependentAdapter(this, profileList);
+            sp_name_list.setAdapter(adapter);
+            sp_name_list.setSelection(profile_pos);
+            sp_name_list.setEnabled(false);
+            sp_name_list.setClickable(false);
+            tv_add.setText(((JsonProfile)sp_name_list.getSelectedItem()).getName());
             String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) +
                     " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour());
             if (jsonTokenAndQueue.getDelayedInMinutes() > 0) {
@@ -244,8 +264,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 String queueUserId;
                 String guardianId = null;
                 Log.v("dependent size: ", "" + jsonProfile.getDependents().size());
-                if (jsonProfile.getDependents().size() > 0) {
-                    queueUserId = jsonProfile.getDependents().get(0).getQueueUserId();
+                if (profile_pos > 1) {
+                    queueUserId = ((JsonProfile)sp_name_list.getSelectedItem()).getQueueUserId();
                     guardianId = jsonProfile.getQueueUserId();
                 } else {
                     queueUserId = jsonProfile.getQueueUserId();
