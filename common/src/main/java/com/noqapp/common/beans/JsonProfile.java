@@ -228,7 +228,8 @@ public final class JsonProfile implements Serializable {
     @Override
     public String toString() {
         return "JsonProfile{" +
-                "profileImage='" + profileImage + '\'' +
+                "queueUserId='" + queueUserId + '\'' +
+                ", profileImage='" + profileImage + '\'' +
                 ", name='" + name + '\'' +
                 ", mail='" + mail + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
@@ -241,6 +242,7 @@ public final class JsonProfile implements Serializable {
                 ", gender=" + gender +
                 ", userLevel=" + userLevel +
                 ", jsonUserMedicalProfile=" + jsonUserMedicalProfile +
+                ", dependents=" + dependents +
                 ", error=" + error +
                 '}';
     }
