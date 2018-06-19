@@ -30,7 +30,11 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class JsonProfile implements Serializable {
+public final class JsonProfile implements Serializable {
+
+    @JsonProperty ("qid")
+    private String queueUserId;
+
     @JsonProperty ("pi")
     private String profileImage;
 
@@ -76,6 +80,15 @@ public class JsonProfile implements Serializable {
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public JsonProfile setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
+    }
 
     public String getProfileImage() {
         return profileImage;
