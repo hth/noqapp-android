@@ -237,19 +237,18 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (codeQR != null) {
             Log.d("CodeQR=", codeQR);
             if (UserUtils.isLogin()) {
-                boolean callingFromHistory = getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false);
-                if (!callingFromHistory && getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
-                    QueueApiModel.tokenPresenter = this;
-                    QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-                } else if (callingFromHistory) {
-                    if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
-                        QueueApiModel.tokenPresenter = this;
-                        QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-                    } else {
-                        //Failure
-                        Toast.makeText(this, getString(R.string.error_remote_join_available), Toast.LENGTH_LONG).show();
-                    }
-                }
+                QueueApiModel.tokenPresenter = this;
+                QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+//                boolean callingFromHistory = getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false);
+//                if (!callingFromHistory && getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
+//                    QueueApiModel.tokenPresenter = this;
+//                    QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+//                } else if (callingFromHistory) {
+//                    if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
+//                        QueueApiModel.tokenPresenter = this;
+//                        QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+//                    }
+//                }
             } else {
                 QueueModel.tokenPresenter = this;
                 QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);

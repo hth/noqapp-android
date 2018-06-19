@@ -216,29 +216,29 @@ public class QueueApiModel {
         });
     }
 
-    public static void remoteJoinQueue(String did, String mail, String auth, String codeQR) {
-        queueService.remoteJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    tokenPresenter.authenticationFailure(response.code());
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", response.body().toString());
-                    tokenPresenter.tokenPresenterResponse(response.body());
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed to join queue" + response.body().getError());
-                    tokenPresenter.tokenPresenterError();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
-                tokenPresenter.tokenPresenterError();
-            }
-        });
-    }
+//    public static void remoteJoinQueue(String did, String mail, String auth, String codeQR) {
+//        queueService.remoteJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
+//            @Override
+//            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
+//                if (response.code() == Constants.INVALID_CREDENTIAL) {
+//                    tokenPresenter.authenticationFailure(response.code());
+//                    return;
+//                }
+//                if (null != response.body() && null == response.body().getError()) {
+//                    Log.d("Response", response.body().toString());
+//                    tokenPresenter.tokenPresenterResponse(response.body());
+//                } else {
+//                    //TODO something logical
+//                    Log.e(TAG, "Failed to join queue" + response.body().getError());
+//                    tokenPresenter.tokenPresenterError();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
+//                Log.e("Response", t.getLocalizedMessage(), t);
+//                tokenPresenter.tokenPresenterError();
+//            }
+//        });
+//    }
 }

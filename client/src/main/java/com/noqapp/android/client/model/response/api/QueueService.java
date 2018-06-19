@@ -126,21 +126,21 @@ public interface QueueService {
             String codeQR
     );
 
-    @POST("api/c/token/remote/queue/{codeQR}.json")
-    Call<JsonToken> remoteJoinQueue(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Path("codeQR")
-            String codeQR
-    );
+//    @POST("api/c/token/remote/queue/{codeQR}.json")
+//    Call<JsonToken> remoteJoinQueue(
+//            @Header("X-R-DID")
+//            String did,
+//
+//            @Header("X-R-DT")
+//            String dt,
+//
+//            @Header("X-R-MAIL")
+//            String mail,
+//
+//            @Header("X-R-AUTH")
+//            String auth,
+//
+//            @Path("codeQR")
+//            String codeQR
+//    );
 }
