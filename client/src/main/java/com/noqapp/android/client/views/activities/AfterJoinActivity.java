@@ -35,6 +35,7 @@ import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
+import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.body.JoinQueue;
 import com.noqapp.common.utils.Formatter;
@@ -239,7 +240,18 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             Log.d("CodeQR=", codeQR);
             if (UserUtils.isLogin()) {
                 QueueApiModel.tokenPresenter = this;
-                JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId().setGuardianQid();
+                JsonProfile jsonProfile = LaunchActivity.getLaunchActivity().getUserProfile();
+                String queueUserID = "";
+                String guardianID = "";
+                Log.v("dependent size: ",""+jsonProfile.getDependents().size());
+                if(jsonProfile.getDependents().size()>0){
+                    queueUserID = jsonProfile.getDependents().get(0).getQueueUserId();
+                    guardianID = jsonProfile.getQueueUserId();
+                }else{
+                    queueUserID = jsonProfile.getQueueUserId();
+                    guardianID = "";
+                }
+                JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserID).setGuardianQid(guardianID);
                 QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
 //                boolean callingFromHistory = getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false);
 //                if (!callingFromHistory && getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {

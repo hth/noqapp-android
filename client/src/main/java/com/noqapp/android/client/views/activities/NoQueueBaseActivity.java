@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.common.beans.JsonProfile;
@@ -41,7 +42,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String KEY_IS_REJOIN = "isRejoin";
   //  public static final String KEY_IS_AUTOJOIN_ELIGIBLE = "autoJoinEligible";
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
-
+    protected static final String KEY_USER_PROFILE = "userProfile";
     /* Secured Shared Preference. */
     public static final String APP_PREF = "shared_pref";
     public static String XR_DID = "X-R-DID";
@@ -121,6 +122,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static void commitProfile(JsonProfile profile, String email, String auth) {
+        setUserProfile(profile);
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(PREKEY_PHONE, profile.getPhoneRaw());
         editor.putString(PREKEY_NAME, profile.getName());
@@ -137,7 +139,20 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();
     }
+    public static void setUserProfile(JsonProfile jsonProfile){
+        SharedPreferences.Editor editor = getSharedPreferencesEditor();
+        Gson gson = new Gson();
+        String json = gson.toJson(jsonProfile);
+        editor.putString(KEY_USER_PROFILE, json);
+        editor.apply();
+    }
 
+    public JsonProfile getUserProfile(){
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_USER_PROFILE, "");
+        JsonProfile obj = gson.fromJson(json, JsonProfile.class);
+        return obj;
+    }
     public static void clearPreferences() {
         getSharedPreferencesEditor().clear().commit();
     }

@@ -304,7 +304,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
                 } else {
-                    Toast.makeText(MedicalHistoryDetailActivity.this, "Please fill atleast one field", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MedicalHistoryDetailActivity.this, "Please fill at least one field", Toast.LENGTH_LONG).show();
                 }
                 break;
         }

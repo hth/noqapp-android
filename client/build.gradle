@@ -334,13 +334,14 @@ android {
 }
 
 dependencies {
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    implementation 'com.android.support:design:27.0.2'
-    implementation 'com.android.support:support-v4:27.0.2'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.4.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
@@ -352,7 +353,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:12.0.1'
     implementation 'com.google.firebase:firebase-auth:12.0.1'
     implementation 'com.google.firebase:firebase-messaging:12.0.1'
-    implementation 'com.android.support:cardview-v7:27.0.2'
     implementation 'com.google.android.gms:play-services-vision:12.0.1'
     implementation 'com.google.android.gms:play-services:12.0.1'
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
@@ -373,6 +373,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.github.RobertApikyan:SegmentedControl:release_1.0.2'
+    implementation 'com.google.code.gson:gson:2.8.4'
     implementation project(':common')
 }
 
