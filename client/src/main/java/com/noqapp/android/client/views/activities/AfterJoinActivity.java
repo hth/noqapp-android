@@ -96,6 +96,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @BindView(R.id.sp_name_list)
     protected Spinner sp_name_list;
 
+    @BindView(R.id.ll_patient_name)
+    protected LinearLayout ll_patient_name;
+
     private JsonTokenAndQueue jsonTokenAndQueue;
     private String codeQR;
     private String displayName;
@@ -130,15 +133,25 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             tv_queue_name.setText(queueName);
             tv_address.setText(address);
             profile_pos = bundle.getIntExtra("profile_pos",1);
-            List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
-            profileList.add(0,LaunchActivity.getLaunchActivity().getUserProfile());
-            profileList.add(0,new JsonProfile().setName("Select Patient"));
-            DependentAdapter adapter = new DependentAdapter(this, profileList);
-            sp_name_list.setAdapter(adapter);
-            sp_name_list.setSelection(profile_pos);
-            sp_name_list.setEnabled(false);
-            sp_name_list.setClickable(false);
-            tv_add.setText(((JsonProfile)sp_name_list.getSelectedItem()).getName());
+            if(UserUtils.isLogin()) {
+                List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
+                profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
+                profileList.add(0, new JsonProfile().setName("Select Patient"));
+                DependentAdapter adapter = new DependentAdapter(this, profileList);
+                sp_name_list.setAdapter(adapter);
+                sp_name_list.setSelection(profile_pos);
+                sp_name_list.setEnabled(false);
+                sp_name_list.setClickable(false);
+                tv_add.setText(((JsonProfile) sp_name_list.getSelectedItem()).getName());
+            }
+            switch (jsonTokenAndQueue.getBusinessType()) {
+                case DO:
+                case PH:
+                    ll_patient_name.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    ll_patient_name.setVisibility(View.GONE);
+            }
             String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) +
                     " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour());
             if (jsonTokenAndQueue.getDelayedInMinutes() > 0) {

@@ -12,6 +12,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -84,6 +85,9 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     @BindView(R.id.sp_name_list)
     protected Spinner sp_name_list;
 
+    @BindView(R.id.ll_patient_name)
+    protected LinearLayout ll_patient_name;
+
     private String codeQR;
     private String countryShortName;
     private JsonQueue jsonQueue;
@@ -99,13 +103,15 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         ButterKnife.bind(this);
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_join));
-        List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
-        profileList.add(0,LaunchActivity.getLaunchActivity().getUserProfile());
-        profileList.add(0,new JsonProfile().setName("Select Patient"));
-        DependentAdapter adapter = new DependentAdapter(this, profileList);
-        sp_name_list.setAdapter(adapter);
-        if(profileList.size()==0)
-            sp_name_list.setSelection(1);
+        if(UserUtils.isLogin()) {
+            List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
+            profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
+            profileList.add(0, new JsonProfile().setName("Select Patient"));
+            DependentAdapter adapter = new DependentAdapter(this, profileList);
+            sp_name_list.setAdapter(adapter);
+            if (profileList.size() == 0)
+                sp_name_list.setSelection(1);
+        }
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         AppUtilities.setRatingBarColor(stars, this);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
@@ -151,9 +157,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     ShowAlertInformation.showNetworkDialog(this);
                 }
             }
-
         }
-
     }
 
 
@@ -206,6 +210,15 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         if (joinQueueState.isJoinNotPossible()) {
             isJoinNotPossible = joinQueueState.isJoinNotPossible();
             joinErrorMsg = joinQueueState.getJoinErrorMsg();
+        }
+
+        switch (jsonQueue.getBusinessType()) {
+            case DO:
+            case PH:
+                ll_patient_name.setVisibility(View.VISIBLE);
+                break;
+            default:
+                ll_patient_name.setVisibility(View.GONE);
         }
         /* Update the remote join count */
 //        NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
