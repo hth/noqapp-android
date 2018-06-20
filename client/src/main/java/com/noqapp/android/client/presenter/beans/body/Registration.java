@@ -24,6 +24,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Registration {
+    @JsonProperty("QID")
+    private String queueUserId;
+
     @JsonProperty("PH")
     private String phone;
 
@@ -50,6 +53,15 @@ public class Registration {
 
     @JsonProperty("IC")
     private String inviteCode;
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public Registration setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
+    }
 
     public String getPhone() {
         return phone;
