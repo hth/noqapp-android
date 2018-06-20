@@ -109,7 +109,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private boolean isResumeFirst = true;
     private String gotoPerson = "";
     private int profile_pos;
-
+    private List<JsonProfile> profileList;
+    private String queueUserId ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,8 +134,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             tv_queue_name.setText(queueName);
             tv_address.setText(address);
             profile_pos = bundle.getIntExtra("profile_pos",1);
+
             if(UserUtils.isLogin()) {
-                List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
+                profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
                 profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
                 profileList.add(0, new JsonProfile().setName("Select Patient"));
                 DependentAdapter adapter = new DependentAdapter(this, profileList);
@@ -142,6 +144,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 sp_name_list.setSelection(profile_pos);
                 sp_name_list.setEnabled(false);
                 sp_name_list.setClickable(false);
+                queueUserId = ((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId();
                 tv_add.setText(((JsonProfile) sp_name_list.getSelectedItem()).getName());
             }
             switch (jsonTokenAndQueue.getBusinessType()) {
@@ -178,6 +181,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
                 tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
                 setBackGround(jsonTokenAndQueue.afterHowLong());
+                tv_add.setText(AppUtilities.getNameFromQueueUserID(jsonTokenAndQueue.getQueueUserId(),profileList));
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     if (isResumeFirst) {
@@ -203,6 +207,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         NoQueueMessagingService.subscribeTopics(topic);
         jsonTokenAndQueue.setServingNumber(token.getServingNumber());
         jsonTokenAndQueue.setToken(token.getToken());
+        jsonTokenAndQueue.setQueueUserId(queueUserId);
         updateEstimatedTime();
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);

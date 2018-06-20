@@ -46,6 +46,7 @@ public class CreateTable {
                     + TokenQueue.TOWN + " TEXT , "
                     + TokenQueue.AREA + " TEXT , "
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
+                    + TokenQueue.QUEUE_USER_ID + " TEXT , "
                     + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`"+ TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                     ");");
@@ -83,6 +84,7 @@ public class CreateTable {
                     + TokenQueue.TOWN + " TEXT , "
                     + TokenQueue.AREA + " TEXT , "
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
+                    + TokenQueue.QUEUE_USER_ID + " TEXT , "
                     + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`"+ TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                     ");");
@@ -124,12 +126,14 @@ public class CreateTable {
         db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.TOWN + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.AREA + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.DISPLAY_IMAGE + " TEXT  ");
+        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.QUEUE_USER_ID + " TEXT  ");
 
         db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.BUSINESS_TYPE + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.GEOHASH + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.TOWN + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.AREA + " TEXT  ");
         db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.DISPLAY_IMAGE + " TEXT  ");
+        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.QUEUE_USER_ID + " TEXT  ");
     }
 
     static void updateBusinessType(SQLiteDatabase db){

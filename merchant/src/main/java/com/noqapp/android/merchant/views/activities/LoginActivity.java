@@ -188,6 +188,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
             if (isReadAndReceiveSMSPermissionAllowed()) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.show();
+                    countryCode = edt_phone_code.getText().toString();
                     //@TODO @Chandra update the country code dynamic
                     startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 

@@ -30,6 +30,7 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.model.types.BusinessTypeEnum;
 import com.noqapp.common.utils.CommonHelper;
 import com.noqapp.common.utils.Formatter;
@@ -400,6 +401,20 @@ public class AppUtilities extends CommonHelper{
             e.printStackTrace();
             return "";
         }
+    }
+
+
+        public static String getNameFromQueueUserID(String queueUserID, List<JsonProfile> list){
+        String name ="";
+            if(null != list && list.size()>0){
+                for (int i = 0; i< list.size();i++){
+                    if(queueUserID.equalsIgnoreCase(list.get(i).getQueueUserId())){
+                        name = list.get(i).getName();
+                        break;
+                    }
+                }
+            }
+        return name;
     }
 }
 

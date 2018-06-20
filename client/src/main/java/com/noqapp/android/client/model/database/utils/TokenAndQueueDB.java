@@ -62,6 +62,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setTown(cursor.getString(20));
                     tokenAndQueue.setArea(cursor.getString(21));
                     tokenAndQueue.setDisplayImage(cursor.getString(22));
+                    tokenAndQueue.setQueueUserId(cursor.getString(23));
                     listJsonQueue.add(tokenAndQueue);
                 }
             } catch (Exception e) {
@@ -106,6 +107,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setTown(cursor.getString(20));
                         tokenAndQueue.setArea(cursor.getString(21));
                         tokenAndQueue.setDisplayImage(cursor.getString(22));
+                        tokenAndQueue.setQueueUserId(cursor.getString(23));
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
@@ -151,6 +153,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setTown(cursor.getString(20));
                     tokenAndQueue.setArea(cursor.getString(21));
                     tokenAndQueue.setDisplayImage(cursor.getString(22));
+                    tokenAndQueue.setQueueUserId(cursor.getString(23));
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
@@ -198,6 +201,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setTown(cursor.getString(20));
                         tokenAndQueue.setArea(cursor.getString(21));
                         tokenAndQueue.setDisplayImage(cursor.getString(22));
+                        tokenAndQueue.setQueueUserId(cursor.getString(23));
                         listJsonQueue.add(tokenAndQueue);
                     }
                 } finally {
@@ -271,6 +275,7 @@ public class TokenAndQueueDB {
             cv.put(TokenQueue.BUSINESS_TYPE,tokenAndQueue.getBusinessType().name());
             cv.put(TokenQueue.GEOHASH,tokenAndQueue.getGeoHash());
             cv.put(TokenQueue.DISPLAY_IMAGE,tokenAndQueue.getDisplayImage());
+            cv.put(TokenQueue.QUEUE_USER_ID,tokenAndQueue.getQueueUserId());
         } catch (Exception e) {
             Log.e(TAG, "Error createQueueContentValue reason=" + e.getLocalizedMessage(), e);
         }

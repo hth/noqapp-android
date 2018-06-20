@@ -103,15 +103,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         ButterKnife.bind(this);
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_join));
-        if(UserUtils.isLogin()) {
-            List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
-            profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
-            profileList.add(0, new JsonProfile().setName("Select Patient"));
-            DependentAdapter adapter = new DependentAdapter(this, profileList);
-            sp_name_list.setAdapter(adapter);
-            if (profileList.size() == 0)
-                sp_name_list.setSelection(1);
-        }
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         AppUtilities.setRatingBarColor(stars, this);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
@@ -337,6 +328,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
         in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.FROM_JOIN_SCREEN, true);
+        in.putExtra("profile_pos",sp_name_list.getSelectedItemPosition());
         startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }
 
@@ -376,6 +368,15 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 isJoinNotPossible = false;
                 joinErrorMsg = "";
             }
+        }
+        if(UserUtils.isLogin()) {
+            List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
+            profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
+            profileList.add(0, new JsonProfile().setName("Select Patient"));
+            DependentAdapter adapter = new DependentAdapter(this, profileList);
+            sp_name_list.setAdapter(adapter);
+            if (profileList.size() == 0)
+                sp_name_list.setSelection(1);
         }
     }
 }
