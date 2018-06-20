@@ -24,9 +24,9 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,12 +39,10 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
-import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.beans.JsonResponse;
-import com.noqapp.common.beans.body.UpdateProfile;
 import com.noqapp.common.presenter.ImageUploadPresenter;
 import com.noqapp.common.utils.ImagePathReader;
 import com.squareup.picasso.Picasso;
@@ -55,12 +53,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -72,6 +69,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     protected TextView tv_name;
     @BindView(R.id.iv_edit)
     protected ImageView iv_edit;
+
+    @BindView(R.id.iv_add_dependent)
+    protected ImageView iv_add_dependent;
     public static ImageView iv_profile;
     private final int SELECT_PICTURE = 110;
     private final int STORAGE_PERMISSION_CODE = 102;
@@ -84,8 +84,6 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     protected EditText edt_birthday;
     @BindView(R.id.edt_address)
     protected EditText edt_address;
-    @BindView(R.id.btn_update)
-    protected Button btn_update;
 
     public String gender = "";
 
@@ -111,8 +109,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.ll_gender)
     protected LinearLayout ll_gender;
 
+    @BindView(R.id.ll_dependent)
+    protected LinearLayout ll_dependent;
 
-    private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
 
 
@@ -122,13 +121,10 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_user_profile);
         ButterKnife.bind(this);
         initActionsViews(false);
-        tv_toolbar_title.setText("Profile");
         iv_profile = findViewById(R.id.iv_profile);
         iv_edit.setOnClickListener(this);
-        iv_profile.setOnClickListener(this);
         loadProfilePic();
         tv_toolbar_title.setText("Profile");
-        iv_edit.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
         dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         updateUI();
@@ -138,24 +134,17 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         tv_female.setOnClickListener(this);
         tv_migrate.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
-        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                Date current = newDate.getTime();
-                int date_diff = new Date().compareTo(current);
+        iv_add_dependent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(UserProfileActivity.this,UserProfileEditActivity.class);
+                in.putExtra(NoQueueBaseActivity.IS_DEPENDENT,true);
+               // in.putExtra(NoQueueBaseActivity.DEPENDENT_PROFILE,new JsonProfile());
 
-                if (date_diff < 0) {
-                    Toast.makeText(UserProfileActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
-                    edt_birthday.setText("");
-                } else {
-                    edt_birthday.setText(dateFormatter.format(newDate.getTime()));
-                }
-
+                startActivity(in);
             }
-
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        });
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
@@ -199,38 +188,6 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.iv_edit:
                 // selectImage();
-                break;
-            case R.id.edt_birthday:
-                fromDatePickerDialog.show();
-
-            case R.id.tv_male:
-                gender = "M";
-                tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_male.setBackgroundResource(R.drawable.gender_redbg);
-                SpannableString ss = new SpannableString("Male  ");
-                Drawable d = getResources().getDrawable(R.drawable.check_white);
-                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-                ss.setSpan(span, 5, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                tv_male.setText(ss);
-                tv_male.setTextColor(Color.WHITE);
-                tv_female.setTextColor(Color.BLACK);
-                tv_female.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                break;
-            case R.id.tv_female:
-                gender = "F";
-                tv_female.setBackgroundResource(R.drawable.gender_redbg);
-                tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_female.setCompoundDrawablePadding(0);
-                tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                tv_male.setTextColor(Color.BLACK);
-                tv_female.setTextColor(Color.WHITE);
-                SpannableString ss1 = new SpannableString("Female  ");
-                Drawable d1 = getResources().getDrawable(R.drawable.check_white);
-                d1.setBounds(0, 0, d1.getIntrinsicWidth(), d1.getIntrinsicHeight());
-                ImageSpan span1 = new ImageSpan(d1, ImageSpan.ALIGN_BASELINE);
-                ss1.setSpan(span1, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                tv_female.setText(ss1);
                 break;
 
             case R.id.tv_migrate:
@@ -318,35 +275,6 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-    @OnClick(R.id.btn_update)
-    public void updateProfile() {
-
-        if (validate()) {
-            btn_update.setBackgroundResource(R.drawable.button_drawable_red);
-            btn_update.setTextColor(Color.WHITE);
-            btn_update.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0, R.drawable.arrow_white, 0);
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
-                ProfileModel.profilePresenter = this;
-                //   String phoneNo = edt_phoneNo.getText().toString();
-                String name = edt_Name.getText().toString();
-                //   String mail = edt_Mail.getText().toString();
-                String birthday = edt_birthday.getText().toString();
-                String address = edt_address.getText().toString();
-                UpdateProfile updateProfile = new UpdateProfile();
-                updateProfile.setAddress(address);
-                updateProfile.setFirstName(name);
-                updateProfile.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
-                updateProfile.setGender(gender);
-                updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
-                ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
-            } else {
-                ShowAlertInformation.showNetworkDialog(this);
-            }
-        }
-
-    }
 
     @Override
     public void queueResponse(JsonProfile profile, String email, String auth) {
@@ -381,17 +309,53 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         edt_Name.setText(NoQueueBaseActivity.getUserName());
         tv_name.setText(NoQueueBaseActivity.getUserName());
         edt_phoneNo.setText(NoQueueBaseActivity.getPhoneNo());
-        edt_Mail.setText(NoQueueBaseActivity.getMail().toString().contains("noqapp.com")? "":
+        edt_Mail.setText(NoQueueBaseActivity.getMail().toString().contains("noqapp.com") ? "" :
                 NoQueueBaseActivity.getMail());
         edt_phoneNo.setEnabled(false);
         edt_Mail.setEnabled(false);
+        edt_Name.setEnabled(false);
+        edt_birthday.setEnabled(false);
+        edt_address.setEnabled(false);
         edt_address.setText(NoQueueBaseActivity.getAddress());
+        int id = 0;
         if (NoQueueBaseActivity.getGender().equals("M")) {
-            onClick(tv_male);
+            id = R.id.tv_male;
         } else {
-            onClick(tv_female);
+            id = R.id.tv_female;
         }
-        // edt_address.setText(NoQueueBaseActivity.geta);
+        switch (id) {
+            case R.id.tv_male:
+                gender = "M";
+                tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_male.setBackgroundResource(R.drawable.gender_redbg);
+                SpannableString ss = new SpannableString("Male  ");
+                Drawable d = getResources().getDrawable(R.drawable.check_white);
+                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
+                ss.setSpan(span, 5, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                tv_male.setText(ss);
+                tv_male.setTextColor(Color.WHITE);
+                tv_female.setTextColor(Color.BLACK);
+                tv_female.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                break;
+            case R.id.tv_female:
+                gender = "F";
+                tv_female.setBackgroundResource(R.drawable.gender_redbg);
+                tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_female.setCompoundDrawablePadding(0);
+                tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                tv_male.setTextColor(Color.BLACK);
+                tv_female.setTextColor(Color.WHITE);
+                SpannableString ss1 = new SpannableString("Female  ");
+                Drawable d1 = getResources().getDrawable(R.drawable.check_white);
+                d1.setBounds(0, 0, d1.getIntrinsicWidth(), d1.getIntrinsicHeight());
+                ImageSpan span1 = new ImageSpan(d1, ImageSpan.ALIGN_BASELINE);
+                ss1.setSpan(span1, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                tv_female.setText(ss1);
+                break;
+
+
+        }
         try {
             SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd");
             String reformattedStr = dateFormatter.format(fromUser.parse(NoQueueBaseActivity.getUserDOB()));
@@ -399,46 +363,35 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         } catch (Exception e) {
             e.printStackTrace();
         }
+        List<JsonProfile> jsonProfiles = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
+        ll_dependent.removeAllViews();
+        if (null != jsonProfiles && jsonProfiles.size() > 0) {
+            for (int j = 0; j < jsonProfiles.size(); j++) {
+                final JsonProfile jsonProfile =jsonProfiles.get(j);
+                LayoutInflater inflater = LayoutInflater.from(this);
+                final View listitem_dependent = inflater.inflate(R.layout.listitem_dependent, null);
+                ImageView iv_delete = listitem_dependent.findViewById(R.id.iv_delete);
+                ImageView iv_edit = listitem_dependent.findViewById(R.id.iv_edit);
+                TextView tv_title = listitem_dependent.findViewById(R.id.tv_title);
+                tv_title.setText(jsonProfile.getName());
+                iv_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(UserProfileActivity.this,"Delete: "+jsonProfile.toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
+                iv_edit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(UserProfileActivity.this,"Edit: "+jsonProfile.toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
+                ll_dependent.addView(listitem_dependent);
+            }
+        }
         loadProfilePic();
     }
 
-
-    private boolean isValidEmail(CharSequence target) {
-        if (TextUtils.isEmpty(target)) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-        }
-    }
-
-    private boolean validate() {
-        btn_update.setBackgroundResource(R.drawable.button_drawable);
-        btn_update.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
-        btn_update.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
-        boolean isValid = true;
-        edt_Name.setError(null);
-        edt_Mail.setError(null);
-        edt_birthday.setError(null);
-        new AppUtilities().hideKeyBoard(this);
-
-        if (TextUtils.isEmpty(edt_Name.getText())) {
-            edt_Name.setError(getString(R.string.error_name_blank));
-            isValid = false;
-        }
-        if (!TextUtils.isEmpty(edt_Name.getText()) && edt_Name.getText().length() < 4) {
-            edt_Name.setError(getString(R.string.error_name_length));
-            isValid = false;
-        }
-        if (!TextUtils.isEmpty(edt_Mail.getText()) && !isValidEmail(edt_Mail.getText())) {
-            edt_Mail.setError(getString(R.string.error_invalid_email));
-            isValid = false;
-        }
-        if (TextUtils.isEmpty(edt_birthday.getText())) {
-            edt_birthday.setError(getString(R.string.error_dob_blank));
-            isValid = false;
-        }
-        return isValid;
-    }
 
     @Override
     protected void onResume() {
