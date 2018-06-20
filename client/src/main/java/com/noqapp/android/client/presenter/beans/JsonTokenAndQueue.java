@@ -93,6 +93,9 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty ("qid")
+    private String queueUserId;
+
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
 
@@ -269,6 +272,15 @@ public class JsonTokenAndQueue implements Serializable {
 
     public void setToken(int token) {
         this.token = token;
+    }
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public JsonTokenAndQueue setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
     }
 
     public QueueStatusEnum getQueueStatus() {
