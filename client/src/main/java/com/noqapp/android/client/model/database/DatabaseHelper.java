@@ -63,6 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     CreateTable.createTableNotification(db);
                     CreateTable.alterTable(db);
                     CreateTable.updateBusinessType(db);
+                    CreateTable.dropAndCreateTable(db);
                 }
             }
 

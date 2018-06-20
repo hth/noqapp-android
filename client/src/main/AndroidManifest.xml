@@ -170,7 +170,12 @@
             android:name=".views.activities.ManagerProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.UserProfileEditActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".views.activities.BlinkerActivity"
             android:screenOrientation="portrait"

@@ -12,7 +12,9 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +30,12 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.DependentAdapter;
+import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.PhoneFormatterUtil;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,6 +82,12 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     @BindView(R.id.btn_no)
     protected Button btn_no;
 
+    @BindView(R.id.sp_name_list)
+    protected Spinner sp_name_list;
+
+    @BindView(R.id.ll_patient_name)
+    protected LinearLayout ll_patient_name;
+
     private String codeQR;
     private String countryShortName;
     private JsonQueue jsonQueue;
@@ -91,7 +103,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         ButterKnife.bind(this);
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_join));
-
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         AppUtilities.setRatingBarColor(stars, this);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
@@ -137,9 +148,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     ShowAlertInformation.showNetworkDialog(this);
                 }
             }
-
         }
-
     }
 
 
@@ -192,6 +201,15 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         if (joinQueueState.isJoinNotPossible()) {
             isJoinNotPossible = joinQueueState.isJoinNotPossible();
             joinErrorMsg = joinQueueState.getJoinErrorMsg();
+        }
+
+        switch (jsonQueue.getBusinessType()) {
+            case DO:
+            case PH:
+                ll_patient_name.setVisibility(View.VISIBLE);
+                break;
+            default:
+                ll_patient_name.setVisibility(View.GONE);
         }
         /* Update the remote join count */
 //        NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
@@ -254,11 +272,16 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_not_available) + "\n";
                     isValid = false;
                 }
-                if (jsonQueue.getRemoteJoinCount() == 0) {
-                    errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_available);
-                    //TODO(hth) Forced change to true when Remote Join fails.
-                    isValid = true;
+//                if (jsonQueue.getRemoteJoinCount() == 0) {
+//                    errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_available);
+//                    //TODO(hth) Forced change to true when Remote Join fails.
+//                    isValid = true;
+//                }
+                if (sp_name_list.getSelectedItemPosition()==0) {
+                    errorMsg += getString(R.string.bullet) + getString(R.string.error_patient_name_missing) + "\n";
+                    isValid = false;
                 }
+
                 if (isValid) {
                     Intent in = new Intent(this, AfterJoinActivity.class);
                     in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
@@ -267,6 +290,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                //     in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true);
                     in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
                     in.putExtra(Constants.FROM_JOIN_SCREEN, true);
+                    in.putExtra("profile_pos",sp_name_list.getSelectedItemPosition());
                     startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
                 } else {
                     ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), errorMsg, true);
@@ -304,6 +328,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
         in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.FROM_JOIN_SCREEN, true);
+        in.putExtra("profile_pos",sp_name_list.getSelectedItemPosition());
         startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }
 
@@ -343,6 +368,15 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 isJoinNotPossible = false;
                 joinErrorMsg = "";
             }
+        }
+        if(UserUtils.isLogin()) {
+            List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
+            profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
+            profileList.add(0, new JsonProfile().setName("Select Patient"));
+            DependentAdapter adapter = new DependentAdapter(this, profileList);
+            sp_name_list.setAdapter(adapter);
+            if (profileList.size() == 0)
+                sp_name_list.setSelection(1);
         }
     }
 }

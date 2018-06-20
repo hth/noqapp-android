@@ -246,6 +246,9 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="experience">Experience</string>
     <string name="available_other_place">Avaliable at other places</string>
     <string name="whole_day">24 Hours</string>
+    <string name="error_patient_name_missing">Please select the patient name</string>
+    <string name="dependent_list">Dependent List</string>
+    <string name="personal_info">Personal Informations</string>
     <!-- Language select dialog -->
 
 </resources>
