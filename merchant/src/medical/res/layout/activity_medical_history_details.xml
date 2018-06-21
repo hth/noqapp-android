@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#99ffffff"
+    android:background="#f2f2f2"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar_layout" />
@@ -26,347 +26,334 @@
                 android:orientation="vertical"
                 android:padding="15dp">
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
-
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                        style="@style/style_mdh_header"
-                        android:layout_width="wrap_content"
-                        android:text="Medication: " />
 
                     <LinearLayout
-                        android:id="@+id/ll_medicines"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                        android:layout_marginRight="2.5dp"
+                        android:layout_weight=".5"
+                        android:orientation="vertical">
 
-                        <Spinner
-                            android:id="@+id/sp_medication"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight=".15"
-                            android:background="@drawable/spinner_border"
-                            android:padding="10dp" />
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                            style="@style/style_mdh_header"
+                            android:text="Chief Complaint: " />
 
                         <AutoCompleteTextView
-                            android:id="@+id/actv_medicine_name"
-                            android:layout_width="0dp"
+                            android:id="@+id/actv_complaints"
+                            style="@style/style_mdh_details"
+                            android:gravity="top"
+                            android:minLines="5"
+                            android:text="" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2.5dp"
+                        android:layout_weight=".5"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight=".25"
-                            android:background="@drawable/square_white_bg_drawable"
-                            android:hint="Medicine name"
-                            android:inputType="textCapSentences"
-                            android:padding="10dp" />
+                            android:layout_marginBottom="10dp"
+                            android:orientation="vertical">
 
-                        <Spinner
-                            android:id="@+id/sp_dose"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight=".15"
-                            android:background="@drawable/spinner_border"
-                            android:entries="@array/dose_types"
-                            android:padding="10dp"
-                            android:prompt="@string/dose_prompt" />
+                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                                style="@style/style_mdh_header"
+                                android:text="Past History: " />
 
-                        <Spinner
-                            android:id="@+id/sp_frequency"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight=".15"
-                            android:background="@drawable/spinner_border"
-                            android:entries="@array/frequency_types"
-                            android:padding="10dp"
-                            android:prompt="@string/frequency_prompt" />
+                            <AutoCompleteTextView
+                                android:id="@+id/actv_past_history"
+                                style="@style/style_mdh_details"
+                                android:gravity="top"
+                                android:minLines="5"
+                                android:text="" />
 
-                        <Spinner
-                            android:id="@+id/sp_dose_timing"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight=".15"
-                            android:background="@drawable/spinner_border"
-                            android:padding="10dp" />
-
-                        <Spinner
-                            android:id="@+id/sp_course"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight=".15"
-                            android:background="@drawable/spinner_border"
-                            android:entries="@array/course_types"
-                            android:padding="10dp"
-                            android:prompt="@string/course_prompt" />
-
-
-                        <Button
-                            android:id="@+id/tv_add"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_margin="5dp"
-                            android:background="@drawable/add_medic"
-                            android:textColor="@android:color/transparent"
-                            android:padding="10dp" />
-
+                        </LinearLayout>
                     </LinearLayout>
 
 
-                    <com.noqapp.android.merchant.views.customviews.FixedHeightListView
-                        android:id="@+id/listview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:divider="@null" />
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="vertical">
-
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                        style="@style/style_mdh_header"
-                        android:text="Chief Complaint: " />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_complaints"
-                        style="@style/style_mdh_details"
-                        android:text="" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="vertical">
-
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                        style="@style/style_mdh_header"
-                        android:text="Past History: " />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_past_history"
-                        style="@style/style_mdh_details"
-                        android:text="" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="vertical">
-
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                        style="@style/style_mdh_header"
-                        android:text="Family History: " />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_family_history"
-                        style="@style/style_mdh_details"
-                        android:text="" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="vertical">
-
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                        style="@style/style_mdh_header"
-                        android:text="Known Allergies: " />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_known_allergy"
-                        style="@style/style_mdh_details"
-                        android:text="" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_physical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="vertical">
-
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                        style="@style/style_mdh_header"
-                        android:text="Physical Examination: " />
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                        android:layout_marginRight="2.5dp"
+                        android:layout_weight=".5"
+                        android:orientation="vertical">
+
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                            style="@style/style_mdh_header"
+                            android:text="Family History: " />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actv_family_history"
+                            style="@style/style_mdh_details"
+                            android:gravity="top"
+                            android:minLines="5"
+                            android:text="" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2.5dp"
+                        android:layout_weight=".5"
+                        android:orientation="vertical">
+
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                            style="@style/style_mdh_header"
+                            android:text="Known Allergies: " />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actv_known_allergy"
+                            style="@style/style_mdh_details"
+                            android:gravity="top"
+                            android:minLines="5"
+                            android:text="" />
+                    </LinearLayout>
 
 
-                        <LinearLayout
-                            android:layout_width="0dp"
+                </LinearLayout>
+
+
+                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                    style="@style/style_mdh_header"
+                    android:text="Physical Examination: " />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33"
+                        android:orientation="vertical">
+
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight=".33"
-                            android:orientation="vertical">
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="Pulse"
+                            android:textSize="15sp" />
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="5dp"
-                                android:padding="5dp"
-                                android:text="Pulse"
-                                android:textSize="15sp" />
-
-                            <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                                android:id="@+id/edt_pulse"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/square_white_bg_drawable"
-                                android:maxLines="1"
-                                android:minLines="1"
-                                android:padding="10dp"
-                                android:text="" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
+                        <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                            android:id="@+id/edt_pulse"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight=".33"
-                            android:orientation="vertical">
+                            android:background="@drawable/square_white_bg_drawable"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:padding="10dp"
+                            android:text="" />
+                    </LinearLayout>
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="5dp"
-                                android:padding="5dp"
-                                android:text="B.P (Blood Pressure)"
-                                android:textSize="15sp" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight=".34"
+                        android:orientation="vertical">
 
-                            <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                                android:id="@+id/edt_bp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/square_white_bg_drawable"
-                                android:maxLines="1"
-                                android:minLines="1"
-                                android:padding="10dp"
-                                android:text="" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight=".33"
-                            android:orientation="vertical">
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="B.P (Blood Pressure)"
+                            android:textSize="15sp" />
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="5dp"
-                                android:padding="5dp"
-                                android:text="Weight"
-                                android:textSize="15sp" />
+                        <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                            android:id="@+id/edt_bp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/square_white_bg_drawable"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:padding="10dp"
+                            android:text="" />
 
-                            <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                                android:id="@+id/edt_weight"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/square_white_bg_drawable"
-                                android:maxLines="1"
-                                android:minLines="1"
-                                android:padding="10dp"
-                                android:text="" />
+                    </LinearLayout>
 
-                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33"
+                        android:orientation="vertical">
 
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="Weight"
+                            android:textSize="15sp" />
+
+                        <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                            android:id="@+id/edt_weight"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/square_white_bg_drawable"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:padding="10dp"
+                            android:text="" />
 
                     </LinearLayout>
 
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+
+                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                    style="@style/style_mdh_header"
+                    android:text="Clinical Findings: " />
+
+                <AutoCompleteTextView
+                    android:id="@+id/actv_clinical_finding"
+                    style="@style/style_mdh_details"
                     android:layout_marginBottom="10dp"
-                    android:orientation="vertical">
+                    android:text="" />
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                        style="@style/style_mdh_header"
-                        android:text="Clinical Findings: " />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_clinical_finding"
-                        style="@style/style_mdh_details"
-                        android:text="" />
+                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                    style="@style/style_mdh_header"
+                    android:text="Provisional /Differential Diagnosis" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <AutoCompleteTextView
+                    android:id="@+id/actv_provisional"
+                    style="@style/style_mdh_details"
                     android:layout_marginBottom="10dp"
-                    android:orientation="vertical">
+                    android:text="" />
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                        style="@style/style_mdh_header"
-                        android:text="Provisional /Differential Diagnosis" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_provisional"
-                        style="@style/style_mdh_details"
-                        android:text="" />
+                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                    style="@style/style_mdh_header"
+                    android:text="Investigation Advised: " />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <AutoCompleteTextView
+                    android:id="@+id/actv_investigation"
+                    style="@style/style_mdh_details"
                     android:layout_marginBottom="10dp"
-                    android:orientation="vertical">
+                    android:text="" />
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                        style="@style/style_mdh_header"
-                        android:text="Investigation Advised: " />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_investigation"
-                        style="@style/style_mdh_details"
-                        android:text="" />
-
-                </LinearLayout>
+                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                    style="@style/style_mdh_header"
+                    android:layout_width="wrap_content"
+                    android:text="Medication: " />
 
                 <LinearLayout
-                    android:id="@+id/ll_medication"
+                    android:id="@+id/ll_medicines"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
-                        style="@style/style_mdh_header"
-                        android:text="Treatment Advice: " />
+                    <Spinner
+                        android:id="@+id/sp_medication"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".15"
+                        android:background="@drawable/spinner_border"
+                        android:padding="10dp" />
 
                     <AutoCompleteTextView
-                        android:id="@+id/actv_treatment"
-                        style="@style/style_mdh_details"
-                        android:text="" />
+                        android:id="@+id/actv_medicine_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".25"
+                        android:background="@drawable/square_white_bg_drawable"
+                        android:hint="Medicine name"
+                        android:inputType="textCapSentences"
+                        android:padding="10dp" />
+
+                    <Spinner
+                        android:id="@+id/sp_dose"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".15"
+                        android:background="@drawable/spinner_border"
+                        android:entries="@array/dose_types"
+                        android:padding="10dp"
+                        android:prompt="@string/dose_prompt" />
+
+                    <Spinner
+                        android:id="@+id/sp_frequency"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".15"
+                        android:background="@drawable/spinner_border"
+                        android:entries="@array/frequency_types"
+                        android:padding="10dp"
+                        android:prompt="@string/frequency_prompt" />
+
+                    <Spinner
+                        android:id="@+id/sp_dose_timing"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".15"
+                        android:background="@drawable/spinner_border"
+                        android:padding="10dp" />
+
+                    <Spinner
+                        android:id="@+id/sp_course"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".15"
+                        android:background="@drawable/spinner_border"
+                        android:entries="@array/course_types"
+                        android:padding="10dp"
+                        android:prompt="@string/course_prompt" />
+
+
+                    <Button
+                        android:id="@+id/tv_add"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/add_medic"
+                        android:padding="10dp"
+                        android:textColor="@android:color/transparent" />
+
                 </LinearLayout>
 
 
+                <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                    android:id="@+id/listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null" />
             </LinearLayout>
         </ScrollView>
 
@@ -376,11 +363,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="30dp"
+            android:layout_marginLeft="300dp"
+            android:layout_marginRight="300dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/button_drawable"
-            android:text="@string/update"
+            android:text="@string/update_medical_history"
             android:textAllCaps="false"
-            android:textColor="@color/colorMobile"
+            android:textColor="@color/colorAccent"
             android:textSize="18sp" />
     </RelativeLayout>
 

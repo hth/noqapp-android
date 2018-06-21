@@ -88,4 +88,5 @@
     <string name="lang_dialog_title">भाषा बदलें</string>
     <string name="hindi"> हिंदी</string>
     <string name="english">अंग्रेज़ी</string>
+    <string name="update_medical_history">Submit Case History</string>
 </resources>

@@ -60,7 +60,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class AppUtilities extends CommonHelper{
+public class AppUtilities extends CommonHelper {
     private static final String TAG = AppUtilities.class.getSimpleName();
     private static Map<String, Locale> localeMap;
 
@@ -390,7 +390,7 @@ public class AppUtilities extends CommonHelper{
     }
 
 
-    public static String getYearFromDate(String dateValue){
+    public static String getYearFromDate(String dateValue) {
         try {
             DateFormat sdf = Formatter.formatRFC822;
             SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
@@ -404,16 +404,16 @@ public class AppUtilities extends CommonHelper{
     }
 
 
-        public static String getNameFromQueueUserID(String queueUserID, List<JsonProfile> list){
-        String name ="";
-            if(null != list && list.size()>0){
-                for (int i = 0; i< list.size();i++){
-                    if(queueUserID.equalsIgnoreCase(list.get(i).getQueueUserId())){
-                        name = list.get(i).getName();
-                        break;
-                    }
+    public static String getNameFromQueueUserID(String queueUserID, List<JsonProfile> list) {
+        String name = "";
+        if (null != list && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                if (queueUserID.equalsIgnoreCase(list.get(i).getQueueUserId())) {
+                    name = list.get(i).getName();
+                    break;
                 }
             }
+        }
         return name;
     }
 }

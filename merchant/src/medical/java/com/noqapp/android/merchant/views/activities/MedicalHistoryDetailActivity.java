@@ -53,7 +53,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private ImageView actionbarBack;
     private HashMap<String, ArrayList<String>> mHashmapTemp = null;
     private String qCodeQR = "";
-    private AutoCompleteTextView actv_medicine_name,actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation, actv_treatment;
+    private AutoCompleteTextView actv_medicine_name,actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation;
     private EditText edt_weight, edt_bp, edt_pulse;
     private final String CHIEF = "chief_complaint";
     private final String PAST_HISTORY = "past_history";
@@ -61,9 +61,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private final String CLINICAL_FINDINGS = "clinical_findings";
     private final String PROVISIONAL_DIAGNOSIS = "provisional_diagnosis";
     private final String INVESTIGATION = "investigation";
-    private final String TREATMENT = "treatment_advice";
     private final String KNOWN_ALLERGIES = "known_allergies";
-    private final String MEDICINES = "medicines";
+    private final String MEDICINES_TREATMENT_ADVICE = "medicines_treatment_advice";
 
     private JsonQueuedPerson jsonQueuedPerson;
     private Button btn_update;
@@ -97,7 +96,6 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         actv_clinical_finding = findViewById(R.id.actv_clinical_finding);
         actv_provisional = findViewById(R.id.actv_provisional);
         actv_investigation = findViewById(R.id.actv_investigation);
-        actv_treatment = findViewById(R.id.actv_treatment);
 
         edt_weight = findViewById(R.id.edt_weight);
         edt_bp = findViewById(R.id.edt_bp);
@@ -143,8 +141,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
 
                     medicalRecordList.add(0, jsonMedicalMedicine);
                     adapter.notifyDataSetChanged();
-                    updateSuggetions(actv_medicine_name, MEDICINES);
-                    setSuggetions(actv_medicine_name, MEDICINES);
+                    updateSuggetions(actv_medicine_name, MEDICINES_TREATMENT_ADVICE);
+                    setSuggetions(actv_medicine_name, MEDICINES_TREATMENT_ADVICE);
                     actv_medicine_name.setText("");
                     sp_dose.setSelection(0);
                     sp_frequency.setSelection(0);
@@ -222,9 +220,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
             mHashmapTemp.put(CLINICAL_FINDINGS, new ArrayList<String>());
             mHashmapTemp.put(PROVISIONAL_DIAGNOSIS, new ArrayList<String>());
             mHashmapTemp.put(INVESTIGATION, new ArrayList<String>());
-            mHashmapTemp.put(TREATMENT, new ArrayList<String>());
             mHashmapTemp.put(KNOWN_ALLERGIES, new ArrayList<String>());
-            mHashmapTemp.put(MEDICINES, new ArrayList<String>());
+            mHashmapTemp.put(MEDICINES_TREATMENT_ADVICE, new ArrayList<String>());
 
             LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
         } else {
@@ -238,8 +235,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                 setSuggetions(actv_clinical_finding, CLINICAL_FINDINGS);
                 setSuggetions(actv_provisional, PROVISIONAL_DIAGNOSIS);
                 setSuggetions(actv_investigation, INVESTIGATION);
-                setSuggetions(actv_treatment, TREATMENT);
-                setSuggetions(actv_medicine_name, MEDICINES);
+                setSuggetions(actv_medicine_name, MEDICINES_TREATMENT_ADVICE);
                 Log.v("JSON", mHashmapTemp.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -312,7 +308,6 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         updateSuggetions(actv_clinical_finding, CLINICAL_FINDINGS);
         updateSuggetions(actv_provisional, PROVISIONAL_DIAGNOSIS);
         updateSuggetions(actv_investigation, INVESTIGATION);
-        updateSuggetions(actv_treatment, TREATMENT);
        // updateSuggetions(actv_medicine_name, MEDICINES); update this when add button click
         LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
 
@@ -331,8 +326,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                 TextUtils.isEmpty(actv_known_allergy.getText()) &&
                 TextUtils.isEmpty(actv_clinical_finding.getText()) &&
                 TextUtils.isEmpty(actv_provisional.getText()) &&
-                TextUtils.isEmpty(actv_investigation.getText()) &&
-                TextUtils.isEmpty(actv_treatment.getText())) {
+                TextUtils.isEmpty(actv_investigation.getText())) {
             isValid = false;
         }
 

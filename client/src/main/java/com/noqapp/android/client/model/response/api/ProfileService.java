@@ -8,6 +8,7 @@ import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.body.UpdateProfile;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -106,6 +107,9 @@ public interface ProfileService {
             String auth,
 
             @Part
-            MultipartBody.Part file
+            MultipartBody.Part file,
+
+            @Part("qid")
+            RequestBody queueUserID
     );
 }

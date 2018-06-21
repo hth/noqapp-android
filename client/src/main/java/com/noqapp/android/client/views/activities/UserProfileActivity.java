@@ -187,7 +187,10 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 selectImage();
                 break;
             case R.id.iv_edit:
-                // selectImage();
+                Intent in = new Intent(UserProfileActivity.this,UserProfileEditActivity.class);
+                in.putExtra(NoQueueBaseActivity.IS_DEPENDENT,false);
+               // in.putExtra(NoQueueBaseActivity.KEY_USER_PROFILE,LaunchActivity.getLaunchActivity().getUserProfile());
+                startActivity(in);
                 break;
 
             case R.id.tv_migrate:
@@ -229,8 +232,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+                        RequestBody tokenRequest = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
                         ProfileModel.imageUploadPresenter = this;
-                        ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
+                        ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart,tokenRequest);
                     }
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
@@ -383,7 +387,11 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 iv_edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(UserProfileActivity.this,"Edit: "+jsonProfile.toString(),Toast.LENGTH_LONG).show();
+                       // Toast.makeText(UserProfileActivity.this,"Edit: "+jsonProfile.toString(),Toast.LENGTH_LONG).show();
+                        Intent in = new Intent(UserProfileActivity.this,UserProfileEditActivity.class);
+                        in.putExtra(NoQueueBaseActivity.IS_DEPENDENT,true);
+                        in.putExtra(NoQueueBaseActivity.DEPENDENT_PROFILE,jsonProfile);
+                        startActivity(in);
                     }
                 });
                 ll_dependent.addView(listitem_dependent);
