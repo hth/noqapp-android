@@ -141,4 +141,5 @@
     <string name="btnregister">Continue Register</string>
     <string name="error_pwd_not_match">Both password should match</string>
     <string name="password">Password <font color='red'>\u2731</font></string>
+    <string name="update_medical_history">Submit Case History</string>
 </resources>

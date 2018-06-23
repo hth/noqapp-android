@@ -16,6 +16,7 @@ import com.noqapp.common.beans.body.UpdateProfile;
 import com.noqapp.common.presenter.ImageUploadPresenter;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -190,8 +191,8 @@ public class ProfileModel {
         });
     }
 
-    public static void uploadImage(String did, String mail, String auth, MultipartBody.Part file) {
-        profileService.upload(did, Constants.DEVICE_TYPE, mail, auth, file).enqueue(new Callback<JsonResponse>() {
+    public static void uploadImage(String did, String mail, String auth, MultipartBody.Part file, RequestBody queueUserId) {
+        profileService.upload(did, Constants.DEVICE_TYPE, mail, auth, file,queueUserId).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {

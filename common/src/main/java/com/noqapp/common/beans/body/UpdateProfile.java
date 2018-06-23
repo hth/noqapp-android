@@ -20,6 +20,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateProfile {
+    @JsonProperty("QID")
+    private String queueUserId;
+
     @JsonProperty("AD")
     private String address;
 
@@ -34,6 +37,15 @@ public class UpdateProfile {
 
     @JsonProperty("TZ")
     private String timeZoneId;
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public UpdateProfile setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
+    }
 
     public String getAddress() {
         return address;

@@ -118,7 +118,7 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
     private SimpleDateFormat dateFormatter;
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
-    private JsonProfile gaurdianProfile = null;
+  //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +132,7 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
         iv_profile.setOnClickListener(this);
         isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT,false);
         dependentProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.DEPENDENT_PROFILE);
+       // gaurdianProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.KEY_USER_PROFILE);
         dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         updateUI();
         edt_birthday.setInputType(InputType.TYPE_NULL);
@@ -266,8 +267,9 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+                        RequestBody tokenRequest = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
                         ProfileModel.imageUploadPresenter = this;
-                        ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
+                        ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart,tokenRequest);
                     }
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
@@ -329,18 +331,29 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
                 String birthday = edt_birthday.getText().toString();
                 String address = edt_address.getText().toString();
                 if(isDependent){
-                    Registration registration = new Registration();
-                    registration.setPhone(PhoneFormatterUtil.phoneNumberWithCountryCode(NoQueueBaseActivity.getPhoneNo(),NoQueueBaseActivity.getCountryShortName()));
-                    registration.setFirstName(name);
-                    registration.setMail("");
-                    registration.setPassword("");
-                    registration.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
-                    registration.setGender(gender);
-                    registration.setTimeZoneId(TimeZone.getDefault().getID());
-                    registration.setCountryShortName(NoQueueBaseActivity.getCountryShortName());
-                    registration.setInviteCode("");
-                    DependencyModel.dependencyPresenter = this;
-                    DependencyModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
+                    if(null != dependentProfile){
+                        UpdateProfile updateProfile = new UpdateProfile();
+                        updateProfile.setAddress(address);
+                        updateProfile.setFirstName(name);
+                        updateProfile.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
+                        updateProfile.setGender(gender);
+                        updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
+                        updateProfile.setQueueUserId(dependentProfile.getQueueUserId());
+                        ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                    }else {
+                        Registration registration = new Registration();
+                        registration.setPhone(PhoneFormatterUtil.phoneNumberWithCountryCode(NoQueueBaseActivity.getPhoneNo(), NoQueueBaseActivity.getCountryShortName()));
+                        registration.setFirstName(name);
+                        registration.setMail("");
+                        registration.setPassword("");
+                        registration.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
+                        registration.setGender(gender);
+                        registration.setTimeZoneId(TimeZone.getDefault().getID());
+                        registration.setCountryShortName(NoQueueBaseActivity.getCountryShortName());
+                        registration.setInviteCode("");
+                        DependencyModel.dependencyPresenter = this;
+                        DependencyModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
+                    }
                 }else {
                     UpdateProfile updateProfile = new UpdateProfile();
                     updateProfile.setAddress(address);
@@ -348,6 +361,7 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
                     updateProfile.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
                     updateProfile.setGender(gender);
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
+                    updateProfile.setQueueUserId(LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
                     ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
@@ -362,7 +376,8 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
         Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
         dismissProgress();
-        updateUI();
+        Toast.makeText(this,"Profile updated successfully",Toast.LENGTH_LONG).show();
+        finish();
     }
 
     @Override
@@ -421,6 +436,8 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }else{
+                btn_update.setText("Add Dependent");
             }
         }else {
             edt_Name.setText(NoQueueBaseActivity.getUserName());

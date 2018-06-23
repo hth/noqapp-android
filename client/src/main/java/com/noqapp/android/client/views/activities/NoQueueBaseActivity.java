@@ -42,7 +42,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String KEY_IS_REJOIN = "isRejoin";
   //  public static final String KEY_IS_AUTOJOIN_ELIGIBLE = "autoJoinEligible";
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
-    protected static final String KEY_USER_PROFILE = "userProfile";
+    public static final String KEY_USER_PROFILE = "userProfile";
     public static final String IS_DEPENDENT = "isDependent";
     public static final String DEPENDENT_PROFILE = "dependentProfile";
     /* Secured Shared Preference. */
