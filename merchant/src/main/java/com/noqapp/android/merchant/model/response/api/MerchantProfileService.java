@@ -6,6 +6,7 @@ import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.body.UpdateProfile;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -32,10 +33,10 @@ public interface MerchantProfileService {
     @POST("api/m/profile/update.json")
     Call<JsonProfile> update(
             @Header("X-R-MAIL")
-                    String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-                    String auth,
+            String auth,
 
             @Body
             UpdateProfile updateProfile
@@ -45,18 +46,21 @@ public interface MerchantProfileService {
     @POST("api/m/profile/upload.json")
     Call<JsonResponse> upload(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Header("X-R-MAIL")
-                    String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-                    String auth,
+            String auth,
 
             @Part
-            MultipartBody.Part file
+            MultipartBody.Part profileImageFile,
+
+            @Part("profileImageOfQid")
+            RequestBody profileImageOfQid
     );
 }

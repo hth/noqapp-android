@@ -223,9 +223,10 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
                     if (!TextUtils.isEmpty(convertedPath)) {
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
-                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+                        MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+                        RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
                         MerchantProfileModel.imageUploadPresenter = this;
-                        MerchantProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
+                        MerchantProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
