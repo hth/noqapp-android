@@ -75,26 +75,8 @@ public interface ManageQueueService {
             Served served
     );
 
-    @POST("api/m/mq/showQueuedClients/{codeQR}.json")
-    Call<JsonQueuePersonList> getQueuePersonList(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Path("codeQR")
-            String codeQR
-    );
-
     @POST("api/m/mq/showClients/{codeQR}.json")
-    Call<JsonQueuePersonList> getAllQueuePersonList(
+    Call<JsonQueuePersonList> showClients(
             @Header("X-R-DID")
             String did,
 
