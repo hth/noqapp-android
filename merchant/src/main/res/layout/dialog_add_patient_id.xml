@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_action_bar">
+
+        <ImageView
+            android:id="@+id/actionbarBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/cross"
+            android:padding="10dp" />
+
+
+        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+            android:id="@+id/tv_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/patient_details"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_top"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+
+        <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+            android:id="@+id/edt_id"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="40dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edt_roun_rect"
+            android:hint="@string/customer_id"
+            android:maxLength="15"
+            android:padding="10dp" />
+
+
+        <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+            android:id="@+id/btn_update"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_center"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/button_drawable_red"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/update_details"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

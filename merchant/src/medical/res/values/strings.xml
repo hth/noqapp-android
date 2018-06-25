@@ -26,9 +26,12 @@
         <item>3 day</item>
         <item>4 days</item>
         <item>5 days</item>
+        <item>6 days</item>
         <item>7 days</item>
+        <item>10 days</item>
         <item>15 days</item>
         <item>30 days</item>
+        <item>45 days</item>
         <item>60 days</item>
         <item>90 days</item>
     </string-array>

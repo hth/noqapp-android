@@ -2,11 +2,13 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -17,7 +19,12 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
@@ -50,18 +57,20 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         TextView tv_sequence_number;
         TextView tv_status_msg;
         TextView tv_create_case;
+        TextView tv_change_name;
         ImageView iv_info;
         CardView cardview;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            this.tv_customer_name = (TextView) itemView.findViewById(R.id.tv_customer_name);
-            this.tv_customer_mobile = (TextView) itemView.findViewById(R.id.tv_customer_mobile);
-            this.tv_sequence_number = (TextView) itemView.findViewById(R.id.tv_sequence_number);
-            this.tv_status_msg = (TextView) itemView.findViewById(R.id.tv_status_msg);
-            this.tv_create_case = (TextView) itemView.findViewById(R.id.tv_create_case);
-            this.iv_info = (ImageView) itemView.findViewById(R.id.iv_info);
-            this.cardview = (CardView) itemView.findViewById(R.id.cardview);
+            this.tv_customer_name = itemView.findViewById(R.id.tv_customer_name);
+            this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
+            this.tv_sequence_number = itemView.findViewById(R.id.tv_sequence_number);
+            this.tv_status_msg = itemView.findViewById(R.id.tv_status_msg);
+            this.tv_create_case = itemView.findViewById(R.id.tv_create_case);
+            this.tv_change_name = itemView.findViewById(R.id.tv_change_name);
+            this.iv_info = itemView.findViewById(R.id.iv_info);
+            this.cardview = itemView.findViewById(R.id.cardview);
         }
     }
 
@@ -159,6 +168,13 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
             }
         });
 
+        recordHolder.tv_change_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePatient(context,jsonQueuedPerson);
+            }
+        });
+
         if(glowPostion > 0 && glowPostion - 1 == position){
             setAnim(recordHolder.cardview);
         }
@@ -213,5 +229,134 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
 
         });
         colorAnimation.start();}
+
+    private void changePatient(final Context mContext, final JsonQueuedPerson jsonQueuedPerson) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_change_patient, null, false);
+        ImageView actionbarBack = (ImageView) customDialogView.findViewById(R.id.actionbarBack);
+        final Spinner sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
+
+       // final RadioGroup rg_user_id = customDialogView.findViewById(R.id.rg_user_id);
+       // final RadioButton rb_user_list = customDialogView.findViewById(R.id.rb_user_list);
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+//        rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                if (checkedId == R.id.rb_user_list) {
+//                    sp_patient_list.setVisibility(View.VISIBLE);
+//                    edt_id.setVisibility(View.GONE);
+//                } else {
+//                    sp_patient_list.setVisibility(View.GONE);
+//                    edt_id.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
+        DependentAdapter adapter = new DependentAdapter(mContext, jsonQueuedPerson.getDependents());
+        sp_patient_list.setAdapter(adapter);
+        Button btn_update = (Button) customDialogView.findViewById(R.id.btn_update);
+        btn_update.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+//                boolean isValid = true;
+//                edt_mobile_or_id.setError(null);
+//                new AppUtils().hideKeyBoard(getActivity());
+//                // get selected radio button from radioGroup
+//                int selectedId = rg_user_id.getCheckedRadioButtonId();
+//                if(selectedId == R.id.rb_mobile){
+//                    if (TextUtils.isEmpty(edt_mobile_or_id.getText())) {
+//                        edt_mobile_or_id.setError(getString(R.string.error_mobile_blank));
+//                        isValid = false;
+//                    }
+//                }else{
+//                    if (TextUtils.isEmpty(edt_mobile_or_id.getText())) {
+//                        edt_mobile_or_id.setError(getString(R.string.error_customer_id));
+//                        isValid = false;
+//                    }
+//                }
+//
+//
+//                if(isValid) {
+//                    if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
+//                        LaunchActivity.getLaunchActivity().progressDialog.show();
+//                        setDispensePresenter();
+//                        String phone = "";
+//                        String cid = "";
+//                        if(rb_mobile.isChecked()){
+//                            phone = edt_mobile_or_id.getText().toString();
+//                        }else{
+//                            cid = edt_mobile_or_id.getText().toString();
+//                            edt_mobile_or_id.setText("");// set blank so that wrong phone no not pass to login screen
+//                        }
+//                        ManageQueueModel.dispenseTokenWithClientInfo(
+//                                LaunchActivity.getLaunchActivity().getDeviceID(),
+//                                LaunchActivity.getLaunchActivity().getEmail(),
+//                                LaunchActivity.getLaunchActivity().getAuth(),
+//                                new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+//                        btn_create_token.setClickable(false);
+//                        mAlertDialog.dismiss();
+//                    } else {
+//                        mAlertDialog.dismiss();
+//                    }
+//                }
+            }
+        });
+
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertDialog.dismiss();
+            }
+        });
+        mAlertDialog.show();
+    }
+
+
+    private void editPatientID(final Context mContext, final JsonQueuedPerson jsonQueuedPerson) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_add_patient_id, null, false);
+        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
+
+        final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
+
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        final Button btn_update = customDialogView.findViewById(R.id.btn_update);
+        btn_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edt_id.setError(null);
+                new AppUtils().hideKeyBoard((Activity) mContext);
+
+                if (TextUtils.isEmpty(edt_id.getText().toString())) {
+                    edt_id.setError(mContext.getString(R.string.error_customer_id));
+                } else {
+                    LaunchActivity.getLaunchActivity().progressDialog.show();
+
+                    //call API
+
+                    btn_update.setClickable(false);
+                    mAlertDialog.dismiss();
+
+                }
+            }
+        });
+
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertDialog.dismiss();
+            }
+        });
+        mAlertDialog.show();
+    }
+
 
 }

@@ -134,7 +134,7 @@
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_provisional"
                     style="@style/style_mdh_details"
-                    android:text="Provisional /Differential Diagnosis details " />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -151,7 +151,7 @@
                 <com.noqapp.android.client.views.customviews.TextViewRobotoLight
                     android:id="@+id/tv_investigation"
                     style="@style/style_mdh_details"
-                    android:text="Investigation Advised details " />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -165,9 +165,12 @@
                     style="@style/style_mdh_header"
                     android:text="Treatment Advice: " />
 
-                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                    style="@style/style_mdh_details"
-                    android:text="Physical Examination details " />
+                <com.noqapp.android.client.views.customviews.FixedHeightListView
+                    android:id="@+id/listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null" />
+
             </LinearLayout>
         </LinearLayout>
 
