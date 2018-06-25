@@ -89,7 +89,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     protected LinearLayout ll_patient_name;
 
     private String codeQR;
-    private String countryShortName;
     private JsonQueue jsonQueue;
     private boolean isJoinNotPossible = false;
     private String joinErrorMsg = "";
@@ -195,7 +194,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         tv_rating_review.setText(reviewText);
 
         codeQR = jsonQueue.getCodeQR();
-        countryShortName = jsonQueue.getCountryShortName();
         /* Check weather join is possible or not today due to some reason */
         JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, JoinActivity.this);
         if (joinQueueState.isJoinNotPossible()) {

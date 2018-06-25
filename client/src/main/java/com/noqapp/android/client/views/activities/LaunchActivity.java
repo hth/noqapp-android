@@ -73,22 +73,16 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     public static DatabaseHelper dbHandler;
-    public static String tabHome = "ScanQ";
-    public static String tabList = "Queues";
-    public static String tabMe = "Me";
     private static LaunchActivity launchActivity;
     public NetworkUtil networkUtil;
     public ProgressDialog progressDialog;
-    // Tabs associated with list of fragments
     public ActivityCommunicator activityCommunicator;
-
 
     public static Locale locale;
     public static SharedPreferences languagepref;
     public static String language;
     @BindView(R.id.tv_badge)
     protected TextView tv_badge;
-
 
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
@@ -105,6 +99,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @BindView(R.id.iv_notification)
     protected ImageView iv_notification;
+
     @BindView(R.id.fl_notification)
     protected FrameLayout fl_notification;
 
@@ -112,26 +107,17 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private long lastPress;
     private Toast backPressToast;
     private BroadcastReceiver broadcastReceiver;
-    private String currentSelectedTabTag = "";
     private ImageView iv_profile;
     private TextView tv_login, tv_name, tv_email;
-    private ScanQueueFragment scanfragment;
+    private ScanQueueFragment scanFragment;
     private DrawerLayout drawer;
-    private double old_latitute = 0;
-    private double old_longitute = 0;
+    private double old_latitude = 0;
+    private double old_longitude = 0;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
 
-    public String getCurrentSelectedTabTag() {
-        return currentSelectedTabTag;
-    }
-
-    // Used in TabListener to keep currentSelectedTabTag actual.
-    public void setCurrentSelectedTabTag(String currentSelectedTabTag) {
-        this.currentSelectedTabTag = currentSelectedTabTag;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +132,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         DeviceModel.appBlacklistPresenter = this;
         Log.v("device id check", getDeviceID());
         setReviewShown(false);//Reset the flag when app is killed
-        //AppUtilities.exportDatabase(this);
         networkUtil = new NetworkUtil(this);
 
         //Language setup
@@ -177,20 +162,19 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         iv_search.setVisibility(View.VISIBLE);
         actionbarBack.setVisibility(View.GONE);
         initProgress();
-        setCurrentSelectedTabTag(tabHome);
-        scanfragment = new ScanQueueFragment();
-        replaceFragmentWithoutBackStack(R.id.frame_layout, scanfragment);
+        scanFragment = new ScanQueueFragment();
+        replaceFragmentWithoutBackStack(R.id.frame_layout, scanFragment);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         LinearLayout mParent = (LinearLayout) navigationView.getHeaderView(0);
         iv_profile = mParent.findViewById(R.id.iv_profile);
@@ -199,8 +183,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         iv_profile.setOnClickListener(this);
         tv_name = mParent.findViewById(R.id.tv_name);
         tv_email = mParent.findViewById(R.id.tv_email);
-        final Intent in = new Intent(this, ReviewActivity.class);
-        //startActivity(in);
+
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -240,40 +223,36 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
             }
         };
-
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
-
-
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
 
     @Override
     public void updateLocationUI() {
-        if (null != scanfragment && Double.compare(old_latitute, latitute) != 0) {
+        if (null != scanFragment && Double.compare(old_latitude, latitute) != 0) {
             try {
-                if(old_latitute == 0){
-                    scanfragment.updateUIwithNewLocation(latitute, longitute, cityName);
-                    old_latitute = latitute;
-                }else {
-                    if(showLocationPopup)
-                    new AlertDialog.Builder(launchActivity)
-                            .setTitle(getString(R.string.location_change))
-                            .setMessage(getString(R.string.location_msg))
-                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    scanfragment.updateUIwithNewLocation(latitute, longitute, cityName);
-                                }
-                            })
-                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    showLocationPopup = false;
-                                }
-                            })
-                            .show();
-
+                if (old_latitude == 0) {
+                    scanFragment.updateUIwithNewLocation(latitute, longitute, cityName);
+                    old_latitude = latitute;
+                } else {
+                    if (showLocationPopup)
+                        new AlertDialog.Builder(launchActivity)
+                                .setTitle(getString(R.string.location_change))
+                                .setMessage(getString(R.string.location_msg))
+                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        scanFragment.updateUIwithNewLocation(latitute, longitute, cityName);
+                                    }
+                                })
+                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        showLocationPopup = false;
+                                    }
+                                })
+                                .show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -305,7 +284,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 onBackPressed();
                 break;
             case R.id.iv_search:
-                scanfragment.callSearch();
+                scanFragment.callSearch();
 
                 break;
             case R.id.iv_notification:
@@ -319,10 +298,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             .setMessage(getString(R.string.logout_msg))
                             .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // logout
                                     NoQueueBaseActivity.clearPreferences();
-                                    //navigate to signup/login
-                                    // replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
                                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                                     startActivity(loginIntent);
                                 }
@@ -340,12 +316,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.iv_profile:
-                if(UserUtils.isLogin()) {
+                if (UserUtils.isLogin()) {
                     Intent intent = new Intent(launchActivity, UserProfileActivity.class);
                     startActivity(intent);
                     drawer.closeDrawer(GravityCompat.START);
-                }else{
-                    Toast.makeText(launchActivity,"Please login to view the profile",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(launchActivity, "Please login to view the profile", Toast.LENGTH_LONG).show();
                 }
                 break;
             default:
@@ -528,7 +504,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     }
 
     private void updateNotification(Intent intent, String codeQR, boolean isReview) {
-        // Toast.makeText(launchActivity, "Notification payload C: " + payload, Toast.LENGTH_LONG).show();
         String current_serving = intent.getStringExtra(Constants.CurrentlyServing);
         String go_to = intent.getStringExtra(Constants.GoTo_Counter);
         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
@@ -557,7 +532,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 }
             }
             try {
-                scanfragment.updateListFromNotification(jtk, go_to);
+                scanFragment.updateListFromNotification(jtk, go_to);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -654,10 +629,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         final View dialogView = inflater.inflate(R.layout.dialog_language, null);
         dialogBuilder.setView(dialogView);
 
-        final LinearLayout ll_hindi = (LinearLayout) dialogView.findViewById(R.id.ll_hindi);
-        final LinearLayout ll_english = (LinearLayout) dialogView.findViewById(R.id.ll_english);
-        final RadioButton rb_hi = (RadioButton) dialogView.findViewById(R.id.rb_hi);
-        final RadioButton rb_en = (RadioButton) dialogView.findViewById(R.id.rb_en);
+        final LinearLayout ll_hindi = dialogView.findViewById(R.id.ll_hindi);
+        final LinearLayout ll_english = dialogView.findViewById(R.id.ll_english);
+        final RadioButton rb_hi = dialogView.findViewById(R.id.rb_hi);
+        final RadioButton rb_en = dialogView.findViewById(R.id.rb_en);
 
         if (language.equals("hi")) {
             rb_hi.setChecked(true);
@@ -666,8 +641,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             rb_en.setChecked(true);
             rb_hi.setChecked(false);
         }
-
-
         ll_hindi.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -685,14 +658,13 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         b.show();
     }
 
-
     public boolean isCurrentActivityLaunchActivity() {
         boolean isCurrentActivity = false;
         try {
             ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
             List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
             Log.d("topActivity", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName());
-            if(taskInfo.get(0).topActivity.getClassName().equals(LaunchActivity.class.getCanonicalName()))
+            if (taskInfo.get(0).topActivity.getClassName().equals(LaunchActivity.class.getCanonicalName()))
                 isCurrentActivity = true;
             else
                 isCurrentActivity = false;

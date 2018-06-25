@@ -18,7 +18,7 @@ import com.noqapp.android.client.R;
 
 public class BlinkerActivity extends Activity {
 
-    RelativeLayout rl_blinker;
+    private RelativeLayout rl_blinker;
     private TextView tv_close;
     private Thread thread;
     private Vibrator vibrator;
@@ -30,7 +30,7 @@ public class BlinkerActivity extends Activity {
         setContentView(R.layout.activity_blinker);
 
 
-        WebView view = (WebView) findViewById(R.id.myWebView);
+        WebView view = findViewById(R.id.myWebView);
         view.loadUrl("file:///android_asset/temp.gif");
         view.getSettings().setLoadWithOverviewMode(true);
         view.getSettings().setUseWideViewPort(true);

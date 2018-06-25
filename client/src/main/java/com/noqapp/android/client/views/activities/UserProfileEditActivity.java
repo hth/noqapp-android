@@ -4,19 +4,14 @@ package com.noqapp.android.client.views.activities;
  * Created by chandra on 10/4/18.
  */
 
-import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.Spannable;
@@ -24,9 +19,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -60,7 +53,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -72,26 +64,19 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 
-public class UserProfileEditActivity extends BaseActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter,DependencyPresenter {
+public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter,DependencyPresenter {
 
     @BindView(R.id.tv_name)
     protected TextView tv_name;
 
-    public static ImageView iv_profile;
-    private final int SELECT_PICTURE = 110;
-    private final int STORAGE_PERMISSION_CODE = 102;
-    private final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
     @BindView(R.id.edt_birthday)
     protected EditText edt_birthday;
+
     @BindView(R.id.edt_address)
     protected EditText edt_address;
+
     @BindView(R.id.btn_update)
     protected Button btn_update;
-
-    public String gender = "";
 
     @BindView(R.id.edt_phone)
     protected EditText edt_phoneNo;
@@ -102,13 +87,11 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
     @BindView(R.id.edt_email)
     protected EditText edt_Mail;
 
-
     @BindView(R.id.tv_male)
     protected EditText tv_male;
 
     @BindView(R.id.tv_female)
     protected EditText tv_female;
-
 
     @BindView(R.id.ll_gender)
     protected LinearLayout ll_gender;
@@ -118,6 +101,8 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
     private SimpleDateFormat dateFormatter;
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
+    public static ImageView iv_profile;
+    public String gender = "";
   //
 
     @Override
@@ -235,20 +220,7 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
         }
     }
 
-    private void selectImage() {
-        if (isExternalStoragePermissionAllowed()) {
-            try {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            requestStoragePermission();
-        }
-    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -280,37 +252,6 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
                 }
             }
         }
-    }
-
-    private String getMimeType(Context context, Uri uri) {
-        String mimeType;
-        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
-            ContentResolver cr = context.getContentResolver();
-            mimeType = cr.getType(uri);
-        } else {
-            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
-            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
-        }
-        return mimeType;
-    }
-
-
-    private boolean isExternalStoragePermissionAllowed() {
-        //Getting the permission status
-        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
-            return true;
-        //If permission is not granted returning false
-        return false;
-    }
-
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(
-                this,
-                STORAGE_PERMISSION_PERMS,
-                STORAGE_PERMISSION_CODE);
     }
 
 
@@ -464,18 +405,7 @@ public class UserProfileEditActivity extends BaseActivity implements View.OnClic
         edt_phoneNo.setEnabled(false);
         edt_Mail.setEnabled(false);
 
-
-
         loadProfilePic();
-    }
-
-
-    private boolean isValidEmail(CharSequence target) {
-        if (TextUtils.isEmpty(target)) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-        }
     }
 
     private boolean validate() {

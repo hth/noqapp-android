@@ -56,8 +56,8 @@ public class SliderActivity extends AppCompatActivity {
 
         // setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         // getSupportActionBar().hide();
-        vp_slider = (ViewPager) findViewById(R.id.vp_slider);
-        ll_dots = (LinearLayout) findViewById(R.id.ll_dots);
+        vp_slider = findViewById(R.id.vp_slider);
+        ll_dots = findViewById(R.id.ll_dots);
         Bundle b = getIntent().getExtras();
         slider_image_list = b.getStringArrayList("imageurls");
 

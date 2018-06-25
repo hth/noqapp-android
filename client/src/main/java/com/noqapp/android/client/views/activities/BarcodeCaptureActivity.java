@@ -89,8 +89,8 @@ public final class BarcodeCaptureActivity extends Activity implements BarcodeGra
         super.onCreate(icicle);
         setContentView(R.layout.barcode_capture);
 
-        mPreview = (CameraSourcePreview) findViewById(R.id.preview);
-        mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
+        mPreview = findViewById(R.id.preview);
+        mGraphicOverlay = findViewById(R.id.graphicOverlay);
 
         // Check for the camera permission before accessing the camera.  If the
         // permission is not granted yet, request permission.
@@ -104,13 +104,12 @@ public final class BarcodeCaptureActivity extends Activity implements BarcodeGra
         gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
-        Button btnClose = (Button) findViewById(R.id.btnClose);
+        Button btnClose = findViewById(R.id.btnClose);
 
         if (null != btnClose) {
             btnClose.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO Auto-generated method stub
                     finish();
                 }
             });

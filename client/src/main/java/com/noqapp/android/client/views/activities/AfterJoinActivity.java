@@ -52,7 +52,7 @@ import butterknife.OnClick;
 public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
 
-    public JsonToken jsonToken;
+    private JsonToken jsonToken;
 
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;

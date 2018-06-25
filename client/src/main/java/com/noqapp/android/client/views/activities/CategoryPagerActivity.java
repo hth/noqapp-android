@@ -31,9 +31,8 @@ public class CategoryPagerActivity extends BaseActivity implements CategoryHeade
     @BindView(R.id.rcv_header)
     protected RecyclerView rcv_header;
     private ViewPager viewPager;
-    List<JsonCategory> categoryMap;
-    Map<String, ArrayList<BizStoreElastic>> queueMap;
-    private CategoryHeaderAdapter.OnItemClickListener listener;
+    private List<JsonCategory> categoryMap;
+    private Map<String, ArrayList<BizStoreElastic>> queueMap;
     private CategoryHeaderAdapter categoryHeaderAdapter;
 
     @Override
@@ -42,8 +41,6 @@ public class CategoryPagerActivity extends BaseActivity implements CategoryHeade
         setContentView(R.layout.activity_category_pager);
         ButterKnife.bind(this);
         initActionsViews(true);
-        listener = this;
-
         try {
             categoryMap = (List<JsonCategory>) getIntent().getExtras().getSerializable("list");
             queueMap = (Map<String, ArrayList<BizStoreElastic>>) getIntent().getExtras().getSerializable("hashmap");
