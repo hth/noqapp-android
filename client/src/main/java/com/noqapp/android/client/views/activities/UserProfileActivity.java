@@ -249,7 +249,6 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
 
     private String getMimeType(Context context, Uri uri) {
         String mimeType;
-        //TODO(chandra) should it be equals? When would the bottom code be hit?
         if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
             ContentResolver cr = context.getContentResolver();
             mimeType = cr.getType(uri);
