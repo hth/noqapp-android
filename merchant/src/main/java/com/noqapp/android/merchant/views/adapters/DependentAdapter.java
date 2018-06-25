@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedDependent;
-import com.noqapp.common.beans.JsonProfile;
 
 import java.util.List;
 

@@ -90,6 +90,12 @@
                 android:textSize="12sp" />
         </RelativeLayout>
 
+        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+            android:id="@+id/tv_business_customer_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp" />
+
         <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
             android:id="@+id/tv_change_name"
             android:layout_width="100dp"
