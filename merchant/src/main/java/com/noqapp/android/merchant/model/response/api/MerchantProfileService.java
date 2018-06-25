@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.model.response.api;
 
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
+import com.noqapp.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.body.UpdateProfile;
@@ -62,5 +63,23 @@ public interface MerchantProfileService {
 
             @Part("profileImageOfQid")
             RequestBody profileImageOfQid
+    );
+
+    @POST("api/m/profile/intellisense.json")
+    Call<JsonResponse> intellisense(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal
     );
 }
