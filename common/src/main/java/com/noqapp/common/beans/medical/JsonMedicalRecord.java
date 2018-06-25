@@ -82,7 +82,7 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
     @JsonProperty ("u")
     private String createDate;
 
-    @JsonProperty ("c")
+    @JsonProperty ("qr")
     private String codeQR;
 
     public BusinessTypeEnum getBusinessType() {
@@ -254,5 +254,30 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
     public JsonMedicalRecord setCodeQR(String codeQR) {
         this.codeQR = codeQR;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonMedicalRecord{" +
+                "businessType=" + businessType +
+                ", queueUserId='" + queueUserId + '\'' +
+                ", chiefComplain='" + chiefComplain + '\'' +
+                ", pastHistory='" + pastHistory + '\'' +
+                ", familyHistory='" + familyHistory + '\'' +
+                ", knownAllergies='" + knownAllergies + '\'' +
+                ", medicalPhysical=" + medicalPhysical +
+                ", clinicalFinding='" + clinicalFinding + '\'' +
+                ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
+                ", pathologies=" + pathologies +
+                ", pathologyTestResult='" + pathologyTestResult + '\'' +
+                ", medicalRadiologyXRays=" + medicalRadiologyXRays +
+                ", medicalMedicines=" + medicalMedicines +
+                ", diagnosedById='" + diagnosedById + '\'' +
+                ", recordAccess=" + recordAccess +
+                ", businessName='" + businessName + '\'' +
+                ", bizCategoryName='" + bizCategoryName + '\'' +
+                ", createDate='" + createDate + '\'' +
+                ", codeQR='" + codeQR + '\'' +
+                '}';
     }
 }

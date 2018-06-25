@@ -29,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.body.Registration;
 import com.noqapp.android.merchant.utils.AppUtils;

@@ -107,9 +107,9 @@ public interface ProfileService {
             String auth,
 
             @Part
-            MultipartBody.Part file,
+            MultipartBody.Part profileImageFile,
 
-            @Part("qid")
-            RequestBody queueUserID
+            @Part("profileImageOfQid")
+            RequestBody profileImageOfQid
     );
 }

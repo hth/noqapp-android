@@ -43,4 +43,11 @@ public class JsonMedicalRecordList extends AbstractDomain {
         this.jsonMedicalRecords.add(jsonMedicalRecord);
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonMedicalRecordList{" +
+                "jsonMedicalRecords=" + jsonMedicalRecords +
+                '}';
+    }
 }

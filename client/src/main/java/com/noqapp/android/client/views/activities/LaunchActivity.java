@@ -108,7 +108,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @BindView(R.id.fl_notification)
     protected FrameLayout fl_notification;
 
-
+    private boolean showLocationPopup = true;
     private long lastPress;
     private Toast backPressToast;
     private BroadcastReceiver broadcastReceiver;
@@ -254,7 +254,27 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public void updateLocationUI() {
         if (null != scanfragment && Double.compare(old_latitute, latitute) != 0) {
             try {
-                scanfragment.updateUIwithNewLocation(latitute, longitute, cityName);
+                if(old_latitute == 0){
+                    scanfragment.updateUIwithNewLocation(latitute, longitute, cityName);
+                    old_latitute = latitute;
+                }else {
+                    if(showLocationPopup)
+                    new AlertDialog.Builder(launchActivity)
+                            .setTitle(getString(R.string.location_change))
+                            .setMessage(getString(R.string.location_msg))
+                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    scanfragment.updateUIwithNewLocation(latitute, longitute, cityName);
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    showLocationPopup = false;
+                                }
+                            })
+                            .show();
+
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

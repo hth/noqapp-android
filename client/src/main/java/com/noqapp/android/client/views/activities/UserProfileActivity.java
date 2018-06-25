@@ -231,10 +231,10 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                     if (!TextUtils.isEmpty(convertedPath)) {
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
-                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                        RequestBody tokenRequest = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
+                        MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+                        RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
                         ProfileModel.imageUploadPresenter = this;
-                        ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart,tokenRequest);
+                        ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block

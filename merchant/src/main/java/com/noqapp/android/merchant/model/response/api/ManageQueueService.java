@@ -146,4 +146,5 @@ public interface ManageQueueService {
             @Body
             ChangeUserInQueue changeUserInQueue
     );
+
 }

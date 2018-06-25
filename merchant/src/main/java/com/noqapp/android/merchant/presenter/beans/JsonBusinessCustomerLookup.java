@@ -28,7 +28,7 @@ public class JsonBusinessCustomerLookup implements Serializable {
     @JsonProperty("bc")
     private String businessCustomerId;
 
-    @JsonProperty("c")
+    @JsonProperty("qr")
     private String codeQR;
 
     public String getCustomerPhone() {

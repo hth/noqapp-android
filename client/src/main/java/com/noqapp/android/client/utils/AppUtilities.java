@@ -61,6 +61,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class AppUtilities extends CommonHelper {
+    private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+
     private static final String TAG = AppUtilities.class.getSimpleName();
     private static Map<String, Locale> localeMap;
 
@@ -335,7 +337,6 @@ public class AppUtilities extends CommonHelper {
 
     public static ArrayList<String> autocomplete(String input) {
         ArrayList<String> resultList = null;
-
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();
         try {
@@ -368,18 +369,13 @@ public class AppUtilities extends CommonHelper {
                 conn.disconnect();
             }
         }
-
         try {
-
             // Create a JSON object hierarchy from the results
             JSONObject jsonObj = new JSONObject(jsonResults.toString());
             JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-
             // Extract the Place descriptions from the results
-            resultList = new ArrayList<String>(predsJsonArray.length());
+            resultList = new ArrayList<>(predsJsonArray.length());
             for (int i = 0; i < predsJsonArray.length(); i++) {
-                System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
-                System.out.println("============================================================");
                 resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
             }
         } catch (JSONException e) {
@@ -389,20 +385,16 @@ public class AppUtilities extends CommonHelper {
         return resultList;
     }
 
-
     public static String getYearFromDate(String dateValue) {
         try {
-            DateFormat sdf = Formatter.formatRFC822;
-            SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+            DateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
             Date date = sdf.parse(dateValue);
-            String month_year = month_date.format(date);
-            return month_year;
+            return MMM_YYYY.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
         }
     }
-
 
     public static String getNameFromQueueUserID(String queueUserID, List<JsonProfile> list) {
         String name = "";

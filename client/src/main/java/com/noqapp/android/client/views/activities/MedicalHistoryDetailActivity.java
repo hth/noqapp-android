@@ -8,14 +8,17 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.adapters.MedicalRecordAdapter;
 import com.noqapp.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.common.model.types.medical.PhysicalExamEnum;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,7 +47,9 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
     protected LinearLayout ll_physical;
     @BindView(R.id.ll_medication)
     protected LinearLayout ll_medication;
-
+    private ListView listview;
+    private MedicalRecordAdapter adapter;
+    private List<JsonMedicalMedicine> medicalRecordList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +64,12 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         tv_known_allergy.setText(jsonMedicalRecord.getKnownAllergies());
         tv_clinical_finding.setText(jsonMedicalRecord.getClinicalFinding());
         tv_provisional.setText(jsonMedicalRecord.getProvisionalDifferentialDiagnosis());
-        //  tv_investigation.setText(jsonMedicalRecord.get);
 
         JsonMedicalPhysical jsonMedicalPhysicalExaminations = jsonMedicalRecord.getMedicalPhysical();
+        listview = findViewById(R.id.listview);
+        medicalRecordList = jsonMedicalRecord.getMedicalMedicines();
+        adapter = new MedicalRecordAdapter(this, medicalRecordList);
+        listview.setAdapter(adapter);
         for(PhysicalExamEnum physicalExam : PhysicalExamEnum.values()) {
             LinearLayout childLayout = new LinearLayout(this);
             LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
@@ -75,52 +83,20 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             mType.setGravity(Gravity.LEFT | Gravity.CENTER);
             switch (physicalExam) {
                 case BP:
-                    mType.setText(physicalExam.getDescription() + ":" + jsonMedicalPhysicalExaminations.getBloodPressure());
+                    mType.setText(physicalExam.getDescription() + ":" +" ");
+                            //+ jsonMedicalPhysicalExaminations.getBloodPressure());
                     break;
                 case PL:
-                    mType.setText(physicalExam.getDescription() + ":" + jsonMedicalPhysicalExaminations.getPluse());
+                    mType.setText(physicalExam.getDescription() + ":" +" ");
+                            //+ jsonMedicalPhysicalExaminations.getPluse());
                     break;
                 case WT:
-                    mType.setText(physicalExam.getDescription() + ":" + jsonMedicalPhysicalExaminations.getWeight());
+                    mType.setText(physicalExam.getDescription() + ":" +" ");
+                            //+ jsonMedicalPhysicalExaminations.getWeight());
                     break;
             }
             childLayout.addView(mType, 0);
             ll_physical.addView(childLayout);
-        }
-
-//        for (int j = 0; j < jsonMedicalPhysicalExaminations.size(); j++) {
-//
-//            LinearLayout childLayout = new LinearLayout(this);
-//            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.WRAP_CONTENT,
-//                    LinearLayout.LayoutParams.WRAP_CONTENT);
-//            childLayout.setLayoutParams(linearParams);
-//            TextView mType = new TextView(this);
-//            mType.setTextSize(17);
-//            mType.setPadding(5, 3, 0, 3);
-//            mType.setTypeface(Typeface.DEFAULT_BOLD);
-//            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-//            mType.setText(jsonMedicalPhysicalExaminations.get(j).getValue() + ":" + jsonMedicalPhysicalExaminations.get(j).getTestResult());
-//            childLayout.addView(mType, 0);
-//            ll_physical.addView(childLayout);
-//        }
-
-        List<JsonMedicalMedicine> jsonMedicalMedicine = jsonMedicalRecord.getMedicalMedicines();
-        for (int j = 0; j < jsonMedicalMedicine.size(); j++) {
-
-            LinearLayout childLayout = new LinearLayout(this);
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            childLayout.setLayoutParams(linearParams);
-            TextView mType = new TextView(this);
-            mType.setTextSize(17);
-            mType.setPadding(5, 3, 0, 3);
-            mType.setTypeface(Typeface.DEFAULT_BOLD);
-            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-            mType.setText(jsonMedicalMedicine.get(j).getName() + ":" + jsonMedicalMedicine.get(j).getStrength() + ":" + jsonMedicalMedicine.get(j).getCourse());
-            childLayout.addView(mType, 0);
-            ll_medication.addView(childLayout);
         }
     }
 

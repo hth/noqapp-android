@@ -29,7 +29,7 @@ public class Constants {
     public static final String LastNumber = "ln";
     public static final String CurrentlyServing = "cs";
     public static final String QueueStatus = "q";
-    public static final String CodeQR = "c";
+    public static final String CodeQR = "qr";
     public static final String QueueUserState = "u";
     public static final String ACTIVITY_TO_CLOSE = "activity_status";
     public static final String FROM_JOIN_SCREEN = "from_join_screen";

@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.views.interfaces;
 
 import android.content.Context;
 
-
 import com.noqapp.android.merchant.model.RegisterModel;
 import com.noqapp.android.merchant.presenter.beans.body.Registration;
 import com.noqapp.android.merchant.utils.UserUtils;

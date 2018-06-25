@@ -25,7 +25,7 @@ import com.noqapp.common.beans.ErrorEncounteredJson;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class QueueSetting {
 
-    @JsonProperty("c")
+    @JsonProperty("qr")
     private String codeQR;
 
     @JsonProperty("f")

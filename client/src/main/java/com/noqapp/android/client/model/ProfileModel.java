@@ -191,8 +191,8 @@ public class ProfileModel {
         });
     }
 
-    public static void uploadImage(String did, String mail, String auth, MultipartBody.Part file, RequestBody queueUserId) {
-        profileService.upload(did, Constants.DEVICE_TYPE, mail, auth, file,queueUserId).enqueue(new Callback<JsonResponse>() {
+    public static void uploadImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody profileImageOfQid) {
+        profileService.upload(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {

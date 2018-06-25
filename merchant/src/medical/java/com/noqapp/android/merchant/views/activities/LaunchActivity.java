@@ -230,5 +230,16 @@ public class LaunchActivity extends BaseLaunchActivity {
     }
 
 
+    public void updateMenuList() {
 
+        NavigationBean[] drawerItem = new NavigationBean[6];
+        drawerItem[1] = new NavigationBean(R.drawable.profile_red, "Profile");
+        drawerItem[2] = new NavigationBean(R.mipmap.logout, "Logout");
+        drawerItem[3] = new NavigationBean(R.drawable.ic_menu_share, "Share the app");
+        drawerItem[4] = new NavigationBean(R.drawable.ic_star, "Rate the app");
+        drawerItem[5] = new NavigationBean(R.drawable.language, "Change language");
+        drawerItem[0] = new NavigationBean(R.drawable.pie_chart, "Charts");
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this, R.layout.listitem_navigation_drawer, drawerItem);
+        mDrawerList.setAdapter(adapter);
+    }
 }
