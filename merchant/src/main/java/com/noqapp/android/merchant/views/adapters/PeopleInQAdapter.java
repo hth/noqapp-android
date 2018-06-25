@@ -209,7 +209,7 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         recordHolder.tv_business_customer_id.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editPatientID(context, jsonQueuedPerson);
+                editBusinessCustomerId(context, jsonQueuedPerson);
             }
         });
 
@@ -320,15 +320,13 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
     }
 
 
-    private void editPatientID(final Context mContext, final JsonQueuedPerson jsonQueuedPerson) {
+    private void editBusinessCustomerId(final Context mContext, final JsonQueuedPerson jsonQueuedPerson) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_add_patient_id, null, false);
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
-
         final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
-
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -343,7 +341,6 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
                     edt_id.setError(mContext.getString(R.string.error_customer_id));
                 } else {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
-
                     String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
                     BusinessCustomerModel.addId(
                             LaunchActivity.getLaunchActivity().getDeviceID(),
@@ -353,7 +350,6 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
 
                     btn_update.setClickable(false);
                     mAlertDialog.dismiss();
-
                 }
             }
         });
@@ -366,6 +362,5 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         });
         mAlertDialog.show();
     }
-
 
 }

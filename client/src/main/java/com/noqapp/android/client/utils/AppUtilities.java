@@ -337,7 +337,6 @@ public class AppUtilities extends CommonHelper {
 
     public static ArrayList<String> autocomplete(String input) {
         ArrayList<String> resultList = null;
-
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();
         try {
@@ -370,17 +369,13 @@ public class AppUtilities extends CommonHelper {
                 conn.disconnect();
             }
         }
-
         try {
             // Create a JSON object hierarchy from the results
             JSONObject jsonObj = new JSONObject(jsonResults.toString());
             JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-
             // Extract the Place descriptions from the results
-            resultList = new ArrayList<String>(predsJsonArray.length());
+            resultList = new ArrayList<>(predsJsonArray.length());
             for (int i = 0; i < predsJsonArray.length(); i++) {
-                System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
-                System.out.println("============================================================");
                 resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
             }
         } catch (JSONException e) {
@@ -392,7 +387,7 @@ public class AppUtilities extends CommonHelper {
 
     public static String getYearFromDate(String dateValue) {
         try {
-            DateFormat sdf = Formatter.formatRFC822;
+            DateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
             Date date = sdf.parse(dateValue);
             return MMM_YYYY.format(date);
         } catch (ParseException e) {
