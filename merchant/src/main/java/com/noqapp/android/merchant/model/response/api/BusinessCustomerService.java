@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.model.response.api;
 
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
-import com.noqapp.common.beans.JsonProfile;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

@@ -111,7 +111,7 @@ public class MeFragment extends NoQueueBaseFragment {
         b.putString("invite_code", inviteCode);
         InviteFragment inf = new InviteFragment();
         inf.setArguments(b);
-        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, inf, TAG, LaunchActivity.tabMe);
+        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, inf, TAG);
     }
 
     @OnClick(R.id.btn_register_login_logout)
@@ -156,7 +156,7 @@ public class MeFragment extends NoQueueBaseFragment {
 
     @OnClick({R.id.ll_legal})
     public void action_Legal() {
-        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LegalFragment(), TAG, LaunchActivity.tabMe);
+        replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LegalFragment(), TAG);
     }
 
     @OnClick({R.id.ll_referal})

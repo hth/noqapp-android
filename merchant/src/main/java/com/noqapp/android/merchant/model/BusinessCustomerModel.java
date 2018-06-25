@@ -4,22 +4,11 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.noqapp.android.merchant.model.response.api.BusinessCustomerService;
-import com.noqapp.android.merchant.model.response.api.ManageQueueService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
-import com.noqapp.android.merchant.presenter.beans.JsonToken;
-import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
-import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
-import com.noqapp.android.merchant.presenter.beans.body.Served;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
-import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
-import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
-import com.noqapp.common.beans.ErrorEncounteredJson;
-
-import org.apache.commons.lang3.StringUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;

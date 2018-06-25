@@ -37,10 +37,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 finish();
             }
         });
-
         tv_toolbar_title.setText(getString(R.string.action_settings));
-
-
     }
 
     @Override

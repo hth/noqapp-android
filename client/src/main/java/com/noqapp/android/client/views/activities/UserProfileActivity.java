@@ -4,20 +4,13 @@ package com.noqapp.android.client.views.activities;
  * Created by chandra on 10/4/18.
  */
 
-import android.Manifest;
-import android.app.DatePickerDialog;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -26,8 +19,6 @@ import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.MimeTypeMap;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -52,7 +43,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -63,22 +53,16 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 
-public class UserProfileActivity extends BaseActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
+public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
 
     @BindView(R.id.tv_name)
     protected TextView tv_name;
+
     @BindView(R.id.iv_edit)
     protected ImageView iv_edit;
 
     @BindView(R.id.iv_add_dependent)
     protected ImageView iv_add_dependent;
-    public static ImageView iv_profile;
-    private final int SELECT_PICTURE = 110;
-    private final int STORAGE_PERMISSION_CODE = 102;
-    private final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
 
     @BindView(R.id.edt_birthday)
     protected EditText edt_birthday;
@@ -113,7 +97,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     protected LinearLayout ll_dependent;
 
     private SimpleDateFormat dateFormatter;
-
+    public static ImageView iv_profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,9 +122,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         iv_add_dependent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(UserProfileActivity.this,UserProfileEditActivity.class);
-                in.putExtra(NoQueueBaseActivity.IS_DEPENDENT,true);
-               // in.putExtra(NoQueueBaseActivity.DEPENDENT_PROFILE,new JsonProfile());
+                Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
+                in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, true);
+                // in.putExtra(NoQueueBaseActivity.DEPENDENT_PROFILE,new JsonProfile());
 
                 startActivity(in);
             }
@@ -187,9 +171,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 selectImage();
                 break;
             case R.id.iv_edit:
-                Intent in = new Intent(UserProfileActivity.this,UserProfileEditActivity.class);
-                in.putExtra(NoQueueBaseActivity.IS_DEPENDENT,false);
-               // in.putExtra(NoQueueBaseActivity.KEY_USER_PROFILE,LaunchActivity.getLaunchActivity().getUserProfile());
+                Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
+                in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
+                // in.putExtra(NoQueueBaseActivity.KEY_USER_PROFILE,LaunchActivity.getLaunchActivity().getUserProfile());
                 startActivity(in);
                 break;
 
@@ -197,21 +181,6 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 Intent migrate = new Intent(this, MigrateActivity.class);
                 startActivity(migrate);
                 break;
-        }
-    }
-
-    private void selectImage() {
-        if (isExternalStoragePermissionAllowed()) {
-            try {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            requestStoragePermission();
         }
     }
 
@@ -246,39 +215,6 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             }
         }
     }
-
-    private String getMimeType(Context context, Uri uri) {
-        String mimeType;
-        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
-            ContentResolver cr = context.getContentResolver();
-            mimeType = cr.getType(uri);
-        } else {
-            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
-            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
-        }
-        return mimeType;
-    }
-
-
-    private boolean isExternalStoragePermissionAllowed() {
-        //Getting the permission status
-        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
-            return true;
-        //If permission is not granted returning false
-        return false;
-    }
-
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(
-                this,
-                STORAGE_PERMISSION_PERMS,
-                STORAGE_PERMISSION_CODE);
-    }
-
-
 
     @Override
     public void queueResponse(JsonProfile profile, String email, String auth) {
@@ -371,7 +307,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         ll_dependent.removeAllViews();
         if (null != jsonProfiles && jsonProfiles.size() > 0) {
             for (int j = 0; j < jsonProfiles.size(); j++) {
-                final JsonProfile jsonProfile =jsonProfiles.get(j);
+                final JsonProfile jsonProfile = jsonProfiles.get(j);
                 LayoutInflater inflater = LayoutInflater.from(this);
                 final View listitem_dependent = inflater.inflate(R.layout.listitem_dependent, null);
                 ImageView iv_delete = listitem_dependent.findViewById(R.id.iv_delete);
@@ -381,16 +317,16 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 iv_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(UserProfileActivity.this,"Delete: "+jsonProfile.toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(UserProfileActivity.this, "Delete: " + jsonProfile.toString(), Toast.LENGTH_LONG).show();
                     }
                 });
                 iv_edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       // Toast.makeText(UserProfileActivity.this,"Edit: "+jsonProfile.toString(),Toast.LENGTH_LONG).show();
-                        Intent in = new Intent(UserProfileActivity.this,UserProfileEditActivity.class);
-                        in.putExtra(NoQueueBaseActivity.IS_DEPENDENT,true);
-                        in.putExtra(NoQueueBaseActivity.DEPENDENT_PROFILE,jsonProfile);
+                        // Toast.makeText(UserProfileActivity.this,"Edit: "+jsonProfile.toString(),Toast.LENGTH_LONG).show();
+                        Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
+                        in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, true);
+                        in.putExtra(NoQueueBaseActivity.DEPENDENT_PROFILE, jsonProfile);
                         startActivity(in);
                     }
                 });

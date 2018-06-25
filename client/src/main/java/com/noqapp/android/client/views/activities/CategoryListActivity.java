@@ -54,7 +54,6 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_category_list.setLayoutManager(horizontalLayoutManagaer);
         rv_category_list.setItemAnimator(new DefaultItemAnimator());
-        // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
         rv_category_list.setAdapter(categoryListAdapter);
     }
 

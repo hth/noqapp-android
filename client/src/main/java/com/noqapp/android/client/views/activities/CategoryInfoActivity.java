@@ -115,13 +115,14 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             .maximumSize(1)
             .build();
 
-    /* Compute Rating and Rating Count at runtime. */
     private float rating = 0;
     private int ratingCount = 0;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
-    Bundle bundle;
+    private Bundle bundle;
     private String title = "";
+    private final String QUEUE = "queue";
+    private final String CATEGORY = "category";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,14 +133,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         listener = this;
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         AppUtilities.setRatingBarColor(stars, this);
-        listener = this;
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
             }
         });
-
 
         bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
@@ -240,7 +239,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             rv_thumb_images.setHasFixedSize(true);
             rv_thumb_images.setLayoutManager(horizontalLayoutManager);
-            ArrayList<String> storeServiceImages = dummyUrls();
+            ArrayList<String> storeServiceImages = new ArrayList<>();
             // initialize list if we are receiving urls from server
             if (bizStoreElastic.getBizServiceImages().size() > 0) {
                 storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
@@ -248,7 +247,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
             rv_thumb_images.setAdapter(adapter);
-            Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
+            Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
 
             if (isFuture) {
                 RecyclerViewGridAdapter recyclerView_Adapter
@@ -293,7 +292,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             categoryMap.put(jsonCategory.getBizCategoryId(), jsonCategory);
         }
         categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName(bizStoreElasticList.getBizStoreElastics().get(0).getBusinessName()));
-        cacheCategory.put("category", categoryMap);
+        cacheCategory.put(CATEGORY, categoryMap);
 
         int systemHourMinutes = getTimeIn24HourFormat();
         Map<String, ArrayList<BizStoreElastic>> queueMap = new HashMap<>();
@@ -321,13 +320,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         }
         rating = ratingQueue / queueWithRating;
         ratingCount = ratingCountQueue;
-
-        cacheQueue.put("queue", queueMap);
+        cacheQueue.put(QUEUE, queueMap);
     }
 
     public List<JsonCategory> getCategoryThatArePopulated() {
-        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
-        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
+        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent(CATEGORY);
+        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
 
         Set<String> categoryKey = categoryMap.keySet();
         Set<String> queueKey = queueMap.keySet();
@@ -338,8 +336,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     @Override
     public void onCategoryItemClick(int pos, JsonCategory jsonCategory) {
-        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent("category");
-        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent("queue");
+        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent(CATEGORY);
+        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
         switch (bizStoreElastic.getBusinessType()) {
             case BK:
                 Intent in = new Intent(this, JoinActivity.class);
@@ -367,16 +365,4 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         startActivity(in);
     }
 
-
-    //TODO: @Chandra remove later when the image urls are fixed at server
-    private ArrayList<String> dummyUrls() {
-        ArrayList<String> storeServiceImages = new ArrayList<>();
-        storeServiceImages.add("https://content.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-3w3dboj.jpg");
-        storeServiceImages.add("https://content.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-1steuoh.jpg");
-        storeServiceImages.add("https://content.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-wek9js.jpg");
-        storeServiceImages.add("https://content.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-2xu2p72.jpg");
-        storeServiceImages.add("https://content1.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-2ov44bu.jpg");
-        storeServiceImages.add("https://content3.jdmagicbox.com/comp/mumbai/b1/022pxx22.xx22.130622101306.r7b1/catalogue/sai-snehdeep-hospital-kopar-khairane-mumbai-dermatologists-3zj5ots.jpg");
-        return storeServiceImages;
-    }
 }
