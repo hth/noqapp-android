@@ -61,6 +61,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class AppUtilities extends CommonHelper {
+    private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+
     private static final String TAG = AppUtilities.class.getSimpleName();
     private static Map<String, Locale> localeMap;
 
@@ -370,7 +372,6 @@ public class AppUtilities extends CommonHelper {
         }
 
         try {
-
             // Create a JSON object hierarchy from the results
             JSONObject jsonObj = new JSONObject(jsonResults.toString());
             JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
@@ -389,20 +390,16 @@ public class AppUtilities extends CommonHelper {
         return resultList;
     }
 
-
     public static String getYearFromDate(String dateValue) {
         try {
             DateFormat sdf = Formatter.formatRFC822;
-            SimpleDateFormat month_date = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
             Date date = sdf.parse(dateValue);
-            String month_year = month_date.format(date);
-            return month_year;
+            return MMM_YYYY.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
         }
     }
-
 
     public static String getNameFromQueueUserID(String queueUserID, List<JsonProfile> list) {
         String name = "";

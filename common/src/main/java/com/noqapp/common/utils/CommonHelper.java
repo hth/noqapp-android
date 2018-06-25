@@ -16,13 +16,13 @@ import java.util.Locale;
 
 public class CommonHelper {
 
-    private static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
-    private static final SimpleDateFormat SDF_DOB = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    private static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+    private static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     public static String convertDOBToValidFormat(String dob) {
         try {
             Date date = SDF_DOB_FROM_UI.parse(dob);
-            return SDF_DOB.format(date);
+            return SDF_YYYY_MM_DD.format(date);
         } catch (ParseException e) {
             Log.e("Date error", "Error parsing DOB={}" + e.getLocalizedMessage(), e);
             return "";
