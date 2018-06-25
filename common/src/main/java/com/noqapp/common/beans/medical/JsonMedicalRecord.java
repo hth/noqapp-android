@@ -82,7 +82,7 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
     @JsonProperty ("u")
     private String createDate;
 
-    @JsonProperty ("c")
+    @JsonProperty ("qr")
     private String codeQR;
 
     public BusinessTypeEnum getBusinessType() {

@@ -27,7 +27,7 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonToken implements Serializable {
 
-    @JsonProperty("c")
+    @JsonProperty("qr")
     private String codeQR;
 
     @JsonProperty("d")

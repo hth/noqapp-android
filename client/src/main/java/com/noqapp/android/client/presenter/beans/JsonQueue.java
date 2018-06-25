@@ -47,7 +47,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("bs")
     private String bizStoreId;
 
-    @JsonProperty("c")
+    @JsonProperty("qr")
     private String codeQR;
 
     @JsonProperty("gh")
