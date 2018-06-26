@@ -309,6 +309,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                     tvcount.setText(String.valueOf(token.getToken()));
                     tvcount.setVisibility(View.VISIBLE);
                     btn_create_token.setClickable(true);
+                    updateUI();
                     break;
                 default:
                     Log.e(MerchantDetailFragment.class.getSimpleName(), "Reached un-reachable condition");
