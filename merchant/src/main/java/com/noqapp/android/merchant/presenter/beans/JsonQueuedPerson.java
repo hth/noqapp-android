@@ -129,4 +129,13 @@ public class JsonQueuedPerson implements Serializable {
         this.businessCustomerId = businessCustomerId;
         return this;
     }
+
+    public boolean isClientVisitedThisStore() {
+        return clientVisitedThisStore;
+    }
+
+    public JsonQueuedPerson setClientVisitedThisStore(boolean clientVisitedThisStore) {
+        this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
 }

@@ -154,6 +154,12 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
                 peopleInQAdapterClick.PeopleInQClick(position);
             }
         });
+        // check parameter to show client is new or has previously visited
+        if (jsonQueuedPerson.isClientVisitedThisStore()) {
+            recordHolder.tv_customer_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.new_client, 0);
+        } else {
+            recordHolder.tv_customer_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
         switch (jsonQueuedPerson.getQueueUserState()) {
             case Q:
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId())) {
