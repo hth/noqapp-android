@@ -51,9 +51,6 @@ public class JsonToken implements Serializable {
     @JsonProperty ("e")
     private String expectedServiceBegin;
 
-    @JsonProperty ("v")
-    private boolean clientVisitedThisStore;
-
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -123,15 +120,6 @@ public class JsonToken implements Serializable {
         return this;
     }
 
-    public boolean hasClientVisitedThisStore() {
-        return clientVisitedThisStore;
-    }
-
-    public JsonToken setClientVisitedThisStore(boolean clientVisitedThisStore) {
-        this.clientVisitedThisStore = clientVisitedThisStore;
-        return this;
-    }
-
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -155,7 +143,6 @@ public class JsonToken implements Serializable {
                 .append("token", token)
                 .append("customerName", customerName)
                 .append("expectedServiceBegin", expectedServiceBegin)
-                .append("clientVisitedThisStore", clientVisitedThisStore)
                 .append("error", error)
                 .toString();
     }

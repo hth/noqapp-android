@@ -55,6 +55,9 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty("bc")
     private String businessCustomerId;
 
+    @JsonProperty ("vs")
+    private boolean clientVisitedThisStore;
+
     public int getToken() {
         return token;
     }
