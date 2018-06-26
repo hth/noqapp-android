@@ -153,7 +153,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                 }
                 LaunchActivity.getLaunchActivity().setAccessGrant(true);
                 LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
-                LaunchActivity.getLaunchActivity().updateMenuList();
+                LaunchActivity.getLaunchActivity().updateMenuList(jsonMerchant.getJsonProfile().getUserLevel()== UserLevelEnum.S_MANAGER);
                 MerchantListFragment mlf = new MerchantListFragment();
                 Bundle b = new Bundle();
                 b.putSerializable("jsonMerchant", jsonMerchant);

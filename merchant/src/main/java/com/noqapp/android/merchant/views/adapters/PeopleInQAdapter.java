@@ -39,6 +39,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalHistoryDetailActivity;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
+import com.noqapp.common.model.types.UserLevelEnum;
 import com.noqapp.common.utils.PhoneFormatterUtil;
 
 import java.util.List;
@@ -212,6 +213,11 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
                 editBusinessCustomerId(context, jsonQueuedPerson);
             }
         });
+
+        if(LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER)
+            recordHolder.tv_create_case.setVisibility(View.VISIBLE);
+        else
+            recordHolder.tv_create_case.setVisibility(View.GONE);
 
         if (glowPostion > 0 && glowPostion - 1 == position) {
             setAnim(recordHolder.cardview);

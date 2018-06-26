@@ -33,11 +33,13 @@ import com.noqapp.android.merchant.views.adapters.NavigationDrawerAdapter;
 import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
+import com.noqapp.common.model.types.UserLevelEnum;
 import com.noqapp.common.utils.NetworkUtil;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -48,11 +50,12 @@ public class LaunchActivity extends BaseLaunchActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
+    private NavigationDrawerAdapter drawerAdapter;
+    private ArrayList<NavigationBean> drawerItem = new ArrayList<>();
 
     @Override
     public void enableDisableDrawer(boolean isEnable) {
-        mDrawerLayout.setDrawerLockMode(isEnable?DrawerLayout.LOCK_MODE_UNLOCKED:DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mDrawerLayout.setDrawerLockMode(isEnable ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     @Override
@@ -84,35 +87,24 @@ public class LaunchActivity extends BaseLaunchActivity {
             }
         });
         if (new AppUtils().isTablet(this)) {
-            list_fragment = (FrameLayout) findViewById(R.id.frame_layout);
-            list_detail_fragment = (FrameLayout) findViewById(R.id.list_detail_fragment);
+            list_fragment = findViewById(R.id.frame_layout);
+            list_detail_fragment = findViewById(R.id.list_detail_fragment);
         }
         initProgress();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.drawer_list);
-        NavigationBean[] drawerItem = null;
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerList = findViewById(R.id.drawer_list);
+        drawerItem.clear();
         if (isLoggedIn()) {
-            drawerItem = new NavigationBean[6];
-            drawerItem[1] = new NavigationBean(R.drawable.profile_red, "Profile");
-            drawerItem[2] = new NavigationBean(R.mipmap.logout, "Logout");
-            drawerItem[3] = new NavigationBean(R.drawable.ic_menu_share, "Share the app");
-            drawerItem[4] = new NavigationBean(R.drawable.ic_star, "Rate the app");
-            drawerItem[5] = new NavigationBean(R.drawable.language, "Change language");
-
-        } else {
-            drawerItem = new NavigationBean[1];
+            updateMenuList(getUserLevel()== UserLevelEnum.S_MANAGER);
         }
-        drawerItem[0] = new NavigationBean(R.drawable.pie_chart, "Charts");
 
 
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this, R.layout.listitem_navigation_drawer, drawerItem);
-        mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int selectedPosition = position;
+                int selectedPosition = drawerAdapter.getData().get(position).getIcon();
                 switch (selectedPosition) {
-                    case 0:
+                    case R.drawable.pie_chart:
                         if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
                             Intent in1 = new Intent(launchActivity, ChartSampleActivity.class);
                             in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
@@ -121,20 +113,20 @@ public class LaunchActivity extends BaseLaunchActivity {
                             Toast.makeText(launchActivity, "No queue available", Toast.LENGTH_LONG).show();
                         }
                         break;
-                    case 1:
+                    case R.drawable.profile_red:
                         Intent in3 = new Intent(launchActivity, ManagerProfileActivity.class);
                         startActivity(in3);
                         break;
-                    case 2:
+                    case R.mipmap.logout:
                         showLogoutDialog();
                         break;
-                    case 3:
+                    case R.drawable.ic_menu_share:
                         AppUtils.shareTheApp(launchActivity);
                         break;
-                    case 4:
+                    case R.drawable.ic_star:
                         AppUtils.openPlayStore(launchActivity);
                         break;
-                    case 5:
+                    case R.drawable.language:
                         showChangeLangDialog();
                         break;
                     default:
@@ -230,16 +222,16 @@ public class LaunchActivity extends BaseLaunchActivity {
     }
 
 
-    public void updateMenuList() {
-
-        NavigationBean[] drawerItem = new NavigationBean[6];
-        drawerItem[1] = new NavigationBean(R.drawable.profile_red, "Profile");
-        drawerItem[2] = new NavigationBean(R.mipmap.logout, "Logout");
-        drawerItem[3] = new NavigationBean(R.drawable.ic_menu_share, "Share the app");
-        drawerItem[4] = new NavigationBean(R.drawable.ic_star, "Rate the app");
-        drawerItem[5] = new NavigationBean(R.drawable.language, "Change language");
-        drawerItem[0] = new NavigationBean(R.drawable.pie_chart, "Charts");
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this, R.layout.listitem_navigation_drawer, drawerItem);
-        mDrawerList.setAdapter(adapter);
+    public void updateMenuList(boolean showChart) {
+        drawerItem.clear();
+        drawerItem.add(new NavigationBean(R.drawable.profile_red, "Profile"));
+        drawerItem.add(new NavigationBean(R.mipmap.logout, "Logout"));
+        drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, "Share the app"));
+        drawerItem.add(new NavigationBean(R.drawable.ic_star, "Rate the app"));
+        drawerItem.add(new NavigationBean(R.drawable.language, "Change language"));
+        if (showChart)
+            drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Charts"));
+        drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
+        mDrawerList.setAdapter(drawerAdapter);
     }
 }

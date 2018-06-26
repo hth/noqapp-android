@@ -39,6 +39,7 @@ import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.merchant.views.fragments.UserProfileFragment;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 import com.noqapp.common.beans.JsonResponse;
+import com.noqapp.common.model.types.UserLevelEnum;
 import com.noqapp.common.presenter.ImageUploadPresenter;
 import com.noqapp.common.utils.ImagePathReader;
 import com.squareup.picasso.Picasso;
@@ -79,14 +80,14 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue_manager_profile);
-        actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
+        actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        tv_profile_name = (TextView)findViewById(R.id.tv_profile_name);
+        tv_profile_name = findViewById(R.id.tv_profile_name);
 //        ButterKnife.bind(this);
 //        initActionsViews(false);
 //        tv_toolbar_title.setText("Doctor Profile");
@@ -107,8 +108,8 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        viewPager = findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.tabs);
         loadTabs =new LoadTabs();
         loadTabs.execute();
 
@@ -128,8 +129,11 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
             LaunchActivity.getLaunchActivity().setUserName();
             tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
-            userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
             userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
+            if(LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+                // Additional profile will be only visible to store manager
+                userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
+            }
             Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
             loadProfilePic(jsonMerchant.getJsonProfile().getProfileImage());
         }
@@ -253,10 +257,13 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
 
     private void setupViewPager(ViewPager viewPager) {
         userProfileFragment = new UserProfileFragment();
-        userAdditionalInfoFragment = new UserAdditionalInfoFragment();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(userProfileFragment, "Profile");
-        adapter.addFragment(userAdditionalInfoFragment, "Professional Profile");
+        if(LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+            // Additional profile will be only visible to store manager
+            userAdditionalInfoFragment = new UserAdditionalInfoFragment();
+            adapter.addFragment(userAdditionalInfoFragment, "Professional Profile");
+        }
         viewPager.setAdapter(adapter);
     }
 
