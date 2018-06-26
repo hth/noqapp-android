@@ -7,54 +7,63 @@ package com.noqapp.android.merchant.views.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.common.beans.JsonNameDatePair;
+import com.noqapp.common.beans.JsonProfessionalProfilePersonal;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class UserAdditionalInfoFragment extends Fragment {
 
 
-//    @BindView(R.id.tv_education)
-//    protected TextView tv_education;
+    @BindView(R.id.tv_education)
+    protected TextView tv_education;
+
+    @BindView(R.id.tv_experience)
+    protected TextView tv_experience;
 //
-//    @BindView(R.id.tv_experience)
-//    protected TextView tv_experience;
-//
-//    private JsonHealthCareProfile jsonHealthCareProfile;
+    private JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_additional_info, container, false);
-//        ButterKnife.bind(this, view);
-//        if (null != jsonHealthCareProfile)
-//            updateUI(jsonHealthCareProfile);
+        ButterKnife.bind(this, view);
+        if (null != jsonProfessionalProfilePersonal)
+            updateUI(jsonProfessionalProfilePersonal);
         return view;
     }
 
 
-    public void updateUI(JsonProfile jsonHealthCareProfile) {
-//        this.jsonHealthCareProfile = jsonHealthCareProfile;
-//        List<JsonNameDatePair> experience = jsonHealthCareProfile.getAwards();
-//        List<JsonNameDatePair> education = jsonHealthCareProfile.getEducation();
-//
-//        StringBuilder text_edu = new StringBuilder();
-//        for (int i = 0; i < education.size(); i++) {
-//            text_edu.append(TextUtils.isEmpty(education.get(i).getMonthYear()) ? "" : AppUtilities.getYearFromDate(education.get(i).getMonthYear()) + ", " );
-//            text_edu.append(education.get(i).getName()+ "\n");
-//        }
-//
-//        StringBuilder text_exp = new StringBuilder();
-//        for (int i = 0; i < experience.size(); i++) {
-//            text_exp.append(TextUtils.isEmpty(experience.get(i).getMonthYear()) ? "" : AppUtilities.getYearFromDate(experience.get(i).getMonthYear()) + ", " );
-//            text_exp.append(experience.get(i).getName()+ "\n");
-//        }
-//        tv_experience.setText(text_exp);
-//        tv_education.setText(text_edu);
+    public void updateUI(JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal) {
+        this.jsonProfessionalProfilePersonal = jsonProfessionalProfilePersonal;
+        List<JsonNameDatePair> experience = jsonProfessionalProfilePersonal.getAwards();
+        List<JsonNameDatePair> education = jsonProfessionalProfilePersonal.getEducation();
+
+        StringBuilder text_edu = new StringBuilder();
+        for (int i = 0; i < education.size(); i++) {
+            text_edu.append(TextUtils.isEmpty(education.get(i).getMonthYear()) ? "" : AppUtils.getYearFromDate(education.get(i).getMonthYear()) + ", " );
+            text_edu.append(education.get(i).getName()+ "\n");
+        }
+
+        StringBuilder text_exp = new StringBuilder();
+        for (int i = 0; i < experience.size(); i++) {
+            text_exp.append(TextUtils.isEmpty(experience.get(i).getMonthYear()) ? "" : AppUtils.getYearFromDate(experience.get(i).getMonthYear()) + ", " );
+            text_exp.append(experience.get(i).getName()+ "\n");
+        }
+        tv_experience.setText(text_exp);
+        tv_education.setText(text_edu);
     }
 
 }

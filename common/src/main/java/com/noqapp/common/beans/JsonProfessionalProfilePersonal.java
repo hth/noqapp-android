@@ -102,4 +102,16 @@ public class JsonProfessionalProfilePersonal {
         this.dataDictionary = dataDictionary;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonProfessionalProfilePersonal{" +
+                "webProfileId='" + webProfileId + '\'' +
+                ", practiceStart=" + practiceStart +
+                ", education=" + education +
+                ", licenses=" + licenses +
+                ", awards=" + awards +
+                ", dataDictionary='" + dataDictionary + '\'' +
+                '}';
+    }
 }

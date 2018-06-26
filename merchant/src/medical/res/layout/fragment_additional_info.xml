@@ -33,32 +33,35 @@
                     android:id="@+id/email_login_form"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible">
+                    android:orientation="vertical">
 
 
                     <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="education" />
+                        android:textSize="16sp"
+                        android:text="@string/education" />
 
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                         android:id="@+id/tv_education"
                         android:layout_width="match_parent"
+                        android:textSize="16sp"
                         android:layout_height="wrap_content" />
 
 
                     <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="experience" />
+                        android:textSize="16sp"
+                        android:text="@string/experience" />
 
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                         android:id="@+id/tv_experience"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="16sp"
                         android:inputType="text|textMultiLine" />
                 </LinearLayout>
 

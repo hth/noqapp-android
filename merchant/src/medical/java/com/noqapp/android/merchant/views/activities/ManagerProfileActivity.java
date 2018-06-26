@@ -128,7 +128,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
             LaunchActivity.getLaunchActivity().setUserName();
             tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
-            userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfile());
+            userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
             userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
             Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
             loadProfilePic(jsonMerchant.getJsonProfile().getProfileImage());

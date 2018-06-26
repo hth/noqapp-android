@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.Locale;
 
 public class CommonHelper {
 
+    private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
     private static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
     private static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
@@ -69,5 +71,16 @@ public class CommonHelper {
         autoCompleteTextView.setFocusable(true);
         autoCompleteTextView.setFocusableInTouchMode(true);
         autoCompleteTextView.dismissDropDown();
+    }
+
+    public static String getYearFromDate(String dateValue) {
+        try {
+            DateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+            Date date = sdf.parse(dateValue);
+            return MMM_YYYY.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

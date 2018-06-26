@@ -75,10 +75,11 @@ public class JsonMerchant implements Serializable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("jsonProfile", jsonProfile)
-                .append("topics", topics)
-                .append("error", error)
-                .toString();
+        return "JsonMerchant{" +
+                "jsonProfile=" + jsonProfile +
+                ", jsonProfessionalProfile=" + jsonProfessionalProfile +
+                ", topics=" + topics +
+                ", error=" + error +
+                '}';
     }
 }
