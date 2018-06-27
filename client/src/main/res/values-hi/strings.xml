@@ -169,4 +169,5 @@
     <string name="personal_info">Personal Informations</string>
     <string name="location_change">Location update</string>
     <string name="location_msg">It seems your location has been changed.Do you want to update it?</string>
+    <string name="token">TOKEN</string>
 </resources>
