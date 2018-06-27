@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonProfessionalProfilePersonal {
+public class JsonProfessionalProfilePersonal implements Serializable{
 
     @JsonProperty("wp")
     private String webProfileId;
@@ -101,5 +102,17 @@ public class JsonProfessionalProfilePersonal {
     public JsonProfessionalProfilePersonal setDataDictionary(String dataDictionary) {
         this.dataDictionary = dataDictionary;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonProfessionalProfilePersonal{" +
+                "webProfileId='" + webProfileId + '\'' +
+                ", practiceStart=" + practiceStart +
+                ", education=" + education +
+                ", licenses=" + licenses +
+                ", awards=" + awards +
+                ", dataDictionary='" + dataDictionary + '\'' +
+                '}';
     }
 }

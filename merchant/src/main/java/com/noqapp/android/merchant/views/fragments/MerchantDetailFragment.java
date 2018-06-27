@@ -11,7 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -87,7 +86,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private JsonTopic jsonTopic = null;
     private RelativeLayout rl_left;
 
-    private TextView tv_title, tv_serving_customer, tv_total_value, tv_current_value, tv_counter_name, tv_timing, tv_start, tv_next;
+    private TextView tv_title, tv_total_value, tv_current_value, tv_counter_name, tv_timing, tv_start, tv_next;
     private Chronometer chronometer;
     private int currrentpos = 0;
     private static AdapterCallback mAdapterCallback;
@@ -122,33 +121,32 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         jsonTopic = topicsList.get(currrentpos);
 
 
-        progressDialog = (ProgressBar) itemView.findViewById(R.id.progress_bar);
-        rl_left = (RelativeLayout) itemView.findViewById(R.id.rl_left);
-        tv_current_value = (TextView) itemView.findViewById(R.id.tv_current_value);
-        tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
-        tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-        tv_serving_customer = (TextView) itemView.findViewById(R.id.tv_serving_customer);
-        tv_timing = (TextView) itemView.findViewById(R.id.tv_timing);
-        chronometer = (Chronometer) itemView.findViewById(R.id.chronometer);
+        progressDialog = itemView.findViewById(R.id.progress_bar);
+        rl_left = itemView.findViewById(R.id.rl_left);
+        tv_current_value = itemView.findViewById(R.id.tv_current_value);
+        tv_total_value = itemView.findViewById(R.id.tv_total_value);
+        tv_title = itemView.findViewById(R.id.tv_title);
+        tv_timing = itemView.findViewById(R.id.tv_timing);
+        chronometer = itemView.findViewById(R.id.chronometer);
 
-        rv_queue_people = (RecyclerView) itemView.findViewById(R.id.rv_queue_people);
-        tv_counter_name = (TextView) itemView.findViewById(R.id.tv_counter_name);
+        rv_queue_people = itemView.findViewById(R.id.rv_queue_people);
+        tv_counter_name = itemView.findViewById(R.id.tv_counter_name);
         rv_queue_people.setHasFixedSize(true);
         horizontalLayoutManagaer
                 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         rv_queue_people.setLayoutManager(horizontalLayoutManagaer);
         rv_queue_people.setItemAnimator(new DefaultItemAnimator());
-        btn_skip = (Button) itemView.findViewById(R.id.btn_skip);
-        btn_next = (Button) itemView.findViewById(R.id.btn_next);
-        btn_start = (Button) itemView.findViewById(R.id.btn_start);
-        TextView tv_deviceId = (TextView) itemView.findViewById(R.id.tv_deviceId);
+        btn_skip = itemView.findViewById(R.id.btn_skip);
+        btn_next = itemView.findViewById(R.id.btn_next);
+        btn_start = itemView.findViewById(R.id.btn_start);
+        TextView tv_deviceId =itemView.findViewById(R.id.tv_deviceId);
         tv_deviceId.setText(UserUtils.getDeviceId());
         tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
 
-        tv_next = (TextView) itemView.findViewById(R.id.tv_next);
-        tv_start = (TextView) itemView.findViewById(R.id.tv_start);
-        iv_edit = (ImageView) itemView.findViewById(R.id.iv_edit);
-        ImageView iv_settings = (ImageView) itemView.findViewById(R.id.iv_settings);
+        tv_next = itemView.findViewById(R.id.tv_next);
+        tv_start = itemView.findViewById(R.id.tv_start);
+        iv_edit = itemView.findViewById(R.id.iv_edit);
+        ImageView iv_settings = itemView.findViewById(R.id.iv_settings);
         iv_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,7 +163,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                 }
             }
         });
-        ImageView iv_generate_token = (ImageView) itemView.findViewById(R.id.iv_generate_token);
+        ImageView iv_generate_token = itemView.findViewById(R.id.iv_generate_token);
         iv_generate_token.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -309,6 +307,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                     tvcount.setText(String.valueOf(token.getToken()));
                     tvcount.setVisibility(View.VISIBLE);
                     btn_create_token.setClickable(true);
+                    updateUI();
                     break;
                 default:
                     Log.e(MerchantDetailFragment.class.getSimpleName(), "Reached un-reachable condition");
@@ -595,14 +594,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         /* Add to show only remaining people in queue */
         tv_total_value.setText(String.valueOf(jsonTopic.getToken() - jsonTopic.getServingNumber()));
         tv_title.setText(jsonTopic.getDisplayName());
-        tv_serving_customer.setText(Html.fromHtml("Serving: " + (StringUtils.isNotBlank(jsonTopic.getCustomerName()) ? "<b>" + jsonTopic.getCustomerName() + "</b> " : context.getString(R.string.name_unavailable))));
 
-        // check parameter to show client is new or has previously visited
-        if (jsonTopic.hasClientVisitedThisStore()) {
-            tv_serving_customer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.new_client, 0, 0, 0);
-        } else {
-            tv_serving_customer.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }
         btn_start.setText(context.getString(R.string.start));
 
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN

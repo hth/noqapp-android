@@ -29,11 +29,15 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
+import com.noqapp.android.merchant.model.M_MerchantProfileModel;
 import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
+import com.noqapp.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.common.beans.JsonResponse;
 import com.noqapp.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.common.beans.medical.JsonMedicalPhysical;
@@ -48,7 +52,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MedicalHistoryDetailActivity extends AppCompatActivity implements MedicalRecordPresenter, View.OnClickListener {
+public class MedicalHistoryDetailActivity extends AppCompatActivity implements MedicalRecordPresenter, View.OnClickListener,IntellisensePresenter {
     private final String packageName = "com.google.android.apps.handwriting.ime";
     private ImageView actionbarBack;
     private HashMap<String, ArrayList<String>> mHashmapTemp = null;
@@ -311,6 +315,10 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
        // updateSuggetions(actv_medicine_name, MEDICINES); update this when add button click
         LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
 
+        M_MerchantProfileModel.intellisensePresenter = this;
+        M_MerchantProfileModel.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+                new JsonProfessionalProfilePersonal().setDataDictionary(LaunchActivity.getLaunchActivity().getSuggestions()));
+
     }
 
     private boolean validate() {
@@ -347,6 +355,16 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     @Override
     public void medicalRecordError() {
         Toast.makeText(this, "Failed to update", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void intellisenseResponse(JsonResponse jsonResponse) {
+        Log.v("intellesence upload", "" + jsonResponse.getResponse());
+    }
+
+    @Override
+    public void intellisenseError() {
+        Log.v("intellesence upload: ", "error" );
     }
 
     @Override

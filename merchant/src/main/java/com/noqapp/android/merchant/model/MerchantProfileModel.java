@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class MerchantProfileModel {
     private static final String TAG = MerchantProfileModel.class.getSimpleName();
 
-    private static final MerchantProfileService merchantProfileService;
+    protected static final MerchantProfileService merchantProfileService;
     public static MerchantPresenter merchantPresenter;
     public static ProfilePresenter profilePresenter;
     public static ImageUploadPresenter imageUploadPresenter;

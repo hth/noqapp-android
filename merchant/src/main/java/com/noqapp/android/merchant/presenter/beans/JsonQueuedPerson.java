@@ -55,6 +55,9 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty("bc")
     private String businessCustomerId;
 
+    @JsonProperty ("vs")
+    private boolean clientVisitedThisStore;
+
     public int getToken() {
         return token;
     }
@@ -124,6 +127,15 @@ public class JsonQueuedPerson implements Serializable {
 
     public JsonQueuedPerson setBusinessCustomerId(String businessCustomerId) {
         this.businessCustomerId = businessCustomerId;
+        return this;
+    }
+
+    public boolean isClientVisitedThisStore() {
+        return clientVisitedThisStore;
+    }
+
+    public JsonQueuedPerson setClientVisitedThisStore(boolean clientVisitedThisStore) {
+        this.clientVisitedThisStore = clientVisitedThisStore;
         return this;
     }
 }

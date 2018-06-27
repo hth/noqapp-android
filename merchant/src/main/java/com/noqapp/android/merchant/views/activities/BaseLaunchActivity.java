@@ -12,16 +12,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,9 +38,12 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.network.VersionCheckAsync;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
+import com.noqapp.android.merchant.presenter.beans.NavigationBean;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.views.adapters.NavigationDrawerAdapter;
+import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
@@ -47,6 +54,7 @@ import com.noqapp.common.utils.NetworkUtil;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,8 +104,15 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public static Locale locale;
     public static SharedPreferences languagepref;
     public static String language;
+    protected DrawerLayout mDrawerLayout;
+    protected ListView mDrawerList;
+    protected ActionBarDrawerToggle mDrawerToggle;
+    protected NavigationDrawerAdapter drawerAdapter;
+    protected ArrayList<NavigationBean> drawerItem = new ArrayList<>();
 
-    public abstract void enableDisableDrawer(boolean isEnable);
+    public void enableDisableDrawer(boolean isEnable) {
+        mDrawerLayout.setDrawerLockMode(isEnable ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!new AppUtils().isTablet(getApplicationContext())) {
@@ -137,6 +152,108 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     }
 
+    protected void initDrawer(){
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerList = findViewById(R.id.drawer_list);
+        drawerItem.clear();
+        if (isLoggedIn()) {
+            updateMenuList(getUserLevel()== UserLevelEnum.S_MANAGER);
+        }
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int selectedPosition = drawerAdapter.getData().get(position).getIcon();
+                switch (selectedPosition) {
+                    case R.drawable.pie_chart:
+                        if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
+                            Intent in1 = new Intent(launchActivity, ChartSampleActivity.class);
+                            in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+                            startActivity(in1);
+                        } else {
+                            Toast.makeText(launchActivity, "No queue available", Toast.LENGTH_LONG).show();
+                        }
+                        break;
+                    case R.drawable.profile_red:
+                        Intent in3 = new Intent(launchActivity, ManagerProfileActivity.class);
+                        startActivity(in3);
+                        break;
+                    case R.mipmap.logout:
+                        showLogoutDialog();
+                        break;
+                    case R.drawable.ic_menu_share:
+                        AppUtils.shareTheApp(launchActivity);
+                        break;
+                    case R.drawable.ic_star:
+                        AppUtils.openPlayStore(launchActivity);
+                        break;
+                    case R.drawable.language:
+                        showChangeLangDialog();
+                        break;
+                    default:
+                }
+                mDrawerLayout.closeDrawer(mDrawerList);
+            }
+        });
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            public void onDrawerClosed(View view) {
+            }
+
+            public void onDrawerOpened(View drawerView) {
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
+        if (isLoggedIn()) {
+            if (isAccessGrant()) {
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                if (!new AppUtils().isTablet(getApplicationContext())) {
+                    merchantListFragment = new MerchantListFragment();
+                    replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
+                    // setUserName();
+                } else {
+                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
+                    LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
+                    list_fragment.setLayoutParams(lp1);
+                    list_detail_fragment.setLayoutParams(lp2);
+                    merchantListFragment = new MerchantListFragment();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_layout, merchantListFragment);
+                    //  fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            } else {
+                if (new AppUtils().isTablet(getApplicationContext())) {
+                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
+                    LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
+                    list_fragment.setLayoutParams(lp1);
+                    list_detail_fragment.setLayoutParams(lp0);
+                }
+                AccessDeniedFragment adf = new AccessDeniedFragment();
+                replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
+            }
+            setUserName();
+        } else {
+            if (new AppUtils().isTablet(getApplicationContext())) {
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
+                LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
+                list_fragment.setLayoutParams(lp1);
+                list_detail_fragment.setLayoutParams(lp0);
+            }
+
+            replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
+
+    }
     public boolean isOnline() {
         return networkUtil.isOnline();
     }
@@ -515,5 +632,18 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         Intent intent = getIntent();
         startActivity(intent);
         finish();
+    }
+
+    public void updateMenuList(boolean showChart) {
+        drawerItem.clear();
+        drawerItem.add(new NavigationBean(R.drawable.profile_red, "Profile"));
+        drawerItem.add(new NavigationBean(R.mipmap.logout, "Logout"));
+        drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, "Share the app"));
+        drawerItem.add(new NavigationBean(R.drawable.ic_star, "Rate the app"));
+        drawerItem.add(new NavigationBean(R.drawable.language, "Change language"));
+        if (showChart)
+            drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Charts"));
+        drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
+        mDrawerList.setAdapter(drawerAdapter);
     }
 }

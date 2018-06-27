@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.answers.Answers;
@@ -23,9 +21,6 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
-import com.noqapp.android.merchant.views.fragments.LoginFragment;
-import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.common.utils.NetworkUtil;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -37,11 +32,6 @@ public class LaunchActivity extends BaseLaunchActivity {
     private FrameLayout fl_notification;
     private TextView tv_badge;
 
-
-    @Override
-    public void enableDisableDrawer(boolean isEnable) {
-        // do nothing here
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,45 +66,9 @@ public class LaunchActivity extends BaseLaunchActivity {
             list_detail_fragment = (FrameLayout) findViewById(R.id.list_detail_fragment);
         }
         initProgress();
+        initDrawer();
 
-        if (isLoggedIn()) {
-            if (isAccessGrant()) {
-                if (!new AppUtils().isTablet(getApplicationContext())) {
-                    merchantListFragment = new MerchantListFragment();
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
-                    // setUserName();
-                } else {
-                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
-                    LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
-                    list_fragment.setLayoutParams(lp1);
-                    list_detail_fragment.setLayoutParams(lp2);
-                    merchantListFragment = new MerchantListFragment();
-                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_layout, merchantListFragment);
-                    //  fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                }
-            } else {
-                if (new AppUtils().isTablet(getApplicationContext())) {
-                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
-                    LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
-                    list_fragment.setLayoutParams(lp1);
-                    list_detail_fragment.setLayoutParams(lp0);
-                }
-                AccessDeniedFragment adf = new AccessDeniedFragment();
-                replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
-            }
-            setUserName();
-        } else {
-            if (new AppUtils().isTablet(getApplicationContext())) {
-                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
-                LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
-                list_fragment.setLayoutParams(lp1);
-                list_detail_fragment.setLayoutParams(lp0);
-            }
 
-            replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
-        }
 
 
         /* Call to check if the current version of app blacklist or old. */
@@ -144,4 +98,5 @@ public class LaunchActivity extends BaseLaunchActivity {
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
     }
+
 }

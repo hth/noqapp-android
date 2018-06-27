@@ -2,13 +2,10 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,41 +16,50 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerModel;
 import com.noqapp.android.merchant.model.ManageQueueModel;
-import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.MedicalHistoryDetailActivity;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
+import com.noqapp.common.model.types.UserLevelEnum;
 import com.noqapp.common.utils.PhoneFormatterUtil;
 
 import java.util.List;
 
-public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyViewHolder> implements QueuePersonListPresenter {
+public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeopleInQAdapter.MyViewHolder> implements QueuePersonListPresenter {
 
-    private static final String TAG = PeopleInQAdapter.class.getSimpleName();
+    private static final String TAG = BasePeopleInQAdapter.class.getSimpleName();
     private final Context context;
     private List<JsonQueuedPerson> dataSet;
     private int glowPostion = -1;
-    private String qCodeQR = "";
+    protected String qCodeQR = "";
+
+    // for medical Only
+    abstract void changePatient(Context context, JsonQueuedPerson jsonQueuedPerson);
+    // for medical Only
+    abstract void editBusinessCustomerId(Context context, JsonQueuedPerson jsonQueuedPerson);
+    // for medical Only
+    abstract void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson);
 
     @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
-        dataSet = jsonQueuePersonList.getQueuedPeople();
+        // Only the updated record will be returned from WebService
+        if(jsonQueuePersonList.getQueuedPeople().size()>0) {
+            JsonQueuedPerson jsonQueuedPerson = jsonQueuePersonList.getQueuedPeople().get(0);
+            for (int i = 0; i < dataSet.size(); i++) {
+                if (dataSet.get(i).getToken() == jsonQueuedPerson.getToken()) {
+                    dataSet.set(i, jsonQueuedPerson);
+                    break;
+                }
+            }
+        }
         notifyDataSetChanged();
         LaunchActivity.getLaunchActivity().dismissProgress();
 
@@ -101,7 +107,7 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         }
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR) {
+    public BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -110,7 +116,7 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         BusinessCustomerModel.queuePersonListPresenter = this;
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion) {
+    public BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -153,6 +159,12 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
                 peopleInQAdapterClick.PeopleInQClick(position);
             }
         });
+        // check parameter to show client is new or has previously visited
+        if (jsonQueuedPerson.isClientVisitedThisStore()) {
+            recordHolder.tv_customer_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.new_client, 0);
+        } else {
+            recordHolder.tv_customer_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
         switch (jsonQueuedPerson.getQueueUserState()) {
             case Q:
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId())) {
@@ -193,10 +205,7 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MedicalHistoryDetailActivity.class);
-                intent.putExtra("qCodeQR", qCodeQR);
-                intent.putExtra("data", jsonQueuedPerson);
-                context.startActivity(intent);
+                createCaseHistory(context, jsonQueuedPerson);
             }
         });
 
@@ -212,6 +221,11 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
                 editBusinessCustomerId(context, jsonQueuedPerson);
             }
         });
+
+        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER)
+            recordHolder.tv_create_case.setVisibility(View.VISIBLE);
+        else
+            recordHolder.tv_create_case.setVisibility(View.GONE);
 
         if (glowPostion > 0 && glowPostion - 1 == position) {
             setAnim(recordHolder.cardview);
@@ -268,99 +282,5 @@ public class PeopleInQAdapter extends RecyclerView.Adapter<PeopleInQAdapter.MyVi
         colorAnimation.start();
     }
 
-    private void changePatient(final Context mContext, final JsonQueuedPerson jsonQueuedPerson) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_change_patient, null, false);
-        ImageView actionbarBack = (ImageView) customDialogView.findViewById(R.id.actionbarBack);
-        final Spinner sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        DependentAdapter adapter = new DependentAdapter(mContext, jsonQueuedPerson.getDependents());
-        sp_patient_list.setAdapter(adapter);
-        Button btn_update = (Button) customDialogView.findViewById(R.id.btn_update);
-        btn_update.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (!jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId().equalsIgnoreCase(jsonQueuedPerson.getQueueUserId())) {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
-                        ChangeUserInQueue changeUserInQueue = new ChangeUserInQueue();
-                        changeUserInQueue.setCodeQR(qCodeQR);
-                        changeUserInQueue.setTokenNumber(jsonQueuedPerson.getToken());
-                        changeUserInQueue.setChangeToQueueUserId(jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
-                        changeUserInQueue.setExistingQueueUserId(jsonQueuedPerson.getQueueUserId());
-
-                        ManageQueueModel.changeUserInQueue(
-                                LaunchActivity.getLaunchActivity().getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(), changeUserInQueue);
-                        mAlertDialog.dismiss();
-                    } else {
-                        mAlertDialog.dismiss();
-                        ShowAlertInformation.showNetworkDialog(mContext);
-                    }
-                } else {
-                    Toast.makeText(mContext, "please select the patient name other than the current name", Toast.LENGTH_LONG).show();
-                }
-            }
-
-        });
-
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        mAlertDialog.show();
-    }
-
-
-    private void editBusinessCustomerId(final Context mContext, final JsonQueuedPerson jsonQueuedPerson) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_add_patient_id, null, false);
-        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
-        final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        final Button btn_update = customDialogView.findViewById(R.id.btn_update);
-        btn_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edt_id.setError(null);
-                new AppUtils().hideKeyBoard((Activity) mContext);
-
-                if (TextUtils.isEmpty(edt_id.getText().toString())) {
-                    edt_id.setError(mContext.getString(R.string.error_customer_id));
-                } else {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
-                    String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
-                    BusinessCustomerModel.addId(
-                            LaunchActivity.getLaunchActivity().getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            new JsonBusinessCustomerLookup().setCodeQR(qCodeQR).setCustomerPhone(phoneNoWithCode).setBusinessCustomerId(edt_id.getText().toString()));
-
-                    btn_update.setClickable(false);
-                    mAlertDialog.dismiss();
-                }
-            }
-        });
-
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        mAlertDialog.show();
-    }
 
 }

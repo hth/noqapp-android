@@ -6,9 +6,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.beans.ErrorEncounteredJson;
+import com.noqapp.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.common.beans.JsonProfile;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +29,9 @@ public class JsonMerchant implements Serializable {
     @JsonProperty("p")
     private JsonProfile jsonProfile;
 
+    @JsonProperty ("pp")
+    private JsonProfessionalProfilePersonal jsonProfessionalProfile;
+
     @JsonProperty("ts")
     private List<JsonTopic> topics = new ArrayList<>();
 
@@ -42,6 +44,15 @@ public class JsonMerchant implements Serializable {
 
     public void setJsonProfile(JsonProfile jsonProfile) {
         this.jsonProfile = jsonProfile;
+    }
+
+    public JsonProfessionalProfilePersonal getJsonProfessionalProfile() {
+        return jsonProfessionalProfile;
+    }
+
+    public JsonMerchant setJsonProfessionalProfile(JsonProfessionalProfilePersonal jsonProfessionalProfile) {
+        this.jsonProfessionalProfile = jsonProfessionalProfile;
+        return this;
     }
 
     public List<JsonTopic> getTopics() {
@@ -62,10 +73,11 @@ public class JsonMerchant implements Serializable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("jsonProfile", jsonProfile)
-                .append("topics", topics)
-                .append("error", error)
-                .toString();
+        return "JsonMerchant{" +
+                "jsonProfile=" + jsonProfile +
+                ", jsonProfessionalProfile=" + jsonProfessionalProfile +
+                ", topics=" + topics +
+                ", error=" + error +
+                '}';
     }
 }

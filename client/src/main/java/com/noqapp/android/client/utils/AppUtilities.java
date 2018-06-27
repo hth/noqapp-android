@@ -61,7 +61,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class AppUtilities extends CommonHelper {
-    private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+
 
     private static final String TAG = AppUtilities.class.getSimpleName();
     private static Map<String, Locale> localeMap;
@@ -385,16 +385,6 @@ public class AppUtilities extends CommonHelper {
         return resultList;
     }
 
-    public static String getYearFromDate(String dateValue) {
-        try {
-            DateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
-            Date date = sdf.parse(dateValue);
-            return MMM_YYYY.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
 
     public static String getNameFromQueueUserID(String queueUserID, List<JsonProfile> list) {
         String name = "";

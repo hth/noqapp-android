@@ -22,85 +22,146 @@
             android:orientation="vertical"
             android:weightSum="1">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight=".2"
                 android:background="@color/pager_top_bg"
-                android:gravity="center"
-                android:padding="5dp">
-
-
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                    android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="10dp"
-                    android:text="sfsdf"
-                    android:textColor="@color/color_action_bar"
-                    android:textSize="24sp" />
-
+                android:orientation="horizontal"
+                android:weightSum="1">
 
                 <RelativeLayout
-                    android:id="@+id/top"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_title"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
-                    android:gravity="center">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:gravity="center"
+                    android:padding="5dp">
+
 
                     <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                        android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="10dp"
+                        android:text="sfsdf"
+                        android:textColor="@color/color_action_bar"
+                        android:textSize="24sp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_deviceId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title"
+                        android:layout_centerHorizontal="true" />
+
+                    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+                        android:id="@+id/tv_timing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_deviceId"
+                        android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="10dp"
-                        android:layout_toLeftOf="@+id/iv_settings"
                         android:gravity="center"
                         android:hint="@string/setting"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:textColor="@color/colorAddress"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
-                    <ImageView
-                        android:id="@+id/iv_settings"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_margin="5dp"
-                        android:background="@mipmap/setting"
-                        android:gravity="center_vertical"
-                        android:scaleType="centerInside" />
                 </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/tv_deviceId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/top"
-                    android:layout_centerHorizontal="true" />
-
-                <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
-                    android:id="@+id/tv_timing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_deviceId"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginBottom="10dp"
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_separator" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
                     android:gravity="center"
-                    android:hint="@string/setting"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:textColor="@color/colorAddress"
-                    android:textSize="14sp" />
+                    android:orientation="vertical">
 
-            </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/top"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:gravity="center">
 
+                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="10dp"
+                            android:layout_toLeftOf="@+id/iv_settings"
+                            android:gravity="center"
+                            android:hint="@string/setting"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="16sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_settings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="5dp"
+                            android:background="@mipmap/setting"
+                            android:gravity="center_vertical"
+                            android:scaleType="centerInside" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:weightSum="1">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center">
+
+                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                                android:id="@+id/tv_counter_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_toLeftOf="@+id/iv_edit"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:gravity="center"
+                                android:hint="@string/counter_name"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:textColor="@color/colorAddress"
+                                android:textSize="18sp" />
+
+                            <ImageView
+                                android:id="@+id/iv_edit"
+                                android:layout_width="@dimen/edit_icon_size"
+                                android:layout_height="@dimen/edit_icon_size"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="5dp"
+                                android:background="@mipmap/edit"
+                                android:gravity="center_vertical"
+                                android:padding="10dp" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -120,6 +181,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
+                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
                         <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
@@ -132,7 +194,6 @@
                         <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                             android:id="@+id/tv_current_value"
                             style="@style/style_join_queue_tv"
-                            android:layout_below="@+id/tv_current"
                             android:textColor="@color/colorMobile"
                             android:textSize="36sp" />
                     </LinearLayout>
@@ -144,7 +205,7 @@
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:background="@color/color_separator" />
-                />
+
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -156,6 +217,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
+                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
                         <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
@@ -168,7 +230,6 @@
                         <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
                             android:id="@+id/tv_total_value"
                             style="@style/style_join_queue_tv"
-                            android:layout_below="@+id/tv_total"
                             android:textColor="@color/color_total_val"
                             android:textSize="36sp" />
                     </LinearLayout>
@@ -222,67 +283,10 @@
                 android:orientation="vertical"
                 android:weightSum="1">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".30"
-                    android:gravity="center"
-                    android:weightSum="1">
-
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                        android:id="@+id/tv_serving_customer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:text=""
-                        android:textColor="@color/colorAddress"
-                        android:textSize="18sp" />
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_serving_customer"
-                        android:layout_marginLeft="50dp"
-                        android:layout_marginRight="50dp"
-                        android:gravity="center">
-
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
-                            android:id="@+id/tv_counter_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_toLeftOf="@+id/iv_edit"
-                            android:background="@drawable/square_white_bg_drawable"
-                            android:gravity="center"
-                            android:hint="@string/counter_name"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:id="@+id/iv_edit"
-                            android:layout_width="@dimen/edit_icon_size"
-                            android:layout_height="@dimen/edit_icon_size"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="5dp"
-                            android:background="@mipmap/edit"
-                            android:gravity="center_vertical"
-                            android:padding="10dp" />
-                    </RelativeLayout>
-                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".70"
+                    android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
                     android:weightSum="1">
