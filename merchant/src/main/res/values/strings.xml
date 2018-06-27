@@ -146,4 +146,7 @@
     <string name="update_details">Update Details</string>
     <string name="patient_details">Patient Details</string>
     <string name="customer_id">Customer ID</string>
+
+    <string name="education">Education</string>
+    <string name="experience">Experience</string>
 </resources>

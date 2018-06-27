@@ -9,8 +9,6 @@ import com.noqapp.common.beans.ErrorEncounteredJson;
 import com.noqapp.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.common.beans.JsonProfile;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

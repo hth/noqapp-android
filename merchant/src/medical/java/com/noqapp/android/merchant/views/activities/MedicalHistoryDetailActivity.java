@@ -30,8 +30,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
+import com.noqapp.android.merchant.model.M_MerchantProfileModel;
 import com.noqapp.android.merchant.model.MedicalHistoryModel;
-import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -44,7 +44,6 @@ import com.noqapp.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.common.model.types.MedicationTypeEnum;
 import com.noqapp.common.model.types.MedicationWithFoodEnum;
-import com.noqapp.common.presenter.ImageUploadPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -316,8 +315,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
        // updateSuggetions(actv_medicine_name, MEDICINES); update this when add button click
         LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
 
-        MerchantProfileModel.intellisensePresenter = this;
-        MerchantProfileModel.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+        M_MerchantProfileModel.intellisensePresenter = this;
+        M_MerchantProfileModel.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
                 new JsonProfessionalProfilePersonal().setDataDictionary(LaunchActivity.getLaunchActivity().getSuggestions()));
 
     }
