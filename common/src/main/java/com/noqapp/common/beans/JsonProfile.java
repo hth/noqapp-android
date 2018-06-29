@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.common.model.types.BusinessTypeEnum;
 import com.noqapp.common.model.types.GenderEnum;
 import com.noqapp.common.model.types.UserLevelEnum;
 
@@ -70,6 +71,9 @@ public final class JsonProfile implements Serializable {
 
     @JsonProperty("ul")
     private UserLevelEnum userLevel;
+
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
 
     @JsonProperty ("mp")
     private JsonUserMedicalProfile jsonUserMedicalProfile;
@@ -196,6 +200,14 @@ public final class JsonProfile implements Serializable {
     public JsonProfile setUserLevel(UserLevelEnum userLevel) {
         this.userLevel = userLevel;
         return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
     }
 
     public JsonUserMedicalProfile getJsonUserMedicalProfile() {
