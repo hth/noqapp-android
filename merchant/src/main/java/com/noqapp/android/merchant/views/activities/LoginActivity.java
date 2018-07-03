@@ -42,6 +42,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 import com.noqapp.common.beans.ErrorEncounteredJson;
 import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.common.utils.PhoneFormatterUtil;
 
 import java.util.concurrent.TimeUnit;
@@ -303,7 +304,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         } else {
             // Rejected from  server
             ErrorEncounteredJson eej = profile.getError();
-            if (null != eej && eej.getSystemErrorCode().equals("412")) {
+            if (null != eej && eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
                 Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
                 in.putExtra("mobile_no", verifiedMobileNo);
                 in.putExtra("country_code", countryCode);

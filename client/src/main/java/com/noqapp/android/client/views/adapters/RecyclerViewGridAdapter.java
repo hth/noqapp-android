@@ -11,9 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -79,7 +81,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
         Vholder.tv_title.setText(jsonCategory.getCategoryName());
         if(!TextUtils.isEmpty(jsonCategory.getDisplayImage()))
         Picasso.with(context)
-                .load(jsonCategory.getDisplayImage())
+                .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,jsonCategory.getDisplayImage()))
                 .into(Vholder.iv_main);
 
 

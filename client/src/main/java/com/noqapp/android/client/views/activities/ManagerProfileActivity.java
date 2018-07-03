@@ -26,6 +26,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfessionalProfileModel;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
@@ -80,7 +81,7 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
         try {
             if (!TextUtils.isEmpty(managerImageUrl)) {
                 Picasso.with(this)
-                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + managerImageUrl)
+                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET , managerImageUrl))
                         .into(iv_profile);
             }
         } catch (Exception e) {

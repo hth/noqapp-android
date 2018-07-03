@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.views.activities.SliderActivity;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +45,7 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
     public void onBindViewHolder(ThumbnailGalleryAdapter.MyViewHolder holder, int position) {
 
         Picasso.with(mContext)
-                .load(imageUrls.get(position))
+                .load(AppUtilities.getImageUrls( BuildConfig.SERVICE_BUCKET,imageUrls.get(position)))
                 .into(holder.iv_photo);
         if(position<3 || imageUrls.size()==4){
             holder.tv_title.setVisibility(View.GONE);

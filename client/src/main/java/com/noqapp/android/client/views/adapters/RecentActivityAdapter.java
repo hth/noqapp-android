@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -98,7 +99,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
 
         if(!TextUtils.isEmpty(jsonTokenAndQueue.getDisplayImage()))
             Picasso.with(context)
-                    .load(jsonTokenAndQueue.getDisplayImage())
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,jsonTokenAndQueue.getDisplayImage()))
                     .into(holder.iv_main);
         else{
             Picasso.with(context).load(R.drawable.store_default).into(holder.iv_main);

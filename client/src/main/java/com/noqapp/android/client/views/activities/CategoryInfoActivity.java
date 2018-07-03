@@ -19,6 +19,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.common.cache.Cache;
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.types.AmenityEnum;
@@ -234,7 +235,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             sc_facility.addSegments(data);
 
             Picasso.with(this)
-                    .load(bizStoreElastic.getDisplayImage())
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,bizStoreElastic.getDisplayImage()))
                     .into(iv_category_banner);
             LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             rv_thumb_images.setHasFixedSize(true);
