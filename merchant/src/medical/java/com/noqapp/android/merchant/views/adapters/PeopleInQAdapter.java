@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerModel;
 import com.noqapp.android.merchant.model.ManageQueueModel;
+import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
@@ -40,55 +41,59 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     }
 
     @Override
-    public void changePatient(final Context mContext, final JsonQueuedPerson jsonQueuedPerson) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_change_patient, null, false);
-        ImageView actionbarBack = (ImageView) customDialogView.findViewById(R.id.actionbarBack);
-        final Spinner sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        DependentAdapter adapter = new DependentAdapter(mContext, jsonQueuedPerson.getDependents());
-        sp_patient_list.setAdapter(adapter);
-        Button btn_update = (Button) customDialogView.findViewById(R.id.btn_update);
-        btn_update.setOnClickListener(new View.OnClickListener() {
+    public void changePatient(final Context context, final JsonQueuedPerson jsonQueuedPerson) {
+        if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            builder.setTitle(null);
+            View customDialogView = inflater.inflate(R.layout.dialog_change_patient, null, false);
+            ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
+            final Spinner sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
+            builder.setView(customDialogView);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            DependentAdapter adapter = new DependentAdapter(context, jsonQueuedPerson.getDependents());
+            sp_patient_list.setAdapter(adapter);
+            Button btn_update = (Button) customDialogView.findViewById(R.id.btn_update);
+            btn_update.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                if (!jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId().equalsIgnoreCase(jsonQueuedPerson.getQueueUserId())) {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
-                        ChangeUserInQueue changeUserInQueue = new ChangeUserInQueue();
-                        changeUserInQueue.setCodeQR(qCodeQR);
-                        changeUserInQueue.setTokenNumber(jsonQueuedPerson.getToken());
-                        changeUserInQueue.setChangeToQueueUserId(jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
-                        changeUserInQueue.setExistingQueueUserId(jsonQueuedPerson.getQueueUserId());
+                @Override
+                public void onClick(View v) {
+                    if (!jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId().equalsIgnoreCase(jsonQueuedPerson.getQueueUserId())) {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            LaunchActivity.getLaunchActivity().progressDialog.show();
+                            ChangeUserInQueue changeUserInQueue = new ChangeUserInQueue();
+                            changeUserInQueue.setCodeQR(qCodeQR);
+                            changeUserInQueue.setTokenNumber(jsonQueuedPerson.getToken());
+                            changeUserInQueue.setChangeToQueueUserId(jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                            changeUserInQueue.setExistingQueueUserId(jsonQueuedPerson.getQueueUserId());
 
-                        ManageQueueModel.changeUserInQueue(
-                                LaunchActivity.getLaunchActivity().getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(), changeUserInQueue);
-                        mAlertDialog.dismiss();
+                            manageQueueModel.changeUserInQueue(
+                                    LaunchActivity.getLaunchActivity().getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(), changeUserInQueue);
+                            mAlertDialog.dismiss();
+                        } else {
+                            mAlertDialog.dismiss();
+                            ShowAlertInformation.showNetworkDialog(context);
+                        }
                     } else {
-                        mAlertDialog.dismiss();
-                        ShowAlertInformation.showNetworkDialog(mContext);
+                        Toast.makeText(context, "please select the patient name other than the current name", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    Toast.makeText(mContext, "please select the patient name other than the current name", Toast.LENGTH_LONG).show();
                 }
-            }
 
-        });
+            });
 
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        mAlertDialog.show();
+            actionbarBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAlertDialog.dismiss();
+                }
+            });
+            mAlertDialog.show();
+        } else {
+            Toast.makeText(context, "Currently you are not serving this person", Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -115,7 +120,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                 } else {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
                     String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
-                    BusinessCustomerModel.addId(
+                    businessCustomerModel.addId(
                             LaunchActivity.getLaunchActivity().getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
@@ -138,10 +143,14 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
     @Override
     void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson) {
-        Intent intent = new Intent(context, MedicalHistoryDetailActivity.class);
-        intent.putExtra("qCodeQR", qCodeQR);
-        intent.putExtra("data", jsonQueuedPerson);
-        context.startActivity(intent);
+        if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
+            Intent intent = new Intent(context, MedicalHistoryDetailActivity.class);
+            intent.putExtra("qCodeQR", qCodeQR);
+            intent.putExtra("data", jsonQueuedPerson);
+            context.startActivity(intent);
+        } else {
+            Toast.makeText(context, "Currently you are not serving this person", Toast.LENGTH_LONG).show();
+        }
     }
 
 

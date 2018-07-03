@@ -52,7 +52,7 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
     private Served served;
     private int lastSelectedPos = -1;
     private boolean queueStatus = false;
-
+    private ManageQueueModel manageQueueModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!new AppUtils().isTablet(getApplicationContext())) {
@@ -61,7 +61,7 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         super.onCreate(savedInstanceState);
-        ManageQueueModel.queuePersonListPresenter = this;
+        manageQueueModel = new ManageQueueModel(this);
         ManageQueueModel.manageQueuePresenter = this;
         context = this;
         setContentView(R.layout.activity_outofsequence);
@@ -92,7 +92,7 @@ public class OutOfSequenceActivity extends AppCompatActivity implements QueuePer
         tv_toolbar_title.setText(getString(R.string.screen_out_of_sequence));
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            ManageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            manageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(OutOfSequenceActivity.this);
         }

@@ -73,7 +73,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private ListView listview;
     private List<JsonMedicalMedicine> medicalRecordList = new ArrayList<>();
     private MedicalRecordAdapter adapter;
-
+    private MedicalHistoryModel medicalHistoryModel;
 
     private Spinner sp_medication;
     private Spinner sp_frequency;
@@ -88,7 +88,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         setContentView(R.layout.activity_medical_history_details);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
-        MedicalHistoryModel.medicalRecordPresenter = this;
+        medicalHistoryModel = new MedicalHistoryModel(this);
         listview = findViewById(R.id.listview);
         adapter = new MedicalRecordAdapter(this, medicalRecordList);
         listview.setAdapter(adapter);
@@ -404,7 +404,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                         jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
 
-                        MedicalHistoryModel.add(LaunchActivity.getLaunchActivity().getDeviceID(),
+                        medicalHistoryModel.add(LaunchActivity.getLaunchActivity().getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
                     } else {

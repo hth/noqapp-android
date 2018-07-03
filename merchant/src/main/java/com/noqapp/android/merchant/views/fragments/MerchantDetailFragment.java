@@ -98,6 +98,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private int lastSelectedPos = -1;
     private LinearLayoutManager horizontalLayoutManagaer;
     private EditText edt_mobile_or_id;
+    private ManageQueueModel manageQueueModel;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -116,7 +117,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
         itemView = inflater.inflate(R.layout.viewpager_item, container, false);
         context = getActivity();
-        ManageQueueModel.queuePersonListPresenter = this;
+        manageQueueModel = new ManageQueueModel(this);
         ManageQueueModel.manageQueuePresenter = this;
         jsonTopic = topicsList.get(currrentpos);
 
@@ -815,7 +816,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setVisibility(View.VISIBLE);
-            ManageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+            manageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

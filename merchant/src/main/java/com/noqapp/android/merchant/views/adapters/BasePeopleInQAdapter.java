@@ -40,7 +40,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     private List<JsonQueuedPerson> dataSet;
     private int glowPostion = -1;
     protected String qCodeQR = "";
-
+    protected ManageQueueModel manageQueueModel;
+    protected BusinessCustomerModel businessCustomerModel;
     // for medical Only
     abstract void changePatient(Context context, JsonQueuedPerson jsonQueuedPerson);
     // for medical Only
@@ -112,8 +113,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
         this.qCodeQR = qCodeQR;
-        ManageQueueModel.queuePersonListPresenter = this;
-        BusinessCustomerModel.queuePersonListPresenter = this;
+        manageQueueModel = new ManageQueueModel(this);
+        businessCustomerModel =  new BusinessCustomerModel(this);
     }
 
     public BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion) {
@@ -122,8 +123,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.peopleInQAdapterClick = peopleInQAdapterClick;
         this.qCodeQR = qCodeQR;
         this.glowPostion = glowPostion;
-        ManageQueueModel.queuePersonListPresenter = this;
-        BusinessCustomerModel.queuePersonListPresenter = this;
+        manageQueueModel = new ManageQueueModel(this);
+        businessCustomerModel =  new BusinessCustomerModel(this);
     }
 
     @Override
@@ -226,6 +227,11 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             recordHolder.tv_create_case.setVisibility(View.VISIBLE);
         else
             recordHolder.tv_create_case.setVisibility(View.GONE);
+
+        if (jsonQueuedPerson.getDependents().size()>0)
+            recordHolder.tv_change_name.setVisibility(View.VISIBLE);
+        else
+            recordHolder.tv_change_name.setVisibility(View.GONE);
 
         if (glowPostion > 0 && glowPostion - 1 == position) {
             setAnim(recordHolder.cardview);

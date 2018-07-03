@@ -55,6 +55,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private CheckBox cb_limit;
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
+    private QueueSettingModel queueSettingModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         super.onCreate(savedInstanceState);
-        QueueSettingModel.queueSettingPresenter = this;
+        queueSettingModel = new QueueSettingModel(this);
         setContentView(R.layout.activity_setting);
         if (isDialog) {
             DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -161,7 +162,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            QueueSettingModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            queueSettingModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
@@ -296,7 +297,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         } else {
             queueSetting.setDelayedInMinutes(0);
         }
-        QueueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
+        queueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
     }
 
     private class TextViewClick implements View.OnClickListener {
