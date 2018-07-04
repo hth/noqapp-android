@@ -22,9 +22,12 @@ import retrofit2.Response;
  */
 public class QueueSettingModel {
     private static final String TAG = QueueSettingModel.class.getSimpleName();
-
     private static final QueueSettingService queueSettingService;
-    public static QueueSettingPresenter queueSettingPresenter;
+    private QueueSettingPresenter queueSettingPresenter;
+
+    public QueueSettingModel(QueueSettingPresenter queueSettingPresenter){
+        this.queueSettingPresenter = queueSettingPresenter;
+    }
 
     static {
         queueSettingService = RetrofitClient.getClient().create(QueueSettingService.class);
@@ -37,7 +40,7 @@ public class QueueSettingModel {
      * @param mail
      * @param auth
      */
-    public static void getQueueState(String did, String mail, String auth, String codeQR) {
+    public void getQueueState(String did, String mail, String auth, String codeQR) {
         queueSettingService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
@@ -68,7 +71,7 @@ public class QueueSettingModel {
      * @param mail
      * @param auth
      */
-    public static void modify(String did, String mail, String auth, QueueSetting queueSetting) {
+    public void modify(String did, String mail, String auth, QueueSetting queueSetting) {
         queueSettingService.modify(did, Constants.DEVICE_TYPE, mail, auth, queueSetting).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
@@ -160,7 +161,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getRatingCount() == 0 ? "No" : bizStoreElastic.getRatingCount()) + " Reviews");
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
                 Picasso.with(context)
-                        .load(bizStoreElastic.getDisplayImage())
+                        .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,bizStoreElastic.getDisplayImage()))
                         .into(holder.iv_main);
             else {
                 Picasso.with(context).load(R.drawable.store_default).into(holder.iv_main);

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
@@ -102,7 +103,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         }
         if(!TextUtils.isEmpty(item.getDisplayImage()))
             Picasso.with(context)
-                    .load(item.getDisplayImage())
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,item.getDisplayImage()))
                     .into(holder.iv_main);
         else{
             Picasso.with(context).load(R.drawable.store_default).into(holder.iv_main);

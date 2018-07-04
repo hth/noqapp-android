@@ -180,7 +180,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         }
         if (!TextUtils.isEmpty(dataSet.get(listPosition).getDisplayImage())) {
 
-            Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + dataSet.get(listPosition).getDisplayImage()).
+            Picasso.with(context).load(AppUtilities.getImageUrls( BuildConfig.PROFILE_BUCKET , dataSet.get(listPosition).getDisplayImage())).
                     placeholder(context.getResources().getDrawable(R.drawable.profile_red)).
                     error(context.getResources().getDrawable(R.drawable.profile_red)).into(holder.iv_main);
         }else{

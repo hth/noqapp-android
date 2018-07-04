@@ -45,8 +45,6 @@ import com.noqapp.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.common.model.types.MedicationTypeEnum;
 import com.noqapp.common.model.types.MedicationWithFoodEnum;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +71,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private ListView listview;
     private List<JsonMedicalMedicine> medicalRecordList = new ArrayList<>();
     private MedicalRecordAdapter adapter;
-
+    private MedicalHistoryModel medicalHistoryModel;
 
     private Spinner sp_medication;
     private Spinner sp_frequency;
@@ -88,7 +86,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         setContentView(R.layout.activity_medical_history_details);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
-        MedicalHistoryModel.medicalRecordPresenter = this;
+        medicalHistoryModel = new MedicalHistoryModel(this);
         listview = findViewById(R.id.listview);
         adapter = new MedicalRecordAdapter(this, medicalRecordList);
         listview.setAdapter(adapter);
@@ -382,12 +380,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                     if (TextUtils.isEmpty(actv_medicine_name.getText().toString())) {
                         JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                         jsonMedicalRecord.setCodeQR(qCodeQR);
-                        jsonMedicalRecord.setQueueUserId(StringUtils.isBlank(jsonQueuedPerson.getQueueUserId()) ? "100000000032" : jsonQueuedPerson.getQueueUserId());
-
-//                    if (StringUtils.isBlank(jsonQueuedPerson.getQueueUserId())) {
-//                        throw new RuntimeException("Need QID");
-//                        //TODO better error handling
-//                    }
+                        jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
                         jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
                         jsonMedicalRecord.setChiefComplain(actv_complaints.getText().toString());
                         jsonMedicalRecord.setPastHistory(actv_past_history.getText().toString());
@@ -404,7 +397,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                         jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
 
-                        MedicalHistoryModel.add(LaunchActivity.getLaunchActivity().getDeviceID(),
+                        medicalHistoryModel.add(LaunchActivity.getLaunchActivity().getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
                     } else {

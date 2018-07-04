@@ -59,6 +59,7 @@ import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 import com.noqapp.common.beans.ErrorEncounteredJson;
+import com.noqapp.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.common.model.types.UserLevelEnum;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.PhoneFormatterUtil;
@@ -79,7 +80,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private TextView tvcount;
     private PeopleInQAdapter peopleInQAdapter;
     private List<JsonQueuedPerson> jsonQueuedPersonArrayList;
-
+    EditText edt_mobile;
     private RecyclerView rv_queue_people;
     private ProgressBar progressDialog;
     private View itemView;
@@ -97,7 +98,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private boolean queueStatusOuter = false;
     private int lastSelectedPos = -1;
     private LinearLayoutManager horizontalLayoutManagaer;
-    private EditText edt_mobile_or_id;
+    private ManageQueueModel manageQueueModel;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -116,7 +117,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
         itemView = inflater.inflate(R.layout.viewpager_item, container, false);
         context = getActivity();
-        ManageQueueModel.queuePersonListPresenter = this;
+        manageQueueModel = new ManageQueueModel(this);
         ManageQueueModel.manageQueuePresenter = this;
         jsonTopic = topicsList.get(currrentpos);
 
@@ -265,10 +266,10 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     public void dispenseTokenError(ErrorEncounteredJson errorEncounteredJson) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
-        if(errorEncounteredJson.getSystemErrorCode().equalsIgnoreCase("412")){
+        if(errorEncounteredJson.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())){
             Toast.makeText(context,errorEncounteredJson.getReason(),Toast.LENGTH_LONG).show();
             Intent in = new Intent(getActivity(), LoginActivity.class);
-            in.putExtra("phone_no",edt_mobile_or_id.getText().toString());
+            in.putExtra("phone_no",edt_mobile.getText().toString());
             context.startActivity(in);
             RegistrationActivity.registerCallBack = this;
             LoginActivity.loginCallBack = this;
@@ -288,8 +289,8 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
         if (null != token && null != tv_create_token) {
-            if(null != edt_mobile_or_id)
-                edt_mobile_or_id.setText("");
+            if(null != edt_mobile)
+                edt_mobile.setText("");
             switch (token.getQueueStatus()) {
                 case C:
                     tv_create_token.setText("Queue is closed. Cannot generate token.");
@@ -409,45 +410,50 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_create_token_with_mobile, null, false);
-        ImageView actionbarBack = (ImageView) customDialogView.findViewById(R.id.actionbarBack);
-        tv_create_token = (TextView) customDialogView.findViewById(R.id.tvtitle);
-        iv_banner = (ImageView) customDialogView.findViewById(R.id.iv_banner);
-        tvcount = (TextView) customDialogView.findViewById(R.id.tvcount);
-        edt_mobile_or_id = customDialogView.findViewById(R.id.edt_mobile_or_id);
+        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
+        tv_create_token = customDialogView.findViewById(R.id.tvtitle);
+        iv_banner = customDialogView.findViewById(R.id.iv_banner);
+        tvcount = customDialogView.findViewById(R.id.tvcount);
+        edt_mobile = customDialogView.findViewById(R.id.edt_mobile);
+        final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
         final RadioGroup rg_user_id = customDialogView.findViewById(R.id.rg_user_id);
         final RadioButton rb_mobile = customDialogView.findViewById(R.id.rb_mobile);
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        edt_mobile_or_id.setInputType(InputType.TYPE_CLASS_NUMBER);
         rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rb_mobile) {
-                    edt_mobile_or_id.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    edt_mobile.setVisibility(View.VISIBLE);
+                    edt_id.setVisibility(View.GONE);
+                    edt_id.setText("");
                 } else {
-                    edt_mobile_or_id.setInputType(InputType.TYPE_CLASS_TEXT);
+                    edt_id.setVisibility(View.VISIBLE);
+                    edt_mobile.setVisibility(View.GONE);
+                    edt_mobile.setText("");
                 }
             }
         });
-        btn_create_token = (Button) customDialogView.findViewById(R.id.btn_create_token);
+        btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
         btn_create_token.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
                 boolean isValid = true;
-                edt_mobile_or_id.setError(null);
+                edt_mobile.setError(null);
+                edt_id.setError(null);
                 new AppUtils().hideKeyBoard(getActivity());
                 // get selected radio button from radioGroup
                 int selectedId = rg_user_id.getCheckedRadioButtonId();
                 if(selectedId == R.id.rb_mobile){
-                    if (TextUtils.isEmpty(edt_mobile_or_id.getText())) {
-                        edt_mobile_or_id.setError(getString(R.string.error_mobile_blank));
+                    if (TextUtils.isEmpty(edt_mobile.getText())) {
+                        edt_mobile.setError(getString(R.string.error_mobile_blank));
                         isValid = false;
                     }
                 }else{
-                    if (TextUtils.isEmpty(edt_mobile_or_id.getText())) {
-                        edt_mobile_or_id.setError(getString(R.string.error_customer_id));
+                    if (TextUtils.isEmpty(edt_id.getText())) {
+                        edt_id.setError(getString(R.string.error_customer_id));
                         isValid = false;
                     }
                 }
@@ -460,10 +466,11 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                     String phone = "";
                     String cid = "";
                     if(rb_mobile.isChecked()){
-                        phone = edt_mobile_or_id.getText().toString();
+                        edt_id.setText("");
+                        phone = "91"+edt_mobile.getText().toString();
                     }else{
-                        cid = edt_mobile_or_id.getText().toString();
-                        edt_mobile_or_id.setText("");// set blank so that wrong phone no not pass to login screen
+                        cid = edt_id.getText().toString();
+                        edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
                     }
                     ManageQueueModel.dispenseTokenWithClientInfo(
                             LaunchActivity.getLaunchActivity().getDeviceID(),
@@ -815,7 +822,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setVisibility(View.VISIBLE);
-            ManageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+            manageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

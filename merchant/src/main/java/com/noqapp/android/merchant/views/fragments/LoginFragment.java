@@ -30,6 +30,7 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
+import com.noqapp.common.model.types.BusinessTypeEnum;
 import com.noqapp.common.model.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -144,26 +145,43 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
 
             if(jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.Q_SUPERVISOR || jsonMerchant.getJsonProfile().getUserLevel()== UserLevelEnum.S_MANAGER ) {
-                if (new AppUtils().isTablet(getActivity())) {
-                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
-                    LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
-                    LaunchActivity.getLaunchActivity().list_fragment.setLayoutParams(lp1);
-                    LaunchActivity.getLaunchActivity().list_detail_fragment.setLayoutParams(lp2);
-                    LaunchActivity.getLaunchActivity().enableDisableDrawer(true);
+                if((getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare") &&
+                        jsonMerchant.getJsonProfile().getBusinessType() == BusinessTypeEnum.DO)||
+                        (getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant") &&
+                        jsonMerchant.getJsonProfile().getBusinessType() != BusinessTypeEnum.DO)) {
+                    if (new AppUtils().isTablet(getActivity())) {
+                        LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
+                        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
+                        LaunchActivity.getLaunchActivity().list_fragment.setLayoutParams(lp1);
+                        LaunchActivity.getLaunchActivity().list_detail_fragment.setLayoutParams(lp2);
+                        LaunchActivity.getLaunchActivity().enableDisableDrawer(true);
+                    }
+                    LaunchActivity.getLaunchActivity().setAccessGrant(true);
+                    LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
+                    LaunchActivity.getLaunchActivity().updateMenuList(jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER);
+                    MerchantListFragment mlf = new MerchantListFragment();
+                    Bundle b = new Bundle();
+                    b.putSerializable("jsonMerchant", jsonMerchant);
+                    mlf.setArguments(b);
+                    LaunchActivity.setMerchantListFragment(mlf);
+                    LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, mlf);
+                }else{
+                    // unauthorised to see the screen
+                    LaunchActivity.getLaunchActivity().setAccessGrant(false);
+                    AccessDeniedFragment adf = new AccessDeniedFragment();
+                    Bundle b = new Bundle();
+                    b.putString("errorMsg", "You are login in the wrong app please login in the correct app");
+                    adf.setArguments(b);
+                    LaunchActivity.getLaunchActivity().clearLoginData(false);
+                    LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
                 }
-                LaunchActivity.getLaunchActivity().setAccessGrant(true);
-                LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
-                LaunchActivity.getLaunchActivity().updateMenuList(jsonMerchant.getJsonProfile().getUserLevel()== UserLevelEnum.S_MANAGER);
-                MerchantListFragment mlf = new MerchantListFragment();
-                Bundle b = new Bundle();
-                b.putSerializable("jsonMerchant", jsonMerchant);
-                mlf.setArguments(b);
-                LaunchActivity.setMerchantListFragment(mlf);
-                LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, mlf);
             }else{
                 // unauthorised to see the screen
                 LaunchActivity.getLaunchActivity().setAccessGrant(false);
                 AccessDeniedFragment adf = new AccessDeniedFragment();
+                Bundle b = new Bundle();
+                b.putString("errorMsg", getString(R.string.error_access_denied));
+                adf.setArguments(b);
                 LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
             }
             LaunchActivity.getLaunchActivity().setUserName();

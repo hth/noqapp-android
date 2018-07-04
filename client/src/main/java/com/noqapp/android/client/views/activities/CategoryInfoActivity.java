@@ -19,6 +19,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.common.cache.Cache;
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.types.AmenityEnum;
@@ -234,7 +235,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             sc_facility.addSegments(data);
 
             Picasso.with(this)
-                    .load(bizStoreElastic.getDisplayImage())
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,bizStoreElastic.getDisplayImage()))
                     .into(iv_category_banner);
             LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             rv_thumb_images.setHasFixedSize(true);
@@ -243,6 +244,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             // initialize list if we are receiving urls from server
             if (bizStoreElastic.getBizServiceImages().size() > 0) {
                 storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
+                // load first image default
+                Picasso.with(this)
+                        .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,bizStoreElastic.getBizServiceImages().get(0)))
+                        .into(iv_category_banner);
             }
 
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);

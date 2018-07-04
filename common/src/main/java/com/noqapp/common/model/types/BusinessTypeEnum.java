@@ -1,10 +1,12 @@
 package com.noqapp.common.model.types;
 
+import java.io.Serializable;
+
 /**
  * Created by hitender on 1/2/18.
  */
 
-public enum BusinessTypeEnum {
+public enum BusinessTypeEnum implements Serializable{
     RS("RS", "Restaurant"),
     BA("BA", "Bar"),
     ST("ST", "Store"),

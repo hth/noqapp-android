@@ -12,9 +12,6 @@ import android.view.ViewGroup;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.DatabaseTable;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-
-import org.apache.commons.lang3.StringUtils;
 
 
 public class NoQueueBaseFragment extends Fragment {

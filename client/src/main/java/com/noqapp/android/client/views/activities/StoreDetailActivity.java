@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.DeliveryTypeEnum;
@@ -131,7 +132,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
             Picasso.with(this)
-                    .load(bizStoreElastic.getDisplayImage())
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,bizStoreElastic.getDisplayImage()))
                     .into(collapseImageView);
         else {
             //TODO show some default image

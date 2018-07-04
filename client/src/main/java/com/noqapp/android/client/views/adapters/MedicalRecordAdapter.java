@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-
 import com.noqapp.android.client.R;
 import com.noqapp.common.beans.medical.JsonMedicalMedicine;
 

@@ -12,7 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.views.adapters.MedicalRecordAdapter;
+import com.noqapp.common.beans.JsonProfile;
 import com.noqapp.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.common.beans.medical.JsonMedicalRecord;
@@ -28,13 +30,20 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
 
     @BindView(R.id.ll_main)
     protected LinearLayout ll_main;
-
     @BindView(R.id.tv_complaints)
     protected TextView tv_complaints;
     @BindView(R.id.tv_past_history)
     protected TextView tv_past_history;
     @BindView(R.id.tv_family_history)
     protected TextView tv_family_history;
+    
+    
+    @BindView(R.id.tv_patient_name)
+    protected TextView tv_patient_name;
+    @BindView(R.id.tv_diagnosed_by)
+    protected TextView tv_diagnosed_by;
+    @BindView(R.id.tv_business_name)
+    protected TextView tv_business_name;
     @BindView(R.id.tv_known_allergy)
     protected TextView tv_known_allergy;
     @BindView(R.id.tv_clinical_finding)
@@ -65,6 +74,13 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         tv_clinical_finding.setText(jsonMedicalRecord.getClinicalFinding());
         tv_provisional.setText(jsonMedicalRecord.getProvisionalDifferentialDiagnosis());
 
+        tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedById()+" ("+jsonMedicalRecord.getBizCategoryName()+")");
+        tv_business_name.setText(jsonMedicalRecord.getBusinessName());
+        List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
+        profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
+        tv_patient_name.setText(AppUtilities.getNameFromQueueUserID(jsonMedicalRecord.getQueueUserId(),profileList));
+        
+        
         JsonMedicalPhysical jsonMedicalPhysicalExaminations = jsonMedicalRecord.getMedicalPhysical();
         listview = findViewById(R.id.listview);
         medicalRecordList = jsonMedicalRecord.getMedicalMedicines();
@@ -83,16 +99,16 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             mType.setGravity(Gravity.LEFT | Gravity.CENTER);
             switch (physicalExam) {
                 case BP:
-                    mType.setText(physicalExam.getDescription() + ":" +" ");
-                            //+ jsonMedicalPhysicalExaminations.getBloodPressure());
+                    mType.setText(physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getBloodPressure()[0]);
                     break;
                 case PL:
-                    mType.setText(physicalExam.getDescription() + ":" +" ");
-                            //+ jsonMedicalPhysicalExaminations.getPluse());
+                    mType.setText(physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getPluse());
                     break;
                 case WT:
-                    mType.setText(physicalExam.getDescription() + ":" +" ");
-                            //+ jsonMedicalPhysicalExaminations.getWeight());
+                    mType.setText(physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getWeight());
                     break;
             }
             childLayout.addView(mType, 0);

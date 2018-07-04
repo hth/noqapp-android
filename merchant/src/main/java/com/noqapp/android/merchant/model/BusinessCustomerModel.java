@@ -22,7 +22,11 @@ public class BusinessCustomerModel {
     private static final String TAG = BusinessCustomerModel.class.getSimpleName();
 
     private static final BusinessCustomerService businessCustomerService;
-    public static QueuePersonListPresenter queuePersonListPresenter;
+    private QueuePersonListPresenter queuePersonListPresenter;
+
+    public BusinessCustomerModel(QueuePersonListPresenter queuePersonListPresenter) {
+        this.queuePersonListPresenter = queuePersonListPresenter;
+    }
 
     static {
         businessCustomerService = RetrofitClient.getClient().create(BusinessCustomerService.class);
@@ -31,7 +35,7 @@ public class BusinessCustomerModel {
 
 
 
-    public static void addId(String did, String mail, String auth, JsonBusinessCustomerLookup jsonBusinessCustomerLookup) {
+    public void addId(String did, String mail, String auth, JsonBusinessCustomerLookup jsonBusinessCustomerLookup) {
         businessCustomerService.addId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomerLookup).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {

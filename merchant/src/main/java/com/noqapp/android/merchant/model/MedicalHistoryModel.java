@@ -18,7 +18,11 @@ public class MedicalHistoryModel {
     private static final String TAG = MedicalHistoryModel.class.getSimpleName();
 
     private static final MedicalRecordService medicalRecordService;
-    public static MedicalRecordPresenter medicalRecordPresenter;
+    private MedicalRecordPresenter medicalRecordPresenter;
+
+    public MedicalHistoryModel(MedicalRecordPresenter medicalRecordPresenter) {
+        this.medicalRecordPresenter = medicalRecordPresenter;
+    }
 
     static {
         medicalRecordService = RetrofitClient.getClient().create(MedicalRecordService.class);
@@ -29,7 +33,7 @@ public class MedicalHistoryModel {
      * @param mail
      * @param auth
      */
-    public static void add(String did, String mail, String auth, JsonMedicalRecord jsonMedicalRecord) {
+    public void add(String did, String mail, String auth, JsonMedicalRecord jsonMedicalRecord) {
         medicalRecordService.add(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {

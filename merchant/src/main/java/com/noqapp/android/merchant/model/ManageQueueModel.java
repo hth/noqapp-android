@@ -35,7 +35,12 @@ public class ManageQueueModel {
     public static ManageQueuePresenter manageQueuePresenter;
     public static DispenseTokenPresenter dispenseTokenPresenter;
     public static TopicPresenter topicPresenter;
-    public static QueuePersonListPresenter queuePersonListPresenter;
+
+    public ManageQueueModel(QueuePersonListPresenter queuePersonListPresenter) {
+        this.queuePersonListPresenter = queuePersonListPresenter;
+    }
+
+    public QueuePersonListPresenter queuePersonListPresenter;
 
     static {
         manageQueueService = RetrofitClient.getClient().create(ManageQueueService.class);
@@ -146,7 +151,7 @@ public class ManageQueueModel {
         });
     }
 
-    public static void getAllQueuePersonList(String did, String mail, String auth, String codeQR) {
+    public void getAllQueuePersonList(String did, String mail, String auth, String codeQR) {
         manageQueueService.showClients(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
@@ -235,7 +240,7 @@ public class ManageQueueModel {
     }
 
 
-    public static void changeUserInQueue(String did, String mail, String auth, ChangeUserInQueue changeUserInQueue) {
+    public void changeUserInQueue(String did, String mail, String auth, ChangeUserInQueue changeUserInQueue) {
         manageQueueService.changeUserInQueue(did, Constants.DEVICE_TYPE, mail, auth, changeUserInQueue).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {

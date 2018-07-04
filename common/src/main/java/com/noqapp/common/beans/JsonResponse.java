@@ -29,12 +29,23 @@ public class JsonResponse {
     @JsonProperty("r")
     private int response;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public int getResponse() {
         return response;
     }
 
     public void setResponse(int response) {
         this.response = response;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
     }
 
     @Override

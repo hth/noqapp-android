@@ -158,7 +158,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
                 Picasso.with(this)
-                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + NoQueueBaseActivity.getUserProfileUri())
+                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET , NoQueueBaseActivity.getUserProfileUri()))
                         .into(UserProfileEditActivity.iv_profile);
             }
         } catch (Exception e) {

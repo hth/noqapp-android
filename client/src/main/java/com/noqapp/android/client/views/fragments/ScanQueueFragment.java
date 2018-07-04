@@ -148,7 +148,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             // switch to identify the message by its code
             switch (msg.what) {
                 case MSG_CURRENT_QUEUE:
-                    //doSomething();
                     isCurrentExecute = true;
                     if (isHistoryExecute && isCurrentExecute) {
                         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(LaunchActivity.getLaunchActivity());
@@ -158,7 +157,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                     break;
 
                 case MSG_HISTORY_QUEUE:
-                    //doMoreThings();
                     isHistoryExecute = true;
                     if (isHistoryExecute && isCurrentExecute) {
                         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(LaunchActivity.getLaunchActivity());
@@ -183,24 +181,11 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (null != bundle) {
-            if (bundle.getBoolean(KEY_FROM_LIST, false)) {
-                fromList = true;
-            } else {
-                startScanningBarcode();
-            }
-        } else {
-            // startScanningBarcode();
-            // commented due to last discussion that barcode should not start automatically
-        }
-
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String city_name = (String) parent.getItemAtPosition(position);
-                //Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
                 LatLng latLng = AppUtilities.getLocationFromAddress(getActivity(), city_name);
                 lat = latLng.latitude;
                 log = latLng.longitude;
@@ -420,23 +405,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true);
         in.putExtra(KEY_IS_HISTORY, false);
         startActivity(in);
-
-//        Bundle b = new Bundle();
-//        b.putString(KEY_CODE_QR, jsonQueue.getCodeQR());
-//        b.putBoolean(KEY_FROM_LIST, true);
-//        if (groupPosition == 0) {
-//            b.putSerializable(KEY_JSON_TOKEN_QUEUE, jsonQueue);
-//            //  AfterJoinFragment ajf = new AfterJoinFragment();
-//            //  ajf.setArguments(b);
-//            //  replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, ajf, TAG, LaunchActivity.tabList);
-//        } else {
-//            b.putBoolean(KEY_IS_HISTORY, true);
-//            b.putBoolean(KEY_IS_AUTOJOIN_ELIGIBLE, false);
-//            b.putBoolean("isCategoryData", false);
-//            // JoinFragment jf = new JoinFragment();
-//            // jf.setArguments(b);
-//            // replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, jf, TAG, LaunchActivity.tabList);
-//        }
     }
 
     @Override

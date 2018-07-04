@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
@@ -47,13 +48,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -398,5 +397,18 @@ public class AppUtilities extends CommonHelper {
         }
         return name;
     }
+
+
+    public static String getImageUrls(String bucket_type ,String url) {
+        switch (bucket_type) {
+            case BuildConfig.PROFILE_BUCKET:
+                return BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + url;
+            case BuildConfig.SERVICE_BUCKET:
+                return BuildConfig.AWSS3 + BuildConfig.SERVICE_BUCKET + url;
+            default:
+                return "";
+        }
+    }
+
 }
 

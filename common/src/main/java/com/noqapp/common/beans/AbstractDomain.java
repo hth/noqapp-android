@@ -14,8 +14,6 @@ import java.io.Writer;
 public abstract class AbstractDomain {
     private static final String TAG = AbstractDomain.class.getSimpleName();
 
-    public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-
     /**
      * @deprecated (This adds tons of accept charset.)
      * Converts this object to JSON representation;
