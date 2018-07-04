@@ -33,10 +33,10 @@
                     android:drawableRight="@drawable/cancel_grey"
                     android:ems="10"
                     android:hint="Search location..."
+                    android:inputType="textNoSuggestions"
                     android:maxLines="1"
                     android:minLines="1"
                     android:padding="10dp"
-                    android:inputType="textNoSuggestions"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray"
                     android:textSize="16sp" />
@@ -69,7 +69,7 @@
                 android:id="@+id/rl_scan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
+                android:background="#d75b71"
                 android:gravity="center_vertical"
                 android:minHeight="@dimen/cell_size"
                 android:paddingLeft="@dimen/screen_padding_home"
@@ -90,7 +90,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/iv_scan"
                     android:text="@string/scan_qr"
-                    android:textColor="@android:color/black"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -101,7 +101,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/iv_scan"
                     android:text="@string/scan_info"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
 

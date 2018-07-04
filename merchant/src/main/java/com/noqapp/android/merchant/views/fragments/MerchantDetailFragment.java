@@ -79,7 +79,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private ImageView iv_banner;
     private TextView tvcount;
     private PeopleInQAdapter peopleInQAdapter;
-    private List<JsonQueuedPerson> jsonQueuedPersonArrayList;
+    private List<JsonQueuedPerson> jsonQueuedPersonArrayList= new ArrayList<>();
     EditText edt_mobile;
     private RecyclerView rv_queue_people;
     private ProgressBar progressDialog;
@@ -308,7 +308,19 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                     tvcount.setText(String.valueOf(token.getToken()));
                     tvcount.setVisibility(View.VISIBLE);
                     btn_create_token.setClickable(true);
-                    updateUI();
+                    for (int i = 0; i < jsonQueuedPersonArrayList.size(); i++) {
+                        JsonQueuedPerson jt = jsonQueuedPersonArrayList.get(i);
+                        if (jt.getToken()==token.getToken()) {
+                            Toast.makeText(context,"User already in Queue",Toast.LENGTH_LONG).show();
+                            break;
+                        }
+                    }
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        progressDialog.setVisibility(View.VISIBLE);
+                        manageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(getActivity());
+                    }
                     break;
                 default:
                     Log.e(MerchantDetailFragment.class.getSimpleName(), "Reached un-reachable condition");
@@ -527,7 +539,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                     }
             );
 
-            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(),jsonTopic.getServingNumber());
+            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(),jsonTopic.getServingNumber(),jsonTopic.getQueueStatus());
             rv_queue_people.setAdapter(peopleInQAdapter);
             if(jsonTopic.getServingNumber() > 0)
              rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber()-1);
@@ -603,6 +615,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         tv_title.setText(jsonTopic.getDisplayName());
 
         btn_start.setText(context.getString(R.string.start));
+        btn_start.setBackgroundResource(R.mipmap.start);
 
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
                 || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
