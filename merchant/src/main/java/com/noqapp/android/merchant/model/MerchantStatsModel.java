@@ -20,12 +20,16 @@ public class MerchantStatsModel {
     private static final String TAG = MerchantStatsModel.class.getSimpleName();
 
     private static final MerchantStatsService merchantStatsService;
-    public static ChartPresenter chartPresenter;
+    private ChartPresenter chartPresenter;
+
+    public MerchantStatsModel(ChartPresenter chartPresenter){
+        this.chartPresenter = chartPresenter;
+    }
     static {
         merchantStatsService = RetrofitClient.getClient().create(MerchantStatsService.class);
     }
 
-    public static void doctor(String did, String mail, String auth) {
+    public void doctor(String did, String mail, String auth) {
         merchantStatsService.doctor(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<HealthCareStatList>() {
             @Override
             public void onResponse(Call<HealthCareStatList> call, Response<HealthCareStatList> response) {

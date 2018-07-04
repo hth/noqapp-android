@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChartFragment extends Fragment implements OnChartValueSelectedListener {
+public class ChartFragment extends Fragment {
 
 
     private PieChart pieChart;
@@ -49,10 +49,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
 
         View view = inflater.inflate(R.layout.fragment_chart, container, false);
-
-
         bar_chart = view.findViewById(R.id.bar_chart);
-
         pieChart = view.findViewById(R.id.pieChart);
         pieChart.setUsePercentValues(false);
         pieChart.getDescription().setEnabled(false);
@@ -76,9 +73,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         // pieChart.setDrawUnitsInChart(true);
 
         // add a selection listener
-        pieChart.setOnChartValueSelectedListener(this);
-
-
+       // pieChart.setOnChartValueSelectedListener(this);
         bar_chart.getDescription().setEnabled(false);
         bar_chart.setDrawGridBackground(false);
         bar_chart.setDrawBarShadow(false);
@@ -96,7 +91,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         xAxis.setLabelCount(12);
         xAxis.setValueFormatter(new DayAxisValueFormatter());
 
-
         YAxis leftAxis = bar_chart.getAxisLeft();
         leftAxis.setLabelCount(5, false);
         leftAxis.setSpaceTop(20f);
@@ -107,7 +101,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         rightAxis.setSpaceTop(20f);
         rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-
         // set data
         //  bar_chart.setData((BarData) generateDataBar(12));
         bar_chart.setFitBars(true);
@@ -115,26 +108,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         // do not forget to refresh the chart
 //        bar_chart.invalidate();
         bar_chart.animateY(700);
-
-
         return view;
-    }
-
-
-
-    @Override
-    public void onValueSelected(Entry e, Highlight h) {
-
-        if (e == null)
-            return;
-        Log.i("VAL SELECTED",
-                "Value: " + e.getY() + ", index: " + h.getX()
-                        + ", DataSet index: " + h.getDataSetIndex());
-    }
-
-    @Override
-    public void onNothingSelected() {
-        Log.i("PieChart", "nothing selected");
     }
 
 
@@ -154,36 +128,25 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         // add a lot of colors
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
-
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
-
         for (int c : ColorTemplate.JOYFUL_COLORS)
             colors.add(c);
-
         for (int c : ColorTemplate.COLORFUL_COLORS)
             colors.add(c);
-
         for (int c : ColorTemplate.LIBERTY_COLORS)
             colors.add(c);
-
         for (int c : ColorTemplate.PASTEL_COLORS)
             colors.add(c);
-
         colors.add(ColorTemplate.getHoloBlue());
-
         dataSet.setColors(colors);
-        //dataSet.setSelectionShift(0f);
-
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new MyValueFormatter());
         data.setValueTextSize(16f);
         data.setValueTextColor(Color.BLACK);
         pieChart.setData(data);
-
         // undo all highlights
         pieChart.highlightValues(null);
-
         pieChart.invalidate();
     }
 
@@ -204,13 +167,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         bar_chart.invalidate();
     }
 
-
-
-
-
     public void setPage(int page, ArrayList<HealthCareStat> healthCareStatList) {
-       // this.pos = page;
-       // this.healthCareStatList = healthCareStatList;
         HealthCareStat healthCareStat = healthCareStatList.get(page);
         if (null != healthCareStat) {
             int new_count = healthCareStat.getRepeatCustomers().getCustomerNew();
@@ -224,6 +181,5 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
             //set the bar data
             generateDataBar(healthCareStat.getTwelveMonths());
         }
-
     }
 }

@@ -36,18 +36,17 @@ public class MerchantChartListFragment extends Fragment implements  ChartPresent
     private ListView listview;
     private ArrayList<HealthCareStat> healthCareStatList = new ArrayList<>();
     private ProgressDialog progressDialog;
+    private MerchantStatsModel merchantStatsModel;
     public MerchantChartListFragment() {
 
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchant_chart_list, container, false);
         listview = view.findViewById(R.id.listview);
         initProgress();
-
+        merchantStatsModel = new MerchantStatsModel(this);
         Bundle bundle = getArguments();
         run = new Runnable() {
             public void run() {
@@ -65,8 +64,7 @@ public class MerchantChartListFragment extends Fragment implements  ChartPresent
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            MerchantStatsModel.chartPresenter = this;
-            MerchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+            merchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -138,7 +136,6 @@ public class MerchantChartListFragment extends Fragment implements  ChartPresent
     public void chartResponse(HealthCareStatList healthCareStatListTemp) {
         if (null != healthCareStatListTemp) {
             healthCareStatList= new ArrayList<>(healthCareStatListTemp.getHealthCareStat());
-
             chartFragment.setPage(selected_pos,healthCareStatList);
         }
         dismissProgress();
@@ -148,7 +145,7 @@ public class MerchantChartListFragment extends Fragment implements  ChartPresent
     private void initProgress() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage("fetching data...");
     }
 
     private void dismissProgress() {

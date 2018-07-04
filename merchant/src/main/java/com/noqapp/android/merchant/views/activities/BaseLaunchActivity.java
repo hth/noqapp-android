@@ -167,7 +167,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 switch (selectedPosition) {
                     case R.drawable.pie_chart:
                         if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
-                            Intent in1 = new Intent(launchActivity, ChartSampleActivity.class);
+                            Intent in1 = new Intent(launchActivity, ChartListActivity.class);
                             in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
                             startActivity(in1);
                         } else {

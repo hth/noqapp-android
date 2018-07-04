@@ -18,20 +18,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.fragments.MerchantChartListFragment;
 
-import java.util.ArrayList;
 
-
-public class ChartSampleActivity extends AppCompatActivity  {
+public class ChartListActivity extends AppCompatActivity {
 
     private FrameLayout fl_notification;
     private TextView tv_toolbar_title;
     private ImageView actionbarBack;
     private MerchantChartListFragment merchantChartListFragment;
     private FrameLayout list_fragment, list_detail_fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!new AppUtils().isTablet(getApplicationContext())) {
@@ -43,9 +41,9 @@ public class ChartSampleActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_chart_sample);
 
 
-        fl_notification = (FrameLayout) findViewById(R.id.fl_notification);
-        tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
-        actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
+        fl_notification = findViewById(R.id.fl_notification);
+        tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +54,7 @@ public class ChartSampleActivity extends AppCompatActivity  {
         tv_toolbar_title.setText("Charts");
         merchantChartListFragment = new MerchantChartListFragment();
         Bundle b = new Bundle();
-        b.putSerializable("jsonTopic", (ArrayList<JsonTopic>) getIntent().getExtras().getSerializable("jsonTopic"));
+        b.putSerializable("jsonTopic", getIntent().getExtras().getSerializable("jsonTopic"));
         merchantChartListFragment.setArguments(b);
 
         if (!new AppUtils().isTablet(getApplicationContext())) {
@@ -76,8 +74,6 @@ public class ChartSampleActivity extends AppCompatActivity  {
             //  fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
-
-
 
 
     }

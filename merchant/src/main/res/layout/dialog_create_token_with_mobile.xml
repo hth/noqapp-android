@@ -116,12 +116,22 @@
             </RadioGroup>
 
             <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
-                android:id="@+id/edt_mobile_or_id"
+                android:id="@+id/edt_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:maxLength="10"
+                android:background="@drawable/edt_roun_rect"
+                android:inputType="phone"
+                android:padding="10dp" />
+            <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                android:id="@+id/edt_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:maxLength="15"
                 android:background="@drawable/edt_roun_rect"
+                android:visibility="gone"
                 android:padding="10dp" />
         </LinearLayout>
 

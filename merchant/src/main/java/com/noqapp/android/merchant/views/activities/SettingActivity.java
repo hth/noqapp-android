@@ -171,7 +171,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage("fetching...");
     }
 
     private void dismissProgress() {
