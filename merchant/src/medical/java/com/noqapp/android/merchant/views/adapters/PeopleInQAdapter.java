@@ -144,10 +144,14 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     @Override
     void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson) {
         if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
-            Intent intent = new Intent(context, MedicalHistoryDetailActivity.class);
-            intent.putExtra("qCodeQR", qCodeQR);
-            intent.putExtra("data", jsonQueuedPerson);
-            context.startActivity(intent);
+            if(!TextUtils.isEmpty(jsonQueuedPerson.getQueueUserId())) {
+                Intent intent = new Intent(context, MedicalHistoryDetailActivity.class);
+                intent.putExtra("qCodeQR", qCodeQR);
+                intent.putExtra("data", jsonQueuedPerson);
+                context.startActivity(intent);
+            }else{
+                Toast.makeText(context, "This person in not the register user. You cannot create the case history", Toast.LENGTH_LONG).show();
+            }
         } else {
             Toast.makeText(context, "Currently you are not serving this person", Toast.LENGTH_LONG).show();
         }

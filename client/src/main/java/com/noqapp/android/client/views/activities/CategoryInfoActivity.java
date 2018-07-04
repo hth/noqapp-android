@@ -244,6 +244,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             // initialize list if we are receiving urls from server
             if (bizStoreElastic.getBizServiceImages().size() > 0) {
                 storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
+                // load first image default
+                Picasso.with(this)
+                        .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,bizStoreElastic.getBizServiceImages().get(0)))
+                        .into(iv_category_banner);
             }
 
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);

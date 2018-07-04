@@ -201,10 +201,6 @@
                     style="@style/style_mdh_header"
                     android:text="Physical Examination: " />
 
-                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
-                    style="@style/style_mdh_details"
-                    android:text="Physical Examination details " />
-
             </LinearLayout>
 
             <LinearLayout
@@ -272,7 +268,8 @@
                     android:id="@+id/listview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="@null" />
+                    android:divider="@android:color/white"
+                    android:dividerHeight="1dp"/>
 
             </LinearLayout>
         </LinearLayout>

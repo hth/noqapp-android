@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.common.beans.AbstractDomain;
 
+import java.io.Serializable;
+
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
@@ -20,7 +22,7 @@ import com.noqapp.common.beans.AbstractDomain;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonMedicalPhysical extends AbstractDomain {
+public class JsonMedicalPhysical extends AbstractDomain implements Serializable{
 
     @JsonProperty("pl")
     private String pluse;

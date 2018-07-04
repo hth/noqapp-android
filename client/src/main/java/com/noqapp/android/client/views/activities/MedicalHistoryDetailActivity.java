@@ -99,16 +99,16 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             mType.setGravity(Gravity.LEFT | Gravity.CENTER);
             switch (physicalExam) {
                 case BP:
-                    mType.setText(physicalExam.getDescription() + ":" +" ");
-                            //+ jsonMedicalPhysicalExaminations.getBloodPressure());
+                    mType.setText(physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getBloodPressure()[0]);
                     break;
                 case PL:
-                    mType.setText(physicalExam.getDescription() + ":" +" ");
-                            //+ jsonMedicalPhysicalExaminations.getPluse());
+                    mType.setText(physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getPluse());
                     break;
                 case WT:
-                    mType.setText(physicalExam.getDescription() + ":" +" ");
-                            //+ jsonMedicalPhysicalExaminations.getWeight());
+                    mType.setText(physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getWeight());
                     break;
             }
             childLayout.addView(mType, 0);
