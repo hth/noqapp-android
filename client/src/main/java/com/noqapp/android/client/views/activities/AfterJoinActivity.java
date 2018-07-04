@@ -437,6 +437,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @Override
     public void onBackPressed() {
         returnResultBack();
+        LaunchActivity.getLaunchActivity().activityCommunicator = null;
         super.onBackPressed();
 
     }
@@ -452,6 +453,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             }
         }
     }
+
 
 
 }

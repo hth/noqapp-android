@@ -572,7 +572,8 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
-        if (isUpdated && LaunchActivity.getLaunchActivity().isCurrentActivityLaunchActivity()) {
+        boolean isUserTurn = jq.afterHowLong()<=0;
+        if (isUserTurn && isUpdated && LaunchActivity.getLaunchActivity().isCurrentActivityLaunchActivity()) {
             Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
             startActivity(blinker);
         }

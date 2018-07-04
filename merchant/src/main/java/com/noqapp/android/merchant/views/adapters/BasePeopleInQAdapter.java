@@ -22,6 +22,8 @@ import android.widget.TextView;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerModel;
 import com.noqapp.android.merchant.model.ManageQueueModel;
+import com.noqapp.android.merchant.model.types.QueueStatusEnum;
+import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -42,6 +44,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     protected String qCodeQR = "";
     protected ManageQueueModel manageQueueModel;
     protected BusinessCustomerModel businessCustomerModel;
+    private QueueStatusEnum queueStatusEnum;
     // for medical Only
     abstract void changePatient(Context context, JsonQueuedPerson jsonQueuedPerson);
     // for medical Only
@@ -117,7 +120,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         businessCustomerModel =  new BusinessCustomerModel(this);
     }
 
-    public BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion) {
+    public BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion, QueueStatusEnum queueStatusEnum) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -125,6 +128,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.glowPostion = glowPostion;
         manageQueueModel = new ManageQueueModel(this);
         businessCustomerModel =  new BusinessCustomerModel(this);
+        this.queueStatusEnum = queueStatusEnum;
     }
 
     @Override
@@ -223,18 +227,26 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             }
         });
 
-        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER)
-            recordHolder.tv_create_case.setVisibility(View.VISIBLE);
-        else
+        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+            if(glowPostion > 0 && glowPostion - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
+                recordHolder.tv_create_case.setVisibility(View.VISIBLE);
+            }else{
+                recordHolder.tv_create_case.setVisibility(View.GONE);
+            }
+        }else {
             recordHolder.tv_create_case.setVisibility(View.GONE);
+        }
 
         if (jsonQueuedPerson.getDependents().size()>0)
             recordHolder.tv_change_name.setVisibility(View.VISIBLE);
         else
             recordHolder.tv_change_name.setVisibility(View.GONE);
 
-        if (glowPostion > 0 && glowPostion - 1 == position) {
+        if (glowPostion > 0 && glowPostion - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
             setAnim(recordHolder.cardview);
+            Log.v("animation true: ",""+position);
+        }else{
+            recordHolder.cardview.clearAnimation();
         }
     }
 
