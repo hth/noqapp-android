@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 
+import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 
 import java.util.List;
@@ -13,8 +14,8 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         super(data, context, peopleInQAdapterClick, qCodeQR);
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion) {
-        super(data, context, peopleInQAdapterClick, qCodeQR, glowPostion);
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion, QueueStatusEnum queueStatusEnum) {
+        super(data, context, peopleInQAdapterClick, qCodeQR, glowPostion,queueStatusEnum);
     }
 
     @Override
