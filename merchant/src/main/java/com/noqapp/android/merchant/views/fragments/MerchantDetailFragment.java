@@ -11,7 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,8 +46,6 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.LoginActivity;
-import com.noqapp.android.merchant.views.activities.OutOfSequenceActivity;
-import com.noqapp.android.merchant.views.activities.OutOfSequenceDialogActivity;
 import com.noqapp.android.merchant.views.activities.RegistrationActivity;
 import com.noqapp.android.merchant.views.activities.SettingActivity;
 import com.noqapp.android.merchant.views.activities.SettingDialogActivity;
@@ -85,7 +81,6 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private ProgressBar progressDialog;
     private View itemView;
     private JsonTopic jsonTopic = null;
-    private RelativeLayout rl_left;
 
     private TextView tv_title, tv_total_value, tv_current_value, tv_counter_name, tv_timing, tv_start, tv_next;
     private Chronometer chronometer;
@@ -123,7 +118,6 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
 
         progressDialog = itemView.findViewById(R.id.progress_bar);
-        rl_left = itemView.findViewById(R.id.rl_left);
         tv_current_value = itemView.findViewById(R.id.tv_current_value);
         tv_total_value = itemView.findViewById(R.id.tv_total_value);
         tv_title = itemView.findViewById(R.id.tv_title);
@@ -197,11 +191,8 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         super.onResume();
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue_detail));
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
-        if (new AppUtils().isTablet(getActivity())) {
-            LaunchActivity.getLaunchActivity().enableDisableBack(false);
-        } else {
-            LaunchActivity.getLaunchActivity().enableDisableBack(true);
-        }
+        LaunchActivity.getLaunchActivity().enableDisableBack(false);
+
     }
 
     public void updateListData(final ArrayList<JsonTopic> jsonTopics) {
@@ -520,25 +511,14 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
         if (null != jsonQueuePersonList) {
             jsonQueuedPersonArrayList = jsonQueuePersonList.getQueuedPeople();
-            // Collections.reverse(jsonQueuedPersonArrayList);
             Collections.sort(
                     jsonQueuedPersonArrayList,
                     new Comparator<JsonQueuedPerson>() {
                         public int compare(JsonQueuedPerson lhs, JsonQueuedPerson rhs) {
-                            int returnVal = 0;
-
-                            if (lhs.getToken() < rhs.getToken()) {
-                                returnVal = -1;
-                            } else if (lhs.getToken() < rhs.getToken()) {
-                                returnVal = 1;
-                            } else if (lhs.getToken() < rhs.getToken()) {
-                                returnVal = 0;
-                            }
-                            return returnVal;
+                           return Integer.compare(lhs.getToken(), rhs.getToken());
                         }
                     }
             );
-
             peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(),jsonTopic.getServingNumber(),jsonTopic.getQueueStatus());
             rv_queue_people.setAdapter(peopleInQAdapter);
             if(jsonTopic.getServingNumber() > 0)
@@ -574,41 +554,6 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getStartHour())
                 + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getEndHour()));
 
-        rl_left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //if (queueStatus == QueueStatusEnum.N) {
-                mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
-                if (tv_counter_name.getText().toString().trim().equals("")) {
-                    Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
-                } else {
-                    Served served = new Served();
-                    served.setCodeQR(jsonTopic.getCodeQR());
-                    served.setQueueStatus(jsonTopic.getQueueStatus());
-                    // served.setQueueUserState(QueueUserStateEnum.N); don't send for time being
-                    //served.setServedNumber(jsonTopic.getServingNumber());
-                    served.setGoTo(tv_counter_name.getText().toString());
-                    if (new AppUtils().isTablet(context)) {
-                        Intent in = new Intent(context, OutOfSequenceDialogActivity.class);
-                        in.putExtra("codeQR", jsonTopic.getCodeQR());
-                        in.putExtra("data", served);
-                        in.putExtra("queueStatus", queueStatus == QueueStatusEnum.N);
-                        ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
-                    } else {
-                        Intent in = new Intent(context, OutOfSequenceActivity.class);
-                        in.putExtra("codeQR", jsonTopic.getCodeQR());
-                        in.putExtra("data", served);
-                        in.putExtra("queueStatus", queueStatus == QueueStatusEnum.N);
-                        ((Activity) context).startActivityForResult(in, Constants.RESULT_ACQUIRE);
-                        ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
-
-                    }
-                }
-//                } else {
-//                    ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
-//                }
-            }
-        });
         tv_current_value.setText(String.valueOf(jsonTopic.getServingNumber()));
         /* Add to show only remaining people in queue */
         tv_total_value.setText(String.valueOf(jsonTopic.getToken() - jsonTopic.getServingNumber()));

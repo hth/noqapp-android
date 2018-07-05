@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.fragments.MerchantChartListFragment;
+import com.noqapp.android.merchant.views.fragments.ChartListFragment;
 
 
 public class ChartListActivity extends AppCompatActivity {
@@ -27,8 +27,14 @@ public class ChartListActivity extends AppCompatActivity {
     private FrameLayout fl_notification;
     private TextView tv_toolbar_title;
     private ImageView actionbarBack;
-    private MerchantChartListFragment merchantChartListFragment;
+    private ChartListFragment merchantChartListFragment;
     private FrameLayout list_fragment, list_detail_fragment;
+
+    public static ChartListActivity getChartListActivity() {
+        return chartListActivity;
+    }
+
+    private static ChartListActivity chartListActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +45,7 @@ public class ChartListActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart_sample);
-
+        chartListActivity = this;
 
         fl_notification = findViewById(R.id.fl_notification);
         tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
@@ -52,26 +58,23 @@ public class ChartListActivity extends AppCompatActivity {
             }
         });
         tv_toolbar_title.setText("Charts");
-        merchantChartListFragment = new MerchantChartListFragment();
+        merchantChartListFragment = new ChartListFragment();
         Bundle b = new Bundle();
         b.putSerializable("jsonTopic", getIntent().getExtras().getSerializable("jsonTopic"));
         merchantChartListFragment.setArguments(b);
 
         if (!new AppUtils().isTablet(getApplicationContext())) {
-
             replaceFragmentWithoutBackStack(R.id.frame_layout, merchantChartListFragment);
-            // setUserName();
         } else {
 
-            list_fragment = (FrameLayout) findViewById(R.id.frame_layout);
-            list_detail_fragment = (FrameLayout) findViewById(R.id.list_detail_fragment);
+            list_fragment = findViewById(R.id.frame_layout);
+            list_detail_fragment = findViewById(R.id.list_detail_fragment);
             LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
             LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
             list_fragment.setLayoutParams(lp1);
             list_detail_fragment.setLayoutParams(lp2);
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frame_layout, merchantChartListFragment);
-            //  fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
 
@@ -83,5 +86,11 @@ public class ChartListActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(container, fragment).commit();
+    }
+
+    public void replaceFragmentWithBackStack(int container, Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(container, fragment, tag).addToBackStack(tag).commit();
     }
 }

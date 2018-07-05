@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.views.fragments.MerchantChartListFragment;
+import com.noqapp.android.merchant.views.fragments.ChartListFragment;
 
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class MerchantChartListAdapter extends BaseAdapter {
         JsonTopic jsonTopic = items.get(position);
         recordHolder.tv_number.setText("#" + String.valueOf(position + 1));
         recordHolder.tv_queue_name.setText(jsonTopic.getDisplayName());
-        if (position == MerchantChartListFragment.selected_pos) {
+        if (position == ChartListFragment.selected_pos) {
             recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.pressed_color));
             recordHolder.tv_queue_name.setTextColor(Color.WHITE);
         } else {

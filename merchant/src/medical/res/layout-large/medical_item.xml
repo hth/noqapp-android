@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        android:id="@+id/tv_medication"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:layout_weight=".15"
+        android:background="@drawable/square_grey_bg"
+        android:padding="10dp" />
+
+    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        android:id="@+id/tv_medicine_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:layout_weight=".25"
+        android:background="@drawable/square_grey_bg"
+        android:padding="10dp" />
+
+    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        android:id="@+id/tv_dose"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:layout_weight=".15"
+        android:background="@drawable/square_grey_bg"
+        android:entries="@array/dose_types"
+        android:padding="10dp"
+        android:prompt="@string/dose_prompt" />
+
+    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        android:id="@+id/tv_frequency"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:layout_weight=".15"
+        android:background="@drawable/square_grey_bg"
+        android:entries="@array/frequency_types"
+        android:padding="10dp"
+        android:prompt="@string/frequency_prompt" />
+
+    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        android:id="@+id/tv_dose_timing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:layout_weight=".15"
+        android:background="@drawable/square_grey_bg"
+        android:padding="10dp" />
+
+    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        android:id="@+id/tv_course"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:layout_weight=".15"
+        android:background="@drawable/square_grey_bg"
+        android:entries="@array/course_types"
+        android:padding="10dp"
+        android:prompt="@string/course_prompt" />
+
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_margin="1dp"
+        android:background="@drawable/delete_medic"
+        android:layout_gravity="center_vertical"
+        android:padding="10dp"
+        android:textColor="@android:color/transparent" />
+
+</LinearLayout>

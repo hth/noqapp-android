@@ -19,6 +19,7 @@ import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.ChartListActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.MerchantChartListAdapter;
 import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
@@ -26,7 +27,7 @@ import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MerchantChartListFragment extends Fragment implements  ChartPresenter{
+public class ChartListFragment extends Fragment implements  ChartPresenter{
 
     public static int selected_pos = 0;
     public ChartFragment chartFragment;
@@ -37,7 +38,9 @@ public class MerchantChartListFragment extends Fragment implements  ChartPresent
     private ArrayList<HealthCareStat> healthCareStatList = new ArrayList<>();
     private ProgressDialog progressDialog;
     private MerchantStatsModel merchantStatsModel;
-    public MerchantChartListFragment() {
+    private boolean isFirstTime = true;
+
+    public ChartListFragment() {
 
     }
 
@@ -61,15 +64,19 @@ public class MerchantChartListFragment extends Fragment implements  ChartPresent
             initListView();
         }
 
-
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
-            merchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
-        } else {
-            ShowAlertInformation.showNetworkDialog(getActivity());
+        if(isFirstTime) {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.show();
+                merchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+                isFirstTime = false;
+            } else {
+                ShowAlertInformation.showNetworkDialog(getActivity());
+            }
         }
         return view;
     }
+
+
 
     @Override
     public void onResume() {
@@ -95,12 +102,11 @@ public class MerchantChartListFragment extends Fragment implements  ChartPresent
                 if (!new AppUtils().isTablet(getActivity())) {
                     chartFragment = new ChartFragment();
                     Bundle b = new Bundle();
-                    b.putSerializable("healthCareStatList", healthCareStatList);
-                    b.putInt("position", position);
+                    b.putSerializable("healthCareStat", healthCareStatList.get(position));
                     chartFragment.setArguments(b);
-                    LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, chartFragment, "MerchantViewPagerFragment");
+                    ChartListActivity.getChartListActivity().replaceFragmentWithBackStack(R.id.frame_layout, chartFragment,ChartListFragment.class.getSimpleName());
                 } else {
-                    chartFragment.setPage(position, healthCareStatList);
+                    chartFragment.updateChart(healthCareStatList.get(position));
                     //set page for view pager
                 }
                 selected_pos = position;
@@ -136,7 +142,9 @@ public class MerchantChartListFragment extends Fragment implements  ChartPresent
     public void chartResponse(HealthCareStatList healthCareStatListTemp) {
         if (null != healthCareStatListTemp) {
             healthCareStatList= new ArrayList<>(healthCareStatListTemp.getHealthCareStat());
-            chartFragment.setPage(selected_pos,healthCareStatList);
+            if (new AppUtils().isTablet(getActivity())) {
+                chartFragment.updateChart(healthCareStatList.get(selected_pos));
+            }
         }
         dismissProgress();
         Log.v("Chart data",healthCareStatList.toString());
