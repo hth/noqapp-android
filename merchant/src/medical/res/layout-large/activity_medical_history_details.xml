@@ -149,7 +149,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".25"
+                        android:layout_weight=".33"
                         android:orientation="vertical">
 
                         <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:layout_weight=".5"
+                        android:layout_weight=".34"
                         android:orientation="vertical">
 
                         <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
@@ -205,7 +205,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".25"
+                        android:layout_weight=".33"
                         android:orientation="vertical">
 
                         <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
@@ -276,47 +276,7 @@
                     android:id="@+id/listview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="3dp" />
-
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <Spinner
-                        android:id="@+id/sp_medication"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
-                        android:layout_weight=".25"
-                        android:background="@drawable/spinner_border"
-                        android:padding="10dp" />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_medicine_name"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
-                        android:layout_weight=".50"
-                        android:background="@drawable/square_white_bg_drawable"
-                        android:hint="Medicine name"
-                        android:inputType="textCapSentences"
-                        android:padding="10dp" />
-
-                    <Spinner
-                        android:id="@+id/sp_dose"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
-                        android:layout_weight=".25"
-                        android:background="@drawable/spinner_border"
-                        android:entries="@array/dose_types"
-                        android:padding="10dp"
-                        android:prompt="@string/dose_prompt" />
-                </LinearLayout>
+                    android:divider="@null" />
 
                 <LinearLayout
                     android:id="@+id/ll_medicines"
@@ -326,11 +286,42 @@
                     android:weightSum="1">
 
                     <Spinner
+                        android:id="@+id/sp_medication"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".15"
+                        android:background="@drawable/spinner_border"
+                        android:padding="10dp" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_medicine_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".25"
+                        android:background="@drawable/square_white_bg_drawable"
+                        android:hint="Medicine name"
+                        android:inputType="textCapSentences"
+                        android:padding="10dp" />
+
+                    <Spinner
+                        android:id="@+id/sp_dose"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".15"
+                        android:background="@drawable/spinner_border"
+                        android:entries="@array/dose_types"
+                        android:padding="10dp"
+                        android:prompt="@string/dose_prompt" />
+
+                    <Spinner
                         android:id="@+id/sp_frequency"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
-                        android:layout_weight=".33"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".15"
                         android:background="@drawable/spinner_border"
                         android:entries="@array/frequency_types"
                         android:padding="10dp"
@@ -340,8 +331,8 @@
                         android:id="@+id/sp_dose_timing"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
-                        android:layout_weight=".33"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".15"
                         android:background="@drawable/spinner_border"
                         android:padding="10dp" />
 
@@ -349,8 +340,8 @@
                         android:id="@+id/sp_course"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
-                        android:layout_weight=".33"
+                        android:layout_margin="5dp"
+                        android:layout_weight=".15"
                         android:background="@drawable/spinner_border"
                         android:entries="@array/course_types"
                         android:padding="10dp"
@@ -361,7 +352,7 @@
                         android:id="@+id/tv_add"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_margin="2dp"
+                        android:layout_margin="5dp"
                         android:background="@drawable/add_medic"
                         android:padding="10dp"
                         android:textColor="@android:color/transparent" />
@@ -377,9 +368,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="300dp"
+            android:layout_marginRight="300dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/button_drawable"
             android:text="@string/update_medical_history"

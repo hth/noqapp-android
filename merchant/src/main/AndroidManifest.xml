@@ -64,17 +64,6 @@
             android:theme="@style/myDialog"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.OutOfSequenceActivity"
-            android:theme="@style/BaseTheme">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.OutOfSequenceDialogActivity"
-            android:excludeFromRecents="true"
-            android:theme="@style/myDialog" />
-        <activity
             android:name="com.noqapp.android.merchant.views.activities.NotificationActivity"
             android:theme="@style/BaseTheme">
             <intent-filter>

@@ -8,7 +8,6 @@ package com.noqapp.android.merchant.views.fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +19,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.noqapp.android.merchant.R;
@@ -108,6 +104,11 @@ public class ChartFragment extends Fragment {
         // do not forget to refresh the chart
 //        bar_chart.invalidate();
         bar_chart.animateY(700);
+        Bundle bundle = getArguments();
+        if (null != bundle) {
+            HealthCareStat healthCareStat = (HealthCareStat) bundle.getSerializable("healthCareStat");
+            updateChart(healthCareStat);
+        }
         return view;
     }
 
@@ -167,8 +168,7 @@ public class ChartFragment extends Fragment {
         bar_chart.invalidate();
     }
 
-    public void setPage(int page, ArrayList<HealthCareStat> healthCareStatList) {
-        HealthCareStat healthCareStat = healthCareStatList.get(page);
+    public void updateChart(HealthCareStat healthCareStat) {
         if (null != healthCareStat) {
             int new_count = healthCareStat.getRepeatCustomers().getCustomerNew();
             int old_count = healthCareStat.getRepeatCustomers().getCustomerRepeat();
