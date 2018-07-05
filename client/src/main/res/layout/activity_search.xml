@@ -30,7 +30,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:drawableLeft="@drawable/places_ic_search"
+                android:drawableLeft="@drawable/ic_search"
                 android:drawablePadding="20dp"
                 android:drawableRight="@drawable/cancel_grey"
                 android:inputType="textNoSuggestions"
