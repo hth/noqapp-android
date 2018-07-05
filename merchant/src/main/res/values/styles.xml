@@ -70,4 +70,8 @@
         <item name="android:background">@drawable/square_white_bg_drawable</item>
     </style>
 
+    <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
 </resources>

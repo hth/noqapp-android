@@ -73,12 +73,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             int height = (int) (metrics.heightPixels * 0.60);
             getWindow().setLayout(screenWidth, height);
         }
-        tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
-        actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
+        tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        actionbarBack =  findViewById(R.id.actionbarBack);
         initProgress();
-        tv_title = (TextView) findViewById(R.id.tv_title);
-        toggleDayClosed = (ToggleButton) findViewById(R.id.toggleDayClosed);
-        togglePreventJoin = (ToggleButton) findViewById(R.id.togglePreventJoin);
+        tv_title = findViewById(R.id.tv_title);
+        toggleDayClosed =  findViewById(R.id.toggleDayClosed);
+        togglePreventJoin =  findViewById(R.id.togglePreventJoin);
         String title = getIntent().getStringExtra("title");
         codeQR = getIntent().getStringExtra("codeQR");
         if (null != title) {
@@ -94,7 +94,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         });
         tv_toolbar_title.setText(getString(R.string.screen_settings));
 
-        cb_limit = (CheckBox) findViewById(R.id.cb_limit);
+        cb_limit = findViewById(R.id.cb_limit);
         cb_limit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -113,7 +113,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 }
             }
         });
-        edt_token_no = (EditText) findViewById(R.id.edt_token_no);
+        edt_token_no = findViewById(R.id.edt_token_no);
         edt_token_no.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -133,19 +133,19 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 return false;
             }
         });
-        tv_token_available = (TextView) findViewById(R.id.tv_token_available);
-        tv_store_start = (TextView) findViewById(R.id.tv_store_start);
-        tv_token_not_available = (TextView) findViewById(R.id.tv_token_not_available);
-        tv_store_close = (TextView) findViewById(R.id.tv_store_close);
+        tv_token_available = findViewById(R.id.tv_token_available);
+        tv_store_start = findViewById(R.id.tv_store_start);
+        tv_token_not_available = findViewById(R.id.tv_token_not_available);
+        tv_store_close = findViewById(R.id.tv_store_close);
         tv_token_available.setOnClickListener(new TextViewClick(tv_token_available));
         tv_store_start.setOnClickListener(new TextViewClick(tv_store_start));
         tv_token_not_available.setOnClickListener(new TextViewClick(tv_token_not_available));
         tv_store_close.setOnClickListener(new TextViewClick(tv_store_close));
-        tv_limited_label = (TextView) findViewById(R.id.tv_limited_label);
-        tv_delay_in_minute = (TextView) findViewById(R.id.tv_delay_in_minute);
+        tv_limited_label = findViewById(R.id.tv_limited_label);
+        tv_delay_in_minute = findViewById(R.id.tv_delay_in_minute);
         tv_delay_in_minute.setOnClickListener(new TextViewClickDelay(tv_delay_in_minute));
-        btn_update_time = (Button) findViewById(R.id.btn_update_time);
-        btn_update_delay = (Button) findViewById(R.id.btn_update_delay);
+        btn_update_time = findViewById(R.id.btn_update_time);
+        btn_update_delay = findViewById(R.id.btn_update_delay);
         btn_update_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -313,7 +313,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker;
-            mTimePicker = new TimePickerDialog(SettingActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            mTimePicker = new TimePickerDialog(SettingActivity.this,R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     if (selectedHour == 0 && selectedMinute == 0) {
@@ -322,7 +322,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                         textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                     }
                 }
-            }, hour, minute, true);//Yes 24 hour time
+            }, hour, minute, false);//Yes 24 hour time
             //mTimePicker.setTitle("Select Time");
             mTimePicker.show();
         }
@@ -341,7 +341,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker;
-            mTimePicker = new TimePickerDialog(SettingActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            mTimePicker = new TimePickerDialog(SettingActivity.this,R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     if (selectedHour == 0 && selectedMinute == 0) {
