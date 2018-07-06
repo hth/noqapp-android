@@ -79,6 +79,9 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     @BindView(R.id.tv_rating)
     protected TextView tv_rating;
 
+    @BindView(R.id.tv_add)
+    protected TextView tv_add;
+
     @BindView(R.id.btn_no)
     protected Button btn_no;
 
@@ -115,6 +118,17 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             @Override
             public void onClick(View v) {
                 AppUtilities.openAddressInMap(JoinActivity.this, tv_address.getText().toString());
+            }
+        });
+        tv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(UserUtils.isLogin()) {
+                    Intent loginIntent = new Intent(JoinActivity.this, UserProfileActivity.class);
+                    startActivity(loginIntent);
+                }else{
+                    Toast.makeText(JoinActivity.this,"Please login to add dependents",Toast.LENGTH_LONG).show();
+                }
             }
         });
 

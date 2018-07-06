@@ -57,11 +57,15 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
         // Only the updated record will be returned from WebService
         if(jsonQueuePersonList.getQueuedPeople().size()>0) {
-            JsonQueuedPerson jsonQueuedPerson = jsonQueuePersonList.getQueuedPeople().get(0);
-            for (int i = 0; i < dataSet.size(); i++) {
-                if (dataSet.get(i).getToken() == jsonQueuedPerson.getToken()) {
-                    dataSet.set(i, jsonQueuedPerson);
-                    break;
+            //Server will return only updated objects list
+            //Hence update only that objects
+            for (int j = 0; j < jsonQueuePersonList.getQueuedPeople().size(); j++) {
+                JsonQueuedPerson jsonQueuedPerson = jsonQueuePersonList.getQueuedPeople().get(j);
+                for (int i = 0; i < dataSet.size(); i++) {
+                    if (dataSet.get(i).getToken() == jsonQueuedPerson.getToken()) {
+                        dataSet.set(i, jsonQueuedPerson);
+                        break;
+                    }
                 }
             }
         }
