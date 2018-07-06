@@ -76,4 +76,14 @@ public class BizStoreElasticList {
         this.bizStoreElastics = bizStoreElastics;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "BizStoreElasticList{" +
+                "scrollId='" + scrollId + '\'' +
+                ", cityName='" + cityName + '\'' +
+                ", jsonCategories=" + jsonCategories +
+                ", bizStoreElastics=" + bizStoreElastics +
+                '}';
+    }
 }

@@ -91,6 +91,6 @@
     <string name="update_medical_history">Submit Case History</string>
     <string name="change_name">Change Patient</string>
     <string name="update_details">Update Details</string>
-    <string name="patient_details">Patient Details</string>
-    <string name="customer_id">Customer ID</string>
+    <string name="patient_details">Business Patient ID</string>
+    <string name="customer_id">Patient ID</string>
 </resources>
