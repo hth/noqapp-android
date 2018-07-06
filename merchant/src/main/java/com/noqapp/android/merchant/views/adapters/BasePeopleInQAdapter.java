@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -251,10 +252,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             recordHolder.tv_change_name.setVisibility(View.GONE);
 
         if (glowPostion > 0 && glowPostion - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
-            setAnim(recordHolder.cardview);
+            Animation startAnimation = AnimationUtils.loadAnimation(context, R.anim.show_anim);
+            recordHolder.cardview.startAnimation(startAnimation);
             Log.v("animation true: ",""+position);
         }else{
-            recordHolder.cardview.clearAnimation();
+            Animation removeAnimation = AnimationUtils.loadAnimation(context, R.anim.remove_anim);
+            recordHolder.cardview.startAnimation(removeAnimation);
         }
     }
 
