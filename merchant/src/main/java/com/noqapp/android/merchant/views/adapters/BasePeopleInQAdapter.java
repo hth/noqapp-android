@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -95,6 +96,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         TextView tv_change_name;
         TextView tv_business_customer_id;
         ImageView iv_info;
+        ImageView iv_new;
         CardView cardview;
 
         public MyViewHolder(View itemView) {
@@ -107,6 +109,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             this.tv_change_name = itemView.findViewById(R.id.tv_change_name);
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
             this.iv_info = itemView.findViewById(R.id.iv_info);
+            this.iv_new = itemView.findViewById(R.id.iv_new);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
     }
@@ -147,7 +150,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
 
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
-        recordHolder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getBusinessCustomerId());
+        recordHolder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? context.getString(R.string.unregister_user) :
+                Html.fromHtml("<b>Reg. Id: </b>"+jsonQueuedPerson.getBusinessCustomerId()));
         recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                 //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
                 PhoneFormatterUtil.formatNumber("IN", phoneNo));
@@ -166,9 +170,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         });
         // check parameter to show client is new or has previously visited
         if (jsonQueuedPerson.isClientVisitedThisStore()) {
-            recordHolder.tv_customer_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.new_client, 0);
+            recordHolder.iv_new.setVisibility(View.VISIBLE);
         } else {
-            recordHolder.tv_customer_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            recordHolder.iv_new.setVisibility(View.GONE);
         }
         switch (jsonQueuedPerson.getQueueUserState()) {
             case Q:
