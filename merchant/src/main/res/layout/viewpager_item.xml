@@ -41,19 +41,21 @@
 
                     <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
                         android:id="@+id/tv_title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
                         android:layout_marginBottom="10dp"
                         android:text="sfsdf"
                         android:textColor="@color/color_action_bar"
-                        android:textSize="24sp" />
+                        android:textSize="@dimen/title_size" />
 
 
                     <TextView
                         android:id="@+id/tv_deviceId"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
                         android:layout_below="@+id/tv_title"
                         android:layout_centerHorizontal="true" />
 

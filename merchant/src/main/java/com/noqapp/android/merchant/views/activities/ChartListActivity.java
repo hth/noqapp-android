@@ -44,7 +44,7 @@ public class ChartListActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chart_sample);
+        setContentView(R.layout.activity_chart);
         chartListActivity = this;
 
         fl_notification = findViewById(R.id.fl_notification);
