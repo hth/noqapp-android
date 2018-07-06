@@ -50,6 +50,8 @@ public class LaunchActivity extends BaseLaunchActivity {
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false); // to hide the default action bar title
         tv_name = (TextView) findViewById(R.id.tv_name);
         tv_badge = (TextView) findViewById(R.id.tv_badge);
         fl_notification = (FrameLayout) findViewById(R.id.fl_notification);
