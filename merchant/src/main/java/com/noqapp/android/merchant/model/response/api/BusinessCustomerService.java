@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model.response.api;
 
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 
@@ -29,7 +30,24 @@ public interface BusinessCustomerService {
             String auth,
 
             @Body
-            JsonBusinessCustomerLookup jsonBusinessCustomerLookup
+            JsonBusinessCustomer jsonBusinessCustomer
     );
 
+    @POST("api/m/bc/editId.json")
+    Call<JsonQueuePersonList> editId(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonBusinessCustomer jsonBusinessCustomer
+    );
 }
