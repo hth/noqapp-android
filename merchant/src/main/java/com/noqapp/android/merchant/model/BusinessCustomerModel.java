@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.noqapp.android.merchant.model.response.api.BusinessCustomerService;
 import com.noqapp.android.merchant.network.RetrofitClient;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.utils.Constants;
@@ -32,11 +33,8 @@ public class BusinessCustomerModel {
         businessCustomerService = RetrofitClient.getClient().create(BusinessCustomerService.class);
     }
 
-
-
-
-    public void addId(String did, String mail, String auth, JsonBusinessCustomerLookup jsonBusinessCustomerLookup) {
-        businessCustomerService.addId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomerLookup).enqueue(new Callback<JsonQueuePersonList>() {
+    public void addId(String did, String mail, String auth, JsonBusinessCustomer jsonBusinessCustomer) {
+        businessCustomerService.addId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == 401) {
@@ -53,8 +51,7 @@ public class BusinessCustomerModel {
                     queuePersonListPresenter.queuePersonListError();
                 }
             }
-
-
+            
             @Override
             public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
