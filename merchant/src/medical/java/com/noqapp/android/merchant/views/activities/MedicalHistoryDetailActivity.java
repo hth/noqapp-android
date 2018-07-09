@@ -313,8 +313,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
        // updateSuggetions(actv_medicine_name, MEDICINES); update this when add button click
         LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
 
-        M_MerchantProfileModel.intellisensePresenter = this;
-        M_MerchantProfileModel.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+        M_MerchantProfileModel m_merchantProfileModel = new M_MerchantProfileModel(this);
+        m_merchantProfileModel.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
                 new JsonProfessionalProfilePersonal().setDataDictionary(LaunchActivity.getLaunchActivity().getSuggestions()));
 
     }

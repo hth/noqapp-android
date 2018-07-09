@@ -22,10 +22,14 @@ import static com.noqapp.android.merchant.utils.Constants.DEVICE_TYPE;
  * Date: 4/2/17 6:40 PM
  */
 public class DeviceModel {
-    private static final String TAG = DeviceModel.class.getSimpleName();
+    private final String TAG = DeviceModel.class.getSimpleName();
 
     private static final DeviceService deviceService;
-    public static AppBlacklistPresenter appBlacklistPresenter;
+    public AppBlacklistPresenter appBlacklistPresenter;
+
+    public DeviceModel(AppBlacklistPresenter appBlacklistPresenter) {
+        this.appBlacklistPresenter = appBlacklistPresenter;
+    }
 
     static {
         deviceService = RetrofitClient.getClient().create(DeviceService.class);
@@ -37,7 +41,7 @@ public class DeviceModel {
      * @param did
      * @param deviceToken
      */
-    public static void register(String did, DeviceToken deviceToken) {
+    public void register(String did, DeviceToken deviceToken) {
         deviceService.register(did, DEVICE_TYPE, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
@@ -61,7 +65,7 @@ public class DeviceModel {
      *
      * @param did
      */
-    public static void isSupportedAppVersion(String did) {
+    public void isSupportedAppVersion(String did) {
         deviceService.isSupportedAppVersion(did, DEVICE_TYPE, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {

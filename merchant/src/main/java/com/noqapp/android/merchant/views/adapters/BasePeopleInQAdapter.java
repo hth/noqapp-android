@@ -124,7 +124,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
         this.qCodeQR = qCodeQR;
-        manageQueueModel = new ManageQueueModel(this);
+        manageQueueModel = new ManageQueueModel();
+        manageQueueModel.setQueuePersonListPresenter(this);
         businessCustomerModel =  new BusinessCustomerModel(this);
     }
 
@@ -134,7 +135,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.peopleInQAdapterClick = peopleInQAdapterClick;
         this.qCodeQR = qCodeQR;
         this.glowPostion = glowPostion;
-        manageQueueModel = new ManageQueueModel(this);
+        manageQueueModel = new ManageQueueModel();
+        manageQueueModel.setQueuePersonListPresenter(this);
         businessCustomerModel =  new BusinessCustomerModel(this);
         this.queueStatusEnum = queueStatusEnum;
     }

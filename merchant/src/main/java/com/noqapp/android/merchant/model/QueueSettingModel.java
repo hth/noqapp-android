@@ -21,6 +21,7 @@ import retrofit2.Response;
  * Date: 7/15/17 10:27 AM
  */
 public class QueueSettingModel {
+
     private static final String TAG = QueueSettingModel.class.getSimpleName();
     private static final QueueSettingService queueSettingService;
     private QueueSettingPresenter queueSettingPresenter;

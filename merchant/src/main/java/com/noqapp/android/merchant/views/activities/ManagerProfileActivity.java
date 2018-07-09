@@ -54,11 +54,11 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 
-public class ManagerProfileActivity extends AppCompatActivity implements View.OnClickListener,MerchantPresenter,ImageUploadPresenter {
+public class ManagerProfileActivity extends AppCompatActivity implements View.OnClickListener, MerchantPresenter, ImageUploadPresenter {
 
 
     private TextView tv_profile_name;
-//    @BindView(R.id.iv_edit)
+    //    @BindView(R.id.iv_edit)
 //    protected ImageView iv_edit;
     private ImageView iv_profile;
     private final int SELECT_PICTURE = 110;
@@ -73,8 +73,9 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
     private String webProfileId = "";
     private String managerName = "";
-    private String managerImageUrl="";
+    private String managerImageUrl = "";
     private ImageView actionbarBack;
+    private MerchantProfileModel merchantProfileModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             }
         });
         tv_profile_name = findViewById(R.id.tv_profile_name);
+        merchantProfileModel = new MerchantProfileModel();
 //        ButterKnife.bind(this);
 //        initActionsViews(false);
 //        tv_toolbar_title.setText("Doctor Profile");
@@ -110,12 +112,12 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
 //        }
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
-        loadTabs =new LoadTabs();
+        loadTabs = new LoadTabs();
         loadTabs.execute();
 
-        if(LaunchActivity.getLaunchActivity().isOnline()){
-            MerchantProfileModel.merchantPresenter = this;
-            MerchantProfileModel.fetch( LaunchActivity.getLaunchActivity().getEmail(),
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            merchantProfileModel.setMerchantPresenter(this);
+            merchantProfileModel.fetch(LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
         }
 
@@ -130,7 +132,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             LaunchActivity.getLaunchActivity().setUserName();
             tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
             userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
-            if(LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 // Additional profile will be only visible to store manager
                 userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
             }
@@ -160,15 +162,17 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         protected String doInBackground(String... params) {
             return null;
         }
+
         protected void onPostExecute(String result) {
             try {
                 setupViewPager(viewPager);
                 tabLayout.setupWithViewPager(viewPager);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
     private void loadProfilePic(String imageUrl) {
         Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
         try {
@@ -222,15 +226,15 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
                     iv_profile.setImageBitmap(bitmap);
 
                     String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
-                   // NoQueueBaseActivity.setUserProfileUri(convertedPath);
+                    // NoQueueBaseActivity.setUserProfileUri(convertedPath);
 
                     if (!TextUtils.isEmpty(convertedPath)) {
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
-                        MerchantProfileModel.imageUploadPresenter = this;
-                        MerchantProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+                        merchantProfileModel.setImageUploadPresenter(this);
+                        merchantProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
@@ -259,7 +263,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         userProfileFragment = new UserProfileFragment();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(userProfileFragment, "Profile");
-        if(LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
             // Additional profile will be only visible to store manager
             userAdditionalInfoFragment = new UserAdditionalInfoFragment();
             adapter.addFragment(userAdditionalInfoFragment, "Professional Profile");
@@ -299,7 +303,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(null != loadTabs)
+        if (null != loadTabs)
             loadTabs.cancel(true);
     }
 
@@ -324,7 +328,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     @Override
     protected void onResume() {
         super.onResume();
-       //tv_name.setText(LaunchActivity.getLaunchActivity().getUserName());
+        //tv_name.setText(LaunchActivity.getLaunchActivity().getUserName());
     }
 
     @Override

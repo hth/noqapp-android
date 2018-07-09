@@ -110,7 +110,6 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         });
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Login");
-        RegisterModel.profilePresenter = this;
         mAuth = FirebaseAuth.getInstance();
         updateUI(STATE_INITIALIZED);
         initProgress();
@@ -204,7 +203,8 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         Login login = new Login();
         login.setPhone(phoneNumber);
         login.setCountryShortName("");
-        RegisterModel.login(UserUtils.getDeviceId(), login);
+        RegisterModel registerModel = new RegisterModel(this);
+        registerModel.login(UserUtils.getDeviceId(), login);
     }
 
     private boolean validate() {

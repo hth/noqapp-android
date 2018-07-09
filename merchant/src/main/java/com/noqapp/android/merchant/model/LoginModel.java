@@ -19,7 +19,11 @@ public class LoginModel {
     private static final String TAG = LoginModel.class.getSimpleName();
 
     private static final LoginService loginService;
-    public static LoginPresenter loginPresenter;
+    public LoginPresenter loginPresenter;
+
+    public LoginModel(LoginPresenter loginPresenter) {
+        this.loginPresenter = loginPresenter;
+    }
 
     static {
         loginService = RetrofitClient.getClient().create(LoginService.class);
@@ -29,7 +33,7 @@ public class LoginModel {
      * @param mail
      * @param password
      */
-    public static void login(String mail, String password) {
+    public void login(String mail, String password) {
         loginService.login(mail, password).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {

@@ -28,10 +28,19 @@ public class MerchantProfileModel {
     private static final String TAG = MerchantProfileModel.class.getSimpleName();
 
     protected static final MerchantProfileService merchantProfileService;
-    public static MerchantPresenter merchantPresenter;
-    public static ProfilePresenter profilePresenter;
-    public static ImageUploadPresenter imageUploadPresenter;
+    public ImageUploadPresenter imageUploadPresenter;
+    public MerchantPresenter merchantPresenter;
+    public ProfilePresenter profilePresenter;
 
+    public void setMerchantPresenter(MerchantPresenter merchantPresenter) {
+        this.merchantPresenter = merchantPresenter;
+    }
+    public void setProfilePresenter(ProfilePresenter profilePresenter) {
+        this.profilePresenter = profilePresenter;
+    }
+    public void setImageUploadPresenter(ImageUploadPresenter imageUploadPresenter) {
+        this.imageUploadPresenter = imageUploadPresenter;
+    }
 
     static {
         merchantProfileService = RetrofitClient.getClient().create(MerchantProfileService.class);
@@ -41,7 +50,7 @@ public class MerchantProfileModel {
      * @param mail
      * @param auth
      */
-    public static void fetch(String mail, String auth) {
+    public void fetch(String mail, String auth) {
         merchantProfileService.fetch(mail, auth).enqueue(new Callback<JsonMerchant>() {
             @Override
             public void onResponse(@NonNull Call<JsonMerchant> call, @NonNull Response<JsonMerchant> response) {
@@ -66,7 +75,7 @@ public class MerchantProfileModel {
         });
     }
 
-    public static void updateProfile(final String mail, final String auth, UpdateProfile updateProfile) {
+    public void updateProfile(final String mail, final String auth, UpdateProfile updateProfile) {
         merchantProfileService.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
@@ -92,7 +101,7 @@ public class MerchantProfileModel {
         });
     }
 
-    public static void uploadImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody profileImageOfQid) {
+    public void uploadImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody profileImageOfQid) {
         merchantProfileService.upload(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {

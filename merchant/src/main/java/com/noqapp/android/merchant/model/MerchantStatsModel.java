@@ -21,7 +21,6 @@ public class MerchantStatsModel {
 
     private static final MerchantStatsService merchantStatsService;
     private ChartPresenter chartPresenter;
-
     public MerchantStatsModel(ChartPresenter chartPresenter){
         this.chartPresenter = chartPresenter;
     }
