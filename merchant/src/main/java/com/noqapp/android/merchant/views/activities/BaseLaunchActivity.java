@@ -69,7 +69,7 @@ import java.util.UUID;
 
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
-public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter,SharedPreferences.OnSharedPreferenceChangeListener {
+public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
     public static final String mypref = "shared_pref";
     public static final String XR_DID = "X-R-DID";
@@ -79,6 +79,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public static void setMerchantListFragment(MerchantListFragment merchantListFragment) {
         BaseLaunchActivity.merchantListFragment = merchantListFragment;
     }
+
     protected DeviceModel deviceModel;
     protected static MerchantListFragment merchantListFragment;
     protected final String IS_LOGIN = "IsLoggedIn";
@@ -120,6 +121,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void enableDisableDrawer(boolean isEnable) {
         mDrawerLayout.setDrawerLockMode(isEnable ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!new AppUtils().isTablet(getApplicationContext())) {
@@ -157,11 +159,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             }
         };
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this,  new OnSuccessListener<InstanceIdResult>() {
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 String newToken = instanceIdResult.getToken();
-                Log.e("newToken",newToken);
+                Log.e("newToken", newToken);
                 String fcmToken = newToken;
                 Log.d(BaseLaunchActivity.class.getSimpleName(), "FCM Token=" + fcmToken);
                 sendRegistrationToServer(fcmToken);
@@ -169,12 +171,12 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         });
     }
 
-    protected void initDrawer(){
+    protected void initDrawer() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerList = findViewById(R.id.drawer_list);
         drawerItem.clear();
         if (isLoggedIn()) {
-            updateMenuList(getUserLevel()== UserLevelEnum.S_MANAGER);
+            updateMenuList(getUserLevel() == UserLevelEnum.S_MANAGER);
         }
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -271,6 +273,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         }
 
     }
+
     public boolean isOnline() {
         return networkUtil.isOnline();
     }
@@ -313,7 +316,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     public String getSuggestions() {
-        return sharedpreferences.getString(KEY_SUGGESTION ,null);
+        return sharedpreferences.getString(KEY_SUGGESTION, null);
     }
 
     public void setSuggestions(HashMap<String, ArrayList<String>> mHashmap) {
@@ -321,20 +324,20 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         String strInput = gson.toJson(mHashmap);
         sharedpreferences.edit().putString(KEY_SUGGESTION, strInput).apply();
     }
-    public ArrayList<String>  getCounterNames() {
+
+    public ArrayList<String> getCounterNames() {
         //Retrieve the values
         Gson gson = new Gson();
         String jsonText = sharedpreferences.getString(KEY_COUNTER_NAME_LIST, null);
         ArrayList<String> nameList = gson.fromJson(jsonText, ArrayList.class);
-        return null != nameList? nameList : new ArrayList<String>();
+        return null != nameList ? nameList : new ArrayList<String>();
     }
 
-    public void setCounterNames( ArrayList<String> mHashmap) {
+    public void setCounterNames(ArrayList<String> mHashmap) {
         Gson gson = new Gson();
         String strInput = gson.toJson(mHashmap);
         sharedpreferences.edit().putString(KEY_COUNTER_NAME_LIST, strInput).apply();
     }
-
 
 
     public UserLevelEnum getUserLevel() {
@@ -387,7 +390,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         editor.apply();
     }
 
-    public void setUserProfile(JsonProfile jsonProfile){
+    public void setUserProfile(JsonProfile jsonProfile) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(jsonProfile);
@@ -395,7 +398,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         editor.apply();
     }
 
-    public JsonProfile getUserProfile(){
+    public JsonProfile getUserProfile() {
         Gson gson = new Gson();
         String json = sharedpreferences.getString(KEY_USER_PROFILE, "");
         JsonProfile obj = gson.fromJson(json, JsonProfile.class);
@@ -488,15 +491,18 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         if (null != merchantListFragment) {
             merchantListFragment.unSubscribeTopics();
         }
-        // logout
-        sharedpreferences.edit().clear().apply();
+
         MerchantListFragment.selected_pos = 0;
         if (new AppUtils().isTablet(getApplicationContext())) {
             LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
             LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
             list_fragment.setLayoutParams(lp1);
             list_detail_fragment.setLayoutParams(lp0);
+            merchantListFragment.clearData();
+            merchantListFragment = null;
         }
+        // logout
+        sharedpreferences.edit().clear().apply();
         //navigate to signup/login
         replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
         if (showAlert) {
@@ -604,12 +610,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialog_language, null);
         dialogBuilder.setView(dialogView);
-
-        final LinearLayout ll_hindi = (LinearLayout) dialogView.findViewById(R.id.ll_hindi);
-        final LinearLayout ll_english = (LinearLayout) dialogView.findViewById(R.id.ll_english);
-        final RadioButton rb_hi = (RadioButton) dialogView.findViewById(R.id.rb_hi);
-        final RadioButton rb_en = (RadioButton) dialogView.findViewById(R.id.rb_en);
-
+        final LinearLayout ll_hindi = dialogView.findViewById(R.id.ll_hindi);
+        final LinearLayout ll_english = dialogView.findViewById(R.id.ll_english);
+        final RadioButton rb_hi = dialogView.findViewById(R.id.rb_hi);
+        final RadioButton rb_en = dialogView.findViewById(R.id.rb_en);
         if (language.equals("hi")) {
             rb_hi.setChecked(true);
             rb_en.setChecked(false);
@@ -617,7 +621,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             rb_en.setChecked(true);
             rb_hi.setChecked(false);
         }
-
 
         ll_hindi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -666,7 +669,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     private void sendRegistrationToServer(String refreshToken) {
         DeviceToken deviceToken = new DeviceToken(refreshToken);
-
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
                 LaunchActivity.mypref, Context.MODE_PRIVATE);
         String deviceId = sharedpreferences.getString(LaunchActivity.XR_DID, "");
