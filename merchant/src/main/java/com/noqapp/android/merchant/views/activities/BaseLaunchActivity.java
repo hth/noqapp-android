@@ -79,7 +79,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public static void setMerchantListFragment(MerchantListFragment merchantListFragment) {
         BaseLaunchActivity.merchantListFragment = merchantListFragment;
     }
-
+    protected DeviceModel deviceModel;
     protected static MerchantListFragment merchantListFragment;
     protected final String IS_LOGIN = "IsLoggedIn";
     protected final String KEY_USER_EMAIL = "userEmail";
@@ -132,7 +132,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         languagepref.registerOnSharedPreferenceChangeListener(this);
         language = languagepref.getString(
                 "pref_language", "");
-
+        deviceModel = new DeviceModel(this);
 
         if (!language.equals("")) {
             if (language.equals("hi")) {
@@ -677,7 +677,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         } else {
             Log.d(BaseLaunchActivity.class.getSimpleName(), "Device Id exist" + deviceId);
         }
-        DeviceModel.register(deviceId, deviceToken);
+        deviceModel.register(deviceId, deviceToken);
     }
 
     private void setSharedPreferenceDeviceID(SharedPreferences sharedpreferences, String deviceId) {

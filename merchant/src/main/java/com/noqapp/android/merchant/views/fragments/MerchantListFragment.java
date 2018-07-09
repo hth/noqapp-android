@@ -69,6 +69,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private Snackbar snackbar;
     private boolean isFragmentVisible = false;
     private AutoCompleteTextView auto_complete_search;
+    private ManageQueueModel manageQueueModel;
 
     public MerchantListFragment() {
 
@@ -84,7 +85,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantlist, container, false);
-
+        manageQueueModel = new ManageQueueModel();
+        manageQueueModel.setTopicPresenter(this);
         String strOutput = LaunchActivity.getLaunchActivity().getCounterName();
         Type type = new TypeToken<HashMap<String, String>>() {}.getType();
         Gson gson = new Gson();
@@ -181,8 +183,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
-                ManageQueueModel.topicPresenter = this;
-                ManageQueueModel.getQueues(
+                manageQueueModel.getQueues(
                         LaunchActivity.getLaunchActivity().getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth());
@@ -423,8 +424,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         //Refresh the ListView after pull
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             swipeRefreshLayout.setRefreshing(true);
-            ManageQueueModel.topicPresenter = this;
-            ManageQueueModel.getQueues(
+            manageQueueModel.getQueues(
                     LaunchActivity.getLaunchActivity().getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());

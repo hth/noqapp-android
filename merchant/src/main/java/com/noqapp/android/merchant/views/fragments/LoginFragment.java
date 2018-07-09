@@ -43,8 +43,9 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     private EditText  edt_pwd;
     private AutoCompleteTextView actv_email;
     private String email, pwd;
-
     private ArrayList<String> userList = new ArrayList<>();
+    private LoginModel loginModel;
+    private MerchantProfileModel merchantProfileModel;
 
 
     public LoginFragment() {
@@ -55,12 +56,12 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
 
         View view = inflater.inflate(R.layout.frag_login, container, false);
-        btn_login = (Button) view.findViewById(R.id.btn_login);
-        actv_email = (AutoCompleteTextView) view.findViewById(R.id.actv_email);
-        edt_pwd = (EditText) view.findViewById(R.id.edt_pwd);
+        btn_login = view.findViewById(R.id.btn_login);
+        actv_email = view.findViewById(R.id.actv_email);
+        edt_pwd = view.findViewById(R.id.edt_pwd);
         userList = LaunchActivity.getLaunchActivity().getUserList();
-        LoginModel.loginPresenter = this;
-        MerchantProfileModel.merchantPresenter = this;
+        loginModel = new LoginModel(this);
+        merchantProfileModel = new MerchantProfileModel();
         //Creating the instance of ArrayAdapter containing list of fruit names
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (getActivity(), android.R.layout.select_dialog_item, userList);
@@ -78,7 +79,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                     btn_login.setTextColor(Color.WHITE);
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
-                        LoginModel.login(email.toLowerCase(), pwd);
+                        loginModel.login(email.toLowerCase(), pwd);
 
                         Answers.getInstance().logLogin(new LoginEvent()
                                 .putMethod("Email_Password_Login")
@@ -113,7 +114,8 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     public void loginResponse(String email, String auth) {
         if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(auth)) {
             LaunchActivity.getLaunchActivity().setUserInformation("", "", email, auth, true);
-            MerchantProfileModel.fetch(email, auth);
+            merchantProfileModel.setMerchantPresenter(this);
+            merchantProfileModel.fetch(email, auth);
             if(!userList.contains(email)){
                 userList.add(email);
                 LaunchActivity.getLaunchActivity().setUserList(userList);

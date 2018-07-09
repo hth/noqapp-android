@@ -112,8 +112,8 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
         itemView = inflater.inflate(R.layout.viewpager_item, container, false);
         context = getActivity();
-        manageQueueModel = new ManageQueueModel(this);
-        ManageQueueModel.manageQueuePresenter = this;
+        manageQueueModel = new ManageQueueModel();
+        manageQueueModel.setManageQueuePresenter(this);
         jsonTopic = topicsList.get(currrentpos);
 
 
@@ -386,7 +386,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                 if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
                     setDispensePresenter();
-                    ManageQueueModel.dispenseToken(
+                    manageQueueModel.dispenseToken(
                             LaunchActivity.getLaunchActivity().getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
@@ -475,7 +475,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                         cid = edt_id.getText().toString();
                         edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
                     }
-                    ManageQueueModel.dispenseTokenWithClientInfo(
+                    manageQueueModel.dispenseTokenWithClientInfo(
                             LaunchActivity.getLaunchActivity().getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
@@ -500,11 +500,11 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
 
     private void setPresenter() {
-        ManageQueueModel.manageQueuePresenter = this;
+       manageQueueModel.setManageQueuePresenter(this);
     }
 
     private void setDispensePresenter() {
-        ManageQueueModel.dispenseTokenPresenter =this;
+        manageQueueModel.setDispenseTokenPresenter(this);
     }
 
     @Override
@@ -652,7 +652,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                         served.setServedNumber(jsonTopic.getServingNumber());
                         served.setGoTo(tv_counter_name.getText().toString());
                         setPresenter();
-                        ManageQueueModel.served(
+                        manageQueueModel.served(
                                 LaunchActivity.getLaunchActivity().getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),
@@ -680,7 +680,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                             served.setServedNumber(jsonTopic.getServingNumber());
                             served.setGoTo(tv_counter_name.getText().toString());
                             setPresenter();
-                            ManageQueueModel.served(
+                            manageQueueModel.served(
                                     LaunchActivity.getLaunchActivity().getDeviceID(),
                                     LaunchActivity.getLaunchActivity().getEmail(),
                                     LaunchActivity.getLaunchActivity().getAuth(),
@@ -729,7 +729,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                                         served.setServedNumber(jsonTopic.getServingNumber());
                                         served.setGoTo(tv_counter_name.getText().toString());
                                         setPresenter();
-                                        ManageQueueModel.served(
+                                        manageQueueModel.served(
                                                 LaunchActivity.getLaunchActivity().getDeviceID(),
                                                 LaunchActivity.getLaunchActivity().getEmail(),
                                                 LaunchActivity.getLaunchActivity().getAuth(),
@@ -761,7 +761,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                                 served.setServedNumber(jsonTopic.getServingNumber());
                                 served.setGoTo(tv_counter_name.getText().toString());
                                 setPresenter();
-                                ManageQueueModel.served(
+                                manageQueueModel.served(
                                         LaunchActivity.getLaunchActivity().getDeviceID(),
                                         LaunchActivity.getLaunchActivity().getEmail(),
                                         LaunchActivity.getLaunchActivity().getAuth(),
@@ -780,6 +780,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setVisibility(View.VISIBLE);
+            manageQueueModel.setQueuePersonListPresenter(this);
             manageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -809,7 +810,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                         //served.setServedNumber(jsonTopic.getServingNumber());
                         served.setGoTo(tv_counter_name.getText().toString());
                         served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
-                        ManageQueueModel.acquire(
+                        manageQueueModel.acquire(
                                 LaunchActivity.getLaunchActivity().getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),
@@ -834,7 +835,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         LaunchActivity.getLaunchActivity().progressDialog.show();
         String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(phoneNo,  countryShortName);
         setDispensePresenter();
-        ManageQueueModel.dispenseTokenWithClientInfo(
+        manageQueueModel.dispenseTokenWithClientInfo(
                 LaunchActivity.getLaunchActivity().getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(),

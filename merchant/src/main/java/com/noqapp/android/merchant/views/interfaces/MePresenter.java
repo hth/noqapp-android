@@ -17,8 +17,7 @@ public class MePresenter implements ProfilePresenter {
     }
 
     public void callProfile(Registration registration) {
-        RegisterModel registerModel = new RegisterModel();
-        registerModel.profilePresenter = this;
+        RegisterModel registerModel = new RegisterModel(this);
         registerModel.register(UserUtils.getDeviceId(), registration);
     }
 

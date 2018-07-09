@@ -19,9 +19,13 @@ import retrofit2.Response;
 public class M_MerchantProfileModel extends MerchantProfileModel {
     private static final String TAG = M_MerchantProfileModel.class.getSimpleName();
 
-    public static IntellisensePresenter intellisensePresenter;
+    public M_MerchantProfileModel (IntellisensePresenter intellisensePresenter) {
+        this.intellisensePresenter = intellisensePresenter;
+    }
 
-    public static void uploadIntellisense(String did, String mail, String auth,JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal) {
+    public IntellisensePresenter intellisensePresenter;
+
+    public void uploadIntellisense(String did, String mail, String auth,JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal) {
         merchantProfileService.intellisense(did, Constants.DEVICE_TYPE, mail, auth, jsonProfessionalProfilePersonal).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {

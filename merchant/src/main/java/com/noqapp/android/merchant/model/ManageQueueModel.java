@@ -32,15 +32,27 @@ public class ManageQueueModel {
     private static final String TAG = ManageQueueModel.class.getSimpleName();
 
     private static final ManageQueueService manageQueueService;
-    public static ManageQueuePresenter manageQueuePresenter;
-    public static DispenseTokenPresenter dispenseTokenPresenter;
-    public static TopicPresenter topicPresenter;
+    public ManageQueuePresenter manageQueuePresenter;
+    public DispenseTokenPresenter dispenseTokenPresenter;
+    public TopicPresenter topicPresenter;
+    public QueuePersonListPresenter queuePersonListPresenter;
 
-    public ManageQueueModel(QueuePersonListPresenter queuePersonListPresenter) {
-        this.queuePersonListPresenter = queuePersonListPresenter;
+
+    public void setManageQueuePresenter(ManageQueuePresenter manageQueuePresenter) {
+        this.manageQueuePresenter = manageQueuePresenter;
     }
 
-    public QueuePersonListPresenter queuePersonListPresenter;
+    public void setDispenseTokenPresenter(DispenseTokenPresenter dispenseTokenPresenter) {
+        this.dispenseTokenPresenter = dispenseTokenPresenter;
+    }
+
+    public void setTopicPresenter(TopicPresenter topicPresenter) {
+        this.topicPresenter = topicPresenter;
+    }
+
+    public void setQueuePersonListPresenter(QueuePersonListPresenter queuePersonListPresenter) {
+        this.queuePersonListPresenter = queuePersonListPresenter;
+    }
 
     static {
         manageQueueService = RetrofitClient.getClient().create(ManageQueueService.class);
@@ -51,7 +63,7 @@ public class ManageQueueModel {
      * @param mail
      * @param auth
      */
-    public static void getQueues(String did, String mail, String auth) {
+    public void getQueues(String did, String mail, String auth) {
         manageQueueService.getQueues(did, Constants.DEVICE_TYPE, Constants.appVersion(), mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
@@ -82,7 +94,7 @@ public class ManageQueueModel {
      * @param mail
      * @param auth
      */
-    public static void served(String did, String mail, String auth, Served served) {
+    public void served(String did, String mail, String auth, Served served) {
         manageQueueService.served(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
@@ -119,7 +131,7 @@ public class ManageQueueModel {
      * @param mail
      * @param auth
      */
-    public static void acquire(String did, String mail, String auth, Served served) {
+    public void acquire(String did, String mail, String auth, Served served) {
         manageQueueService.acquire(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
@@ -180,7 +192,7 @@ public class ManageQueueModel {
     }
 
 
-    public static void dispenseToken(String did, String mail, String auth, String codeQR) {
+    public void dispenseToken(String did, String mail, String auth, String codeQR) {
         manageQueueService.dispenseTokenWithoutClientInfo(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
@@ -210,7 +222,7 @@ public class ManageQueueModel {
     }
 
 
-    public static void dispenseTokenWithClientInfo(String did, String mail, String auth, JsonBusinessCustomerLookup jsonBusinessCustomerLookup) {
+    public void dispenseTokenWithClientInfo(String did, String mail, String auth, JsonBusinessCustomerLookup jsonBusinessCustomerLookup) {
         manageQueueService.dispenseTokenWithClientInfo(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomerLookup).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {

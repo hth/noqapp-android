@@ -57,12 +57,14 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     protected LinearLayout ll_gender;
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
+    private MerchantProfileModel merchantProfileModel;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
 
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        merchantProfileModel = new MerchantProfileModel();
         tv_male = view.findViewById(R.id.tv_male);
         tv_female = view.findViewById(R.id.tv_female);
 
@@ -164,7 +166,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                     0, 0, R.drawable.arrow_white, 0);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
              //   progressDialog.show();
-                MerchantProfileModel.profilePresenter = this;
                 //   String phoneNo = edt_phoneNo.getText().toString();
                 String name = edt_name.getText().toString();
                 //   String mail = edt_Mail.getText().toString();
@@ -176,7 +177,8 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 updateProfile.setBirthday(convertDOBToValidFormat(birthday));
                 updateProfile.setGender(gender);
                 updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
-                MerchantProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                merchantProfileModel.setProfilePresenter(this);
+                merchantProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
