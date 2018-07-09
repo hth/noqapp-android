@@ -19,6 +19,7 @@ import com.noqapp.android.merchant.model.BusinessCustomerModel;
 import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
@@ -123,17 +124,31 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
                     if (TextUtils.isEmpty(edt_id.getText().toString())) {
                         edt_id.setError(mContext.getString(R.string.error_customer_id));
-                    } else {
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
-                        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
-                        businessCustomerModel.addId(
-                                LaunchActivity.getLaunchActivity().getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                new JsonBusinessCustomerLookup().setCodeQR(qCodeQR).setCustomerPhone(phoneNoWithCode).setBusinessCustomerId(edt_id.getText().toString()));
+                    }else {
+                        if(jsonQueuedPerson.getBusinessCustomerId().equalsIgnoreCase(edt_id.getText().toString())){
+                            edt_id.setError(mContext.getString(R.string.error_customer_id_exist));
+                        }else {
+                            LaunchActivity.getLaunchActivity().progressDialog.show();
+                            String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
+                            JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonQueuedPerson.getQueueUserId());
+                            jsonBusinessCustomer.setCodeQR(qCodeQR);
+                            jsonBusinessCustomer.setCustomerPhone(phoneNoWithCode);
+                            jsonBusinessCustomer.setBusinessCustomerId(edt_id.getText().toString());
+                            if (TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())) {
+                                businessCustomerModel.addId(
+                                        LaunchActivity.getLaunchActivity().getDeviceID(),
+                                        LaunchActivity.getLaunchActivity().getEmail(),
+                                        LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
+                            } else {
+                                businessCustomerModel.editId(
+                                        LaunchActivity.getLaunchActivity().getDeviceID(),
+                                        LaunchActivity.getLaunchActivity().getEmail(),
+                                        LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
+                            }
+                            btn_update.setClickable(false);
+                            mAlertDialog.dismiss();
+                        }
 
-                        btn_update.setClickable(false);
-                        mAlertDialog.dismiss();
                     }
                 }
             });
