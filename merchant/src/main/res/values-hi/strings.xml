@@ -93,4 +93,5 @@
     <string name="update_details">Update Details</string>
     <string name="patient_details">Business Patient ID</string>
     <string name="customer_id">Patient ID</string>
+    <string name="error_customer_id_exist">This Customer Id already associated with the customer</string>
 </resources>
