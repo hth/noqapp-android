@@ -17,17 +17,15 @@ import java.util.ArrayList;
 public class NavigationDrawerAdapter extends BaseAdapter {
 
     private Context mContext;
-
+    private ArrayList<NavigationBean> data;
 
     public ArrayList<NavigationBean> getData() {
         return data;
     }
 
-    private ArrayList<NavigationBean> data;
+
 
     public NavigationDrawerAdapter(Context mContext, ArrayList<NavigationBean> data) {
-
-
         this.mContext = mContext;
         this.data = data;
     }

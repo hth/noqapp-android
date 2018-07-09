@@ -5,9 +5,9 @@ import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
 
 
 public interface TopicPresenter {
-    void queueResponse(JsonTopicList token);
+    void topicPresenterResponse(JsonTopicList token);
 
-    void queueError();
+    void topicPresenterError();
 
     void authenticationFailure(int errorCode);
 }

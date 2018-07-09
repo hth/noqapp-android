@@ -30,11 +30,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.RegisterModel;
 import com.noqapp.android.merchant.presenter.beans.body.Registration;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.views.interfaces.MePresenter;
-import com.noqapp.android.merchant.views.interfaces.MeView;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 import com.noqapp.common.beans.ErrorEncounteredJson;
 import com.noqapp.common.beans.JsonProfile;
 
@@ -48,7 +49,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegistrationActivity extends AppCompatActivity implements MeView, View.OnClickListener {
+public class RegistrationActivity extends AppCompatActivity implements ProfilePresenter, View.OnClickListener {
 
     public interface RegisterCallBack{
         void passPhoneNo(String phoneNo, String countryShortName);
@@ -193,7 +194,7 @@ public class RegistrationActivity extends AppCompatActivity implements MeView, V
     }
 
     @Override
-    public void queueResponse(JsonProfile profile, String email, String auth) {
+    public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             registerCallBack.passPhoneNo(profile.getPhoneRaw(),profile.getCountryShortName());
@@ -210,8 +211,17 @@ public class RegistrationActivity extends AppCompatActivity implements MeView, V
     }
 
     @Override
-    public void queueError() {
-        Log.d(TAG, "Error");
+    public void profileError() {
+        dismissProgress();
+    }
+
+    @Override
+    public void profileError(String error) {
+        dismissProgress();
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
         dismissProgress();
     }
 
@@ -322,9 +332,9 @@ public class RegistrationActivity extends AppCompatActivity implements MeView, V
         registration.setCountryShortName(getIntent().getStringExtra("countryShortName"));
         registration.setInviteCode("");
 
-        MePresenter mePresenter = new MePresenter(this);
-        mePresenter.meView = this;
-        mePresenter.callProfile(registration);
+        RegisterModel registerModel = new RegisterModel(this);
+        registerModel.register(UserUtils.getDeviceId(), registration);
+
     }
 
     private void initProgress() {

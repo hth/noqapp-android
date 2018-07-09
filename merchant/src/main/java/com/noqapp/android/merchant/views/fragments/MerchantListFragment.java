@@ -105,10 +105,10 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                 mHashmap.put(topics.get(i).getCodeQR(), "");
             }
         }
-        listview = (ListView) view.findViewById(R.id.listview);
-        rl_empty_screen = (RelativeLayout) view.findViewById(R.id.rl_empty_screen);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
-        auto_complete_search = (AutoCompleteTextView) view.findViewById(R.id.auto_complete_search);
+        listview = view.findViewById(R.id.listview);
+        rl_empty_screen = view.findViewById(R.id.rl_empty_screen);
+        swipeRefreshLayout = view.findViewById(R.id.refresh);
+        auto_complete_search = view.findViewById(R.id.auto_complete_search);
         auto_complete_search.setThreshold(1);
         auto_complete_search.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -223,7 +223,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
     @Override
-    public void queueResponse(JsonTopicList topiclist) {
+    public void topicPresenterResponse(JsonTopicList topiclist) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         // To cancel
         if (null != topiclist) {
@@ -240,7 +240,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
     @Override
-    public void queueError() {
+    public void topicPresenterError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
         swipeRefreshLayout.setRefreshing(false);
     }

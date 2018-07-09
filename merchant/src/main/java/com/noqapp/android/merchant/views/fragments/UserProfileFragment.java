@@ -204,12 +204,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public void queueResponse(JsonProfile profile, String email, String auth) {
-
-    }
-
-
-    @Override
     public void profileError() {
        // dismissProgress();
     }

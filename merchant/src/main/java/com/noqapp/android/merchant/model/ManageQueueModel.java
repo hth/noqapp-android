@@ -74,7 +74,7 @@ public class ManageQueueModel {
 
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Get all assigned queues", String.valueOf(response.body()));
-                    topicPresenter.queueResponse(response.body());
+                    topicPresenter.topicPresenterResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while getting all queues assigned");
@@ -84,7 +84,7 @@ public class ManageQueueModel {
             @Override
             public void onFailure(@NonNull Call<JsonTopicList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                topicPresenter.queueError();
+                topicPresenter.topicPresenterError();
             }
         });
     }

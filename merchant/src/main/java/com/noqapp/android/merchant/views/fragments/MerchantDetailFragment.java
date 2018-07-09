@@ -76,7 +76,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private TextView tvcount;
     private PeopleInQAdapter peopleInQAdapter;
     private List<JsonQueuedPerson> jsonQueuedPersonArrayList= new ArrayList<>();
-    EditText edt_mobile;
+    private EditText edt_mobile;
     private RecyclerView rv_queue_people;
     private ProgressBar progressDialog;
     private View itemView;
@@ -94,13 +94,11 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private int lastSelectedPos = -1;
     private LinearLayoutManager horizontalLayoutManagaer;
     private ManageQueueModel manageQueueModel;
+    private ArrayList<JsonTopic> topicsList;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
     }
-
-    private ArrayList<JsonTopic> topicsList;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -336,8 +334,8 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        Button btn_update = (Button) customDialogView.findViewById(R.id.btn_update);
-        Button btn_cancel = (Button) customDialogView.findViewById(R.id.btn_cancel);
+        Button btn_update = customDialogView.findViewById(R.id.btn_update);
+        Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -371,14 +369,14 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_create_token, null, false);
-        ImageView actionbarBack = (ImageView) customDialogView.findViewById(R.id.actionbarBack);
-        tv_create_token = (TextView) customDialogView.findViewById(R.id.tvtitle);
-        iv_banner = (ImageView) customDialogView.findViewById(R.id.iv_banner);
-        tvcount = (TextView) customDialogView.findViewById(R.id.tvcount);
+        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
+        tv_create_token = customDialogView.findViewById(R.id.tvtitle);
+        iv_banner = customDialogView.findViewById(R.id.iv_banner);
+        tvcount = customDialogView.findViewById(R.id.tvcount);
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        btn_create_token = (Button) customDialogView.findViewById(R.id.btn_create_token);
+        btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
         btn_create_token.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -585,8 +583,6 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                 break;
             case N:
                 tv_next.setText(context.getString(R.string.next));
-//                btn_next.setVisibility(View.VISIBLE);
-//                btn_skip.setVisibility(View.VISIBLE);
                 btn_next.setEnabled(true);
                 btn_next.setBackgroundResource(R.mipmap.next);
                 btn_skip.setEnabled(true);
@@ -598,8 +594,6 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                 tv_start.setText(context.getString(R.string.done));
                 tv_total_value.setText("0");
                 btn_start.setBackgroundResource(R.mipmap.stop);
-                // btn_next.setVisibility(View.GONE);
-                // btn_skip.setVisibility(View.GONE);
                 btn_next.setEnabled(false);
                 btn_next.setBackgroundResource(R.mipmap.next_inactive);
                 btn_skip.setEnabled(false);
@@ -609,9 +603,6 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                 break;
             case C:
                 tv_start.setText(context.getString(R.string.closed));
-//                btn_next.setVisibility(View.GONE);
-//                btn_skip.setVisibility(View.GONE);
-//                btn_start.setVisibility(View.GONE);
                 btn_start.setEnabled(false);
                 btn_start.setBackgroundResource(R.mipmap.stop_inactive);
                 btn_next.setEnabled(false);
@@ -621,8 +612,6 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                 break;
             case P:
                 tv_start.setText(context.getString(R.string.pause));
-                // btn_next.setVisibility(View.GONE);
-                // btn_skip.setVisibility(View.GONE);
                 btn_next.setEnabled(false);
                 btn_next.setBackgroundResource(R.mipmap.next_inactive);
                 btn_skip.setEnabled(false);

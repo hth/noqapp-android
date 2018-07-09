@@ -22,16 +22,13 @@ import java.util.List;
 
 public class AutocompleteAdapter extends ArrayAdapter {
     private List<JsonTopic> dataList;
-    private Context mContext;
     private int itemLayout;
-
     private ListFilter listFilter = new ListFilter();
     private List<JsonTopic> dataListAllItems;
 
     public AutocompleteAdapter(Context context, int resource, List<JsonTopic> storeDataLst) {
         super(context, resource, storeDataLst);
         dataList = storeDataLst;
-        mContext = context;
         itemLayout = resource;
     }
 

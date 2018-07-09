@@ -44,12 +44,12 @@ public class MerchantListAdapter extends BaseAdapter {
         if (view == null) {
             recordHolder = new RecordHolder();
             view = layoutInflater.inflate(R.layout.listitem_merchant, null);
-            recordHolder.tv_number = (TextView) view.findViewById(R.id.tv_number);
-            recordHolder.tv_queue_name = (TextView) view.findViewById(R.id.tv_queue_name);
-            recordHolder.tv_serving_no = (TextView) view.findViewById(R.id.tv_serving_no);
-            recordHolder.tv_inqueue = (TextView) view.findViewById(R.id.tv_inqueue);
-            recordHolder.tv_label = (TextView) view.findViewById(R.id.tv_label);
-            recordHolder.cardview = (CardView) view.findViewById(R.id.cardview);
+            recordHolder.tv_number = view.findViewById(R.id.tv_number);
+            recordHolder.tv_queue_name = view.findViewById(R.id.tv_queue_name);
+            recordHolder.tv_serving_no = view.findViewById(R.id.tv_serving_no);
+            recordHolder.tv_inqueue = view.findViewById(R.id.tv_inqueue);
+            recordHolder.tv_label = view.findViewById(R.id.tv_label);
+            recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
