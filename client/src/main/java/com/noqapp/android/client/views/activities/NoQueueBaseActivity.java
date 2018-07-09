@@ -48,6 +48,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     /* Secured Shared Preference. */
     public static final String APP_PREF = "shared_pref";
     public static String XR_DID = "X-R-DID";
+    public static final String FCM_TOKEN = "fcmToken";
     public static NoQueueBaseActivity noQueueBaseActivity;
     private static SharedPreferences sharedPreferences;
 
@@ -70,6 +71,13 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 //    public static void setAutoJoinStatus(boolean autoJoinStatus) {
 //        sharedPreferences.edit().putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, autoJoinStatus).commit();
 //    }
+
+    public static String getFCMToken() {
+        return sharedPreferences.getString(FCM_TOKEN, "");
+    }
+    public static void setFCMToken(String fcmtoken) {
+        sharedPreferences.edit().putString(FCM_TOKEN, fcmtoken).apply();
+    }
 
     public static String getUserName() {
         return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_NAME, "Guest User");

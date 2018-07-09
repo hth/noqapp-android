@@ -32,6 +32,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceModel;
 import com.noqapp.android.client.model.database.DatabaseHelper;
@@ -52,6 +55,7 @@ import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
+import com.noqapp.common.beans.body.DeviceToken;
 import com.noqapp.common.utils.NetworkUtil;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -62,6 +66,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -228,8 +233,39 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( LaunchActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String newToken = instanceIdResult.getToken();
+                Log.e("newToken",newToken);
+                String fcmToken = newToken;
+                Log.d(TAG, "FCM Token=" + fcmToken);
+                sendRegistrationToServer(fcmToken);
+            }
+        });
+    }
+    private void sendRegistrationToServer(String refreshToken) {
+        DeviceToken deviceToken = new DeviceToken(refreshToken);
+        NoQueueBaseActivity.setFCMToken(refreshToken);
+        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
+                NoQueueBaseActivity.APP_PREF, Context.MODE_PRIVATE);
+        String deviceId = sharedpreferences.getString(NoQueueBaseActivity.XR_DID, "");
+        if (StringUtils.isBlank(deviceId)) {
+            deviceId = UUID.randomUUID().toString().toUpperCase();
+            setSharedPreferenceDeviceID(sharedpreferences, deviceId);
+            Log.d(TAG, "Created deviceId=" + deviceId);
+        } else {
+            Log.d(TAG, "Exist deviceId=" + deviceId);
+        }
+        DeviceModel.register(deviceId, deviceToken);
     }
 
+    private void setSharedPreferenceDeviceID(SharedPreferences sharedpreferences, String deviceId) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(NoQueueBaseActivity.XR_DID, deviceId);
+        editor.apply();
+    }
     @Override
     public void updateLocationUI() {
         if (null != scanFragment && Double.compare(old_latitude, latitute) != 0) {
@@ -237,23 +273,24 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 if (old_latitude == 0) {
                     scanFragment.updateUIwithNewLocation(latitute, longitute, cityName);
                     old_latitude = latitute;
-                } else {
-                    if (showLocationPopup)
-                        new AlertDialog.Builder(launchActivity)
-                                .setTitle(getString(R.string.location_change))
-                                .setMessage(getString(R.string.location_msg))
-                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        scanFragment.updateUIwithNewLocation(latitute, longitute, cityName);
-                                    }
-                                })
-                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        showLocationPopup = false;
-                                    }
-                                })
-                                .show();
                 }
+//                else {
+//                    if (showLocationPopup)
+//                        new AlertDialog.Builder(launchActivity)
+//                                .setTitle(getString(R.string.location_change))
+//                                .setMessage(getString(R.string.location_msg))
+//                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        scanFragment.updateUIwithNewLocation(latitute, longitute, cityName);
+//                                    }
+//                                })
+//                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        showLocationPopup = false;
+//                                    }
+//                                })
+//                                .show();
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
