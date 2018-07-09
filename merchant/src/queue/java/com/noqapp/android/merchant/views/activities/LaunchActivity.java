@@ -43,7 +43,6 @@ public class LaunchActivity extends BaseLaunchActivity {
         setSupportActionBar(toolbar);
         //   getSupportActionBar().setDisplayShowTitleEnabled(false);
         launchActivity = this;
-        DeviceModel.appBlacklistPresenter = this;
         Log.v("device id check", getDeviceID());
         networkUtil = new NetworkUtil(this);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -75,7 +74,7 @@ public class LaunchActivity extends BaseLaunchActivity {
 
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
+            deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
     }
 
