@@ -295,7 +295,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     }
 
     @Override
-    public void queueResponse(JsonProfile profile, String email, String auth) {
+    public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             loginCallBack.passPhoneNo(profile.getPhoneRaw(),profile.getCountryShortName());
@@ -314,12 +314,6 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                 finish();//close the current activity
             }
         }
-    }
-
-
-    @Override
-    public void profileResponse(JsonProfile jsonProfile, String mail, String auth) {
-
     }
 
     @Override

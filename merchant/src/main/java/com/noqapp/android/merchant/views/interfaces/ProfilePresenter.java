@@ -5,9 +5,7 @@ import com.noqapp.common.beans.JsonProfile;
 
 public interface ProfilePresenter {
 
-    void profileResponse(JsonProfile jsonProfile,final String mail, final String auth);
-
-    void queueResponse(JsonProfile profile, String email, String auth);
+    void profileResponse(JsonProfile jsonProfile, String mail, String auth);
 
     void profileError();
 

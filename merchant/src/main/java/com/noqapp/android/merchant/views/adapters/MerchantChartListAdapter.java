@@ -43,9 +43,9 @@ public class MerchantChartListAdapter extends BaseAdapter {
         if (view == null) {
             recordHolder = new RecordHolder();
             view = layoutInflater.inflate(R.layout.listitem_merchant_chart, null);
-            recordHolder.tv_number = (TextView) view.findViewById(R.id.tv_number);
-            recordHolder.tv_queue_name = (TextView) view.findViewById(R.id.tv_queue_name);
-            recordHolder.cardview = (CardView) view.findViewById(R.id.cardview);
+            recordHolder.tv_number = view.findViewById(R.id.tv_number);
+            recordHolder.tv_queue_name = view.findViewById(R.id.tv_queue_name);
+            recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
