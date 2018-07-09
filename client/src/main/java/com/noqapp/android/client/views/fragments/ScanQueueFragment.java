@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.model.QueueApiModel;
@@ -83,6 +84,9 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected TextView tv_current_title;
     @BindView(R.id.tv_auto)
     protected TextView tv_auto;
+
+    @BindView(R.id.tv_deviceId)
+    protected TextView tv_deviceId;
 
     private static final int MSG_CURRENT_QUEUE = 0;
     private static final int MSG_HISTORY_QUEUE = 1;
@@ -295,6 +299,12 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_scan));
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
         fetchCurrentAndHistoryList();
+        try{
+            tv_deviceId.setText(UserUtils.getDeviceId()+"\n"+"FCM Token: "+NoQueueBaseActivity.getFCMToken());
+            tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @OnClick(R.id.cv_scan)

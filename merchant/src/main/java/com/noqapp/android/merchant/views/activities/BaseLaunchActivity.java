@@ -32,9 +32,13 @@ import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.DeviceModel;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.network.VersionCheckAsync;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
@@ -49,9 +53,11 @@ import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.common.beans.body.DeviceToken;
 import com.noqapp.common.model.types.UserLevelEnum;
 import com.noqapp.common.utils.NetworkUtil;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.Serializable;
@@ -59,6 +65,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.UUID;
 
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
@@ -150,6 +157,16 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             }
         };
 
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String newToken = instanceIdResult.getToken();
+                Log.e("newToken",newToken);
+                String fcmToken = newToken;
+                Log.d(BaseLaunchActivity.class.getSimpleName(), "FCM Token=" + fcmToken);
+                sendRegistrationToServer(fcmToken);
+            }
+        });
     }
 
     protected void initDrawer(){
@@ -645,5 +662,27 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Charts"));
         drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
         mDrawerList.setAdapter(drawerAdapter);
+    }
+
+    private void sendRegistrationToServer(String refreshToken) {
+        DeviceToken deviceToken = new DeviceToken(refreshToken);
+
+        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
+                LaunchActivity.mypref, Context.MODE_PRIVATE);
+        String deviceId = sharedpreferences.getString(LaunchActivity.XR_DID, "");
+        if (StringUtils.isBlank(deviceId)) {
+            deviceId = UUID.randomUUID().toString().toUpperCase();
+            setSharedPreferenceDeviceID(sharedpreferences, deviceId);
+            Log.d(BaseLaunchActivity.class.getSimpleName(), "Device Id created" + deviceId);
+        } else {
+            Log.d(BaseLaunchActivity.class.getSimpleName(), "Device Id exist" + deviceId);
+        }
+        DeviceModel.register(deviceId, deviceToken);
+    }
+
+    private void setSharedPreferenceDeviceID(SharedPreferences sharedpreferences, String deviceId) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(LaunchActivity.XR_DID, deviceId);
+        editor.apply();
     }
 }
