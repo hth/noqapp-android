@@ -237,15 +237,18 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 editBusinessCustomerId(context, jsonQueuedPerson);
             }
         });
-
-        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
-            if(glowPostion > 0 && glowPostion - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
-                recordHolder.tv_create_case.setVisibility(View.VISIBLE);
-            }else{
+        try {
+            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+                if (glowPostion > 0 && glowPostion - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
+                    recordHolder.tv_create_case.setVisibility(View.VISIBLE);
+                } else {
+                    recordHolder.tv_create_case.setVisibility(View.GONE);
+                }
+            } else {
                 recordHolder.tv_create_case.setVisibility(View.GONE);
             }
-        }else {
-            recordHolder.tv_create_case.setVisibility(View.GONE);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         if (jsonQueuedPerson.getDependents().size()>0)

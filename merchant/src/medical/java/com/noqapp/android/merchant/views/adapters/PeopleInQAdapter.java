@@ -125,7 +125,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                     if (TextUtils.isEmpty(edt_id.getText().toString())) {
                         edt_id.setError(mContext.getString(R.string.error_customer_id));
                     }else {
-                        if(jsonQueuedPerson.getBusinessCustomerId().equalsIgnoreCase(edt_id.getText().toString())){
+                        if(!TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) && jsonQueuedPerson.getBusinessCustomerId().equalsIgnoreCase(edt_id.getText().toString())){
                             edt_id.setError(mContext.getString(R.string.error_customer_id_exist));
                         }else {
                             LaunchActivity.getLaunchActivity().progressDialog.show();

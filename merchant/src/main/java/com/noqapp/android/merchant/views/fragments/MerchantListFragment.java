@@ -448,4 +448,9 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     public HashMap<String, String> getNameList() {
         return mHashmap;
     }
+
+    public void clearData(){
+        topics.clear();
+        adapter.notifyDataSetChanged();
+    }
 }
