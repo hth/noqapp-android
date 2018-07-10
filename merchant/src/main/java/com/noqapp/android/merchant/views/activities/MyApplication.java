@@ -6,6 +6,8 @@ import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.noqapp.common.utils.FontsOverride;
+
 import java.util.Locale;
 
 /**
@@ -27,6 +29,10 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FontsOverride.overrideFont(this, "DEFAULT", "fonts/roboto_regular.ttf");
+        FontsOverride.overrideFont(this, "MONOSPACE", "fonts/roboto_regular.ttf");
+        FontsOverride.overrideFont(this, "SERIF", "fonts/roboto_regular.ttf");
+        FontsOverride.overrideFont(this, "SANS_SERIF", "fonts/roboto_regular.ttf");
         setLocale();
     }
 
