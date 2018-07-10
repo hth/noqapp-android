@@ -55,14 +55,14 @@
                     android:orientation="vertical">
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                    <TextView
                         android:id="@+id/tv_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    <TextView
                         android:id="@+id/tv_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                         android:layout_marginTop="3dp"
                         android:textSize="14sp" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    <TextView
                         android:id="@+id/tv_phoneno"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -78,14 +78,14 @@
                         android:textSize="14sp" />
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    <TextView
                         android:id="@+id/tv_category_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
                         android:textSize="14sp" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                    <TextView
                         android:id="@+id/tv_status"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                     android:id="@+id/tv_store_rating"
                     layout="@layout/rating_textview" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                <TextView
                     android:id="@+id/tv_store_review"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
             </RelativeLayout>
 
 
-            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+            <TextView
                 android:id="@+id/tv_store_special"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

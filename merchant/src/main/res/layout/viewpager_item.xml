@@ -39,7 +39,7 @@
                     android:padding="5dp">
 
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                    <TextView
                         android:id="@+id/tv_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                         android:layout_below="@+id/tv_title"
                         android:layout_centerHorizontal="true" />
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+                    <TextView
                         android:id="@+id/tv_timing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                         android:layout_marginRight="50dp"
                         android:gravity="center">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -133,7 +133,7 @@
                             android:layout_marginTop="10dp"
                             android:gravity="center">
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:id="@+id/tv_counter_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
@@ -186,14 +186,14 @@
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                        <TextView
                             android:id="@+id/tv_current"
                             style="@style/style_join_queue_tv"
                             android:text="@string/serving"
                             android:textColor="@color/colorAddress"
                             android:textSize="15sp" />
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+                        <TextView
                             android:id="@+id/tv_current_value"
                             style="@style/style_join_queue_tv"
                             android:textColor="@color/colorMobile"
@@ -222,14 +222,14 @@
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                        <TextView
                             android:id="@+id/tv_total"
                             style="@style/style_join_queue_tv"
                             android:text="@string/in_Queue"
                             android:textColor="@color/colorAddress"
                             android:textSize="15sp" />
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+                        <TextView
                             android:id="@+id/tv_total_value"
                             style="@style/style_join_queue_tv"
                             android:textColor="@color/color_total_val"
@@ -255,7 +255,7 @@
                         android:layout_centerInParent="true"
                         android:orientation="vertical">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                        <TextView
                             android:id="@+id/tv_label"
                             style="@style/style_join_queue_tv"
                             android:text="@string/service_time"
@@ -309,7 +309,7 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+                            <Button
 
                                 android:id="@+id/btn_skip"
                                 android:layout_width="@dimen/play_btn_size"
@@ -320,7 +320,7 @@
                                 android:textColor="@android:color/transparent"
                                 android:textSize="15sp" />
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:id="@+id/tv_skip"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginTop="5dp"
@@ -336,7 +336,7 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+                            <Button
 
                                 android:id="@+id/btn_start"
                                 android:layout_width="@dimen/play_btn_size"
@@ -347,7 +347,7 @@
                                 android:textColor="@android:color/transparent"
                                 android:textSize="15sp" />
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:id="@+id/tv_start"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginTop="5dp"
@@ -364,7 +364,7 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+                            <Button
                                 android:id="@+id/btn_next"
                                 android:layout_width="@dimen/play_btn_size"
                                 android:layout_height="@dimen/play_btn_size"
@@ -374,7 +374,7 @@
                                 android:textColor="@android:color/transparent"
                                 android:textSize="15sp" />
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:id="@+id/tv_next"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginTop="5dp"

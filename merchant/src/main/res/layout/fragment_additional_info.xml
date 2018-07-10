@@ -36,28 +36,28 @@
                     android:orientation="vertical">
 
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:text="@string/education" />
 
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+                    <TextView
                         android:id="@+id/tv_education"
                         android:layout_width="match_parent"
                         android:textSize="16sp"
                         android:layout_height="wrap_content" />
 
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:text="@string/experience" />
 
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+                    <TextView
                         android:id="@+id/tv_experience"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -19,7 +19,7 @@
             android:paddingBottom="5dp"
             android:paddingTop="5dp">
 
-            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+            <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                     android:paddingLeft="@dimen/screen_padding"
                     android:paddingRight="@dimen/screen_padding">
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.75"
@@ -89,7 +89,7 @@
                     android:paddingLeft="@dimen/screen_padding"
                     android:paddingRight="@dimen/screen_padding">
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.75"
@@ -135,7 +135,7 @@
                         android:gravity="center_vertical"
                         android:weightSum="1">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".5"
@@ -144,7 +144,7 @@
                             android:textColor="@color/color_total_val"
                             android:textSize="18sp" />
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                        <TextView
                             android:id="@+id/tv_delay_in_minute"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
                             android:textSize="18sp" />
 
 
-                        <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+                        <Button
                             android:id="@+id/btn_update_delay"
                             android:layout_width="0dp"
                             android:layout_weight=".25"
@@ -204,7 +204,7 @@
                             android:orientation="horizontal"
                             android:weightSum="1">
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".7"
@@ -213,7 +213,7 @@
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:id="@+id/tv_token_available"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -232,7 +232,7 @@
                             android:layout_weight=".5"
                             android:orientation="horizontal">
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".7"
@@ -241,7 +241,7 @@
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:id="@+id/tv_store_start"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -268,7 +268,7 @@
                             android:layout_weight=".5"
                             android:orientation="horizontal">
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".7"
@@ -277,7 +277,7 @@
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:id="@+id/tv_token_not_available"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -296,7 +296,7 @@
                             android:layout_weight=".5"
                             android:orientation="horizontal">
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".7"
@@ -305,7 +305,7 @@
                                 android:textColor="@color/color_total_val"
                                 android:textSize="18sp" />
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                            <TextView
                                 android:id="@+id/tv_store_close"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -318,7 +318,7 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+                    <Button
                         android:id="@+id/btn_update_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -351,7 +351,7 @@
                     android:paddingLeft="@dimen/screen_padding"
                     android:paddingRight="@dimen/screen_padding">
 
-                    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                    <TextView
 
                         android:id="@+id/tv_limited_label"
                         android:layout_width="0dp"

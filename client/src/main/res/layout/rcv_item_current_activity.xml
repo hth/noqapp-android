@@ -56,7 +56,7 @@
                         android:orientation="vertical"
                         android:paddingTop="5dp">
 
-                        <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                        <TextView
                             android:id="@+id/tv_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                             android:textSize="16sp" />
 
 
-                        <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        <TextView
                             android:id="@+id/tv_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                     android:orientation="horizontal">
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    <TextView
                         android:id="@+id/tv_total_value"
                         style="@style/style_join_queue_tv"
                         android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
                         android:textColor="@color/colorMobile"
                         android:textSize="28sp" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    <TextView
                         android:id="@+id/tv_total"
                         style="@style/style_join_queue_tv"
                         android:layout_width="wrap_content"
@@ -112,7 +112,7 @@
                         android:textColor="@color/colorMobile"
                         android:textSize="14sp" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    <TextView
                         android:id="@+id/tv_estimated_time"
                         style="@style/style_join_queue_tv"
                         android:layout_width="wrap_content"
@@ -144,7 +144,7 @@
                     android:orientation="vertical">
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    <TextView
                         android:id="@+id/tv_current_value"
                         style="@style/style_join_queue_tv"
                         android:layout_width="match_parent"
@@ -157,7 +157,7 @@
                         android:textColor="@color/color_list_text"
                         android:textSize="42sp" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <TextView
                         android:id="@+id/tv_current"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"

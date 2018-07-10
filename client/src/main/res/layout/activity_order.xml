@@ -26,7 +26,7 @@
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp">
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                <TextView
                     android:id="@+id/tv_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                     android:textStyle="bold" />
 
 
-                <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                <TextView
                     android:id="@+id/address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                     android:text="Delivery Address"
                     android:textSize="16sp" />
 
-                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                <EditText
                     android:id="@+id/edt_address"
                     style="@style/style_register_edt"
                     android:layout_width="match_parent"
@@ -68,7 +68,7 @@
                     android:layout_margin="10dip"
                     android:visibility="gone"/>
 
-                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                <EditText
                     android:id="@+id/edt_phone"
                     style="@style/style_register_edt"
                     android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                     android:maxLength="12"
                     android:textSize="18sp" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                <TextView
                     android:id="@+id/tv_payment_mode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                     android:paddingRight="10dp"
                     android:paddingBottom="5dp">
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
@@ -159,7 +159,7 @@
                     android:layout_marginRight="10dp"
                     android:orientation="horizontal">
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -167,7 +167,7 @@
                         android:text="Total Amount: "
                         android:textSize="@dimen/store_info" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                    <TextView
                         android:id="@+id/tv_total_order_amt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -184,7 +184,7 @@
                     android:layout_marginRight="10dp"
                     android:orientation="horizontal">
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -192,7 +192,7 @@
                         android:text="Total Tax: "
                         android:textSize="@dimen/store_info" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                    <TextView
                         android:id="@+id/tv_tax_amt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
                     android:layout_marginRight="10dp"
                     android:orientation="horizontal">
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -217,7 +217,7 @@
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                    <TextView
                         android:id="@+id/tv_due_amt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

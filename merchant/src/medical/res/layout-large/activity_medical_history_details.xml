@@ -41,7 +41,7 @@
                         android:layout_weight=".5"
                         android:orientation="vertical">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        <TextView
                             style="@style/style_mdh_header"
                             android:text="Chief Complaint: " />
 
@@ -66,7 +66,7 @@
                             android:layout_marginBottom="10dp"
                             android:orientation="vertical">
 
-                            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                            <TextView
                                 style="@style/style_mdh_header"
                                 android:text="Past History: " />
 
@@ -98,7 +98,7 @@
                         android:layout_weight=".5"
                         android:orientation="vertical">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        <TextView
                             style="@style/style_mdh_header"
                             android:text="Family History: " />
 
@@ -117,7 +117,7 @@
                         android:layout_weight=".5"
                         android:orientation="vertical">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                        <TextView
                             style="@style/style_mdh_header"
                             android:text="Known Allergies: " />
 
@@ -133,7 +133,7 @@
                 </LinearLayout>
 
 
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                <TextView
                     style="@style/style_mdh_header"
                     android:text="Physical Examination: " />
 
@@ -152,7 +152,7 @@
                         android:layout_weight=".33"
                         android:orientation="vertical">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
@@ -160,7 +160,7 @@
                             android:text="Pulse"
                             android:textSize="15sp" />
 
-                        <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                        <EditText
                             android:id="@+id/edt_pulse"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                         android:layout_weight=".34"
                         android:orientation="vertical">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
@@ -189,7 +189,7 @@
                             android:text="B.P (Blood Pressure)"
                             android:textSize="15sp" />
 
-                        <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                        <EditText
                             android:id="@+id/edt_bp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
                         android:layout_weight=".33"
                         android:orientation="vertical">
 
-                        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
@@ -216,7 +216,7 @@
                             android:text="Weight(Kg)"
                             android:textSize="15sp" />
 
-                        <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+                        <EditText
                             android:id="@+id/edt_weight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -234,7 +234,7 @@
                 </LinearLayout>
 
 
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                <TextView
                     style="@style/style_mdh_header"
                     android:text="Clinical Findings: " />
 
@@ -245,7 +245,7 @@
                     android:text="" />
 
 
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                <TextView
                     style="@style/style_mdh_header"
                     android:text="Provisional /Differential Diagnosis" />
 
@@ -256,7 +256,7 @@
                     android:text="" />
 
 
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                <TextView
                     style="@style/style_mdh_header"
                     android:text="Investigation Advised: " />
 
@@ -267,7 +267,7 @@
                     android:text="" />
 
 
-                <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+                <TextView
                     style="@style/style_mdh_header"
                     android:layout_width="wrap_content"
                     android:text="Medication: " />
@@ -363,7 +363,7 @@
             </LinearLayout>
         </ScrollView>
 
-        <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+        <Button
             android:id="@+id/btn_update"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -22,7 +22,7 @@
             android:padding="10dp" />
 
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+        <TextView
             android:id="@+id/tv_toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+            <TextView
                 android:id="@+id/tvtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="15sp" />
 
-            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+            <TextView
                 android:id="@+id/tvcount"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
@@ -115,7 +115,7 @@
                     app:buttonTint="#e13e3e"/>
             </RadioGroup>
 
-            <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+            <EditText
                 android:id="@+id/edt_mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                 android:background="@drawable/edt_roun_rect"
                 android:inputType="phone"
                 android:padding="10dp" />
-            <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+            <EditText
                 android:id="@+id/edt_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                 android:padding="10dp" />
         </LinearLayout>
 
-        <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+        <Button
             android:id="@+id/btn_create_token"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

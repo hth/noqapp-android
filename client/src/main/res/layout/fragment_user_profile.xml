@@ -37,7 +37,7 @@
                     android:orientation="vertical">
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                    <TextView
                         style="@style/style_register_tv"
                         android:text="@string/available_other_place"
                         android:layout_marginBottom="10dp"/>

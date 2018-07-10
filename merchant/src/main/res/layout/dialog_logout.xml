@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+        <TextView
             android:id="@+id/tvtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:textColor="@color/color_action_bar"
             android:textSize="24sp" />
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+        <TextView
             android:id="@+id/tv_msg"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -47,7 +47,7 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+            <Button
                 android:id="@+id/btn_no"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
@@ -65,7 +65,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/color_grey_bg" />
 
-            <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+            <Button
                 android:id="@+id/btn_yes"
                 android:layout_width="0dp"
                 android:layout_height="40dp"

@@ -27,7 +27,7 @@
             android:background="@mipmap/back"
             android:padding="12dp" />
 
-        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+        <TextView
             android:id="@+id/tv_toolbar_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

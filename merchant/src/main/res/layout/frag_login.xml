@@ -42,7 +42,7 @@
                 android:textColorHint="@color/color_login_hint"
                 android:textSize="18sp" />
 
-            <com.noqapp.android.merchant.views.customsviews.TextEditRobotoLight
+            <EditText
                 android:id="@+id/edt_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                 android:textColorHint="@color/color_login_hint"
                 android:textSize="18sp" />
 
-            <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+            <Button
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                 android:textSize="18sp" />
 
 
-            <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_login"

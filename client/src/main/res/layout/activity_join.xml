@@ -33,14 +33,14 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    <TextView
                         android:id="@+id/tv_serving_no"
                         style="@style/style_join_queue_tv"
                         android:gravity="center"
                         android:textColor="@color/color_total_val"
                         android:textSize="36sp" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <TextView
                         style="@style/style_join_queue_tv"
                         android:gravity="center"
                         android:text="@string/currently_serving"
@@ -57,14 +57,14 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                    <TextView
                         android:id="@+id/tv_people_in_q"
                         style="@style/style_join_queue_tv"
                         android:gravity="center"
                         android:textColor="@color/colorMobile"
                         android:textSize="36sp" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <TextView
                         style="@style/style_join_queue_tv"
                         android:gravity="center"
                         android:text="@string/people_in_queue"
@@ -94,7 +94,7 @@
                     android:orientation="vertical">
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <TextView
                         android:id="@+id/tv_add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
                         android:paddingRight="10dp"
                         android:weightSum="1">
 
-                        <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        <TextView
                             android:id="@+id/add_person"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -139,7 +139,7 @@
                         android:background="@android:color/white" />
                 </LinearLayout>
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                <TextView
                     style="@style/style_join_queue_tv"
                     android:layout_marginBottom="10dp"
                     android:paddingLeft="10dp"
@@ -148,7 +148,7 @@
                     android:textColor="@color/colorAddress"
                     android:textSize="18sp" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                <TextView
                     android:id="@+id/tv_queue_name"
                     style="@style/style_join_queue_tv"
                     android:layout_marginBottom="5dp"
@@ -157,7 +157,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                <TextView
                     android:id="@+id/tv_hour_saved"
                     style="@style/style_join_queue_tv"
                     android:layout_marginBottom="5dp"
@@ -166,7 +166,7 @@
                     android:textColor="@color/colorAddress"
                     android:textSize="18sp" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                <TextView
                     android:id="@+id/tv_mobile"
                     style="@style/style_join_queue_tv"
                     android:layout_marginBottom="5dp"
@@ -195,7 +195,7 @@
                         android:rating="0.0"
                         android:stepSize=".5" />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <TextView
                         android:id="@+id/tv_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -206,7 +206,7 @@
                         android:visibility="invisible" />
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <TextView
                         android:id="@+id/tv_rating_review"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -225,7 +225,7 @@
                     android:layout_marginTop="20dp"
                     android:background="@android:color/white" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                <TextView
                     android:id="@+id/tv_store_name"
                     style="@style/style_join_queue_tv"
                     android:layout_marginBottom="5dp"
@@ -235,7 +235,7 @@
                     android:textSize="20sp" />
 
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                <TextView
                     android:id="@+id/tv_address"
                     style="@style/style_join_queue_tv"
                     android:layout_marginBottom="5dp"
@@ -253,7 +253,7 @@
                 android:layout_marginTop="10dp"
                 android:visibility="visible">
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                <TextView
                     android:id="@+id/tv_skip_msg"
                     style="@style/style_join_queue_tv"
                     android:layout_marginBottom="10dp"
@@ -272,7 +272,7 @@
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
-                    <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
+                    <Button
                         android:id="@+id/btn_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -290,7 +290,7 @@
                         android:textSize="15sp"
                         android:visibility="gone" />
 
-                    <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
+                    <Button
                         android:id="@+id/btn_joinQueue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

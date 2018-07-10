@@ -29,7 +29,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/splash_logo" />
 
-            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+            <TextView
                 android:id="@+id/tv_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                         android:paddingLeft="@dimen/screen_padding"
                         android:paddingRight="@dimen/screen_padding">
 
-                        <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight=".75"
@@ -93,7 +93,7 @@
                         android:paddingLeft="@dimen/screen_padding"
                         android:paddingRight="@dimen/screen_padding">
 
-                        <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight=".75"
@@ -125,7 +125,7 @@
                         android:paddingLeft="@dimen/screen_padding"
                         android:paddingRight="@dimen/screen_padding">
 
-                        <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight=".75"
@@ -145,7 +145,7 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
