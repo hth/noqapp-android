@@ -25,7 +25,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonNameDatePair implements Serializable{
+public class JsonNameDatePair implements Serializable {
 
     @JsonProperty("n")
     private String name;

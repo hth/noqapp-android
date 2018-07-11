@@ -26,14 +26,6 @@ public enum MedicationTypeEnum {
         this.description = description;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public static List<String> asList() {
         MedicationTypeEnum[] all = MedicationTypeEnum.values();
         ArrayList<String> dataList = new ArrayList<>();
@@ -49,10 +41,17 @@ public enum MedicationTypeEnum {
             map.put(instance.getDescription(), instance);
         }
         Map<String, MedicationTypeEnum> ENUM_MAP = Collections.unmodifiableMap(map);
-        Log.v("MedicationTypeEnum",ENUM_MAP.get(name).toString());
+        Log.v("MedicationTypeEnum", ENUM_MAP.get(name).toString());
         return ENUM_MAP.get(name);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     @Override
     public String toString() {

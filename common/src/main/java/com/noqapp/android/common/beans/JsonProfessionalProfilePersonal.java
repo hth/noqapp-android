@@ -28,7 +28,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonProfessionalProfilePersonal implements Serializable{
+public class JsonProfessionalProfilePersonal implements Serializable {
 
     @JsonProperty("wp")
     private String webProfileId;

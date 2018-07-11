@@ -24,7 +24,7 @@ public final class FontsOverride {
             defaultFontTypefaceField.setAccessible(true);
             defaultFontTypefaceField.set(null, customFontTypeface);
         } catch (Exception e) {
-            Log.e("Can not set custom font" , customFontFileNameInAssets + " instead of " + defaultFontNameToOverride);
+            Log.e("Can not set custom font", customFontFileNameInAssets + " instead of " + defaultFontNameToOverride);
         }
     }
 }

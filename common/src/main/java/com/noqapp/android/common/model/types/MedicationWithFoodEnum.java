@@ -20,14 +20,6 @@ public enum MedicationWithFoodEnum {
         this.description = description;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
     public static List<String> asList() {
         MedicationWithFoodEnum[] all = MedicationWithFoodEnum.values();
         ArrayList<String> dataList = new ArrayList<>();
@@ -37,14 +29,22 @@ public enum MedicationWithFoodEnum {
         return dataList;
     }
 
-    public static MedicationWithFoodEnum get (String name) {
-        Map<String,MedicationWithFoodEnum> map = new ConcurrentHashMap<String,MedicationWithFoodEnum>();
+    public static MedicationWithFoodEnum get(String name) {
+        Map<String, MedicationWithFoodEnum> map = new ConcurrentHashMap<String, MedicationWithFoodEnum>();
         for (MedicationWithFoodEnum instance : MedicationWithFoodEnum.values()) {
-            map.put(instance.getDescription(),instance);
+            map.put(instance.getDescription(), instance);
         }
-        Map<String,MedicationWithFoodEnum> ENUM_MAP = Collections.unmodifiableMap(map);
-        Log.v("MedicationWithFoodEnum",ENUM_MAP.get(name).toString());
+        Map<String, MedicationWithFoodEnum> ENUM_MAP = Collections.unmodifiableMap(map);
+        Log.v("MedicationWithFoodEnum", ENUM_MAP.get(name).toString());
         return ENUM_MAP.get(name);
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
     public String toString() {

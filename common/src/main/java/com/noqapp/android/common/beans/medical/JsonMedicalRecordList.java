@@ -10,7 +10,7 @@ import com.noqapp.android.common.beans.AbstractDomain;
 import java.util.LinkedList;
 import java.util.List;
 
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",

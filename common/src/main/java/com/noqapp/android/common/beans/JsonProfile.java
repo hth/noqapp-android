@@ -33,10 +33,10 @@ import java.util.List;
 //@JsonInclude (JsonInclude.Include.NON_NULL)
 public final class JsonProfile implements Serializable {
 
-    @JsonProperty ("qid")
+    @JsonProperty("qid")
     private String queueUserId;
 
-    @JsonProperty ("pi")
+    @JsonProperty("pi")
     private String profileImage;
 
     @JsonProperty("nm")
@@ -75,11 +75,11 @@ public final class JsonProfile implements Serializable {
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
-    @JsonProperty ("mp")
+    @JsonProperty("mp")
     private JsonUserMedicalProfile jsonUserMedicalProfile;
 
     /* Dependents can be anyone minor or other elderly family members. */
-    @JsonProperty ("dp")
+    @JsonProperty("dp")
     private List<JsonProfile> dependents = new ArrayList<>();
 
     @JsonProperty("error")

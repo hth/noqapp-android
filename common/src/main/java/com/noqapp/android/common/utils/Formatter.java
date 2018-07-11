@@ -20,9 +20,8 @@ import java.util.TimeZone;
  * Date: 5/1/17 7:11 PM
  */
 public class Formatter {
-    private static final String TAG = Formatter.class.getSimpleName();
     public static final DateFormat formatRFC822 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-
+    private static final String TAG = Formatter.class.getSimpleName();
     private static final DateFormat df = DateFormat.getDateInstance();
     private static final TimeZone tz = TimeZone.getTimeZone("UTC");
 

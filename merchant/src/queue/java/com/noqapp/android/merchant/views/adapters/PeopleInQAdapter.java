@@ -15,7 +15,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     }
 
     public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion, QueueStatusEnum queueStatusEnum) {
-        super(data, context, peopleInQAdapterClick, qCodeQR, glowPostion,queueStatusEnum);
+        super(data, context, peopleInQAdapterClick, qCodeQR, glowPostion, queueStatusEnum);
     }
 
     @Override
