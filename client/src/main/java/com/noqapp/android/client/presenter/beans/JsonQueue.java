@@ -152,7 +152,7 @@ public class JsonQueue implements Serializable {
     @JsonProperty("md")
     private int minimumDeliveryOrder;
 
-    @JsonProperty ("dr")
+    @JsonProperty("dr")
     private int deliveryRange;
 
     @JsonProperty("si")

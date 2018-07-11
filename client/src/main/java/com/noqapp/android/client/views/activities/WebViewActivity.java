@@ -120,6 +120,11 @@ public class WebViewActivity extends AppCompatActivity {
 
     }
 
+    private void webViewGoBack() {
+        if (webView.canGoBack())
+            webView.goBack();
+    }
+
     private class myWebClient extends WebViewClient {
 
         @Override
@@ -155,10 +160,5 @@ public class WebViewActivity extends AppCompatActivity {
                 exception.printStackTrace();
             }
         }
-    }
-
-    private void webViewGoBack() {
-        if (webView.canGoBack())
-            webView.goBack();
     }
 }

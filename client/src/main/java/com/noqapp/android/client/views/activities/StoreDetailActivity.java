@@ -132,7 +132,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
             Picasso.with(this)
-                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,bizStoreElastic.getDisplayImage()))
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                     .into(collapseImageView);
         else {
             //TODO show some default image
@@ -304,15 +304,14 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
             } else {
                 //TODO(hth) when product without category else it will drop
-                if(null == listDataChild.get(defaultCategory))
-                {
+                if (null == listDataChild.get(defaultCategory)) {
                     listDataChild.put(defaultCategory, new ArrayList<ChildData>());
                 }
                 listDataChild.get(defaultCategory).add(new ChildData(0, jsonStoreProducts.get(k)));
             }
         }
 
-        if(null != listDataChild.get(defaultCategory)){
+        if (null != listDataChild.get(defaultCategory)) {
             jsonStoreCategories.add(new JsonStoreCategory().setCategoryName(defaultCategory).setCategoryId(defaultCategory));
         }
         //  }

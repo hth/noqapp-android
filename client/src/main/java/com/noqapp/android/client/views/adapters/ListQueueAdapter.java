@@ -20,10 +20,6 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<JsonTokenAndQueue>> listDataChild;
     private ListOnClick listOnClick;
 
-    public interface ListOnClick {
-        void listShowCategory(String qrCode);
-    }
-
     public ListQueueAdapter(
             Context context,
             List<String> listDataHeader,
@@ -201,5 +197,9 @@ public class ListQueueAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    public interface ListOnClick {
+        void listShowCategory(String qrCode);
     }
 }

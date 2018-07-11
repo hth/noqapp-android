@@ -15,7 +15,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-
 public final class DependencyModel {
     private static final String TAG = DependencyModel.class.getSimpleName();
 
@@ -29,7 +28,7 @@ public final class DependencyModel {
     /**
      * @param registration
      */
-    public static void addDependency(String did, String mail, String auth,  Registration registration) {
+    public static void addDependency(String did, String mail, String auth, Registration registration) {
         dependentApiService.add(did, Constants.DEVICE_TYPE, mail, auth, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {

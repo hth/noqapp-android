@@ -27,12 +27,10 @@ import butterknife.ButterKnife;
 public class CategoryListFragment extends Fragment implements CategoryListAdapter.OnItemClickListener {
 
 
-    private ArrayList<BizStoreElastic> jsonQueues;
-    private CategoryListAdapter categoryListAdapter;
-
     @BindView(R.id.rv_category_list)
     protected RecyclerView rv_category_list;
-
+    private ArrayList<BizStoreElastic> jsonQueues;
+    private CategoryListAdapter categoryListAdapter;
     private View view;
 
     private CategoryListAdapter.OnItemClickListener listener;

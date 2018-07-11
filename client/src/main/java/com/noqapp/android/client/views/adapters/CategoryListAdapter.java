@@ -26,44 +26,9 @@ import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.MyViewHolder> {
     private final Context context;
+    private final OnItemClickListener listener;
     private List<BizStoreElastic> dataSet;
 
-    public interface OnItemClickListener {
-        void onCategoryItemClick(BizStoreElastic item, View view, int pos);
-    }
-
-
-    private final OnItemClickListener listener;
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView tv_name;
-        private TextView tv_address;
-        private TextView tv_phoneno;
-        private TextView tv_store_rating;
-        private TextView tv_specialization;
-        private TextView tv_store_special;
-        private TextView tv_store_review;
-        private TextView tv_status;
-        private TextView tv_join;
-        private ImageView iv_main;
-        private CardView card_view;
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
-            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
-            this.tv_phoneno = (TextView) itemView.findViewById(R.id.tv_phoneno);
-            this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
-            this.tv_specialization = (TextView) itemView.findViewById(R.id.tv_specialization);
-            this.tv_store_special = (TextView) itemView.findViewById(R.id.tv_store_special);
-            this.tv_store_review = (TextView) itemView.findViewById(R.id.tv_store_review);
-            this.tv_status = (TextView) itemView.findViewById(R.id.tv_status);
-            this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
-            this.tv_join =  itemView.findViewById(R.id.tv_join);
-            this.card_view = (CardView) itemView.findViewById(R.id.card_view);
-        }
-    }
 
     public CategoryListAdapter(List<BizStoreElastic> jsonQueues, Context context, OnItemClickListener listener) {
         this.dataSet = jsonQueues;
@@ -180,10 +145,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         }
         if (!TextUtils.isEmpty(dataSet.get(listPosition).getDisplayImage())) {
 
-            Picasso.with(context).load(AppUtilities.getImageUrls( BuildConfig.PROFILE_BUCKET , dataSet.get(listPosition).getDisplayImage())).
+            Picasso.with(context).load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, dataSet.get(listPosition).getDisplayImage())).
                     placeholder(context.getResources().getDrawable(R.drawable.profile_red)).
                     error(context.getResources().getDrawable(R.drawable.profile_red)).into(holder.iv_main);
-        }else{
+        } else {
             Picasso.with(context).load(R.drawable.profile_red).into(holder.iv_main);
         }
 
@@ -200,9 +165,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ManagerProfileActivity.class);
-                intent.putExtra("webProfileId",jsonQueue.getWebProfileId());
-                intent.putExtra("managerName",dataSet.get(listPosition).getDisplayName());
-                intent.putExtra("managerImage",dataSet.get(listPosition).getDisplayImage());
+                intent.putExtra("webProfileId", jsonQueue.getWebProfileId());
+                intent.putExtra("managerName", dataSet.get(listPosition).getDisplayName());
+                intent.putExtra("managerImage", dataSet.get(listPosition).getDisplayImage());
                 context.startActivity(intent);
 
 
@@ -213,6 +178,40 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+
+    public interface OnItemClickListener {
+        void onCategoryItemClick(BizStoreElastic item, View view, int pos);
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView tv_name;
+        private TextView tv_address;
+        private TextView tv_phoneno;
+        private TextView tv_store_rating;
+        private TextView tv_specialization;
+        private TextView tv_store_special;
+        private TextView tv_store_review;
+        private TextView tv_status;
+        private TextView tv_join;
+        private ImageView iv_main;
+        private CardView card_view;
+
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
+            this.tv_phoneno = (TextView) itemView.findViewById(R.id.tv_phoneno);
+            this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
+            this.tv_specialization = (TextView) itemView.findViewById(R.id.tv_specialization);
+            this.tv_store_special = (TextView) itemView.findViewById(R.id.tv_store_special);
+            this.tv_store_review = (TextView) itemView.findViewById(R.id.tv_store_review);
+            this.tv_status = (TextView) itemView.findViewById(R.id.tv_status);
+            this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
+            this.tv_join = itemView.findViewById(R.id.tv_join);
+            this.card_view = (CardView) itemView.findViewById(R.id.card_view);
+        }
     }
 
 }

@@ -21,26 +21,12 @@ public class CategoryHeaderAdapter extends RecyclerView.Adapter<CategoryHeaderAd
     private List<JsonCategory> categories;
     private Context context;
     private int selected_pos = 0;
-    public interface OnItemClickListener {
-        void onCategoryItemClick(int pos, JsonCategory jsonCategory);
-    }
 
     public CategoryHeaderAdapter(Context context, List<JsonCategory> categories,
                                  OnItemClickListener listener) {
         this.categories = categories;
         this.context = context;
         this.listener = listener;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_menu_header;
-        private LinearLayout ll_header;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            this.tv_menu_header = itemView.findViewById(R.id.tv_menu_header);
-            this.ll_header = itemView.findViewById(R.id.ll_header);
-        }
     }
 
     @Override
@@ -50,7 +36,6 @@ public class CategoryHeaderAdapter extends RecyclerView.Adapter<CategoryHeaderAd
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
-
 
     @Override
     public void onBindViewHolder(ViewHolder Vholder, final int position) {
@@ -79,6 +64,21 @@ public class CategoryHeaderAdapter extends RecyclerView.Adapter<CategoryHeaderAd
     public CategoryHeaderAdapter setSelected_pos(int selected_pos) {
         this.selected_pos = selected_pos;
         return this;
+    }
+
+    public interface OnItemClickListener {
+        void onCategoryItemClick(int pos, JsonCategory jsonCategory);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView tv_menu_header;
+        private LinearLayout ll_header;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            this.tv_menu_header = itemView.findViewById(R.id.tv_menu_header);
+            this.ll_header = itemView.findViewById(R.id.ll_header);
+        }
     }
 
 }

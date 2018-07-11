@@ -47,10 +47,10 @@ public class CreateTable {
                     + TokenQueue.AREA + " TEXT , "
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
                     + TokenQueue.QUEUE_USER_ID + " TEXT , "
-                    + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`"+ TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
+                    + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                     ");");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -85,10 +85,10 @@ public class CreateTable {
                     + TokenQueue.AREA + " TEXT , "
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
                     + TokenQueue.QUEUE_USER_ID + " TEXT , "
-                    + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`"+ TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
+                    + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                     ");");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -119,32 +119,32 @@ public class CreateTable {
                 ");");
     }
 
-    static void alterTable(SQLiteDatabase db){
+    static void alterTable(SQLiteDatabase db) {
 
-        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.BUSINESS_TYPE + " TEXT  ");
-        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.GEOHASH + " TEXT  ");
-        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.TOWN + " TEXT  ");
-        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.AREA + " TEXT  ");
-        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.DISPLAY_IMAGE + " TEXT  ");
-        db.execSQL("ALTER TABLE "+TokenQueue.TABLE_NAME +" ADD COLUMN "+ TokenQueue.QUEUE_USER_ID + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.BUSINESS_TYPE + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.GEOHASH + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.TOWN + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.AREA + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.DISPLAY_IMAGE + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.QUEUE_USER_ID + " TEXT  ");
 
-        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.BUSINESS_TYPE + " TEXT  ");
-        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.GEOHASH + " TEXT  ");
-        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.TOWN + " TEXT  ");
-        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.AREA + " TEXT  ");
-        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.DISPLAY_IMAGE + " TEXT  ");
-        db.execSQL("ALTER TABLE "+TokenQueueHistory.TABLE_NAME +" ADD COLUMN "+ TokenQueue.QUEUE_USER_ID + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.BUSINESS_TYPE + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.GEOHASH + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.TOWN + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.AREA + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.DISPLAY_IMAGE + " TEXT  ");
+        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.QUEUE_USER_ID + " TEXT  ");
     }
 
-    static void updateBusinessType(SQLiteDatabase db){
-        db.execSQL("UPDATE "+TokenQueue.TABLE_NAME +" SET " + TokenQueue.BUSINESS_TYPE+ " = DO WHERE "+TokenQueue.BUSINESS_TYPE+ " = HO");
-        db.execSQL("UPDATE "+TokenQueueHistory.TABLE_NAME +" SET " + TokenQueue.BUSINESS_TYPE+ " = DO WHERE "+TokenQueue.BUSINESS_TYPE+ " = HO");
+    static void updateBusinessType(SQLiteDatabase db) {
+        db.execSQL("UPDATE " + TokenQueue.TABLE_NAME + " SET " + TokenQueue.BUSINESS_TYPE + " = DO WHERE " + TokenQueue.BUSINESS_TYPE + " = HO");
+        db.execSQL("UPDATE " + TokenQueueHistory.TABLE_NAME + " SET " + TokenQueue.BUSINESS_TYPE + " = DO WHERE " + TokenQueue.BUSINESS_TYPE + " = HO");
     }
 
-    static void dropAndCreateTable(SQLiteDatabase db){
+    static void dropAndCreateTable(SQLiteDatabase db) {
 
         db.execSQL("DROP TABLE IF EXISTS '" + TokenQueue.TABLE_NAME + "'");
-        db.execSQL("DROP TABLE IF EXISTS '" + TokenQueueHistory.TABLE_NAME  + "'");
+        db.execSQL("DROP TABLE IF EXISTS '" + TokenQueueHistory.TABLE_NAME + "'");
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);
     }

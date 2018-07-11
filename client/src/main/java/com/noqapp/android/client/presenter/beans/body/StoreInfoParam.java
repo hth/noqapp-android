@@ -45,7 +45,6 @@ public class StoreInfoParam {
     private String filters;
 
 
-
     public String getQuery() {
         return query;
     }
@@ -86,6 +85,10 @@ public class StoreInfoParam {
         return filters;
     }
 
+    public StoreInfoParam setFilters(String filters) {
+        this.filters = filters;
+        return this;
+    }
 
     public String getScrollId() {
         return scrollId;
@@ -93,11 +96,6 @@ public class StoreInfoParam {
 
     public StoreInfoParam setScrollId(String scrollId) {
         this.scrollId = scrollId;
-        return this;
-    }
-
-    public StoreInfoParam setFilters(String filters) {
-        this.filters = filters;
         return this;
     }
 }

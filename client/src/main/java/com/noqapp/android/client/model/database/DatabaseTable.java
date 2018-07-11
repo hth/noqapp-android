@@ -31,7 +31,7 @@ public class DatabaseTable {
         public static final String TOWN = "town";
         public static final String AREA = "area";
         public static final String DISPLAY_IMAGE = "displayImage";
-        public static final String QUEUE_USER_ID= "queueUserID";
+        public static final String QUEUE_USER_ID = "queueUserID";
 
         private TokenQueue() {
         }

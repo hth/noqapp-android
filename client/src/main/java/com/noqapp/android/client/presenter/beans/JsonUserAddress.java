@@ -11,7 +11,7 @@ import com.noqapp.android.common.beans.AbstractDomain;
  * hitender
  * 5/16/18 10:07 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -31,7 +31,7 @@ public class JsonUserAddress extends AbstractDomain {
     @JsonProperty("id")
     private String id;
 
-    @JsonProperty ("ad")
+    @JsonProperty("ad")
     private String address;
 
     @JsonProperty("gh")

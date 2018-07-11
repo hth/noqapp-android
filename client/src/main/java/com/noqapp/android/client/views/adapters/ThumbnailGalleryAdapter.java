@@ -22,9 +22,9 @@ import java.util.ArrayList;
  */
 
 public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalleryAdapter.MyViewHolder> {
+    private final int baseVisibleCount = 4;
     private ArrayList<String> imageUrls;
     private Context mContext;
-    private final int baseVisibleCount = 4;
 
     public ThumbnailGalleryAdapter(Context context, ArrayList<String> imageUrls) {
         mContext = context;
@@ -45,19 +45,19 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
     public void onBindViewHolder(ThumbnailGalleryAdapter.MyViewHolder holder, int position) {
 
         Picasso.with(mContext)
-                .load(AppUtilities.getImageUrls( BuildConfig.SERVICE_BUCKET,imageUrls.get(position)))
+                .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrls.get(position)))
                 .into(holder.iv_photo);
-        if(position<3 || imageUrls.size()==4){
+        if (position < 3 || imageUrls.size() == 4) {
             holder.tv_title.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.tv_title.setVisibility(View.VISIBLE);
-            holder.tv_title.setText("+"+(imageUrls.size()- baseVisibleCount));
+            holder.tv_title.setText("+" + (imageUrls.size() - baseVisibleCount));
         }
     }
 
     @Override
     public int getItemCount() {
-        return (imageUrls.size()> baseVisibleCount ? baseVisibleCount : imageUrls.size());
+        return (imageUrls.size() > baseVisibleCount ? baseVisibleCount : imageUrls.size());
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

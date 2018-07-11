@@ -49,12 +49,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     public NoQueueMessagingService() {
     }
 
-    @Override
-    public void onNewToken(String s) {
-        super.onNewToken(s);
-        Log.e("NEW_TOKEN",s);
-    }
-
     // Clears notification tray messages
     public static void clearNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -67,6 +61,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
     public static void unSubscribeTopics(String topic) {
         FirebaseMessaging.getInstance().unsubscribeFromTopic(topic + "_A");
+    }
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        Log.e("NEW_TOKEN", s);
     }
 
     @Override

@@ -36,8 +36,8 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
     protected TextView tv_past_history;
     @BindView(R.id.tv_family_history)
     protected TextView tv_family_history;
-    
-    
+
+
     @BindView(R.id.tv_patient_name)
     protected TextView tv_patient_name;
     @BindView(R.id.tv_diagnosed_by)
@@ -59,6 +59,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
     private ListView listview;
     private MedicalRecordAdapter adapter;
     private List<JsonMedicalMedicine> medicalRecordList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,19 +75,19 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         tv_clinical_finding.setText(jsonMedicalRecord.getClinicalFinding());
         tv_provisional.setText(jsonMedicalRecord.getProvisionalDifferentialDiagnosis());
 
-        tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedById()+" ("+jsonMedicalRecord.getBizCategoryName()+")");
+        tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedById() + " (" + jsonMedicalRecord.getBizCategoryName() + ")");
         tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
         profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
-        tv_patient_name.setText(AppUtilities.getNameFromQueueUserID(jsonMedicalRecord.getQueueUserId(),profileList));
-        
-        
+        tv_patient_name.setText(AppUtilities.getNameFromQueueUserID(jsonMedicalRecord.getQueueUserId(), profileList));
+
+
         JsonMedicalPhysical jsonMedicalPhysicalExaminations = jsonMedicalRecord.getMedicalPhysical();
         listview = findViewById(R.id.listview);
         medicalRecordList = jsonMedicalRecord.getMedicalMedicines();
         adapter = new MedicalRecordAdapter(this, medicalRecordList);
         listview.setAdapter(adapter);
-        for(PhysicalExamEnum physicalExam : PhysicalExamEnum.values()) {
+        for (PhysicalExamEnum physicalExam : PhysicalExamEnum.values()) {
             LinearLayout childLayout = new LinearLayout(this);
             LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,

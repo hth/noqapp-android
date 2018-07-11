@@ -79,14 +79,14 @@ public class MeFragment extends NoQueueBaseFragment {
         String name = NoQueueBaseActivity.getUserName();
         String phone = NoQueueBaseActivity.getPhoneNo();
         String gender = NoQueueBaseActivity.getGender();
-      //  int remoteScanCount = NoQueueBaseActivity.getRemoteJoinCount();
-       // boolean isAutoScanAvail = NoQueueBaseActivity.getAutoJoinStatus();
+        //  int remoteScanCount = NoQueueBaseActivity.getRemoteJoinCount();
+        // boolean isAutoScanAvail = NoQueueBaseActivity.getAutoJoinStatus();
         inviteCode = NoQueueBaseActivity.getInviteCode();
         tv_firstName.setText(name);
         if (!phone.equals("")) {
             tv_phoneNo.setText(PhoneFormatterUtil.formatNumber(NoQueueBaseActivity.getCountryShortName(), phone));
         }
-      //  tv_scanCount.setText(String.valueOf(remoteScanCount) + " ");
+        //  tv_scanCount.setText(String.valueOf(remoteScanCount) + " ");
 //        toggleAutoJoin.setChecked(isAutoScanAvail);
 //        toggleAutoJoin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            @Override
@@ -134,7 +134,7 @@ public class MeFragment extends NoQueueBaseFragment {
                     })
                     .show();
         } else {
-           // replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LoginFragment(), TAG, LaunchActivity.tabMe);
+            // replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LoginFragment(), TAG, LaunchActivity.tabMe);
         }
     }
 

@@ -17,7 +17,6 @@ import com.noqapp.android.common.beans.JsonProfile;
 /**
  * This Class is created to store the information which data need to be final(Consistent)
  * Through out the App. So only one class can extend this Activity. Otherwise it was a serious issue.
- *
  */
 public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_PHONE = "phone";
@@ -28,7 +27,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_PROFILE_IMAGE = "imageUri";
     //TODO add address from profile
     public static final String PREKEY_GENDER = "gender";
-   // public static final String PREKEY_REMOTE_JOIN = "remoteJoin";
+    // public static final String PREKEY_REMOTE_JOIN = "remoteJoin";
     //public static final String PREKEY_AUTOJOIN = "autojoin";
     public static final String PREKEY_INVITECODE = "invitecode";
     public static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
@@ -40,15 +39,15 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String KEY_FROM_LIST = "fromList";
     public static final String KEY_IS_HISTORY = "isHistory";
     public static final String KEY_IS_REJOIN = "isRejoin";
-  //  public static final String KEY_IS_AUTOJOIN_ELIGIBLE = "autoJoinEligible";
+    //  public static final String KEY_IS_AUTOJOIN_ELIGIBLE = "autoJoinEligible";
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
     public static final String KEY_USER_PROFILE = "userProfile";
     public static final String IS_DEPENDENT = "isDependent";
     public static final String DEPENDENT_PROFILE = "dependentProfile";
     /* Secured Shared Preference. */
     public static final String APP_PREF = "shared_pref";
-    public static String XR_DID = "X-R-DID";
     public static final String FCM_TOKEN = "fcmToken";
+    public static String XR_DID = "X-R-DID";
     public static NoQueueBaseActivity noQueueBaseActivity;
     private static SharedPreferences sharedPreferences;
 
@@ -75,6 +74,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static String getFCMToken() {
         return sharedPreferences.getString(FCM_TOKEN, "");
     }
+
     public static void setFCMToken(String fcmtoken) {
         sharedPreferences.edit().putString(FCM_TOKEN, fcmtoken).apply();
     }
@@ -139,32 +139,34 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(PREKEY_GENDER, profile.getGender().name());
         editor.putString(PREKEY_DOB, profile.getBirthday());
         editor.putString(PREKEY_MAIL, profile.getMail());
-       // editor.putInt(PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
-       // editor.putBoolean(PREKEY_AUTOJOIN, true);
+        // editor.putInt(PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
+        // editor.putBoolean(PREKEY_AUTOJOIN, true);
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
-        editor.putString(PREKEY_ADD,profile.getAddress());
-        editor.putString(PREKEY_PROFILE_IMAGE,profile.getProfileImage());
+        editor.putString(PREKEY_ADD, profile.getAddress());
+        editor.putString(PREKEY_PROFILE_IMAGE, profile.getProfileImage());
         editor.putString(APIConstant.Key.XR_MAIL, email);
         editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();
     }
-    public static void setUserProfile(JsonProfile jsonProfile){
-        SharedPreferences.Editor editor = getSharedPreferencesEditor();
-        Gson gson = new Gson();
-        String json = gson.toJson(jsonProfile);
-        editor.putString(KEY_USER_PROFILE, json);
-        editor.apply();
+
+    public static void clearPreferences() {
+        getSharedPreferencesEditor().clear().commit();
     }
 
-    public JsonProfile getUserProfile(){
+    public JsonProfile getUserProfile() {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(KEY_USER_PROFILE, "");
         JsonProfile obj = gson.fromJson(json, JsonProfile.class);
         return obj;
     }
-    public static void clearPreferences() {
-        getSharedPreferencesEditor().clear().commit();
+
+    public static void setUserProfile(JsonProfile jsonProfile) {
+        SharedPreferences.Editor editor = getSharedPreferencesEditor();
+        Gson gson = new Gson();
+        String json = gson.toJson(jsonProfile);
+        editor.putString(KEY_USER_PROFILE, json);
+        editor.apply();
     }
 
     public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {

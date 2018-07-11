@@ -29,7 +29,7 @@ public class UserProfileFragment extends Fragment {
     @BindView(R.id.ll_multiple_store)
     protected LinearLayout ll_multiple_store;
 
-    private String [] days= new String[]{"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+    private String[] days = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
 
     @Override
@@ -43,8 +43,8 @@ public class UserProfileFragment extends Fragment {
     }
 
     public void updateUI(List<JsonStore> stores) {
-        if(null != stores && stores.size()>0){
-            for (int i=0; i<stores.size();i++) {
+        if (null != stores && stores.size() > 0) {
+            for (int i = 0; i < stores.size(); i++) {
                 LayoutInflater inflater = LayoutInflater.from(getActivity());
                 View inflatedLayout = inflater.inflate(R.layout.store_items, null, false);
                 TextView tv_name = (TextView) inflatedLayout.findViewById(R.id.tv_name);
@@ -53,13 +53,13 @@ public class UserProfileFragment extends Fragment {
                 tv_name.setText(stores.get(i).getJsonQueue().getBusinessName());
                 tv_address.setText(stores.get(i).getJsonQueue().getStoreAddress());
                 String timing = "";
-                 for (int j = 0; j < 7; j++) {
+                for (int j = 0; j < 7; j++) {
                     JsonHour jsonHour = stores.get(i).getJsonHours().get(j);
-                    if(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()).equals("12:01 AM") &&
-                            Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()).equals("11:59 PM")){
+                    if (Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()).equals("12:01 AM") &&
+                            Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()).equals("11:59 PM")) {
                         timing += days[j] + " - "
                                 + getString(R.string.whole_day) + "\n";
-                    }else {
+                    } else {
                         timing += days[j] + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - "
                                 + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()) + "\n";
                     }

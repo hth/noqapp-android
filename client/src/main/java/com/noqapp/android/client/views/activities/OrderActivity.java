@@ -45,7 +45,7 @@ import java.util.TimeZone;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter ,ProfilePresenter {
+public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter {
 
     @BindView(R.id.tv_user_name)
     protected TextView tv_user_name;
@@ -79,21 +79,21 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
         edt_address.setText(NoQueueBaseActivity.getAddress());
         PurchaseApiModel.purchaseOrderPresenter = this;
-        tv_tax_amt.setText(getString(R.string.rupee)+""+"0.0");
-        tv_due_amt.setText(getString(R.string.rupee)+""+Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/100);
-        tv_total_order_amt.setText(getString(R.string.rupee)+""+Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/100);
-        for (int i =0; i< jsonPurchaseOrder.getPurchaseOrderProducts().size();i++){
+        tv_tax_amt.setText(getString(R.string.rupee) + "" + "0.0");
+        tv_due_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        tv_total_order_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
-            View inflatedLayout= inflater.inflate(R.layout.order_summary_item, null, false);
-            TextView tv_title = (TextView)inflatedLayout.findViewById(R.id.tv_title);
-            TextView tv_qty = (TextView)inflatedLayout.findViewById(R.id.tv_qty);
-            TextView tv_price = (TextView)inflatedLayout.findViewById(R.id.tv_price);
-            TextView tv_total_price = (TextView)inflatedLayout.findViewById(R.id.tv_total_price);
+            View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
+            TextView tv_title = (TextView) inflatedLayout.findViewById(R.id.tv_title);
+            TextView tv_qty = (TextView) inflatedLayout.findViewById(R.id.tv_qty);
+            TextView tv_price = (TextView) inflatedLayout.findViewById(R.id.tv_price);
+            TextView tv_total_price = (TextView) inflatedLayout.findViewById(R.id.tv_total_price);
             tv_title.setText(jsonPurchaseOrderProduct.getJsonStoreProduct().getProductName());
-            tv_qty.setText("Quantity: "+jsonPurchaseOrderProduct.getProductQuantity());
-            tv_price.setText(getString(R.string.rupee)+""+jsonPurchaseOrderProduct.getProductPrice()/100);
-            tv_total_price.setText(getString(R.string.rupee)+""+jsonPurchaseOrderProduct.getProductPrice()*jsonPurchaseOrderProduct.getProductQuantity()/100);
+            tv_qty.setText("Quantity: " + jsonPurchaseOrderProduct.getProductQuantity());
+            tv_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() / 100);
+            tv_total_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
             ll_order_details.addView(inflatedLayout);
         }
         tv_place_order.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +114,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 }
             }
         });
-        if (LaunchActivity.getLaunchActivity().isOnline() ){//&& !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {//&& !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
             ProfileModel.profilePresenter = this;
             ProfileModel.getProfileAllAddress(UserUtils.getEmail(), UserUtils.getAuth());
         }
@@ -124,32 +124,32 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         boolean isValid = true;
         edt_phone.setError(null);
         edt_address.setError(null);
-        if(edt_phone.getText().toString().equals("")){
+        if (edt_phone.getText().toString().equals("")) {
             edt_phone.setError("Please enter mobile no.");
             isValid = false;
         }
-        if(!edt_phone.getText().toString().equals("") && edt_phone.getText().length()<10){
+        if (!edt_phone.getText().toString().equals("") && edt_phone.getText().length() < 10) {
             edt_phone.setError("Please enter valid mobile no.");
             isValid = false;
         }
-        if(edt_address.getText().toString().equals("")){
+        if (edt_address.getText().toString().equals("")) {
             edt_address.setError("Please enter delivery address.");
             isValid = false;
-        }else{
-            LatLng latLng_d = AppUtilities.getLocationFromAddress(this,edt_address.getText().toString());
-            LatLng latLng_s = AppUtilities.getLocationFromAddress(this,getIntent().getExtras().getString("storeAddress"));
-            if(null != latLng_d){
-                float distance = (float)AppUtilities.calculateDistance(
+        } else {
+            LatLng latLng_d = AppUtilities.getLocationFromAddress(this, edt_address.getText().toString());
+            LatLng latLng_s = AppUtilities.getLocationFromAddress(this, getIntent().getExtras().getString("storeAddress"));
+            if (null != latLng_d) {
+                float distance = (float) AppUtilities.calculateDistance(
                         (float) latLng_s.latitude,
                         (float) latLng_s.longitude,
                         (float) latLng_d.latitude,
                         (float) latLng_d.longitude);
-                if(distance>getIntent().getExtras().getInt("deliveryRange")){
+                if (distance > getIntent().getExtras().getInt("deliveryRange")) {
                     edt_address.setError("Please change the address. This address is very far from the store");
                     isValid = false;
 
                 }
-                Toast.makeText(this,"distance is:" +distance,Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "distance is:" + distance, Toast.LENGTH_LONG).show();
             }
         }
 
@@ -184,7 +184,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 }
                 if (LaunchActivity.getLaunchActivity().isOnline() && !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
                     ProfileModel.profilePresenter = this;
-                    ProfileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(),new JsonUserAddress().setAddress(edt_address.getText().toString()).setId(""));
+                    ProfileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_address.getText().toString()).setId(""));
                 }
 
             } else {
@@ -215,7 +215,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     @Override
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
-        Toast.makeText(this,""+jsonUserAddressList.getJsonUserAddresses().size(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "" + jsonUserAddressList.getJsonUserAddresses().size(), Toast.LENGTH_LONG).show();
         final List<JsonUserAddress> notificationsList = jsonUserAddressList.getJsonUserAddresses();
 
 

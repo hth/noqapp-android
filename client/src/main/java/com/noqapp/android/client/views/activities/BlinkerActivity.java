@@ -41,7 +41,7 @@ public class BlinkerActivity extends Activity {
             public void onClick(View v) {
                 if (null != vibrator)
                     vibrator.cancel();
-                if(null != thread)
+                if (null != thread)
                     thread.interrupt();
                 stopVibrate = true;
                 finish();
@@ -62,16 +62,16 @@ public class BlinkerActivity extends Activity {
                 @Override
                 public void run() {
                     for (int i = 0; i < 5; i++) {
-                       if(!stopVibrate) {
-                           vibrator.vibrate(pattern, -1);
-                           try {
-                               Thread.sleep(4000); //the time, the complete pattern needs
-                           } catch (Exception e) {
-                               e.printStackTrace();
-                           }
-                       }else{
-                           return;
-                       }
+                        if (!stopVibrate) {
+                            vibrator.vibrate(pattern, -1);
+                            try {
+                                Thread.sleep(4000); //the time, the complete pattern needs
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            return;
+                        }
                     }
                 }
             };
@@ -85,7 +85,7 @@ public class BlinkerActivity extends Activity {
         super.onBackPressed();
         if (null != vibrator)
             vibrator.cancel();
-        if(null != thread)
+        if (null != thread)
             thread.interrupt();
         stopVibrate = true;
     }

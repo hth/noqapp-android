@@ -39,22 +39,21 @@ import butterknife.ButterKnife;
 public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdapter.OnItemClickListener, NearMePresenter {
 
 
-    private ArrayList<BizStoreElastic> listData = new ArrayList<>();
-    private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
     @BindView(R.id.rv_merchant_around_you)
     protected RecyclerView rv_merchant_around_you;
-    private StoreInfoViewAllAdapter.OnItemClickListener listener;
-    private String scrollId = "";
-    private String city = "";
-    private String lat = "";
-    private String longitute = "";
     @BindView(R.id.edt_search)
     protected EditText edt_search;
     @BindView(R.id.tv_auto)
     protected TextView tv_auto;
     @BindView(R.id.autoCompleteTextView)
     protected AutoCompleteTextView autoCompleteTextView;
-
+    private ArrayList<BizStoreElastic> listData = new ArrayList<>();
+    private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
+    private StoreInfoViewAllAdapter.OnItemClickListener listener;
+    private String scrollId = "";
+    private String city = "";
+    private String lat = "";
+    private String longitute = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +116,7 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
                         edt_search.setText("");
                         return true;
                     }
-                    if (event.getRawX() <= (20+edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
+                    if (event.getRawX() <= (20 + edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
                         if (edt_search.getText().toString().equals("")) {
 
                         } else {
@@ -217,7 +216,7 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
         ArrayList<BizStoreElastic> nearMeData = new ArrayList<>();
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         scrollId = bizStoreElasticList.getScrollId();
-        if(scrollId == null)
+        if (scrollId == null)
             scrollId = "";
         //sort the list, give the Comparator the current location
         Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));

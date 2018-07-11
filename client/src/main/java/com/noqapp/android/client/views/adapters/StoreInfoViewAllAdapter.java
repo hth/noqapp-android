@@ -26,63 +26,17 @@ import java.util.ArrayList;
 
 public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     private final Context context;
-    private ArrayList<BizStoreElastic> dataSet;
-    private RecyclerView recyclerView;
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
+    private final OnItemClickListener listener;
+    private ArrayList<BizStoreElastic> dataSet;
+    private RecyclerView recyclerView;
     // The minimum amount of items to have below your current scroll position
 // before loading more.
     private int visibleThreshold = 3;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
     private OnLoadMoreListener onLoadMoreListener;
-
-    public interface OnItemClickListener {
-        void onStoreItemClick(BizStoreElastic item, View view, int pos);
-    }
-
-    public interface OnLoadMoreListener {
-        void onLoadMore();
-    }
-
-    private final OnItemClickListener listener;
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView tv_name;
-        private TextView tv_address;
-        private TextView tv_phoneno;
-        private TextView tv_store_rating;
-        private TextView tv_store_review;
-        private TextView tv_category_name;
-        private TextView tv_store_special;
-        private TextView tv_status;
-        private ImageView iv_main;
-        private CardView card_view;
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
-            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
-            this.tv_phoneno = (TextView) itemView.findViewById(R.id.tv_phoneno);
-            this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
-            this.tv_store_review = (TextView) itemView.findViewById(R.id.tv_store_review);
-            this.tv_category_name = (TextView) itemView.findViewById(R.id.tv_category_name);
-            this.tv_store_special = (TextView) itemView.findViewById(R.id.tv_store_special);
-            this.tv_status = (TextView) itemView.findViewById(R.id.tv_status);
-            this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
-            this.card_view = (CardView) itemView.findViewById(R.id.card_view);
-        }
-    }
-
-    public static class ProgressViewHolder extends RecyclerView.ViewHolder {
-        public ProgressBar progressBar;
-
-        public ProgressViewHolder(View v) {
-            super(v);
-            progressBar = v.findViewById(R.id.progressBar);
-        }
-    }
 
     public StoreInfoViewAllAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener, RecyclerView recyclerView) {
         this.dataSet = data;
@@ -141,7 +95,6 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
         return vh;
     }
 
-
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
         if (viewHolder instanceof MyViewHolder) {
@@ -161,7 +114,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getRatingCount() == 0 ? "No" : bizStoreElastic.getRatingCount()) + " Reviews");
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
                 Picasso.with(context)
-                        .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,bizStoreElastic.getDisplayImage()))
+                        .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                         .into(holder.iv_main);
             else {
                 Picasso.with(context).load(R.drawable.store_default).into(holder.iv_main);
@@ -211,5 +164,51 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
 
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
         this.onLoadMoreListener = onLoadMoreListener;
+    }
+
+
+    public interface OnItemClickListener {
+        void onStoreItemClick(BizStoreElastic item, View view, int pos);
+    }
+
+    public interface OnLoadMoreListener {
+        void onLoadMore();
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView tv_name;
+        private TextView tv_address;
+        private TextView tv_phoneno;
+        private TextView tv_store_rating;
+        private TextView tv_store_review;
+        private TextView tv_category_name;
+        private TextView tv_store_special;
+        private TextView tv_status;
+        private ImageView iv_main;
+        private CardView card_view;
+
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
+            this.tv_phoneno = (TextView) itemView.findViewById(R.id.tv_phoneno);
+            this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
+            this.tv_store_review = (TextView) itemView.findViewById(R.id.tv_store_review);
+            this.tv_category_name = (TextView) itemView.findViewById(R.id.tv_category_name);
+            this.tv_store_special = (TextView) itemView.findViewById(R.id.tv_store_special);
+            this.tv_status = (TextView) itemView.findViewById(R.id.tv_status);
+            this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
+            this.card_view = (CardView) itemView.findViewById(R.id.card_view);
+        }
+    }
+
+    public static class ProgressViewHolder extends RecyclerView.ViewHolder {
+        public ProgressBar progressBar;
+
+        public ProgressViewHolder(View v) {
+            super(v);
+            progressBar = v.findViewById(R.id.progressBar);
+        }
     }
 }

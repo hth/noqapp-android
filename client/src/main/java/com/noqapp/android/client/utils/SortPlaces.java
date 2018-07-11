@@ -8,9 +8,10 @@ import java.util.Comparator;
 public class SortPlaces implements Comparator<BizStoreElastic> {
     LatLng currentLoc;
 
-    public SortPlaces(LatLng current){
+    public SortPlaces(LatLng current) {
         currentLoc = current;
     }
+
     @Override
     public int compare(final BizStoreElastic place1, final BizStoreElastic place2) {
 
@@ -29,10 +30,10 @@ public class SortPlaces implements Comparator<BizStoreElastic> {
         double radius = 6378137;   // approximate Earth radius, *in meters*
         double deltaLat = toLat - fromLat;
         double deltaLon = toLon - fromLon;
-        double angle = 2 * Math.asin( Math.sqrt(
-                Math.pow(Math.sin(deltaLat/2), 2) +
+        double angle = 2 * Math.asin(Math.sqrt(
+                Math.pow(Math.sin(deltaLat / 2), 2) +
                         Math.cos(fromLat) * Math.cos(toLat) *
-                                Math.pow(Math.sin(deltaLon/2), 2) ) );
+                                Math.pow(Math.sin(deltaLon / 2), 2)));
         return radius * angle;
     }
 }

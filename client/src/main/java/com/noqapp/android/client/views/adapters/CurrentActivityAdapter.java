@@ -20,37 +20,8 @@ import java.util.List;
 
 public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivityAdapter.MyViewHolder> {
     private final Context context;
-    private List<JsonTokenAndQueue> dataSet;
-
-    public interface OnItemClickListener {
-        void currentItemClick(JsonTokenAndQueue item, View view, int pos);
-    }
-
     private final OnItemClickListener listener;
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView tv_name;
-        private TextView tv_detail;
-        private TextView tv_address;
-        private ImageView iv_store_icon;
-        private CardView card_view;
-        private TextView tv_total_value;
-        private TextView tv_current_value;
-        private TextView tv_estimated_time;
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
-            this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
-            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
-            this.tv_current_value = (TextView) itemView.findViewById(R.id.tv_current_value);
-            this.tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
-            this.tv_estimated_time = (TextView) itemView.findViewById(R.id.tv_estimated_time);
-            this.iv_store_icon = (ImageView) itemView.findViewById(R.id.iv_store_icon);
-            this.card_view = (CardView) itemView.findViewById(R.id.card_view);
-        }
-    }
+    private List<JsonTokenAndQueue> dataSet;
 
     public CurrentActivityAdapter(List<JsonTokenAndQueue> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
@@ -98,9 +69,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         return dataSet.size();
     }
 
-
-
-    private  void setStoreDrawable(Context context, ImageView iv, BusinessTypeEnum bussinessType) {
+    private void setStoreDrawable(Context context, ImageView iv, BusinessTypeEnum bussinessType) {
         switch (bussinessType) {
             case DO:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.hospital));
@@ -113,6 +82,34 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
             default:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.store));
                 iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
+        }
+    }
+
+    public interface OnItemClickListener {
+        void currentItemClick(JsonTokenAndQueue item, View view, int pos);
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView tv_name;
+        private TextView tv_detail;
+        private TextView tv_address;
+        private ImageView iv_store_icon;
+        private CardView card_view;
+        private TextView tv_total_value;
+        private TextView tv_current_value;
+        private TextView tv_estimated_time;
+
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
+            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
+            this.tv_current_value = (TextView) itemView.findViewById(R.id.tv_current_value);
+            this.tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
+            this.tv_estimated_time = (TextView) itemView.findViewById(R.id.tv_estimated_time);
+            this.iv_store_icon = (ImageView) itemView.findViewById(R.id.iv_store_icon);
+            this.card_view = (CardView) itemView.findViewById(R.id.card_view);
         }
     }
 

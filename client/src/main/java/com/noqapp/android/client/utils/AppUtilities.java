@@ -399,7 +399,7 @@ public class AppUtilities extends CommonHelper {
     }
 
 
-    public static String getImageUrls(String bucket_type ,String url) {
+    public static String getImageUrls(String bucket_type, String url) {
         switch (bucket_type) {
             case BuildConfig.PROFILE_BUCKET:
                 return BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + url;

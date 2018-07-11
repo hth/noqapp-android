@@ -71,11 +71,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
+    private static final int MSG_CURRENT_QUEUE = 0;
+    private static final int MSG_HISTORY_QUEUE = 1;
+    private static TokenQueueViewInterface tokenQueueViewInterface;
+    private static QueueHandler mHandler;
     private final String TAG = ScanQueueFragment.class.getSimpleName();
-
     @BindView(R.id.cv_scan)
     protected CardView cv_scan;
-
     @BindView(R.id.rv_recent_activity)
     protected RecyclerView rv_recent_activity;
     @BindView(R.id.rv_current_activity)
@@ -84,15 +86,24 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected TextView tv_current_title;
     @BindView(R.id.tv_auto)
     protected TextView tv_auto;
-
     @BindView(R.id.tv_deviceId)
     protected TextView tv_deviceId;
-
-    private static final int MSG_CURRENT_QUEUE = 0;
-    private static final int MSG_HISTORY_QUEUE = 1;
-    private static TokenQueueViewInterface tokenQueueViewInterface;
     @BindView(R.id.rv_merchant_around_you)
     protected RecyclerView rv_merchant_around_you;
+    @BindView(R.id.tv_recent_view_all)
+    protected TextView tv_recent_view_all;
+    @BindView(R.id.tv_near_view_all)
+    protected TextView tv_near_view_all;
+    @BindView(R.id.btn_temp)
+    protected Button btn_temp;
+    @BindView(R.id.pb_current)
+    protected ProgressBar pb_current;
+    @BindView(R.id.pb_recent)
+    protected ProgressBar pb_recent;
+    @BindView(R.id.pb_near)
+    protected ProgressBar pb_near;
+    @BindView(R.id.autoCompleteTextView)
+    protected AutoCompleteTextView autoCompleteTextView;
     private boolean fromList = false;
     private CurrentActivityAdapter currentActivityAdapter;
     private StoreInfoAdapter storeInfoAdapter;
@@ -101,33 +112,9 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     private CurrentActivityAdapter.OnItemClickListener currentClickListner;
     private RecentActivityAdapter.OnItemClickListener recentClickListner;
     private StoreInfoAdapter.OnItemClickListener storeListener;
-
-    @BindView(R.id.tv_recent_view_all)
-    protected TextView tv_recent_view_all;
-    @BindView(R.id.tv_near_view_all)
-    protected TextView tv_near_view_all;
-
-    private static QueueHandler mHandler;
-    @BindView(R.id.btn_temp)
-    protected Button btn_temp;
-
-    @BindView(R.id.pb_current)
-    protected ProgressBar pb_current;
-
-    @BindView(R.id.pb_recent)
-    protected ProgressBar pb_recent;
-
-    @BindView(R.id.pb_near)
-    protected ProgressBar pb_near;
-
-    @BindView(R.id.autoCompleteTextView)
-    protected AutoCompleteTextView autoCompleteTextView;
-
     private String scrollId = "";
     private double lat, log;
     private String city = "";
-
-
 
 
     public ScanQueueFragment() {
@@ -139,39 +126,8 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         getNearMeInfo(cityName, "" + latitute, "" + longitute);
         lat = latitute;
         log = longitute;
-        AppUtilities.setAutoCompleteText(autoCompleteTextView ,cityName);
+        AppUtilities.setAutoCompleteText(autoCompleteTextView, cityName);
         city = cityName;
-    }
-
-    private static class QueueHandler extends Handler {
-        private boolean isCurrentExecute = false;
-        private boolean isHistoryExecute = false;
-
-        // This method is used to handle received messages
-        public void handleMessage(Message msg) {
-            // switch to identify the message by its code
-            switch (msg.what) {
-                case MSG_CURRENT_QUEUE:
-                    isCurrentExecute = true;
-                    if (isHistoryExecute && isCurrentExecute) {
-                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(LaunchActivity.getLaunchActivity());
-                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
-                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
-                    }
-                    break;
-
-                case MSG_HISTORY_QUEUE:
-                    isHistoryExecute = true;
-                    if (isHistoryExecute && isCurrentExecute) {
-                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(LaunchActivity.getLaunchActivity());
-                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
-                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 
     @Override
@@ -230,7 +186,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 lat = LaunchActivity.getLaunchActivity().latitute;
                 log = LaunchActivity.getLaunchActivity().longitute;
                 city = LaunchActivity.getLaunchActivity().cityName;
-                AppUtilities.setAutoCompleteText(autoCompleteTextView ,city);
+                AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
                 getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
                 new AppUtilities().hideKeyBoard(getActivity());
             }
@@ -299,10 +255,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_scan));
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
         fetchCurrentAndHistoryList();
-        try{
-            tv_deviceId.setText(UserUtils.getDeviceId()+"\n"+"FCM Token: "+NoQueueBaseActivity.getFCMToken());
+        try {
+            tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + "FCM Token: " + NoQueueBaseActivity.getFCMToken());
             tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -338,7 +294,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void onSaveInstanceState(Bundle outState) {
         //No call for super(). Bug on API Level > 11.
     }
-
 
     private void getNearMeInfo(String city, String lat, String longitute) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -564,6 +519,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
         Collections.sort(historylist, new Comparator<JsonTokenAndQueue>() {
             DateFormat f = Formatter.formatRFC822;
+
             @Override
             public int compare(JsonTokenAndQueue o1, JsonTokenAndQueue o2) {
                 try {
@@ -582,7 +538,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
-        boolean isUserTurn = jq.afterHowLong()<=0;
+        boolean isUserTurn = jq.afterHowLong() <= 0;
         if (isUserTurn && isUpdated && LaunchActivity.getLaunchActivity().isCurrentActivityLaunchActivity()) {
             Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
             startActivity(blinker);
@@ -604,5 +560,36 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         in_search.putExtra("long", "" + log);
         in_search.putExtra("city", city);
         startActivity(in_search);
+    }
+
+    private static class QueueHandler extends Handler {
+        private boolean isCurrentExecute = false;
+        private boolean isHistoryExecute = false;
+
+        // This method is used to handle received messages
+        public void handleMessage(Message msg) {
+            // switch to identify the message by its code
+            switch (msg.what) {
+                case MSG_CURRENT_QUEUE:
+                    isCurrentExecute = true;
+                    if (isHistoryExecute && isCurrentExecute) {
+                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(LaunchActivity.getLaunchActivity());
+                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
+                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
+                    }
+                    break;
+
+                case MSG_HISTORY_QUEUE:
+                    isHistoryExecute = true;
+                    if (isHistoryExecute && isCurrentExecute) {
+                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(LaunchActivity.getLaunchActivity());
+                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
+                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

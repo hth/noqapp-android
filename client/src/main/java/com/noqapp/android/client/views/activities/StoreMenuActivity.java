@@ -36,7 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 // Scrollview issue  https://stackoverflow.com/questions/37605545/android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
-public class StoreMenuActivity extends BaseActivity implements  CustomExpandableListAdapter.CartUpdate,MenuHeaderAdapter.OnItemClickListener , MenuAdapter.CartOrderUpdate{
+public class StoreMenuActivity extends BaseActivity implements CustomExpandableListAdapter.CartUpdate, MenuHeaderAdapter.OnItemClickListener, MenuAdapter.CartOrderUpdate {
     private static final String TAG = StoreMenuActivity.class.getSimpleName();
 
     @BindView(R.id.actionbarBack)
@@ -54,6 +54,7 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
     private JsonQueue jsonQueue;
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
+    private HashMap<String, ChildData> orders = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,16 +78,15 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
         viewPager = findViewById(R.id.pager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         ArrayList<Integer> removeEmptyData = new ArrayList<>();
-        for(int i = 0; i< expandableListTitle.size();i++){
-            if(expandableListDetail.get(expandableListTitle.get(i).getCategoryId()).size()>0)
-             adapter.addFragment(new FragmentDummy(expandableListDetail.get(expandableListTitle.get(i).getCategoryId()),this,this), "FRAG"+i);
+        for (int i = 0; i < expandableListTitle.size(); i++) {
+            if (expandableListDetail.get(expandableListTitle.get(i).getCategoryId()).size() > 0)
+                adapter.addFragment(new FragmentDummy(expandableListDetail.get(expandableListTitle.get(i).getCategoryId()), this, this), "FRAG" + i);
             else
                 removeEmptyData.add(i);
         }
         // Remove the categories which having zero items
-        for(int j = removeEmptyData.size()-1 ; j>=0;j--)
-        {
-            expandableListTitle.remove((int)removeEmptyData.get(j));
+        for (int j = removeEmptyData.size() - 1; j >= 0; j--) {
+            expandableListTitle.remove((int) removeEmptyData.get(j));
         }
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
@@ -132,7 +132,7 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
                                     .setProductId(value.getJsonStoreProduct().getProductId())
                                     .setProductPrice(value.getJsonStoreProduct().getProductPrice())
                                     .setProductQuantity(value.getChildInput())
-                            .setJsonStoreProduct(value.getJsonStoreProduct()));
+                                    .setJsonStoreProduct(value.getJsonStoreProduct()));
                             price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
                         }
                         if (price / 100 >= jsonQueue.getMinimumDeliveryOrder()) {
@@ -144,10 +144,10 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
 
                             Intent intent = new Intent(StoreMenuActivity.this, OrderActivity.class);
                             Bundle bundle = new Bundle();
-                            bundle.putSerializable("data",jsonPurchaseOrder);
-                            bundle.putString("storeName",jsonQueue.getDisplayName());
-                            bundle.putString("storeAddress",jsonQueue.getStoreAddress());
-                            bundle.putInt("deliveryRange",jsonQueue.getDeliveryRange());
+                            bundle.putSerializable("data", jsonPurchaseOrder);
+                            bundle.putString("storeName", jsonQueue.getDisplayName());
+                            bundle.putString("storeAddress", jsonQueue.getStoreAddress());
+                            bundle.putInt("deliveryRange", jsonQueue.getDeliveryRange());
                             intent.putExtras(bundle);
                             startActivity(intent);
                         } else {
@@ -193,6 +193,10 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
         }
     }
 
+    public HashMap<String, ChildData> getOrders() {
+        return orders;
+    }
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -221,10 +225,4 @@ public class StoreMenuActivity extends BaseActivity implements  CustomExpandable
             return mFragmentTitleList.get(position);
         }
     }
-
-    public HashMap<String, ChildData> getOrders() {
-        return orders;
-    }
-
-    private HashMap<String, ChildData> orders = new HashMap<>();
 }
