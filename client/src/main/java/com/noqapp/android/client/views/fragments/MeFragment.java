@@ -20,7 +20,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.WebViewActivity;
-import com.noqapp.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

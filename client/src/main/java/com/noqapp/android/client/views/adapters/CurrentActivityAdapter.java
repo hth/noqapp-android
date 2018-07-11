@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.util.List;
 

@@ -8,7 +8,7 @@ import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.DependencyPresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonProfile;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -38,10 +38,10 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.merchant.views.fragments.UserProfileFragment;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
-import com.noqapp.common.beans.JsonResponse;
-import com.noqapp.common.model.types.UserLevelEnum;
-import com.noqapp.common.presenter.ImageUploadPresenter;
-import com.noqapp.common.utils.ImagePathReader;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.presenter.ImageUploadPresenter;
+import com.noqapp.android.common.utils.ImagePathReader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

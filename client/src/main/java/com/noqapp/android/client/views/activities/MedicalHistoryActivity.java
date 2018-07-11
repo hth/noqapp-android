@@ -19,8 +19,8 @@ import com.noqapp.android.client.presenter.MedicalRecordPresenter;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MedicalHistoryAdapter;
-import com.noqapp.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.common.beans.medical.JsonMedicalRecordList;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 
 import java.util.ArrayList;
 import java.util.Collections;

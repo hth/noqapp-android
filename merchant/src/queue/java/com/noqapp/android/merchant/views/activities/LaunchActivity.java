@@ -21,7 +21,7 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.common.utils.NetworkUtil;
+import com.noqapp.android.common.utils.NetworkUtil;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 

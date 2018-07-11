@@ -1,8 +1,8 @@
 package com.noqapp.android.client.model.response.open;
 
-import com.noqapp.common.beans.DeviceRegistered;
-import com.noqapp.common.beans.JsonLatestAppVersion;
-import com.noqapp.common.beans.body.DeviceToken;
+import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.JsonLatestAppVersion;
+import com.noqapp.android.common.beans.body.DeviceToken;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

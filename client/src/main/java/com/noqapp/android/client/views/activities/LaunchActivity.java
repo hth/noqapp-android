@@ -55,8 +55,8 @@ import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
-import com.noqapp.common.beans.body.DeviceToken;
-import com.noqapp.common.utils.NetworkUtil;
+import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.utils.NetworkUtil;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 

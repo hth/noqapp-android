@@ -7,7 +7,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
-import com.noqapp.common.utils.Formatter;
+import com.noqapp.android.common.utils.Formatter;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;

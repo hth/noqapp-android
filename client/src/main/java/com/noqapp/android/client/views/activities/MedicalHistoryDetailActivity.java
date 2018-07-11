@@ -14,11 +14,11 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.views.adapters.MedicalRecordAdapter;
-import com.noqapp.common.beans.JsonProfile;
-import com.noqapp.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.common.beans.medical.JsonMedicalPhysical;
-import com.noqapp.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.common.model.types.medical.PhysicalExamEnum;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.medical.PhysicalExamEnum;
 
 import java.util.ArrayList;
 import java.util.List;

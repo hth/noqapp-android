@@ -40,10 +40,10 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
-import com.noqapp.common.beans.ErrorEncounteredJson;
-import com.noqapp.common.beans.JsonProfile;
-import com.noqapp.common.model.types.MobileSystemErrorCodeEnum;
-import com.noqapp.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import java.util.concurrent.TimeUnit;
 

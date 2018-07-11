@@ -5,8 +5,8 @@ import android.util.Log;
 
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.common.beans.JsonProfessionalProfilePersonal;
-import com.noqapp.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.beans.JsonResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

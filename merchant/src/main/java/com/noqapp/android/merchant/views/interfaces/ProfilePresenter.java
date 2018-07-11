@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.views.interfaces;
 
 
-import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonProfile;
 
 public interface ProfilePresenter {
 

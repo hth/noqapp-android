@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.presenter.beans;
 
-import com.noqapp.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.JsonResponse;
 
 public interface MedicalRecordPresenter {
 

@@ -8,7 +8,7 @@ import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
-import com.noqapp.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import org.apache.commons.lang3.StringUtils;
 

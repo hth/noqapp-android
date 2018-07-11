@@ -36,8 +36,8 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.SpinAdapter;
-import com.noqapp.common.beans.JsonProfile;
-import com.noqapp.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.body.UpdateProfile;
 
 import java.util.List;
 import java.util.TimeZone;

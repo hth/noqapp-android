@@ -1,6 +1,6 @@
 package com.noqapp.android.client.presenter;
 
-import com.noqapp.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.JsonResponse;
 
 /**
  * User: hitender

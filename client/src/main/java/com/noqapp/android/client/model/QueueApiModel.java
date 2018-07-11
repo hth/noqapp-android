@@ -14,9 +14,9 @@ import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.common.beans.JsonResponse;
-import com.noqapp.common.beans.body.DeviceToken;
-import com.noqapp.common.beans.body.JoinQueue;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.beans.body.JoinQueue;
 
 import java.util.List;
 

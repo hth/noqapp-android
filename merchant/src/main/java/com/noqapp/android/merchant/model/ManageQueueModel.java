@@ -16,7 +16,7 @@ import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
-import com.noqapp.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import org.apache.commons.lang3.StringUtils;
 

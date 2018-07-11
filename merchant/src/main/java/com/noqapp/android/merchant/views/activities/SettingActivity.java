@@ -31,7 +31,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
-import com.noqapp.common.utils.Formatter;
+import com.noqapp.android.common.utils.Formatter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;

@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.DeliveryTypeEnum;
 import com.noqapp.android.client.model.types.PaymentTypeEnum;
 import com.noqapp.android.client.model.types.PurchaseOrderStateEnum;
-import com.noqapp.common.beans.AbstractDomain;
-import com.noqapp.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.io.Serializable;
 import java.util.LinkedList;

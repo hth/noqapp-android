@@ -52,10 +52,10 @@ import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
-import com.noqapp.common.beans.JsonProfile;
-import com.noqapp.common.beans.body.DeviceToken;
-import com.noqapp.common.model.types.UserLevelEnum;
-import com.noqapp.common.utils.NetworkUtil;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.NetworkUtil;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;

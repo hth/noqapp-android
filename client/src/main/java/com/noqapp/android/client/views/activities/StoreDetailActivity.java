@@ -40,8 +40,8 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.utils.ViewAnimationUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
-import com.noqapp.common.beans.JsonHour;
-import com.noqapp.common.utils.Formatter;
+import com.noqapp.android.common.beans.JsonHour;
+import com.noqapp.android.common.utils.Formatter;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
