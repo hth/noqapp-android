@@ -26,7 +26,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializable{
+public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializable {
 
     @JsonProperty("pi")
     private String productId;

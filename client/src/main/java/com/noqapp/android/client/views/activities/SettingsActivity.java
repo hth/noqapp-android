@@ -25,7 +25,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     protected TextView tv_toolbar_title;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

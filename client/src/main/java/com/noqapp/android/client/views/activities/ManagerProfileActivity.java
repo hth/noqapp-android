@@ -46,7 +46,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 
-public class ManagerProfileActivity extends ProfileActivity implements View.OnClickListener,QueueManagerPresenter {
+public class ManagerProfileActivity extends ProfileActivity implements View.OnClickListener, QueueManagerPresenter {
 
     @BindView(R.id.tv_name)
     protected TextView tv_name;
@@ -60,7 +60,7 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
     private String webProfileId = "";
     private String managerName = "";
-    private String managerImageUrl="";
+    private String managerImageUrl = "";
 
 
     @Override
@@ -81,7 +81,7 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
         try {
             if (!TextUtils.isEmpty(managerImageUrl)) {
                 Picasso.with(this)
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET , managerImageUrl))
+                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, managerImageUrl))
                         .into(iv_profile);
             }
         } catch (Exception e) {
@@ -89,16 +89,15 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
         }
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
-        loadTabs =new LoadTabs();
+        loadTabs = new LoadTabs();
         loadTabs.execute();
 
-        if(LaunchActivity.getLaunchActivity().isOnline()){
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
             ProfessionalProfileModel.queueManagerPresenter = this;
-            ProfessionalProfileModel.profile(UserUtils.getDeviceId(),webProfileId);
+            ProfessionalProfileModel.profile(UserUtils.getDeviceId(), webProfileId);
         }
 
     }
-
 
 
     @Override
@@ -116,22 +115,6 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
     @Override
     public void queueManagerError() {
 
-    }
-
-    private class LoadTabs extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            return null;
-        }
-        protected void onPostExecute(String result) {
-            try {
-                setupViewPager(viewPager);
-                tabLayout.setupWithViewPager(viewPager);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
@@ -167,8 +150,8 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                     //   ProfileModel.imageUploadPresenter = this;
-                      //  ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
+                        //   ProfileModel.imageUploadPresenter = this;
+                        //  ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
                     }
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
@@ -181,7 +164,6 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
         }
     }
 
-
     private void setupViewPager(ViewPager viewPager) {
         userProfileFragment = new UserProfileFragment();
         userAdditionalInfoFragment = new UserAdditionalInfoFragment();
@@ -189,6 +171,36 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
         adapter.addFragment(userProfileFragment, "Profile");
         adapter.addFragment(userAdditionalInfoFragment, "Additional Infos");
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != loadTabs)
+            loadTabs.cancel(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tv_name.setText(managerName);
+    }
+
+    private class LoadTabs extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            return null;
+        }
+
+        protected void onPostExecute(String result) {
+            try {
+                setupViewPager(viewPager);
+                tabLayout.setupWithViewPager(viewPager);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -218,18 +230,5 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(null != loadTabs)
-            loadTabs.cancel(true);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        tv_name.setText(managerName);
     }
 }

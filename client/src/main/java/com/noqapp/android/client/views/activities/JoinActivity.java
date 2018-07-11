@@ -123,11 +123,11 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(UserUtils.isLogin()) {
+                if (UserUtils.isLogin()) {
                     Intent loginIntent = new Intent(JoinActivity.this, UserProfileActivity.class);
                     startActivity(loginIntent);
-                }else{
-                    Toast.makeText(JoinActivity.this,"Please login to add dependents",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(JoinActivity.this, "Please login to add dependents", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -228,8 +228,8 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
 
         /**
-        * Below code block is commented to avoid false joining
-        * **/
+         * Below code block is commented to avoid false joining
+         * **/
        /* if (isJoinNotPossible) {
             Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
         } else {
@@ -257,7 +257,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
     @Override
     public void queueResponse(BizStoreElasticList bizStoreElasticList) {
-      dismissProgress();
+        dismissProgress();
     }
 
 
@@ -289,7 +289,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 //                    //TODO(hth) Forced change to true when Remote Join fails.
 //                    isValid = true;
 //                }
-                if (sp_name_list.getSelectedItemPosition()==0) {
+                if (sp_name_list.getSelectedItemPosition() == 0) {
                     errorMsg += getString(R.string.bullet) + getString(R.string.error_patient_name_missing) + "\n";
                     isValid = false;
                 }
@@ -299,10 +299,10 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
                     in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);
                     in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-               //     in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true);
+                    //     in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true);
                     in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
                     in.putExtra(Constants.FROM_JOIN_SCREEN, true);
-                    in.putExtra("profile_pos",sp_name_list.getSelectedItemPosition());
+                    in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
                     startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
                 } else {
                     ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), errorMsg, true);
@@ -340,7 +340,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
         in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.FROM_JOIN_SCREEN, true);
-        in.putExtra("profile_pos",sp_name_list.getSelectedItemPosition());
+        in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
         startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }
 
@@ -381,7 +381,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 joinErrorMsg = "";
             }
         }
-        if(UserUtils.isLogin()) {
+        if (UserUtils.isLogin()) {
             List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
             profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
             profileList.add(0, new JsonProfile().setName("Select Patient"));

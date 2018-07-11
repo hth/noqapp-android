@@ -31,17 +31,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private List<JsonStoreCategory> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<ChildData>> listDataChild;
-
-    public interface CartUpdate {
-        void updateCartInfo(int amountString);
-    }
-
     private CartUpdate cartUpdate;
-
-    public HashMap<String, ChildData> getOrders() {
-        return orders;
-    }
-
     private HashMap<String, ChildData> orders = new HashMap<>();
 
     public CustomExpandableListAdapter(Context context, List<JsonStoreCategory> listDataHeader,
@@ -51,6 +41,10 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         this.listDataChild = listDataChild;
         this.cartUpdate = cartUpdate;
         orders.clear();
+    }
+
+    public HashMap<String, ChildData> getOrders() {
+        return orders;
     }
 
     @Override
@@ -215,16 +209,6 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    public final class ChildViewHolder {
-        TextView tv_child_title;
-        TextView tv_price;
-        TextView tv_value;
-        TextView tv_discounted_price;
-        TextView tv_cat;
-        Button btn_decrease;
-        Button btn_increase;
-    }
-
     private double calculateDiscountPrice(String displayPrice, String discountPercentage) {
         double price = Double.valueOf(displayPrice);
         double discountPercentageValue = Double.valueOf(discountPercentage);
@@ -237,5 +221,19 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
         }
         return price / 100;
+    }
+
+    public interface CartUpdate {
+        void updateCartInfo(int amountString);
+    }
+
+    public final class ChildViewHolder {
+        TextView tv_child_title;
+        TextView tv_price;
+        TextView tv_value;
+        TextView tv_discounted_price;
+        TextView tv_cat;
+        Button btn_decrease;
+        Button btn_increase;
     }
 }

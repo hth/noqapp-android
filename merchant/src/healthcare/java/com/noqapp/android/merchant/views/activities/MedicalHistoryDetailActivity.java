@@ -28,6 +28,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.MedicationTypeEnum;
+import com.noqapp.android.common.model.types.MedicationWithFoodEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.model.M_MerchantProfileModel;
@@ -37,26 +44,14 @@ import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
-import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.model.types.MedicationTypeEnum;
-import com.noqapp.android.common.model.types.MedicationWithFoodEnum;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MedicalHistoryDetailActivity extends AppCompatActivity implements MedicalRecordPresenter, View.OnClickListener,IntellisensePresenter {
+public class MedicalHistoryDetailActivity extends AppCompatActivity implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter {
     private final String packageName = "com.google.android.apps.handwriting.ime";
-    private ImageView actionbarBack;
-    private HashMap<String, ArrayList<String>> mHashmapTemp = null;
-    private String qCodeQR = "";
-    private AutoCompleteTextView actv_medicine_name,actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation;
-    private EditText edt_weight, edt_bp, edt_pulse;
     private final String CHIEF = "chief_complaint";
     private final String PAST_HISTORY = "past_history";
     private final String FAMILY_HISTORY = "family_history";
@@ -65,7 +60,11 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private final String INVESTIGATION = "investigation";
     private final String KNOWN_ALLERGIES = "known_allergies";
     private final String MEDICINES_TREATMENT_ADVICE = "medicines_treatment_advice";
-
+    private ImageView actionbarBack;
+    private HashMap<String, ArrayList<String>> mHashmapTemp = null;
+    private String qCodeQR = "";
+    private AutoCompleteTextView actv_medicine_name, actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation;
+    private EditText edt_weight, edt_bp, edt_pulse;
     private JsonQueuedPerson jsonQueuedPerson;
     private Button btn_update;
     private ListView listview;
@@ -310,7 +309,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         updateSuggetions(actv_clinical_finding, CLINICAL_FINDINGS);
         updateSuggetions(actv_provisional, PROVISIONAL_DIAGNOSIS);
         updateSuggetions(actv_investigation, INVESTIGATION);
-       // updateSuggetions(actv_medicine_name, MEDICINES); update this when add button click
+        // updateSuggetions(actv_medicine_name, MEDICINES); update this when add button click
         LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
 
         M_MerchantProfileModel m_merchantProfileModel = new M_MerchantProfileModel(this);
@@ -362,7 +361,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
 
     @Override
     public void intellisenseError() {
-        Log.v("intellesence upload: ", "error" );
+        Log.v("intellesence upload: ", "error");
     }
 
     @Override

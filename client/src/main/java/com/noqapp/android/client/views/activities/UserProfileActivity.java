@@ -56,49 +56,35 @@ import okhttp3.RequestBody;
 
 public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
 
+    public static ImageView iv_profile;
+    public String gender = "";
     @BindView(R.id.tv_name)
     protected TextView tv_name;
-
     @BindView(R.id.iv_edit)
     protected ImageView iv_edit;
-
     @BindView(R.id.iv_add_dependent)
     protected ImageView iv_add_dependent;
-
     @BindView(R.id.edt_birthday)
     protected EditText edt_birthday;
     @BindView(R.id.edt_address)
     protected EditText edt_address;
-
-    public String gender = "";
-
     @BindView(R.id.edt_phone)
     protected EditText edt_phoneNo;
-
     @BindView(R.id.edt_name)
     protected EditText edt_Name;
-
     @BindView(R.id.edt_email)
     protected EditText edt_Mail;
-
-
     @BindView(R.id.tv_male)
     protected EditText tv_male;
-
     @BindView(R.id.tv_female)
     protected EditText tv_female;
-
     @BindView(R.id.tv_migrate)
     protected TextView tv_migrate;
-
     @BindView(R.id.ll_gender)
     protected LinearLayout ll_gender;
-
     @BindView(R.id.ll_dependent)
     protected LinearLayout ll_dependent;
-
     private SimpleDateFormat dateFormatter;
-    public static ImageView iv_profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

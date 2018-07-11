@@ -30,19 +30,17 @@ import java.util.Locale;
 public abstract class LocationActivity extends NoQueueBaseActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
     private static final int REQUEST_CODE_PERMISSION = 2;
-    private String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String TAG = "LocationActivity";
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLocation;
     public double latitute = 0;
     public double longitute = 0;
+    public String cityName = "";
+    private String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLocation;
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 60 * 2 * 1000 * 10;  /* 10*6 secs */
     private long FASTEST_INTERVAL = 2000; /* 2 sec */
-
     private LocationManager locationManager;
-    public String cityName = "";
-
 
     // TODO @Chandra
     // Please check this link too ->https://stackoverflow.com/a/3145655/3912847

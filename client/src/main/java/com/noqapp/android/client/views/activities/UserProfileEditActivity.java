@@ -64,46 +64,35 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 
-public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter,DependencyPresenter {
+public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
 
+    public static ImageView iv_profile;
+    public String gender = "";
     @BindView(R.id.tv_name)
     protected TextView tv_name;
-
     @BindView(R.id.edt_birthday)
     protected EditText edt_birthday;
-
     @BindView(R.id.edt_address)
     protected EditText edt_address;
-
     @BindView(R.id.btn_update)
     protected Button btn_update;
-
     @BindView(R.id.edt_phone)
     protected EditText edt_phoneNo;
-
     @BindView(R.id.edt_name)
     protected EditText edt_Name;
-
     @BindView(R.id.edt_email)
     protected EditText edt_Mail;
-
     @BindView(R.id.tv_male)
     protected EditText tv_male;
-
     @BindView(R.id.tv_female)
     protected EditText tv_female;
-
     @BindView(R.id.ll_gender)
     protected LinearLayout ll_gender;
-
-
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
-    public static ImageView iv_profile;
-    public String gender = "";
-  //
+    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,9 +104,9 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         iv_profile = findViewById(R.id.iv_profile);
         loadProfilePic();
         iv_profile.setOnClickListener(this);
-        isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT,false);
+        isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
         dependentProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.DEPENDENT_PROFILE);
-       // gaurdianProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.KEY_USER_PROFILE);
+        // gaurdianProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.KEY_USER_PROFILE);
         dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         updateUI();
         edt_birthday.setInputType(InputType.TYPE_NULL);
@@ -158,7 +147,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
                 Picasso.with(this)
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET , NoQueueBaseActivity.getUserProfileUri()))
+                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
                         .into(UserProfileEditActivity.iv_profile);
             }
         } catch (Exception e) {
@@ -221,7 +210,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
 
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SELECT_PICTURE) {
@@ -271,8 +259,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 //   String mail = edt_Mail.getText().toString();
                 String birthday = edt_birthday.getText().toString();
                 String address = edt_address.getText().toString();
-                if(isDependent){
-                    if(null != dependentProfile){
+                if (isDependent) {
+                    if (null != dependentProfile) {
                         UpdateProfile updateProfile = new UpdateProfile();
                         updateProfile.setAddress(address);
                         updateProfile.setFirstName(name);
@@ -281,7 +269,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                         updateProfile.setQueueUserId(dependentProfile.getQueueUserId());
                         ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
-                    }else {
+                    } else {
                         Registration registration = new Registration();
                         registration.setPhone(PhoneFormatterUtil.phoneNumberWithCountryCode(NoQueueBaseActivity.getPhoneNo(), NoQueueBaseActivity.getCountryShortName()));
                         registration.setFirstName(name);
@@ -295,7 +283,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         DependencyModel.dependencyPresenter = this;
                         DependencyModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
                     }
-                }else {
+                } else {
                     UpdateProfile updateProfile = new UpdateProfile();
                     updateProfile.setAddress(address);
                     updateProfile.setFirstName(name);
@@ -317,7 +305,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
         dismissProgress();
-        Toast.makeText(this,"Profile updated successfully",Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_LONG).show();
         finish();
     }
 
@@ -343,8 +331,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         NoQueueBaseActivity.setUserProfile(profile);
         dependentProfile = profile;
         dismissProgress();
-        Toast.makeText(this,"Dependent added successfully",Toast.LENGTH_LONG).show();
-       // updateUI();
+        Toast.makeText(this, "Dependent added successfully", Toast.LENGTH_LONG).show();
+        // updateUI();
         finish();
     }
 
@@ -359,9 +347,9 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
     private void updateUI() {
-        if(isDependent){
+        if (isDependent) {
             onClick(tv_male);// set default
-            if(null!= dependentProfile) {
+            if (null != dependentProfile) {
                 edt_Name.setText(dependentProfile.getName());
                 tv_name.setText(dependentProfile.getName());
                 edt_address.setText(dependentProfile.getAddress());
@@ -377,10 +365,10 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else{
+            } else {
                 btn_update.setText("Add Dependent");
             }
-        }else {
+        } else {
             edt_Name.setText(NoQueueBaseActivity.getUserName());
             tv_name.setText(NoQueueBaseActivity.getUserName());
             edt_address.setText(NoQueueBaseActivity.getAddress());

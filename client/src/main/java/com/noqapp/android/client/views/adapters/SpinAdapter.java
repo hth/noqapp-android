@@ -50,7 +50,7 @@ public class SpinAdapter extends ArrayAdapter<JsonUserAddress> {
         TextView label = (TextView) super.getView(position, convertView, parent);
         label.setTextColor(Color.BLACK);
         label.setTextSize(18.0f);
-        label.setPadding(5,5,5,5);
+        label.setPadding(5, 5, 5, 5);
         // Then you can get the current item using the values array (Users array) and the current position
         // You can NOW reference each method you has created in your bean object (User class)
         label.setText(values.get(position).getAddress());
@@ -67,7 +67,7 @@ public class SpinAdapter extends ArrayAdapter<JsonUserAddress> {
         TextView label = (TextView) super.getDropDownView(position, convertView, parent);
         label.setTextColor(Color.BLACK);
         label.setTextSize(18.0f);
-        label.setPadding(5,5,5,5);
+        label.setPadding(5, 5, 5, 5);
         label.setText(values.get(position).getAddress());
         return label;
     }

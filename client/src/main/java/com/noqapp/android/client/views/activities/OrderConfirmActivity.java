@@ -15,7 +15,6 @@ import butterknife.ButterKnife;
 
 public class OrderConfirmActivity extends BaseActivity {
 
-    private JsonPurchaseOrder jsonPurchaseOrder, oldjsonPurchaseOrder;
     @BindView(R.id.tv_total_order_amt)
     protected TextView tv_total_order_amt;
     @BindView(R.id.tv_tax_amt)
@@ -34,7 +33,7 @@ public class OrderConfirmActivity extends BaseActivity {
     protected TextView tv_store_name;
     @BindView(R.id.tv_address)
     protected TextView tv_address;
-
+    private JsonPurchaseOrder jsonPurchaseOrder, oldjsonPurchaseOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

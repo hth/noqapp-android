@@ -51,54 +51,37 @@ import butterknife.OnClick;
 
 public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
-
-    private JsonToken jsonToken;
-
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
-
     @BindView(R.id.tv_queue_name)
     protected TextView tv_queue_name;
-
     @BindView(R.id.tv_address)
     protected TextView tv_address;
-
     @BindView(R.id.tv_mobile)
     protected TextView tv_mobile;
-
     @BindView(R.id.tv_serving_no)
     protected TextView tv_serving_no;
-
     @BindView(R.id.tv_token)
     protected TextView tv_token;
-
     @BindView(R.id.tv_how_long)
     protected TextView tv_how_long;
-
     @BindView(R.id.btn_cancel_queue)
     protected Button btn_cancel_queue;
-
     @BindView(R.id.tv_after)
     protected TextView tv_after;
-
     @BindView(R.id.tv_hour_saved)
     protected TextView tv_hour_saved;
-
     @BindView(R.id.tv_estimated_time)
     protected TextView tv_estimated_time;
-
     @BindView(R.id.tv_add)
     protected TextView tv_add;
-
     @BindView(R.id.ll_change_bg)
     protected LinearLayout ll_change_bg;
-
     @BindView(R.id.sp_name_list)
     protected Spinner sp_name_list;
-
     @BindView(R.id.ll_patient_name)
     protected LinearLayout ll_patient_name;
-
+    private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
     private String codeQR;
     private String displayName;
@@ -110,7 +93,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private String gotoPerson = "";
     private int profile_pos;
     private List<JsonProfile> profileList;
-    private String queueUserId ="";
+    private String queueUserId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,9 +116,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(address);
-            profile_pos = bundle.getIntExtra("profile_pos",1);
+            profile_pos = bundle.getIntExtra("profile_pos", 1);
 
-            if(UserUtils.isLogin()) {
+            if (UserUtils.isLogin()) {
                 profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
                 profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
                 profileList.add(0, new JsonProfile().setName("Select Patient"));
@@ -181,7 +164,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
                 tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
                 setBackGround(jsonTokenAndQueue.afterHowLong());
-                tv_add.setText(AppUtilities.getNameFromQueueUserID(jsonTokenAndQueue.getQueueUserId(),profileList));
+                tv_add.setText(AppUtilities.getNameFromQueueUserID(jsonTokenAndQueue.getQueueUserId(), profileList));
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     if (isResumeFirst) {
@@ -283,7 +266,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 String guardianId = null;
                 Log.v("dependent size: ", "" + jsonProfile.getDependents().size());
                 if (profile_pos > 1) {
-                    queueUserId = ((JsonProfile)sp_name_list.getSelectedItem()).getQueueUserId();
+                    queueUserId = ((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId();
                     guardianId = jsonProfile.getQueueUserId();
                 } else {
                     queueUserId = jsonProfile.getQueueUserId();
@@ -329,7 +312,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     public void setBackGround(int pos) {
         tv_after.setTextColor(Color.WHITE);
         tv_how_long.setTextColor(Color.WHITE);
-       // tv_estimated_time.setTextColor(Color.WHITE);
+        // tv_estimated_time.setTextColor(Color.WHITE);
         tv_after.setText("Soon is your turn! You are:");
         //tv_after.setVisibility(View.VISIBLE);
         switch (pos) {
@@ -360,7 +343,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_after.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 ll_change_bg.setBackgroundResource(R.drawable.square_bg_drawable);
-               // tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
+                // tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 break;
 
         }
@@ -417,11 +400,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (codeQR.equals(qrCode)) {
             //updating the serving status
             setObject(jq, go_to);
-            if(jq.afterHowLong() > 0)
-                return  false;
+            if (jq.afterHowLong() > 0)
+                return false;
             else
                 return true;
-        }else
+        } else
             return false;
     }
 
@@ -453,7 +436,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             }
         }
     }
-
 
 
 }

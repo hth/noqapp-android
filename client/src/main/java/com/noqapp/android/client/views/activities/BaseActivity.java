@@ -17,6 +17,7 @@ public class BaseActivity extends AppCompatActivity {
     protected ImageView iv_home;
     protected ImageView actionbarBack;
     protected TextView tv_toolbar_title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +36,11 @@ public class BaseActivity extends AppCompatActivity {
             progressDialog.dismiss();
     }
 
-    protected void initActionsViews(boolean isHomeVisible){
+    protected void initActionsViews(boolean isHomeVisible) {
         iv_home = findViewById(R.id.iv_home);
         actionbarBack = findViewById(R.id.actionbarBack);
         tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        iv_home.setVisibility(isHomeVisible?View.VISIBLE:View.GONE);
+        iv_home.setVisibility(isHomeVisible ? View.VISIBLE : View.GONE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
         iv_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goToA = new Intent(BaseActivity.this,LaunchActivity.class);
+                Intent goToA = new Intent(BaseActivity.this, LaunchActivity.class);
                 goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(goToA);
             }

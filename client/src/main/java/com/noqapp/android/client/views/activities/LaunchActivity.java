@@ -78,14 +78,13 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     public static DatabaseHelper dbHandler;
+    public static Locale locale;
+    public static SharedPreferences languagepref;
+    public static String language;
     private static LaunchActivity launchActivity;
     public NetworkUtil networkUtil;
     public ProgressDialog progressDialog;
     public ActivityCommunicator activityCommunicator;
-
-    public static Locale locale;
-    public static SharedPreferences languagepref;
-    public static String language;
     @BindView(R.id.tv_badge)
     protected TextView tv_badge;
 
@@ -234,17 +233,18 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( LaunchActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(LaunchActivity.this, new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 String newToken = instanceIdResult.getToken();
-                Log.e("newToken",newToken);
+                Log.e("newToken", newToken);
                 String fcmToken = newToken;
                 Log.d(TAG, "FCM Token=" + fcmToken);
                 sendRegistrationToServer(fcmToken);
             }
         });
     }
+
     private void sendRegistrationToServer(String refreshToken) {
         DeviceToken deviceToken = new DeviceToken(refreshToken);
         NoQueueBaseActivity.setFCMToken(refreshToken);
@@ -266,6 +266,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         editor.putString(NoQueueBaseActivity.XR_DID, deviceId);
         editor.apply();
     }
+
     @Override
     public void updateLocationUI() {
         if (null != scanFragment && Double.compare(old_latitude, latitute) != 0) {

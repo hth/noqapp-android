@@ -18,37 +18,19 @@ import java.util.List;
 
 public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.MyViewHolder> {
     private final Context context;
-    private List<JsonStoreCategory> dataSet;
-
-    public MenuHeaderAdapter setSelected_pos(int selected_pos) {
-        this.selected_pos = selected_pos;
-        return this;
-    }
-
-    private int selected_pos = 0;
-
-    public interface OnItemClickListener {
-        void menuHeaderClick(int pos);
-    }
-
     private final OnItemClickListener listener;
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView tv_menu_header;
-        private LinearLayout ll_header;
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            this.tv_menu_header = itemView.findViewById(R.id.tv_menu_header);
-            this.ll_header = itemView.findViewById(R.id.ll_header);
-        }
-    }
+    private List<JsonStoreCategory> dataSet;
+    private int selected_pos = 0;
 
     public MenuHeaderAdapter(List<JsonStoreCategory> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
+    }
+
+    public MenuHeaderAdapter setSelected_pos(int selected_pos) {
+        this.selected_pos = selected_pos;
+        return this;
     }
 
     @Override
@@ -82,6 +64,22 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.My
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+
+    public interface OnItemClickListener {
+        void menuHeaderClick(int pos);
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView tv_menu_header;
+        private LinearLayout ll_header;
+
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            this.tv_menu_header = itemView.findViewById(R.id.tv_menu_header);
+            this.ll_header = itemView.findViewById(R.id.ll_header);
+        }
     }
 
 

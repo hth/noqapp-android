@@ -61,22 +61,22 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
 
     /* Populated from TokenQueue. */
-    @JsonProperty ("s")
+    @JsonProperty("s")
     private int servingNumber;
 
-    @JsonProperty ("t")
+    @JsonProperty("t")
     private int token;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String customerName;
 
-    @JsonProperty ("e")
+    @JsonProperty("e")
     private String expectedServiceBegin;
 
-    @JsonProperty ("ti")
+    @JsonProperty("ti")
     private String transactionId;
 
-    @JsonProperty ("os")
+    @JsonProperty("os")
     private PurchaseOrderStateEnum purchaseOrderState;
 
     public JsonPurchaseOrder() {

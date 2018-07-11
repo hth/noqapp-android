@@ -21,13 +21,13 @@ import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
 import org.apache.commons.lang3.StringUtils;
 
 public abstract class Scanner extends NoQueueBaseFragment {
+    private static final int RC_BARCODE_CAPTURE = 9001;
     private final String TAG = Scanner.class.getSimpleName();
     private final int CAMERA_AND_STORAGE_PERMISSION_CODE = 102;
     private final String[] CAMERA_AND_STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
-    private static final int RC_BARCODE_CAPTURE = 9001;
 
     public Scanner() {
 

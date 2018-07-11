@@ -93,7 +93,7 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("t")
     private int token;
 
-    @JsonProperty ("qid")
+    @JsonProperty("qid")
     private String queueUserId;
 
     @JsonProperty("q")

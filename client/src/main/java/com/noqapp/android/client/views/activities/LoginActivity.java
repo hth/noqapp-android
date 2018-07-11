@@ -55,11 +55,6 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements ProfilePresenter {
 
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
     private final String TAG = LoginActivity.class.getSimpleName();
     private final int READ_AND_RECEIVE_SMS_PERMISSION_CODE = 101;
     private final String[] READ_AND_RECEIVE_SMS_PERMISSION_PERMS = {
@@ -72,6 +67,10 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     private final int STATE_VERIFY_SUCCESS = 4;
     private final int STATE_SIGN_IN_FAILED = 5;
     private final int STATE_SIGN_IN_SUCCESS = 6;
+    @BindView(R.id.actionbarBack)
+    protected ImageView actionbarBack;
+    @BindView(R.id.tv_toolbar_title)
+    protected TextView tv_toolbar_title;
     @BindView(R.id.edt_phone)
     protected EditText edt_phoneNo;
     @BindView(R.id.btn_login)
@@ -88,7 +87,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     private String mVerificationId;
     private String verifiedMobileNo;
     private FirebaseAuth mAuth;
-    private String countryCode ="";
+    private String countryCode = "";
     private String countryShortName = "";
 
 
@@ -108,11 +107,11 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         mAuth = FirebaseAuth.getInstance();
         updateUI(STATE_INITIALIZED);
 
-        TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         String c_codeValue = tm.getNetworkCountryIso();
-        int c_code =  PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
-        Log.v("country code", ""+c_code);
-        countryCode = "+"+c_code;
+        int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
+        Log.v("country code", "" + c_code);
+        countryCode = "+" + c_code;
         countryShortName = c_codeValue.toUpperCase();
         edt_phone_code.setText(countryCode);
 
@@ -303,7 +302,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
                 in.putExtra("mobile_no", verifiedMobileNo);
                 in.putExtra("country_code", countryCode);
-                in.putExtra("countryShortName",countryShortName);
+                in.putExtra("countryShortName", countryShortName);
                 startActivity(in);
                 dismissProgress();
                 finish();//close the current activity
@@ -324,7 +323,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     @Override
     public void queueError(String error) {
         dismissProgress();
-        Toast.makeText(this,error,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
     @Override

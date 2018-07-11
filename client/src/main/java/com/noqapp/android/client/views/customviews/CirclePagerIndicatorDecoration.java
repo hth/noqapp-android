@@ -12,21 +12,15 @@ import android.view.animation.Interpolator;
 
 public class CirclePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
 
-    private int colorActive = 0xFFFF0000;
-    private int colorInactive = 0x66FBBFFF;
-
     private static final float DP = Resources.getSystem().getDisplayMetrics().density;
-
     /**
      * Height of the space the indicator takes up at the bottom of the view.
      */
     private final int mIndicatorHeight = (int) (DP * 16);
-
     /**
      * Indicator stroke width.
      */
     private final float mIndicatorStrokeWidth = DP * 2;
-
     /**
      * Indicator width.
      */
@@ -35,13 +29,13 @@ public class CirclePagerIndicatorDecoration extends RecyclerView.ItemDecoration 
      * Padding between indicators.
      */
     private final float mIndicatorItemPadding = DP * 4;
-
     /**
      * Some more natural animation interpolation
      */
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
-
     private final Paint mPaint = new Paint();
+    private int colorActive = 0xFFFF0000;
+    private int colorInactive = 0x66FBBFFF;
 
     public CirclePagerIndicatorDecoration() {
         mPaint.setStrokeCap(Paint.Cap.ROUND);

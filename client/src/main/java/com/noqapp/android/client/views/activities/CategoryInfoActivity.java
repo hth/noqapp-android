@@ -58,72 +58,54 @@ import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat
 public class CategoryInfoActivity extends BaseActivity implements QueuePresenter, RecyclerViewGridAdapter.OnItemClickListener {
 
 
-    @BindView(R.id.tv_store_name)
-    protected TextView tv_store_name;
-
-    @BindView(R.id.tv_amenities)
-    protected TextView tv_amenities;
-
-    @BindView(R.id.tv_address)
-    protected TextView tv_address;
-
-    @BindView(R.id.tv_mobile)
-    protected TextView tv_mobile;
-
-    @BindView(R.id.tv_complete_address)
-    protected TextView tv_complete_address;
-
-    @BindView(R.id.tv_rating_review)
-    protected TextView tv_rating_review;
-
-    @BindView(R.id.tv_rating)
-    protected TextView tv_rating;
-
-    @BindView(R.id.ratingBar)
-    protected RatingBar ratingBar;
-
-    @BindView(R.id.iv_business_icon)
-    protected ImageView iv_business_icon;
-
-    @BindView(R.id.rv_categories)
-    protected RecyclerView rv_categories;
-
-    @BindView(R.id.rv_thumb_images)
-    protected RecyclerView rv_thumb_images;
-
-    @BindView(R.id.iv_category_banner)
-    protected ImageView iv_category_banner;
-
-
-    @BindView(R.id.btn_join_queues)
-    protected Button btn_join_queues;
-
-    @BindView(R.id.sc_amenities)
-    protected SegmentedControl sc_amenities;
-
-    @BindView(R.id.sc_facility)
-    protected SegmentedControl sc_facility;
-
-    private String codeQR;
-    private BizStoreElastic bizStoreElastic;
-    private boolean isFuture = false;
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
             .maximumSize(1)
             .build();
-
     private final Cache<String, Map<String, ArrayList<BizStoreElastic>>> cacheQueue = newBuilder()
             .maximumSize(1)
             .build();
-
+    private final String QUEUE = "queue";
+    private final String CATEGORY = "category";
+    @BindView(R.id.tv_store_name)
+    protected TextView tv_store_name;
+    @BindView(R.id.tv_amenities)
+    protected TextView tv_amenities;
+    @BindView(R.id.tv_address)
+    protected TextView tv_address;
+    @BindView(R.id.tv_mobile)
+    protected TextView tv_mobile;
+    @BindView(R.id.tv_complete_address)
+    protected TextView tv_complete_address;
+    @BindView(R.id.tv_rating_review)
+    protected TextView tv_rating_review;
+    @BindView(R.id.tv_rating)
+    protected TextView tv_rating;
+    @BindView(R.id.ratingBar)
+    protected RatingBar ratingBar;
+    @BindView(R.id.iv_business_icon)
+    protected ImageView iv_business_icon;
+    @BindView(R.id.rv_categories)
+    protected RecyclerView rv_categories;
+    @BindView(R.id.rv_thumb_images)
+    protected RecyclerView rv_thumb_images;
+    @BindView(R.id.iv_category_banner)
+    protected ImageView iv_category_banner;
+    @BindView(R.id.btn_join_queues)
+    protected Button btn_join_queues;
+    @BindView(R.id.sc_amenities)
+    protected SegmentedControl sc_amenities;
+    @BindView(R.id.sc_facility)
+    protected SegmentedControl sc_facility;
+    private String codeQR;
+    private BizStoreElastic bizStoreElastic;
+    private boolean isFuture = false;
     private float rating = 0;
     private int ratingCount = 0;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     private Bundle bundle;
     private String title = "";
-    private final String QUEUE = "queue";
-    private final String CATEGORY = "category";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,7 +217,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             sc_facility.addSegments(data);
 
             Picasso.with(this)
-                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,bizStoreElastic.getDisplayImage()))
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                     .into(iv_category_banner);
             LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             rv_thumb_images.setHasFixedSize(true);
@@ -246,7 +228,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
                 // load first image default
                 Picasso.with(this)
-                        .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,bizStoreElastic.getBizServiceImages().get(0)))
+                        .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
                         .into(iv_category_banner);
             }
 

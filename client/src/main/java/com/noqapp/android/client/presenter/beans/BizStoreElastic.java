@@ -141,7 +141,9 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("FA")
     private List<FacilityEnum> facilities = new LinkedList<>();
 
-    /** WP is populated when the BT is of type BusinessTypeEnum.DO. */
+    /**
+     * WP is populated when the BT is of type BusinessTypeEnum.DO.
+     */
     @JsonProperty("WP")
     private String webProfileId;
 

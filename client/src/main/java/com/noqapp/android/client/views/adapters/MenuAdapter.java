@@ -21,6 +21,7 @@ public class MenuAdapter extends BaseAdapter {
     private Context context;
     private List<ChildData> menuItemsList;
     private StoreMenuActivity storeMenuActivity;
+    private CartOrderUpdate cartOrderUpdate;
 
     public MenuAdapter(Context context, List<ChildData> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate) {
         this.context = context;
@@ -28,12 +29,6 @@ public class MenuAdapter extends BaseAdapter {
         this.storeMenuActivity = storeMenuActivity;
         this.cartOrderUpdate = cartOrderUpdate;
     }
-
-    public interface CartOrderUpdate {
-        void updateCartOrderInfo(int amountString);
-    }
-
-    private CartOrderUpdate cartOrderUpdate;
 
     public int getCount() {
         return this.menuItemsList.size();
@@ -134,16 +129,6 @@ public class MenuAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public final class ChildViewHolder {
-        TextView tv_child_title;
-        TextView tv_price;
-        TextView tv_value;
-        TextView tv_discounted_price;
-        TextView tv_cat;
-        Button btn_decrease;
-        Button btn_increase;
-    }
-
     private double calculateDiscountPrice(String displayPrice, String discountPercentage) {
         double price = Double.valueOf(displayPrice);
         double discountPercentageValue = Double.valueOf(discountPercentage);
@@ -156,5 +141,19 @@ public class MenuAdapter extends BaseAdapter {
             price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
         }
         return price / 100;
+    }
+
+    public interface CartOrderUpdate {
+        void updateCartOrderInfo(int amountString);
+    }
+
+    public final class ChildViewHolder {
+        TextView tv_child_title;
+        TextView tv_price;
+        TextView tv_value;
+        TextView tv_discounted_price;
+        TextView tv_cat;
+        Button btn_decrease;
+        Button btn_increase;
     }
 }

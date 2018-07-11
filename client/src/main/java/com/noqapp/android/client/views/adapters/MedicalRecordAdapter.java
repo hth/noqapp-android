@@ -14,7 +14,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import java.util.List;
 
 public class MedicalRecordAdapter extends BaseAdapter {
-    
+
     private Context context;
     private List<JsonMedicalMedicine> medicalRecordList;
 
@@ -57,7 +57,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-    
+
         final JsonMedicalMedicine medicalRecord = medicalRecordList.get(position);
         recordHolder.tv_medication.setText(medicalRecord.getMedicationType().getDescription());
         recordHolder.tv_dose.setText(medicalRecord.getStrength());

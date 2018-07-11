@@ -137,8 +137,8 @@ public class ProfileModel {
         });
     }
 
-    public static void addProfileAddress(final String mail, final String auth,JsonUserAddress jsonUserAddress) {
-        profileService.addressAdd(mail, auth,jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
+    public static void addProfileAddress(final String mail, final String auth, JsonUserAddress jsonUserAddress) {
+        profileService.addressAdd(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
                 if (response.code() == 401) {
@@ -164,8 +164,8 @@ public class ProfileModel {
         });
     }
 
-    public static void deleteProfileAddress(final String mail, final String auth,JsonUserAddress jsonUserAddress) {
-        profileService.addressDelete(mail, auth,jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
+    public static void deleteProfileAddress(final String mail, final String auth, JsonUserAddress jsonUserAddress) {
+        profileService.addressDelete(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
                 if (response.code() == 401) {

@@ -29,29 +29,12 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
     private Map<String, ArrayList<BizStoreElastic>> queueMap;
     private Context context;
 
-    public interface OnItemClickListener {
-        void onCategoryItemClick(int pos, JsonCategory jsonCategory);
-    }
-
     public RecyclerViewGridAdapter(Context context, List<JsonCategory> categories,
                                    Map<String, ArrayList<BizStoreElastic>> queueMap, OnItemClickListener listener) {
         this.categories = categories;
         this.queueMap = queueMap;
         this.context = context;
         this.listener = listener;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_title;
-        private ImageView iv_main;
-        private CardView card_view;
-
-        public ViewHolder(View v) {
-            super(v);
-            tv_title = v.findViewById(R.id.tv_title);
-            iv_main = v.findViewById(R.id.iv_main);
-            card_view = v.findViewById(R.id.card_view);
-        }
     }
 
     @Override
@@ -71,18 +54,18 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
             jsonQueue = jsonQueues.get(0);
             switch (jsonQueue.getBusinessType()) {
                 case BK:
-                    Vholder.iv_main.setBackground(ContextCompat.getDrawable(context,R.drawable.bank_bg));
+                    Vholder.iv_main.setBackground(ContextCompat.getDrawable(context, R.drawable.bank_bg));
                     break;
                 default:
-                    Vholder.iv_main.setBackground(ContextCompat.getDrawable(context,R.drawable.dep_bg));
+                    Vholder.iv_main.setBackground(ContextCompat.getDrawable(context, R.drawable.dep_bg));
             }
 
         }
         Vholder.tv_title.setText(jsonCategory.getCategoryName());
-        if(!TextUtils.isEmpty(jsonCategory.getDisplayImage()))
-        Picasso.with(context)
-                .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET,jsonCategory.getDisplayImage()))
-                .into(Vholder.iv_main);
+        if (!TextUtils.isEmpty(jsonCategory.getDisplayImage()))
+            Picasso.with(context)
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonCategory.getDisplayImage()))
+                    .into(Vholder.iv_main);
 
 
         Vholder.card_view.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +79,23 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
     @Override
     public int getItemCount() {
         return categories.size();
+    }
+
+    public interface OnItemClickListener {
+        void onCategoryItemClick(int pos, JsonCategory jsonCategory);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView tv_title;
+        private ImageView iv_main;
+        private CardView card_view;
+
+        public ViewHolder(View v) {
+            super(v);
+            tv_title = v.findViewById(R.id.tv_title);
+            iv_main = v.findViewById(R.id.iv_main);
+            card_view = v.findViewById(R.id.card_view);
+        }
     }
 
 

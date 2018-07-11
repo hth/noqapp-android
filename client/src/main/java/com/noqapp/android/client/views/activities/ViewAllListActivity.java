@@ -32,17 +32,17 @@ import butterknife.ButterKnife;
 /**
  * Created by chandra on 5/7/17.
  */
-public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener,NearMePresenter {
+public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener, NearMePresenter {
 
 
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
-    private ArrayList<BizStoreElastic> listData;
-    private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
     @BindView(R.id.rv_merchant_around_you)
     protected RecyclerView rv_merchant_around_you;
+    private ArrayList<BizStoreElastic> listData;
+    private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
     private StoreInfoViewAllAdapter.OnItemClickListener listener;
     private String scrollId = "";
     private String city = "";
@@ -76,7 +76,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
         // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
-        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, listener,rv_merchant_around_you);
+        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, listener, rv_merchant_around_you);
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
         storeInfoViewAllAdapter.setOnLoadMoreListener(new StoreInfoViewAllAdapter.OnLoadMoreListener() {
             @Override
@@ -90,17 +90,17 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
                     }
                 });
 
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            StoreInfoParam storeInfoParam = new StoreInfoParam();
-                            storeInfoParam.setCityName(city);
-                            storeInfoParam.setLatitude(lat);
-                            storeInfoParam.setLongitude(longitute);
-                            storeInfoParam.setFilters("xyz");
-                            storeInfoParam.setScrollId(scrollId);
-                            NearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(ViewAllListActivity.this);
-                        }
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    StoreInfoParam storeInfoParam = new StoreInfoParam();
+                    storeInfoParam.setCityName(city);
+                    storeInfoParam.setLatitude(lat);
+                    storeInfoParam.setLongitude(longitute);
+                    storeInfoParam.setFilters("xyz");
+                    storeInfoParam.setScrollId(scrollId);
+                    NearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(ViewAllListActivity.this);
+                }
             }
         });
 
@@ -132,6 +132,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
                 startActivity(intent);
         }
     }
+
     @Override
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
 
@@ -139,7 +140,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         scrollId = bizStoreElasticList.getScrollId();
         //sort the list, give the Comparator the current location
-        Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat),Double.parseDouble(longitute))));
+        Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));
         //   remove progress item
         listData.remove(listData.size() - 1);
         storeInfoViewAllAdapter.notifyItemRemoved(listData.size());

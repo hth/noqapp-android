@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
@@ -17,12 +16,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DeviceModel;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
@@ -31,13 +28,10 @@ import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
-import com.noqapp.android.common.beans.body.DeviceToken;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
-import java.util.UUID;
 
 import static com.noqapp.android.client.utils.Constants.CodeQR;
 import static com.noqapp.android.client.utils.Constants.CurrentlyServing;
@@ -55,12 +49,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     public NoQueueMessagingService() {
     }
 
-    @Override
-    public void onNewToken(String s) {
-        super.onNewToken(s);
-        Log.e("NEW_TOKEN",s);
-    }
-
     // Clears notification tray messages
     public static void clearNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -73,6 +61,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
     public static void unSubscribeTopics(String topic) {
         FirebaseMessaging.getInstance().unsubscribeFromTopic(topic + "_A");
+    }
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        Log.e("NEW_TOKEN", s);
     }
 
     @Override
