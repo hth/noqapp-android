@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.noqapp.android.merchant.model.database.DatabaseTable;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.common.beans.NotificationBeans;
+import com.noqapp.android.common.beans.NotificationBeans;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

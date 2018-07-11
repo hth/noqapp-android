@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.interfaces;
 
-import com.noqapp.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.JsonResponse;
 
 public interface IntellisensePresenter {
 

@@ -15,7 +15,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.Locale;
 

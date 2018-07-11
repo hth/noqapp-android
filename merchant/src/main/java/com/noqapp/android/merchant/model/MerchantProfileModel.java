@@ -9,10 +9,10 @@ import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
-import com.noqapp.common.beans.JsonProfile;
-import com.noqapp.common.beans.JsonResponse;
-import com.noqapp.common.beans.body.UpdateProfile;
-import com.noqapp.common.presenter.ImageUploadPresenter;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.presenter.ImageUploadPresenter;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

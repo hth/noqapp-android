@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonProfile;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
-import com.noqapp.common.model.types.GenderEnum;
+import com.noqapp.android.common.model.types.GenderEnum;
 
 import java.io.Serializable;
 

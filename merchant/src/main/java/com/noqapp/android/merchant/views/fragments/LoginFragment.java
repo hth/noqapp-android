@@ -30,8 +30,8 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
-import com.noqapp.common.model.types.BusinessTypeEnum;
-import com.noqapp.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
 

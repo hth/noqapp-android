@@ -32,8 +32,8 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
-import com.noqapp.common.model.types.UserLevelEnum;
-import com.noqapp.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import java.util.List;
 

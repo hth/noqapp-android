@@ -32,8 +32,8 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
-import com.noqapp.common.beans.JsonProfile;
-import com.noqapp.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.body.UpdateProfile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

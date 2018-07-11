@@ -1,10 +1,10 @@
 package com.noqapp.android.merchant.model.response.api;
 
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
-import com.noqapp.common.beans.JsonProfessionalProfilePersonal;
-import com.noqapp.common.beans.JsonProfile;
-import com.noqapp.common.beans.JsonResponse;
-import com.noqapp.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.body.UpdateProfile;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

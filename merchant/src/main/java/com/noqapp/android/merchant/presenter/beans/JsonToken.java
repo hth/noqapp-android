@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.merchant.model.types.BusinessTypeEnum;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
-import com.noqapp.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

@@ -56,8 +56,8 @@ import com.noqapp.android.client.views.adapters.RecentActivityAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
-import com.noqapp.common.beans.body.DeviceToken;
-import com.noqapp.common.utils.Formatter;
+import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.utils.Formatter;
 
 import java.io.Serializable;
 import java.text.DateFormat;

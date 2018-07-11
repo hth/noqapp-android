@@ -54,11 +54,11 @@ import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
-import com.noqapp.common.beans.ErrorEncounteredJson;
-import com.noqapp.common.model.types.MobileSystemErrorCodeEnum;
-import com.noqapp.common.model.types.UserLevelEnum;
-import com.noqapp.common.utils.Formatter;
-import com.noqapp.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import org.apache.commons.lang3.StringUtils;
 

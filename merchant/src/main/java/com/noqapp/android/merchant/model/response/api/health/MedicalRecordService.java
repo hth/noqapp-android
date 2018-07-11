@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.model.response.api.health;
 
-import com.noqapp.common.beans.JsonResponse;
-import com.noqapp.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

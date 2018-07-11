@@ -32,7 +32,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
-import com.noqapp.common.beans.body.DeviceToken;
+import com.noqapp.android.common.beans.body.DeviceToken;
 
 import org.apache.commons.lang3.StringUtils;
 

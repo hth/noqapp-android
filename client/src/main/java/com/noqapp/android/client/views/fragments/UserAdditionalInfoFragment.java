@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.beans.JsonNameDatePair;
 
 import java.util.List;
 

@@ -42,10 +42,10 @@ import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.common.beans.ErrorEncounteredJson;
-import com.noqapp.common.beans.JsonProfile;
-import com.noqapp.common.model.types.MobileSystemErrorCodeEnum;
-import com.noqapp.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import java.util.concurrent.TimeUnit;
 

@@ -7,8 +7,8 @@ import com.noqapp.android.merchant.model.response.api.health.MedicalRecordServic
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.common.beans.JsonResponse;
-import com.noqapp.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 
 import retrofit2.Call;
 import retrofit2.Callback;

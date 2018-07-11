@@ -1,7 +1,7 @@
 package com.noqapp.android.client.presenter;
 
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
-import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonProfile;
 
 /**
  * User: hitender

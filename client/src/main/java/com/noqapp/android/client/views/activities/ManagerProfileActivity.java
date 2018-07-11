@@ -30,7 +30,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
-import com.noqapp.common.utils.ImagePathReader;
+import com.noqapp.android.common.utils.ImagePathReader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

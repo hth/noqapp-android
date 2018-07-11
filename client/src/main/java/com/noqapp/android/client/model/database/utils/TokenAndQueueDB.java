@@ -11,7 +11,7 @@ import com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
 import com.noqapp.android.client.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.interfaces.NOQueueDBPresenterInterface;
-import com.noqapp.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model.response.api.health;
 
-import com.noqapp.common.beans.medical.JsonMedicalRecordList;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

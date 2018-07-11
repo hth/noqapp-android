@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 
 import java.util.List;
 

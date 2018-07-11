@@ -31,10 +31,10 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.common.beans.JsonProfile;
-import com.noqapp.common.model.types.BusinessTypeEnum;
-import com.noqapp.common.utils.CommonHelper;
-import com.noqapp.common.utils.Formatter;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.Formatter;
 
 import org.joda.time.LocalDateTime;
 import org.json.JSONArray;

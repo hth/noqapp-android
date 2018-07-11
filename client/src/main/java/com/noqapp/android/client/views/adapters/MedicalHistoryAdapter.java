@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 
 import java.util.List;
 

@@ -31,9 +31,9 @@ import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
-import com.noqapp.common.beans.JsonProfile;
-import com.noqapp.common.utils.Formatter;
-import com.noqapp.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import java.util.List;
 

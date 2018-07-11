@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.common.beans.JsonNameDatePair;
-import com.noqapp.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 
 import java.util.List;
 

@@ -28,7 +28,7 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalHistoryDetailActivity;
-import com.noqapp.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import java.util.List;
 

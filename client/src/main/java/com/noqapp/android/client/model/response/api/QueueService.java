@@ -3,9 +3,9 @@ package com.noqapp.android.client.model.response.api;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
-import com.noqapp.common.beans.JsonResponse;
-import com.noqapp.common.beans.body.DeviceToken;
-import com.noqapp.common.beans.body.JoinQueue;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.beans.body.JoinQueue;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

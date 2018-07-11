@@ -9,7 +9,7 @@ import com.noqapp.android.merchant.presenter.beans.body.Login;
 import com.noqapp.android.merchant.presenter.beans.body.Registration;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
-import com.noqapp.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonProfile;
 
 import retrofit2.Call;
 import retrofit2.Callback;

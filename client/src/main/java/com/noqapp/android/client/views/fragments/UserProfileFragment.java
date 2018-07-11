@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonStore;
-import com.noqapp.common.beans.JsonHour;
-import com.noqapp.common.utils.Formatter;
+import com.noqapp.android.common.beans.JsonHour;
+import com.noqapp.android.common.utils.Formatter;
 
 import java.util.List;
 
