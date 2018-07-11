@@ -8,7 +8,7 @@ import com.noqapp.android.common.beans.AbstractDomain;
 
 import java.io.Serializable;
 
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",

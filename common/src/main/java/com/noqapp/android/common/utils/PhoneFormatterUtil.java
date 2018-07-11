@@ -71,7 +71,7 @@ public class PhoneFormatterUtil {
     }
 
 
-    public static int getCountryCodeFromRegion(String regionCode){
+    public static int getCountryCodeFromRegion(String regionCode) {
         return phoneUtil.getCountryCodeForRegion(regionCode.toUpperCase());
     }
 }

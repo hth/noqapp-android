@@ -11,7 +11,7 @@ import java.io.Serializable;
  * hitender
  * 3/26/18 10:52 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -27,29 +27,29 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonHour implements Serializable {
 
-    @JsonProperty ("dw")
+    @JsonProperty("dw")
     private int dayOfWeek;
 
-    @JsonProperty ("tf")
+    @JsonProperty("tf")
     private int tokenAvailableFrom;
 
-    @JsonProperty ("sh")
+    @JsonProperty("sh")
     private int startHour;
 
-    @JsonProperty ("te")
+    @JsonProperty("te")
     private int tokenNotAvailableFrom;
 
-    @JsonProperty ("eh")
+    @JsonProperty("eh")
     private int endHour;
 
     @JsonProperty("pj")
     private boolean preventJoining;
 
-    @JsonProperty ("dc")
+    @JsonProperty("dc")
     private boolean dayClosed = false;
 
     /* When business queue delays the start time. Delayed by minutes. */
-    @JsonProperty ("de")
+    @JsonProperty("de")
     private int delayedInMinutes = 0;
 
     public int getDayOfWeek() {

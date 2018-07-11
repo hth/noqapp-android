@@ -8,7 +8,7 @@ import com.noqapp.android.common.beans.AbstractDomain;
 
 import java.io.Serializable;
 
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -22,7 +22,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonMedicalPhysical extends AbstractDomain implements Serializable{
+public class JsonMedicalPhysical extends AbstractDomain implements Serializable {
 
     @JsonProperty("pl")
     private String pluse;

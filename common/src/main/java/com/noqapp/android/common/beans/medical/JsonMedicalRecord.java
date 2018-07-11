@@ -11,7 +11,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import java.io.Serializable;
 import java.util.List;
 
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -25,7 +25,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonMedicalRecord extends AbstractDomain implements Serializable{
+public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
@@ -75,14 +75,16 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable{
     @JsonProperty("n")
     private String businessName;
 
-    /** Convert to Category Name instead of Id. */
-    @JsonProperty ("bc")
+    /**
+     * Convert to Category Name instead of Id.
+     */
+    @JsonProperty("bc")
     private String bizCategoryName;
 
-    @JsonProperty ("u")
+    @JsonProperty("u")
     private String createDate;
 
-    @JsonProperty ("qr")
+    @JsonProperty("qr")
     private String codeQR;
 
     public BusinessTypeEnum getBusinessType() {

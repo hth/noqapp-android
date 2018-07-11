@@ -17,9 +17,9 @@ import java.util.Locale;
 
 public class CommonHelper {
 
-    private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
     private static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
     private static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
 
     public static String convertDOBToValidFormat(String dob) {
         try {
@@ -49,16 +49,6 @@ public class CommonHelper {
         context.startActivity(sendIntent);
     }
 
-
-    public void hideKeyBoard(Activity activity) {
-        View view = activity.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-
     /*
      * Method add to hide the dropdown while setting the
      * AutoCompleteTextView
@@ -81,6 +71,14 @@ public class CommonHelper {
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
+        }
+    }
+
+    public void hideKeyBoard(Activity activity) {
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

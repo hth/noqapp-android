@@ -10,7 +10,7 @@ import com.noqapp.android.common.model.types.MedicationWithFoodEnum;
 
 import java.io.Serializable;
 
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",

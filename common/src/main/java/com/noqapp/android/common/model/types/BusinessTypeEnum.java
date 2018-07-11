@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by hitender on 1/2/18.
  */
 
-public enum BusinessTypeEnum implements Serializable{
+public enum BusinessTypeEnum implements Serializable {
     RS("RS", "Restaurant"),
     BA("BA", "Bar"),
     ST("ST", "Store"),
