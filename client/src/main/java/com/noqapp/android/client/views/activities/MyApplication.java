@@ -1,10 +1,12 @@
 package com.noqapp.android.client.views.activities;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
+
+import com.noqapp.common.utils.FontsOverride;
 
 import java.util.Locale;
 
@@ -12,7 +14,7 @@ import java.util.Locale;
  * Created by chandra on 5/20/17.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
     private static final String LOG_TAG = "Application";
 
     public MyApplication() {
@@ -27,6 +29,10 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FontsOverride.overrideFont(this, "DEFAULT", "fonts/roboto_regular.ttf");
+        FontsOverride.overrideFont(this, "MONOSPACE", "fonts/roboto_regular.ttf");
+        FontsOverride.overrideFont(this, "SERIF", "fonts/roboto_regular.ttf");
+        FontsOverride.overrideFont(this, "SANS_SERIF", "fonts/roboto_regular.ttf");
         setLocale();
     }
 

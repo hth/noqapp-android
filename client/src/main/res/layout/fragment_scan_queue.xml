@@ -91,7 +91,7 @@
                     android:layout_margin="5dp"
                     android:src="@drawable/barcode" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                <TextView
                     android:id="@+id/tv_scan_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_scan_title"
@@ -136,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp">
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                <TextView
                     android:id="@+id/tv_current_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -186,18 +186,17 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp">
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                <TextView
                     android:id="@+id/tv_recent_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_alignParentLeft="true"
                     android:text="@string/recent_activity"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                <TextView
                     android:id="@+id/tv_recent_view_all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -246,7 +245,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp">
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                <TextView
                     android:id="@+id/tv_merchant_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -256,7 +255,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                <TextView
                     android:id="@+id/tv_near_view_all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

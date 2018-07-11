@@ -52,9 +52,12 @@
                             android:id="@+id/iv_business_icon"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:padding="5dp"
-                            android:background="@color/color_invite_details"
-                            android:layout_alignParentLeft="true" />
+                            android:layout_alignParentLeft="true"
+                            android:background="@drawable/round_corner_business"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/bank"
+                            android:tint="@color/colorAccent"
+                            android:padding="5dp" />
 
                         <RelativeLayout
                             android:id="@+id/rl_rating"
@@ -74,7 +77,7 @@
                                 android:rating="0.0"
                                 android:stepSize=".5" />
 
-                            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                            <TextView
                                 android:id="@+id/tv_rating"
                                 android:layout_width="@dimen/rating_radius"
                                 android:layout_height="@dimen/rating_radius"
@@ -87,7 +90,7 @@
                                 android:textSize="@dimen/rating_text_size" />
 
 
-                            <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                            <TextView
                                 android:id="@+id/tv_rating_review"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -109,7 +112,7 @@
                         android:paddingRight="10dp">
 
 
-                        <com.noqapp.android.client.views.customviews.TextViewRalewayBold
+                        <TextView
                             android:id="@+id/tv_store_name"
                             style="@style/style_join_queue_tv"
                             android:layout_marginTop="3dp"
@@ -117,20 +120,20 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                        <TextView
                             android:id="@+id/tv_address"
                             style="@style/style_join_queue_tv"
                             android:layout_marginBottom="3dp"
                             android:textColor="@color/colorAddress"
                             android:textSize="14sp" />
 
-                        <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
+                        <Button
                             android:id="@+id/btn_join_queues"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:background="@android:color/black"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/button_color"
                             android:padding="10dp"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
@@ -142,7 +145,7 @@
                             android:layout_marginBottom="10dp"
                             android:background="@android:color/darker_gray" />
 
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        <TextView
                             android:id="@+id/tv_photos"
                             style="@style/style_join_queue_tv"
                             android:layout_marginBottom="5dp"
@@ -156,7 +159,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp" />
 
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        <TextView
                             android:id="@+id/tv_amenities"
                             style="@style/style_join_queue_tv"
                             android:layout_marginBottom="5dp"
@@ -175,13 +178,13 @@
                             app:segmentVerticalMargin="4dp"
                             app:selectedBackgroundColor="@color/segment_bg_color"
                             app:selectedStrokeColor="@color/segment_bg_color"
-                            app:selectedTextColor="@android:color/black"
+                            app:selectedTextColor="@color/segment_text_color"
                             app:textVerticalPadding="3dp"
                             app:unSelectedBackgroundColor="@color/segment_bg_color"
                             app:unSelectedStrokeColor="@color/segment_bg_color"
-                            app:unSelectedTextColor="@android:color/black" />
+                            app:unSelectedTextColor="@color/segment_text_color" />
 
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        <TextView
                             android:id="@+id/tv_facilities"
                             style="@style/style_join_queue_tv"
                             android:layout_marginBottom="5dp"
@@ -200,20 +203,20 @@
                             app:segmentVerticalMargin="4dp"
                             app:selectedBackgroundColor="@color/segment_bg_color"
                             app:selectedStrokeColor="@color/segment_bg_color"
-                            app:selectedTextColor="@android:color/black"
+                            app:selectedTextColor="@color/segment_text_color"
                             app:textVerticalPadding="3dp"
                             app:unSelectedBackgroundColor="@color/segment_bg_color"
                             app:unSelectedStrokeColor="@color/segment_bg_color"
-                            app:unSelectedTextColor="@android:color/black" />
+                            app:unSelectedTextColor="@color/segment_text_color" />
 
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+                        <TextView
                             style="@style/style_join_queue_tv"
                             android:layout_marginBottom="5dp"
                             android:text="Phone Number"
                             android:textColor="@android:color/black"
                             android:textSize="14sp" />
 
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                        <TextView
                             android:id="@+id/tv_mobile"
                             style="@style/style_join_queue_tv"
                             android:layout_marginBottom="3dp"
@@ -230,7 +233,7 @@
                             android:background="@android:color/darker_gray" />
 
 
-                        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+                        <TextView
                             android:id="@+id/tv_complete_address"
                             style="@style/style_join_queue_tv"
                             android:layout_marginBottom="10dp"

@@ -25,8 +25,11 @@
     <color name="black_transparent">#A6000000</color>
 
     <color name="bussiness_hospital">#2b58de</color>
-    <color name="bussiness_store">#6e22b4</color>
+    <color name="bussiness_store">#F31130</color>
     <color name="bussiness_bank">#328d69</color>
-    <color name="segment_bg_color">#80cccccc</color>
+    <color name="segment_bg_color">#FDE6E6</color>
+    <color name="segment_text_color">#928c9d</color>
+
+    <color name="button_color">#F31130</color>
 
 </resources>

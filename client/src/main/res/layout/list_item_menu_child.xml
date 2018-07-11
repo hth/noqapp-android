@@ -22,7 +22,7 @@
             android:layout_margin="2dp"
             android:background="@color/colorPrimary" />
 
-        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+        <TextView
             android:id="@+id/tv_child_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         android:paddingRight="10dp">
 
 
-        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+        <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 
-        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+        <TextView
             android:id="@+id/tv_discounted_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <com.noqapp.android.client.views.customviews.TextViewRobotoLight
+        <TextView
             android:id="@+id/tv_value"
             android:layout_width="@dimen/btn_height"
             android:layout_height="@dimen/btn_height"

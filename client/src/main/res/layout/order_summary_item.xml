@@ -13,7 +13,7 @@
         android:layout_weight=".4"
         android:orientation="vertical">
 
-        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+        <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+        <TextView
             android:id="@+id/tv_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             android:textSize="15sp" />
     </LinearLayout>
 
-    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+    <TextView
         android:id="@+id/tv_qty"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         android:textSize="15sp" />
 
 
-    <com.noqapp.android.client.views.customviews.TextViewRobotoRegular
+    <TextView
         android:id="@+id/tv_total_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

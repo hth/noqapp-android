@@ -346,7 +346,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             childLayout.setLayoutParams(linearParams);
-            com.noqapp.android.client.views.customviews.TextViewRobotoLight textView = new com.noqapp.android.client.views.customviews.TextViewRobotoLight(this);
+            TextView textView = new TextView(this);
             textView.setTextSize(17);
             textView.setPadding(5, 3, 0, 3);
             textView.setGravity(Gravity.LEFT | Gravity.CENTER);

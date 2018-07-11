@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/access_denied" />
 
-    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayBold
+    <TextView
         android:id="@+id/tv_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

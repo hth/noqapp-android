@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+        <TextView
             android:id="@+id/tvtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+            <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
@@ -72,7 +72,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/color_grey_bg" />
 
-            <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+            <Button
                 android:id="@+id/btn_update"
                 android:layout_width="0dp"
                 android:layout_height="40dp"

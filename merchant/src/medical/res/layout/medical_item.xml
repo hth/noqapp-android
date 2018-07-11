@@ -11,7 +11,7 @@
         android:orientation="horizontal"
         android:weightSum="1">
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        <TextView
             android:id="@+id/tv_medication"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
             android:background="@drawable/square_grey_bg"
             android:padding="10dp" />
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        <TextView
             android:id="@+id/tv_medicine_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             android:background="@drawable/square_grey_bg"
             android:padding="10dp" />
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        <TextView
             android:id="@+id/tv_dose"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         android:orientation="horizontal"
         android:weightSum="1">
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        <TextView
             android:id="@+id/tv_frequency"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:padding="10dp"
             android:prompt="@string/frequency_prompt" />
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        <TextView
             android:id="@+id/tv_dose_timing"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             android:background="@drawable/square_grey_bg"
             android:padding="10dp" />
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoRegular
+        <TextView
             android:id="@+id/tv_course"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

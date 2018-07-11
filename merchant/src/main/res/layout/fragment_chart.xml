@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#99ffffff"
     android:orientation="vertical">
-    <com.noqapp.android.merchant.views.customsviews.TextViewRalewayRegular
+    <TextView
         android:id="@+id/tv_queue_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

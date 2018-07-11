@@ -87,24 +87,24 @@
                     android:orientation="vertical">
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <TextView
                         style="@style/style_register_tv"
                         android:text="@string/phone" />
 
 
-                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                    <EditText
                         android:id="@+id/edt_phone"
                         style="@style/style_register_edt"
                         android:inputType="phone"
                         android:maxLength="15" />
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <TextView
                         style="@style/style_register_tv"
                         android:text="@string/name" />
 
 
-                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                    <EditText
                         android:id="@+id/edt_name"
                         style="@style/style_register_edt"
                         android:inputType="text"
@@ -112,12 +112,12 @@
 
                         />
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <TextView
                         style="@style/style_register_tv"
                         android:text="@string/mail" />
 
 
-                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                    <EditText
                         android:id="@+id/edt_email"
                         style="@style/style_register_edt"
                         android:inputType="textEmailAddress" />
@@ -136,11 +136,11 @@
                             android:orientation="vertical"
                             android:paddingRight="10dp">
 
-                            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                            <TextView
                                 style="@style/style_register_tv"
                                 android:text="@string/birthday" />
 
-                            <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                            <EditText
                                 android:id="@+id/edt_birthday"
                                 style="@style/style_register_edt" />
                         </LinearLayout>
@@ -151,7 +151,7 @@
                             android:layout_weight=".50"
                             android:orientation="vertical">
 
-                            <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                            <TextView
                                 style="@style/style_register_tv"
                                 android:text="@string/gender" />
 
@@ -161,7 +161,7 @@
                                 android:layout_height="wrap_content"
                                 android:weightSum="1">
 
-                                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                                <EditText
                                     android:id="@+id/tv_male"
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
@@ -174,7 +174,7 @@
                                     android:text="male "
                                     android:textSize="14sp" />
 
-                                <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                                <EditText
                                     android:id="@+id/tv_female"
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
@@ -192,12 +192,12 @@
                     </LinearLayout>
 
 
-                    <com.noqapp.android.client.views.customviews.TextViewRalewayRegular
+                    <TextView
                         style="@style/style_register_tv"
                         android:text="@string/prompt_address_status" />
 
 
-                    <com.noqapp.android.client.views.customviews.TextEditRobotoLight
+                    <EditText
                         android:id="@+id/edt_address"
                         style="@style/style_register_edt"
                         android:gravity="top|left"
@@ -208,7 +208,7 @@
                         android:singleLine="false" />
 
 
-                    <com.noqapp.android.client.views.customviews.ButtonRalewayRegular
+                    <Button
                         android:id="@+id/btn_update"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

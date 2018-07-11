@@ -21,7 +21,7 @@
             android:padding="10dp" />
 
 
-        <com.noqapp.android.merchant.views.customsviews.TextViewRobotoLight
+        <TextView
             android:id="@+id/tv_toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:background="@drawable/spinner_border"
             android:layout_marginBottom="40dp" />
 
-        <com.noqapp.android.merchant.views.customsviews.ButtonRalewayRegular
+        <Button
             android:id="@+id/btn_update"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
