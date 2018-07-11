@@ -3,7 +3,6 @@ package com.noqapp.common.model.types;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
