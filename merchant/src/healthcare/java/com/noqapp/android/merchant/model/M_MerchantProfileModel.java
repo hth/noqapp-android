@@ -3,10 +3,10 @@ package com.noqapp.android.merchant.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
+import com.noqapp.android.merchant.utils.Constants;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,14 +18,13 @@ import retrofit2.Response;
  */
 public class M_MerchantProfileModel extends MerchantProfileModel {
     private static final String TAG = M_MerchantProfileModel.class.getSimpleName();
+    public IntellisensePresenter intellisensePresenter;
 
-    public M_MerchantProfileModel (IntellisensePresenter intellisensePresenter) {
+    public M_MerchantProfileModel(IntellisensePresenter intellisensePresenter) {
         this.intellisensePresenter = intellisensePresenter;
     }
 
-    public IntellisensePresenter intellisensePresenter;
-
-    public void uploadIntellisense(String did, String mail, String auth,JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal) {
+    public void uploadIntellisense(String did, String mail, String auth, JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal) {
         merchantProfileService.intellisense(did, Constants.DEVICE_TYPE, mail, auth, jsonProfessionalProfilePersonal).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {

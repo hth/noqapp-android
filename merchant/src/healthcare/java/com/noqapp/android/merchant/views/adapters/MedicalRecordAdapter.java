@@ -9,13 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.noqapp.android.merchant.R;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.merchant.R;
 
 import java.util.List;
 
 public class MedicalRecordAdapter extends BaseAdapter {
-    
+
     private Context context;
     private List<JsonMedicalMedicine> medicalRecordList;
 
@@ -59,7 +59,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-    
+
         final JsonMedicalMedicine medicalRecord = medicalRecordList.get(position);
         recordHolder.tv_medication.setText(medicalRecord.getMedicationType().getDescription());
         recordHolder.tv_dose.setText(medicalRecord.getStrength());
@@ -70,11 +70,15 @@ public class MedicalRecordAdapter extends BaseAdapter {
         recordHolder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    medicalRecordList.remove(position);
-                    notifyDataSetChanged();
+                medicalRecordList.remove(position);
+                notifyDataSetChanged();
             }
         });
         return view;
+    }
+
+    public List<JsonMedicalMedicine> getJsonMedicineList() {
+        return medicalRecordList;
     }
 
     static class RecordHolder {
@@ -89,10 +93,5 @@ public class MedicalRecordAdapter extends BaseAdapter {
 
         RecordHolder() {
         }
-    }
-
-
-    public List<JsonMedicalMedicine> getJsonMedicineList() {
-        return medicalRecordList;
     }
 }
