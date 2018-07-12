@@ -182,8 +182,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         progressDialog.setIndeterminate(true);
                         progressDialog.setMessage("Updating...");
                         progressDialog.show();
-                        ReviewModel.reviewPresenter = ReviewActivity.this;
-                        ReviewModel.review(UserUtils.getDeviceId(), rr);
+                        new ReviewModel(ReviewActivity.this).review(UserUtils.getDeviceId(), rr);
                     } else {
                         ShowAlertInformation.showNetworkDialog(ReviewActivity.this);
                     }

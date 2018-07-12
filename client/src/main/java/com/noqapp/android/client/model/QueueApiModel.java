@@ -25,23 +25,41 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * User: hitender
- * Date: 5/27/17 5:38 PM
+ * Authorised call required authorised user
  */
 public class QueueApiModel {
-    private static final String TAG = QueueApiModel.class.getSimpleName();
-
+    private final String TAG = QueueApiModel.class.getSimpleName();
     private final static QueueService queueService;
-    public static QueuePresenter queuePresenter;
-    public static TokenPresenter tokenPresenter;
-    public static ResponsePresenter responsePresenter;
-    public static TokenAndQueuePresenter tokenAndQueuePresenter;
+    private QueuePresenter queuePresenter;
+    private TokenPresenter tokenPresenter;
+    private ResponsePresenter responsePresenter;
+    private TokenAndQueuePresenter tokenAndQueuePresenter;
+
+    public QueueApiModel setQueuePresenter(QueuePresenter queuePresenter) {
+        this.queuePresenter = queuePresenter;
+        return this;
+    }
+
+    public QueueApiModel setTokenPresenter(TokenPresenter tokenPresenter) {
+        this.tokenPresenter = tokenPresenter;
+        return this;
+    }
+
+    public QueueApiModel setResponsePresenter(ResponsePresenter responsePresenter) {
+        this.responsePresenter = responsePresenter;
+        return this;
+    }
+
+    public QueueApiModel setTokenAndQueuePresenter(TokenAndQueuePresenter tokenAndQueuePresenter) {
+        this.tokenAndQueuePresenter = tokenAndQueuePresenter;
+        return this;
+    }
 
     static {
         queueService = RetrofitClient.getClient().create(QueueService.class);
     }
 
-    public static void getQueueState(String did, String mail, String auth, String codeQR) {
+    public void getQueueState(String did, String mail, String auth, String codeQR) {
         queueService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
@@ -67,7 +85,7 @@ public class QueueApiModel {
         });
     }
 
-    public static void getAllJoinedQueues(String did, String mail, String auth) {
+    public void getAllJoinedQueues(String did, String mail, String auth) {
         queueService.getAllJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
@@ -106,7 +124,7 @@ public class QueueApiModel {
         });
     }
 
-    public static void allHistoricalJoinedQueues(String did, String mail, String auth, DeviceToken deviceToken) {
+    public void allHistoricalJoinedQueues(String did, String mail, String auth, DeviceToken deviceToken) {
         queueService.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
@@ -139,7 +157,7 @@ public class QueueApiModel {
         });
     }
 
-    public static void joinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
+    public void joinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
         queueService.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
@@ -165,7 +183,7 @@ public class QueueApiModel {
         });
     }
 
-    public static void abortQueue(String did, String mail, String auth, String codeQR) {
+    public void abortQueue(String did, String mail, String auth, String codeQR) {
         queueService.abortQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
@@ -190,7 +208,7 @@ public class QueueApiModel {
         });
     }
 
-    public static void remoteScanQueueState(String did, String mail, String auth, String codeQR) {
+    public void remoteScanQueueState(String did, String mail, String auth, String codeQR) {
         queueService.remoteScanQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {

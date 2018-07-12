@@ -16,10 +16,13 @@ import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
 public class ProfessionalProfileModel {
 
-    private static final String TAG = ProfessionalProfileModel.class.getSimpleName();
-
+    private final String TAG = ProfessionalProfileModel.class.getSimpleName();
     private static final ProfessionalProfileService professionalProfileService;
-    public static QueueManagerPresenter queueManagerPresenter;
+    private QueueManagerPresenter queueManagerPresenter;
+
+    public ProfessionalProfileModel(QueueManagerPresenter queueManagerPresenter) {
+        this.queueManagerPresenter = queueManagerPresenter;
+    }
 
     static {
         professionalProfileService = RetrofitClient.getClient().create(ProfessionalProfileService.class);
@@ -29,7 +32,7 @@ public class ProfessionalProfileModel {
      * @param did
      * @param webProfileId
      */
-    public static void profile(String did, String webProfileId) {
+    public void profile(String did, String webProfileId) {
         professionalProfileService.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfile> call, @NonNull Response<JsonProfessionalProfile> response) {

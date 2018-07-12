@@ -15,16 +15,19 @@ import retrofit2.Response;
 
 
 public class MedicalRecordApiModel {
-    private static final String TAG = MedicalRecordApiModel.class.getSimpleName();
-
+    private final String TAG = MedicalRecordApiModel.class.getSimpleName();
     private final static MedicalRecordService medicalRecordService;
-    public static MedicalRecordPresenter medicalRecordPresenter;
+    private MedicalRecordPresenter medicalRecordPresenter;
+
+    public MedicalRecordApiModel(MedicalRecordPresenter medicalRecordPresenter) {
+        this.medicalRecordPresenter = medicalRecordPresenter;
+    }
 
     static {
         medicalRecordService = RetrofitClient.getClient().create(MedicalRecordService.class);
     }
 
-    public static void getMedicalRecord(String mail, String auth) {
+    public void getMedicalRecord(String mail, String auth) {
         medicalRecordService.getMedicalRecord(mail, auth).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {

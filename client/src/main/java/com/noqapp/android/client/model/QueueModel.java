@@ -26,18 +26,30 @@ import retrofit2.Response;
 
 /**
  * Unregistered client access.
- * <p>
- * User: omkar
- * Date: 3/26/17 11:49 PM
  */
 public final class QueueModel {
-    private static final String TAG = QueueModel.class.getSimpleName();
-
+    private final String TAG = QueueModel.class.getSimpleName();
     private static final QueueService queueService;
-    public static QueuePresenter queuePresenter;
-    public static TokenPresenter tokenPresenter;
-    public static ResponsePresenter responsePresenter;
-    public static TokenAndQueuePresenter tokenAndQueuePresenter;
+    private QueuePresenter queuePresenter;
+    private TokenPresenter tokenPresenter;
+    private ResponsePresenter responsePresenter;
+    private TokenAndQueuePresenter tokenAndQueuePresenter;
+
+    public void setQueuePresenter(QueuePresenter queuePresenter) {
+        this.queuePresenter = queuePresenter;
+    }
+
+    public void setTokenPresenter(TokenPresenter tokenPresenter) {
+        this.tokenPresenter = tokenPresenter;
+    }
+
+    public void setResponsePresenter(ResponsePresenter responsePresenter) {
+        this.responsePresenter = responsePresenter;
+    }
+
+    public void setTokenAndQueuePresenter(TokenAndQueuePresenter tokenAndQueuePresenter) {
+        this.tokenAndQueuePresenter = tokenAndQueuePresenter;
+    }
 
     static {
         queueService = RetrofitClient.getClient().create(QueueService.class);
@@ -49,7 +61,7 @@ public final class QueueModel {
      * @param did
      * @param qrCode
      */
-    public static void getQueueState(String did, String qrCode) {
+    public void getQueueState(String did, String qrCode) {
         queueService.getQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
@@ -81,7 +93,7 @@ public final class QueueModel {
      * @param did
      * @param qrCode
      */
-    public static void getAllQueueState(String did, String qrCode) {
+    public void getAllQueueState(String did, String qrCode) {
         queueService.getAllQueueState(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
@@ -107,7 +119,7 @@ public final class QueueModel {
         });
     }
 
-    public static void getAllQueueStateLevelUp(String did, String qrCode) {
+    public void getAllQueueStateLevelUp(String did, String qrCode) {
         queueService.getAllQueueStateLevelUp(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
@@ -138,7 +150,7 @@ public final class QueueModel {
      *
      * @param did
      */
-    public static void getAllJoinedQueue(String did) {
+    public void getAllJoinedQueue(String did) {
         queueService.getAllJoinedQueue(did, Constants.DEVICE_TYPE).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
@@ -175,7 +187,7 @@ public final class QueueModel {
      *
      * @param did
      */
-    public static void getHistoryQueueList(String did, DeviceToken deviceToken) {
+    public void getHistoryQueueList(String did, DeviceToken deviceToken) {
         queueService.getAllHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
@@ -210,7 +222,7 @@ public final class QueueModel {
      * @param did
      * @param codeQR
      */
-    public static void joinQueue(String did, String codeQR) {
+    public void joinQueue(String did, String codeQR) {
         queueService.joinQueue(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
@@ -242,7 +254,7 @@ public final class QueueModel {
      * @param did
      * @param codeQR
      */
-    public static void abortQueue(String did, String codeQR) {
+    public void abortQueue(String did, String codeQR) {
         queueService.abortQueue(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {

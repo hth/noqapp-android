@@ -133,7 +133,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
         launchActivity = this;
-        DeviceModel.appBlacklistPresenter = this;
         Log.v("device id check", getDeviceID());
         setReviewShown(false);//Reset the flag when app is killed
         networkUtil = new NetworkUtil(this);
@@ -229,7 +228,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         };
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            DeviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
+            DeviceModel deviceModel = new DeviceModel();
+            deviceModel.setAppBlacklistPresenter(this);
+            deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
 
@@ -258,7 +259,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         } else {
             Log.d(TAG, "Exist deviceId=" + deviceId);
         }
-        DeviceModel.register(deviceId, deviceToken);
+        new DeviceModel().register(deviceId, deviceToken);
     }
 
     private void setSharedPreferenceDeviceID(SharedPreferences sharedpreferences, String deviceId) {

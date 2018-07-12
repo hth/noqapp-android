@@ -21,10 +21,13 @@ import retrofit2.Response;
  */
 
 public final class RegisterModel {
-    private static final String TAG = RegisterModel.class.getSimpleName();
-
+    private final String TAG = RegisterModel.class.getSimpleName();
     private static final RegisterService registerService;
-    public static ProfilePresenter profilePresenter;
+    private ProfilePresenter profilePresenter;
+
+    public RegisterModel(ProfilePresenter profilePresenter) {
+        this.profilePresenter = profilePresenter;
+    }
 
     static {
         registerService = RetrofitClient.getClient().create(RegisterService.class);
@@ -33,7 +36,7 @@ public final class RegisterModel {
     /**
      * @param registration
      */
-    public static void register(String did, Registration registration) {
+    public void register(String did, Registration registration) {
         registerService.register(did, Constants.DEVICE_TYPE, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
@@ -59,7 +62,7 @@ public final class RegisterModel {
     /**
      * @param login
      */
-    public static void login(String did, Login login) {
+    public void login(String did, Login login) {
         registerService.login(did, Constants.DEVICE_TYPE, login).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {

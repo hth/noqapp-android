@@ -225,20 +225,22 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
             if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
                 //Call the current queue
-                QueueApiModel.tokenAndQueuePresenter = this;
-                QueueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+                QueueApiModel queueApiModel = new QueueApiModel();
+                queueApiModel.setTokenAndQueuePresenter(this);
+                queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
 
                 //Call the history queue
                 DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-                QueueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+                queueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
             } else {
                 //Call the current queue
-                QueueModel.tokenAndQueuePresenter = this;
-                QueueModel.getAllJoinedQueue(UserUtils.getDeviceId());
+                QueueModel queueModel = new QueueModel();
+                queueModel.setTokenAndQueuePresenter(this);
+                queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
 
                 //Call the history queue
                 DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-                QueueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
+                queueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
             }
             pb_current.setVisibility(View.VISIBLE);
             pb_recent.setVisibility(View.VISIBLE);
@@ -304,8 +306,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             storeInfoParam.setFilters("xyz");
             storeInfoParam.setScrollId("");
             pb_near.setVisibility(View.VISIBLE);
-            NearMeModel.nearMePresenter = this;
-            NearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
+            new NearMeModel(this).nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

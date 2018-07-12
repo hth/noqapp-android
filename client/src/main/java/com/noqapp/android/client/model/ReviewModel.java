@@ -21,10 +21,14 @@ import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
  */
 
 public class ReviewModel {
-    private static final String TAG = RegisterModel.class.getSimpleName();
-
+    private final String TAG = RegisterModel.class.getSimpleName();
     private static final ReviewService reviewService;
-    public static ReviewPresenter reviewPresenter;
+    private ReviewPresenter reviewPresenter;
+
+    public ReviewModel(ReviewPresenter reviewPresenter) {
+        this.reviewPresenter = reviewPresenter;
+    }
+
 
     static {
         reviewService = RetrofitClient.getClient().create(ReviewService.class);
@@ -34,7 +38,7 @@ public class ReviewModel {
      * @param did
      * @param reviewRating
      */
-    public static void review(String did, ReviewRating reviewRating) {
+    public void review(String did, ReviewRating reviewRating) {
         reviewService.review(did, DEVICE_TYPE, reviewRating).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
@@ -59,7 +63,7 @@ public class ReviewModel {
      * @param did
      * @param reviewRating
      */
-    public static void reviewHistorical(String did, ReviewRating reviewRating) {
+    public void reviewHistorical(String did, ReviewRating reviewRating) {
         reviewService.reviewHistorical(did, DEVICE_TYPE, reviewRating).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {

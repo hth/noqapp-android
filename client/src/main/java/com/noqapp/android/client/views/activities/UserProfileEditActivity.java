@@ -92,7 +92,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     private SimpleDateFormat dateFormatter;
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
-    //
+    private ProfileModel profileModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +102,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         initActionsViews(false);
         tv_toolbar_title.setText("Edit Profile");
         iv_profile = findViewById(R.id.iv_profile);
+        profileModel = new ProfileModel();
         loadProfilePic();
         iv_profile.setOnClickListener(this);
         isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
@@ -228,8 +229,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
-                        ProfileModel.imageUploadPresenter = this;
-                        ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+                        profileModel.setImageUploadPresenter(this);
+                        profileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
@@ -253,7 +254,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     0, 0, R.drawable.arrow_white, 0);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
-                ProfileModel.profilePresenter = this;
+                profileModel.setProfilePresenter(this);
                 //   String phoneNo = edt_phoneNo.getText().toString();
                 String name = edt_Name.getText().toString();
                 //   String mail = edt_Mail.getText().toString();
@@ -268,8 +269,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         updateProfile.setGender(gender);
                         updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                         updateProfile.setQueueUserId(dependentProfile.getQueueUserId());
-                        ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
-                    } else {
+                        profileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                    }else {
                         Registration registration = new Registration();
                         registration.setPhone(PhoneFormatterUtil.phoneNumberWithCountryCode(NoQueueBaseActivity.getPhoneNo(), NoQueueBaseActivity.getCountryShortName()));
                         registration.setFirstName(name);
@@ -280,10 +281,10 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         registration.setTimeZoneId(TimeZone.getDefault().getID());
                         registration.setCountryShortName(NoQueueBaseActivity.getCountryShortName());
                         registration.setInviteCode("");
-                        DependencyModel.dependencyPresenter = this;
-                        DependencyModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
+                        DependencyModel dependencyModel = new DependencyModel(this);
+                        dependencyModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
                     }
-                } else {
+                }else {
                     UpdateProfile updateProfile = new UpdateProfile();
                     updateProfile.setAddress(address);
                     updateProfile.setFirstName(name);
@@ -291,7 +292,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     updateProfile.setGender(gender);
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                     updateProfile.setQueueUserId(LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
-                    ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                    profileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(this);

@@ -94,6 +94,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private int profile_pos;
     private List<JsonProfile> profileList;
     private String queueUserId = "";
+    private QueueModel queueModel;
+    private QueueApiModel queueApiModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         ButterKnife.bind(this);
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_qdetails));
+        queueModel = new QueueModel();
+        queueApiModel = new QueueApiModel();
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
@@ -245,11 +249,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             if (UserUtils.isLogin()) {
-                QueueApiModel.responsePresenter = this;
-                QueueApiModel.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                queueApiModel.setResponsePresenter(this);
+                queueApiModel.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
             } else {
-                QueueModel.responsePresenter = this;
-                QueueModel.abortQueue(UserUtils.getDeviceId(), codeQR);
+                queueModel.setResponsePresenter(this);
+                queueModel.abortQueue(UserUtils.getDeviceId(), codeQR);
             }
         } else {
             ShowAlertInformation.showNetworkDialog(this);
@@ -260,7 +264,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (codeQR != null) {
             Log.d("CodeQR=", codeQR);
             if (UserUtils.isLogin()) {
-                QueueApiModel.tokenPresenter = this;
                 JsonProfile jsonProfile = LaunchActivity.getLaunchActivity().getUserProfile();
                 String queueUserId;
                 String guardianId = null;
@@ -272,7 +275,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     queueUserId = jsonProfile.getQueueUserId();
                 }
                 JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserId).setGuardianQid(guardianId);
-                QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+                queueApiModel.setTokenPresenter(this);
+                queueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
 //                boolean callingFromHistory = getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false);
 //                if (!callingFromHistory && getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
 //                    QueueApiModel.tokenPresenter = this;
@@ -284,8 +288,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 //                    }
 //                }
             } else {
-                QueueModel.tokenPresenter = this;
-                QueueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
+                queueModel.setTokenPresenter(this);
+                queueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
             }
         }
     }

@@ -92,9 +92,8 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
         loadTabs = new LoadTabs();
         loadTabs.execute();
 
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            ProfessionalProfileModel.queueManagerPresenter = this;
-            ProfessionalProfileModel.profile(UserUtils.getDeviceId(), webProfileId);
+        if(LaunchActivity.getLaunchActivity().isOnline()){
+            new ProfessionalProfileModel(this).profile(UserUtils.getDeviceId(),webProfileId);
         }
 
     }

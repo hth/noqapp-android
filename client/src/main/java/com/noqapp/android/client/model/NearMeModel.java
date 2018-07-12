@@ -21,10 +21,13 @@ import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
  */
 
 public class NearMeModel {
-    private static final String TAG = NearMeModel.class.getSimpleName();
-
+    private final String TAG = NearMeModel.class.getSimpleName();
     private static final NearMeService nearmeService;
-    public static NearMePresenter nearMePresenter;
+    private NearMePresenter nearMePresenter;
+
+    public NearMeModel(NearMePresenter nearMePresenter) {
+        this.nearMePresenter = nearMePresenter;
+    }
 
     static {
         nearmeService = RetrofitClient.getClient().create(NearMeService.class);
@@ -34,7 +37,7 @@ public class NearMeModel {
      * @param did
      * @param storeInfoParam
      */
-    public static void nearMeStore(String did, StoreInfoParam storeInfoParam) {
+    public void nearMeStore(String did, StoreInfoParam storeInfoParam) {
         nearmeService.nearMe(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
@@ -55,7 +58,7 @@ public class NearMeModel {
         });
     }
 
-    public static void search(String did, StoreInfoParam storeInfoParam) {
+    public void search(String did, StoreInfoParam storeInfoParam) {
         nearmeService.search(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
