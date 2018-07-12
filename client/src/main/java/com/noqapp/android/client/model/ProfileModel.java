@@ -23,18 +23,25 @@ import retrofit2.Response;
 
 public class ProfileModel {
 
-    private static final String TAG = ProfileModel.class.getSimpleName();
-
+    private final String TAG = ProfileModel.class.getSimpleName();
     private static final ProfileService profileService;
-    public static ProfilePresenter profilePresenter;
-    public static ImageUploadPresenter imageUploadPresenter;
+    private ProfilePresenter profilePresenter;
+    private ImageUploadPresenter imageUploadPresenter;
+
+    public void setProfilePresenter(ProfilePresenter profilePresenter) {
+        this.profilePresenter = profilePresenter;
+    }
+
+    public void setImageUploadPresenter(ImageUploadPresenter imageUploadPresenter) {
+        this.imageUploadPresenter = imageUploadPresenter;
+    }
 
     static {
         profileService = RetrofitClient.getClient().create(ProfileService.class);
     }
 
 
-    public static void fetchProfile(final String mail, final String auth) {
+    public void fetchProfile(final String mail, final String auth) {
         profileService.fetch(mail, auth).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
@@ -56,7 +63,7 @@ public class ProfileModel {
         });
     }
 
-    public static void updateProfile(final String mail, final String auth, UpdateProfile updateProfile) {
+    public void updateProfile(final String mail, final String auth, UpdateProfile updateProfile) {
         profileService.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
@@ -82,7 +89,7 @@ public class ProfileModel {
         });
     }
 
-    public static void migrate(final String mail, final String auth, MigrateProfile migrateProfile) {
+    public void migrate(final String mail, final String auth, MigrateProfile migrateProfile) {
         profileService.migrate(mail, auth, migrateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
@@ -110,7 +117,7 @@ public class ProfileModel {
         });
     }
 
-    public static void getProfileAllAddress(final String mail, final String auth) {
+    public void getProfileAllAddress(final String mail, final String auth) {
         profileService.address(mail, auth).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
@@ -137,8 +144,8 @@ public class ProfileModel {
         });
     }
 
-    public static void addProfileAddress(final String mail, final String auth, JsonUserAddress jsonUserAddress) {
-        profileService.addressAdd(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
+    public void addProfileAddress(final String mail, final String auth,JsonUserAddress jsonUserAddress) {
+        profileService.addressAdd(mail, auth,jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
                 if (response.code() == 401) {
@@ -164,8 +171,8 @@ public class ProfileModel {
         });
     }
 
-    public static void deleteProfileAddress(final String mail, final String auth, JsonUserAddress jsonUserAddress) {
-        profileService.addressDelete(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
+    public void deleteProfileAddress(final String mail, final String auth,JsonUserAddress jsonUserAddress) {
+        profileService.addressDelete(mail, auth,jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
                 if (response.code() == 401) {
@@ -191,7 +198,7 @@ public class ProfileModel {
         });
     }
 
-    public static void uploadImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody profileImageOfQid) {
+    public void uploadImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody profileImageOfQid) {
         profileService.upload(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {

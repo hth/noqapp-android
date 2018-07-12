@@ -103,7 +103,6 @@ public class MigrateActivity extends BaseActivity implements ProfilePresenter {
             }
         });
         tv_toolbar_title.setText("Migrate No");
-        RegisterModel.profilePresenter = this;
         mAuth = FirebaseAuth.getInstance();
         updateUI(STATE_INITIALIZED);
 
@@ -203,8 +202,9 @@ public class MigrateActivity extends BaseActivity implements ProfilePresenter {
         migrateProfile.setCountryShortName(countryShortName);
         migrateProfile.setTimeZoneId(tz.getID());
         migrateProfile.setPhone(phoneNumber);
-        ProfileModel.profilePresenter = this;
-        ProfileModel.migrate(UserUtils.getEmail(), UserUtils.getAuth(), migrateProfile);
+        ProfileModel profileModel = new ProfileModel();
+        profileModel.setProfilePresenter(this);
+        profileModel.migrate(UserUtils.getEmail(),UserUtils.getAuth(),migrateProfile);
     }
 
     private boolean validate() {

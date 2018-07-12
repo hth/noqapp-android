@@ -48,7 +48,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
     private String city = "";
     private String lat = "";
     private String longitute = "";
-
+    private NearMeModel nearMeModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         tv_toolbar_title.setText("View All");
         listener = this;
         //getString(R.string.medical_history));
-        NearMeModel.nearMePresenter = this;
+        nearMeModel = new NearMeModel(this);
         listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
@@ -97,7 +97,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
                     storeInfoParam.setLongitude(longitute);
                     storeInfoParam.setFilters("xyz");
                     storeInfoParam.setScrollId(scrollId);
-                    NearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
+                    nearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
                 } else {
                     ShowAlertInformation.showNetworkDialog(ViewAllListActivity.this);
                 }

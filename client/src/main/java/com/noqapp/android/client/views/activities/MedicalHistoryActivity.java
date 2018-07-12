@@ -58,9 +58,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             if (UserUtils.isLogin()) {
-                MedicalRecordApiModel.medicalRecordPresenter = this;
-                MedicalRecordApiModel.getMedicalRecord(UserUtils.getEmail(), UserUtils.getAuth());
-
+                new MedicalRecordApiModel(this).getMedicalRecord(UserUtils.getEmail(), UserUtils.getAuth());
             } else {
                 //Give error
             }

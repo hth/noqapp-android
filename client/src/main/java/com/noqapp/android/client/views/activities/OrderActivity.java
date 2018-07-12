@@ -66,6 +66,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @BindView(R.id.ll_order_details)
     protected LinearLayout ll_order_details;
     private JsonPurchaseOrder jsonPurchaseOrder;
+    private ProfileModel profileModel;
+    private PurchaseApiModel purchaseApiModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,16 +75,17 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         setContentView(R.layout.activity_order);
         ButterKnife.bind(this);
         initActionsViews(false);
+        purchaseApiModel = new PurchaseApiModel(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
         tv_toolbar_title.setText(getString(R.string.screen_order));
         tv_user_name.setText(NoQueueBaseActivity.getUserName());
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
         edt_address.setText(NoQueueBaseActivity.getAddress());
-        PurchaseApiModel.purchaseOrderPresenter = this;
-        tv_tax_amt.setText(getString(R.string.rupee) + "" + "0.0");
-        tv_due_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
-        tv_total_order_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
-        for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
+        profileModel = new ProfileModel();
+        tv_tax_amt.setText(getString(R.string.rupee)+""+"0.0");
+        tv_due_amt.setText(getString(R.string.rupee)+""+Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/100);
+        tv_total_order_amt.setText(getString(R.string.rupee)+""+Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/100);
+        for (int i =0; i< jsonPurchaseOrder.getPurchaseOrderProducts().size();i++){
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
@@ -107,16 +110,17 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         jsonPurchaseOrder.setDeliveryType(DeliveryTypeEnum.HD);
                         jsonPurchaseOrder.setPaymentType(PaymentTypeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
-                        PurchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+
+                        purchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                     }
                 }
             }
         });
-        if (LaunchActivity.getLaunchActivity().isOnline()) {//&& !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
-            ProfileModel.profilePresenter = this;
-            ProfileModel.getProfileAllAddress(UserUtils.getEmail(), UserUtils.getAuth());
+        if (LaunchActivity.getLaunchActivity().isOnline() ){//&& !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
+            profileModel.setProfilePresenter(this);
+            profileModel.getProfileAllAddress(UserUtils.getEmail(), UserUtils.getAuth());
         }
     }
 
@@ -170,9 +174,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 in.putExtras(bundle);
                 startActivity(in);
 
-
+                profileModel.setProfilePresenter(this);
                 if (TextUtils.isEmpty(NoQueueBaseActivity.getAddress())) {
-                    ProfileModel.profilePresenter = this;
                     String address = edt_address.getText().toString();
                     UpdateProfile updateProfile = new UpdateProfile();
                     updateProfile.setAddress(address);
@@ -180,11 +183,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     updateProfile.setBirthday(NoQueueBaseActivity.getUserDOB());
                     updateProfile.setGender(NoQueueBaseActivity.getGender());
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
-                    ProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                    profileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
                 if (LaunchActivity.getLaunchActivity().isOnline() && !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
-                    ProfileModel.profilePresenter = this;
-                    ProfileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_address.getText().toString()).setId(""));
+                    profileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(),new JsonUserAddress().setAddress(edt_address.getText().toString()).setId(""));
                 }
 
             } else {

@@ -129,11 +129,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             boolean callingFromHistory = bundle.getBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
-                QueueModel.queuePresenter = this;
+                QueueModel queueModel = new QueueModel();
+                queueModel.setQueuePresenter(this);
                 if (bundle.getBoolean("CallCategory", false)) {
-                    QueueModel.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
+                    queueModel.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
                 } else {
-                    QueueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
+                    queueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(this);

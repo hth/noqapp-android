@@ -119,8 +119,9 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            ProfileModel.profilePresenter = this;
-            ProfileModel.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
+            ProfileModel profileModel = new ProfileModel();
+            profileModel.setProfilePresenter(this);
+            profileModel.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -189,14 +190,13 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
-                        ProfileModel.imageUploadPresenter = this;
-                        ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+                        ProfileModel profileModel = new ProfileModel();
+                        profileModel.setImageUploadPresenter(this);
+                        profileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
                 } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }

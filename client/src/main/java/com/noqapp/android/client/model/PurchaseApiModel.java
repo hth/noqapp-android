@@ -14,16 +14,19 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PurchaseApiModel {
-    private static final String TAG = PurchaseApiModel.class.getSimpleName();
-
+    private final String TAG = PurchaseApiModel.class.getSimpleName();
     private final static PurchaseOrderService purchaseOrderService;
-    public static PurchaseOrderPresenter purchaseOrderPresenter;
+    private PurchaseOrderPresenter purchaseOrderPresenter;
+
+    public PurchaseApiModel(PurchaseOrderPresenter purchaseOrderPresenter) {
+        this.purchaseOrderPresenter = purchaseOrderPresenter;
+    }
 
     static {
         purchaseOrderService = RetrofitClient.getClient().create(PurchaseOrderService.class);
     }
 
-    public static void placeOrder(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+    public void placeOrder(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
         purchaseOrderService.placeOrder(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {

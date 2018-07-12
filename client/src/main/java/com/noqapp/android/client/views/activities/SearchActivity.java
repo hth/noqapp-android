@@ -54,6 +54,7 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
     private String city = "";
     private String lat = "";
     private String longitute = "";
+    private NearMeModel nearMeModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +64,8 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
         initActionsViews(false);
         tv_toolbar_title.setText("Search");
         listener = this;
+        nearMeModel = new NearMeModel(this);
         //getString(R.string.medical_history));
-        NearMeModel.nearMePresenter = this;
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         longitute = getIntent().getStringExtra("long");
@@ -99,7 +100,7 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
                     storeInfoParam.setFilters("xyz");
                     storeInfoParam.setScrollId(scrollId);
                     storeInfoParam.setQuery(edt_search.getText().toString());
-                    NearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
+                    nearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
                 } else {
                     ShowAlertInformation.showNetworkDialog(SearchActivity.this);
                 }
@@ -129,7 +130,7 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
                                 storeInfoParam.setQuery(edt_search.getText().toString());
                                 storeInfoParam.setFilters("");
                                 storeInfoParam.setScrollId(""); //Scroll id - fresh search pass blank
-                                NearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
+                                nearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
                             } else {
                                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
                             }

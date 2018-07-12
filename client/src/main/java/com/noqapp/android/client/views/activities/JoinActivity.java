@@ -150,12 +150,14 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.show();
                     if (UserUtils.isLogin()) {
-                        QueueApiModel.queuePresenter = this;
-                        QueueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                        QueueApiModel queueApiModel = new QueueApiModel();
+                        queueApiModel.setQueuePresenter(this);
+                        queueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
 
                     } else {
-                        QueueModel.queuePresenter = this;
-                        QueueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
+                        QueueModel queueModel = new QueueModel();
+                        queueModel.setQueuePresenter(this);
+                        queueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
                     }
                 } else {
                     ShowAlertInformation.showNetworkDialog(this);
