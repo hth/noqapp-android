@@ -9,6 +9,11 @@ import retrofit2.http.POST;
 
 public interface PurchaseOrderService {
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
     @POST("api/c/purchaseOrder/purchase.json")
     Call<JsonPurchaseOrder> placeOrder(
             @Header("X-R-DID")

@@ -15,6 +15,10 @@ import retrofit2.http.POST;
 public interface NearMeService {
 
 
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
     @POST("open/search.json")
     Call<BizStoreElasticList> search(
             @Header("X-R-DID")
@@ -27,6 +31,10 @@ public interface NearMeService {
             StoreInfoParam storeInfoParam
     );
 
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
     @POST("open/search/nearMe.json")
     Call<BizStoreElasticList> nearMe(
             @Header("X-R-DID")

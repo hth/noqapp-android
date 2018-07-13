@@ -13,6 +13,12 @@ import retrofit2.http.POST;
  * Date: 5/7/17 12:40 PM
  */
 public interface ReviewService {
+
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     */
     @POST("open/review/service.json")
     Call<JsonResponse> review(
             @Header("X-R-DID")

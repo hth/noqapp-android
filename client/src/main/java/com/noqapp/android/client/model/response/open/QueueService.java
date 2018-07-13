@@ -22,6 +22,11 @@ import retrofit2.http.Path;
  */
 public interface QueueService {
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @GET("open/token/{codeQR}.json")
     Call<JsonQueue> getQueueState(
             @Header("X-R-DID")
@@ -34,6 +39,11 @@ public interface QueueService {
             String codeQR
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @GET("open/token/v1/{codeQR}.json")
     Call<BizStoreElasticList> getAllQueueState(
             @Header("X-R-DID")
@@ -46,6 +56,11 @@ public interface QueueService {
             String codeQR
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @GET("open/token/levelUp/{codeQR}.json")
     Call<BizStoreElasticList> getAllQueueStateLevelUp(
             @Header("X-R-DID")
@@ -58,6 +73,10 @@ public interface QueueService {
             String codeQR
     );
 
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @GET("open/token/queues.json")
     Call<JsonTokenAndQueueList> getAllJoinedQueue(
             @Header("X-R-DID")
@@ -67,6 +86,12 @@ public interface QueueService {
             String dt
     );
 
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("open/token/historical.json")
     Call<JsonTokenAndQueueList> getAllHistoricalJoinedQueue(
             @Header("X-R-DID")
@@ -79,6 +104,11 @@ public interface QueueService {
             DeviceToken deviceToken
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("open/token/queue/{codeQR}.json")
     Call<JsonToken> joinQueue(
             @Header("X-R-DID")
@@ -91,6 +121,11 @@ public interface QueueService {
             String codeQR
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("open/token/abort/{codeQR}.json")
     Call<JsonResponse> abortQueue(
             @Header("X-R-DID")
