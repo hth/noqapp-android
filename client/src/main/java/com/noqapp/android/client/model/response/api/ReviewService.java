@@ -1,4 +1,4 @@
-package com.noqapp.android.client.model.response.open;
+package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -10,12 +10,12 @@ import retrofit2.http.POST;
 
 /**
  * User: hitender
- * Date: 5/7/17 12:40 PM
+ * Date: 7/14/18 12:19 AM
  */
 public interface ReviewService {
-
     /**
      * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
@@ -27,6 +27,12 @@ public interface ReviewService {
 
             @Header("X-R-DT")
             String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
 
             @Body
             ReviewRating reviewRating
