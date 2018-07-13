@@ -7,6 +7,7 @@ import com.noqapp.android.client.model.response.open.DeviceService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
+import com.noqapp.android.client.views.interfaces.DeviceRegisterPresenter;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
@@ -23,6 +24,11 @@ public class DeviceModel {
     private final String TAG = DeviceModel.class.getSimpleName();
     private static final DeviceService deviceService;
     private AppBlacklistPresenter appBlacklistPresenter;
+    private DeviceRegisterPresenter deviceRegisterPresenter;
+
+    public void setDeviceRegisterPresenter(DeviceRegisterPresenter deviceRegisterPresenter) {
+        this.deviceRegisterPresenter = deviceRegisterPresenter;
+    }
 
     public void setAppBlacklistPresenter(AppBlacklistPresenter appBlacklistPresenter) {
         this.appBlacklistPresenter = appBlacklistPresenter;
@@ -44,15 +50,18 @@ public class DeviceModel {
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.body() != null) {
                     Log.d(TAG, "Registered device " + String.valueOf(response.body()));
+                    deviceRegisterPresenter.deviceRegisterResponse();
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty body");
+                    deviceRegisterPresenter.deviceRegisterError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<DeviceRegistered> call, @NonNull Throwable t) {
                 Log.e(TAG, "Failure Response " + t.getLocalizedMessage(), t);
+                deviceRegisterPresenter.deviceRegisterError();
             }
         });
     }

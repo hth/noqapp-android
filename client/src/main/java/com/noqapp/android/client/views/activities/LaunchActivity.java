@@ -78,7 +78,6 @@ import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
 
 public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
-
     public static DatabaseHelper dbHandler;
     public static Locale locale;
     public static SharedPreferences languagepref;
@@ -135,6 +134,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
         launchActivity = this;
+        if(null != getIntent().getExtras()){
+            NoQueueBaseActivity.setFCMToken(getIntent().getStringExtra("fcmToken"));
+            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
+                    NoQueueBaseActivity.APP_PREF, Context.MODE_PRIVATE);
+            setSharedPreferenceDeviceID(sharedpreferences,getIntent().getStringExtra("deviceId"));
+        }
         Log.v("device id check", getDeviceID());
         setReviewShown(false);//Reset the flag when app is killed
         networkUtil = new NetworkUtil(this);
@@ -238,33 +243,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(LaunchActivity.this, new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                String newToken = instanceIdResult.getToken();
-                Log.e("newToken", newToken);
-                String fcmToken = newToken;
-                Log.d(TAG, "FCM Token=" + fcmToken);
-                sendRegistrationToServer(fcmToken);
-            }
-        });
-    }
-
-    private void sendRegistrationToServer(String refreshToken) {
-        DeviceToken deviceToken = new DeviceToken(refreshToken);
-        NoQueueBaseActivity.setFCMToken(refreshToken);
-        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
-                NoQueueBaseActivity.APP_PREF, Context.MODE_PRIVATE);
-        String deviceId = sharedpreferences.getString(NoQueueBaseActivity.XR_DID, "");
-        if (StringUtils.isBlank(deviceId)) {
-            deviceId = UUID.randomUUID().toString().toUpperCase();
-            setSharedPreferenceDeviceID(sharedpreferences, deviceId);
-            Log.d(TAG, "Created deviceId=" + deviceId);
-            //Call this api only once in life time
-            new DeviceModel().register(deviceId, deviceToken);
-        } else {
-            Log.d(TAG, "Exist deviceId=" + deviceId);
-        }
     }
 
     private void setSharedPreferenceDeviceID(SharedPreferences sharedpreferences, String deviceId) {

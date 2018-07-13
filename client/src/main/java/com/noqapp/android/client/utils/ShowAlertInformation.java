@@ -26,8 +26,8 @@ public class ShowAlertInformation {
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-        TextView tvtitle = (TextView) customDialogView.findViewById(R.id.tvtitle);
-        TextView tv_msg = (TextView) customDialogView.findViewById(R.id.tv_msg);
+        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+        TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
         tvtitle.setText(title);
         tv_msg.setText(message);
         if (isGravityLeft)
@@ -35,8 +35,8 @@ public class ShowAlertInformation {
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        Button btn_yes = (Button) customDialogView.findViewById(R.id.btn_yes);
-        Button btn_no = (Button) customDialogView.findViewById(R.id.btn_no);
+        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+        Button btn_no = customDialogView.findViewById(R.id.btn_no);
         btn_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,15 +61,15 @@ public class ShowAlertInformation {
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-        TextView tvtitle = (TextView) customDialogView.findViewById(R.id.tvtitle);
-        TextView tv_msg = (TextView) customDialogView.findViewById(R.id.tv_msg);
+        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+        TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
         tvtitle.setText(context.getString(R.string.barcode_error));
         tv_msg.setText(context.getString(R.string.barcode_error_msg));
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        Button btn_yes = (Button) customDialogView.findViewById(R.id.btn_yes);
-        Button btn_no = (Button) customDialogView.findViewById(R.id.btn_no);
+        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+        Button btn_no = customDialogView.findViewById(R.id.btn_no);
         btn_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,17 +92,17 @@ public class ShowAlertInformation {
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-        TextView tvtitle = (TextView) customDialogView.findViewById(R.id.tvtitle);
-        TextView tv_msg = (TextView) customDialogView.findViewById(R.id.tv_msg);
-        View separator = (View) customDialogView.findViewById(R.id.seperator);
+        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+        TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+        View separator = customDialogView.findViewById(R.id.seperator);
         tvtitle.setText(title);
         tv_msg.setText(message);
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
-        Button btn_yes = (Button) customDialogView.findViewById(R.id.btn_yes);
+        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
         btn_yes.setText(context.getString(R.string.btn_playstore));
-        Button btn_no = (Button) customDialogView.findViewById(R.id.btn_no);
+        Button btn_no = customDialogView.findViewById(R.id.btn_no);
         if (isNegativeEnable) {
             btn_no.setVisibility(View.VISIBLE);
             separator.setVisibility(View.VISIBLE);
