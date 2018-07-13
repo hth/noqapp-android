@@ -22,6 +22,12 @@ import retrofit2.http.Path;
  */
 public interface QueueService {
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @GET("api/c/token/{codeQR}.json")
     Call<JsonQueue> getQueueState(
             @Header("X-R-DID")
@@ -40,6 +46,12 @@ public interface QueueService {
             String codeQR
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @GET("api/c/token/queues.json")
     Call<JsonTokenAndQueueList> getAllJoinedQueue(
             @Header("X-R-DID")
@@ -55,6 +67,13 @@ public interface QueueService {
             String auth
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/c/token/historical.json")
     Call<JsonTokenAndQueueList> allHistoricalJoinedQueue(
             @Header("X-R-DID")
@@ -73,6 +92,12 @@ public interface QueueService {
             DeviceToken deviceToken
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/c/token/queue.json")
     Call<JsonToken> joinQueue(
             @Header("X-R-DID")
@@ -91,6 +116,12 @@ public interface QueueService {
             JoinQueue joinQueue
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/c/token/abort/{codeQR}.json")
     Call<JsonResponse> abortQueue(
             @Header("X-R-DID")
@@ -109,6 +140,12 @@ public interface QueueService {
             String codeQR
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/c/token/remote/{codeQR}.json")
     Call<JsonQueue> remoteScanQueueState(
             @Header("X-R-DID")

@@ -10,9 +10,11 @@ import retrofit2.http.Path;
 /**
  * Created by chandra on 3/23/18.
  */
-
 public interface StoreService {
 
+    /**
+     * No Errors
+     */
     @GET("open/store/{codeQR}.json")
     Call<JsonStore> getStoreService(
             @Header("X-R-DID")

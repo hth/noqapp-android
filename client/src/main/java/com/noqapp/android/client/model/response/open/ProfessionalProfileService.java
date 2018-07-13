@@ -13,6 +13,10 @@ import retrofit2.http.Path;
  */
 public interface ProfessionalProfileService {
 
+    /**
+     * ERROR
+     * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
+     */
     @GET("open/professional/profile/{webProfileId}.json")
     Call<JsonProfessionalProfile> profile(
             @Header("X-R-DID")

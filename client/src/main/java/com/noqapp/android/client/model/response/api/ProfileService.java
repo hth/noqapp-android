@@ -25,6 +25,11 @@ import retrofit2.http.Part;
  */
 public interface ProfileService {
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @GET("api/c/profile/fetch.json")
     Call<JsonProfile> fetch(
             @Header("X-R-MAIL")
@@ -34,6 +39,12 @@ public interface ProfileService {
             String auth
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/c/profile/update.json")
     Call<JsonProfile> update(
             @Header("X-R-MAIL")
@@ -46,6 +57,13 @@ public interface ProfileService {
             UpdateProfile updateProfile
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_EXISTING}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/c/profile/migrate.json")
     Call<JsonProfile> migrate(
             @Header("X-R-MAIL")
@@ -58,6 +76,10 @@ public interface ProfileService {
             MigrateProfile migrateProfile
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     */
     @GET("api/c/profile/address.json")
     Call<JsonUserAddressList> address(
             @Header("X-R-MAIL")
@@ -67,6 +89,11 @@ public interface ProfileService {
             String auth
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
     @POST("api/c/profile/address/add.json")
     Call<JsonUserAddressList> addressAdd(
             @Header("X-R-MAIL")
@@ -79,6 +106,11 @@ public interface ProfileService {
             JsonUserAddress jsonUserAddress
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
     @POST("api/c/profile/address/delete.json")
     Call<JsonUserAddressList> addressDelete(
             @Header("X-R-MAIL")
@@ -91,6 +123,12 @@ public interface ProfileService {
             JsonUserAddress jsonUserAddress
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPLOAD}
+     * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
+     */
     @Multipart
     @POST("api/c/profile/upload.json")
     Call<JsonResponse> upload(
