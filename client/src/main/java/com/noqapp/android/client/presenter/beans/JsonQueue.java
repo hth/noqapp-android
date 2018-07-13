@@ -115,9 +115,6 @@ public class JsonQueue implements Serializable {
     @JsonProperty("se")
     private String serviceEndTime;
 
-    @JsonProperty("rj")
-    private int remoteJoinCount;
-
     @JsonProperty("u")
     private String created;
 
@@ -130,15 +127,20 @@ public class JsonQueue implements Serializable {
     @JsonProperty("as")
     private long averageServiceTime;
 
-    @JsonProperty("ja")
+    //***************************/
+    //*  Queue Settings Starts. */
+    //***************************/
+    @JsonProperty("rj")
     private boolean remoteJoinAvailable = false;
 
     @JsonProperty("lu")
     private boolean allowLoggedInUser = false;
 
-    //TODO add this property in Queue Settings screen
     @JsonProperty("at")
     private int availableTokenCount;
+    //***************************/
+    //*  Queue Settings Ends.   */
+    //***************************/
 
     @JsonProperty("bc")
     private String bizCategoryId;
@@ -383,16 +385,6 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
-    /* Used when joining remotely. */
-    public int getRemoteJoinCount() {
-        return remoteJoinCount;
-    }
-
-    public JsonQueue setRemoteJoinCount(int remoteJoinCount) {
-        this.remoteJoinCount = remoteJoinCount;
-        return this;
-    }
-
     public String getCreated() {
         return created;
     }
@@ -628,7 +620,6 @@ public class JsonQueue implements Serializable {
                 ", lastNumber=" + lastNumber +
                 ", queueStatus=" + queueStatus +
                 ", serviceEndTime='" + serviceEndTime + '\'' +
-                ", remoteJoinCount=" + remoteJoinCount +
                 ", created='" + created + '\'' +
                 ", rating=" + rating +
                 ", ratingCount=" + ratingCount +

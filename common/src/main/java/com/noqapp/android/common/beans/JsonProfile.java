@@ -60,9 +60,6 @@ public final class JsonProfile implements Serializable {
     @JsonProperty("ic")
     private String inviteCode;
 
-    @JsonProperty("rj")
-    private int remoteJoin;
-
     @JsonProperty("bd")
     private String birthday;
 
@@ -166,15 +163,6 @@ public final class JsonProfile implements Serializable {
         return this;
     }
 
-    public int getRemoteJoin() {
-        return remoteJoin;
-    }
-
-    public JsonProfile setRemoteJoin(int remoteJoin) {
-        this.remoteJoin = remoteJoin;
-        return this;
-    }
-
     public String getBirthday() {
         return birthday;
     }
@@ -249,7 +237,6 @@ public final class JsonProfile implements Serializable {
                 ", phoneRaw='" + phoneRaw + '\'' +
                 ", timeZone='" + timeZone + '\'' +
                 ", inviteCode='" + inviteCode + '\'' +
-                ", remoteJoin=" + remoteJoin +
                 ", birthday='" + birthday + '\'' +
                 ", gender=" + gender +
                 ", userLevel=" + userLevel +
