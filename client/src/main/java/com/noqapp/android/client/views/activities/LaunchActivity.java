@@ -46,6 +46,7 @@ import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.network.VersionCheckAsync;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.NetworkStateChanged;
@@ -64,6 +65,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -173,7 +175,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -198,6 +200,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         String userStatus = intent.getStringExtra("u");
+                        String token = intent.getStringExtra(Constants.TOKEN);
+                        String quserID = intent.getStringExtra(Constants.QuserID);
                         /**
                          * Save codeQR of review & show the review screen on app
                          * resume if there is any record in Review DB for review key
@@ -205,16 +209,16 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         if (null == userStatus) {
                             updateNotification(intent, codeQR, false);
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                            ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
-                            callReviewActivity(codeQR);
+                            ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token,"",quserID);
+                            callReviewActivity(codeQR ,token);
                             // this code is added to close the join & after join screen if the request is processed
                             if (activityCommunicator != null) {
-                                activityCommunicator.requestProcessed(codeQR);
+                                activityCommunicator.requestProcessed(codeQR,token);
                             }
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                            ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
+                            ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, token,"",quserID);
                             //TODO @CHANDRA implement it for activtiy
-                            callSkipScreen(codeQR);
+                            callSkipScreen(codeQR,token,quserID);
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         updateNotification(intent, codeQR, true);
@@ -256,10 +260,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             deviceId = UUID.randomUUID().toString().toUpperCase();
             setSharedPreferenceDeviceID(sharedpreferences, deviceId);
             Log.d(TAG, "Created deviceId=" + deviceId);
+            //Call this api only once in life time
+            new DeviceModel().register(deviceId, deviceToken);
         } else {
             Log.d(TAG, "Exist deviceId=" + deviceId);
         }
-        new DeviceModel().register(deviceId, deviceToken);
     }
 
     private void setSharedPreferenceDeviceID(SharedPreferences sharedpreferences, String deviceId) {
@@ -303,13 +308,16 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public void onNewIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            if (extras.containsKey(Constants.QRCODE) && extras.containsKey(Constants.ISREVIEW)) {
+            if (extras.containsKey(Constants.QRCODE) && extras.containsKey(Constants.ISREVIEW)
+                    && extras.containsKey(Constants.TOKEN)) {
                 String codeQR = extras.getString(Constants.QRCODE);
+                String token = extras.getString(Constants.TOKEN);
+                String quserID = extras.getString(Constants.QuserID);
                 boolean isReview = extras.getBoolean(Constants.ISREVIEW, false);
                 if (isReview) {
-                    callReviewActivity(codeQR);
+                    callReviewActivity(codeQR,token);
                 } else {
-                    callSkipScreen(codeQR);
+                    callSkipScreen(codeQR,token,quserID);
                 }
             }
         }
@@ -378,9 +386,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (requestCode == Constants.requestCodeJoinQActivity) {
             if (resultCode == RESULT_OK) {
                 String intent_qrCode = data.getExtras().getString(Constants.QRCODE);
-                //Remove the AfterJoinFragment screen if having same qr code from tablist
+                String token = data.getExtras().getString(Constants.TOKEN);
                 if (activityCommunicator != null) {
-                    activityCommunicator.requestProcessed(intent_qrCode);
+                    activityCommunicator.requestProcessed(intent_qrCode, token);
                 }
                 dismissProgress();
             }
@@ -440,17 +448,17 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
 
-        String codeQR = ReviewDB.getValue(ReviewDB.KEY_REVIEW);
+        ReviewData reviewData = ReviewDB.getValue(ReviewDB.KEY_REVIEW);
         // shown only one time if the review is canceled
-        if (StringUtils.isNotBlank(codeQR) && !isReviewShown()) {
-            callReviewActivity(codeQR);
+        if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !isReviewShown()) {
+            callReviewActivity(reviewData.getCodeQR(),reviewData.getToken());
         }
 
-        String codeQRSkip = ReviewDB.getValue(ReviewDB.KEY_SKIP);
+        ReviewData reviewDataSkip = ReviewDB.getValue(ReviewDB.KEY_SKIP);
         // shown only one time if it is skipped
-        if (StringUtils.isNotBlank(codeQRSkip)) {
-            ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
-            // Toast.makeText(launchActivity, "Skip Screen shown", Toast.LENGTH_LONG).show();
+        if (StringUtils.isNotBlank(reviewDataSkip.getCodeQR())) {
+            ReviewDB.deleteReview(ReviewDB.KEY_SKIP, reviewData.getCodeQR(),reviewData.getToken());
+            Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -504,10 +512,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         return sharedpreferences.getString(XR_DID, "");
     }
 
-    private void callReviewActivity(String codeQR) {
-        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
+    private void callReviewActivity(String codeQR, String token) {
+        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR,token);
         if (null == jtk)
-            jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR);
+            jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR,token);
         if (null != jtk) {
             Intent in = new Intent(launchActivity, ReviewActivity.class);
             Bundle bundle = new Bundle();
@@ -516,17 +524,17 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             startActivityForResult(in, Constants.requestCodeJoinQActivity);
             NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
         } else {
-            ReviewDB.insert(ReviewDB.KEY_REVIEW, "", "");
+            ReviewDB.deleteReview(ReviewDB.KEY_REVIEW,codeQR,token);
         }
     }
 
-    private void callSkipScreen(String codeQR) {
-        ReviewDB.insert(ReviewDB.KEY_SKIP, "", "");
+    private void callSkipScreen(String codeQR,String token, String quserID) {
+        ReviewDB.deleteReview(ReviewDB.KEY_SKIP,codeQR,token);
+        Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
         Bundle b = new Bundle();
         b.putString(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
         b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
-        b.putBoolean(NoQueueBaseFragment.KEY_IS_REJOIN, true);
         b.putBoolean(NoQueueBaseFragment.KEY_IS_AUTOJOIN_ELIGIBLE, false);
         b.putBoolean("isCategoryData", false);
         //   JoinFragment jf = new JoinFragment();
@@ -545,38 +553,43 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private void updateNotification(Intent intent, String codeQR, boolean isReview) {
         String current_serving = intent.getStringExtra(Constants.CurrentlyServing);
         String go_to = intent.getStringExtra(Constants.GoTo_Counter);
-        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-        if (null != jtk) {
-            //update DB & after join screen
-            jtk.setServingNumber(Integer.parseInt(current_serving));
-            /*
-             * Save codeQR of goto & show it in after join screen on app
-             * Review DB for review key && current serving == token no.
-             */
-            if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
-                ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
-            }
 
-            if (jtk.isTokenExpired()) {
-                //un subscribe the topic
-                NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-            }
-            TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-
-            if (activityCommunicator != null) {
-                boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
-                if (isUpdated) {
-                    Intent blinker = new Intent(this, BlinkerActivity.class);
-                    startActivity(blinker);
+        ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+        for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
+            JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
+            if (null != jtk) {
+                //update DB & after join screen
+                jtk.setServingNumber(Integer.parseInt(current_serving));
+                /*
+                 * Save codeQR of goto & show it in after join screen on app
+                 * Review DB for review key && current serving == token no.
+                 */
+                if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
+                    ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR,current_serving, go_to,jtk.getQueueUserId());
                 }
+
+                if (jtk.isTokenExpired()&& jsonTokenAndQueueArrayList.size() == 1) {
+                    //un subscribe the topic
+                    //TODO @chandra write logic for unsubscribe
+                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                }
+                TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+
+                if (activityCommunicator != null) {
+                    boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
+                    if (isUpdated) {
+                        Intent blinker = new Intent(this, BlinkerActivity.class);
+                        startActivity(blinker);
+                    }
+                }
+                try {
+                    scanFragment.updateListFromNotification(jtk, go_to);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e(TAG, "codeQR=" + codeQR + " current_serving=" + current_serving + " goTo=" + go_to);
             }
-            try {
-                scanFragment.updateListFromNotification(jtk, go_to);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            Log.e(TAG, "codeQR=" + codeQR + " current_serving=" + current_serving + " goTo=" + go_to);
         }
     }
 
@@ -700,7 +713,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public boolean isCurrentActivityLaunchActivity() {
         boolean isCurrentActivity = false;
         try {
-            ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+            ActivityManager am = (ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
             List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
             Log.d("topActivity", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName());
             if (taskInfo.get(0).topActivity.getClassName().equals(LaunchActivity.class.getCanonicalName()))
@@ -708,6 +721,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             else
                 isCurrentActivity = false;
         } catch (Exception e) {
+            Log.e("getCurrentAct error: ",e.getMessage());
             e.printStackTrace();
         }
         return isCurrentActivity;

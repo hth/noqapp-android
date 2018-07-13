@@ -227,6 +227,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 //Call the current queue
                 QueueApiModel queueApiModel = new QueueApiModel();
                 queueApiModel.setTokenAndQueuePresenter(this);
+                Log.e("DEVICE ID NULL","DID: "+UserUtils.getDeviceId()+" Email: "+ UserUtils.getEmail()+" Auth: "+ UserUtils.getAuth());
                 queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
 
                 //Call the history queue
@@ -237,7 +238,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 QueueModel queueModel = new QueueModel();
                 queueModel.setTokenAndQueuePresenter(this);
                 queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
-
+                Log.e("DEVICE ID NULL Un","DID: "+UserUtils.getDeviceId()+" Email: "+ UserUtils.getEmail()+" Auth: "+ UserUtils.getAuth());
                 //Call the history queue
                 DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
                 queueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
@@ -539,7 +540,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
-        boolean isUserTurn = jq.afterHowLong() <= 0;
+        boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated && LaunchActivity.getLaunchActivity().isCurrentActivityLaunchActivity()) {
             Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
             startActivity(blinker);

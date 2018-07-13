@@ -31,12 +31,14 @@ public class Constants {
     public static final String QueueStatus = "q";
     public static final String CodeQR = "qr";
     public static final String QueueUserState = "u";
+    public static final String TOKEN = "t";
+    public static final String QuserID = "qid";
     public static final String ACTIVITY_TO_CLOSE = "activity_status";
     public static final String FROM_JOIN_SCREEN = "from_join_screen";
     //error codes
     public static final int INVALID_CREDENTIAL = 401;
     public static final int INVALID_BAR_CODE = 404;
-    public static final int DEFAULT_REVIEW_TIME_SAVED = 1;
+    public static final int DEFAULT_REVIEW_TIME_SAVED = 3;
     //Urls
     public static final String URL_ABOUT_US = "https://noqapp.com/mobile/m.about-us.html";
     public static final String URL_TERM_CONDITION = "https://noqapp.com/mobile/m.terms.html";

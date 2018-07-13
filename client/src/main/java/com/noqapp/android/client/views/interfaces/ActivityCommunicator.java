@@ -6,5 +6,5 @@ public interface ActivityCommunicator {
 
     boolean updateUI(String qrCode, JsonTokenAndQueue jq, String go_to);
 
-    void requestProcessed(String qrCode);
+    void requestProcessed(String qrCode, String token);
 }

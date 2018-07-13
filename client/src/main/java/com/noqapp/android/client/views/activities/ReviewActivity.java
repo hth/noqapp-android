@@ -109,7 +109,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                 finish();
             }
         });
-
+        ratingBar.setRating(4.0f);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
             @Override
@@ -159,7 +159,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             }
         });
         seekbarWithIntervals.setProgress(Constants.DEFAULT_REVIEW_TIME_SAVED);
-        tv_hr_saved.setText(getSeekbarLabel(2));
+        tv_hr_saved.setText(getSeekbarLabel(Constants.DEFAULT_REVIEW_TIME_SAVED+1));
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,8 +208,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             returnResultBack();
         }
         //Reset the value in ReviewDB
-        ReviewDB.insert(ReviewDB.KEY_REVIEW, "", "");
-        TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR());
+        ReviewDB.deleteReview(ReviewDB.KEY_REVIEW,jtk.getCodeQR(), String.valueOf(jtk.getToken()));
+        TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR(),String.valueOf(jtk.getToken()));
         finish();
         progressDialog.dismiss();
     }
@@ -224,6 +224,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         NoQueueBaseActivity.setReviewShown(true);
         Intent intent = new Intent();
         intent.putExtra(Constants.QRCODE, jtk.getCodeQR());
+        intent.putExtra(Constants.TOKEN,String.valueOf(jtk.getToken()));
         // if (getParent() == null) {
         setResult(Activity.RESULT_OK, intent);
 //        } else {

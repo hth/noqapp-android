@@ -98,8 +98,10 @@ public class CreateTable {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Review.TABLE_NAME + "("
                 + Review.KEY + " TEXT, "
                 + Review.CODE_QR + " TEXT, "
-                + Review.VALUE + " TEXT, "
-                + "PRIMARY KEY(`" + Review.KEY + "`)" +
+                + Review.VALUE+ " TEXT, "
+                + Review.TOKEN+ " TEXT, "
+                + Review.Q_USER_ID+ " TEXT, "
+                + "PRIMARY KEY(`" + Review.CODE_QR + "`,`" + Review.TOKEN + "`)" +
 
                 ");");
     }
@@ -145,8 +147,10 @@ public class CreateTable {
 
         db.execSQL("DROP TABLE IF EXISTS '" + TokenQueue.TABLE_NAME + "'");
         db.execSQL("DROP TABLE IF EXISTS '" + TokenQueueHistory.TABLE_NAME + "'");
+        db.execSQL("DROP TABLE IF EXISTS '" + Review.TABLE_NAME  + "'");
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);
+        createTableReview(db);
     }
 
 
