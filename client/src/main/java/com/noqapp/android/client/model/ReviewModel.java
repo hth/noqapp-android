@@ -58,27 +58,4 @@ public class ReviewModel {
             }
         });
     }
-
-    /**
-     * @param did
-     * @param reviewRating
-     */
-    public void reviewHistorical(String did, ReviewRating reviewRating) {
-        reviewService.reviewHistorical(did, DEVICE_TYPE, reviewRating).enqueue(new Callback<JsonResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.body() != null) {
-                    Log.d("Response", String.valueOf(response.body()));
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history");
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
-            }
-        });
-    }
 }

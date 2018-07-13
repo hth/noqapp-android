@@ -24,16 +24,4 @@ public interface ReviewService {
             @Body
             ReviewRating reviewRating
     );
-
-    @POST("open/review/historical/service.json")
-    Call<JsonResponse> reviewHistorical(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Body
-            ReviewRating reviewRating
-    );
 }
