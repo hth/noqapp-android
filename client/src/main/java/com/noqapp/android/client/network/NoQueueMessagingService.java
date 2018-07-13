@@ -31,6 +31,7 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.noqapp.android.client.utils.Constants.CodeQR;
@@ -41,6 +42,8 @@ import static com.noqapp.android.client.utils.Constants.ISREVIEW;
 import static com.noqapp.android.client.utils.Constants.LastNumber;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
 import static com.noqapp.android.client.utils.Constants.QueueUserState;
+import static com.noqapp.android.client.utils.Constants.QuserID;
+import static com.noqapp.android.client.utils.Constants.TOKEN;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 
@@ -100,7 +103,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         pushNotification.putExtra(QueueUserState, remoteMessage.getData().get(QueueUserState));
                         pushNotification.putExtra(CurrentlyServing, remoteMessage.getData().get(CurrentlyServing));
                         pushNotification.putExtra(GoTo_Counter, remoteMessage.getData().get(GoTo_Counter));
-
+                        pushNotification.putExtra(TOKEN, remoteMessage.getData().get(TOKEN));
+                        pushNotification.putExtra(QuserID,remoteMessage.getData().get(QuserID));
                         // add notification to DB
                         String userStatus = remoteMessage.getData().get(QueueUserState);
                         if (null == userStatus) {
@@ -120,8 +124,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         if (StringUtils.isNotBlank(codeQR)) {
-                            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
+                            String token = remoteMessage.getData().get(Constants.TOKEN);
+                            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR,token);
                             String userStatus = remoteMessage.getData().get(Constants.QueueUserState);
+                            String quserID = remoteMessage.getData().get(Constants.QuserID);
                             // un-subscribe from the topic
                             NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
 
@@ -133,11 +139,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title);
                                 sendNotification(title, body);
                             } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                                ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, codeQR);
-                                sendNotification(title, body, codeQR, true);//pass codeQR to open review screen
+                                ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token,"",quserID);
+                                sendNotification(title, body, codeQR, true,token);//pass codeQR to open review screen
                             } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                                ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, codeQR);
-                                sendNotification(title, body, codeQR, false);//pass codeQR to open skip screen
+                                ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, token,"",quserID);
+                                sendNotification(title, body, codeQR, false,token);//pass codeQR to open skip screen
                             }
                         } else {
                             Log.w(TAG, "To implement this when a message like this is received");
@@ -163,26 +169,29 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         String current_serving = remoteMessage.getData().get(CurrentlyServing);
-                        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
-                        if (null == jtk) {
-                            jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR);
-                        }
-                        String go_to = remoteMessage.getData().get(GoTo_Counter);
+                        ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+                        for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
+                            JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
+                            if (null != jtk) {
+                                String go_to = remoteMessage.getData().get(GoTo_Counter);
 
-                        /*
-                         * Save codeQR of goto & show it in after join screen on app
-                         * Review DB for review key && current serving == token no.
-                         */
-                        if (Integer.parseInt(current_serving) == jtk.getToken())
-                            ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, go_to);
-                        //update DB & after join screen
-                        jtk.setServingNumber(Integer.parseInt(current_serving));
-                        if (jtk.isTokenExpired()) {
-                            //un-subscribe from the topic
-                            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                                /*
+                                 * Save codeQR of goto & show it in after join screen on app
+                                 * Review DB for review key && current serving == token no.
+                                 */
+                                if (Integer.parseInt(current_serving) == jtk.getToken())
+                                    ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, current_serving,go_to,jtk.getQueueUserId());
+                                //update DB & after join screen
+                                jtk.setServingNumber(Integer.parseInt(current_serving));
+                                if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
+                                    //un-subscribe from the topic
+                                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                                }
+
+                                TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                                sendNotification(title, body); // pass null to show only notification with no action
+                            }
                         }
-                        TokenAndQueueDB.updateJoinQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-                        sendNotification(title, body); // pass null to show only notification with no action
                     }
                 }
             } catch (Exception e) {
@@ -192,12 +201,13 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void sendNotification(String title, String messageBody, String codeQR, boolean isReview) {
+    private void sendNotification(String title, String messageBody, String codeQR, boolean isReview, String token) {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         if (null != codeQR) {
             notificationIntent.putExtra(QRCODE, codeQR);
             notificationIntent.putExtra(ISREVIEW, isReview);
+            notificationIntent.putExtra(TOKEN,token);
 
         }
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -88,6 +88,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private String storePhone;
     private String queueName;
     private String address;
+    private String tokenValue;
     private String topic;
     private boolean isResumeFirst = true;
     private String gotoPerson = "";
@@ -117,11 +118,27 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             queueName = jsonTokenAndQueue.getDisplayName();
             address = jsonTokenAndQueue.getStoreAddress();
             topic = jsonTokenAndQueue.getTopic();
+            tokenValue = String.valueOf(jsonTokenAndQueue.getToken());
             tv_store_name.setText(displayName);
             tv_queue_name.setText(queueName);
             tv_address.setText(address);
             profile_pos = bundle.getIntExtra("profile_pos", 1);
-
+            actionbarBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    returnResultBack();
+                    LaunchActivity.getLaunchActivity().activityCommunicator = null;
+                    finish();
+                }
+            });
+            iv_home.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    returnResultBack();
+                    LaunchActivity.getLaunchActivity().activityCommunicator = null;
+                    finish();
+                }
+            });
             if (UserUtils.isLogin()) {
                 profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
                 profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
@@ -162,7 +179,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     AppUtilities.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
                 }
             });
-            gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR);
+            gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR,tokenValue);
             if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_FROM_LIST, false)) {
                 tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
                 tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
@@ -189,6 +206,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         this.jsonToken = token;
         tv_serving_no.setText(String.valueOf(token.getServingNumber()));
         tv_token.setText(String.valueOf(token.getToken()));
+        tokenValue = String.valueOf(token.getToken());
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
         setBackGround(token.afterHowLong());
         NoQueueMessagingService.subscribeTopics(topic);
@@ -216,7 +234,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             //Show error
         }
         NoQueueMessagingService.unSubscribeTopics(topic);
-        TokenAndQueueDB.deleteTokenQueue(codeQR);
+        TokenAndQueueDB.deleteTokenQueue(codeQR,tokenValue);
         onBackPressed();
         dismissProgress();
     }
@@ -299,7 +317,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         super.onResume();
         /* Added to update the screen if app is in background & notification received */
         if (!isResumeFirst) {
-            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR);
+            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR,tokenValue);
             if (null != jtk) {
                 setObject(jtk, gotoPerson);
             }
@@ -401,7 +419,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 
     @Override
     public boolean updateUI(String qrCode, JsonTokenAndQueue jq, String go_to) {
-        if (codeQR.equals(qrCode)) {
+        if (codeQR.equals(qrCode)&& tokenValue.equals(String.valueOf(jq.getToken()))) {
             //updating the serving status
             setObject(jq, go_to);
             if (jq.afterHowLong() > 0)
@@ -413,8 +431,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     }
 
     @Override
-    public void requestProcessed(String qrCode) {
-        if (codeQR.equals(qrCode)) {
+    public void requestProcessed(String qrCode, String token) {
+        if (codeQR.equals(qrCode) && tokenValue.equals(token)) {
             //remove the screen from stack
             returnResultBack();
             finish();

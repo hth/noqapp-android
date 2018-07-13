@@ -28,8 +28,8 @@ public class TokenAndQueueDB {
 
     public static NOQueueDBPresenterInterface queueDBPresenterInterface;
 
-    public static void deleteTokenQueue(String codeQR) {
-        boolean resultStatus = dbHandler.getReadableDatabase().delete(TokenQueue.TABLE_NAME, TokenQueue.CODE_QR + "=?", new String[]{codeQR}) > 0;
+    public static void deleteTokenQueue(String codeQR , String token) {
+        boolean resultStatus = dbHandler.getReadableDatabase().delete(TokenQueue.TABLE_NAME, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token}) > 0;
         Log.i(TAG, "Deleted deleteTokenQueue status=" + String.valueOf(resultStatus));
     }
 
@@ -76,10 +76,10 @@ public class TokenAndQueueDB {
         return listJsonQueue;
     }
 
-    public static JsonTokenAndQueue getCurrentQueueObject(String codeQR) {
+    public static JsonTokenAndQueue getCurrentQueueObject(String codeQR, String token) {
         JsonTokenAndQueue tokenAndQueue = null;
         try {
-            Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueue.TABLE_NAME, null, TokenQueue.CODE_QR + "=?", new String[]{codeQR}, null, null, null, null);
+            Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueue.TABLE_NAME, null, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token}, null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 try {
                     while (cursor.moveToNext()) {
@@ -123,9 +123,57 @@ public class TokenAndQueueDB {
         return tokenAndQueue;
     }
 
-    public static JsonTokenAndQueue getHistoryQueueObject(String codeQR) {
+    public static ArrayList<JsonTokenAndQueue> getCurrentQueueObjectList(String codeQR) {
+        ArrayList<JsonTokenAndQueue> tokenAndQueueList = new ArrayList<>();
+        try {
+            Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueue.TABLE_NAME, null, TokenQueue.CODE_QR + "=?", new String[]{codeQR}, null, null, null, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                try {
+                    while (cursor.moveToNext()) {
+                        JsonTokenAndQueue tokenAndQueue = new JsonTokenAndQueue();
+                        tokenAndQueue.setCodeQR(cursor.getString(0));
+                        tokenAndQueue.setBusinessName(cursor.getString(1));
+                        tokenAndQueue.setDisplayName(cursor.getString(2));
+                        tokenAndQueue.setStoreAddress(cursor.getString(3));
+                        tokenAndQueue.setCountryShortName(cursor.getString(4));
+                        tokenAndQueue.setStorePhone(cursor.getString(5));
+                        tokenAndQueue.setTokenAvailableFrom(cursor.getInt(6));
+                        tokenAndQueue.setStartHour(cursor.getInt(7));
+                        tokenAndQueue.setEndHour(cursor.getInt(8));
+                        tokenAndQueue.setTopic(cursor.getString(9));
+                        tokenAndQueue.setServingNumber(cursor.getInt(10));
+                        tokenAndQueue.setLastNumber(cursor.getInt(11));
+                        tokenAndQueue.setToken(cursor.getInt(12));
+                        tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
+                        //  tokenAndQueue.setServiceEndTime(cursor.getString(14));
+                        //  tokenAndQueue.setRatingCount(cursor.getInt(15));
+                        //  tokenAndQueue.setHoursSaved(cursor.getInt(16));
+                        tokenAndQueue.setCreateDate(cursor.getString(17));
+                        tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(18)));
+                        tokenAndQueue.setGeoHash(cursor.getString(19));
+                        tokenAndQueue.setTown(cursor.getString(20));
+                        tokenAndQueue.setArea(cursor.getString(21));
+                        tokenAndQueue.setDisplayImage(cursor.getString(22));
+                        tokenAndQueue.setQueueUserId(cursor.getString(23));
+                        tokenAndQueueList.add(tokenAndQueue);
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
+                } finally {
+                    if (!cursor.isClosed()) {
+                        cursor.close();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error dbHandler currentQueue reason=" + e.getLocalizedMessage(), e);
+        }
+        return tokenAndQueueList;
+    }
+
+    public static JsonTokenAndQueue getHistoryQueueObject(String codeQR, String token) {
         JsonTokenAndQueue tokenAndQueue = null;
-        Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueueHistory.TABLE_NAME, null, TokenQueue.CODE_QR + "=?", new String[]{codeQR}, null, null, TokenQueue.CREATE_DATE, null);
+        Cursor cursor = dbHandler.getReadableDatabase().query(true, TokenQueueHistory.TABLE_NAME, null, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token}, null, null, TokenQueue.CREATE_DATE, null);
         if (cursor != null && cursor.getCount() > 0) {
             try {
                 while (cursor.moveToNext()) {
@@ -292,25 +340,25 @@ public class TokenAndQueueDB {
         }
     }
 
-    public static void updateJoinQueueObject(String codeQR, String servingno, String token) {
-        try {
-            ContentValues con = new ContentValues();
-            con.put(TokenQueue.SERVING_NUMBER, servingno);
-            con.put(TokenQueue.TOKEN, token);
-            int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?", new String[]{codeQR});
-            Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + String.valueOf(successCount));
-            //AppUtilities.exportDatabase(LaunchActivity.getLaunchActivity());
-        } catch (Exception e) {
-            Log.e(TAG, "Error updateJoinQueueObject reason=" + e.getLocalizedMessage(), e);
-        }
-    }
+//    public static void updateJoinQueueObject(String codeQR, String servingno, String token) {
+//        try {
+//            ContentValues con = new ContentValues();
+//            con.put(TokenQueue.SERVING_NUMBER, servingno);
+//            con.put(TokenQueue.TOKEN, token);
+//            int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?", new String[]{codeQR});
+//            Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + String.valueOf(successCount));
+//            //AppUtilities.exportDatabase(LaunchActivity.getLaunchActivity());
+//        } catch (Exception e) {
+//            Log.e(TAG, "Error updateJoinQueueObject reason=" + e.getLocalizedMessage(), e);
+//        }
+//    }
 
     public static boolean updateCurrentListQueueObject(String codeQR, String servingno, String token) {
         try {
             ContentValues con = new ContentValues();
             con.put(TokenQueue.SERVING_NUMBER, servingno);
             //  con.put(TokenQueue.TOKEN, token);
-            int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?", new String[]{codeQR});
+            int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token});
             Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + String.valueOf(successCount));
 
             return successCount > 0;
