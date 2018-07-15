@@ -155,6 +155,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
+        //TODO add check for dataSet is not null
         return dataSet.size();
     }
 

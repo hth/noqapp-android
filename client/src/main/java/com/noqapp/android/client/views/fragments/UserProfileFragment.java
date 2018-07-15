@@ -3,8 +3,6 @@ package com.noqapp.android.client.views.fragments;
 /**
  * Created by chandra on 10/4/18.
  */
-
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,7 +21,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class UserProfileFragment extends Fragment {
 
     @BindView(R.id.ll_multiple_store)
@@ -31,14 +28,11 @@ public class UserProfileFragment extends Fragment {
 
     private String[] days = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         ButterKnife.bind(this, view);
-
-
         return view;
     }
 
@@ -47,9 +41,9 @@ public class UserProfileFragment extends Fragment {
             for (int i = 0; i < stores.size(); i++) {
                 LayoutInflater inflater = LayoutInflater.from(getActivity());
                 View inflatedLayout = inflater.inflate(R.layout.store_items, null, false);
-                TextView tv_name = (TextView) inflatedLayout.findViewById(R.id.tv_name);
-                TextView tv_address = (TextView) inflatedLayout.findViewById(R.id.tv_address);
-                TextView tv_opening_date = (TextView) inflatedLayout.findViewById(R.id.tv_opening_date);
+                TextView tv_name = inflatedLayout.findViewById(R.id.tv_name);
+                TextView tv_address = inflatedLayout.findViewById(R.id.tv_address);
+                TextView tv_opening_date = inflatedLayout.findViewById(R.id.tv_opening_date);
                 tv_name.setText(stores.get(i).getJsonQueue().getBusinessName());
                 tv_address.setText(stores.get(i).getJsonQueue().getStoreAddress());
                 String timing = "";

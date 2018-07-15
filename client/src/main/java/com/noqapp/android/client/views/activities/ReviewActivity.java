@@ -5,21 +5,6 @@ package com.noqapp.android.client.views.activities;
  */
 
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatSeekBar;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewModel;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
@@ -34,13 +19,27 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.customviews.SeekbarWithIntervals;
 import com.noqapp.android.common.beans.JsonResponse;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSeekBar;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class ReviewActivity extends AppCompatActivity implements ReviewPresenter {
     private final String TAG = ReviewActivity.class.getSimpleName();
@@ -138,9 +137,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             }
         });
 
-
         seekbarWithIntervals.setIntervals(getIntervals());
-
         seekbarWithIntervals.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -159,7 +156,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             }
         });
         seekbarWithIntervals.setProgress(Constants.DEFAULT_REVIEW_TIME_SAVED);
-        tv_hr_saved.setText(getSeekbarLabel(Constants.DEFAULT_REVIEW_TIME_SAVED+1));
+        tv_hr_saved.setText(getSeekbarLabel(Constants.DEFAULT_REVIEW_TIME_SAVED + 1));
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,8 +172,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         ReviewRating rr = new ReviewRating();
                         rr.setCodeQR(jtk.getCodeQR());
                         rr.setToken(jtk.getToken());
-                        rr.setHoursSaved(String.valueOf(seekbarAppCompact.getProgress() + 1));
-                        rr.setRatingCount(String.valueOf(Math.round(ratingBar.getRating())));
+                        rr.setHoursSaved(seekbarAppCompact.getProgress() + 1);
+                        rr.setRatingCount(Math.round(ratingBar.getRating()));
                         /* New instance of progressbar because it is a new activity. */
                         progressDialog = new ProgressDialog(ReviewActivity.this);
                         progressDialog.setIndeterminate(true);
@@ -208,8 +205,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             returnResultBack();
         }
         //Reset the value in ReviewDB
-        ReviewDB.deleteReview(ReviewDB.KEY_REVIEW,jtk.getCodeQR(), String.valueOf(jtk.getToken()));
-        TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR(),String.valueOf(jtk.getToken()));
+        ReviewDB.deleteReview(ReviewDB.KEY_REVIEW, jtk.getCodeQR(), String.valueOf(jtk.getToken()));
+        TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
         finish();
         progressDialog.dismiss();
     }
@@ -224,7 +221,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         NoQueueBaseActivity.setReviewShown(true);
         Intent intent = new Intent();
         intent.putExtra(Constants.QRCODE, jtk.getCodeQR());
-        intent.putExtra(Constants.TOKEN,String.valueOf(jtk.getToken()));
+        intent.putExtra(Constants.TOKEN, String.valueOf(jtk.getToken()));
         // if (getParent() == null) {
         setResult(Activity.RESULT_OK, intent);
 //        } else {
