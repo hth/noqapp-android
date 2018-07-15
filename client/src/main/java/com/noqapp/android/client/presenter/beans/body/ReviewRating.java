@@ -31,10 +31,13 @@ public class ReviewRating {
     private int token;
 
     @JsonProperty("ra")
-    private String ratingCount;
+    private int ratingCount;
 
     @JsonProperty("hr")
-    private String hoursSaved;
+    private int hoursSaved;
+
+    @JsonProperty("rv")
+    private String review;
 
     public String getCodeQR() {
         return codeQR;
@@ -52,19 +55,27 @@ public class ReviewRating {
         this.token = token;
     }
 
-    public String getRatingCount() {
+    public int getRatingCount() {
         return ratingCount;
     }
 
-    public void setRatingCount(String ratingCount) {
+    public void setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
     }
 
-    public String getHoursSaved() {
+    public int getHoursSaved() {
         return hoursSaved;
     }
 
-    public void setHoursSaved(String hoursSaved) {
+    public void setHoursSaved(int hoursSaved) {
         this.hoursSaved = hoursSaved;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
     }
 }
