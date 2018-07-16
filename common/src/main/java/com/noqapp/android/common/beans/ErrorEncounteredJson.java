@@ -37,6 +37,8 @@ public class ErrorEncounteredJson implements Serializable {
     @JsonProperty("reason")
     private String reason;
 
+    public ErrorEncounteredJson() {}
+
     public String getSystemError() {
         return systemError;
     }
