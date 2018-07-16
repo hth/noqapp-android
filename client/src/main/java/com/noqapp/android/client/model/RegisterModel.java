@@ -3,7 +3,6 @@ package com.noqapp.android.client.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
 import com.noqapp.android.client.model.response.open.RegisterService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ProfilePresenter;

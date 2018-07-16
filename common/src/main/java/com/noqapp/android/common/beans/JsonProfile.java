@@ -31,7 +31,7 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 //@JsonInclude (JsonInclude.Include.NON_NULL)
-public class JsonProfile implements Serializable {
+public final class JsonProfile implements Serializable {
 
     @JsonProperty("qid")
     private String queueUserId;
