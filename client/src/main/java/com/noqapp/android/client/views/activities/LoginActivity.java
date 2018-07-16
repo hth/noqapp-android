@@ -325,6 +325,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     @Override
     public void queueError(String error) {
         dismissProgress();
+        ShowAlertInformation.showThemeDialog(this,"error",error);
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 

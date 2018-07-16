@@ -2,6 +2,7 @@ package com.noqapp.android.client.model;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.noqapp.android.client.model.response.open.RegisterService;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -80,7 +81,7 @@ public final class RegisterModel {
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profilePresenter.queueError(t.getLocalizedMessage());
             }
         });
     }
