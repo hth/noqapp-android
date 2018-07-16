@@ -33,8 +33,6 @@ public class JsonUserMedicalProfile {
         return bloodType;
     }
 
-    public JsonUserMedicalProfile() {}
-
     public JsonUserMedicalProfile setBloodType(BloodTypeEnum bloodType) {
         this.bloodType = bloodType;
         return this;
