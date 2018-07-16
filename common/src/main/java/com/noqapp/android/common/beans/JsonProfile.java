@@ -82,8 +82,6 @@ public class JsonProfile implements Serializable {
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public JsonProfile() {}
-
     public String getQueueUserId() {
         return queueUserId;
     }
