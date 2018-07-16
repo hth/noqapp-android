@@ -292,6 +292,12 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
+            if(getIntent().getBooleanExtra("fromLogin",false)){
+                // To refresh the launch activity
+                Intent intent = new Intent(this, LaunchActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
             finish();//close the current activity
             dismissProgress();
         } else {

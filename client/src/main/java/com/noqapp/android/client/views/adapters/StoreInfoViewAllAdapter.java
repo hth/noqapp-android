@@ -126,7 +126,10 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
                 }
             });
-
+            if(holder.tv_store_rating.getText().toString().equals("0.0"))
+                holder.tv_store_rating.setVisibility(View.INVISIBLE);
+            else
+                holder.tv_store_rating.setVisibility(View.VISIBLE);
             // holder.tv_store_special.setText();
             StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(AppUtilities.getDayOfWeek());
             switch (bizStoreElastic.getBusinessType()) {

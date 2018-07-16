@@ -87,7 +87,10 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
                 (float) GeoHashUtils.decodeLongitude(item.getGeoHash())));
 
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(item.getRating())));
-
+        if(holder.tv_store_rating.getText().toString().equals("0.0"))
+            holder.tv_store_rating.setVisibility(View.INVISIBLE);
+        else
+            holder.tv_store_rating.setVisibility(View.VISIBLE);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
