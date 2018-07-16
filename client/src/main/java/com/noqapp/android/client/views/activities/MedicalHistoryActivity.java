@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.MedicalRecordApiModel;
@@ -54,16 +55,15 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
             listview.setVisibility(View.VISIBLE);
             tv_empty.setVisibility(View.GONE);
         }
-
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
-            if (UserUtils.isLogin()) {
+        if(UserUtils.isLogin()) {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.show();
                 new MedicalRecordApiModel(this).getMedicalRecord(UserUtils.getEmail(), UserUtils.getAuth());
             } else {
-                //Give error
+                ShowAlertInformation.showNetworkDialog(this);
             }
-        } else {
-            ShowAlertInformation.showNetworkDialog(this);
+        }else {
+            Toast.makeText(this,"Please login to see the details",Toast.LENGTH_LONG).show();
         }
 
     }
