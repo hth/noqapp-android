@@ -44,7 +44,7 @@ public class DependentAdapter extends ArrayAdapter<JsonProfile> {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.spinner_item, null);
         }
-        TextView lbl = (TextView) v.findViewById(R.id.tv_title);
+        TextView lbl = v.findViewById(R.id.tv_title);
         lbl.setTextColor(Color.BLACK);
         lbl.setText(items.get(position).getName());
         return v;

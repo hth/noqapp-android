@@ -61,6 +61,13 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
 
         setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType());
         holder.tv_total_value.setText(String.valueOf(dataSet.get(listPosition).getServingNumber()));
+        if(dataSet.get(listPosition).getToken() - dataSet.get(listPosition).getServingNumber() == 0){
+            holder.tv_total.setText("It's your turn!!!");
+            holder.tv_total_value.setVisibility(View.INVISIBLE);
+        }else{
+            holder.tv_total.setText(context.getString(R.string.serving_now));
+            holder.tv_total_value.setVisibility(View.VISIBLE);
+        }
         holder.tv_current_value.setText(String.valueOf(dataSet.get(listPosition).getToken()));
     }
 
@@ -99,17 +106,19 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         private TextView tv_total_value;
         private TextView tv_current_value;
         private TextView tv_estimated_time;
+        private TextView tv_total;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
-            this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
-            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
-            this.tv_current_value = (TextView) itemView.findViewById(R.id.tv_current_value);
-            this.tv_total_value = (TextView) itemView.findViewById(R.id.tv_total_value);
-            this.tv_estimated_time = (TextView) itemView.findViewById(R.id.tv_estimated_time);
-            this.iv_store_icon = (ImageView) itemView.findViewById(R.id.iv_store_icon);
-            this.card_view = (CardView) itemView.findViewById(R.id.card_view);
+            this.tv_name = itemView.findViewById(R.id.tv_name);
+            this.tv_detail = itemView.findViewById(R.id.tv_detail);
+            this.tv_address = itemView.findViewById(R.id.tv_address);
+            this.tv_current_value = itemView.findViewById(R.id.tv_current_value);
+            this.tv_total_value = itemView.findViewById(R.id.tv_total_value);
+            this.tv_estimated_time = itemView.findViewById(R.id.tv_estimated_time);
+            this.tv_total = itemView.findViewById(R.id.tv_total);
+            this.iv_store_icon = itemView.findViewById(R.id.iv_store_icon);
+            this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
 

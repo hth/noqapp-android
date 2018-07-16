@@ -194,16 +194,16 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
-            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
-            this.tv_phoneno = (TextView) itemView.findViewById(R.id.tv_phoneno);
-            this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
-            this.tv_store_review = (TextView) itemView.findViewById(R.id.tv_store_review);
-            this.tv_category_name = (TextView) itemView.findViewById(R.id.tv_category_name);
-            this.tv_store_special = (TextView) itemView.findViewById(R.id.tv_store_special);
-            this.tv_status = (TextView) itemView.findViewById(R.id.tv_status);
-            this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
-            this.card_view = (CardView) itemView.findViewById(R.id.card_view);
+            this.tv_name = itemView.findViewById(R.id.tv_name);
+            this.tv_address = itemView.findViewById(R.id.tv_address);
+            this.tv_phoneno = itemView.findViewById(R.id.tv_phoneno);
+            this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
+            this.tv_store_review = itemView.findViewById(R.id.tv_store_review);
+            this.tv_category_name = itemView.findViewById(R.id.tv_category_name);
+            this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
+            this.tv_status = itemView.findViewById(R.id.tv_status);
+            this.iv_main = itemView.findViewById(R.id.iv_main);
+            this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
 

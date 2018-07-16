@@ -124,15 +124,15 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
-            this.tv_detail = (TextView) itemView.findViewById(R.id.tv_detail);
-            this.tv_address = (TextView) itemView.findViewById(R.id.tv_address);
-            this.tv_store_rating = (TextView) itemView.findViewById(R.id.tv_store_rating);
-            this.tv_distance = (TextView) itemView.findViewById(R.id.tv_distance);
-            this.tv_status = (TextView) itemView.findViewById(R.id.tv_status);
-            this.iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
-            this.iv_store_icon = (ImageView) itemView.findViewById(R.id.iv_store_icon);
-            this.card_view = (CardView) itemView.findViewById(R.id.card_view);
+            this.tv_name = itemView.findViewById(R.id.tv_name);
+            this.tv_detail = itemView.findViewById(R.id.tv_detail);
+            this.tv_address = itemView.findViewById(R.id.tv_address);
+            this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
+            this.tv_distance = itemView.findViewById(R.id.tv_distance);
+            this.tv_status = itemView.findViewById(R.id.tv_status);
+            this.iv_main = itemView.findViewById(R.id.iv_main);
+            this.iv_store_icon = itemView.findViewById(R.id.iv_store_icon);
+            this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
 
