@@ -6,6 +6,7 @@ package com.noqapp.android.client.views.activities;
 
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ReviewApiModel;
 import com.noqapp.android.client.model.ReviewModel;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
@@ -25,9 +26,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
@@ -72,6 +75,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
+
+    @BindView(R.id.edt_review)
+    protected EditText edt_review;
 
     @BindView(R.id.seekbarWithIntervals)
     SeekbarWithIntervals seekbarWithIntervals;
@@ -174,12 +180,17 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         rr.setToken(jtk.getToken());
                         rr.setHoursSaved(seekbarAppCompact.getProgress() + 1);
                         rr.setRatingCount(Math.round(ratingBar.getRating()));
+                        rr.setReview(TextUtils.isEmpty(edt_review.getText().toString())?null:edt_review.getText().toString());
                         /* New instance of progressbar because it is a new activity. */
                         progressDialog = new ProgressDialog(ReviewActivity.this);
                         progressDialog.setIndeterminate(true);
                         progressDialog.setMessage("Updating...");
                         progressDialog.show();
-                        new ReviewModel(ReviewActivity.this).review(UserUtils.getDeviceId(), rr);
+                        if(UserUtils.isLogin()){
+                            new ReviewApiModel(ReviewActivity.this).review(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),rr);
+                        }else {
+                            new ReviewModel(ReviewActivity.this).review(UserUtils.getDeviceId(), rr);
+                        }
                     } else {
                         ShowAlertInformation.showNetworkDialog(ReviewActivity.this);
                     }

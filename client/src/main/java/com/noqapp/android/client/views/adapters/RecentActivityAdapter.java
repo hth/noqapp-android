@@ -65,7 +65,11 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
         holder.tv_detail.setText("Last visit " + jsonTokenAndQueue.getServiceEndTime());
         holder.tv_status.setText(AppUtilities.getStoreOpenStatus(jsonTokenAndQueue));
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType(), holder.tv_store_rating);
-
+        holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonTokenAndQueue.getRatingCount())));
+        if(holder.tv_store_rating.getText().toString().equals("0.0"))
+            holder.tv_store_rating.setVisibility(View.INVISIBLE);
+        else
+            holder.tv_store_rating.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(jsonTokenAndQueue.getDisplayImage()))
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonTokenAndQueue.getDisplayImage()))

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
+import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.io.Serializable;
@@ -141,11 +142,13 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("FA")
     private List<FacilityEnum> facilities = new LinkedList<>();
 
-    /**
-     * WP is populated when the BT is of type BusinessTypeEnum.DO.
-     */
+    /** WP is populated when the BT is of type BusinessTypeEnum.DO. */
     @JsonProperty("WP")
     private String webProfileId;
+
+    /** ED is populated when the BT is of type BusinessTypeEnum.DO. */
+    @JsonProperty("ED")
+    private List<JsonNameDatePair> education;
 
     public String getId() {
         return id;
@@ -459,6 +462,15 @@ public class BizStoreElastic implements Serializable {
 
     public BizStoreElastic setWebProfileId(String webProfileId) {
         this.webProfileId = webProfileId;
+        return this;
+    }
+
+    public List<JsonNameDatePair> getEducation() {
+        return education;
+    }
+
+    public BizStoreElastic setEducation(List<JsonNameDatePair> education) {
+        this.education = education;
         return this;
     }
 

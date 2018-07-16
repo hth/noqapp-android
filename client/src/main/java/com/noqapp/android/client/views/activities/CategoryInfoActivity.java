@@ -198,7 +198,11 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             });
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             ratingBar.setRating(rating);
-            tv_rating.setText(String.valueOf(Math.round(bizStoreElastic.getRating())));
+            tv_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
+            if(tv_rating.getText().toString().equals("0.0"))
+                tv_rating.setVisibility(View.INVISIBLE);
+            else
+                tv_rating.setVisibility(View.VISIBLE);
             tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
             codeQR = bizStoreElastic.getCodeQR();
             AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);

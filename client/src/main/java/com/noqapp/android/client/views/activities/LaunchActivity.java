@@ -21,6 +21,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -185,6 +186,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(R.id.nav_transaction).setVisible(false);
+        nav_Menu.findItem(R.id.nav_app_setting).setVisible(false);
         navigationView.setNavigationItemSelectedListener(this);
         LinearLayout mParent = (LinearLayout) navigationView.getHeaderView(0);
         iv_profile = mParent.findViewById(R.id.iv_profile);
@@ -336,6 +340,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             .show();
                 } else {
                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                    loginIntent.putExtra("fromLogin",true);
                     startActivity(loginIntent);
                 }
                 drawer.closeDrawer(GravityCompat.START);
