@@ -197,6 +197,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         Login login = new Login();
         login.setPhone(phoneNumber);
         login.setCountryShortName("");
+        Toast.makeText(this,"Login api called",Toast.LENGTH_LONG).show();
         new RegisterModel(this).login(UserUtils.getDeviceId(), login);
     }
 
@@ -318,6 +319,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     @Override
     public void queueError() {
         dismissProgress();
+        Toast.makeText(this, "Some error recieved", Toast.LENGTH_LONG).show();
     }
 
     @Override
