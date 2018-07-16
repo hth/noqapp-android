@@ -290,7 +290,6 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
 
     @Override
     public void queueResponse(JsonProfile profile, String email, String auth) {
-        ShowAlertInformation.showThemeDialog(this,"Log",profile.toString());
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
@@ -319,13 +318,11 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     @Override
     public void queueError() {
         dismissProgress();
-        Toast.makeText(this, "Some error recieved", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void queueError(String error) {
         dismissProgress();
-        ShowAlertInformation.showThemeDialog(this,"error",error);
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 

@@ -2,7 +2,6 @@ package com.noqapp.android.client.model;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.noqapp.android.client.model.response.open.RegisterService;
@@ -82,8 +81,7 @@ public final class RegisterModel {
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError(t.getLocalizedMessage());
-                Crashlytics.log(Log.ERROR, "Response", t.getLocalizedMessage());
+                profilePresenter.queueError();
             }
         });
     }
