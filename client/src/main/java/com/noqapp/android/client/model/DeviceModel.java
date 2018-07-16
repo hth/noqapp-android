@@ -50,7 +50,7 @@ public class DeviceModel {
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.body() != null) {
                     Log.d(TAG, "Registered device " + String.valueOf(response.body()));
-                    deviceRegisterPresenter.deviceRegisterResponse();
+                    deviceRegisterPresenter.deviceRegisterResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty body");

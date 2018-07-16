@@ -25,6 +25,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceModel;
 import com.noqapp.android.client.views.interfaces.DeviceRegisterPresenter;
+import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.utils.NetworkUtil;
 
@@ -113,12 +114,16 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     }
 
     @Override
-    public void deviceRegisterResponse() {
-        Intent i = new Intent(splashScreen, LaunchActivity.class);
-        i.putExtra("fcmToken",fcmToken);
-        i.putExtra("deviceId",deviceId);
-        splashScreen.startActivity(i);
-        splashScreen.finish();
+    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
+        if(deviceRegistered.getRegistered() == 1) {
+            Intent i = new Intent(splashScreen, LaunchActivity.class);
+            i.putExtra("fcmToken", fcmToken);
+            i.putExtra("deviceId", deviceId);
+            splashScreen.startActivity(i);
+            splashScreen.finish();
+        }else{
+            Log.e("Device register error: ",deviceRegistered.toString());
+        }
     }
 
     private static class SplashHandler extends Handler {
