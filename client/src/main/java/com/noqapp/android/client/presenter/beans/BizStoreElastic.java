@@ -474,6 +474,21 @@ public class BizStoreElastic implements Serializable {
         return this;
     }
 
+    public String getCompleteEducation(){
+        if(null == education || education.size() == 0)
+            return "";
+        else{
+            String edu = "";
+            for (int i = 0; i < education.size(); i++) {
+                edu += education.get(i).getName()+",";
+            }
+            if (edu.endsWith(",")) {
+                edu = edu.substring(0, edu.length() - 1);
+            }
+            return edu;
+        }
+    }
+
     @Override
     public String toString() {
         return "BizStoreElastic{" +

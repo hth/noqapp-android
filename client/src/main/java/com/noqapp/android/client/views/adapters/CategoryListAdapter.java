@@ -59,7 +59,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 AppUtilities.makeCall((Activity) context, holder.tv_phoneno.getText().toString());
             }
         });
-        // holder.tv_store_special.setText();
+        holder.tv_specialization.setText(jsonQueue.getCompleteEducation());
         StoreHourElastic storeHourElastic = jsonQueue.getStoreHourElasticList().get(AppUtilities.getDayOfWeek());
         if (storeHourElastic.isDayClosed()) {
             holder.tv_status.setText(context.getString(R.string.store_closed));
