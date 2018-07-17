@@ -15,6 +15,8 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.GeoHashUtils;
+import com.noqapp.android.client.utils.ImageUtils;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -73,10 +75,11 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
         if (!TextUtils.isEmpty(jsonTokenAndQueue.getDisplayImage()))
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonTokenAndQueue.getDisplayImage()))
+                    .placeholder(ImageUtils.getThumbPlaceholder(context))
+                    .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(holder.iv_main);
         else {
-            Picasso.with(context).load(R.drawable.store_default).into(holder.iv_main);
-            // TODO add default images
+            Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override

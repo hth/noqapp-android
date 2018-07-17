@@ -16,6 +16,8 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ImageUtils;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -65,6 +67,8 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
         if (!TextUtils.isEmpty(jsonCategory.getDisplayImage()))
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonCategory.getDisplayImage()))
+                    .placeholder(ImageUtils.getThumbPlaceholder(context))
+                    .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(Vholder.iv_main);
 
 

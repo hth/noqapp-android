@@ -31,6 +31,7 @@ import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
@@ -223,6 +224,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
             Picasso.with(this)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                    .placeholder(ImageUtils.getBannerPlaceholder(this))
+                    .error(ImageUtils.getBannerErrorPlaceholder(this))
                     .into(iv_category_banner);
             LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             rv_thumb_images.setHasFixedSize(true);
@@ -234,6 +237,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 // load first image default
                 Picasso.with(this)
                         .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
+                        .placeholder(ImageUtils.getBannerPlaceholder(this))
+                        .error(ImageUtils.getBannerErrorPlaceholder(this))
                         .into(iv_category_banner);
             }
 

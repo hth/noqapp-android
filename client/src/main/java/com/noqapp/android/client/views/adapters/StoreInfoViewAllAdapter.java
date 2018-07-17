@@ -17,6 +17,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
@@ -115,10 +116,11 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
                 Picasso.with(context)
                         .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                        .placeholder(ImageUtils.getThumbPlaceholder(context))
+                        .error(ImageUtils.getThumbErrorPlaceholder(context))
                         .into(holder.iv_main);
             else {
-                Picasso.with(context).load(R.drawable.store_default).into(holder.iv_main);
-                // TODO add default images
+                Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }
             holder.card_view.setOnClickListener(new View.OnClickListener() {
                 @Override
