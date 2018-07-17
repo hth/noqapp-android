@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.model.response.api.DeviceService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.utils.Constants;
@@ -66,7 +67,7 @@ public class DeviceModel {
      * @param did
      */
     public void isSupportedAppVersion(String did) {
-        deviceService.isSupportedAppVersion(did, DEVICE_TYPE, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
+        deviceService.isSupportedAppVersion(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
 
