@@ -50,10 +50,10 @@ public class NotificationListAdapter extends BaseAdapter {
         if (view == null) {
             recordHolder = new RecordHolder();
             view = layoutInflater.inflate(R.layout.listitem_notification, null);
-            recordHolder.tv_msg = (TextView) view.findViewById(R.id.tv_msg);
-            recordHolder.tv_title = (TextView) view.findViewById(R.id.tv_title);
-            recordHolder.tv_create = (TextView) view.findViewById(R.id.tv_create);
-            recordHolder.cardview = (CardView) view.findViewById(R.id.cardview);
+            recordHolder.tv_msg = view.findViewById(R.id.tv_msg);
+            recordHolder.tv_title = view.findViewById(R.id.tv_title);
+            recordHolder.tv_create = view.findViewById(R.id.tv_create);
+            recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();

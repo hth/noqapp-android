@@ -35,7 +35,7 @@ public class SliderPagerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = layoutInflater.inflate(R.layout.layout_slider, container, false);
-        ImageView im_slider = (ImageView) view.findViewById(R.id.im_slider);
+        ImageView im_slider = view.findViewById(R.id.im_slider);
         String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
         Picasso.with(activity.getApplicationContext())
                 .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, url))

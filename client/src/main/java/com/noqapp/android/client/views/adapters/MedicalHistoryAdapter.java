@@ -42,13 +42,13 @@ public class MedicalHistoryAdapter extends BaseAdapter {
             recordHolder = new RecordHolder();
             view = layoutInflater.inflate(R.layout.listitem_medical_history, null);
 
-            recordHolder.tv_diagnosed_by = (TextView) view.findViewById(R.id.tv_diagnosed_by);
-            recordHolder.tv_business_name = (TextView) view.findViewById(R.id.tv_business_name);
-            recordHolder.tv_business_category_name = (TextView) view.findViewById(R.id.tv_business_category_name);
-            recordHolder.tv_complaints = (TextView) view.findViewById(R.id.tv_complaints);
-            recordHolder.tv_create = (TextView) view.findViewById(R.id.tv_create);
-            recordHolder.tv_no_of_time_access = (TextView) view.findViewById(R.id.tv_no_of_time_access);
-            recordHolder.cardview = (CardView) view.findViewById(R.id.cardview);
+            recordHolder.tv_diagnosed_by = view.findViewById(R.id.tv_diagnosed_by);
+            recordHolder.tv_business_name = view.findViewById(R.id.tv_business_name);
+            recordHolder.tv_business_category_name = view.findViewById(R.id.tv_business_category_name);
+            recordHolder.tv_complaints = view.findViewById(R.id.tv_complaints);
+            recordHolder.tv_create = view.findViewById(R.id.tv_create);
+            recordHolder.tv_no_of_time_access = view.findViewById(R.id.tv_no_of_time_access);
+            recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();

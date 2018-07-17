@@ -50,15 +50,13 @@ public class MenuAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_menu_child, null);
             childViewHolder = new ChildViewHolder();
-            childViewHolder.tv_child_title = (TextView) convertView
-                    .findViewById(R.id.tv_child_title);
-            childViewHolder.tv_value = (TextView) convertView
-                    .findViewById(R.id.tv_value);
-            childViewHolder.tv_price = (TextView) convertView.findViewById(R.id.tv_price);
-            childViewHolder.tv_discounted_price = (TextView) convertView.findViewById(R.id.tv_discounted_price);
-            childViewHolder.btn_increase = (Button) convertView.findViewById(R.id.btn_increase);
-            childViewHolder.btn_decrease = (Button) convertView.findViewById(R.id.btn_decrease);
-            childViewHolder.tv_cat = (TextView) convertView.findViewById(R.id.tv_cat);
+            childViewHolder.tv_child_title = convertView.findViewById(R.id.tv_child_title);
+            childViewHolder.tv_value = convertView.findViewById(R.id.tv_value);
+            childViewHolder.tv_price = convertView.findViewById(R.id.tv_price);
+            childViewHolder.tv_discounted_price = convertView.findViewById(R.id.tv_discounted_price);
+            childViewHolder.btn_increase = convertView.findViewById(R.id.btn_increase);
+            childViewHolder.btn_decrease = convertView.findViewById(R.id.btn_decrease);
+            childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
             convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder) convertView
