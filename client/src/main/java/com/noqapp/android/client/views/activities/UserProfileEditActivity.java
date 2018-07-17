@@ -392,8 +392,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
 
 
         edt_phoneNo.setText(NoQueueBaseActivity.getPhoneNo());
-        edt_Mail.setText(NoQueueBaseActivity.getMail().toString().contains("noqapp.com") ? "" :
-                NoQueueBaseActivity.getMail());
+        edt_Mail.setText(NoQueueBaseActivity.getActualMail());
         edt_phoneNo.setEnabled(false);
         edt_Mail.setEnabled(false);
 

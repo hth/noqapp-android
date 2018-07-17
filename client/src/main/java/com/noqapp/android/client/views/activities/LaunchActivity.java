@@ -19,6 +19,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,9 +34,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
+import com.squareup.picasso.Picasso;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceModel;
 import com.noqapp.android.client.model.database.DatabaseHelper;
@@ -50,6 +55,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkStateChanged;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -119,6 +125,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private DrawerLayout drawer;
     private double old_latitude = 0;
     private double old_longitude = 0;
+    private Menu nav_Menu;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -186,9 +193,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
-        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu = navigationView.getMenu();
         nav_Menu.findItem(R.id.nav_transaction).setVisible(false);
         nav_Menu.findItem(R.id.nav_app_setting).setVisible(false);
+        nav_Menu.findItem(R.id.nav_logout).setVisible(UserUtils.isLogin());
+        nav_Menu.findItem(R.id.nav_version).setTitle(BuildConfig.BUILD_TYPE.equalsIgnoreCase("release") ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+                : getString(R.string.version_no, "Not for release"));
         navigationView.setNavigationItemSelectedListener(this);
         LinearLayout mParent = (LinearLayout) navigationView.getHeaderView(0);
         iv_profile = mParent.findViewById(R.id.iv_profile);
@@ -320,31 +330,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 Intent in = new Intent(launchActivity, NotificationActivity.class);
                 startActivity(in);
                 break;
-            case R.id.tv_login:
-                if (tv_login.getText().equals(getString(R.string.logout))) {
-                    new AlertDialog.Builder(launchActivity)
-                            .setTitle(getString(R.string.logout))
-                            .setMessage(getString(R.string.logout_msg))
-                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    NoQueueBaseActivity.clearPreferences();
-                                    Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
-                                    startActivity(loginIntent);
-                                }
-                            })
-                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // user doesn't want to logout
-                                }
-                            })
-                            .show();
-                } else {
-                    Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
-                    loginIntent.putExtra("fromLogin",true);
-                    startActivity(loginIntent);
-                }
-                drawer.closeDrawer(GravityCompat.START);
-                break;
             case R.id.iv_profile:
                 if (UserUtils.isLogin()) {
                     Intent intent = new Intent(launchActivity, UserProfileActivity.class);
@@ -352,6 +337,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     drawer.closeDrawer(GravityCompat.START);
                 } else {
                     Toast.makeText(launchActivity, "Please login to view the profile", Toast.LENGTH_LONG).show();
+                    Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                    loginIntent.putExtra("fromLogin",true);
+                    startActivity(loginIntent);
                 }
                 break;
             default:
@@ -414,14 +402,28 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         } else {
             tv_badge.setVisibility(View.INVISIBLE);
         }
+        nav_Menu.findItem(R.id.nav_logout).setVisible(UserUtils.isLogin());
         if (UserUtils.isLogin()) {
             tv_login.setText("Logout");
-            tv_email.setText(UserUtils.getEmail());
+            tv_email.setText(NoQueueBaseActivity.getActualMail());
             tv_name.setText(NoQueueBaseActivity.getUserName());
         } else {
             tv_login.setText("Login");
             tv_email.setText("guest.user@email.com");
             tv_name.setText("Guest User");
+        }
+        tv_login.setVisibility(View.GONE);
+        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+        try {
+            if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
+                Picasso.with(this)
+                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
+                        .placeholder(ImageUtils.getProfilePlaceholder(this))
+                        .error(ImageUtils.getProfileErrorPlaceholder(this))
+                        .into(iv_profile);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // register new push message receiver
@@ -636,9 +638,25 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             case R.id.nav_rate_app:
                 AppUtilities.openPlayStore(launchActivity);
                 break;
+            case R.id.nav_logout:
+                new AlertDialog.Builder(launchActivity)
+                            .setTitle(getString(R.string.logout))
+                            .setMessage(getString(R.string.logout_msg))
+                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    NoQueueBaseActivity.clearPreferences();
+                                    Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                                    startActivity(loginIntent);
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // user doesn't want to logout
+                                }
+                            })
+                            .show();
+                break;
         }
-
-
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
