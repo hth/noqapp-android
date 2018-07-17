@@ -155,7 +155,14 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static void clearPreferences() {
+        // Clear all data except DID & FCM Token
+        String did = sharedPreferences.getString(NoQueueBaseActivity.XR_DID, "");;
+        String fcmToken = getFCMToken();
         getSharedPreferencesEditor().clear().commit();
+        SharedPreferences.Editor editor = getSharedPreferencesEditor();
+        editor.putString(XR_DID, did);
+        editor.putString(FCM_TOKEN, fcmToken);
+        editor.commit();
     }
 
     public JsonProfile getUserProfile() {

@@ -8,6 +8,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -15,7 +17,9 @@ import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -126,6 +130,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:" + credential);
                 dismissProgress();
+
                 // Update the UI and attempt sign in with the phone credential
                 updateUI(STATE_VERIFY_SUCCESS, credential);
                 signInWithPhoneAuthCredential(credential);
@@ -140,14 +145,10 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 dismissProgress();
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
-
-                    // mPhoneNumberField.setError("Invalid phone number.");
-
+                    Log.e("OTP process: ","Invalid phone number.");
                 } else if (e instanceof FirebaseTooManyRequestsException) {
                     // The SMS quota for the project has been exceeded
-
-//                    Snackbar.make(findViewById(android.R.id.content), "Quota exceeded.",
-//                            Snackbar.LENGTH_SHORT).show();
+                    Log.e("OTP process: ","Quota exceeded.");
                 }
                 // Show a message and update the UI
                 updateUI(STATE_VERIFY_FAILED);
@@ -161,7 +162,12 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
                 Log.d(TAG, "onCodeSent:" + verificationId);
-
+                btn_login.setText(getString(R.string.resend_otp));
+                btn_login.setPaintFlags(btn_login.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                btn_login.setBackground(null);
+                btn_login.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                btn_login.requestLayout();
+                progressDialog.setMessage("OTP Generated");
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
                 // Update UI
@@ -177,6 +183,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
             if (isReadAndReceiveSMSPermissionAllowed()) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.show();
+                    progressDialog.setMessage("Generating OTP");
                     //@TODO @Chandra update the country code dynamic
                     countryCode = edt_phone_code.getText().toString();
                     startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
@@ -228,6 +235,8 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        progressDialog.setMessage("Validating OTP");
+        progressDialog.show();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -248,8 +257,9 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                             }
                             // Update UI
                             updateUI(STATE_SIGN_IN_FAILED);
+                            dismissProgress();
                         }
-                        dismissProgress();
+
                     }
                 });
     }
@@ -421,6 +431,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 // Np-op, handled by sign-in check
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    progressDialog.setMessage("Login in progress");
                     callLoginAPI(user.getPhoneNumber());
                 } else {
                     ShowAlertInformation.showNetworkDialog(this);

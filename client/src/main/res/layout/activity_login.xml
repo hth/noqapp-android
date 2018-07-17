@@ -1,105 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#99ffffff"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#99ffffff"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar_layout"/>
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="20dp">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:text=" "
-            android:textColor="@color/colorActionbar"
-            android:textSize="20sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:text=" "
+                android:textColor="@color/colorActionbar"
+                android:textSize="20sp"/>
 
         <TextView
-            style="@style/style_register_tv"
-            android:text="@string/phone"
-            android:textSize="16sp" />
+                style="@style/style_register_tv"
+                android:text="@string/phone"
+                android:textSize="16sp"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/edt_phone_code"
-                style="@style/style_register_edt"
-                android:layout_width="60dp"
-                android:inputType="numberSigned"
-                android:maxLength="3"
-                android:layout_marginRight="5dp"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/edt_phone"
-                style="@style/style_register_edt"
                 android:layout_width="match_parent"
-                android:hint="@string/login_hint"
-                android:inputType="phone"
-                android:maxLength="15"
-                android:textSize="18sp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <EditText
+                    android:id="@+id/edt_phone_code"
+                    style="@style/style_register_edt"
+                    android:layout_width="60dp"
+                    android:inputType="numberSigned"
+                    android:maxLength="3"
+                    android:layout_marginRight="5dp"
+                    android:textSize="18sp"/>
+
+            <EditText
+                    android:id="@+id/edt_phone"
+                    style="@style/style_register_edt"
+                    android:layout_width="match_parent"
+                    android:hint="@string/login_hint"
+                    android:inputType="phone"
+                    android:maxLength="15"
+                    android:textSize="18sp"/>
         </LinearLayout>
 
         <EditText
-            android:id="@+id/edt_verification_code"
-            style="@style/style_register_edt"
-            android:layout_width="match_parent"
-            android:hint="@string/hint_verification_code"
-            android:inputType="phone"
-            android:maxLength="15"
-            android:textSize="18sp" />
+                android:id="@+id/edt_verification_code"
+                style="@style/style_register_edt"
+                android:layout_width="match_parent"
+                android:hint="@string/hint_verification_code"
+                android:inputType="phone"
+                android:maxLength="15"
+                android:textSize="18sp"/>
 
 
         <Button
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/button_drawable"
-            android:drawablePadding="5dp"
-            android:gravity="center"
-            android:text="@string/login"
-            android:textAllCaps="false"
-            android:textColor="@color/colorMobile"
-            android:textSize="15sp"
-
-            />
+                android:id="@+id/btn_verify_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_drawable"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="@string/verify_phone_auth"
+                android:textAllCaps="false"
+                android:textColor="@color/colorMobile"
+                android:textSize="15sp"/>
 
         <Button
-            android:id="@+id/btn_verify_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/button_drawable"
-            android:drawablePadding="5dp"
-            android:gravity="center"
-            android:text="@string/verify_phone_auth"
-            android:textAllCaps="false"
-            android:textColor="@color/colorMobile"
-            android:textSize="15sp"
-
-            />
-
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_drawable"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/login_via_otp"
+                android:textAllCaps="false"
+                android:textColor="@color/colorMobile"
+                android:textSize="15sp"/>
         <TextView
-            android:id="@+id/tv_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center_horizontal"
-            android:text="Hello" />
+                android:id="@+id/tv_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:text="Hello"/>
     </LinearLayout>
 </LinearLayout>
