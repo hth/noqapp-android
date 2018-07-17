@@ -68,7 +68,7 @@ public class CommonHelper {
             DateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
             Date date = sdf.parse(dateValue);
             return MMM_YYYY.format(date);
-        } catch (ParseException e) {
+        } catch (ParseException |IllegalArgumentException e) {
             e.printStackTrace();
             return "";
         }
