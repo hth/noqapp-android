@@ -201,6 +201,7 @@ android {
             buildConfigField STRING, "AWSS3", sandboxEndpointAwsS3
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
+            buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
         }
 
         sandbox {
@@ -236,6 +237,7 @@ android {
             buildConfigField STRING, "AWSS3", sandboxEndpointAwsS3
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
+            buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
         }
 
         release {
@@ -271,6 +273,7 @@ android {
             buildConfigField STRING, "AWSS3", releaseEndpointAwsS3
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
+            buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
         }
     }
 
@@ -376,7 +379,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.github.RobertApikyan:SegmentedControl:release_1.0.2'
     implementation 'com.google.code.gson:gson:2.8.4'
-    compile 'com.android.support:multidex:1.0.3'
+    implementation 'com.android.support:multidex:1.0.3'
     implementation project(':common')
 }
 
