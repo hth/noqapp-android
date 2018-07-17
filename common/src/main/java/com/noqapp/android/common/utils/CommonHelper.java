@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class CommonHelper {
+    private static final String TAG = CommonHelper.class.getSimpleName();
 
     private static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
     private static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -26,7 +27,7 @@ public class CommonHelper {
             Date date = SDF_DOB_FROM_UI.parse(dob);
             return SDF_YYYY_MM_DD.format(date);
         } catch (ParseException e) {
-            Log.e("Date error", "Error parsing DOB={}" + e.getLocalizedMessage(), e);
+            Log.e(TAG, "Failed parsing DOB=" + dob + " reason=" + e.getLocalizedMessage(), e);
             return "";
         }
     }
@@ -65,11 +66,11 @@ public class CommonHelper {
 
     public static String getYearFromDate(String dateValue) {
         try {
-            DateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+            DateFormat sdf = new SimpleDateFormat("YYYY-MM-DD", Locale.getDefault());
             Date date = sdf.parse(dateValue);
             return MMM_YYYY.format(date);
-        } catch (ParseException |IllegalArgumentException e) {
-            e.printStackTrace();
+        } catch (ParseException | IllegalArgumentException e) {
+            Log.e(TAG, "Failed parsing dateValue=" + dateValue + " reason=" + e.getLocalizedMessage(), e);
             return "";
         }
     }
@@ -78,7 +79,9 @@ public class CommonHelper {
         View view = activity.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 }
