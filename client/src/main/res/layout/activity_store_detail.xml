@@ -44,7 +44,6 @@
                     android:id="@+id/backdrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/cheese_4"
                     android:scaleType="centerCrop" />
 
                 <android.support.v7.widget.Toolbar

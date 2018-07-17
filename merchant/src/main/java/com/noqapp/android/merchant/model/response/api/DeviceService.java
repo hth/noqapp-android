@@ -38,4 +38,19 @@ public interface DeviceService {
             @Header("X-R-VR")
             String versionRelease
     );
+
+    @POST("open/device/v1/version.json")
+    Call<JsonLatestAppVersion> isSupportedAppVersion(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header ("X-R-AF")
+            String appFlavor,
+
+            @Header("X-R-VR")
+            String versionRelease
+    );
 }

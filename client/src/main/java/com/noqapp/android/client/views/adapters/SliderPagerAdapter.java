@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ImageUtils;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -39,8 +41,8 @@ public class SliderPagerAdapter extends PagerAdapter {
         String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
         Picasso.with(activity.getApplicationContext())
                 .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, url))
-                .placeholder(R.mipmap.launcher) // optional
-                .error(R.mipmap.launcher)         // optional
+                .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
+                .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional
                 .into(im_slider);
 
 

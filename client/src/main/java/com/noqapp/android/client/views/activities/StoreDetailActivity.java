@@ -36,6 +36,7 @@ import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.presenter.beans.JsonStoreProduct;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.utils.ViewAnimationUtils;
@@ -133,9 +134,11 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
             Picasso.with(this)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                    .placeholder(ImageUtils.getBannerPlaceholder(this))
+                    .error(ImageUtils.getBannerErrorPlaceholder(this))
                     .into(collapseImageView);
         else {
-            //TODO show some default image
+            Picasso.with(this).load(ImageUtils.getBannerPlaceholder()).into(collapseImageView);
         }
 
 
