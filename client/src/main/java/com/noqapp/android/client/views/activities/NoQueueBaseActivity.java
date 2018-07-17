@@ -126,6 +126,10 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static String getMail() {
         return sharedPreferences.getString(APIConstant.Key.XR_MAIL, "");
     }
+    public static String getActualMail() {
+        return getMail().contains("noqapp.com") ? "" :
+                getMail();
+    }
 
     public static String getAuth() {
         return sharedPreferences.getString(APIConstant.Key.XR_AUTH, "");
