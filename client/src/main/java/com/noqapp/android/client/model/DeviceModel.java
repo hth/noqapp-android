@@ -3,6 +3,7 @@ package com.noqapp.android.client.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.open.DeviceService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.utils.Constants;
@@ -72,7 +73,7 @@ public class DeviceModel {
      * @param did
      */
     public void isSupportedAppVersion(String did) {
-        deviceService.isSupportedAppVersion(did, Constants.DEVICE_TYPE, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
+        deviceService.isSupportedAppVersion(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
 
