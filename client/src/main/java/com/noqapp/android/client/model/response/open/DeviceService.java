@@ -28,6 +28,9 @@ public interface DeviceService {
             @Header("X-R-DT")
             String dt,
 
+            @Header ("X-R-AF")
+            String appFlavor,
+
             @Body
             DeviceToken deviceToken
     );

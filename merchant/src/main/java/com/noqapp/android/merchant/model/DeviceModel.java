@@ -1,22 +1,21 @@
 package com.noqapp.android.merchant.model;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
+import static com.noqapp.android.merchant.utils.Constants.DEVICE_TYPE;
 
+import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.JsonLatestAppVersion;
+import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.model.response.api.DeviceService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
-import com.noqapp.android.common.beans.DeviceRegistered;
-import com.noqapp.android.common.beans.JsonLatestAppVersion;
-import com.noqapp.android.common.beans.body.DeviceToken;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.noqapp.android.merchant.utils.Constants.DEVICE_TYPE;
 
 /**
  * User: hitender
@@ -43,7 +42,7 @@ public class DeviceModel {
      * @param deviceToken
      */
     public void register(String did, DeviceToken deviceToken) {
-        deviceService.register(did, DEVICE_TYPE, deviceToken).enqueue(new Callback<DeviceRegistered>() {
+        deviceService.register(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.body() != null) {

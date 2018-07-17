@@ -1,8 +1,5 @@
 package com.noqapp.android.client.model;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.open.DeviceService;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -13,6 +10,8 @@ import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,7 +45,7 @@ public class DeviceModel {
      * @param deviceToken
      */
     public void register(String did, DeviceToken deviceToken) {
-        deviceService.register(did, Constants.DEVICE_TYPE, deviceToken).enqueue(new Callback<DeviceRegistered>() {
+        deviceService.register(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.body() != null) {
