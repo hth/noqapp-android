@@ -1,15 +1,14 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

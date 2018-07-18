@@ -4,13 +4,6 @@ package com.noqapp.android.client.views.activities;
  * Created by chandra on 5/7/17.
  */
 
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.views.adapters.MedicalRecordAdapter;
@@ -20,11 +13,17 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.PhysicalExamEnum;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MedicalHistoryDetailActivity extends BaseActivity {
 

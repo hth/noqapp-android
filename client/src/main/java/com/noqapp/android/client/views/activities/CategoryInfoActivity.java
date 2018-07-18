@@ -5,20 +5,9 @@ package com.noqapp.android.client.views.activities;
  */
 
 
-import android.content.Intent;
-import android.graphics.drawable.LayerDrawable;
-import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.TextView;
+import static com.google.common.cache.CacheBuilder.newBuilder;
+import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
 
-import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
@@ -38,7 +27,27 @@ import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.google.common.cache.Cache;
+
 import com.squareup.picasso.Picasso;
+
+import android.content.Intent;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -47,14 +56,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-
-import static com.google.common.cache.CacheBuilder.newBuilder;
-import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
 
 public class CategoryInfoActivity extends BaseActivity implements QueuePresenter, RecyclerViewGridAdapter.OnItemClickListener {
 

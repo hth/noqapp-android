@@ -4,6 +4,20 @@ package com.noqapp.android.client.views.activities;
  * Created by chandra on 10/4/18.
  */
 
+import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ProfessionalProfileModel;
+import com.noqapp.android.client.presenter.QueueManagerPresenter;
+import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
+import com.noqapp.android.client.views.fragments.UserProfileFragment;
+import com.noqapp.android.common.utils.ImagePathReader;
+
+import com.squareup.picasso.Picasso;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -20,31 +34,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ProfessionalProfileModel;
-import com.noqapp.android.client.presenter.QueueManagerPresenter;
-import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
-import com.noqapp.android.client.views.fragments.UserProfileFragment;
-import com.noqapp.android.common.utils.ImagePathReader;
-import com.squareup.picasso.Picasso;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 
 public class ManagerProfileActivity extends ProfileActivity implements View.OnClickListener, QueueManagerPresenter {

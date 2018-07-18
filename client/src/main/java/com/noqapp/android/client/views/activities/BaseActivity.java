@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
 
 
 public class BaseActivity extends AppCompatActivity {

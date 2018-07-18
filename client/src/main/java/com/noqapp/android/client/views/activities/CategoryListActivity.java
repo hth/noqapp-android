@@ -1,21 +1,20 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.views.adapters.CategoryListAdapter;
+import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.views.adapters.CategoryListAdapter;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
-
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import java.util.ArrayList;
 
 /**
  * Created by chandra on 5/7/17.

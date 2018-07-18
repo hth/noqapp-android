@@ -5,14 +5,6 @@ package com.noqapp.android.client.views.activities;
  */
 
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.MedicalRecordApiModel;
 import com.noqapp.android.client.presenter.MedicalRecordPresenter;
@@ -22,13 +14,20 @@ import com.noqapp.android.client.views.adapters.MedicalHistoryAdapter;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MedicalHistoryActivity extends BaseActivity implements MedicalRecordPresenter {
 

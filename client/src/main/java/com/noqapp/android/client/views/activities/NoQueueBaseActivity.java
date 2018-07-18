@@ -1,5 +1,11 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.model.APIConstant;
+import com.noqapp.android.client.model.database.DatabaseTable;
+import com.noqapp.android.common.beans.JsonProfile;
+
+import com.google.gson.Gson;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,11 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-
-import com.google.gson.Gson;
-import com.noqapp.android.client.model.APIConstant;
-import com.noqapp.android.client.model.database.DatabaseTable;
-import com.noqapp.android.common.beans.JsonProfile;
 
 /**
  * This Class is created to store the information which data need to be final(Consistent)

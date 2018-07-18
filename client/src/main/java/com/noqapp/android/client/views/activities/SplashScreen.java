@@ -1,5 +1,21 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.DeviceModel;
+import com.noqapp.android.client.views.interfaces.DeviceRegisterPresenter;
+import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.utils.NetworkUtil;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.crashlytics.android.Crashlytics;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,31 +25,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DeviceModel;
-import com.noqapp.android.client.views.interfaces.DeviceRegisterPresenter;
-import com.noqapp.android.common.beans.DeviceRegistered;
-import com.noqapp.android.common.beans.body.DeviceToken;
-import com.noqapp.android.common.utils.NetworkUtil;
-
-import org.apache.commons.lang3.StringUtils;
+import io.fabric.sdk.android.Fabric;
 
 import java.util.UUID;
-
-import io.fabric.sdk.android.Fabric;
 
 ///https://blog.xamarin.com/bring-stunning-animations-to-your-apps-with-lottie/
 public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter{

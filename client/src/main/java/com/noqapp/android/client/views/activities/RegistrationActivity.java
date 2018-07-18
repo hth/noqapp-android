@@ -5,6 +5,15 @@ package com.noqapp.android.client.views.activities;
  */
 
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.MePresenter;
+import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.views.interfaces.MeView;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
+
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -26,25 +35,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.MePresenter;
-import com.noqapp.android.client.presenter.beans.body.Registration;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.views.interfaces.MeView;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonProfile;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class RegistrationActivity extends BaseActivity implements MeView, View.OnClickListener {
 

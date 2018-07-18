@@ -5,22 +5,21 @@ package com.noqapp.android.client.views.activities;
  */
 
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.views.adapters.NotificationListAdapter;
+import com.noqapp.android.common.beans.NotificationBeans;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
-import com.noqapp.android.client.views.adapters.NotificationListAdapter;
-import com.noqapp.android.common.beans.NotificationBeans;
-
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import java.util.List;
 
 public class NotificationActivity extends AppCompatActivity {
 
