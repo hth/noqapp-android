@@ -5,21 +5,6 @@ package com.noqapp.android.client.views.activities;
  */
 
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.AppCompatSpinner;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.model.PurchaseApiModel;
@@ -39,11 +24,26 @@ import com.noqapp.android.client.views.adapters.SpinAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 
-import java.util.List;
-import java.util.TimeZone;
+import com.google.android.gms.maps.model.LatLng;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import java.util.List;
+import java.util.TimeZone;
 
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter {
 

@@ -5,21 +5,6 @@ package com.noqapp.android.client.views.activities;
  */
 
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
@@ -43,11 +28,25 @@ import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
-import java.util.List;
-
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import java.util.List;
 
 public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();

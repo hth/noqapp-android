@@ -4,6 +4,22 @@ package com.noqapp.android.client.views.activities;
  * Created by chandra on 10/4/18.
  */
 
+import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ProfileModel;
+import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.presenter.ImageUploadPresenter;
+import com.noqapp.android.common.utils.ImagePathReader;
+
+import com.squareup.picasso.Picasso;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -24,40 +40,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ProfileModel;
-import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.presenter.ImageUploadPresenter;
-import com.noqapp.android.common.utils.ImagePathReader;
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
+
 
 public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
 
-    public static ImageView iv_profile;
+    public ImageView iv_profile;
     public String gender = "";
     @BindView(R.id.tv_name)
     protected TextView tv_name;
@@ -127,14 +126,14 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void loadProfilePic() {
-        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(UserProfileActivity.iv_profile);
+        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
                 Picasso.with(this)
                         .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
                         .placeholder(ImageUtils.getProfilePlaceholder(this))
                         .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(UserProfileActivity.iv_profile);
+                        .into(iv_profile);
             }
         } catch (Exception e) {
             e.printStackTrace();

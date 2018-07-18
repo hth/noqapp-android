@@ -1,27 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.graphics.drawable.LayerDrawable;
-import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.AmenityEnum;
@@ -43,7 +21,31 @@ import com.noqapp.android.client.utils.ViewAnimationUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.utils.Formatter;
+
 import com.squareup.picasso.Picasso;
+
+import android.content.Intent;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,8 +53,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 public class StoreDetailActivity extends BaseActivity implements StorePresenter {
 

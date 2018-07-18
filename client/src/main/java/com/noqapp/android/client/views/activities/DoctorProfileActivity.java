@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +11,6 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
 
 public class DoctorProfileActivity extends AppCompatActivity
         implements AppBarLayout.OnOffsetChangedListener {

@@ -1,6 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
 
+import com.noqapp.android.client.R;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -12,8 +14,6 @@ import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
 
 
 public class BlinkerActivity extends Activity {

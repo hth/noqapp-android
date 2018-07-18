@@ -1,5 +1,42 @@
 package com.noqapp.android.client.views.activities;
 
+import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
+
+import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.DeviceModel;
+import com.noqapp.android.client.model.database.DatabaseHelper;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.client.model.types.QueueUserStateEnum;
+import com.noqapp.android.client.network.NoQueueMessagingService;
+import com.noqapp.android.client.network.VersionCheckAsync;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.ReviewData;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.client.utils.NetworkStateChanged;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
+import com.noqapp.android.client.views.fragments.ScanQueueFragment;
+import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
+import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
+import com.noqapp.android.common.utils.NetworkUtil;
+
+import com.crashlytics.android.answers.Answers;
+import com.squareup.picasso.Picasso;
+
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -32,56 +69,13 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.crashlytics.android.answers.Answers;
-import com.squareup.picasso.Picasso;
-
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DeviceModel;
-import com.noqapp.android.client.model.database.DatabaseHelper;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
-import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.client.model.types.QueueUserStateEnum;
-import com.noqapp.android.client.network.NoQueueMessagingService;
-import com.noqapp.android.client.network.VersionCheckAsync;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.beans.ReviewData;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.utils.NetworkStateChanged;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
-import com.noqapp.android.client.views.fragments.ScanQueueFragment;
-import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
-import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
-import com.noqapp.android.common.beans.body.DeviceToken;
-import com.noqapp.android.common.utils.NetworkUtil;
-
-import net.danlew.android.joda.JodaTimeAndroid;
-
-import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 
-import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();

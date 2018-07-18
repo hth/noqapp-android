@@ -1,18 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.presenter.NearMePresenter;
@@ -27,11 +14,24 @@ import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import com.google.android.gms.maps.model.LatLng;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by chandra on 5/7/17.

@@ -1,5 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.adapters.SliderPagerAdapter;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -11,9 +14,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.adapters.SliderPagerAdapter;
 
 import java.util.ArrayList;
 

@@ -5,15 +5,14 @@ package com.noqapp.android.client.views.activities;
  */
 
 
+import com.noqapp.android.client.R;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

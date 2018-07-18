@@ -1,5 +1,9 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.utils.Constants;
+
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -18,11 +22,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
-import com.noqapp.android.client.utils.Constants;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

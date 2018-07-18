@@ -4,6 +4,27 @@ package com.noqapp.android.client.views.activities;
  * Created by chandra on 10/4/18.
  */
 
+import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.DependencyModel;
+import com.noqapp.android.client.model.ProfileModel;
+import com.noqapp.android.client.presenter.DependencyPresenter;
+import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
+import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.presenter.ImageUploadPresenter;
+import com.noqapp.android.common.utils.ImagePathReader;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.squareup.picasso.Picasso;
+
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,26 +48,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DependencyModel;
-import com.noqapp.android.client.model.ProfileModel;
-import com.noqapp.android.client.presenter.DependencyPresenter;
-import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
-import com.noqapp.android.client.presenter.beans.body.Registration;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.body.UpdateProfile;
-import com.noqapp.android.common.presenter.ImageUploadPresenter;
-import com.noqapp.android.common.utils.ImagePathReader;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-import com.squareup.picasso.Picasso;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -57,17 +64,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-
 
 public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
 
-    public static ImageView iv_profile;
+    private ImageView iv_profile;
     public String gender = "";
     @BindView(R.id.tv_name)
     protected TextView tv_name;
@@ -135,24 +135,17 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
-//        if (LaunchActivity.getLaunchActivity().isOnline()) {
-//            progressDialog.show();
-//            ProfileModel.profilePresenter = this;
-//            ProfileModel.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
-//        } else {
-//            ShowAlertInformation.showNetworkDialog(this);
-//        }
     }
 
     private void loadProfilePic() {
-        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(UserProfileActivity.iv_profile);
+        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
                 Picasso.with(this)
                         .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
                         .placeholder(ImageUtils.getProfilePlaceholder(this))
                         .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(UserProfileEditActivity.iv_profile);
+                        .into(iv_profile);
             }
         } catch (Exception e) {
             e.printStackTrace();

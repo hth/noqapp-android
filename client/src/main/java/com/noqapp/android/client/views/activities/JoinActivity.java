@@ -5,19 +5,6 @@ package com.noqapp.android.client.views.activities;
  */
 
 
-import android.content.Intent;
-import android.graphics.drawable.LayerDrawable;
-import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
@@ -35,11 +22,23 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
-import java.util.List;
-
+import android.content.Intent;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import java.util.List;
 
 public class JoinActivity extends BaseActivity implements QueuePresenter {
 

@@ -1,5 +1,18 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.ChildData;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
+import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
+import com.noqapp.android.client.views.adapters.MenuAdapter;
+import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
+import com.noqapp.android.client.views.fragments.FragmentDummy;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,26 +27,12 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.ChildData;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
-import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
-import com.noqapp.android.client.views.adapters.MenuAdapter;
-import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
-import com.noqapp.android.client.views.fragments.FragmentDummy;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 // Scrollview issue  https://stackoverflow.com/questions/37605545/android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 public class StoreMenuActivity extends BaseActivity implements CustomExpandableListAdapter.CartUpdate, MenuHeaderAdapter.OnItemClickListener, MenuAdapter.CartOrderUpdate {
