@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ManagerProfileActivity extends ProfileActivity implements View.OnClickListener, QueueManagerPresenter {
+public class ManagerProfileActivity extends ProfileActivity implements QueueManagerPresenter {
 
     @BindView(R.id.tv_name)
     protected TextView tv_name;
@@ -72,13 +72,10 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
         initActionsViews(false);
         tv_toolbar_title.setText("Doctor Profile");
         iv_profile = findViewById(R.id.iv_profile);
-        iv_edit.setOnClickListener(this);
-        iv_profile.setOnClickListener(this);
         webProfileId = getIntent().getStringExtra("webProfileId");
         managerName = getIntent().getStringExtra("managerName");
         managerImageUrl = getIntent().getStringExtra("managerImage");
-
-        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(UserProfileActivity.iv_profile);
+        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(managerImageUrl)) {
                 Picasso.with(this)
@@ -119,52 +116,6 @@ public class ManagerProfileActivity extends ProfileActivity implements View.OnCl
 
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-            case R.id.iv_profile:
-                selectImage();
-                break;
-            case R.id.iv_edit:
-                // selectImage();
-                break;
-        }
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SELECT_PICTURE) {
-            if (resultCode == RESULT_OK) {
-                //  Bitmap bitmap = getPath(data.getData());
-                //  iv_profile.setImageBitmap(bitmap);
-
-                Uri selectedImage = data.getData();
-                Bitmap bitmap;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                    iv_profile.setImageBitmap(bitmap);
-
-                    String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
-                    NoQueueBaseActivity.setUserProfileUri(convertedPath);
-
-                    if (!TextUtils.isEmpty(convertedPath)) {
-                        String type = getMimeType(this, selectedImage);
-                        File file = new File(convertedPath);
-                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                        //   ProfileModel.imageUploadPresenter = this;
-                        //  ProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), filePart);
-                    }
-                } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     private void setupViewPager(ViewPager viewPager) {
         userProfileFragment = new UserProfileFragment();

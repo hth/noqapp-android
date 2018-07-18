@@ -56,7 +56,7 @@ import java.util.Locale;
 
 public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
 
-    public static ImageView iv_profile;
+    public ImageView iv_profile;
     public String gender = "";
     @BindView(R.id.tv_name)
     protected TextView tv_name;
@@ -126,14 +126,14 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void loadProfilePic() {
-        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(UserProfileActivity.iv_profile);
+        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
                 Picasso.with(this)
                         .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
                         .placeholder(ImageUtils.getProfilePlaceholder(this))
                         .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(UserProfileActivity.iv_profile);
+                        .into(iv_profile);
             }
         } catch (Exception e) {
             e.printStackTrace();
