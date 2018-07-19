@@ -61,10 +61,10 @@ public class MedicalRecordAdapter extends BaseAdapter {
         }
 
         final JsonMedicalMedicine medicalRecord = medicalRecordList.get(position);
-        recordHolder.tv_medication.setText(medicalRecord.getMedicationType().getDescription());
+        recordHolder.tv_medication.setText(medicalRecord.getMedicationType());
         recordHolder.tv_dose.setText(medicalRecord.getStrength());
         recordHolder.tv_frequency.setText(medicalRecord.getDailyFrequency());
-        recordHolder.tv_dose_timing.setText(medicalRecord.getMedicationWithFood().getDescription());
+        recordHolder.tv_dose_timing.setText(medicalRecord.getMedicationWithFood());
         recordHolder.tv_course.setText(medicalRecord.getCourse());
         recordHolder.tv_medicine_name.setText(medicalRecord.getName());
         recordHolder.iv_delete.setOnClickListener(new View.OnClickListener() {
