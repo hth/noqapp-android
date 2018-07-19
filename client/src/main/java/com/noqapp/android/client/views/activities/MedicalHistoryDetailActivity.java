@@ -11,7 +11,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.model.types.medical.PhysicalExamEnum;
+import com.noqapp.android.common.model.types.medical.PhysicalGeneralExamEnum;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -86,7 +86,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         medicalRecordList = jsonMedicalRecord.getMedicalMedicines();
         adapter = new MedicalRecordAdapter(this, medicalRecordList);
         listview.setAdapter(adapter);
-        for (PhysicalExamEnum physicalExam : PhysicalExamEnum.values()) {
+        for (PhysicalGeneralExamEnum physicalExam : PhysicalGeneralExamEnum.values()) {
             LinearLayout childLayout = new LinearLayout(this);
             LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -98,6 +98,8 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             mType.setTypeface(Typeface.DEFAULT_BOLD);
             mType.setGravity(Gravity.LEFT | Gravity.CENTER);
             switch (physicalExam) {
+                case TE:
+                    break;
                 case BP:
                     mType.setText(physicalExam.getDescription() + ": "
                             + jsonMedicalPhysicalExaminations.getBloodPressure()[0]);
@@ -105,6 +107,8 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                 case PL:
                     mType.setText(physicalExam.getDescription() + ": "
                             + jsonMedicalPhysicalExaminations.getPluse());
+                    break;
+                case OX:
                     break;
                 case WT:
                     mType.setText(physicalExam.getDescription() + ": "
