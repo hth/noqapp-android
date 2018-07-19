@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
-import com.noqapp.android.common.model.types.MedicationTypeEnum;
-import com.noqapp.android.common.model.types.MedicationWithFoodEnum;
 
 import java.io.Serializable;
 
