@@ -254,6 +254,7 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="token">TOKEN</string>
     <string name="login_via_otp">Login via OTP</string>
     <string name="resend_otp">Resend OTP</string>
+    <string name="awards">Awards</string>
     <!-- Language select dialog -->
 
 </resources>

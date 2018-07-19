@@ -24,14 +24,29 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonMedicalPhysical extends AbstractDomain implements Serializable {
 
+    @JsonProperty("te")
+    private String temperature;
+
     @JsonProperty("pl")
     private String pluse;
 
     @JsonProperty("bp")
     private String[] bloodPressure;
 
+    @JsonProperty("ox")
+    private String oxygen;
+
     @JsonProperty("wt")
     private String weight;
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public JsonMedicalPhysical setTemperature(String temperature) {
+        this.temperature = temperature;
+        return this;
+    }
 
     public String getPluse() {
         return pluse;
@@ -57,6 +72,15 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
 
     public JsonMedicalPhysical setWeight(String weight) {
         this.weight = weight;
+        return this;
+    }
+
+    public String getOxygen() {
+        return oxygen;
+    }
+
+    public JsonMedicalPhysical setOxygen(String oxygen) {
+        this.oxygen = oxygen;
         return this;
     }
 }
