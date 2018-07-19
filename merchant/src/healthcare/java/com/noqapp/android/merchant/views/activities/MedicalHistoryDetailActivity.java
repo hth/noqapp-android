@@ -10,11 +10,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -22,7 +24,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +34,6 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.model.types.MedicationTypeEnum;
-import com.noqapp.android.common.model.types.MedicationWithFoodEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.model.M_MerchantProfileModel;
@@ -59,11 +58,22 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private final String PROVISIONAL_DIAGNOSIS = "provisional_diagnosis";
     private final String INVESTIGATION = "investigation";
     private final String KNOWN_ALLERGIES = "known_allergies";
-    private final String MEDICINES_TREATMENT_ADVICE = "medicines_treatment_advice";
+    private final String FOLLOW_UP = "followup";
+    private final String INSTRUCTIONS = "instructions";
+    // medicine infos
+    private final String MEDICINES_NAME = "medicines_name";
+    private final String MEDICINES_TYPE = "medicines_type";
+    private final String MEDICINES_DOSE = "medicines_dose";
+    private final String MEDICINES_FREQUENCY = "medicines_frequency";
+    private final String MEDICINES_DOSE_TIMINGS = "medicines_dose_timings";
+    private final String MEDICINES_COURSE = "medicines_course";
+
+    //
+
     private ImageView actionbarBack;
     private HashMap<String, ArrayList<String>> mHashmapTemp = null;
     private String qCodeQR = "";
-    private AutoCompleteTextView actv_medicine_name, actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation;
+    private AutoCompleteTextView actv_medicine_name, actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation,actv_instruction,actv_followup;
     private EditText edt_weight, edt_bp, edt_pulse;
     private JsonQueuedPerson jsonQueuedPerson;
     private Button btn_update;
@@ -72,12 +82,14 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private MedicalRecordAdapter adapter;
     private MedicalHistoryModel medicalHistoryModel;
 
-    private Spinner sp_medication;
-    private Spinner sp_frequency;
-    private Spinner sp_dose_timing;
-    private Spinner sp_course;
-    private Spinner sp_dose;
+    private AutoCompleteTextView actv_medicine_type;
+    private AutoCompleteTextView actv_frequency;
+    private AutoCompleteTextView actv_dose_timing;
+    private AutoCompleteTextView actv_course;
+    private AutoCompleteTextView actv_dose;
     private Button tv_add;
+    private long lastPress;
+    private Toast backPressToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +109,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         actv_clinical_finding = findViewById(R.id.actv_clinical_finding);
         actv_provisional = findViewById(R.id.actv_provisional);
         actv_investigation = findViewById(R.id.actv_investigation);
+        actv_followup = findViewById(R.id.actv_followup);
+        actv_instruction = findViewById(R.id.actv_instruction);
 
         edt_weight = findViewById(R.id.edt_weight);
         edt_bp = findViewById(R.id.edt_bp);
@@ -104,27 +118,13 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
 
 
         actv_medicine_name = findViewById(R.id.actv_medicine_name);
-        sp_medication = findViewById(R.id.sp_medication);
-        sp_dose = findViewById(R.id.sp_dose);
-        sp_frequency = findViewById(R.id.sp_frequency);
-        sp_dose_timing = findViewById(R.id.sp_dose_timing);
-        sp_course = findViewById(R.id.sp_course);
+        actv_medicine_type = findViewById(R.id.actv_medicine_type);
+        actv_dose = findViewById(R.id.actv_dose);
+        actv_frequency = findViewById(R.id.actv_frequency);
+        actv_dose_timing = findViewById(R.id.actv_dose_timing);
+        actv_course = findViewById(R.id.actv_course);
         tv_add = findViewById(R.id.tv_add);
 
-        //
-        ArrayAdapter<String> sp_medication_adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_spinner_item,
-                        MedicationTypeEnum.asList());
-        sp_medication_adapter.setDropDownViewResource(android.R.layout
-                .simple_spinner_dropdown_item);
-        sp_medication.setAdapter(sp_medication_adapter);
-
-        ArrayAdapter<String> sp_dose_timing_adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_spinner_item,
-                        MedicationWithFoodEnum.asList());
-        sp_dose_timing_adapter.setDropDownViewResource(android.R.layout
-                .simple_spinner_dropdown_item);
-        sp_dose_timing.setAdapter(sp_dose_timing_adapter);
 
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,21 +133,36 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                 if (isValidEntry()) {
                     JsonMedicalMedicine jsonMedicalMedicine = new JsonMedicalMedicine();
 
-                    jsonMedicalMedicine.setDailyFrequency(sp_frequency.getSelectedItem().toString());
-                    jsonMedicalMedicine.setStrength(sp_dose.getSelectedItem().toString());
-                    jsonMedicalMedicine.setMedicationType(MedicationTypeEnum.get(sp_medication.getSelectedItem().toString()));
-                    jsonMedicalMedicine.setMedicationWithFood(MedicationWithFoodEnum.get(sp_dose_timing.getSelectedItem().toString()));
-                    jsonMedicalMedicine.setCourse(sp_course.getSelectedItem().toString());
+                    jsonMedicalMedicine.setDailyFrequency(actv_frequency.getText().toString());
+                    jsonMedicalMedicine.setStrength(actv_dose.getText().toString());
+                    jsonMedicalMedicine.setMedicationType(actv_medicine_type.getText().toString());
+                    jsonMedicalMedicine.setMedicationWithFood(actv_dose_timing.getText().toString());
+                    jsonMedicalMedicine.setCourse(actv_course.getText().toString());
                     jsonMedicalMedicine.setName(actv_medicine_name.getText().toString());
 
                     medicalRecordList.add(0, jsonMedicalMedicine);
                     adapter.notifyDataSetChanged();
-                    updateSuggetions(actv_medicine_name, MEDICINES_TREATMENT_ADVICE);
-                    setSuggetions(actv_medicine_name, MEDICINES_TREATMENT_ADVICE);
+
+                    updateSuggetions(actv_medicine_name, MEDICINES_NAME);
+                    setSuggetions(actv_medicine_name, MEDICINES_NAME,false);
+                    updateSuggetions(actv_dose, MEDICINES_DOSE);
+                    setSuggetions(actv_dose, MEDICINES_DOSE,false);
+                    updateSuggetions(actv_frequency, MEDICINES_FREQUENCY);
+                    setSuggetions(actv_frequency, MEDICINES_FREQUENCY,false);
+                    updateSuggetions(actv_course, MEDICINES_COURSE);
+                    setSuggetions(actv_course, MEDICINES_COURSE,false);
+                    updateSuggetions(actv_medicine_type, MEDICINES_TYPE);
+                    setSuggetions(actv_medicine_type, MEDICINES_TYPE,false);
+                    updateSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
+                    setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS,false);
+                    // update medicine related info because we are setting the fields blank
+                    LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
                     actv_medicine_name.setText("");
-                    sp_dose.setSelection(0);
-                    sp_frequency.setSelection(0);
-                    sp_course.setSelection(0);
+                    actv_dose.setText("");
+                    actv_frequency.setText("");
+                    actv_course.setText("");
+                    actv_medicine_type.setText("");
+                    actv_dose_timing.setText("");
                 }
             }
         });
@@ -171,8 +186,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
             builder.setView(customDialogView);
             final AlertDialog mAlertDialog = builder.create();
             mAlertDialog.setCanceledOnTouchOutside(false);
-            Button btn_yes = (Button) customDialogView.findViewById(R.id.btn_yes);
-            Button btn_no = (Button) customDialogView.findViewById(R.id.btn_no);
+            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+            Button btn_no = customDialogView.findViewById(R.id.btn_no);
             TextView tv_title = customDialogView.findViewById(R.id.tvtitle);
             TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
             btn_no.setOnClickListener(new View.OnClickListener() {
@@ -222,21 +237,39 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
             mHashmapTemp.put(PROVISIONAL_DIAGNOSIS, new ArrayList<String>());
             mHashmapTemp.put(INVESTIGATION, new ArrayList<String>());
             mHashmapTemp.put(KNOWN_ALLERGIES, new ArrayList<String>());
-            mHashmapTemp.put(MEDICINES_TREATMENT_ADVICE, new ArrayList<String>());
+            mHashmapTemp.put(MEDICINES_NAME, new ArrayList<String>());
+            mHashmapTemp.put(FOLLOW_UP, new ArrayList<String>());
+            mHashmapTemp.put(INSTRUCTIONS, new ArrayList<String>());
+
+            mHashmapTemp.put(MEDICINES_TYPE, new ArrayList<String>());
+            mHashmapTemp.put(MEDICINES_DOSE, new ArrayList<String>());
+            mHashmapTemp.put(MEDICINES_FREQUENCY, new ArrayList<String>());
+            mHashmapTemp.put(MEDICINES_DOSE_TIMINGS, new ArrayList<String>());
+            mHashmapTemp.put(MEDICINES_COURSE, new ArrayList<String>());
 
             LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
         } else {
             try {
                 mHashmapTemp = gson.fromJson(strOutput, type);
 
-                setSuggetions(actv_complaints, CHIEF);
-                setSuggetions(actv_past_history, PAST_HISTORY);
-                setSuggetions(actv_family_history, FAMILY_HISTORY);
-                setSuggetions(actv_known_allergy, KNOWN_ALLERGIES);
-                setSuggetions(actv_clinical_finding, CLINICAL_FINDINGS);
-                setSuggetions(actv_provisional, PROVISIONAL_DIAGNOSIS);
-                setSuggetions(actv_investigation, INVESTIGATION);
-                setSuggetions(actv_medicine_name, MEDICINES_TREATMENT_ADVICE);
+                setSuggetions(actv_complaints, CHIEF,true);
+                setSuggetions(actv_past_history, PAST_HISTORY,true);
+                setSuggetions(actv_family_history, FAMILY_HISTORY,true);
+                setSuggetions(actv_known_allergy, KNOWN_ALLERGIES,true);
+                setSuggetions(actv_clinical_finding, CLINICAL_FINDINGS,true);
+                setSuggetions(actv_provisional, PROVISIONAL_DIAGNOSIS,true);
+                setSuggetions(actv_investigation, INVESTIGATION,true);
+                setSuggetions(actv_followup, FOLLOW_UP,true);
+                setSuggetions(actv_instruction, INSTRUCTIONS,true);
+
+                setSuggetions(actv_medicine_name, MEDICINES_NAME,false);
+                setSuggetions(actv_medicine_type, MEDICINES_TYPE,false);
+                setSuggetions(actv_dose, MEDICINES_DOSE,false);
+                setSuggetions(actv_frequency, MEDICINES_FREQUENCY,false);
+                setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS,false);
+                setSuggetions(actv_course, MEDICINES_COURSE,false);
+
+
                 Log.v("JSON", mHashmapTemp.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -254,17 +287,25 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
             Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
             return isValid;
         }
-        if (sp_dose.getSelectedItemPosition() == 0) {
+        if (TextUtils.isEmpty(actv_dose.getText().toString())) {
             isValid = false;
             errorMsg += "Please select dose for the  medicine \n";
         }
-        if (sp_frequency.getSelectedItemPosition() == 0) {
+        if (TextUtils.isEmpty(actv_frequency.getText().toString())) {
             isValid = false;
             errorMsg += "Please select frequency for the  medicine \n";
         }
-        if (sp_course.getSelectedItemPosition() == 0) {
+        if (TextUtils.isEmpty(actv_course.getText().toString())) {
             isValid = false;
             errorMsg += "Please select course for the  medicine \n";
+        }
+        if (TextUtils.isEmpty(actv_medicine_type.getText().toString())) {
+            isValid = false;
+            errorMsg += "Please select medication type for the  medicine \n";
+        }
+        if (TextUtils.isEmpty(actv_dose_timing.getText().toString())) {
+            isValid = false;
+            errorMsg += "Please select dose timing for the  medicine \n";
         }
         if (!errorMsg.equalsIgnoreCase(""))
             Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
@@ -272,12 +313,23 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         return isValid;
     }
 
-    private void setSuggetions(AutoCompleteTextView actv, String key) {
+    private void setSuggetions(final AutoCompleteTextView actv, String key, boolean isThreashold) {
+        if (null == mHashmapTemp.get(key))
+            mHashmapTemp.put(key, new ArrayList<String>());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this, android.R.layout.simple_list_item_1, mHashmapTemp.get(key));
         actv.setAdapter(adapter);
-        actv.setThreshold(1);
-        actv.setThreshold(1);
+        if (isThreashold) {
+            actv.setThreshold(1);
+        } else {
+            actv.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    actv.showDropDown();
+                    return false;
+                }
+            });
+        }
     }
 
     private void updateSuggetions(AutoCompleteTextView actv, String key) {
@@ -309,7 +361,16 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         updateSuggetions(actv_clinical_finding, CLINICAL_FINDINGS);
         updateSuggetions(actv_provisional, PROVISIONAL_DIAGNOSIS);
         updateSuggetions(actv_investigation, INVESTIGATION);
-        // updateSuggetions(actv_medicine_name, MEDICINES); update this when add button click
+        updateSuggetions(actv_followup, FOLLOW_UP);
+        updateSuggetions(actv_instruction, INSTRUCTIONS);
+        //update medicine when add button click
+        //updateSuggetions(actv_medicine_name, MEDICINES);
+//        updateSuggetions(actv_medicine_type, MEDICINES_TYPE);
+//        updateSuggetions(actv_dose, MEDICINES_DOSE);
+//        updateSuggetions(actv_frequency, MEDICINES_FREQUENCY);
+//        updateSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
+//        updateSuggetions(actv_course, MEDICINES_COURSE);
+
         LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
 
         M_MerchantProfileModel m_merchantProfileModel = new M_MerchantProfileModel(this);
@@ -331,6 +392,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                 TextUtils.isEmpty(actv_known_allergy.getText()) &&
                 TextUtils.isEmpty(actv_clinical_finding.getText()) &&
                 TextUtils.isEmpty(actv_provisional.getText()) &&
+                TextUtils.isEmpty(actv_instruction.getText()) &&
+                TextUtils.isEmpty(actv_followup.getText()) &&
                 TextUtils.isEmpty(actv_investigation.getText())) {
             isValid = false;
         }
@@ -406,6 +469,23 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                     Toast.makeText(MedicalHistoryDetailActivity.this, "Please fill at least one field", Toast.LENGTH_LONG).show();
                 }
                 break;
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastPress > 3000) {
+            backPressToast = Toast.makeText(this, getString(R.string.exit_medical_screen), Toast.LENGTH_LONG);
+            backPressToast.show();
+            lastPress = currentTime;
+        } else {
+            if (backPressToast != null) {
+                backPressToast.cancel();
+            }
+            //super.onBackPressed();
+            finish();
         }
     }
 

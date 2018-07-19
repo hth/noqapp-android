@@ -30,9 +30,7 @@
         android:layout_margin="1dp"
         android:layout_weight=".15"
         android:background="@drawable/square_grey_bg"
-        android:entries="@array/dose_types"
-        android:padding="10dp"
-        android:prompt="@string/dose_prompt" />
+        android:padding="10dp"/>
 
     <TextView
         android:id="@+id/tv_frequency"
@@ -41,9 +39,7 @@
         android:layout_margin="1dp"
         android:layout_weight=".15"
         android:background="@drawable/square_grey_bg"
-        android:entries="@array/frequency_types"
-        android:padding="10dp"
-        android:prompt="@string/frequency_prompt" />
+        android:padding="10dp"/>
 
     <TextView
         android:id="@+id/tv_dose_timing"
@@ -61,9 +57,7 @@
         android:layout_margin="1dp"
         android:layout_weight=".15"
         android:background="@drawable/square_grey_bg"
-        android:entries="@array/course_types"
-        android:padding="10dp"
-        android:prompt="@string/course_prompt" />
+        android:padding="10dp"/>
 
 
     <ImageView

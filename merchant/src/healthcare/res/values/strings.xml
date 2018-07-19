@@ -2,38 +2,11 @@
 <resources>
 
 
-    <string name="dose_prompt">Choose Dose(Size)</string>
-    <string-array name="dose_types">
-        <item>Dose(Size)</item>
-        <item>250 gm</item>
-        <item>30 ml</item>
-    </string-array>
-
-    <string name="frequency_prompt">Frequency</string>
-    <string-array name="frequency_types">
-        <item>Frequency</item>
-        <item>QD(Once a day)</item>
-        <item>BID(Twice a day)</item>
-        <item>TD(Three times a day)</item>
-        <item>QID(Four times a day)</item>
-    </string-array>
-
-    <string name="course_prompt">Frequency</string>
-    <string-array name="course_types">
-        <item>Course</item>
-        <item>1 day</item>
-        <item>2 days</item>
-        <item>3 day</item>
-        <item>4 days</item>
-        <item>5 days</item>
-        <item>6 days</item>
-        <item>7 days</item>
-        <item>10 days</item>
-        <item>15 days</item>
-        <item>30 days</item>
-        <item>45 days</item>
-        <item>60 days</item>
-        <item>90 days</item>
-    </string-array>
-
+    <string name="dose_prompt"> 250 mg</string>
+    <string name="frequency_prompt">OD</string>
+    <string name="course_prompt">1 Day</string>
+    <string name="medicine_type">Tablet</string>
+    <string name="medicine_name">Paracetamol</string>
+    <string name="dose_timing">After Food</string>
+    <string name="exit_medical_screen">Press back again to close the Form.</string>
 </resources>

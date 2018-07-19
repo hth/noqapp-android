@@ -1,81 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#f2f2f2"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#f2f2f2"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar_layout"/>
 
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/btn_update"
-            android:layout_alignParentTop="true"
-            android:overScrollMode="never">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/btn_update"
+                android:layout_alignParentTop="true"
+                android:overScrollMode="never">
 
             <LinearLayout
-                android:id="@+id/ll_main"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="15dp">
+                    android:id="@+id/ll_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="15dp">
 
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="2.5dp"
-                        android:layout_weight=".5"
-                        android:orientation="vertical">
-
-                        <TextView
-                            style="@style/style_mdh_header"
-                            android:text="Chief Complaint: " />
-
-                        <AutoCompleteTextView
-                            android:id="@+id/actv_complaints"
-                            style="@style/style_mdh_details"
-                            android:gravity="top"
-                            android:minLines="5"
-                            android:text="" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2.5dp"
-                        android:layout_weight=".5"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginRight="2.5dp"
+                            android:layout_weight=".5"
                             android:orientation="vertical">
 
-                            <TextView
+                        <TextView
                                 style="@style/style_mdh_header"
-                                android:text="Past History: " />
+                                android:text="Chief Complaint: "/>
 
-                            <AutoCompleteTextView
-                                android:id="@+id/actv_past_history"
+                        <AutoCompleteTextView
+                                android:id="@+id/actv_complaints"
                                 style="@style/style_mdh_details"
                                 android:gravity="top"
                                 android:minLines="5"
-                                android:text="" />
+                                android:text=""/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2.5dp"
+                            android:layout_weight=".5"
+                            android:orientation="vertical">
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="vertical">
+
+                            <TextView
+                                    style="@style/style_mdh_header"
+                                    android:text="Past History: "/>
+
+                            <AutoCompleteTextView
+                                    android:id="@+id/actv_past_history"
+                                    style="@style/style_mdh_details"
+                                    android:gravity="top"
+                                    android:minLines="5"
+                                    android:text=""/>
 
                         </LinearLayout>
                     </LinearLayout>
@@ -85,48 +85,48 @@
 
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="2.5dp"
-                        android:layout_weight=".5"
-                        android:orientation="vertical">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="2.5dp"
+                            android:layout_weight=".5"
+                            android:orientation="vertical">
 
                         <TextView
-                            style="@style/style_mdh_header"
-                            android:text="Family History: " />
+                                style="@style/style_mdh_header"
+                                android:text="Family History: "/>
 
                         <AutoCompleteTextView
-                            android:id="@+id/actv_family_history"
-                            style="@style/style_mdh_details"
-                            android:gravity="top"
-                            android:minLines="5"
-                            android:text="" />
+                                android:id="@+id/actv_family_history"
+                                style="@style/style_mdh_details"
+                                android:gravity="top"
+                                android:minLines="5"
+                                android:text=""/>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2.5dp"
-                        android:layout_weight=".5"
-                        android:orientation="vertical">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2.5dp"
+                            android:layout_weight=".5"
+                            android:orientation="vertical">
 
                         <TextView
-                            style="@style/style_mdh_header"
-                            android:text="Known Allergies: " />
+                                style="@style/style_mdh_header"
+                                android:text="Known Allergies: "/>
 
                         <AutoCompleteTextView
-                            android:id="@+id/actv_known_allergy"
-                            style="@style/style_mdh_details"
-                            android:gravity="top"
-                            android:minLines="5"
-                            android:text="" />
+                                android:id="@+id/actv_known_allergy"
+                                style="@style/style_mdh_details"
+                                android:gravity="top"
+                                android:minLines="5"
+                                android:text=""/>
                     </LinearLayout>
 
 
@@ -134,99 +134,99 @@
 
 
                 <TextView
-                    style="@style/style_mdh_header"
-                    android:text="Physical Examination: " />
+                        style="@style/style_mdh_header"
+                        android:text="Physical Examination: "/>
 
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".33"
-                        android:orientation="vertical">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".33"
+                            android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:padding="5dp"
-                            android:text="Pulse"
-                            android:textSize="15sp" />
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:padding="5dp"
+                                android:text="Pulse"
+                                android:textSize="15sp"/>
 
                         <EditText
-                            android:id="@+id/edt_pulse"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/square_white_bg_drawable"
-                            android:inputType="numberSigned"
-                            android:maxLength="3"
-                            android:maxLines="1"
-                            android:minLines="1"
-                            android:padding="10dp"
-                            android:text="" />
+                                android:id="@+id/edt_pulse"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:inputType="numberSigned"
+                                android:maxLength="3"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="10dp"
+                                android:text=""/>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight=".34"
-                        android:orientation="vertical">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight=".34"
+                            android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:padding="5dp"
-                            android:text="B.P (Blood Pressure)"
-                            android:textSize="15sp" />
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:padding="5dp"
+                                android:text="B.P (Blood Pressure)"
+                                android:textSize="15sp"/>
 
                         <EditText
-                            android:id="@+id/edt_bp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/square_white_bg_drawable"
-                            android:maxLength="15"
-                            android:maxLines="1"
-                            android:minLines="1"
-                            android:padding="10dp"
-                            android:text="" />
+                                android:id="@+id/edt_bp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:maxLength="15"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="10dp"
+                                android:text=""/>
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".33"
-                        android:orientation="vertical">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".33"
+                            android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:padding="5dp"
-                            android:text="Weight(Kg)"
-                            android:textSize="15sp" />
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:padding="5dp"
+                                android:text="Weight(Kg)"
+                                android:textSize="15sp"/>
 
                         <EditText
-                            android:id="@+id/edt_weight"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/square_white_bg_drawable"
-                            android:inputType="numberSigned"
-                            android:maxLength="6"
-                            android:maxLines="1"
-                            android:minLines="1"
-                            android:padding="10dp"
-                            android:text="" />
+                                android:id="@+id/edt_weight"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:inputType="numberSigned"
+                                android:maxLength="6"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="10dp"
+                                android:text=""/>
 
                     </LinearLayout>
 
@@ -235,148 +235,181 @@
 
 
                 <TextView
-                    style="@style/style_mdh_header"
-                    android:text="Clinical Findings: " />
+                        style="@style/style_mdh_header"
+                        android:text="Clinical Findings: "/>
 
                 <AutoCompleteTextView
-                    android:id="@+id/actv_clinical_finding"
-                    style="@style/style_mdh_details"
-                    android:layout_marginBottom="10dp"
-                    android:text="" />
+                        android:id="@+id/actv_clinical_finding"
+                        style="@style/style_mdh_details"
+                        android:layout_marginBottom="10dp"
+                        android:text=""/>
 
 
                 <TextView
-                    style="@style/style_mdh_header"
-                    android:text="Provisional /Differential Diagnosis" />
+                        style="@style/style_mdh_header"
+                        android:text="Provisional /Differential Diagnosis"/>
 
                 <AutoCompleteTextView
-                    android:id="@+id/actv_provisional"
-                    style="@style/style_mdh_details"
-                    android:layout_marginBottom="10dp"
-                    android:text="" />
-
-
+                        android:id="@+id/actv_provisional"
+                        style="@style/style_mdh_details"
+                        android:layout_marginBottom="10dp"
+                        android:text=""/>
                 <TextView
-                    style="@style/style_mdh_header"
-                    android:text="Investigation Advised: " />
+                        style="@style/style_mdh_header"
+                        android:text="Investigation Advised: "/>
 
                 <AutoCompleteTextView
-                    android:id="@+id/actv_investigation"
-                    style="@style/style_mdh_details"
-                    android:layout_marginBottom="10dp"
-                    android:text="" />
-
+                        android:id="@+id/actv_investigation"
+                        style="@style/style_mdh_details"
+                        android:layout_marginBottom="10dp"
+                        android:text=""/>
 
                 <TextView
-                    style="@style/style_mdh_header"
-                    android:layout_width="wrap_content"
-                    android:text="Medication: " />
+                        style="@style/style_mdh_header"
+                        android:layout_width="wrap_content"
+                        android:text="Medication: "/>
 
                 <com.noqapp.android.merchant.views.customviews.FixedHeightListView
-                    android:id="@+id/listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@null" />
+                        android:id="@+id/listview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"/>
 
                 <LinearLayout
-                    android:id="@+id/ll_medicines"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <Spinner
-                        android:id="@+id/sp_medication"
-                        android:layout_width="0dp"
+                        android:id="@+id/ll_medicines"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight=".15"
-                        android:background="@drawable/spinner_border"
-                        android:padding="10dp" />
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:weightSum="1">
 
                     <AutoCompleteTextView
-                        android:id="@+id/actv_medicine_name"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight=".25"
-                        android:background="@drawable/square_white_bg_drawable"
-                        android:hint="Medicine name"
-                        android:inputType="textCapSentences"
-                        android:padding="10dp" />
+                            android:id="@+id/actv_medicine_type"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight=".15"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:inputType="textCapSentences"
+                            android:hint="@string/medicine_type"
+                            android:background="@drawable/spinner_border"
+                            android:padding="10dp"/>
 
-                    <Spinner
-                        android:id="@+id/sp_dose"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight=".15"
-                        android:background="@drawable/spinner_border"
-                        android:entries="@array/dose_types"
-                        android:padding="10dp"
-                        android:prompt="@string/dose_prompt" />
+                    <AutoCompleteTextView
+                            android:id="@+id/actv_medicine_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight=".25"
+                            android:background="@drawable/spinner_border"
+                            android:hint="@string/medicine_name"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:inputType="textCapSentences"
+                            android:padding="10dp"/>
 
-                    <Spinner
-                        android:id="@+id/sp_frequency"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight=".15"
-                        android:background="@drawable/spinner_border"
-                        android:entries="@array/frequency_types"
-                        android:padding="10dp"
-                        android:prompt="@string/frequency_prompt" />
+                    <AutoCompleteTextView
+                            android:id="@+id/actv_dose"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight=".15"
+                            android:background="@drawable/spinner_border"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:inputType="textCapSentences"
+                            android:padding="10dp"
+                            android:hint="@string/dose_prompt"/>
 
-                    <Spinner
-                        android:id="@+id/sp_dose_timing"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight=".15"
-                        android:background="@drawable/spinner_border"
-                        android:padding="10dp" />
+                    <AutoCompleteTextView
+                            android:id="@+id/actv_frequency"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight=".15"
+                            android:background="@drawable/spinner_border"
+                            android:padding="10dp"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:inputType="textCapSentences"
+                            android:hint="@string/frequency_prompt"/>
 
-                    <Spinner
-                        android:id="@+id/sp_course"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight=".15"
-                        android:background="@drawable/spinner_border"
-                        android:entries="@array/course_types"
-                        android:padding="10dp"
-                        android:prompt="@string/course_prompt" />
+                    <AutoCompleteTextView
+                            android:id="@+id/actv_dose_timing"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight=".15"
+                            android:background="@drawable/spinner_border"
+                            android:hint="@string/dose_timing"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:inputType="textCapSentences"
+                            android:padding="10dp"/>
+
+                    <AutoCompleteTextView
+                            android:id="@+id/actv_course"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight=".15"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:inputType="textCapSentences"
+                            android:background="@drawable/spinner_border"
+                            android:padding="10dp"
+                            android:hint="@string/course_prompt"/>
 
 
                     <Button
-                        android:id="@+id/tv_add"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/add_medic"
-                        android:padding="10dp"
-                        android:textColor="@android:color/transparent" />
+                            android:id="@+id/tv_add"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/add_medic"
+                            android:padding="10dp"
+                            android:textColor="@android:color/transparent"/>
 
                 </LinearLayout>
 
 
+                <TextView
+                        style="@style/style_mdh_header"
+                        android:text="Instruction/Plan to patient: "/>
+
+                <AutoCompleteTextView
+                        android:id="@+id/actv_instruction"
+                        style="@style/style_mdh_details"
+                        android:layout_marginBottom="10dp"
+                        android:text=""/>
+
+                <TextView
+                        style="@style/style_mdh_header"
+                        android:text="Follow up: "/>
+
+                <AutoCompleteTextView
+                        android:id="@+id/actv_followup"
+                        style="@style/style_mdh_details"
+                        android:layout_marginBottom="10dp"
+                        android:text=""/>
             </LinearLayout>
         </ScrollView>
 
         <Button
-            android:id="@+id/btn_update"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="30dp"
-            android:layout_marginLeft="300dp"
-            android:layout_marginRight="300dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/button_drawable"
-            android:text="@string/update_medical_history"
-            android:textAllCaps="false"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp" />
+                android:id="@+id/btn_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="300dp"
+                android:layout_marginRight="300dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_drawable"
+                android:text="@string/update_medical_history"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"/>
     </RelativeLayout>
 
 

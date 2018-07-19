@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
-import com.noqapp.android.common.model.types.MedicationTypeEnum;
-import com.noqapp.android.common.model.types.MedicationWithFoodEnum;
 
 import java.io.Serializable;
 
@@ -39,10 +37,10 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
     private String course;
 
     @JsonProperty("mf")
-    private MedicationWithFoodEnum medicationWithFood;
+    private String medicationWithFood;
 
     @JsonProperty("mt")
-    private MedicationTypeEnum medicationType;
+    private String medicationType;
 
     public String getName() {
         return name;
@@ -80,20 +78,20 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
         return this;
     }
 
-    public MedicationWithFoodEnum getMedicationWithFood() {
+    public String getMedicationWithFood() {
         return medicationWithFood;
     }
 
-    public JsonMedicalMedicine setMedicationWithFood(MedicationWithFoodEnum medicationWithFood) {
+    public JsonMedicalMedicine setMedicationWithFood(String medicationWithFood) {
         this.medicationWithFood = medicationWithFood;
         return this;
     }
 
-    public MedicationTypeEnum getMedicationType() {
+    public String getMedicationType() {
         return medicationType;
     }
 
-    public JsonMedicalMedicine setMedicationType(MedicationTypeEnum medicationType) {
+    public JsonMedicalMedicine setMedicationType(String medicationType) {
         this.medicationType = medicationType;
         return this;
     }
