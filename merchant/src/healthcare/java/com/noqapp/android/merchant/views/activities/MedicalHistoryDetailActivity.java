@@ -142,20 +142,21 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
 
                     medicalRecordList.add(0, jsonMedicalMedicine);
                     adapter.notifyDataSetChanged();
+
                     updateSuggetions(actv_medicine_name, MEDICINES_NAME);
                     setSuggetions(actv_medicine_name, MEDICINES_NAME,false);
                     updateSuggetions(actv_dose, MEDICINES_DOSE);
                     setSuggetions(actv_dose, MEDICINES_DOSE,false);
-
                     updateSuggetions(actv_frequency, MEDICINES_FREQUENCY);
                     setSuggetions(actv_frequency, MEDICINES_FREQUENCY,false);
                     updateSuggetions(actv_course, MEDICINES_COURSE);
                     setSuggetions(actv_course, MEDICINES_COURSE,false);
                     updateSuggetions(actv_medicine_type, MEDICINES_TYPE);
                     setSuggetions(actv_medicine_type, MEDICINES_TYPE,false);
-
                     updateSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
                     setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS,false);
+                    // update medicine related info because we are setting the fields blank
+                    LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
                     actv_medicine_name.setText("");
                     actv_dose.setText("");
                     actv_frequency.setText("");
@@ -360,15 +361,15 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         updateSuggetions(actv_clinical_finding, CLINICAL_FINDINGS);
         updateSuggetions(actv_provisional, PROVISIONAL_DIAGNOSIS);
         updateSuggetions(actv_investigation, INVESTIGATION);
-        // updateSuggetions(actv_medicine_name, MEDICINES); update this when add button click
         updateSuggetions(actv_followup, FOLLOW_UP);
         updateSuggetions(actv_instruction, INSTRUCTIONS);
-
-        updateSuggetions(actv_medicine_type, MEDICINES_TYPE);
-        updateSuggetions(actv_dose, MEDICINES_DOSE);
-        updateSuggetions(actv_frequency, MEDICINES_FREQUENCY);
-        updateSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
-        updateSuggetions(actv_course, MEDICINES_COURSE);
+        //update medicine when add button click
+        //updateSuggetions(actv_medicine_name, MEDICINES);
+//        updateSuggetions(actv_medicine_type, MEDICINES_TYPE);
+//        updateSuggetions(actv_dose, MEDICINES_DOSE);
+//        updateSuggetions(actv_frequency, MEDICINES_FREQUENCY);
+//        updateSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
+//        updateSuggetions(actv_course, MEDICINES_COURSE);
 
         LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
 

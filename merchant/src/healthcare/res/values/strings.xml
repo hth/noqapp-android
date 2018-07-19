@@ -2,11 +2,11 @@
 <resources>
 
 
-    <string name="dose_prompt"> Dose(Size)</string>
-    <string name="frequency_prompt">Frequency</string>
-    <string name="course_prompt">Course</string>
-    <string name="medicine_type">Medicine type</string>
-    <string name="medicine_name">Medicine name</string>
-    <string name="dose_timing">Dose Timing</string>
+    <string name="dose_prompt"> 250 mg</string>
+    <string name="frequency_prompt">OD</string>
+    <string name="course_prompt">1 Day</string>
+    <string name="medicine_type">Tablet</string>
+    <string name="medicine_name">Paracetamol</string>
+    <string name="dose_timing">After Food</string>
     <string name="exit_medical_screen">Press back again to close the Form.</string>
 </resources>
