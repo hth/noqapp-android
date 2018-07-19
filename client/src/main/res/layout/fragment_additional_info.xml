@@ -51,13 +51,12 @@
 
                     <TextView
                         style="@style/style_register_tv"
-                        android:text="@string/experience" />
+                        android:text="@string/awards" />
 
 
                     <TextView
                         android:id="@+id/tv_experience"
                         style="@style/style_register_tv"
-                        android:inputType="text|textMultiLine"
                         />
                 </LinearLayout>
 
