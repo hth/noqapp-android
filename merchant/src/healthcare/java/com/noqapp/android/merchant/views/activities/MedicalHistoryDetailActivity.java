@@ -500,7 +500,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                         jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
-                        jsonMedicalRecord.setPlanToPatient("")
+                        jsonMedicalRecord.setPlanToPatient(actv_instruction.getText().toString())
                                 .setFollowUpInDays("")
                                 .setDiagnosedById("");
 
