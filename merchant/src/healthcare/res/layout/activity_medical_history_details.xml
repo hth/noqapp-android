@@ -44,7 +44,7 @@
 
                         <TextView
                                 style="@style/style_mdh_header"
-                                android:text="Chief Complaint: "/>
+                                android:text="@string/mds_chief_complaints"/>
 
                         <AutoCompleteTextView
                                 android:id="@+id/actv_complaints"
@@ -69,7 +69,7 @@
 
                             <TextView
                                     style="@style/style_mdh_header"
-                                    android:text="Past History: "/>
+                                    android:text="@string/mds_past_history"/>
 
                             <AutoCompleteTextView
                                     android:id="@+id/actv_past_history"
@@ -101,7 +101,7 @@
 
                         <TextView
                                 style="@style/style_mdh_header"
-                                android:text="Family History: "/>
+                                android:text="@string/mds_family_history"/>
 
                         <AutoCompleteTextView
                                 android:id="@+id/actv_family_history"
@@ -120,7 +120,7 @@
 
                         <TextView
                                 style="@style/style_mdh_header"
-                                android:text="Known Allergies: "/>
+                                android:text="@string/mds_known_allergies"/>
 
                         <AutoCompleteTextView
                                 android:id="@+id/actv_known_allergy"
@@ -136,7 +136,7 @@
 
                 <TextView
                         style="@style/style_mdh_header"
-                        android:text="Physical Examination: "/>
+                        android:text="@string/mds_physical_exam"/>
 
 
                 <LinearLayout
@@ -158,7 +158,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="5dp"
                                 android:padding="5dp"
-                                android:text="Pulse"
+                                android:text="@string/pe_pulse"
                                 android:textSize="15sp"/>
 
                         <EditText
@@ -187,7 +187,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="5dp"
                                 android:padding="5dp"
-                                android:text="B.P (Blood Pressure)"
+                                android:text="@string/pe_bp"
                                 android:textSize="15sp"/>
 
                         <EditText
@@ -214,7 +214,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="5dp"
                                 android:padding="5dp"
-                                android:text="Weight(Kg)"
+                                android:text="@string/pe_weight"
                                 android:textSize="15sp"/>
 
                         <EditText
@@ -234,10 +234,74 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:layout_marginRight="5dp"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:padding="5dp"
+                                android:text="@string/pe_temperature"
+                                android:textSize="15sp"/>
+
+                        <EditText
+                                android:id="@+id/edt_temperature"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:inputType="numberSigned"
+                                android:maxLength="6"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="10dp"
+                                android:text=""/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:padding="5dp"
+                                android:text="@string/pe_oxygen"
+                                android:textSize="15sp"/>
+
+                        <EditText
+                                android:id="@+id/edt_oxygen"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:inputType="numberSigned"
+                                android:maxLength="6"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="10dp"
+                                android:text=""/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
 
                 <TextView
                         style="@style/style_mdh_header"
-                        android:text="Clinical Findings: "/>
+                        android:text="@string/mds_clinical_findings"/>
 
                 <AutoCompleteTextView
                         android:id="@+id/actv_clinical_finding"
@@ -248,7 +312,7 @@
 
                 <TextView
                         style="@style/style_mdh_header"
-                        android:text="Provisional /Differential Diagnosis"/>
+                        android:text="@string/mds_provisional_diagnosis"/>
 
                 <AutoCompleteTextView
                         android:id="@+id/actv_provisional"
@@ -258,7 +322,7 @@
 
                 <TextView
                         style="@style/style_mdh_header"
-                        android:text="Investigation Advised: "/>
+                        android:text="@string/mds_investigation_advice"/>
 
                 <AutoCompleteTextView
                         android:id="@+id/actv_investigation"
@@ -274,7 +338,7 @@
                             style="@style/style_mdh_header"
                             android:layout_width="wrap_content"
                             android:layout_alignParentLeft="true"
-                            android:text="Medication: "/>
+                            android:text="@string/mds_medication"/>
 
                     <TextView
                             android:id="@+id/tv_assist"
@@ -282,7 +346,7 @@
                             android:layout_width="wrap_content"
                             android:layout_alignParentRight="true"
                             android:drawableRight="@drawable/arrow_up"
-                            android:text="Assist"/>
+                            android:text="@string/mds_assist"/>
 
 
                 </RelativeLayout>
@@ -437,7 +501,7 @@
 
                 <TextView
                         style="@style/style_mdh_header"
-                        android:text="Instruction/Plan to patient: "/>
+                        android:text="@string/mds_instruction"/>
 
                 <AutoCompleteTextView
                         android:id="@+id/actv_instruction"
@@ -447,13 +511,55 @@
 
                 <TextView
                         style="@style/style_mdh_header"
-                        android:text="Follow up: "/>
+                        android:text="@string/mds_follow_up"/>
 
-                <AutoCompleteTextView
-                        android:id="@+id/actv_followup"
-                        style="@style/style_mdh_details"
-                        android:layout_marginBottom="10dp"
-                        android:text=""/>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="1"
+                        android:orientation="horizontal">
+
+                    <AutoCompleteTextView
+                            android:id="@+id/actv_followup"
+                            style="@style/style_mdh_details"
+                            android:layout_width="0dp"
+                            android:layout_weight=".5"
+                            android:layout_marginRight="10dp"
+                            android:digits="0123456789"
+                            android:inputType="numberSigned"
+                            android:maxLength="2"
+                            android:maxLines="1"
+                            android:text=""/>
+
+                    <RadioGroup
+                            android:id="@+id/rg_duration"
+                            android:layout_width="0dp"
+                            android:layout_weight=".5"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp">
+
+                        <RadioButton
+                                android:id="@+id/rb_days"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:layout_marginRight="10dp"
+                                android:textSize="14dp"
+                                android:text="@string/days"/>
+
+                        <RadioButton
+                                android:id="@+id/rb_months"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:textSize="14dp"
+                                android:text="@string/month"/>
+                    </RadioGroup>
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

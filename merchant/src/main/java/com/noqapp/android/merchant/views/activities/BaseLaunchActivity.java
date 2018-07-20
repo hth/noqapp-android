@@ -516,8 +516,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
             list_fragment.setLayoutParams(lp1);
             list_detail_fragment.setLayoutParams(lp0);
-            merchantListFragment.clearData();
-            merchantListFragment = null;
+            if(null != merchantListFragment) {
+                merchantListFragment.clearData();
+                merchantListFragment = null;
+            }
         }
         // logout
         sharedpreferences.edit().clear().apply();
@@ -683,6 +685,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Charts"));
         drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
         mDrawerList.setAdapter(drawerAdapter);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
     private void sendRegistrationToServer(String refreshToken) {

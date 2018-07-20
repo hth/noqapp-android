@@ -105,9 +105,9 @@ public class MedicalRecordFavouriteAdapter extends BaseAdapter {
                         @Override
                         public void onClick(View v) {
                             Toast.makeText(context,"Deleted from Favourite",Toast.LENGTH_LONG).show();
-                            adapterCommunicate.updateNonFavouriteList(medicalRecord,false);
                             medicalRecordList.remove(position);
                             notifyDataSetChanged();
+                            adapterCommunicate.updateNonFavouriteList(medicalRecord,false);
                             LaunchActivity.getLaunchActivity().setFavouriteMedicines(medicalRecordList);
                             mAlertDialog.dismiss();
                         }

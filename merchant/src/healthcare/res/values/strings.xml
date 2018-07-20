@@ -10,4 +10,28 @@
     <string name="dose_timing">After Food</string>
     <string name="exit_medical_screen">Press back again to close the Form.</string>
     <string name="favourite_text">Your favourite medicines will appear here</string>
+    <string name="month">Month</string>
+    <string name="days">Days</string>
+    <!--medical details screen-->
+
+
+    <string name="mds_chief_complaints">Chief Complaint:</string>
+    <string name="mds_past_history">Past History:</string>
+    <string name="mds_family_history">Family History:</string>
+    <string name="mds_known_allergies">Known Allergies:</string>
+    <string name="mds_physical_exam">Physical Examination: </string>
+    <string name="mds_clinical_findings">Clinical Findings:</string>
+    <string name="mds_provisional_diagnosis">Provisional /Differential Diagnosis:</string>
+    <string name="mds_investigation_advice">Investigation Advised:   </string>
+    <string name="mds_medication">Medication:  </string>
+    <string name="mds_assist">Assist </string>
+    <string name="mds_follow_up">Follow up: </string>
+    <string name="mds_instruction">Instruction/Plan to patient: </string>
+
+    <string name="pe_oxygen">Oxygen </string>
+    <string name="pe_temperature">Temperature </string>
+    <string name="pe_weight">Weight(Kg) </string>
+    <string name="pe_bp">B.P </string>
+    <string name="pe_pulse">Pulse</string>
+
 </resources>

@@ -99,6 +99,8 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             mType.setGravity(Gravity.LEFT | Gravity.CENTER);
             switch (physicalExam) {
                 case TE:
+                    mType.setText(physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getTemperature());
                     break;
                 case BP:
                     mType.setText(physicalExam.getDescription() + ": "
@@ -109,6 +111,8 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                             + jsonMedicalPhysicalExaminations.getPluse());
                     break;
                 case OX:
+                    mType.setText(physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getOxygen());
                     break;
                 case WT:
                     mType.setText(physicalExam.getDescription() + ": "
