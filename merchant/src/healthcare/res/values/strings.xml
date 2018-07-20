@@ -9,4 +9,5 @@
     <string name="medicine_name">Paracetamol</string>
     <string name="dose_timing">After Food</string>
     <string name="exit_medical_screen">Press back again to close the Form.</string>
+    <string name="favourite_text">your favourite medicine list will appear here</string>
 </resources>
