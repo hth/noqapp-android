@@ -495,12 +495,14 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                         JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical()
                                 .setBloodPressure(new String[]{edt_bp.getText().toString()})
                                 .setPluse(edt_pulse.getText().toString())
-                                .setWeight(edt_weight.getText().toString());
+                                .setWeight(edt_weight.getText().toString())
+                                .setDiagnosedById("");
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                         jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
                         jsonMedicalRecord.setPlanToPatient("")
-                                .setFollowUpInDays("");
+                                .setFollowUpInDays("")
+                                .setDiagnosedById("");
 
                         medicalHistoryModel.add(LaunchActivity.getLaunchActivity().getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
