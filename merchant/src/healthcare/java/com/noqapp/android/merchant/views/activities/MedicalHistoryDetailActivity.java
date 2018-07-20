@@ -7,6 +7,7 @@ package com.noqapp.android.merchant.views.activities;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -23,6 +24,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,14 +44,17 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.Utils.AnimationUtils;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
+import com.noqapp.android.merchant.views.adapters.MedicalRecordFavouriteAdapter;
+import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MedicalHistoryDetailActivity extends AppCompatActivity implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter {
+public class MedicalHistoryDetailActivity extends AppCompatActivity implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate {
     private final String packageName = "com.google.android.apps.handwriting.ime";
     private final String CHIEF = "chief_complaint";
     private final String PAST_HISTORY = "past_history";
@@ -77,9 +82,11 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private EditText edt_weight, edt_bp, edt_pulse;
     private JsonQueuedPerson jsonQueuedPerson;
     private Button btn_update;
-    private ListView listview;
+    private ListView listview,listview_favroite;
     private List<JsonMedicalMedicine> medicalRecordList = new ArrayList<>();
+    private List<JsonMedicalMedicine> medicalRecordFavouriteList = new ArrayList<>();
     private MedicalRecordAdapter adapter;
+    private MedicalRecordFavouriteAdapter adapterFavourite;
     private MedicalHistoryModel medicalHistoryModel;
 
     private AutoCompleteTextView actv_medicine_type;
@@ -90,7 +97,9 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private Button tv_add;
     private long lastPress;
     private Toast backPressToast;
-
+    private TextView tv_assist;
+    private LinearLayout ll_fav_medicines;
+    private boolean isExpand;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,8 +108,16 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         medicalHistoryModel = new MedicalHistoryModel(this);
         listview = findViewById(R.id.listview);
-        adapter = new MedicalRecordAdapter(this, medicalRecordList);
+        listview_favroite = findViewById(R.id.listview_favroite);
+        adapter = new MedicalRecordAdapter(this, medicalRecordList,this);
         listview.setAdapter(adapter);
+
+        medicalRecordFavouriteList = LaunchActivity.getLaunchActivity().getFavouriteMedicines();
+        if(null == medicalRecordFavouriteList)
+            medicalRecordFavouriteList = new ArrayList<>();
+        adapterFavourite = new MedicalRecordFavouriteAdapter(this,medicalRecordFavouriteList,this);
+        listview_favroite.setAdapter(adapterFavourite);
+
         actv_complaints = findViewById(R.id.actv_complaints);
         actv_past_history = findViewById(R.id.actv_past_history);
         actv_family_history = findViewById(R.id.actv_family_history);
@@ -115,7 +132,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         edt_weight = findViewById(R.id.edt_weight);
         edt_bp = findViewById(R.id.edt_bp);
         edt_pulse = findViewById(R.id.edt_pulse);
-
+        ll_fav_medicines = findViewById(R.id.ll_fav_medicines);
 
         actv_medicine_name = findViewById(R.id.actv_medicine_name);
         actv_medicine_type = findViewById(R.id.actv_medicine_type);
@@ -124,6 +141,24 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         actv_dose_timing = findViewById(R.id.actv_dose_timing);
         actv_course = findViewById(R.id.actv_course);
         tv_add = findViewById(R.id.tv_add);
+        tv_assist = findViewById(R.id.tv_assist);
+        tv_assist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExpand) {
+                    AnimationUtils.expand(ll_fav_medicines);
+                    Drawable img = getResources().getDrawable( R.drawable.arrow_up );
+                    tv_assist.setCompoundDrawablesWithIntrinsicBounds( null, null, img, null);
+                   // iv_store_open_status.setBackground(ContextCompat.getDrawable(MedicalHistoryDetailActivity.this, R.drawable.arrow_down));
+                } else {
+                    AnimationUtils.collapse(ll_fav_medicines);
+                   // iv_store_open_status.setBackground(ContextCompat.getDrawable(MedicalHistoryDetailActivity.this, R.drawable.arrow_up));
+                    Drawable img = getResources().getDrawable( R.drawable.arrow_down );
+                    tv_assist.setCompoundDrawablesWithIntrinsicBounds( null, null, img, null);
+                }
+                isExpand = !isExpand;
+            }
+        });
 
 
         tv_add.setOnClickListener(new View.OnClickListener() {
@@ -139,30 +174,33 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                     jsonMedicalMedicine.setMedicationWithFood(actv_dose_timing.getText().toString());
                     jsonMedicalMedicine.setCourse(actv_course.getText().toString());
                     jsonMedicalMedicine.setName(actv_medicine_name.getText().toString());
+                    if(!medicalRecordList.contains(jsonMedicalMedicine)) {
+                        medicalRecordList.add(0, jsonMedicalMedicine);
+                        adapter.notifyDataSetChanged();
+                        updateSuggetions(actv_medicine_name, MEDICINES_NAME);
+                        setSuggetions(actv_medicine_name, MEDICINES_NAME,false);
+                        updateSuggetions(actv_dose, MEDICINES_DOSE);
+                        setSuggetions(actv_dose, MEDICINES_DOSE,false);
+                        updateSuggetions(actv_frequency, MEDICINES_FREQUENCY);
+                        setSuggetions(actv_frequency, MEDICINES_FREQUENCY,false);
+                        updateSuggetions(actv_course, MEDICINES_COURSE);
+                        setSuggetions(actv_course, MEDICINES_COURSE,false);
+                        updateSuggetions(actv_medicine_type, MEDICINES_TYPE);
+                        setSuggetions(actv_medicine_type, MEDICINES_TYPE,false);
+                        updateSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
+                        setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS,false);
+                        // update medicine related info because we are setting the fields blank
+                        LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
+                        actv_medicine_name.setText("");
+                        actv_dose.setText("");
+                        actv_frequency.setText("");
+                        actv_course.setText("");
+                        actv_medicine_type.setText("");
+                        actv_dose_timing.setText("");
+                    }else{
+                        Toast.makeText(MedicalHistoryDetailActivity.this, "medicine already added", Toast.LENGTH_LONG).show();
+                    }
 
-                    medicalRecordList.add(0, jsonMedicalMedicine);
-                    adapter.notifyDataSetChanged();
-
-                    updateSuggetions(actv_medicine_name, MEDICINES_NAME);
-                    setSuggetions(actv_medicine_name, MEDICINES_NAME,false);
-                    updateSuggetions(actv_dose, MEDICINES_DOSE);
-                    setSuggetions(actv_dose, MEDICINES_DOSE,false);
-                    updateSuggetions(actv_frequency, MEDICINES_FREQUENCY);
-                    setSuggetions(actv_frequency, MEDICINES_FREQUENCY,false);
-                    updateSuggetions(actv_course, MEDICINES_COURSE);
-                    setSuggetions(actv_course, MEDICINES_COURSE,false);
-                    updateSuggetions(actv_medicine_type, MEDICINES_TYPE);
-                    setSuggetions(actv_medicine_type, MEDICINES_TYPE,false);
-                    updateSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
-                    setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS,false);
-                    // update medicine related info because we are setting the fields blank
-                    LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
-                    actv_medicine_name.setText("");
-                    actv_dose.setText("");
-                    actv_frequency.setText("");
-                    actv_course.setText("");
-                    actv_medicine_type.setText("");
-                    actv_dose_timing.setText("");
                 }
             }
         });
@@ -489,4 +527,35 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         }
     }
 
+
+    @Override
+    public void updateFavouriteList(JsonMedicalMedicine jsonMedicalMedicine, boolean isAdded) {
+        if (isAdded) {
+            if (medicalRecordFavouriteList.contains(jsonMedicalMedicine))
+                Toast.makeText(this, "medicine already marked as favroite", Toast.LENGTH_LONG).show();
+            else
+                medicalRecordFavouriteList.add(jsonMedicalMedicine);
+        } else
+            medicalRecordFavouriteList.remove(jsonMedicalMedicine);
+        LaunchActivity.getLaunchActivity().setFavouriteMedicines(medicalRecordFavouriteList);
+        adapterFavourite = new MedicalRecordFavouriteAdapter(this, medicalRecordFavouriteList, this);
+        listview_favroite.setAdapter(adapterFavourite);
+    }
+
+    @Override
+    public void updateNonFavouriteList(JsonMedicalMedicine jsonMedicalMedicine, boolean isAdded) {
+        if (isAdded) {
+            if (medicalRecordList.contains(jsonMedicalMedicine))
+                Toast.makeText(this, "medicine already added", Toast.LENGTH_LONG).show();
+            else
+                medicalRecordList.add(jsonMedicalMedicine);
+        } else {
+            medicalRecordList.remove(jsonMedicalMedicine);
+            jsonMedicalMedicine.setFavourite(false);
+            medicalRecordList.add(jsonMedicalMedicine);
+        }
+        adapter = new MedicalRecordAdapter(this, medicalRecordList, this);
+        listview.setAdapter(adapter);
+
+    }
 }

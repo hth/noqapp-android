@@ -37,6 +37,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.DeviceModel;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -64,6 +66,7 @@ import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -93,6 +96,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_USER_AUTH = "auth";
     protected final String KEY_LAST_UPDATE = "last_update";
     protected final String KEY_SUGGESTION = "suggestions";
+    protected final String KEY_MEDICINES = "medicines";
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
 
@@ -323,6 +327,20 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         Gson gson = new Gson();
         String strInput = gson.toJson(mHashmap);
         sharedpreferences.edit().putString(KEY_SUGGESTION, strInput).apply();
+    }
+
+    public void setFavouriteMedicines(List<JsonMedicalMedicine> jsonMedicalMedicines){
+        Gson gson = new Gson();
+        String json = gson.toJson(jsonMedicalMedicines);
+        sharedpreferences.edit().putString(KEY_MEDICINES, json).apply();
+    }
+
+    public List<JsonMedicalMedicine> getFavouriteMedicines(){
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<JsonMedicalMedicine>>(){}.getType();
+        String listData = sharedpreferences.getString(KEY_MEDICINES, null);
+        List<JsonMedicalMedicine> jsonMedicalMedicines = gson.fromJson(listData, type);
+        return  jsonMedicalMedicines;
     }
 
     public ArrayList<String> getCounterNames() {

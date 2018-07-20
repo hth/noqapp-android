@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
@@ -41,6 +42,8 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
 
     @JsonProperty("mt")
     private String medicationType;
+
+    private boolean isFavourite = false;
 
     public String getName() {
         return name;
@@ -94,5 +97,32 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
     public JsonMedicalMedicine setMedicationType(String medicationType) {
         this.medicationType = medicationType;
         return this;
+    }
+
+    public boolean isFavourite() {
+        return isFavourite;
+    }
+
+    public JsonMedicalMedicine setFavourite(boolean favourite) {
+        isFavourite = favourite;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof JsonMedicalMedicine)) {
+            return false;
+        }
+        JsonMedicalMedicine user = (JsonMedicalMedicine) o;
+        return
+                Objects.equals(name, user.name) &&
+                        Objects.equals(medicationType, user.medicationType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, strength, dailyFrequency,course,medicationWithFood,medicationType,isFavourite);
     }
 }
