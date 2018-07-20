@@ -1,5 +1,10 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
+
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -12,22 +17,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-
 import java.util.List;
 
-public class MedicalRecordAdapter extends BaseAdapter {
+public class MedicalRecordFavouriteAdapter extends BaseAdapter {
 
     private Context context;
     private List<JsonMedicalMedicine> medicalRecordList;
     private AdapterCommunicate adapterCommunicate;
 
-    public MedicalRecordAdapter(Context context, List<JsonMedicalMedicine> medicalRecordList,AdapterCommunicate adapterCommunicate) {
+    public MedicalRecordFavouriteAdapter(Context context, List<JsonMedicalMedicine> medicalRecordList,AdapterCommunicate adapterCommunicate) {
         this.context = context;
         this.medicalRecordList = medicalRecordList;
         this.adapterCommunicate = adapterCommunicate;
@@ -77,6 +75,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
         recordHolder.tv_dose_timing.setText(medicalRecord.getMedicationWithFood());
         recordHolder.tv_course.setText(medicalRecord.getCourse());
         recordHolder.tv_medicine_name.setText(medicalRecord.getName());
+        recordHolder.iv_delete.setBackgroundResource(R.drawable.add_medic);
         recordHolder.iv_favourite.setBackgroundResource(medicalRecord.isFavourite()?R.drawable.ic_favorite:R.drawable.ic_favorite_border);
         recordHolder.iv_favourite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,16 +105,16 @@ public class MedicalRecordAdapter extends BaseAdapter {
                         @Override
                         public void onClick(View v) {
                             Toast.makeText(context,"Deleted from Favourite",Toast.LENGTH_LONG).show();
-                            medicalRecord.setFavourite(false);
-                            adapterCommunicate.updateFavouriteList(medicalRecord,false);
+                            adapterCommunicate.updateNonFavouriteList(medicalRecord,false);
+                            medicalRecordList.remove(position);
                             notifyDataSetChanged();
+                            LaunchActivity.getLaunchActivity().setFavouriteMedicines(medicalRecordList);
                             mAlertDialog.dismiss();
                         }
                     });
                     mAlertDialog.show();
                 }else{
                     medicalRecord.setFavourite(true);
-                    adapterCommunicate.updateFavouriteList(medicalRecord,true);
                     notifyDataSetChanged();
                 }
             }
@@ -123,15 +122,12 @@ public class MedicalRecordAdapter extends BaseAdapter {
         recordHolder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                medicalRecordList.remove(position);
-                notifyDataSetChanged();
+                //medicalRecordList.remove(position);
+                //notifyDataSetChanged();
+                adapterCommunicate.updateNonFavouriteList(medicalRecord,true);
             }
         });
         return view;
-    }
-
-    public List<JsonMedicalMedicine> getJsonMedicineList() {
-        return medicalRecordList;
     }
 
     static class RecordHolder {

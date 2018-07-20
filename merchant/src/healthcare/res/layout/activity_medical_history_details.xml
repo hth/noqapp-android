@@ -254,6 +254,7 @@
                         style="@style/style_mdh_details"
                         android:layout_marginBottom="10dp"
                         android:text=""/>
+
                 <TextView
                         style="@style/style_mdh_header"
                         android:text="Investigation Advised: "/>
@@ -263,6 +264,7 @@
                         style="@style/style_mdh_details"
                         android:layout_marginBottom="10dp"
                         android:text=""/>
+
                 <TextView
                         style="@style/style_mdh_header"
                         android:layout_width="wrap_content"
