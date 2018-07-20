@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,7 +80,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private HashMap<String, ArrayList<String>> mHashmapTemp = null;
     private String qCodeQR = "";
     private AutoCompleteTextView actv_medicine_name, actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation,actv_instruction,actv_followup;
-    private EditText edt_weight, edt_bp, edt_pulse;
+    private EditText edt_weight, edt_bp, edt_pulse, edt_temperature, edt_oxygen;
     private JsonQueuedPerson jsonQueuedPerson;
     private Button btn_update;
     private ListView listview,listview_favroite;
@@ -100,6 +101,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private TextView tv_assist,tv_favourite_text;
     private LinearLayout ll_fav_medicines;
     private boolean isExpand;
+    private RadioGroup rg_duration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +134,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         edt_weight = findViewById(R.id.edt_weight);
         edt_bp = findViewById(R.id.edt_bp);
         edt_pulse = findViewById(R.id.edt_pulse);
+        edt_temperature = findViewById(R.id.edt_temperature);
+        edt_oxygen = findViewById(R.id.edt_oxygen);
         ll_fav_medicines = findViewById(R.id.ll_fav_medicines);
 
         actv_medicine_name = findViewById(R.id.actv_medicine_name);
@@ -142,6 +146,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         actv_course = findViewById(R.id.actv_course);
         tv_add = findViewById(R.id.tv_add);
         tv_assist = findViewById(R.id.tv_assist);
+        rg_duration = findViewById(R.id.rg_duration);
         tv_favourite_text = findViewById(R.id.tv_favourite_text);
         tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE:View.VISIBLE);
         tv_assist.setOnClickListener(new View.OnClickListener() {
@@ -496,14 +501,23 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                                 .setBloodPressure(new String[]{edt_bp.getText().toString()})
                                 .setPluse(edt_pulse.getText().toString())
                                 .setWeight(edt_weight.getText().toString())
+                                .setOxygen(edt_oxygen.getText().toString())
+                                .setTemperature(edt_temperature.getText().toString())
                                 .setDiagnosedById("");
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                         jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
                         jsonMedicalRecord.setPlanToPatient(actv_instruction.getText().toString())
-                                .setFollowUpInDays("")
                                 .setDiagnosedById("");
-
+                        if (!actv_followup.getText().toString().equals("")) {
+                            String value = actv_followup.getText().toString();
+                            int selectedId = rg_duration.getCheckedRadioButtonId();
+                            if (selectedId == R.id.rb_months) {
+                                jsonMedicalRecord.setFollowUpInDays(String.valueOf(Integer.parseInt(value) * 30));
+                            } else {
+                                jsonMedicalRecord.setFollowUpInDays(value);
+                            }
+                        }
                         medicalHistoryModel.add(LaunchActivity.getLaunchActivity().getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
@@ -561,6 +575,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
             medicalRecordList.remove(jsonMedicalMedicine);
             jsonMedicalMedicine.setFavourite(false);
             medicalRecordList.add(jsonMedicalMedicine);
+
         }
         adapter = new MedicalRecordAdapter(this, medicalRecordList, this);
         listview.setAdapter(adapter);
