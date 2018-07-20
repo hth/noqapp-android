@@ -39,8 +39,6 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
     @JsonProperty("wt")
     private String weight;
 
-    @JsonProperty("dbi")
-    private String diagnosedById;
 
     public String getTemperature() {
         return temperature;
@@ -87,12 +85,4 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
         return this;
     }
 
-    public String getDiagnosedById() {
-        return diagnosedById;
-    }
-
-    public JsonMedicalPhysical setDiagnosedById(String diagnosedById) {
-        this.diagnosedById = diagnosedById;
-        return this;
-    }
 }
