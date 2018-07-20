@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:card_view="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="#f2f2f2"
@@ -265,10 +266,62 @@
                         android:layout_marginBottom="10dp"
                         android:text=""/>
 
-                <TextView
-                        style="@style/style_mdh_header"
-                        android:layout_width="wrap_content"
-                        android:text="Medication: "/>
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            style="@style/style_mdh_header"
+                            android:layout_width="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="Medication: "/>
+
+                    <TextView
+                            android:id="@+id/tv_assist"
+                            style="@style/style_mdh_header"
+                            android:layout_width="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:drawableRight="@drawable/arrow_up"
+                            android:text="Assist"/>
+
+
+                </RelativeLayout>
+
+
+                <android.support.v7.widget.CardView
+                        android:id="@+id/cardview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        card_view:cardBackgroundColor="@android:color/white"
+                        card_view:cardCornerRadius="4dp">
+
+                    <LinearLayout
+                            android:id="@+id/ll_fav_medicines"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:orientation="vertical">
+
+                        <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                                android:id="@+id/listview_favroite"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:listSelector="@android:color/transparent"
+                                android:divider="@null"/>
+
+                        <TextView
+                                android:id="@+id/tv_favourite_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:gravity="center_horizontal"
+                                android:text="@string/favourite_text"/>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
 
                 <com.noqapp.android.merchant.views.customviews.FixedHeightListView
                         android:id="@+id/listview"

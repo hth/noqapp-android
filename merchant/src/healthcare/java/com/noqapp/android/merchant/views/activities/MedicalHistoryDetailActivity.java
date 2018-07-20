@@ -97,7 +97,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private Button tv_add;
     private long lastPress;
     private Toast backPressToast;
-    private TextView tv_assist;
+    private TextView tv_assist,tv_favourite_text;
     private LinearLayout ll_fav_medicines;
     private boolean isExpand;
     @Override
@@ -142,6 +142,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         actv_course = findViewById(R.id.actv_course);
         tv_add = findViewById(R.id.tv_add);
         tv_assist = findViewById(R.id.tv_assist);
+        tv_favourite_text = findViewById(R.id.tv_favourite_text);
+        tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE:View.VISIBLE);
         tv_assist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,6 +159,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                     tv_assist.setCompoundDrawablesWithIntrinsicBounds( null, null, img, null);
                 }
                 isExpand = !isExpand;
+                tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE:View.VISIBLE);
             }
         });
 
@@ -540,6 +543,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         LaunchActivity.getLaunchActivity().setFavouriteMedicines(medicalRecordFavouriteList);
         adapterFavourite = new MedicalRecordFavouriteAdapter(this, medicalRecordFavouriteList, this);
         listview_favroite.setAdapter(adapterFavourite);
+        tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE:View.VISIBLE);
     }
 
     @Override
@@ -556,6 +560,6 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         }
         adapter = new MedicalRecordAdapter(this, medicalRecordList, this);
         listview.setAdapter(adapter);
-
+        tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE:View.VISIBLE);
     }
 }
