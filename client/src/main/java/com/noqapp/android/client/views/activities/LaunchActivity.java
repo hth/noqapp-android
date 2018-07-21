@@ -264,7 +264,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (null != scanFragment && Double.compare(old_latitude, latitute) != 0) {
             try {
                 if (old_latitude == 0) {
-                    scanFragment.updateUIwithNewLocation(latitute, longitute, cityName);
+                    scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
                     old_latitude = latitute;
                 }
 //                else {
@@ -274,7 +274,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 //                                .setMessage(getString(R.string.location_msg))
 //                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
 //                                    public void onClick(DialogInterface dialog, int which) {
-//                                        scanFragment.updateUIwithNewLocation(latitute, longitute, cityName);
+//                                        scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
 //                                    }
 //                                })
 //                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
