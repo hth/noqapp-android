@@ -259,7 +259,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
         fetchCurrentAndHistoryList();
         try {
-            tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + "FCM Token: " + NoQueueBaseActivity.getFCMToken());
+            tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getFCMToken());
             tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
