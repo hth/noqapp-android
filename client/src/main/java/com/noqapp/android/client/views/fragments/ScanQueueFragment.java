@@ -509,7 +509,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         rv_current_activity.setAdapter(currentActivityAdapter);
         tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentlist.size()) + ")");
         currentActivityAdapter.notifyDataSetChanged();
-        
+
         Collections.sort(historylist, new Comparator<JsonTokenAndQueue>() {
             DateFormat f = Formatter.formatRFC822;
 
