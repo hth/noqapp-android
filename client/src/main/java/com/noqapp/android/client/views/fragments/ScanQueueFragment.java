@@ -182,7 +182,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         tv_auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(city)){
+                if(TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)){
                     lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
                     log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
                     city = LaunchActivity.getLaunchActivity().getDefaultCity();
@@ -252,7 +252,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
 
-        if(TextUtils.isEmpty(city)){
+        if(TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)){
             lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
             log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
             city = LaunchActivity.getLaunchActivity().getDefaultCity();
