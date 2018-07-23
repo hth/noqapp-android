@@ -143,7 +143,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
         updateLocationUI();
     }
 
-    private boolean checkLocation() {
+    public boolean checkLocation() {
         if (!isLocationEnabled())
             showAlert();
         return isLocationEnabled();
@@ -190,7 +190,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-                        startLocationUpdates();
+                       onConnected(getIntent().getExtras());
                     }
                 } else {
                     // Permission denied, Disable the functionality that depends on this permission.

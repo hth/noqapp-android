@@ -37,7 +37,7 @@
         android:id="@+id/tv_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="guest.user@email.com" />
+        android:text="Please login" />
 
     <TextView
         android:id="@+id/tv_login"
