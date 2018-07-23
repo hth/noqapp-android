@@ -9,6 +9,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -241,6 +242,14 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
+        }
+
+        if(TextUtils.isEmpty(city)){
+            lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
+            log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
+            city = LaunchActivity.getLaunchActivity().getDefaultCity();
+            AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
+            getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
         }
     }
 
