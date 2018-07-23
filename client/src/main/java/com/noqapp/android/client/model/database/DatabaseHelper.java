@@ -13,14 +13,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "noqueue.db";
     private static final int DB_VERSION = 3;
     private static final Patch[] PATCHES = new Patch[]{
-            new Patch(1, 2, "1.0.55") {
+            new Patch(1, 3, "1.0.200") {
                 public void apply(SQLiteDatabase db) {
                     CreateTable.createTableNotification(db);
                     CreateTable.alterTable(db);
                     CreateTable.updateBusinessType(db);
                     CreateTable.dropAndCreateTable(db);
                 }
-            }
+            },
 
     };
     private static DatabaseHelper dbInstance;
