@@ -356,11 +356,13 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     @OnClick(R.id.btn_join_queues)
     public void joinClick() {
-        Intent in = new Intent(this, CategoryPagerActivity.class);
-        in.putExtra("list", (Serializable) getCategoryThatArePopulated());
-        in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
-        in.putExtra("title", title);
-        startActivity(in);
+        if (null != getCategoryThatArePopulated() && null != cacheQueue.getIfPresent("queue")) {
+            Intent in = new Intent(this, CategoryPagerActivity.class);
+            in.putExtra("list", (Serializable) getCategoryThatArePopulated());
+            in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
+            in.putExtra("title", title);
+            startActivity(in);
+        }
     }
 
 }
