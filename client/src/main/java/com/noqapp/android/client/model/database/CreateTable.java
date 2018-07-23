@@ -122,25 +122,32 @@ public class CreateTable {
     }
 
     static void alterTable(SQLiteDatabase db) {
+        try {
+            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.BUSINESS_TYPE + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.GEOHASH + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.TOWN + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.AREA + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.DISPLAY_IMAGE + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.QUEUE_USER_ID + " TEXT  ");
 
-        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.BUSINESS_TYPE + " TEXT  ");
-        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.GEOHASH + " TEXT  ");
-        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.TOWN + " TEXT  ");
-        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.AREA + " TEXT  ");
-        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.DISPLAY_IMAGE + " TEXT  ");
-        db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.QUEUE_USER_ID + " TEXT  ");
-
-        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.BUSINESS_TYPE + " TEXT  ");
-        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.GEOHASH + " TEXT  ");
-        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.TOWN + " TEXT  ");
-        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.AREA + " TEXT  ");
-        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.DISPLAY_IMAGE + " TEXT  ");
-        db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.QUEUE_USER_ID + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.BUSINESS_TYPE + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.GEOHASH + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.TOWN + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.AREA + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.DISPLAY_IMAGE + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.QUEUE_USER_ID + " TEXT  ");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     static void updateBusinessType(SQLiteDatabase db) {
-        db.execSQL("UPDATE " + TokenQueue.TABLE_NAME + " SET " + TokenQueue.BUSINESS_TYPE + " = DO WHERE " + TokenQueue.BUSINESS_TYPE + " = HO");
-        db.execSQL("UPDATE " + TokenQueueHistory.TABLE_NAME + " SET " + TokenQueue.BUSINESS_TYPE + " = DO WHERE " + TokenQueue.BUSINESS_TYPE + " = HO");
+        try {
+            db.execSQL("UPDATE " + TokenQueue.TABLE_NAME + " SET " + TokenQueue.BUSINESS_TYPE + "= 'DO'  WHERE " + TokenQueue.BUSINESS_TYPE + " = 'HO'");
+            db.execSQL("UPDATE " + TokenQueueHistory.TABLE_NAME + " SET " + TokenQueue.BUSINESS_TYPE + "= 'DO'  WHERE " + TokenQueue.BUSINESS_TYPE + " = 'HO'");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     static void dropAndCreateTable(SQLiteDatabase db) {

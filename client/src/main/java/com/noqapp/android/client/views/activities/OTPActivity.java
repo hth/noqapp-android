@@ -32,6 +32,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -333,7 +334,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
                 // Set the verification text based on the credential
                 if (cred != null) {
-                    if (cred.getSmsCode() != null) {
+                    if (!TextUtils.isEmpty(cred.getSmsCode()) && cred.getSmsCode().length() ==6) {
                         edt_one.setText(cred.getSmsCode().charAt(0));
                         edt_two.setText(cred.getSmsCode().charAt(1));
                         edt_three.setText(cred.getSmsCode().charAt(2));
