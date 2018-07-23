@@ -414,7 +414,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             tv_name.setText(NoQueueBaseActivity.getUserName());
         } else {
             tv_login.setText("Login");
-            tv_email.setText("guest.user@email.com");
+            tv_email.setText("Please login");
             tv_name.setText("Guest User");
         }
         tv_login.setVisibility(View.GONE);
