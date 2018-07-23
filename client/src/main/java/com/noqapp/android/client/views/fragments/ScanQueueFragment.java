@@ -116,16 +116,14 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     private double lat, log;
     private String city = "";
 
-
     public ScanQueueFragment() {
 
     }
 
-    public void updateUIwithNewLocation(double latitute, double longitute, String cityName) {
-
-        getNearMeInfo(cityName, "" + latitute, "" + longitute);
-        lat = latitute;
-        log = longitute;
+    public void updateUIWithNewLocation(double latitude, double longitude, String cityName) {
+        getNearMeInfo(cityName, "" + latitude, "" + longitude);
+        lat = latitude;
+        log = longitude;
         AppUtilities.setAutoCompleteText(autoCompleteTextView, cityName);
         city = cityName;
     }
@@ -196,27 +194,22 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         recentClickListner = this;
         storeListener = this;
         rv_recent_activity.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        rv_recent_activity.setLayoutManager(horizontalLayoutManagaer);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rv_recent_activity.setLayoutManager(horizontalLayoutManager);
         rv_recent_activity.setItemAnimator(new DefaultItemAnimator());
 
-
         //
-
         rv_current_activity.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer2
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        rv_current_activity.setLayoutManager(horizontalLayoutManagaer2);
+        LinearLayoutManager horizontalLayoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rv_current_activity.setLayoutManager(horizontalLayoutManager2);
         rv_current_activity.setItemAnimator(new DefaultItemAnimator());
         rv_current_activity.addItemDecoration(new CirclePagerIndicatorDecoration());
 
 
         //
         rv_merchant_around_you.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer1
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer1);
+        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rv_merchant_around_you.setLayoutManager(horizontalLayoutManager1);
         // rv_merchant_around_you.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL));
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
 
@@ -259,7 +252,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
         fetchCurrentAndHistoryList();
         try {
-            tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + "FCM Token: " + NoQueueBaseActivity.getFCMToken());
+            tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getFCMToken());
             tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -315,7 +308,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @Override
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
-
         nearMeData = new ArrayList<>();
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         //sort the list, give the Comparator the current location
@@ -517,7 +509,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         rv_current_activity.setAdapter(currentActivityAdapter);
         tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentlist.size()) + ")");
         currentActivityAdapter.notifyDataSetChanged();
-
 
         Collections.sort(historylist, new Comparator<JsonTokenAndQueue>() {
             DateFormat f = Formatter.formatRFC822;
