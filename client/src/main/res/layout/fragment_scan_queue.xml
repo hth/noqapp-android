@@ -262,7 +262,8 @@
                     android:layout_alignParentRight="true"
                     android:text="@string/view_all"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 

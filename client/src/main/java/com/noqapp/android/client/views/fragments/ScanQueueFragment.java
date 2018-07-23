@@ -321,6 +321,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             recentActivityAdapter.updateLatLong(lat, log);
             recentActivityAdapter.notifyDataSetChanged();
         }
+        tv_near_view_all.setVisibility(nearMeData.size() == 0 ? View.GONE:View.VISIBLE);
     }
 
     @Override

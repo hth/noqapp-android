@@ -66,6 +66,8 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         //getString(R.string.medical_history));
         nearMeModel = new NearMeModel(this);
         listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
+        if(null == listData)
+        listData = new ArrayList<>();
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         longitute = getIntent().getStringExtra("long");
