@@ -125,6 +125,17 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         return launchActivity;
     }
 
+    public double  getDefaultLatitude() {
+        return 19.0760;
+    }
+
+    public  double getDefaultLongitude() {
+        return 72.8777;
+    }
+    public  String getDefaultCity() {
+        return "Mumbai";
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
