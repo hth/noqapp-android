@@ -7,11 +7,11 @@ package com.noqapp.android.merchant.views.activities;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -23,12 +23,14 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -40,6 +42,8 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.common.beans.medical.JsonPathology;
+
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.model.M_MerchantProfileModel;
@@ -49,16 +53,64 @@ import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.Utils.AnimationUtils;
+import com.noqapp.android.merchant.views.Utils.GridItem;
+import com.noqapp.android.merchant.views.Utils.TestCaseString;
+import com.noqapp.android.merchant.views.adapters.GridAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordFavouriteAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
+import com.noqapp.android.merchant.views.interfaces.GridCommunication;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MedicalHistoryDetailActivity extends AppCompatActivity implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate {
+public class MedicalHistoryDetailActivity extends AppCompatActivity implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate, GridCommunication {
+
+
+    private String jsonText =   "{\n" +
+            "  \"pathology\": {\n" +
+            "    \"blood\": [\n" +
+            "      \"Prostate-Specific Antigen (PSA)\",\n" +
+            "      \"Thyroid Stimulating Hormone (TSH)\",\n" +
+            "      \"Testosterone (Free)\",\n" +
+            "      \"Estradiol\",\n" +
+            "      \"Pregnenolone\",\n" +
+            "      \"Homocysteine\",\n" +
+            "      \"Hemoglobin A1C (HbA1C)\",\n" +
+            "      \"Dihydrotestosterone (DHT)\"\n" +
+            "    ],\n" +
+            "    \"urine\": [\n" +
+            "      \"Urinary Methylmalonic Acid (MMA)\",\n" +
+            "      \"Urinalysis\",\n" +
+            "      \"Neurotransmitter Panel\",\n" +
+            "      \"Iodine\",\n" +
+            "      \"Protein and Creatinine\"\n" +
+            "    ]\n" +
+            "  },\n" +
+            "  \"radiology\": {\n" +
+            "    \"x_ray\": [\n" +
+            "      \"Bone Density (BMD)\",\n" +
+            "      \"Ribs (Oblique)\",\n" +
+            "      \"Acromioclavicular (AC) Joint\",\n" +
+            "      \"Teeth and bones X-rays\",\n" +
+            "      \"Submentovertex (S.M.V.)\"\n" +
+            "    ],\n" +
+            "    \"mri\": [\n" +
+            "      \"Angiography (MRA) Head\",\n" +
+            "      \"Venography (MRV) Brain\",\n" +
+            "      \"Pituitary With Contrast\",\n" +
+            "      \"Angiography (MRA) Neck\",\n" +
+            "      \"Cholangiopancreatography (MRCP)\"\n" +
+            "    ]\n" +
+            "  },\n" +
+            "  \"general\": [\n" +
+            "    \"ecg\",\n" +
+            "    \"cag\"\n" +
+            "  ]\n" +
+            "}";
+
     private final String packageName = "com.google.android.apps.handwriting.ime";
     private final String CHIEF = "chief_complaint";
     private final String PAST_HISTORY = "past_history";
@@ -80,13 +132,13 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     //
 
     private ImageView actionbarBack;
-    private HashMap<String, ArrayList<String>> mHashmapTemp = null;
+    private HashMap<String, ArrayList<String>> hashmap = null;
     private String qCodeQR = "";
-    private AutoCompleteTextView actv_medicine_name, actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation,actv_instruction,actv_followup;
+    private AutoCompleteTextView actv_medicine_name, actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation, actv_instruction, actv_followup;
     private EditText edt_weight, edt_bp, edt_pulse, edt_temperature, edt_oxygen;
     private JsonQueuedPerson jsonQueuedPerson;
     private Button btn_update;
-    private ListView listview,listview_favroite;
+    private ListView listview, listview_favroite;
     private List<JsonMedicalMedicine> medicalRecordList = new ArrayList<>();
     private List<JsonMedicalMedicine> medicalRecordFavouriteList = new ArrayList<>();
     private MedicalRecordAdapter adapter;
@@ -101,27 +153,60 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     private Button tv_add;
     private long lastPress;
     private Toast backPressToast;
-    private TextView tv_assist,tv_favourite_text;
+    private TextView tv_assist, tv_favourite_text;
     private LinearLayout ll_fav_medicines;
     private boolean isExpand;
     private RadioGroup rg_duration;
+
+    private SegmentedControl sc_blood,sc_urine;
+    private ArrayList<String> sc_blood_data = new ArrayList<>();
+    private ArrayList<String> sc_urine_data = new ArrayList<>();
+    private TestCaseString testCaseString;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history_details);
+        try {
+            testCaseString = new Gson().fromJson(jsonText, TestCaseString.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
+        actionbarBack = findViewById(R.id.actionbarBack);
         medicalHistoryModel = new MedicalHistoryModel(this);
         listview = findViewById(R.id.listview);
         listview_favroite = findViewById(R.id.listview_favroite);
-        adapter = new MedicalRecordAdapter(this, medicalRecordList,this);
+        adapter = new MedicalRecordAdapter(this, medicalRecordList, this);
         listview.setAdapter(adapter);
 
         medicalRecordFavouriteList = LaunchActivity.getLaunchActivity().getFavouriteMedicines();
-        if(null == medicalRecordFavouriteList)
+        if (null == medicalRecordFavouriteList)
             medicalRecordFavouriteList = new ArrayList<>();
-        adapterFavourite = new MedicalRecordFavouriteAdapter(this,medicalRecordFavouriteList,this);
+        adapterFavourite = new MedicalRecordFavouriteAdapter(this, medicalRecordFavouriteList, this);
         listview_favroite.setAdapter(adapterFavourite);
+        sc_blood = findViewById(R.id.sc_blood);
+        sc_urine = findViewById(R.id.sc_urine);
+        TextView tv_urine = findViewById(R.id.tv_urine);
+        tv_urine.setPaintFlags(tv_urine.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
+        TextView tv_blood_test = findViewById(R.id.tv_blood_test);
+        tv_blood_test.setPaintFlags(tv_blood_test.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
+
+        ArrayList<String> data = testCaseString.getPathology().getBlood();
+        ArrayList<String> data1 = testCaseString.getPathology().getUrine();
+         ArrayList<GridItem> gridItems = new ArrayList<>();
+        ArrayList<GridItem> gridItems1 = new ArrayList<>();
+        for (int i =0 ; i< data.size();i++){
+            gridItems.add(new GridItem().setFavourite(false).setKey("pathology").setLabel(data.get(i)).setSelect(false).setFavourite(true));
+        }
+        for (int i =0 ; i< data1.size();i++){
+            gridItems1.add(new GridItem().setFavourite(false).setKey("pathology").setLabel(data1.get(i)).setSelect(false).setFavourite(false));
+        }
+        GridView gv_blood =  findViewById(R.id.gv_blood);
+        GridView gv_urine =  findViewById(R.id.gv_urine);
+        gv_blood.setAdapter(new GridAdapter(this,gridItems,this,"blood"));
+        gv_urine.setAdapter(new GridAdapter(this,gridItems1,this,"urine"));
 
         actv_complaints = findViewById(R.id.actv_complaints);
         actv_past_history = findViewById(R.id.actv_past_history);
@@ -151,23 +236,23 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         tv_assist = findViewById(R.id.tv_assist);
         rg_duration = findViewById(R.id.rg_duration);
         tv_favourite_text = findViewById(R.id.tv_favourite_text);
-        tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE:View.VISIBLE);
+        tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE : View.VISIBLE);
         tv_assist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isExpand) {
                     AnimationUtils.expand(ll_fav_medicines);
-                    Drawable img = getResources().getDrawable( R.drawable.arrow_up );
-                    tv_assist.setCompoundDrawablesWithIntrinsicBounds( null, null, img, null);
-                   // iv_store_open_status.setBackground(ContextCompat.getDrawable(MedicalHistoryDetailActivity.this, R.drawable.arrow_down));
+                    Drawable img = getResources().getDrawable(R.drawable.arrow_up);
+                    tv_assist.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
+                    // iv_store_open_status.setBackground(ContextCompat.getDrawable(MedicalHistoryDetailActivity.this, R.drawable.arrow_down));
                 } else {
                     AnimationUtils.collapse(ll_fav_medicines);
-                   // iv_store_open_status.setBackground(ContextCompat.getDrawable(MedicalHistoryDetailActivity.this, R.drawable.arrow_up));
-                    Drawable img = getResources().getDrawable( R.drawable.arrow_down );
-                    tv_assist.setCompoundDrawablesWithIntrinsicBounds( null, null, img, null);
+                    // iv_store_open_status.setBackground(ContextCompat.getDrawable(MedicalHistoryDetailActivity.this, R.drawable.arrow_up));
+                    Drawable img = getResources().getDrawable(R.drawable.arrow_down);
+                    tv_assist.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
                 }
                 isExpand = !isExpand;
-                tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE:View.VISIBLE);
+                tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE : View.VISIBLE);
             }
         });
 
@@ -185,30 +270,30 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                     jsonMedicalMedicine.setMedicationWithFood(actv_dose_timing.getText().toString());
                     jsonMedicalMedicine.setCourse(actv_course.getText().toString());
                     jsonMedicalMedicine.setName(actv_medicine_name.getText().toString());
-                    if(!medicalRecordList.contains(jsonMedicalMedicine)) {
+                    if (!medicalRecordList.contains(jsonMedicalMedicine)) {
                         medicalRecordList.add(0, jsonMedicalMedicine);
                         adapter.notifyDataSetChanged();
                         updateSuggetions(actv_medicine_name, MEDICINES_NAME);
-                        setSuggetions(actv_medicine_name, MEDICINES_NAME,false);
+                        setSuggetions(actv_medicine_name, MEDICINES_NAME, false);
                         updateSuggetions(actv_dose, MEDICINES_DOSE);
-                        setSuggetions(actv_dose, MEDICINES_DOSE,false);
+                        setSuggetions(actv_dose, MEDICINES_DOSE, false);
                         updateSuggetions(actv_frequency, MEDICINES_FREQUENCY);
-                        setSuggetions(actv_frequency, MEDICINES_FREQUENCY,false);
+                        setSuggetions(actv_frequency, MEDICINES_FREQUENCY, false);
                         updateSuggetions(actv_course, MEDICINES_COURSE);
-                        setSuggetions(actv_course, MEDICINES_COURSE,false);
+                        setSuggetions(actv_course, MEDICINES_COURSE, false);
                         updateSuggetions(actv_medicine_type, MEDICINES_TYPE);
-                        setSuggetions(actv_medicine_type, MEDICINES_TYPE,false);
+                        setSuggetions(actv_medicine_type, MEDICINES_TYPE, false);
                         updateSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
-                        setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS,false);
+                        setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS, false);
                         // update medicine related info because we are setting the fields blank
-                        LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
+                        LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
                         actv_medicine_name.setText("");
                         actv_dose.setText("");
                         actv_frequency.setText("");
                         actv_course.setText("");
                         actv_medicine_type.setText("");
                         actv_dose_timing.setText("");
-                    }else{
+                    } else {
                         Toast.makeText(MedicalHistoryDetailActivity.this, "medicine already added", Toast.LENGTH_LONG).show();
                     }
 
@@ -278,48 +363,48 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         Gson gson = new Gson();
         if (TextUtils.isEmpty(strOutput) || strOutput.equalsIgnoreCase("null")) {
             Log.v("JSON", "empty json");
-            mHashmapTemp = new HashMap<>();
-            mHashmapTemp.put(CHIEF, new ArrayList<String>());
-            mHashmapTemp.put(PAST_HISTORY, new ArrayList<String>());
-            mHashmapTemp.put(FAMILY_HISTORY, new ArrayList<String>());
-            mHashmapTemp.put(CLINICAL_FINDINGS, new ArrayList<String>());
-            mHashmapTemp.put(PROVISIONAL_DIAGNOSIS, new ArrayList<String>());
-            mHashmapTemp.put(INVESTIGATION, new ArrayList<String>());
-            mHashmapTemp.put(KNOWN_ALLERGIES, new ArrayList<String>());
-            mHashmapTemp.put(MEDICINES_NAME, new ArrayList<String>());
-            mHashmapTemp.put(FOLLOW_UP, new ArrayList<String>());
-            mHashmapTemp.put(INSTRUCTIONS, new ArrayList<String>());
+            hashmap = new HashMap<>();
+            hashmap.put(CHIEF, new ArrayList<String>());
+            hashmap.put(PAST_HISTORY, new ArrayList<String>());
+            hashmap.put(FAMILY_HISTORY, new ArrayList<String>());
+            hashmap.put(CLINICAL_FINDINGS, new ArrayList<String>());
+            hashmap.put(PROVISIONAL_DIAGNOSIS, new ArrayList<String>());
+            hashmap.put(INVESTIGATION, new ArrayList<String>());
+            hashmap.put(KNOWN_ALLERGIES, new ArrayList<String>());
+            hashmap.put(MEDICINES_NAME, new ArrayList<String>());
+            hashmap.put(FOLLOW_UP, new ArrayList<String>());
+            hashmap.put(INSTRUCTIONS, new ArrayList<String>());
 
-            mHashmapTemp.put(MEDICINES_TYPE, new ArrayList<String>());
-            mHashmapTemp.put(MEDICINES_DOSE, new ArrayList<String>());
-            mHashmapTemp.put(MEDICINES_FREQUENCY, new ArrayList<String>());
-            mHashmapTemp.put(MEDICINES_DOSE_TIMINGS, new ArrayList<String>());
-            mHashmapTemp.put(MEDICINES_COURSE, new ArrayList<String>());
+            hashmap.put(MEDICINES_TYPE, new ArrayList<String>());
+            hashmap.put(MEDICINES_DOSE, new ArrayList<String>());
+            hashmap.put(MEDICINES_FREQUENCY, new ArrayList<String>());
+            hashmap.put(MEDICINES_DOSE_TIMINGS, new ArrayList<String>());
+            hashmap.put(MEDICINES_COURSE, new ArrayList<String>());
 
-            LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
+            LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
         } else {
             try {
-                mHashmapTemp = gson.fromJson(strOutput, type);
+                hashmap = gson.fromJson(strOutput, type);
 
-                setSuggetions(actv_complaints, CHIEF,true);
-                setSuggetions(actv_past_history, PAST_HISTORY,true);
-                setSuggetions(actv_family_history, FAMILY_HISTORY,true);
-                setSuggetions(actv_known_allergy, KNOWN_ALLERGIES,true);
-                setSuggetions(actv_clinical_finding, CLINICAL_FINDINGS,true);
-                setSuggetions(actv_provisional, PROVISIONAL_DIAGNOSIS,true);
-                setSuggetions(actv_investigation, INVESTIGATION,true);
-                setSuggetions(actv_followup, FOLLOW_UP,true);
-                setSuggetions(actv_instruction, INSTRUCTIONS,true);
+                setSuggetions(actv_complaints, CHIEF, true);
+                setSuggetions(actv_past_history, PAST_HISTORY, true);
+                setSuggetions(actv_family_history, FAMILY_HISTORY, true);
+                setSuggetions(actv_known_allergy, KNOWN_ALLERGIES, true);
+                setSuggetions(actv_clinical_finding, CLINICAL_FINDINGS, true);
+                setSuggetions(actv_provisional, PROVISIONAL_DIAGNOSIS, true);
+                setSuggetions(actv_investigation, INVESTIGATION, true);
+                setSuggetions(actv_followup, FOLLOW_UP, true);
+                setSuggetions(actv_instruction, INSTRUCTIONS, true);
 
-                setSuggetions(actv_medicine_name, MEDICINES_NAME,false);
-                setSuggetions(actv_medicine_type, MEDICINES_TYPE,false);
-                setSuggetions(actv_dose, MEDICINES_DOSE,false);
-                setSuggetions(actv_frequency, MEDICINES_FREQUENCY,false);
-                setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS,false);
-                setSuggetions(actv_course, MEDICINES_COURSE,false);
+                setSuggetions(actv_medicine_name, MEDICINES_NAME, false);
+                setSuggetions(actv_medicine_type, MEDICINES_TYPE, false);
+                setSuggetions(actv_dose, MEDICINES_DOSE, false);
+                setSuggetions(actv_frequency, MEDICINES_FREQUENCY, false);
+                setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS, false);
+                setSuggetions(actv_course, MEDICINES_COURSE, false);
 
 
-                Log.v("JSON", mHashmapTemp.toString());
+                Log.v("JSON", hashmap.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -363,10 +448,10 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
     }
 
     private void setSuggetions(final AutoCompleteTextView actv, String key, boolean isThreashold) {
-        if (null == mHashmapTemp.get(key))
-            mHashmapTemp.put(key, new ArrayList<String>());
+        if (null == hashmap.get(key))
+            hashmap.put(key, new ArrayList<String>());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, mHashmapTemp.get(key));
+                (this, android.R.layout.simple_list_item_1, hashmap.get(key));
         actv.setAdapter(adapter);
         if (isThreashold) {
             actv.setThreshold(1);
@@ -383,8 +468,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
 
     private void updateSuggetions(AutoCompleteTextView actv, String key) {
         if (!actv.getText().toString().equals(""))
-            if (!mHashmapTemp.get(key).contains(actv.getText().toString())) {
-                mHashmapTemp.get(key).add(actv.getText().toString());
+            if (!hashmap.get(key).contains(actv.getText().toString())) {
+                hashmap.get(key).add(actv.getText().toString());
             }
     }
 
@@ -420,7 +505,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
 //        updateSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
 //        updateSuggetions(actv_course, MEDICINES_COURSE);
 
-        LaunchActivity.getLaunchActivity().setSuggestions(mHashmapTemp);
+        LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
 
         M_MerchantProfileModel m_merchantProfileModel = new M_MerchantProfileModel(this);
         m_merchantProfileModel.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
@@ -490,7 +575,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
 
                     if (TextUtils.isEmpty(actv_medicine_name.getText().toString())) {
                         JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
-                        jsonMedicalRecord.setRecordReferenceId("From JsonQueue");
+                        jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
                         jsonMedicalRecord.setFormVersion(FormVersionEnum.valueOf(BuildConfig.MEDICAL_FORM_VERSION));
                         jsonMedicalRecord.setCodeQR(qCodeQR);
                         jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
@@ -508,6 +593,19 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                                 .setWeight(edt_weight.getText().toString())
                                 .setOxygen(edt_oxygen.getText().toString())
                                 .setTemperature(edt_temperature.getText().toString());
+                        ArrayList<JsonPathology> pathologies = new ArrayList<>();
+                        if (sc_urine_data.size() > 0) {
+                            for (int i = 0; i < sc_urine_data.size(); i++) {
+                                pathologies.add(new JsonPathology().setName(sc_urine_data.get(i)));
+                            }
+                        }
+                        if (sc_blood_data.size() > 0) {
+                            for (int i = 0; i < sc_blood_data.size(); i++) {
+                                pathologies.add(new JsonPathology().setName(sc_blood_data.get(i)));
+                            }
+                        }
+                        if (sc_urine_data.size() > 0 || sc_blood_data.size() > 0)
+                            jsonMedicalRecord.setPathologies(pathologies);
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                         jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
@@ -564,7 +662,7 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         LaunchActivity.getLaunchActivity().setFavouriteMedicines(medicalRecordFavouriteList);
         adapterFavourite = new MedicalRecordFavouriteAdapter(this, medicalRecordFavouriteList, this);
         listview_favroite.setAdapter(adapterFavourite);
-        tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE:View.VISIBLE);
+        tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -582,6 +680,27 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         }
         adapter = new MedicalRecordAdapter(this, medicalRecordList, this);
         listview.setAdapter(adapter);
-        tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE:View.VISIBLE);
+        tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void addDeleteItems(String value, boolean isAdded, String key) {
+        if(key.equals("blood")) {
+            if (isAdded) {
+                sc_blood_data.add(value);
+            } else {
+                sc_blood_data.remove(value);
+            }
+            sc_blood.removeAllSegments();
+            sc_blood.addSegments(sc_blood_data);
+        }else if(key.equals("urine")) {
+            if (isAdded) {
+                sc_urine_data.add(value);
+            } else {
+                sc_urine_data.remove(value);
+            }
+            sc_urine.removeAllSegments();
+            sc_urine.addSegments(sc_urine_data);
+        }
     }
 }
