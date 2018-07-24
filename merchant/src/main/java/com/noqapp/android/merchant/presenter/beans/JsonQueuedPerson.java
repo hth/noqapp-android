@@ -58,6 +58,10 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty ("vs")
     private boolean clientVisitedThisStore;
 
+    /** This record reference has to be used when submitting a form. */
+    @JsonProperty ("rr")
+    private String recordReferenceId;
+
     public int getToken() {
         return token;
     }
@@ -136,6 +140,15 @@ public class JsonQueuedPerson implements Serializable {
 
     public JsonQueuedPerson setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public String getRecordReferenceId() {
+        return recordReferenceId;
+    }
+
+    public JsonQueuedPerson setRecordReferenceId(String recordReferenceId) {
+        this.recordReferenceId = recordReferenceId;
         return this;
     }
 }

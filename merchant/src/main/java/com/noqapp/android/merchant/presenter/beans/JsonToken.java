@@ -51,10 +51,6 @@ public class JsonToken implements Serializable {
     @JsonProperty ("e")
     private String expectedServiceBegin;
 
-    /** This record reference has to be used when submitting a form. */
-    @JsonProperty ("rr")
-    private String recordReferenceId;
-
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -121,15 +117,6 @@ public class JsonToken implements Serializable {
 
     public JsonToken setExpectedServiceBegin(String expectedServiceBegin) {
         this.expectedServiceBegin = expectedServiceBegin;
-        return this;
-    }
-
-    public String getRecordReferenceId() {
-        return recordReferenceId;
-    }
-
-    public JsonToken setRecordReferenceId(String recordReferenceId) {
-        this.recordReferenceId = recordReferenceId;
         return this;
     }
 
