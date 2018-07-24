@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.noqapp.android.common.BuildConfig;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.JsonRecordAccess;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -98,6 +97,9 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     @JsonProperty("fv")
     private FormVersionEnum formVersion;
+
+    @JsonProperty("rr")
+    private String recordReferenceId;
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
@@ -294,6 +296,15 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     public JsonMedicalRecord setFormVersion(FormVersionEnum formVersion) {
         this.formVersion = formVersion;
+        return this;
+    }
+
+    public String getRecordReferenceId() {
+        return recordReferenceId;
+    }
+
+    public JsonMedicalRecord setRecordReferenceId(String recordReferenceId) {
+        this.recordReferenceId = recordReferenceId;
         return this;
     }
 
