@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import com.noqapp.android.common.BuildConfig;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.JsonRecordAccess;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 
 import java.io.Serializable;
 import java.util.List;
@@ -92,6 +95,9 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     @JsonProperty("qr")
     private String codeQR;
+
+    @JsonProperty("fv")
+    private FormVersionEnum formVersion;
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
@@ -279,6 +285,15 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     public JsonMedicalRecord setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
+    }
+
+    public FormVersionEnum getFormVersion() {
+        return formVersion;
+    }
+
+    public JsonMedicalRecord setFormVersion(FormVersionEnum formVersion) {
+        this.formVersion = formVersion;
         return this;
     }
 
