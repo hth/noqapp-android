@@ -397,6 +397,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'de.hdodenhof:circleimageview:1.3.0'
+    implementation 'com.github.RobertApikyan:SegmentedControl:release_1.0.2'
     implementation project(':common')
 }
 
