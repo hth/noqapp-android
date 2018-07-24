@@ -32,11 +32,14 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.medical.FormVersionEnum;
+import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.model.M_MerchantProfileModel;
@@ -487,6 +490,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
 
                     if (TextUtils.isEmpty(actv_medicine_name.getText().toString())) {
                         JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
+                        jsonMedicalRecord.setRecordReferenceId("From JsonQueue");
+                        jsonMedicalRecord.setFormVersion(FormVersionEnum.valueOf(BuildConfig.MEDICAL_FORM_VERSION));
                         jsonMedicalRecord.setCodeQR(qCodeQR);
                         jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
                         jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
@@ -502,13 +507,11 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                                 .setPluse(edt_pulse.getText().toString())
                                 .setWeight(edt_weight.getText().toString())
                                 .setOxygen(edt_oxygen.getText().toString())
-                                .setTemperature(edt_temperature.getText().toString())
-                                .setDiagnosedById("");
+                                .setTemperature(edt_temperature.getText().toString());
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                         jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
-                        jsonMedicalRecord.setPlanToPatient(actv_instruction.getText().toString())
-                                .setDiagnosedById("");
+                        jsonMedicalRecord.setPlanToPatient(actv_instruction.getText().toString());
                         if (!actv_followup.getText().toString().equals("")) {
                             String value = actv_followup.getText().toString();
                             int selectedId = rg_duration.getCheckedRadioButtonId();

@@ -181,6 +181,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
         switch (requestCode) {
             case REQUEST_CODE_PERMISSION: {
                 // If request is cancelled, the result arrays are empty.
