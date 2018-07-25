@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
@@ -94,5 +95,17 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
     public JsonMedicalPhysical setDiagnosedById(String diagnosedById) {
         this.diagnosedById = diagnosedById;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonMedicalPhysical{" +
+                "temperature='" + temperature + '\'' +
+                ", pluse='" + pluse + '\'' +
+                ", bloodPressure=" + Arrays.toString(bloodPressure) +
+                ", oxygen='" + oxygen + '\'' +
+                ", weight='" + weight + '\'' +
+                ", diagnosedById='" + diagnosedById + '\'' +
+                '}';
     }
 }

@@ -55,6 +55,9 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
     protected LinearLayout ll_physical;
     @BindView(R.id.ll_medication)
     protected LinearLayout ll_medication;
+
+    @BindView(R.id.ll_investigation)
+    protected LinearLayout ll_investigation;
     private ListView listview;
     private MedicalRecordAdapter adapter;
     private List<JsonMedicalMedicine> medicalRecordList = new ArrayList<>();
@@ -121,6 +124,21 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             }
             childLayout.addView(mType, 0);
             ll_physical.addView(childLayout);
+        }
+        for (int i =0;i<jsonMedicalRecord.getPathologies().size();i++) {
+            LinearLayout childLayout = new LinearLayout(this);
+            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            childLayout.setLayoutParams(linearParams);
+            TextView mType = new TextView(this);
+            mType.setTextSize(17);
+            mType.setPadding(5, 3, 0, 3);
+            mType.setTypeface(Typeface.DEFAULT_BOLD);
+            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
+            mType.setText(jsonMedicalRecord.getPathologies().get(i).getName());
+            childLayout.addView(mType, 0);
+            ll_investigation.addView(childLayout);
         }
     }
 

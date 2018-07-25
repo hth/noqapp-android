@@ -46,4 +46,12 @@ public class JsonRecordAccess extends AbstractDomain implements Serializable {
         this.recordAccessedDate = recordAccessedDate;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonRecordAccess{" +
+                "recordAccessedQid='" + recordAccessedQid + '\'' +
+                ", recordAccessedDate='" + recordAccessedDate + '\'' +
+                '}';
+    }
 }

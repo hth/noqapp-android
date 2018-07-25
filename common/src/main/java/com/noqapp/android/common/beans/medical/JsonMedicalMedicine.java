@@ -125,4 +125,18 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
     public int hashCode() {
         return Objects.hash(name, strength, dailyFrequency,course,medicationWithFood,medicationType,isFavourite);
     }
+
+
+    @Override
+    public String toString() {
+        return "JsonMedicalMedicine{" +
+                "name='" + name + '\'' +
+                ", strength='" + strength + '\'' +
+                ", dailyFrequency='" + dailyFrequency + '\'' +
+                ", course='" + course + '\'' +
+                ", medicationWithFood='" + medicationWithFood + '\'' +
+                ", medicationType='" + medicationType + '\'' +
+                ", isFavourite=" + isFavourite +
+                '}';
+    }
 }

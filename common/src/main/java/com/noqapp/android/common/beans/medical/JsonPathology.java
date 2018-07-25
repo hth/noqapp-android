@@ -47,5 +47,13 @@ public class JsonPathology extends AbstractDomain implements Serializable {
         this.testResult = testResult;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonPathology{" +
+                "name='" + name + '\'' +
+                ", testResult='" + testResult + '\'' +
+                '}';
+    }
 }
 
