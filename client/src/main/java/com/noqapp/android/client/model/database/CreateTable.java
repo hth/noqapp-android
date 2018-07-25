@@ -115,7 +115,8 @@ public class CreateTable {
                 + Notification.TITLE + " TEXT, "
                 + Notification.STATUS + " TEXT, "
                 + Notification.SEQUENCE + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + Notification.CREATE_DATE + " TEXT " +
+                + Notification.CREATE_DATE + " TEXT, "
+                + Notification.BUSINESS_TYPE + " TEXT " +
                 //+ "PRIMARY KEY(`" + Notification.KEY + "`)" +
 
                 ");");
@@ -155,9 +156,11 @@ public class CreateTable {
         db.execSQL("DROP TABLE IF EXISTS '" + TokenQueue.TABLE_NAME + "'");
         db.execSQL("DROP TABLE IF EXISTS '" + TokenQueueHistory.TABLE_NAME + "'");
         db.execSQL("DROP TABLE IF EXISTS '" + Review.TABLE_NAME  + "'");
+        db.execSQL("DROP TABLE IF EXISTS '" + Notification.TABLE_NAME  + "'");
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);
         createTableReview(db);
+        createTableNotification(db);
     }
 
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.NotificationBeans;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,7 +32,7 @@ public class NotificationDB {
     private static final String TAG = NotificationDB.class.getSimpleName();
 
 
-    public static void insertNotification(String key, String codeQR, String value, String title) {
+    public static void insertNotification(String key, String codeQR, String value, String title,String businessType) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseTable.Notification.KEY, key);
         cv.put(DatabaseTable.Notification.CODE_QR, codeQR);
@@ -43,6 +44,7 @@ public class NotificationDB {
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         String dateString = dateFormat.format(new Date());
         cv.put(DatabaseTable.Notification.CREATE_DATE, dateString);
+        cv.put(DatabaseTable.Notification.BUSINESS_TYPE,businessType);
         try {
             long successCount = dbHandler.getWritableDb().insertWithOnConflict(
                     DatabaseTable.Notification.TABLE_NAME,
@@ -71,6 +73,7 @@ public class NotificationDB {
                         notificationBeans.setTitle(cursor.getString(3));
                         notificationBeans.setStatus(cursor.getString(4));
                         notificationBeans.setNotificationCreate(cursor.getString(6));
+                        notificationBeans.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(7)));
                         notificationBeansList.add(notificationBeans);
                     }
                 } finally {
