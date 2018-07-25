@@ -1,5 +1,7 @@
 package com.noqapp.android.common.beans;
 
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+
 /**
  * Created by chandra on 3/16/18.
  */
@@ -10,18 +12,12 @@ public class NotificationBeans {
     private String msg;
     private String status;
     private String notificationCreate;
-
+    private BusinessTypeEnum businessType;
 
     public NotificationBeans() {
 
     }
 
-    public NotificationBeans(String title, String msg, String status, String notificationCreate) {
-        this.title = title;
-        this.msg = msg;
-        this.status = status;
-        this.notificationCreate = notificationCreate;
-    }
 
     public String getTitle() {
         return title;
@@ -59,6 +55,15 @@ public class NotificationBeans {
         return this;
     }
 
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public NotificationBeans setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "NotificationBeans{" +
@@ -66,6 +71,7 @@ public class NotificationBeans {
                 ", msg='" + msg + '\'' +
                 ", status='" + status + '\'' +
                 ", notificationCreate='" + notificationCreate + '\'' +
+                ", businessType=" + businessType +
                 '}';
     }
 }

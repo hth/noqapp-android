@@ -31,6 +31,7 @@ public class Constants {
     public static final String QueueStatus = "q";
     public static final String CodeQR = "qr";
     public static final String QueueUserState = "u";
+    public static final String BusinessType = "bt";
     public static final String TOKEN = "t";
     public static final String QuserID = "qid";
     public static final String ACTIVITY_TO_CLOSE = "activity_status";
