@@ -255,7 +255,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         if (requestCode == READ_AND_RECEIVE_SMS_PERMISSION_CODE) {
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //@TODO @Chandra update the country code dynamic
+                countryCode = edt_phone_code.getText().toString();
                 startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
             } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 //No permission allowed
@@ -323,7 +323,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
                 break;
             case STATE_VERIFY_FAILED:
                 // Verification has failed, show all options
-                enableViews(btn_login, edt_phoneNo, btn_verify_phone, edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
+               // enableViews(btn_login, edt_phoneNo, btn_verify_phone, edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
                 tv_detail.setText(R.string.status_verification_failed);
                 break;
             case STATE_VERIFY_SUCCESS:
