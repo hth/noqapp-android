@@ -301,13 +301,13 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 if (UserUtils.isLogin()) {
                     Intent intent = new Intent(launchActivity, UserProfileActivity.class);
                     startActivity(intent);
-                    drawer.closeDrawer(GravityCompat.START);
                 } else {
                     Toast.makeText(launchActivity, "Please login to view the profile", Toast.LENGTH_LONG).show();
                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                     loginIntent.putExtra("fromLogin",true);
                     startActivity(loginIntent);
                 }
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             default:
                 break;
