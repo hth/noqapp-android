@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
@@ -105,6 +106,15 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected ProgressBar pb_near;
     @BindView(R.id.autoCompleteTextView)
     protected AutoCompleteTextView autoCompleteTextView;
+
+    @BindView(R.id.cv_update_location)
+    protected  CardView cv_update_location;
+
+    @BindView(R.id.tv_no_thanks)
+    protected TextView tv_no_thanks;
+    @BindView(R.id.tv_update)
+    protected TextView tv_update;
+
     private boolean fromList = false;
     private CurrentActivityAdapter currentActivityAdapter;
     private StoreInfoAdapter storeInfoAdapter;
@@ -116,17 +126,44 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     private String scrollId = "";
     private double lat, log;
     private String city = "";
+    private boolean isFirstTimeUpdate = true;
 
     public ScanQueueFragment() {
 
     }
 
-    public void updateUIWithNewLocation(double latitude, double longitude, String cityName) {
-        getNearMeInfo(cityName, "" + latitude, "" + longitude);
-        lat = latitude;
-        log = longitude;
-        AppUtilities.setAutoCompleteText(autoCompleteTextView, cityName);
-        city = cityName;
+    public void updateUIWithNewLocation(final double latitude, final double longitude, final String cityName) {
+        if (latitude != 0.0 && latitude != LaunchActivity.getLaunchActivity().getDefaultLatitude() && Double.compare(lat, latitude) != 0) {
+            if (isFirstTimeUpdate) {
+                getNearMeInfo(cityName, "" + latitude, "" + longitude);
+                lat = latitude;
+                log = longitude;
+                AppUtilities.setAutoCompleteText(autoCompleteTextView, cityName);
+                city = cityName;
+                isFirstTimeUpdate = false;
+            } else {
+                cv_update_location.setVisibility(View.VISIBLE);
+                tv_update.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getNearMeInfo(cityName, "" + latitude, "" + longitude);
+                        lat = latitude;
+                        log = longitude;
+                        AppUtilities.setAutoCompleteText(autoCompleteTextView, cityName);
+                        city = cityName;
+                        cv_update_location.setVisibility(View.GONE);
+                    }
+                });
+                tv_no_thanks.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cv_update_location.setVisibility(View.GONE);
+                    }
+                });
+            }
+        } else {
+            cv_update_location.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -182,13 +219,13 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         tv_auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)){
+                if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
                     lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
                     log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
                     city = LaunchActivity.getLaunchActivity().getDefaultCity();
                     AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
                     getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
-                }else {
+                } else {
                     lat = LaunchActivity.getLaunchActivity().latitute;
                     log = LaunchActivity.getLaunchActivity().longitute;
                     city = LaunchActivity.getLaunchActivity().cityName;
@@ -229,7 +266,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 //Call the current queue
                 QueueApiModel queueApiModel = new QueueApiModel();
                 queueApiModel.setTokenAndQueuePresenter(this);
-                Log.e("DEVICE ID NULL","DID: "+UserUtils.getDeviceId()+" Email: "+ UserUtils.getEmail()+" Auth: "+ UserUtils.getAuth());
+                Log.e("DEVICE ID NULL", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
                 queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
 
                 //Call the history queue
@@ -240,7 +277,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 QueueModel queueModel = new QueueModel();
                 queueModel.setTokenAndQueuePresenter(this);
                 queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
-                Log.e("DEVICE ID NULL Un","DID: "+UserUtils.getDeviceId()+" Email: "+ UserUtils.getEmail()+" Auth: "+ UserUtils.getAuth());
+                Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
                 //Call the history queue
                 DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
                 queueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
@@ -252,7 +289,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
 
-        if(TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)){
+        if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
             lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
             log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
             city = LaunchActivity.getLaunchActivity().getDefaultCity();
@@ -338,7 +375,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             recentActivityAdapter.updateLatLong(lat, log);
             recentActivityAdapter.notifyDataSetChanged();
         }
-        tv_near_view_all.setVisibility(nearMeData.size() == 0 ? View.GONE:View.VISIBLE);
+        tv_near_view_all.setVisibility(nearMeData.size() == 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override

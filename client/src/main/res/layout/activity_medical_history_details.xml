@@ -250,6 +250,7 @@
                 <TextView
                     android:id="@+id/tv_investigation"
                     style="@style/style_mdh_details"
+                    android:visibility="gone"
                     android:text="" />
                 <LinearLayout
                         android:id="@+id/ll_investigation"

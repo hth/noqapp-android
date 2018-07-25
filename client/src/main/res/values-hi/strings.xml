@@ -173,4 +173,7 @@
     <string name="login_via_otp">Login via OTP</string>
     <string name="resend_otp">Resend OTP</string>
     <string name="awards">Awards</string>
+    <string name="new_location">We\'ve detected a change in your location. Do you want to update?</string>
+    <string name="no_thanks">No Thanks</string>
+    <string name="update">Update</string>
 </resources>
