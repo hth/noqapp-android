@@ -117,25 +117,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private TextView tv_login, tv_name, tv_email;
     private ScanQueueFragment scanFragment;
     private DrawerLayout drawer;
-    private double old_latitude = 0;
-    private double old_longitude = 0;
     private Menu nav_Menu;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
-
-    public double  getDefaultLatitude() {
-        return 19.0760;
-    }
-
-    public  double getDefaultLongitude() {
-        return 72.8777;
-    }
-    public  String getDefaultCity() {
-        return "Mumbai";
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,32 +258,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Override
     public void updateLocationUI() {
-        if (null != scanFragment && Double.compare(old_latitude, latitute) != 0) {
-            try {
-                if (old_latitude == 0) {
-                    scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
-                    old_latitude = latitute;
-                }
-//                else {
-//                    if (showLocationPopup)
-//                        new AlertDialog.Builder(launchActivity)
-//                                .setTitle(getString(R.string.location_change))
-//                                .setMessage(getString(R.string.location_msg))
-//                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
-//                                    }
-//                                })
-//                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        showLocationPopup = false;
-//                                    }
-//                                })
-//                                .show();
-//                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (null != scanFragment) {
+            scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
         }
     }
 

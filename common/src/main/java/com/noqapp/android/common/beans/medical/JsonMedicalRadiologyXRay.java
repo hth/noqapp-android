@@ -47,4 +47,12 @@ public class JsonMedicalRadiologyXRay extends AbstractDomain implements Serializ
         this.testResult = testResult;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonMedicalRadiologyXRay{" +
+                "name='" + name + '\'' +
+                ", testResult='" + testResult + '\'' +
+                '}';
+    }
 }

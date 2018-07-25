@@ -41,6 +41,19 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
     private long UPDATE_INTERVAL = 60 * 2 * 1000 * 10;  /* 10*6 secs */
     private long FASTEST_INTERVAL = 2000; /* 2 sec */
     private LocationManager locationManager;
+    private final int GPS_ENABLE_REQUEST = 0x1001;
+
+    public double getDefaultLatitude() {
+        return 19.0760;
+    }
+
+    public double getDefaultLongitude() {
+        return 72.8777;
+    }
+
+    public String getDefaultCity() {
+        return "Mumbai";
+    }
 
     // TODO @Chandra
     // Please check this link too ->https://stackoverflow.com/a/3145655/3912847
@@ -151,21 +164,18 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
 
     private void showAlert() {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("Enable Location")
-                .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
-                        "use this app")
+        dialog.setTitle("Enable GPS")
+                .setMessage("Gps is disabled, in order to use the application properly you need to enable GPS of your device")
                 .setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-
                         Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(myIntent);
+                        startActivityForResult(myIntent, GPS_ENABLE_REQUEST);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-
                     }
                 });
         dialog.show();
@@ -181,7 +191,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_CODE_PERMISSION: {
                 // If request is cancelled, the result arrays are empty.
@@ -191,7 +201,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-                       onConnected(getIntent().getExtras());
+                        onConnected(getIntent().getExtras());
                     }
                 } else {
                     // Permission denied, Disable the functionality that depends on this permission.
@@ -202,6 +212,19 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GPS_ENABLE_REQUEST) {
+            if (isLocationEnabled()) {
+                if (mGoogleApiClient != null) {
+                    mGoogleApiClient.connect();
+                }
+                //onConnected(getIntent().getExtras());
+            }
+
+        }
+    }
 
     public void getAddress(double lat, double lng) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
