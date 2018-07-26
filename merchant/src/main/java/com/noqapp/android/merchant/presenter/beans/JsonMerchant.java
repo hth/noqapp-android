@@ -1,13 +1,14 @@
 package com.noqapp.android.merchant.presenter.beans;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.beans.JsonProfile;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
-import com.noqapp.android.common.beans.JsonProfile;
 
 import java.io.Serializable;
 import java.util.ArrayList;

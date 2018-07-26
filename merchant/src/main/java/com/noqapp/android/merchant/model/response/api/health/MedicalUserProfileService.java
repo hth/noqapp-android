@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.model.response.api.health;
 
-import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
 
 import retrofit2.Call;
@@ -15,7 +15,7 @@ import retrofit2.http.POST;
 public interface MedicalUserProfileService {
 
     @POST("api/m/h/medicalUserProfile/fetch.json")
-    Call<JsonResponse> fetch(
+    Call<JsonProfile> fetch(
             @Header("X-R-DID")
             String did,
 

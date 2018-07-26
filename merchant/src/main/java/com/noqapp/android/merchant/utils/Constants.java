@@ -1,11 +1,11 @@
 package com.noqapp.android.merchant.utils;
 
-import android.util.Log;
-
 import com.noqapp.android.common.model.types.DeviceTypeEnum;
 import com.noqapp.android.merchant.BuildConfig;
 
 import org.apache.commons.lang3.StringUtils;
+
+import android.util.Log;
 
 /**
  * User: hitender

@@ -1,12 +1,11 @@
 package com.noqapp.android.merchant.model;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.noqapp.android.merchant.model.response.api.LoginService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

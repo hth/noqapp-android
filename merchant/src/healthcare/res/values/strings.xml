@@ -34,4 +34,8 @@
     <string name="pe_bp">B.P </string>
     <string name="pe_pulse">Pulse</string>
 
+
+    <string name="personal_info">Personal Informations</string>
+    <string name="dependent_list">Dependent List</string>
+    <string name="medical_history_alert">You don\'t have any medical history.</string>
 </resources>

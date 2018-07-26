@@ -1,5 +1,8 @@
 package com.noqapp.android.merchant.utils;
 
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -13,9 +16,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.Locale;
 

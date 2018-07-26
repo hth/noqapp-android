@@ -1,5 +1,12 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.crashlytics.android.Crashlytics;
+
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -7,13 +14,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.crashlytics.android.Crashlytics;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-
 import io.fabric.sdk.android.Fabric;
 
 public class SplashScreen extends AppCompatActivity {

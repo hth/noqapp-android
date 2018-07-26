@@ -1,5 +1,38 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.ManageQueueModel;
+import com.noqapp.android.merchant.model.types.QueueStatusEnum;
+import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.presenter.beans.JsonToken;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.body.Served;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.LoginActivity;
+import com.noqapp.android.merchant.views.activities.RegistrationActivity;
+import com.noqapp.android.merchant.views.activities.SettingActivity;
+import com.noqapp.android.merchant.views.activities.SettingDialogActivity;
+import com.noqapp.android.merchant.views.adapters.PeopleInQAdapter;
+import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
+import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
+import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
+import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,39 +61,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ManageQueueModel;
-import com.noqapp.android.merchant.model.types.QueueStatusEnum;
-import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
-import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.presenter.beans.JsonToken;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.presenter.beans.body.Served;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.LoginActivity;
-import com.noqapp.android.merchant.views.activities.RegistrationActivity;
-import com.noqapp.android.merchant.views.activities.SettingActivity;
-import com.noqapp.android.merchant.views.activities.SettingDialogActivity;
-import com.noqapp.android.merchant.views.adapters.PeopleInQAdapter;
-import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
-import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
-import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
-import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
-import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

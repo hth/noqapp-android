@@ -1,5 +1,23 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.LoginModel;
+import com.noqapp.android.merchant.model.MerchantProfileModel;
+import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
+import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,23 +35,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LoginEvent;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.LoginModel;
-import com.noqapp.android.merchant.model.MerchantProfileModel;
-import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
-import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.UserLevelEnum;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 

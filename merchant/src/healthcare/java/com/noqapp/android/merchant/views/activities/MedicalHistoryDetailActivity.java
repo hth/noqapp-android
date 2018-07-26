@@ -4,6 +4,34 @@ package com.noqapp.android.merchant.views.activities;
  * Created by chandra on 5/7/17.
  */
 
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.beans.medical.JsonPathology;
+import com.noqapp.android.common.model.types.medical.FormVersionEnum;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
+import com.noqapp.android.merchant.model.M_MerchantProfileModel;
+import com.noqapp.android.merchant.model.MedicalHistoryModel;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.Utils.AnimationUtils;
+import com.noqapp.android.merchant.views.Utils.GridItem;
+import com.noqapp.android.merchant.views.Utils.TestCaseString;
+import com.noqapp.android.merchant.views.adapters.GridAdapter;
+import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
+import com.noqapp.android.merchant.views.adapters.MedicalRecordFavouriteAdapter;
+import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
+import com.noqapp.android.merchant.views.interfaces.GridCommunication;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,35 +59,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.model.types.medical.FormVersionEnum;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.common.beans.medical.JsonPathology;
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
-import com.noqapp.android.merchant.model.M_MerchantProfileModel;
-import com.noqapp.android.merchant.model.MedicalHistoryModel;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.Utils.AnimationUtils;
-import com.noqapp.android.merchant.views.Utils.GridItem;
-import com.noqapp.android.merchant.views.Utils.TestCaseString;
-import com.noqapp.android.merchant.views.adapters.GridAdapter;
-import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
-import com.noqapp.android.merchant.views.adapters.MedicalRecordFavouriteAdapter;
-import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
-import com.noqapp.android.merchant.views.interfaces.GridCommunication;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -244,10 +243,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                     AnimationUtils.expand(ll_fav_medicines);
                     Drawable img = getResources().getDrawable(R.drawable.arrow_up);
                     tv_assist.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
-                    // iv_store_open_status.setBackground(ContextCompat.getDrawable(MedicalHistoryDetailActivity.this, R.drawable.arrow_down));
                 } else {
                     AnimationUtils.collapse(ll_fav_medicines);
-                    // iv_store_open_status.setBackground(ContextCompat.getDrawable(MedicalHistoryDetailActivity.this, R.drawable.arrow_up));
                     Drawable img = getResources().getDrawable(R.drawable.arrow_down);
                     tv_assist.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
                 }

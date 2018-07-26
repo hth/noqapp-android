@@ -4,6 +4,23 @@ package com.noqapp.android.merchant.views.activities;
  * Created by chandra on 10/4/18.
  */
 
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.presenter.ImageUploadPresenter;
+import com.noqapp.android.common.utils.ImagePathReader;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MerchantProfileModel;
+import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
+import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
+import com.noqapp.android.merchant.views.fragments.UserProfileFragment;
+import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
+
+import com.squareup.picasso.Picasso;
+
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -16,9 +33,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -28,30 +42,12 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MerchantProfileModel;
-import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
-import com.noqapp.android.merchant.views.fragments.UserProfileFragment;
-import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.presenter.ImageUploadPresenter;
-import com.noqapp.android.common.utils.ImagePathReader;
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 
 public class ManagerProfileActivity extends AppCompatActivity implements View.OnClickListener, MerchantPresenter, ImageUploadPresenter {
@@ -261,7 +257,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
 
     private void setupViewPager(ViewPager viewPager) {
         userProfileFragment = new UserProfileFragment();
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(userProfileFragment, "Profile");
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
             // Additional profile will be only visible to store manager
@@ -271,34 +267,6 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         viewPager.setAdapter(adapter);
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }
 
     @Override
     protected void onDestroy() {

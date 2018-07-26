@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.model.response.api.health;
 
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
 
 import retrofit2.Call;
@@ -34,7 +35,7 @@ public interface MedicalRecordService {
     );
 
     @POST("api/m/h/medicalRecord/fetch.json")
-    Call<JsonResponse> fetch(
+    Call<JsonMedicalRecordList> fetch(
             @Header("X-R-DID")
             String did,
 

@@ -1,14 +1,14 @@
 package com.noqapp.android.merchant.network;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
-
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 
 import org.jsoup.Jsoup;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.IOException;
 

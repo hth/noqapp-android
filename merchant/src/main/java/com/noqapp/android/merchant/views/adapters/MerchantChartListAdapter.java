@@ -1,5 +1,9 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.views.fragments.ChartListFragment;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
@@ -9,10 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.views.fragments.ChartListFragment;
 
 import java.util.List;
 

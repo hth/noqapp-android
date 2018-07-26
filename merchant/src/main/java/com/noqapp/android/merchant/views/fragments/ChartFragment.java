@@ -5,12 +5,11 @@ package com.noqapp.android.merchant.views.fragments;
  */
 
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
+import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
+import com.noqapp.android.merchant.utils.DayAxisValueFormatter;
+import com.noqapp.android.merchant.utils.MyValueFormatter;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -24,11 +23,13 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
-import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
-import com.noqapp.android.merchant.utils.DayAxisValueFormatter;
-import com.noqapp.android.merchant.utils.MyValueFormatter;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
