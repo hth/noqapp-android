@@ -1,16 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantStatsModel;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -23,6 +12,17 @@ import com.noqapp.android.merchant.views.activities.ChartListActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.MerchantChartListAdapter;
 import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
+
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;

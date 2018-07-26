@@ -1,5 +1,21 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.QueueSettingModel;
+import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.LocalTime;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
@@ -22,21 +38,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.QueueSettingModel;
-import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
-import com.noqapp.android.common.utils.Formatter;
-
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.LocalTime;
 
 import java.util.Calendar;
 import java.util.Locale;

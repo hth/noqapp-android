@@ -1,6 +1,19 @@
 package com.noqapp.android.merchant.views.adapters;
 
 
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.types.QueueStatusEnum;
+import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.MedicalCaseHistoryTabbed;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,19 +26,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.types.QueueStatusEnum;
-import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
-import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.MedicalHistoryDetailActivity;
 
 import java.util.List;
 
@@ -163,7 +163,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson) {
         if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
             if (!TextUtils.isEmpty(jsonQueuedPerson.getQueueUserId())) {
-                Intent intent = new Intent(context, MedicalHistoryDetailActivity.class);
+                Intent intent = new Intent(context, MedicalCaseHistoryTabbed.class);
                 intent.putExtra("qCodeQR", qCodeQR);
                 intent.putExtra("data", jsonQueuedPerson);
                 context.startActivity(intent);

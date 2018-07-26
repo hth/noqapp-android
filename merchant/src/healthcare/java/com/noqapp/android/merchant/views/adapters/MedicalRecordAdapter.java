@@ -1,5 +1,9 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
+
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -11,13 +15,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 
 import java.util.List;
 

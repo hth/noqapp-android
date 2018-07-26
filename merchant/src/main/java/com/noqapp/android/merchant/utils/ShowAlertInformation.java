@@ -1,13 +1,13 @@
 package com.noqapp.android.merchant.utils;
 
+import com.noqapp.android.merchant.R;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.noqapp.android.merchant.R;
 
 public class ShowAlertInformation {
     public static void showNetworkDialog(Context context) {

@@ -4,6 +4,16 @@ package com.noqapp.android.merchant.views.fragments;
  * Created by chandra on 10/4/18.
  */
 
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MerchantProfileModel;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
+
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -24,16 +34,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MerchantProfileModel;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.body.UpdateProfile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

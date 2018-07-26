@@ -1,5 +1,11 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.beans.NotificationBeans;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.database.utils.NotificationDB;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -10,12 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.database.utils.NotificationDB;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
-import com.noqapp.android.common.beans.NotificationBeans;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,5 +1,14 @@
 package com.noqapp.android.merchant.network;
 
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.database.utils.NotificationDB;
+import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
+
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,14 +24,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-
-import com.google.firebase.messaging.FirebaseMessagingService;
-import com.google.firebase.messaging.RemoteMessage;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.database.utils.NotificationDB;
-import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.List;
 

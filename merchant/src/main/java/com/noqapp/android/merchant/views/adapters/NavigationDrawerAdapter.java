@@ -1,5 +1,8 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.NavigationBean;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,9 +11,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.NavigationBean;
 
 import java.util.ArrayList;
 

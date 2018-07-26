@@ -5,6 +5,16 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.RegisterModel;
+import com.noqapp.android.merchant.presenter.beans.body.Registration;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
+
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.graphics.Color;
@@ -28,26 +38,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.RegisterModel;
-import com.noqapp.android.merchant.presenter.beans.body.Registration;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonProfile;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class RegistrationActivity extends AppCompatActivity implements ProfilePresenter, View.OnClickListener {
 

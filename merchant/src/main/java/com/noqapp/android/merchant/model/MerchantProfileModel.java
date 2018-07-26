@@ -1,19 +1,18 @@
 package com.noqapp.android.merchant.model;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.model.response.api.MerchantProfileService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.body.UpdateProfile;
-import com.noqapp.android.common.presenter.ImageUploadPresenter;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;

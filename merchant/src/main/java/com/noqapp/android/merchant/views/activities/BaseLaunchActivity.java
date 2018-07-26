@@ -1,5 +1,40 @@
 package com.noqapp.android.merchant.views.activities;
 
+import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
+
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.NetworkUtil;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.DeviceModel;
+import com.noqapp.android.merchant.model.database.DatabaseHelper;
+import com.noqapp.android.merchant.network.VersionCheckAsync;
+import com.noqapp.android.merchant.presenter.beans.JsonToken;
+import com.noqapp.android.merchant.presenter.beans.NavigationBean;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.views.adapters.NavigationDrawerAdapter;
+import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
+import com.noqapp.android.merchant.views.fragments.LoginFragment;
+import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
+import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
+import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,38 +65,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.DeviceModel;
-import com.noqapp.android.merchant.model.database.DatabaseHelper;
-import com.noqapp.android.merchant.network.VersionCheckAsync;
-import com.noqapp.android.merchant.presenter.beans.JsonToken;
-import com.noqapp.android.merchant.presenter.beans.NavigationBean;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.views.adapters.NavigationDrawerAdapter;
-import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
-import com.noqapp.android.merchant.views.fragments.LoginFragment;
-import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
-import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
-import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.body.DeviceToken;
-import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.utils.NetworkUtil;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
-
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -69,8 +72,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-
-import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
 public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;

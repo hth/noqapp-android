@@ -1,10 +1,11 @@
 package com.noqapp.android.merchant.presenter.beans.body;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 /**
  * Created by chandra on 7/15/17.
