@@ -1,17 +1,20 @@
-package com.noqapp.android.client.model.types;
+package com.noqapp.android.common.model.types.order;
 
 /**
  * Created by hitender on 3/27/18.
  */
 
-public enum DeliveryTypeEnum {
-    HD("HD", "Home Delivery"),
-    TO("TO", "Takeaway");
+public enum PaymentTypeEnum {
+    CA("CA", "Cash"),
+    CC("CC", "Credit Card"),
+    DC("DC", "Debit Card"),
+    CQ("CQ", "Cheque"),
+    AP("AP", "Apple Pay");
 
     private final String description;
     private final String name;
 
-    DeliveryTypeEnum(String name, String description) {
+    PaymentTypeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

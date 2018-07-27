@@ -1,0 +1,29 @@
+package com.noqapp.android.merchant.model.response.api.order;
+
+import com.noqapp.android.merchant.presenter.beans.order.JsonPurchaseOrderList;
+
+import retrofit2.Call;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+
+public interface PurchaseOrderService {
+
+    @POST("/api/m/o/purchaseOrder/showOrders/{codeQR}.json")
+    Call<JsonPurchaseOrderList> fetch(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR
+    );
+}

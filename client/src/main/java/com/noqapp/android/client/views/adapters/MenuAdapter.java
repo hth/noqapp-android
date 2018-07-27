@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.ChildData;
-import com.noqapp.android.client.presenter.beans.JsonStoreProduct;
+import com.noqapp.android.common.beans.order.JsonStoreProduct;
 import com.noqapp.android.client.views.activities.StoreMenuActivity;
 
 import java.util.List;

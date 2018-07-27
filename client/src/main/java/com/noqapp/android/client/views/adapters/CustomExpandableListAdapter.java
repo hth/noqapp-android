@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.ChildData;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
-import com.noqapp.android.client.presenter.beans.JsonStoreProduct;
+import com.noqapp.android.common.beans.order.JsonStoreProduct;
 
 import java.util.HashMap;
 import java.util.List;

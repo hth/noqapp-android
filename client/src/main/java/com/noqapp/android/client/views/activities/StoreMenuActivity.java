@@ -2,8 +2,8 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.ChildData;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.utils.ShowAlertInformation;
