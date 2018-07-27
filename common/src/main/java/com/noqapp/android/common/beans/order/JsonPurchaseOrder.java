@@ -1,12 +1,12 @@
-package com.noqapp.android.client.presenter.beans;
+package com.noqapp.android.common.beans.order;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.client.model.types.DeliveryTypeEnum;
-import com.noqapp.android.client.model.types.PaymentTypeEnum;
-import com.noqapp.android.client.model.types.PurchaseOrderStateEnum;
+import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
+import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 

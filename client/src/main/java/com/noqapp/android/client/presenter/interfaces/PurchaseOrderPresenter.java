@@ -1,7 +1,7 @@
 package com.noqapp.android.client.presenter.interfaces;
 
 
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 
 public interface PurchaseOrderPresenter {
 

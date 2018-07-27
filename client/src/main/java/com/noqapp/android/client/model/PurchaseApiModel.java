@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.noqapp.android.client.model.response.api.PurchaseOrderService;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.client.utils.Constants;
 

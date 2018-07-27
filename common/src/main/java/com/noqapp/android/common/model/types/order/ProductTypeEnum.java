@@ -1,4 +1,4 @@
-package com.noqapp.android.client.model.types;
+package com.noqapp.android.common.model.types.order;
 
 /**
  * Created by hitender on 4/1/18.

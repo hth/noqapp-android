@@ -1,5 +1,6 @@
 package com.noqapp.android.client.presenter.beans;
 
+import com.noqapp.android.common.beans.order.JsonStoreProduct;
 
 import java.io.Serializable;
 
