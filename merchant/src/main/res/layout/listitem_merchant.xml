@@ -24,7 +24,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.25"
+                android:layout_weight="0.15"
                 android:gravity="center">
 
                 <TextView
@@ -41,7 +41,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.50"
+                android:layout_weight="0.65"
                 android:orientation="vertical">
 
                 <TextView
@@ -49,21 +49,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_action_bar"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_serving_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_list_subtitle"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.25"
+                android:layout_weight="0.2"
                 android:orientation="vertical">
 
                 <TextView
@@ -71,7 +71,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="15dp"
+                    android:layout_gravity="center_horizontal|right"
                     android:textColor="@color/color_list_subtitle"
                     android:textSize="22sp" />
 

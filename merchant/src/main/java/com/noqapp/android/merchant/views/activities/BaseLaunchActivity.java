@@ -245,7 +245,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                     // setUserName();
                 } else {
                     LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
-                    LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
+                    LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.7f);
                     list_fragment.setLayoutParams(lp1);
                     list_detail_fragment.setLayoutParams(lp2);
                     merchantListFragment = new MerchantListFragment();

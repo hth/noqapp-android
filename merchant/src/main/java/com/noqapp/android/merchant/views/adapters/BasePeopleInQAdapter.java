@@ -152,7 +152,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
 
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
-        recordHolder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? context.getString(R.string.unregister_user) :
+        recordHolder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ?  Html.fromHtml("<b>Reg. Id: </b>"+context.getString(R.string.unregister_user)):
                 Html.fromHtml("<b>Reg. Id: </b>"+jsonQueuedPerson.getBusinessCustomerId()));
         recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                 //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
@@ -235,21 +235,32 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         try {
             if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 if (glowPostion > 0 && glowPostion - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
-                    recordHolder.tv_create_case.setVisibility(View.VISIBLE);
+                    //recordHolder.tv_create_case.setVisibility(View.VISIBLE);
+                    recordHolder.tv_create_case.setClickable(true);
+                    recordHolder.tv_create_case.setBackgroundResource(R.drawable.tv_roun_rect);
                 } else {
-                    recordHolder.tv_create_case.setVisibility(View.GONE);
+                    //recordHolder.tv_create_case.setVisibility(View.GONE);
+                    recordHolder.tv_create_case.setClickable(false);
+                    recordHolder.tv_create_case.setBackgroundResource(R.drawable.grey_background);
                 }
             } else {
-                recordHolder.tv_create_case.setVisibility(View.GONE);
+                //recordHolder.tv_create_case.setVisibility(View.GONE);
+                recordHolder.tv_create_case.setClickable(false);
+                recordHolder.tv_create_case.setBackgroundResource(R.drawable.grey_background);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (jsonQueuedPerson.getDependents().size()>0)
-            recordHolder.tv_change_name.setVisibility(View.VISIBLE);
-        else
-            recordHolder.tv_change_name.setVisibility(View.GONE);
+        if (jsonQueuedPerson.getDependents().size()>0) {
+            //recordHolder.tv_change_name.setVisibility(View.VISIBLE);
+            recordHolder.tv_change_name.setBackgroundResource(R.drawable.tv_roun_rect);
+            recordHolder.tv_change_name.setClickable(true);
+        }else {
+            //recordHolder.tv_change_name.setVisibility(View.GONE);
+            recordHolder.tv_change_name.setBackgroundResource(R.drawable.grey_background);
+            recordHolder.tv_change_name.setClickable(false);
+        }
 
         if (glowPostion > 0 && glowPostion - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
             Animation startAnimation = AnimationUtils.loadAnimation(context, R.anim.show_anim);
