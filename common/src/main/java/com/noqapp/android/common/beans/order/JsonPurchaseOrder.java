@@ -221,4 +221,25 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         this.purchaseOrderState = purchaseOrderState;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonPurchaseOrder{" +
+                "bizStoreId='" + bizStoreId + '\'' +
+                ", customerPhone='" + customerPhone + '\'' +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", storeDiscount=" + storeDiscount +
+                ", orderPrice='" + orderPrice + '\'' +
+                ", deliveryType=" + deliveryType +
+                ", paymentType=" + paymentType +
+                ", businessType=" + businessType +
+                ", purchaseOrderProducts=" + purchaseOrderProducts +
+                ", servingNumber=" + servingNumber +
+                ", token=" + token +
+                ", customerName='" + customerName + '\'' +
+                ", expectedServiceBegin='" + expectedServiceBegin + '\'' +
+                ", transactionId='" + transactionId + '\'' +
+                ", purchaseOrderState=" + purchaseOrderState +
+                '}';
+    }
 }

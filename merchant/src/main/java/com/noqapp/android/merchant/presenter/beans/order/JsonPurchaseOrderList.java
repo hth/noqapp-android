@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.presenter.beans.order;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -34,6 +35,9 @@ public class JsonPurchaseOrderList extends AbstractDomain implements Serializabl
     @JsonProperty("pos")
     private List<JsonPurchaseOrder> purchaseOrders = new ArrayList<>();
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public List<JsonPurchaseOrder> getPurchaseOrders() {
         return purchaseOrders;
     }
@@ -41,5 +45,21 @@ public class JsonPurchaseOrderList extends AbstractDomain implements Serializabl
     public JsonPurchaseOrderList setPurchaseOrders(List<JsonPurchaseOrder> purchaseOrders) {
         this.purchaseOrders = purchaseOrders;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonPurchaseOrderList{" +
+                "purchaseOrders=" + purchaseOrders +
+                ", error=" + error +
+                '}';
     }
 }

@@ -16,6 +16,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
+import com.noqapp.android.merchant.presenter.beans.order.JsonPurchaseOrderList;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
@@ -29,7 +30,9 @@ import com.noqapp.android.merchant.views.adapters.PeopleInQAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
+import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
+import com.noqapp.android.merchant.views.model.PurchaseOrderModel;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -67,7 +70,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MerchantDetailFragment extends Fragment implements ManageQueuePresenter,DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,RegistrationActivity.RegisterCallBack,LoginActivity.LoginCallBack {
+public class MerchantDetailFragment extends Fragment implements ManageQueuePresenter,DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,RegistrationActivity.RegisterCallBack,LoginActivity.LoginCallBack ,PurchaseOrderPresenter{
 
     private Context context;
     private TextView tv_create_token;
@@ -263,6 +266,19 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
             RegistrationActivity.registerCallBack = this;
             LoginActivity.loginCallBack = this;
         }
+    }
+
+    @Override
+    public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
+        if(null != jsonPurchaseOrderList){
+            Log.v("order data:",jsonPurchaseOrderList.toString());
+        }
+        dismissProgress();
+    }
+
+    @Override
+    public void purchaseOrderError() {
+        dismissProgress();
     }
 
     @Override
@@ -769,8 +785,11 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setVisibility(View.VISIBLE);
-            manageQueueModel.setQueuePersonListPresenter(this);
-            manageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+          //  manageQueueModel.setQueuePersonListPresenter(this);
+           // manageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+
+            PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel(this);
+            purchaseOrderModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

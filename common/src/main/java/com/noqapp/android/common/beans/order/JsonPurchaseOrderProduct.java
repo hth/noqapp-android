@@ -87,4 +87,15 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
         this.jsonStoreProduct = jsonStoreProduct;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonPurchaseOrderProduct{" +
+                "productId='" + productId + '\'' +
+                ", productPrice=" + productPrice +
+                ", productDiscount=" + productDiscount +
+                ", productQuantity=" + productQuantity +
+                ", jsonStoreProduct=" + jsonStoreProduct +
+                '}';
+    }
 }
