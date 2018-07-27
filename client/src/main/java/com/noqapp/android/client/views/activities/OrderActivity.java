@@ -183,6 +183,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     updateProfile.setBirthday(NoQueueBaseActivity.getUserDOB());
                     updateProfile.setGender(NoQueueBaseActivity.getGender());
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
+                    updateProfile.setQueueUserId(NoQueueBaseActivity.getUserProfile().getQueueUserId());
                     profileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
                 if (LaunchActivity.getLaunchActivity().isOnline() && !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {

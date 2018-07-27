@@ -325,10 +325,11 @@ public class AppUtilities extends CommonHelper {
             address = coder.getFromLocationName(strAddress, 5);
             if (address == null) {
                 return null;
+                //TODO @Chandra get proper lat long
             }
             Address location = address.get(0);
             latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return latLng;
