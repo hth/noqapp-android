@@ -166,7 +166,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    public JsonProfile getUserProfile() {
+    public static JsonProfile getUserProfile() {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(KEY_USER_PROFILE, "");
         JsonProfile obj = gson.fromJson(json, JsonProfile.class);
