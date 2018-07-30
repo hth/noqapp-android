@@ -2,6 +2,7 @@ package com.noqapp.android.common.beans.order;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
@@ -36,48 +37,51 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("bs")
     private String bizStoreId;
 
-    @JsonProperty("p")
+    @JsonProperty ("p")
     private String customerPhone;
 
-    @JsonProperty("da")
+    @JsonProperty ("da")
     private String deliveryAddress;
 
-    @JsonProperty("sd")
+    @JsonProperty ("sd")
     private int storeDiscount;
 
-    @JsonProperty("op")
+    @JsonProperty ("op")
     private String orderPrice;
 
-    @JsonProperty("dt")
+    @JsonProperty ("dt")
     private DeliveryTypeEnum deliveryType;
 
-    @JsonProperty("pt")
+    @JsonProperty ("pt")
     private PaymentTypeEnum paymentType;
 
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
-    @JsonProperty("pop")
+    @JsonProperty ("pop")
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
 
     /* Populated from TokenQueue. */
-    @JsonProperty("s")
+    @JsonProperty ("s")
     private int servingNumber;
 
-    @JsonProperty("t")
+    @JsonProperty ("t")
     private int token;
 
-    @JsonProperty("n")
+    @JsonProperty ("n")
     private String customerName;
 
-    @JsonProperty("e")
+    @JsonProperty ("e")
     private String expectedServiceBegin;
 
-    @JsonProperty("ti")
+    @JsonProperty ("ti")
     private String transactionId;
 
-    @JsonProperty("os")
+    @JsonProperty ("os")
     private PurchaseOrderStateEnum purchaseOrderState;
+
+    @JsonProperty ("c")
+    private String created;
 
     public JsonPurchaseOrder() {
     }
@@ -219,6 +223,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setPurchaseOrderState(PurchaseOrderStateEnum purchaseOrderState) {
         this.purchaseOrderState = purchaseOrderState;
+        return this;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public JsonPurchaseOrder setCreated(String created) {
+        this.created = created;
         return this;
     }
 
