@@ -5,26 +5,24 @@ import java.util.ArrayList;
 public class TestCaseString {
 
 
-
-
-    private Pathology pathology;
-    private Radiology radiology;
+    private ArrayList<String> pathology;
+    private ArrayList<String> radiology;
     private ArrayList<String> general;
 
-    public Pathology getPathology() {
+    public ArrayList<String> getPathology() {
         return pathology;
     }
 
-    public TestCaseString setPathology(Pathology pathology) {
+    public TestCaseString setPathology(ArrayList<String> pathology) {
         this.pathology = pathology;
         return this;
     }
 
-    public Radiology getRadiology() {
+    public ArrayList<String> getRadiology() {
         return radiology;
     }
 
-    public TestCaseString setRadiology(Radiology radiology) {
+    public TestCaseString setRadiology(ArrayList<String> radiology) {
         this.radiology = radiology;
         return this;
     }

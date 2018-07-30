@@ -67,9 +67,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MerchantDetailFragment extends Fragment implements ManageQueuePresenter,DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,RegistrationActivity.RegisterCallBack,LoginActivity.LoginCallBack {
+public abstract class BaseMerchantDetailFragment extends Fragment implements ManageQueuePresenter,DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,RegistrationActivity.RegisterCallBack,LoginActivity.LoginCallBack {
 
-    private Context context;
+    protected Context context;
     private TextView tv_create_token;
     private Button btn_create_token;
     private ImageView iv_banner;
@@ -77,10 +77,10 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private PeopleInQAdapter peopleInQAdapter;
     private List<JsonQueuedPerson> jsonQueuedPersonArrayList= new ArrayList<>();
     private EditText edt_mobile;
-    private RecyclerView rv_queue_people;
+    protected RecyclerView rv_queue_people;
     private ProgressBar progressDialog;
     private View itemView;
-    private JsonTopic jsonTopic = null;
+    protected JsonTopic jsonTopic = null;
 
     private TextView tv_title, tv_total_value, tv_current_value, tv_counter_name, tv_timing, tv_start, tv_next;
     private Chronometer chronometer;
@@ -93,8 +93,8 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     private boolean queueStatusOuter = false;
     private int lastSelectedPos = -1;
     private LinearLayoutManager horizontalLayoutManagaer;
-    private ManageQueueModel manageQueueModel;
-    private ArrayList<JsonTopic> topicsList;
+    protected ManageQueueModel manageQueueModel;
+    protected ArrayList<JsonTopic> topicsList;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -222,7 +222,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
             JsonTopic jt = topicsList.get(currrentpos);
             if (token.getCodeQR().equalsIgnoreCase(jt.getCodeQR())) {
                 if (StringUtils.isNotBlank(jt.getCustomerName())) {
-                    Log.i(MerchantDetailFragment.class.getSimpleName(), "Show customer name=" + jt.getCustomerName());
+                    Log.i(BaseMerchantDetailFragment.class.getSimpleName(), "Show customer name=" + jt.getCustomerName());
                 }
                 jt.setToken(token.getToken());
                 jt.setQueueStatus(token.getQueueStatus());
@@ -264,6 +264,8 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
             LoginActivity.loginCallBack = this;
         }
     }
+
+
 
     @Override
     public void authenticationFailure(int errorCode) {
@@ -312,7 +314,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                     }
                     break;
                 default:
-                    Log.e(MerchantDetailFragment.class.getSimpleName(), "Reached un-reachable condition");
+                    Log.e(BaseMerchantDetailFragment.class.getSimpleName(), "Reached un-reachable condition");
                     throw new RuntimeException("Reached unsupported condition");
             }
         }
@@ -532,7 +534,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
     }
 
 
-    private void dismissProgress() {
+    protected void dismissProgress() {
         if (null != progressDialog) {
             progressDialog.setVisibility(View.GONE);
         }
@@ -619,7 +621,7 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
                 btn_start.setBackgroundResource(R.mipmap.pause);
                 break;
             default:
-                Log.e(MerchantDetailFragment.class.getSimpleName(), "Reached un-supported condition");
+                Log.e(BaseMerchantDetailFragment.class.getSimpleName(), "Reached un-supported condition");
         }
 
         btn_next.setOnClickListener(new View.OnClickListener() {
@@ -769,14 +771,16 @@ public class MerchantDetailFragment extends Fragment implements ManageQueuePrese
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setVisibility(View.VISIBLE);
-            manageQueueModel.setQueuePersonListPresenter(this);
-            manageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+            getAllPeopleInQ(jsonTopic);
+
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
     }
 
-    private void resetList() {
+    public abstract void getAllPeopleInQ(JsonTopic jsonTopic);
+
+    protected void resetList() {
         jsonQueuedPersonArrayList = new ArrayList<>();
         peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR());
         rv_queue_people.setAdapter(peopleInQAdapter);

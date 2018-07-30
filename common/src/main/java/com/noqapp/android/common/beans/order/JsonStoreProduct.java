@@ -146,4 +146,19 @@ public class JsonStoreProduct implements Serializable {
     public String getDisplayDiscount() {
         return new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
     }
+
+    @Override
+    public String toString() {
+        return "JsonStoreProduct{" +
+                "productId='" + productId + '\'' +
+                ", productName='" + productName + '\'' +
+                ", productPrice=" + productPrice +
+                ", productDiscount=" + productDiscount +
+                ", productInfo='" + productInfo + '\'' +
+                ", storeCategoryId='" + storeCategoryId + '\'' +
+                ", productType=" + productType +
+                ", unitOfMeasurement=" + unitOfMeasurement +
+                ", productReference='" + productReference + '\'' +
+                '}';
+    }
 }

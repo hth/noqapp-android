@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.merchant.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;

@@ -9,7 +9,7 @@ import retrofit2.http.Path;
 
 public interface PurchaseOrderService {
 
-    @POST("/api/m/o/purchaseOrder/showOrders/{codeQR}.json")
+    @POST("api/m/o/purchaseOrder/showOrders/{codeQR}.json")
     Call<JsonPurchaseOrderList> fetch(
             @Header("X-R-DID")
             String did,

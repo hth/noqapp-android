@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
+import com.noqapp.android.common.model.types.medical.OccupationEnum;
 
 /**
  * hitender
@@ -29,6 +30,12 @@ public class JsonUserMedicalProfile {
     @JsonProperty("bt")
     private BloodTypeEnum bloodType;
 
+    @JsonProperty("oc")
+    private OccupationEnum occupation;
+
+    @JsonProperty("ht")
+    private int height;
+
     public BloodTypeEnum getBloodType() {
         return bloodType;
     }
@@ -38,10 +45,21 @@ public class JsonUserMedicalProfile {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "JsonUserMedicalProfile{" +
-                "bloodType=" + bloodType +
-                '}';
+    public OccupationEnum getOccupation() {
+        return occupation;
+    }
+
+    public JsonUserMedicalProfile setOccupation(OccupationEnum occupation) {
+        this.occupation = occupation;
+        return this;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public JsonUserMedicalProfile setHeight(int height) {
+        this.height = height;
+        return this;
     }
 }
