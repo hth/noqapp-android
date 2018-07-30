@@ -131,7 +131,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                                     .setProductId(value.getJsonStoreProduct().getProductId())
                                     .setProductPrice(value.getJsonStoreProduct().getProductPrice())
                                     .setProductQuantity(value.getChildInput())
-                                    .setJsonStoreProduct(value.getJsonStoreProduct()));
+                                    .setProductName(value.getJsonStoreProduct().getProductName()));
                             price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
                         }
                         if (price / 100 >= jsonQueue.getMinimumDeliveryOrder()) {
