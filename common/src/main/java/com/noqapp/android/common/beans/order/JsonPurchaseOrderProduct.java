@@ -32,6 +32,9 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
     @JsonProperty("pi")
     private String productId;
 
+    @JsonProperty("pn")
+    private String productName;
+
     @JsonProperty("pp")
     private int productPrice;
 
@@ -41,15 +44,21 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
     @JsonProperty("pq")
     private int productQuantity;
 
-    @JsonIgnore
-    private JsonStoreProduct jsonStoreProduct;
-
     public String getProductId() {
         return productId;
     }
 
     public JsonPurchaseOrderProduct setProductId(String productId) {
         this.productId = productId;
+        return this;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public JsonPurchaseOrderProduct setProductName(String productName) {
+        this.productName = productName;
         return this;
     }
 
@@ -80,23 +89,15 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
         return this;
     }
 
-    public JsonStoreProduct getJsonStoreProduct() {
-        return jsonStoreProduct;
-    }
-
-    public JsonPurchaseOrderProduct setJsonStoreProduct(JsonStoreProduct jsonStoreProduct) {
-        this.jsonStoreProduct = jsonStoreProduct;
-        return this;
-    }
-
     @Override
     public String toString() {
-        return "JsonPurchaseOrderProduct{" +
-                "productId='" + productId + '\'' +
-                ", productPrice=" + productPrice +
-                ", productDiscount=" + productDiscount +
-                ", productQuantity=" + productQuantity +
-                ", jsonStoreProduct=" + jsonStoreProduct +
-                '}';
+        final StringBuffer sb = new StringBuffer("JsonPurchaseOrderProduct{");
+        sb.append("productId='").append(productId).append('\'');
+        sb.append(", productName='").append(productName).append('\'');
+        sb.append(", productPrice=").append(productPrice);
+        sb.append(", productDiscount=").append(productDiscount);
+        sb.append(", productQuantity=").append(productQuantity);
+        sb.append('}');
+        return sb.toString();
     }
 }
