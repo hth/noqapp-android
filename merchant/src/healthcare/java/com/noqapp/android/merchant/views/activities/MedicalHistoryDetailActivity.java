@@ -192,8 +192,8 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         TextView tv_blood_test = findViewById(R.id.tv_blood_test);
         tv_blood_test.setPaintFlags(tv_blood_test.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
 
-        ArrayList<String> data = testCaseString.getPathology().getBlood();
-        ArrayList<String> data1 = testCaseString.getPathology().getUrine();
+        ArrayList<String> data = testCaseString.getPathology();
+        ArrayList<String> data1 = testCaseString.getPathology();
          ArrayList<GridItem> gridItems = new ArrayList<>();
         ArrayList<GridItem> gridItems1 = new ArrayList<>();
         for (int i =0 ; i< data.size();i++){
@@ -680,21 +680,22 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
         tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE : View.VISIBLE);
     }
 
+
     @Override
-    public void addDeleteItems(String value, boolean isAdded, String key) {
+    public void addDeleteItems(GridItem value, boolean isAdded, String key) {
         if(key.equals("blood")) {
             if (isAdded) {
-                sc_blood_data.add(value);
+                sc_blood_data.add(value.getLabel());
             } else {
-                sc_blood_data.remove(value);
+                sc_blood_data.remove(value.getLabel());
             }
             sc_blood.removeAllSegments();
             sc_blood.addSegments(sc_blood_data);
         }else if(key.equals("urine")) {
             if (isAdded) {
-                sc_urine_data.add(value);
+                sc_urine_data.add(value.getLabel());
             } else {
-                sc_urine_data.remove(value);
+                sc_urine_data.remove(value.getLabel());
             }
             sc_urine.removeAllSegments();
             sc_urine.addSegments(sc_urine_data);

@@ -331,81 +331,26 @@
                         android:orientation="vertical"
                         android:layout_margin="5dp">
 
-                    <TextView
-                            android:id="@+id/tv_blood_test"
+                    <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                            android:id="@+id/lv_pathology"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:layout_marginBottom="5dp"
-                            android:text="Blood Test: "/>
-
-                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
-                            android:id="@+id/sc_blood"
                             android:minHeight="50dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/square_border"/>
+
+                    <AutoCompleteTextView
+                            android:id="@+id/actv_pathology"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp"
-                            app:distributeEvenly="false"
-                            app:radius="6dp"
-                            app:radiusForEverySegment="true"
-                            app:segmentHorizontalMargin="4dp"
-                            app:segmentVerticalMargin="4dp"
-                            app:selectedBackgroundColor="@color/segment_bg_color"
-                            app:selectedStrokeColor="@color/segment_bg_color"
-                            app:selectedTextColor="@color/segment_text_color"
-                            app:textVerticalPadding="3dp"
-                            app:unSelectedBackgroundColor="@color/segment_bg_color"
-                            app:unSelectedStrokeColor="@color/segment_bg_color"
-                            app:unSelectedTextColor="@color/segment_text_color"
-                            android:background="@drawable/square_border"
-                            app:columnCount="4"/>
+                            android:background="@drawable/square_white_bg_drawable"
+                            android:hint="Search tests"
+                            android:layout_height="40dp"/>
 
                     <com.noqapp.android.merchant.views.customviews.FixedHeightGridView
                             android:id="@+id/gv_blood"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:numColumns="3"/>
-                </LinearLayout>
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_margin="5dp">
-
-                    <TextView
-                            android:id="@+id/tv_urine"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="Urine Test: "
-                            android:layout_marginBottom="5dp"/>
-
-                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
-                            android:id="@+id/sc_urine"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:minHeight="50dp"
-                            android:padding="5dp"
-                            app:distributeEvenly="false"
-                            app:radius="6dp"
-                            app:radiusForEverySegment="true"
-                            app:segmentHorizontalMargin="4dp"
-                            app:segmentVerticalMargin="4dp"
-                            app:selectedBackgroundColor="@color/segment_bg_color"
-                            app:selectedStrokeColor="@color/segment_bg_color"
-                            app:selectedTextColor="@color/segment_text_color"
-                            app:textVerticalPadding="3dp"
-                            app:unSelectedBackgroundColor="@color/segment_bg_color"
-                            app:unSelectedStrokeColor="@color/segment_bg_color"
-                            app:unSelectedTextColor="@color/segment_text_color"
-                            android:background="@drawable/square_border"
-                            app:columnCount="4"/>
-
-                    <com.noqapp.android.merchant.views.customviews.FixedHeightGridView
-                            android:id="@+id/gv_urine"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:visibility="gone"
                             android:numColumns="3"/>
                 </LinearLayout>
 

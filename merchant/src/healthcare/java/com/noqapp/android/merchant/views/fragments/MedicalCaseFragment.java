@@ -21,6 +21,7 @@ import com.noqapp.android.merchant.views.Utils.GridItem;
 import com.noqapp.android.merchant.views.Utils.TestCaseString;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.GridAdapter;
+import com.noqapp.android.merchant.views.adapters.ListAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordFavouriteAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
@@ -45,6 +46,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -66,41 +68,33 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     
 
     private String jsonText =   "{\n" +
-            "  \"pathology\": {\n" +
-            "    \"blood\": [\n" +
-            "      \"Prostate-Specific Antigen (PSA)\",\n" +
-            "      \"Thyroid Stimulating Hormone (TSH)\",\n" +
-            "      \"Testosterone (Free)\",\n" +
-            "      \"Estradiol\",\n" +
-            "      \"Pregnenolone\",\n" +
-            "      \"Homocysteine\",\n" +
-            "      \"Hemoglobin A1C (HbA1C)\",\n" +
-            "      \"Dihydrotestosterone (DHT)\"\n" +
-            "    ],\n" +
-            "    \"urine\": [\n" +
-            "      \"Urinary Methylmalonic Acid (MMA)\",\n" +
-            "      \"Urinalysis\",\n" +
-            "      \"Neurotransmitter Panel\",\n" +
-            "      \"Iodine\",\n" +
-            "      \"Protein and Creatinine\"\n" +
-            "    ]\n" +
-            "  },\n" +
-            "  \"radiology\": {\n" +
-            "    \"x_ray\": [\n" +
-            "      \"Bone Density (BMD)\",\n" +
-            "      \"Ribs (Oblique)\",\n" +
-            "      \"Acromioclavicular (AC) Joint\",\n" +
-            "      \"Teeth and bones X-rays\",\n" +
-            "      \"Submentovertex (S.M.V.)\"\n" +
-            "    ],\n" +
-            "    \"mri\": [\n" +
-            "      \"Angiography (MRA) Head\",\n" +
-            "      \"Venography (MRV) Brain\",\n" +
-            "      \"Pituitary With Contrast\",\n" +
-            "      \"Angiography (MRA) Neck\",\n" +
-            "      \"Cholangiopancreatography (MRCP)\"\n" +
-            "    ]\n" +
-            "  },\n" +
+            "  \"pathology\": [\n" +
+            "    \"Prostate-Specific Antigen (PSA)\",\n" +
+            "    \"Thyroid Stimulating Hormone (TSH)\",\n" +
+            "    \"Testosterone (Free)\",\n" +
+            "    \"Estradiol\",\n" +
+            "    \"Pregnenolone\",\n" +
+            "    \"Homocysteine\",\n" +
+            "    \"Hemoglobin A1C (HbA1C)\",\n" +
+            "    \"Dihydrotestosterone (DHT)\",\n" +
+            "    \"Urinary Methylmalonic Acid (MMA)\",\n" +
+            "    \"Urinalysis\",\n" +
+            "    \"Neurotransmitter Panel\",\n" +
+            "    \"Iodine\",\n" +
+            "    \"Protein and Creatinine\"\n" +
+            "  ],\n" +
+            "  \"radiology\": [\n" +
+            "    \"Bone Density (BMD)\",\n" +
+            "    \"Ribs (Oblique)\",\n" +
+            "    \"Acromioclavicular (AC) Joint\",\n" +
+            "    \"Teeth and bones X-rays\",\n" +
+            "    \"Submentovertex (S.M.V.)\",\n" +
+            "    \"Angiography (MRA) Head\",\n" +
+            "    \"Venography (MRV) Brain\",\n" +
+            "    \"Pituitary With Contrast\",\n" +
+            "    \"Angiography (MRA) Neck\",\n" +
+            "    \"Cholangiopancreatography (MRCP)\"\n" +
+            "  ],\n" +
             "  \"general\": [\n" +
             "    \"ecg\",\n" +
             "    \"cag\"\n" +
@@ -150,11 +144,11 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private LinearLayout ll_fav_medicines;
     private boolean isExpand;
     private RadioGroup rg_duration;
-
-    private SegmentedControl sc_blood,sc_urine;
-    private ArrayList<String> sc_blood_data = new ArrayList<>();
-    private ArrayList<String> sc_urine_data = new ArrayList<>();
     private TestCaseString testCaseString;
+    private ListAdapter listAdapter;
+    private ListView lv_pathology;
+    private ArrayList<GridItem> lv_pathology_items = new ArrayList<>();
+    private AutoCompleteTextView actv_pathology;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -177,27 +171,35 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             medicalRecordFavouriteList = new ArrayList<>();
         adapterFavourite = new MedicalRecordFavouriteAdapter(getActivity(), medicalRecordFavouriteList, this);
         listview_favroite.setAdapter(adapterFavourite);
-        sc_blood = view.findViewById(R.id.sc_blood);
-        sc_urine = view.findViewById(R.id.sc_urine);
-        TextView tv_urine = view.findViewById(R.id.tv_urine);
-        tv_urine.setPaintFlags(tv_urine.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-        TextView tv_blood_test = view.findViewById(R.id.tv_blood_test);
-        tv_blood_test.setPaintFlags(tv_blood_test.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
 
-        ArrayList<String> data = testCaseString.getPathology().getBlood();
-        ArrayList<String> data1 = testCaseString.getPathology().getUrine();
+        ArrayList<String> data = testCaseString.getPathology();
         ArrayList<GridItem> gridItems = new ArrayList<>();
-        ArrayList<GridItem> gridItems1 = new ArrayList<>();
         for (int i =0 ; i< data.size();i++){
             gridItems.add(new GridItem().setFavourite(false).setKey("pathology").setLabel(data.get(i)).setSelect(false).setFavourite(true));
         }
-        for (int i =0 ; i< data1.size();i++){
-            gridItems1.add(new GridItem().setFavourite(false).setKey("pathology").setLabel(data1.get(i)).setSelect(false).setFavourite(false));
-        }
         GridView gv_blood =  view.findViewById(R.id.gv_blood);
-        GridView gv_urine =  view.findViewById(R.id.gv_urine);
-        gv_blood.setAdapter(new GridAdapter(getActivity(),gridItems,this,"blood"));
-        gv_urine.setAdapter(new GridAdapter(getActivity(),gridItems1,this,"urine"));
+        gv_blood.setAdapter(new GridAdapter(getActivity(),gridItems,this,"pathology"));
+        lv_pathology = view.findViewById(R.id.lv_pathology);
+        listAdapter = new ListAdapter(getActivity(),lv_pathology_items,"pathology");
+        lv_pathology.setAdapter(listAdapter);
+
+
+        actv_pathology = view.findViewById(R.id.actv_pathology);
+        final ArrayAdapter<String> actv_adapter = new ArrayAdapter<String>
+                (getActivity(), android.R.layout.simple_list_item_1, data);
+        actv_pathology.setAdapter(actv_adapter);
+        actv_pathology.setThreshold(1);
+        actv_pathology.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                lv_pathology_items.add(new GridItem().setFavourite(false).setKey("pathology").setLabel(actv_adapter.getItem(pos)).setSelect(false).setFavourite(true));
+                listAdapter = new ListAdapter(getActivity(),lv_pathology_items,"pathology");
+                lv_pathology.setAdapter(listAdapter);
+                actv_pathology.setText("");
+            }
+        });
 
         actv_complaints = view.findViewById(R.id.actv_complaints);
         actv_past_history = view.findViewById(R.id.actv_past_history);
@@ -578,17 +580,12 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                                 .setOxygen(edt_oxygen.getText().toString())
                                 .setTemperature(edt_temperature.getText().toString());
                         ArrayList<JsonPathology> pathologies = new ArrayList<>();
-                        if (sc_urine_data.size() > 0) {
-                            for (int i = 0; i < sc_urine_data.size(); i++) {
-                                pathologies.add(new JsonPathology().setName(sc_urine_data.get(i)));
+                        if (lv_pathology_items.size() > 0) {
+                            for (int i = 0; i < lv_pathology_items.size(); i++) {
+                                pathologies.add(new JsonPathology().setName(lv_pathology_items.get(i).getLabel()));
                             }
                         }
-                        if (sc_blood_data.size() > 0) {
-                            for (int i = 0; i < sc_blood_data.size(); i++) {
-                                pathologies.add(new JsonPathology().setName(sc_blood_data.get(i)));
-                            }
-                        }
-                        if (sc_urine_data.size() > 0 || sc_blood_data.size() > 0)
+                        if ( lv_pathology_items.size() > 0)
                             jsonMedicalRecord.setPathologies(pathologies);
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
@@ -668,23 +665,16 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     }
 
     @Override
-    public void addDeleteItems(String value, boolean isAdded, String key) {
-        if(key.equals("blood")) {
+    public void addDeleteItems(GridItem value, boolean isAdded, String key) {
+        if(key.equals("pathology")) {
             if (isAdded) {
-                sc_blood_data.add(value);
+                lv_pathology_items.add(value);
             } else {
-                sc_blood_data.remove(value);
+                lv_pathology_items.remove(value);
             }
-            sc_blood.removeAllSegments();
-            sc_blood.addSegments(sc_blood_data);
-        }else if(key.equals("urine")) {
-            if (isAdded) {
-                sc_urine_data.add(value);
-            } else {
-                sc_urine_data.remove(value);
-            }
-            sc_urine.removeAllSegments();
-            sc_urine.addSegments(sc_urine_data);
+            listAdapter = new ListAdapter(getActivity(),lv_pathology_items,"pathology");
+            lv_pathology.setAdapter(listAdapter);
+
         }
     }
 }

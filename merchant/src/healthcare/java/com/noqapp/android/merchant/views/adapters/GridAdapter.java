@@ -67,7 +67,7 @@ public class GridAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    gridCommunication.addDeleteItems(recordHolder.cb_select.getText().toString(), isChecked, key);
+                    gridCommunication.addDeleteItems(gridItems.get(position), isChecked, key);
                     gridItems.get(position).setSelect(isChecked);
                 }catch (Exception e){
                     e.printStackTrace();
