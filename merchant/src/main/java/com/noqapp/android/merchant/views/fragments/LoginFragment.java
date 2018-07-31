@@ -150,12 +150,14 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         if (null != jsonMerchant) {
             LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
             LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
-            Type type = new TypeToken<HashMap<String, ArrayList<String>>>() {
-            }.getType();
-            Gson gson = new Gson();
-            HashMap<String, ArrayList<String>> hashmap = gson.fromJson(jsonMerchant.getJsonProfessionalProfile().getDataDictionary(), type);
-            if(null != hashmap && hashmap.size()>0)
-             LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
+            if(null != jsonMerchant.getJsonProfessionalProfile()) {
+                Type type = new TypeToken<HashMap<String, ArrayList<String>>>() {
+                }.getType();
+                Gson gson = new Gson();
+                HashMap<String, ArrayList<String>> hashmap = gson.fromJson(jsonMerchant.getJsonProfessionalProfile().getDataDictionary(), type);
+                if (null != hashmap && hashmap.size() > 0)
+                    LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
+            }
             if(jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.Q_SUPERVISOR || jsonMerchant.getJsonProfile().getUserLevel()== UserLevelEnum.S_MANAGER ) {
                 if((getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare") &&
                         jsonMerchant.getJsonProfile().getBusinessType() == BusinessTypeEnum.DO)||

@@ -57,8 +57,6 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,13 +68,13 @@ import java.util.List;
 public abstract class BaseMerchantDetailFragment extends Fragment implements ManageQueuePresenter,DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,RegistrationActivity.RegisterCallBack,LoginActivity.LoginCallBack {
 
     protected Context context;
-    private TextView tv_create_token;
-    private Button btn_create_token;
-    private ImageView iv_banner;
-    private TextView tvcount;
+    protected TextView tv_create_token;
+    protected Button btn_create_token;
+    protected ImageView iv_banner;
+    protected TextView tvcount;
     private PeopleInQAdapter peopleInQAdapter;
     private List<JsonQueuedPerson> jsonQueuedPersonArrayList= new ArrayList<>();
-    private EditText edt_mobile;
+    protected EditText edt_mobile;
     protected RecyclerView rv_queue_people;
     private ProgressBar progressDialog;
     private View itemView;
@@ -161,7 +159,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             @Override
             public void onClick(View view) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    showCreateTokenDialogWithMobile(context, jsonTopic.getCodeQR());
+                    createToken(context, jsonTopic.getCodeQR());
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
                 }
@@ -183,6 +181,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         return itemView;
     }
 
+    protected abstract void createToken(Context context, String codeQR);
 
     @Override
     public void onResume() {
@@ -366,144 +365,14 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         mAlertDialog.show();
     }
 
-    private void showCreateTokenDialog(final Context mContext, final String codeQR) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_create_token, null, false);
-        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
-        tv_create_token = customDialogView.findViewById(R.id.tvtitle);
-        iv_banner = customDialogView.findViewById(R.id.iv_banner);
-        tvcount = customDialogView.findViewById(R.id.tvcount);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
-        btn_create_token.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
-                    setDispensePresenter();
-                    manageQueueModel.dispenseToken(
-                            LaunchActivity.getLaunchActivity().getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            codeQR);
-                    btn_create_token.setClickable(false);
-                } else {
-                    mAlertDialog.dismiss();
-                }
-            }
-        });
-
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        mAlertDialog.show();
-    }
-
-
-    private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_create_token_with_mobile, null, false);
-        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
-        tv_create_token = customDialogView.findViewById(R.id.tvtitle);
-        iv_banner = customDialogView.findViewById(R.id.iv_banner);
-        tvcount = customDialogView.findViewById(R.id.tvcount);
-        edt_mobile = customDialogView.findViewById(R.id.edt_mobile);
-        final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
-        final RadioGroup rg_user_id = customDialogView.findViewById(R.id.rg_user_id);
-        final RadioButton rb_mobile = customDialogView.findViewById(R.id.rb_mobile);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rb_mobile) {
-                    edt_mobile.setVisibility(View.VISIBLE);
-                    edt_id.setVisibility(View.GONE);
-                    edt_id.setText("");
-                } else {
-                    edt_id.setVisibility(View.VISIBLE);
-                    edt_mobile.setVisibility(View.GONE);
-                    edt_mobile.setText("");
-                }
-            }
-        });
-        btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
-        btn_create_token.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                boolean isValid = true;
-                edt_mobile.setError(null);
-                edt_id.setError(null);
-                new AppUtils().hideKeyBoard(getActivity());
-                // get selected radio button from radioGroup
-                int selectedId = rg_user_id.getCheckedRadioButtonId();
-                if(selectedId == R.id.rb_mobile){
-                    if (TextUtils.isEmpty(edt_mobile.getText())) {
-                        edt_mobile.setError(getString(R.string.error_mobile_blank));
-                        isValid = false;
-                    }
-                }else{
-                    if (TextUtils.isEmpty(edt_id.getText())) {
-                        edt_id.setError(getString(R.string.error_customer_id));
-                        isValid = false;
-                    }
-                }
-
-
-                if(isValid) {
-                if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
-                    setDispensePresenter();
-                    String phone = "";
-                    String cid = "";
-                    if(rb_mobile.isChecked()){
-                        edt_id.setText("");
-                        phone = "91"+edt_mobile.getText().toString();
-                    }else{
-                        cid = edt_id.getText().toString();
-                        edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
-                    }
-                    manageQueueModel.dispenseTokenWithClientInfo(
-                            LaunchActivity.getLaunchActivity().getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
-                    btn_create_token.setClickable(false);
-                    mAlertDialog.dismiss();
-                } else {
-                    mAlertDialog.dismiss();
-                }
-                }
-            }
-        });
-
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        mAlertDialog.show();
-    }
 
 
     private void setPresenter() {
        manageQueueModel.setManageQueuePresenter(this);
     }
 
-    private void setDispensePresenter() {
+    protected void setDispensePresenter() {
         manageQueueModel.setDispenseTokenPresenter(this);
     }
 

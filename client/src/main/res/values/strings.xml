@@ -252,7 +252,7 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="location_change">Location update</string>
     <string name="location_msg">It seems your location has been changed.Do you want to update it?</string>
     <string name="token">TOKEN</string>
-    <string name="login_via_otp">Login via OTP</string>
+    <string name="login_via_otp">Login/Register via OTP</string>
     <string name="resend_otp">Resend OTP</string>
     <string name="awards">Awards</string>
     <string name="new_location">We\'ve detected a change in your location. Do you want to update?</string>
