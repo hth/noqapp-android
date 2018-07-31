@@ -25,13 +25,10 @@ import java.util.List;
 
 public class UserAdditionalInfoFragment extends Fragment {
 
-
     @BindView(R.id.tv_education)
     protected TextView tv_education;
-
     @BindView(R.id.tv_experience)
     protected TextView tv_experience;
-//
     private JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal;
 
     @Override

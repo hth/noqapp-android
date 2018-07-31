@@ -388,11 +388,13 @@ public class AppUtilities extends CommonHelper {
 
     public static String getNameFromQueueUserID(String queueUserID, List<JsonProfile> list) {
         String name = "";
-        if (null != list && list.size() > 0) {
-            for (int i = 0; i < list.size(); i++) {
-                if (queueUserID.equalsIgnoreCase(list.get(i).getQueueUserId())) {
-                    name = list.get(i).getName();
-                    break;
+        if(!TextUtils.isEmpty(queueUserID)) {
+            if (null != list && list.size() > 0) {
+                for (int i = 0; i < list.size(); i++) {
+                    if (queueUserID.equalsIgnoreCase(list.get(i).getQueueUserId())) {
+                        name = list.get(i).getName();
+                        break;
+                    }
                 }
             }
         }

@@ -32,7 +32,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -53,8 +52,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     private EditText edt_email;
     private EditText tv_male;
     private EditText tv_female;
-    public String gender = "";
-    protected LinearLayout ll_gender;
+    private String gender = "";
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     private MerchantProfileModel merchantProfileModel;
@@ -101,14 +99,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            // progressDialog.show();
-            // ProfileModel.profilePresenter = this;
-            // ProfileModel.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
-        } else {
-            ShowAlertInformation.showNetworkDialog(getActivity());
-        }
         return view;
     }
 

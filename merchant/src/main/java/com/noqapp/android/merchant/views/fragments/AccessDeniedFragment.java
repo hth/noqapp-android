@@ -19,7 +19,7 @@ public class AccessDeniedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_access_denied, container, false);
         TextView tv_msg = view.findViewById(R.id.tv_msg);
-        tv_msg.setText(getArguments().getString("errorMsg"));
+        tv_msg.setText(getArguments().getString("errorMsg",getString(R.string.error_access_denied)));
         return view;
     }
 
