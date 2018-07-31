@@ -55,6 +55,14 @@
           }
         },
         {
+          "client_id": "129734883266-isvaa1pgtheeck0pa0fn43gssirp44sc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.client",
+            "certificate_hash": "ed89f8d83ecabad282c2df1f8bc2e48faa1a6f52"
+          }
+        },
+        {
           "client_id": "129734883266-f54sbih0l01vo4n8pheie2ap0p7os79u.apps.googleusercontent.com",
           "client_type": 3
         }
