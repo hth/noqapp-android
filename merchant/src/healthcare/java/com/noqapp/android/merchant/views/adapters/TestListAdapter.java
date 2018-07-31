@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.Utils.GridItem;
+import com.noqapp.android.merchant.views.interfaces.ListCommunication;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
@@ -17,25 +18,27 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class ListAdapter extends BaseAdapter {
+public class TestListAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<GridItem> gridItems;
+    private ArrayList<String> listItems;
     private String key;
+    private ListCommunication listCommunication;
 
-    public ListAdapter(Context context, ArrayList<GridItem> gridItems, String key) {
+    public TestListAdapter(Context context, ArrayList<String> listItems, String key, ListCommunication listCommunication) {
         this.context = context;
-        this.gridItems = gridItems;
+        this.listItems = listItems;
         this.key = key;
+        this.listCommunication = listCommunication;
     }
 
     @Override
     public int getCount() {
-        return gridItems.size();
+        return listItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return gridItems.get(position);
+        return listItems.get(position);
     }
 
     @Override
@@ -59,8 +62,8 @@ public class ListAdapter extends BaseAdapter {
             recordHolder = (RecordHolder) convertView.getTag();
         }
         recordHolder.tv_sequence.setText(""+(position+1)+"-");
-        recordHolder.tv_test_name.setText(gridItems.get(position).getLabel());
-        recordHolder.iv_favourite.setBackgroundResource(gridItems.get(position).isFavourite() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
+        recordHolder.tv_test_name.setText(listItems.get(position));
+       // recordHolder.iv_favourite.setBackgroundResource(listItems.get(position).isFavourite() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
         recordHolder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,8 +91,8 @@ public class ListAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(context, "Deleted from test list", Toast.LENGTH_LONG).show();
-                        gridItems.remove(position);
-                        // adapterCommunicate.updateFavouriteList(medicalRecord,false);
+                        listItems.remove(position);
+                        listCommunication.updateList(listItems,key);
                         notifyDataSetChanged();
                         mAlertDialog.dismiss();
                     }

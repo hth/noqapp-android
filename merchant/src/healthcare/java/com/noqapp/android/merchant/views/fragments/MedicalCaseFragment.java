@@ -21,11 +21,12 @@ import com.noqapp.android.merchant.views.Utils.GridItem;
 import com.noqapp.android.merchant.views.Utils.TestCaseString;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.GridAdapter;
-import com.noqapp.android.merchant.views.adapters.ListAdapter;
+import com.noqapp.android.merchant.views.adapters.TestListAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordFavouriteAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
 import com.noqapp.android.merchant.views.interfaces.GridCommunication;
+import com.noqapp.android.merchant.views.interfaces.ListCommunication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -33,7 +34,6 @@ import com.google.gson.reflect.TypeToken;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,17 +57,16 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MedicalCaseFragment extends Fragment implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate, GridCommunication {
-    
+public class MedicalCaseFragment extends Fragment implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate, GridCommunication, ListCommunication {
 
-    private String jsonText =   "{\n" +
+
+    private String jsonText = "{\n" +
             "  \"pathology\": [\n" +
             "    \"Prostate-Specific Antigen (PSA)\",\n" +
             "    \"Thyroid Stimulating Hormone (TSH)\",\n" +
@@ -145,21 +144,25 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private boolean isExpand;
     private RadioGroup rg_duration;
     private TestCaseString testCaseString;
-    private ListAdapter listAdapter;
-    private ListView lv_pathology;
-    private ArrayList<GridItem> lv_pathology_items = new ArrayList<>();
-    private AutoCompleteTextView actv_pathology;
+    private TestListAdapter pathologyAdapter;
+    private TestListAdapter radiologyAdapter;
+    private ListView lv_pathology, lv_radiology;
+    private ArrayList<String> lv_pathology_items = new ArrayList<>();
+    private ArrayList<String> lv_radiology_items = new ArrayList<>();
+    private AutoCompleteTextView actv_pathology, actv_radiology;
+    private final String PATHOLOGY = "pathology";
+    private final String RADIOLOGY = "radiology";
+    private ListCommunication listCommunication;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_medical_case, container, false);
         try {
             testCaseString = new Gson().fromJson(jsonText, TestCaseString.class);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        listCommunication = this;
         medicalHistoryModel = new MedicalHistoryModel(this);
         listview = view.findViewById(R.id.listview);
         listview_favroite = view.findViewById(R.id.listview_favroite);
@@ -174,30 +177,59 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
         ArrayList<String> data = testCaseString.getPathology();
         ArrayList<GridItem> gridItems = new ArrayList<>();
-        for (int i =0 ; i< data.size();i++){
-            gridItems.add(new GridItem().setFavourite(false).setKey("pathology").setLabel(data.get(i)).setSelect(false).setFavourite(true));
+        for (int i = 0; i < data.size(); i++) {
+            gridItems.add(new GridItem().setFavourite(false).setKey(PATHOLOGY).setLabel(data.get(i)).setSelect(false).setFavourite(true));
         }
-        GridView gv_blood =  view.findViewById(R.id.gv_blood);
-        gv_blood.setAdapter(new GridAdapter(getActivity(),gridItems,this,"pathology"));
+        GridView gv_blood = view.findViewById(R.id.gv_blood);
+        gv_blood.setAdapter(new GridAdapter(getActivity(), gridItems, this, PATHOLOGY));
         lv_pathology = view.findViewById(R.id.lv_pathology);
-        listAdapter = new ListAdapter(getActivity(),lv_pathology_items,"pathology");
-        lv_pathology.setAdapter(listAdapter);
+        pathologyAdapter = new TestListAdapter(getActivity(), lv_pathology_items, PATHOLOGY,this);
+        lv_pathology.setAdapter(pathologyAdapter);
 
+        lv_radiology = view.findViewById(R.id.lv_radiology);
+        radiologyAdapter = new TestListAdapter(getActivity(), lv_radiology_items, RADIOLOGY,this);
+        lv_radiology.setAdapter(radiologyAdapter);
 
         actv_pathology = view.findViewById(R.id.actv_pathology);
-        final ArrayAdapter<String> actv_adapter = new ArrayAdapter<String>
+        final ArrayAdapter<String> actv_patholoy_adapter = new ArrayAdapter<String>
                 (getActivity(), android.R.layout.simple_list_item_1, data);
-        actv_pathology.setAdapter(actv_adapter);
+        actv_pathology.setAdapter(actv_patholoy_adapter);
         actv_pathology.setThreshold(1);
         actv_pathology.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                                     long id) {
-                lv_pathology_items.add(new GridItem().setFavourite(false).setKey("pathology").setLabel(actv_adapter.getItem(pos)).setSelect(false).setFavourite(true));
-                listAdapter = new ListAdapter(getActivity(),lv_pathology_items,"pathology");
-                lv_pathology.setAdapter(listAdapter);
+                if (!lv_pathology_items.contains(actv_patholoy_adapter.getItem(pos))) {
+                    lv_pathology_items.add(actv_patholoy_adapter.getItem(pos));
+                    pathologyAdapter = new TestListAdapter(getActivity(), lv_pathology_items, PATHOLOGY,listCommunication);
+                    lv_pathology.setAdapter(pathologyAdapter);
+                } else {
+                    Toast.makeText(getActivity(), "Selected test case already added", Toast.LENGTH_LONG).show();
+                }
                 actv_pathology.setText("");
+            }
+        });
+
+
+        actv_radiology = view.findViewById(R.id.actv_radiology);
+        final ArrayAdapter<String> actv_radiology_adapter = new ArrayAdapter<String>
+                (getActivity(), android.R.layout.simple_list_item_1, testCaseString.getRadiology());
+        actv_radiology.setAdapter(actv_radiology_adapter);
+        actv_radiology.setThreshold(1);
+        actv_radiology.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                if (!lv_radiology_items.contains(actv_radiology_adapter.getItem(pos))) {
+                    lv_radiology_items.add(actv_radiology_adapter.getItem(pos));
+                    radiologyAdapter = new TestListAdapter(getActivity(), lv_radiology_items, RADIOLOGY,listCommunication);
+                    lv_radiology.setAdapter(radiologyAdapter);
+                } else {
+                    Toast.makeText(getActivity(), "Selected test case already added", Toast.LENGTH_LONG).show();
+                }
+                actv_radiology.setText("");
             }
         });
 
@@ -254,7 +286,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
                 if (isValidEntry()) {
                     JsonMedicalMedicine jsonMedicalMedicine = new JsonMedicalMedicine();
-
                     jsonMedicalMedicine.setDailyFrequency(actv_frequency.getText().toString());
                     jsonMedicalMedicine.setStrength(actv_dose.getText().toString());
                     jsonMedicalMedicine.setMedicationType(actv_medicine_type.getText().toString());
@@ -387,14 +418,11 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 setSuggetions(actv_frequency, MEDICINES_FREQUENCY, false);
                 setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS, false);
                 setSuggetions(actv_course, MEDICINES_COURSE, false);
-
-
                 Log.v("JSON", hashmap.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
         return view;
     }
 
@@ -467,7 +495,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             return true;
         } catch (PackageManager.NameNotFoundException e) {
         }
-
         return false;
     }
 
@@ -582,10 +609,15 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                         ArrayList<JsonPathology> pathologies = new ArrayList<>();
                         if (lv_pathology_items.size() > 0) {
                             for (int i = 0; i < lv_pathology_items.size(); i++) {
-                                pathologies.add(new JsonPathology().setName(lv_pathology_items.get(i).getLabel()));
+                                pathologies.add(new JsonPathology().setName(lv_pathology_items.get(i)));
                             }
                         }
-                        if ( lv_pathology_items.size() > 0)
+                        if (lv_radiology_items.size() > 0) {
+                            for (int i = 0; i < lv_radiology_items.size(); i++) {
+                                pathologies.add(new JsonPathology().setName(lv_radiology_items.get(i)));
+                            }
+                        }
+                        if (pathologies.size() > 0)
                             jsonMedicalRecord.setPathologies(pathologies);
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
@@ -641,7 +673,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         } else
             medicalRecordFavouriteList.remove(jsonMedicalMedicine);
         LaunchActivity.getLaunchActivity().setFavouriteMedicines(medicalRecordFavouriteList);
-        adapterFavourite = new MedicalRecordFavouriteAdapter(getActivity(), medicalRecordFavouriteList,this);
+        adapterFavourite = new MedicalRecordFavouriteAdapter(getActivity(), medicalRecordFavouriteList, this);
         listview_favroite.setAdapter(adapterFavourite);
         tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE : View.VISIBLE);
     }
@@ -666,15 +698,35 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
     @Override
     public void addDeleteItems(GridItem value, boolean isAdded, String key) {
-        if(key.equals("pathology")) {
-            if (isAdded) {
-                lv_pathology_items.add(value);
-            } else {
-                lv_pathology_items.remove(value);
-            }
-            listAdapter = new ListAdapter(getActivity(),lv_pathology_items,"pathology");
-            lv_pathology.setAdapter(listAdapter);
+//        if(key.equals(PATHOLOGY)) {
+//            if (isAdded) {
+//                lv_pathology_items.add(value);
+//            } else {
+//                lv_pathology_items.remove(value);
+//            }
+//            pathologyAdapter = new TestListAdapter(getActivity(),lv_pathology_items,PATHOLOGY);
+//            lv_pathology.setAdapter(pathologyAdapter);
+//        }else if(key.equals(RADIOLOGY)) {
+//            if (isAdded) {
+//                lv_radiology_items.add(value);
+//            } else {
+//                lv_radiology_items.remove(value);
+//            }
+//            radiologyAdapter = new TestListAdapter(getActivity(),lv_radiology_items,RADIOLOGY);
+//            lv_radiology.setAdapter(radiologyAdapter);
+//        }
+    }
 
+    @Override
+    public void updateList(ArrayList<String> list, String key) {
+        if (key.equals(PATHOLOGY)) {
+            lv_pathology_items = list;
+            pathologyAdapter = new TestListAdapter(getActivity(), lv_pathology_items, PATHOLOGY, this);
+            lv_pathology.setAdapter(pathologyAdapter);
+        } else if (key.equals(RADIOLOGY)) {
+            lv_radiology_items = list;
+            radiologyAdapter = new TestListAdapter(getActivity(), lv_radiology_items, RADIOLOGY, this);
+            lv_radiology.setAdapter(radiologyAdapter);
         }
     }
 }
