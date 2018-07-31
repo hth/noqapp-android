@@ -42,17 +42,20 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     protected ManageQueueModel manageQueueModel;
     protected BusinessCustomerModel businessCustomerModel;
     private QueueStatusEnum queueStatusEnum;
+
     // for medical Only
     abstract void changePatient(Context context, JsonQueuedPerson jsonQueuedPerson);
+
     // for medical Only
     abstract void editBusinessCustomerId(Context context, JsonQueuedPerson jsonQueuedPerson);
+
     // for medical Only
     abstract void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson);
 
     @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
         // Only the updated record will be returned from WebService
-        if(jsonQueuePersonList.getQueuedPeople().size()>0) {
+        if (jsonQueuePersonList.getQueuedPeople().size() > 0) {
             //Server will return only updated objects list
             //Hence update only that objects
             for (int j = 0; j < jsonQueuePersonList.getQueuedPeople().size(); j++) {
@@ -121,7 +124,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.qCodeQR = qCodeQR;
         manageQueueModel = new ManageQueueModel();
         manageQueueModel.setQueuePersonListPresenter(this);
-        businessCustomerModel =  new BusinessCustomerModel(this);
+        businessCustomerModel = new BusinessCustomerModel(this);
     }
 
     public BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion, QueueStatusEnum queueStatusEnum) {
@@ -132,7 +135,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.glowPostion = glowPostion;
         manageQueueModel = new ManageQueueModel();
         manageQueueModel.setQueuePersonListPresenter(this);
-        businessCustomerModel =  new BusinessCustomerModel(this);
+        businessCustomerModel = new BusinessCustomerModel(this);
         this.queueStatusEnum = queueStatusEnum;
     }
 
@@ -152,8 +155,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
 
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
-        recordHolder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ?  Html.fromHtml("<b>Reg. Id: </b>"+context.getString(R.string.unregister_user)):
-                Html.fromHtml("<b>Reg. Id: </b>"+jsonQueuedPerson.getBusinessCustomerId()));
+        recordHolder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user)) :
+                Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
         recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                 //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
                 PhoneFormatterUtil.formatNumber("IN", phoneNo));
@@ -252,11 +255,11 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             e.printStackTrace();
         }
 
-        if (jsonQueuedPerson.getDependents().size()>0) {
+        if (jsonQueuedPerson.getDependents().size() > 0) {
             //recordHolder.tv_change_name.setVisibility(View.VISIBLE);
             recordHolder.tv_change_name.setBackgroundResource(R.drawable.tv_roun_rect);
             recordHolder.tv_change_name.setClickable(true);
-        }else {
+        } else {
             //recordHolder.tv_change_name.setVisibility(View.GONE);
             recordHolder.tv_change_name.setBackgroundResource(R.drawable.grey_background);
             recordHolder.tv_change_name.setClickable(false);
@@ -265,8 +268,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         if (glowPostion > 0 && glowPostion - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
             Animation startAnimation = AnimationUtils.loadAnimation(context, R.anim.show_anim);
             recordHolder.cardview.startAnimation(startAnimation);
-            Log.v("animation true: ",""+position);
-        }else{
+            Log.v("animation true: ", "" + position);
+        } else {
             Animation removeAnimation = AnimationUtils.loadAnimation(context, R.anim.remove_anim);
             recordHolder.cardview.startAnimation(removeAnimation);
         }
@@ -276,6 +279,5 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     public int getItemCount() {
         return dataSet.size();
     }
-
 
 }
