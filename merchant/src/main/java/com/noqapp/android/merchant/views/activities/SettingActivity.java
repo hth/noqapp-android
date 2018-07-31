@@ -60,10 +60,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        if(!isDialog) {
+            if (!new AppUtils().isTablet(getApplicationContext())) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            } else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
         }
         super.onCreate(savedInstanceState);
         queueSettingModel = new QueueSettingModel(this);

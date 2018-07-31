@@ -54,8 +54,6 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
 
 
     private TextView tv_profile_name;
-    //    @BindView(R.id.iv_edit)
-//    protected ImageView iv_edit;
     private ImageView iv_profile;
     private final int SELECT_PICTURE = 110;
     private final int STORAGE_PERMISSION_CODE = 102;
@@ -67,9 +65,6 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     private LoadTabs loadTabs;
     private UserProfileFragment userProfileFragment;
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
-    private String webProfileId = "";
-    private String managerName = "";
-    private String managerImageUrl = "";
     private ImageView actionbarBack;
     private MerchantProfileModel merchantProfileModel;
 
@@ -86,37 +81,17 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         });
         tv_profile_name = findViewById(R.id.tv_profile_name);
         merchantProfileModel = new MerchantProfileModel();
-//        ButterKnife.bind(this);
-//        initActionsViews(false);
-//        tv_toolbar_title.setText("Doctor Profile");
         iv_profile = findViewById(R.id.iv_profile);
-//        iv_edit.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
-//        webProfileId = getIntent().getStringExtra("webProfileId");
-//        managerName = getIntent().getStringExtra("managerName");
-//        managerImageUrl = getIntent().getStringExtra("managerImage");
-//
-//        Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
-//        try {
-//            if (!TextUtils.isEmpty(managerImageUrl)) {
-//                Picasso.with(this)
-//                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + managerImageUrl)
-//                        .into(iv_profile);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
         loadTabs = new LoadTabs();
         loadTabs.execute();
-
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             merchantProfileModel.setMerchantPresenter(this);
             merchantProfileModel.fetch(LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
         }
-
     }
 
 

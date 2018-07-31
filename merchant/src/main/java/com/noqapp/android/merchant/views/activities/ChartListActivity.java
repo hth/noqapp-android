@@ -70,7 +70,7 @@ public class ChartListActivity extends AppCompatActivity {
             list_fragment = findViewById(R.id.frame_layout);
             list_detail_fragment = findViewById(R.id.list_detail_fragment);
             LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
-            LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
+            LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.7f);
             list_fragment.setLayoutParams(lp1);
             list_detail_fragment.setLayoutParams(lp2);
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

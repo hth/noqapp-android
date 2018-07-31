@@ -417,7 +417,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
 
     public void updateListData(List<JsonTopic> jsonTopics) {
         topics = new ArrayList<>();
-        topics.addAll(jsonTopics);
+        if(null != jsonTopics && jsonTopics.size()>0)
+         topics.addAll(jsonTopics);
     }
 
     @Override

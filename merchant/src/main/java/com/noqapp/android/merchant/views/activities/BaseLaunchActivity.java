@@ -262,6 +262,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                     list_detail_fragment.setLayoutParams(lp0);
                 }
                 AccessDeniedFragment adf = new AccessDeniedFragment();
+                Bundle b = new Bundle();
+                b.putString("errorMsg", getString(R.string.error_access_denied));
+                adf.setArguments(b);
                 replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
             }
             setUserName();
