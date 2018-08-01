@@ -23,7 +23,7 @@ public enum PurchaseOrderStateEnum {
     OD("OD", "Order Delivered"),
     DA("DA", "Delivery Re-attempt"),
     CO("CO", "Cancelled Order");
-    
+
     private final String name;
     private final String description;
 
