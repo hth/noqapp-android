@@ -29,6 +29,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         TextView tv_customer_mobile;
         TextView tv_sequence_number;
         TextView tv_status_msg;
+        TextView tv_order_data;
+        TextView tv_order_status;
         ImageView iv_info;
         CardView cardview;
 
@@ -38,6 +40,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
             this.tv_sequence_number = itemView.findViewById(R.id.tv_sequence_number);
             this.tv_status_msg = itemView.findViewById(R.id.tv_status_msg);
+            this.tv_order_data = itemView.findViewById(R.id.tv_order_data);
+            this.tv_order_status = itemView.findViewById(R.id.tv_order_status);
             this.iv_info = itemView.findViewById(R.id.iv_info);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
@@ -69,6 +73,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                 //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
                 PhoneFormatterUtil.formatNumber("IN", phoneNo));
+        recordHolder.tv_order_data.setText(jsonPurchaseOrder.getPurchaseOrderProducts().toString());
+        recordHolder.tv_order_status.setText(jsonPurchaseOrder.getPurchaseOrderState().getDescription());
         recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
