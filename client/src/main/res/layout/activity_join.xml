@@ -102,7 +102,7 @@
                         android:padding="5dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Add Dependent"
+                        android:text="@string/add_dependent"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -118,7 +118,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".4"
-                            android:text="Patient Name"
+                            android:text="@string/patient_name"
                             android:padding="10dp"
                             android:textColor="@color/colorAddress"
                             android:textSize="18sp" />
@@ -144,7 +144,7 @@
                     android:layout_marginBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:text="Queue Details"
+                    android:text="@string/queue_details"
                     android:textColor="@color/colorAddress"
                     android:textSize="18sp" />
 
@@ -259,7 +259,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_horizontal"
-                    android:text="You were skiped. \nPress yes to join the queue again."
+                    android:text="@string/skip_msg"
                     android:textColor="@color/colorAddress"
                     android:textSize="18sp"
                     android:visibility="gone" />
