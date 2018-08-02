@@ -116,7 +116,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
     @Override
     public void medicalRecordResponse(JsonMedicalRecordList jsonMedicalRecordList) {
         Log.d("data", jsonMedicalRecordList.toString());
-        if (null != jsonMedicalRecordList & jsonMedicalRecordList.getJsonMedicalRecords().size() > 0) {
+        if (!jsonMedicalRecordList.getJsonMedicalRecords().isEmpty()) {
             jsonMedicalRecords = jsonMedicalRecordList.getJsonMedicalRecords();
         }
         Collections.reverse(jsonMedicalRecords);
