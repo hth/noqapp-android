@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class StoreDetailActivity extends BaseActivity implements StorePresenter {
 
@@ -360,7 +361,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             ll_store_open_status.addView(childLayout);
         }
         iv_store_open_status.performClick();// to collapse the view on start
-
     }
 
     @Override
@@ -373,19 +373,12 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         dismissProgress();
     }
 
-
     private boolean isStoreOpenToday(JsonStore jsonStore) {
         List<JsonHour> jsonHourList = jsonStore.getJsonHours();
-        JsonHour jsonHour = jsonHourList.get(//3);
-                AppUtilities.getDayOfWeek());
-        DateFormat df = new SimpleDateFormat("HH:mm");
+        JsonHour jsonHour = jsonHourList.get(AppUtilities.getDayOfWeek());
+        DateFormat df = new SimpleDateFormat("HH:mm", Locale.US);
         String time = df.format(Calendar.getInstance().getTime());
-        int timedata = Integer.parseInt(time.replace(":", ""));
-        if (jsonHour.getStartHour() <= timedata &&
-                timedata <= jsonHour.getEndHour()) {
-            return true;
-        } else {
-            return false;
-        }
+        int timeData = Integer.parseInt(time.replace(":", ""));
+        return jsonHour.getStartHour() <= timeData && timeData <= jsonHour.getEndHour();
     }
 }
