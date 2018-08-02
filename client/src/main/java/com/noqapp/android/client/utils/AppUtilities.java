@@ -299,7 +299,7 @@ public class AppUtilities extends CommonHelper {
         String additionalText;
         DateFormat df = new SimpleDateFormat("HH:mm");
         String time = df.format(Calendar.getInstance().getTime());
-        int timedata = Integer.valueOf(time.replace(":", ""));
+        int timedata = Integer.parseInt(time.replace(":", ""));
         if (jsonTokenAndQueue.getStartHour() <= timedata &&
                 timedata <= jsonTokenAndQueue.getEndHour()) {
             additionalText = "Open";

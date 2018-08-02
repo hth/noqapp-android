@@ -35,9 +35,9 @@ public class AppUtils extends CommonHelper {
         String[] split = version.split("\\.");
         ApkVersionModel apkVersionModel = null;
         if (split.length == 4) {
-            apkVersionModel = new ApkVersionModel(Integer.valueOf(split[0]), Integer.valueOf(split[1]), Integer.valueOf(split[2]), Integer.valueOf(split[3]));
+            apkVersionModel = new ApkVersionModel(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]));
         } else if (split.length == 3) {
-            apkVersionModel = new ApkVersionModel(Integer.valueOf(split[0]), Integer.valueOf(split[1]), Integer.valueOf(split[2]));
+            apkVersionModel = new ApkVersionModel(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
         }
         return apkVersionModel;
     }

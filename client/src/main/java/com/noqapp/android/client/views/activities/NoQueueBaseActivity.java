@@ -48,7 +48,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     /* Secured Shared Preference. */
     public static final String APP_PREF = "shared_pref";
     public static final String FCM_TOKEN = "fcmToken";
-    public static String XR_DID = "X-R-DID";
+    public static final String XR_DID = "X-R-DID";
     public static NoQueueBaseActivity noQueueBaseActivity;
     private static SharedPreferences sharedPreferences;
 

@@ -380,7 +380,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 AppUtilities.getDayOfWeek());
         DateFormat df = new SimpleDateFormat("HH:mm");
         String time = df.format(Calendar.getInstance().getTime());
-        int timedata = Integer.valueOf(time.replace(":", ""));
+        int timedata = Integer.parseInt(time.replace(":", ""));
         if (jsonHour.getStartHour() <= timedata &&
                 timedata <= jsonHour.getEndHour()) {
             return true;
