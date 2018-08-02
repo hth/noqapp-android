@@ -52,6 +52,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -126,7 +127,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private EditText edt_weight, edt_bp, edt_pulse, edt_temperature, edt_oxygen;
     private JsonQueuedPerson jsonQueuedPerson;
     private Button btn_update;
-    private ListView listview, listview_favroite;
+    private ListView listview, listview_favourite;
     private List<JsonMedicalMedicine> medicalRecordList = new ArrayList<>();
     private List<JsonMedicalMedicine> medicalRecordFavouriteList = new ArrayList<>();
     private MedicalRecordAdapter adapter;
@@ -153,6 +154,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private final String PATHOLOGY = "pathology";
     private final String RADIOLOGY = "radiology";
     private ListCommunication listCommunication;
+    private ImageView iv_add_pathology,iv_add_radiology;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -163,17 +165,21 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             e.printStackTrace();
         }
         listCommunication = this;
+
+        iv_add_pathology = view.findViewById(R.id.iv_add_pathology);
+        iv_add_radiology = view.findViewById(R.id.iv_add_radiology);
         medicalHistoryModel = new MedicalHistoryModel(this);
         listview = view.findViewById(R.id.listview);
-        listview_favroite = view.findViewById(R.id.listview_favroite);
+        listview_favourite = view.findViewById(R.id.listview_favroite);
         adapter = new MedicalRecordAdapter(getActivity(), medicalRecordList, this);
         listview.setAdapter(adapter);
 
         medicalRecordFavouriteList = LaunchActivity.getLaunchActivity().getFavouriteMedicines();
-        if (null == medicalRecordFavouriteList)
+        if (null == medicalRecordFavouriteList) {
             medicalRecordFavouriteList = new ArrayList<>();
+        }
         adapterFavourite = new MedicalRecordFavouriteAdapter(getActivity(), medicalRecordFavouriteList, this);
-        listview_favroite.setAdapter(adapterFavourite);
+        listview_favourite.setAdapter(adapterFavourite);
 
         ArrayList<String> data = testCaseString.getPathology();
         ArrayList<GridItem> gridItems = new ArrayList<>();
@@ -191,12 +197,10 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         lv_radiology.setAdapter(radiologyAdapter);
 
         actv_pathology = view.findViewById(R.id.actv_pathology);
-        final ArrayAdapter<String> actv_patholoy_adapter = new ArrayAdapter<String>
-                (getActivity(), android.R.layout.simple_list_item_1, data);
+        final ArrayAdapter<String> actv_patholoy_adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, data);
         actv_pathology.setAdapter(actv_patholoy_adapter);
         actv_pathology.setThreshold(1);
         actv_pathology.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                                     long id) {
@@ -210,18 +214,15 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 actv_pathology.setText("");
             }
         });
-
+        iv_add_pathology.setOnClickListener(this);
 
         actv_radiology = view.findViewById(R.id.actv_radiology);
-        final ArrayAdapter<String> actv_radiology_adapter = new ArrayAdapter<String>
-                (getActivity(), android.R.layout.simple_list_item_1, testCaseString.getRadiology());
+        final ArrayAdapter<String> actv_radiology_adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, testCaseString.getRadiology());
         actv_radiology.setAdapter(actv_radiology_adapter);
         actv_radiology.setThreshold(1);
         actv_radiology.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
-                                    long id) {
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
                 if (!lv_radiology_items.contains(actv_radiology_adapter.getItem(pos))) {
                     lv_radiology_items.add(actv_radiology_adapter.getItem(pos));
                     radiologyAdapter = new TestListAdapter(getActivity(), lv_radiology_items, RADIOLOGY,listCommunication);
@@ -232,7 +233,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 actv_radiology.setText("");
             }
         });
-
+        iv_add_radiology.setOnClickListener(this);
         actv_complaints = view.findViewById(R.id.actv_complaints);
         actv_past_history = view.findViewById(R.id.actv_past_history);
         actv_family_history = view.findViewById(R.id.actv_family_history);
@@ -279,11 +280,9 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             }
         });
 
-
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (isValidEntry()) {
                     JsonMedicalMedicine jsonMedicalMedicine = new JsonMedicalMedicine();
                     jsonMedicalMedicine.setDailyFrequency(actv_frequency.getText().toString());
@@ -295,18 +294,18 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                     if (!medicalRecordList.contains(jsonMedicalMedicine)) {
                         medicalRecordList.add(0, jsonMedicalMedicine);
                         adapter.notifyDataSetChanged();
-                        updateSuggetions(actv_medicine_name, MEDICINES_NAME);
-                        setSuggetions(actv_medicine_name, MEDICINES_NAME, false);
-                        updateSuggetions(actv_dose, MEDICINES_DOSE);
-                        setSuggetions(actv_dose, MEDICINES_DOSE, false);
-                        updateSuggetions(actv_frequency, MEDICINES_FREQUENCY);
-                        setSuggetions(actv_frequency, MEDICINES_FREQUENCY, false);
-                        updateSuggetions(actv_course, MEDICINES_COURSE);
-                        setSuggetions(actv_course, MEDICINES_COURSE, false);
-                        updateSuggetions(actv_medicine_type, MEDICINES_TYPE);
-                        setSuggetions(actv_medicine_type, MEDICINES_TYPE, false);
-                        updateSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
-                        setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS, false);
+                        updateSuggestions(actv_medicine_name, MEDICINES_NAME);
+                        setSuggestions(actv_medicine_name, MEDICINES_NAME, false);
+                        updateSuggestions(actv_dose, MEDICINES_DOSE);
+                        setSuggestions(actv_dose, MEDICINES_DOSE, false);
+                        updateSuggestions(actv_frequency, MEDICINES_FREQUENCY);
+                        setSuggestions(actv_frequency, MEDICINES_FREQUENCY, false);
+                        updateSuggestions(actv_course, MEDICINES_COURSE);
+                        setSuggestions(actv_course, MEDICINES_COURSE, false);
+                        updateSuggestions(actv_medicine_type, MEDICINES_TYPE);
+                        setSuggestions(actv_medicine_type, MEDICINES_TYPE, false);
+                        updateSuggestions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
+                        setSuggestions(actv_dose_timing, MEDICINES_DOSE_TIMINGS, false);
                         // update medicine related info because we are setting the fields blank
                         LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
                         actv_medicine_name.setText("");
@@ -318,7 +317,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                     } else {
                         Toast.makeText(getActivity(), "medicine already added", Toast.LENGTH_LONG).show();
                     }
-
                 }
             }
         });
@@ -328,7 +326,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         btn_update = view.findViewById(R.id.btn_update);
         btn_update.setOnClickListener(this);
 
-        if (!appInstalledOrNot(packageName)) {
+        if (!isAppInstalled(packageName)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater_inner = LayoutInflater.from(getActivity());
             builder.setTitle(null);
@@ -347,7 +345,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 }
             });
             btn_yes.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
                     Uri uri = Uri.parse("market://details?id=" + packageName);
@@ -358,8 +355,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                     try {
                         startActivity(goToMarket);
                     } catch (ActivityNotFoundException e) {
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)));
                     }
                     mAlertDialog.dismiss();
 
@@ -371,7 +367,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             tv_msg.setText("Download the Scribble writer app to make your life easy.");
             tv_title.setText("Scribble app missing");
         }
-
 
         String strOutput = LaunchActivity.getLaunchActivity().getSuggestions();
         Type type = new TypeToken<HashMap<String, ArrayList<String>>>() {
@@ -402,22 +397,22 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             try {
                 hashmap = gson.fromJson(strOutput, type);
 
-                setSuggetions(actv_complaints, CHIEF, true);
-                setSuggetions(actv_past_history, PAST_HISTORY, true);
-                setSuggetions(actv_family_history, FAMILY_HISTORY, true);
-                setSuggetions(actv_known_allergy, KNOWN_ALLERGIES, true);
-                setSuggetions(actv_clinical_finding, CLINICAL_FINDINGS, true);
-                setSuggetions(actv_provisional, PROVISIONAL_DIAGNOSIS, true);
-                setSuggetions(actv_investigation, INVESTIGATION, true);
-                setSuggetions(actv_followup, FOLLOW_UP, true);
-                setSuggetions(actv_instruction, INSTRUCTIONS, true);
+                setSuggestions(actv_complaints, CHIEF, true);
+                setSuggestions(actv_past_history, PAST_HISTORY, true);
+                setSuggestions(actv_family_history, FAMILY_HISTORY, true);
+                setSuggestions(actv_known_allergy, KNOWN_ALLERGIES, true);
+                setSuggestions(actv_clinical_finding, CLINICAL_FINDINGS, true);
+                setSuggestions(actv_provisional, PROVISIONAL_DIAGNOSIS, true);
+                setSuggestions(actv_investigation, INVESTIGATION, true);
+                setSuggestions(actv_followup, FOLLOW_UP, true);
+                setSuggestions(actv_instruction, INSTRUCTIONS, true);
 
-                setSuggetions(actv_medicine_name, MEDICINES_NAME, false);
-                setSuggetions(actv_medicine_type, MEDICINES_TYPE, false);
-                setSuggetions(actv_dose, MEDICINES_DOSE, false);
-                setSuggetions(actv_frequency, MEDICINES_FREQUENCY, false);
-                setSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS, false);
-                setSuggetions(actv_course, MEDICINES_COURSE, false);
+                setSuggestions(actv_medicine_name, MEDICINES_NAME, false);
+                setSuggestions(actv_medicine_type, MEDICINES_TYPE, false);
+                setSuggestions(actv_dose, MEDICINES_DOSE, false);
+                setSuggestions(actv_frequency, MEDICINES_FREQUENCY, false);
+                setSuggestions(actv_dose_timing, MEDICINES_DOSE_TIMINGS, false);
+                setSuggestions(actv_course, MEDICINES_COURSE, false);
                 Log.v("JSON", hashmap.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -437,35 +432,37 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         }
         if (TextUtils.isEmpty(actv_dose.getText().toString())) {
             isValid = false;
-            errorMsg += "Please select dose for the  medicine \n";
+            errorMsg += "Please select dose for the medicine \n";
         }
         if (TextUtils.isEmpty(actv_frequency.getText().toString())) {
             isValid = false;
-            errorMsg += "Please select frequency for the  medicine \n";
+            errorMsg += "Please select frequency for the medicine \n";
         }
         if (TextUtils.isEmpty(actv_course.getText().toString())) {
             isValid = false;
-            errorMsg += "Please select course for the  medicine \n";
+            errorMsg += "Please select course for the medicine \n";
         }
         if (TextUtils.isEmpty(actv_medicine_type.getText().toString())) {
             isValid = false;
-            errorMsg += "Please select medication type for the  medicine \n";
+            errorMsg += "Please select medication type for the medicine \n";
         }
         if (TextUtils.isEmpty(actv_dose_timing.getText().toString())) {
             isValid = false;
-            errorMsg += "Please select dose timing for the  medicine \n";
+            errorMsg += "Please select dose timing for the medicine \n";
         }
-        if (!errorMsg.equalsIgnoreCase(""))
+        if (!errorMsg.equalsIgnoreCase("")) {
             Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+        }
 
         return isValid;
     }
 
-    private void setSuggetions(final AutoCompleteTextView actv, String key, boolean isThreashold) {
-        if (null == hashmap.get(key))
+    private void setSuggestions(final AutoCompleteTextView actv, String key, boolean isThreashold) {
+        if (null == hashmap.get(key)) {
             hashmap.put(key, new ArrayList<String>());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getActivity(), android.R.layout.simple_list_item_1, hashmap.get(key));
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, hashmap.get(key));
         actv.setAdapter(adapter);
         if (isThreashold) {
             actv.setThreshold(1);
@@ -480,20 +477,21 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         }
     }
 
-    private void updateSuggetions(AutoCompleteTextView actv, String key) {
-        if (!actv.getText().toString().equals(""))
+    private void updateSuggestions(AutoCompleteTextView actv, String key) {
+        if (!actv.getText().toString().equals("")) {
             if (!hashmap.get(key).contains(actv.getText().toString())) {
                 hashmap.get(key).add(actv.getText().toString());
             }
+        }
     }
 
-
-    private boolean appInstalledOrNot(String uri) {
-        PackageManager pm = getActivity().getPackageManager();
+    private boolean isAppInstalled(String uri) {
         try {
+            PackageManager pm = getActivity().getPackageManager();
             pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
             return true;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException | NullPointerException e) {
+            e.printStackTrace();
         }
         return false;
     }
@@ -501,29 +499,30 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     @Override
     public void onStop() {
         super.onStop();
-        updateSuggetions(actv_complaints, CHIEF);
-        updateSuggetions(actv_past_history, PAST_HISTORY);
-        updateSuggetions(actv_family_history, FAMILY_HISTORY);
-        updateSuggetions(actv_known_allergy, KNOWN_ALLERGIES);
-        updateSuggetions(actv_clinical_finding, CLINICAL_FINDINGS);
-        updateSuggetions(actv_provisional, PROVISIONAL_DIAGNOSIS);
-        updateSuggetions(actv_investigation, INVESTIGATION);
-        updateSuggetions(actv_followup, FOLLOW_UP);
-        updateSuggetions(actv_instruction, INSTRUCTIONS);
+        updateSuggestions(actv_complaints, CHIEF);
+        updateSuggestions(actv_past_history, PAST_HISTORY);
+        updateSuggestions(actv_family_history, FAMILY_HISTORY);
+        updateSuggestions(actv_known_allergy, KNOWN_ALLERGIES);
+        updateSuggestions(actv_clinical_finding, CLINICAL_FINDINGS);
+        updateSuggestions(actv_provisional, PROVISIONAL_DIAGNOSIS);
+        updateSuggestions(actv_investigation, INVESTIGATION);
+        updateSuggestions(actv_followup, FOLLOW_UP);
+        updateSuggestions(actv_instruction, INSTRUCTIONS);
         //update medicine when add button click
-        //updateSuggetions(actv_medicine_name, MEDICINES);
-//        updateSuggetions(actv_medicine_type, MEDICINES_TYPE);
-//        updateSuggetions(actv_dose, MEDICINES_DOSE);
-//        updateSuggetions(actv_frequency, MEDICINES_FREQUENCY);
-//        updateSuggetions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
-//        updateSuggetions(actv_course, MEDICINES_COURSE);
+        //updateSuggestions(actv_medicine_name, MEDICINES);
+//        updateSuggestions(actv_medicine_type, MEDICINES_TYPE);
+//        updateSuggestions(actv_dose, MEDICINES_DOSE);
+//        updateSuggestions(actv_frequency, MEDICINES_FREQUENCY);
+//        updateSuggestions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
+//        updateSuggestions(actv_course, MEDICINES_COURSE);
 
         LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
-
         M_MerchantProfileModel m_merchantProfileModel = new M_MerchantProfileModel(this);
-        m_merchantProfileModel.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+        m_merchantProfileModel.uploadIntellisense(
+                UserUtils.getDeviceId(),
+                UserUtils.getEmail(),
+                UserUtils.getAuth(),
                 new JsonProfessionalProfilePersonal().setDataDictionary(LaunchActivity.getLaunchActivity().getSuggestions()));
-
     }
 
     private boolean validate() {
@@ -544,19 +543,17 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 TextUtils.isEmpty(actv_investigation.getText())) {
             isValid = false;
         }
-
         return isValid;
     }
 
     @Override
     public void medicalRecordResponse(JsonResponse jsonResponse) {
-        if (jsonResponse.getResponse() == 1) {
+        if (1 == jsonResponse.getResponse()) {
             Toast.makeText(getActivity(), "Medical History updated Successfully", Toast.LENGTH_LONG).show();
             getActivity().finish();
         } else {
             Toast.makeText(getActivity(), "Failed to update", Toast.LENGTH_LONG).show();
         }
-
     }
 
     @Override
@@ -566,12 +563,12 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
     @Override
     public void intellisenseResponse(JsonResponse jsonResponse) {
-        Log.v("intellesence upload", "" + jsonResponse.getResponse());
+        Log.v("Intellisense upload", "" + jsonResponse.getResponse());
     }
 
     @Override
     public void intellisenseError() {
-        Log.v("intellesence upload: ", "error");
+        Log.v("Intellisense upload: ", "error");
     }
 
     @Override
@@ -583,9 +580,38 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     public void onClick(View v) {
 
         switch (v.getId()) {
+
+            case R.id.iv_add_pathology:
+                if(TextUtils.isEmpty(actv_pathology.getText().toString())){
+                    Toast.makeText(getActivity(), "Pathology field is empty", Toast.LENGTH_LONG).show();
+                }else {
+                    if (containsIgnoreCase(lv_pathology_items,actv_pathology.getText().toString().trim())) {
+                        Toast.makeText(getActivity(), "Selected test case already added", Toast.LENGTH_LONG).show();
+                    } else {
+                        lv_pathology_items.add(actv_pathology.getText().toString());
+                        pathologyAdapter = new TestListAdapter(getActivity(), lv_pathology_items, PATHOLOGY, listCommunication);
+                        lv_pathology.setAdapter(pathologyAdapter);
+                    }
+                    actv_pathology.setText("");
+                }
+                break;
+
+            case R.id.iv_add_radiology:
+                if (TextUtils.isEmpty(actv_radiology.getText().toString())) {
+                    Toast.makeText(getActivity(), "Radiology field is empty ", Toast.LENGTH_LONG).show();
+                } else {
+                    if (containsIgnoreCase(lv_radiology_items, actv_radiology.getText().toString().trim())) {
+                        Toast.makeText(getActivity(), "Selected test case already added", Toast.LENGTH_LONG).show();
+                    } else {
+                        lv_radiology_items.add(actv_radiology.getText().toString());
+                        radiologyAdapter = new TestListAdapter(getActivity(), lv_radiology_items, RADIOLOGY, listCommunication);
+                        lv_radiology.setAdapter(radiologyAdapter);
+                    }
+                    actv_radiology.setText("");
+                }
+                break;
             case R.id.btn_update:
                 if (validate()) {
-
                     if (TextUtils.isEmpty(actv_medicine_name.getText().toString())) {
                         JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                         jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
@@ -617,8 +643,9 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                                 pathologies.add(new JsonPathology().setName(lv_radiology_items.get(i)));
                             }
                         }
-                        if (pathologies.size() > 0)
+                        if (pathologies.size() > 0) {
                             jsonMedicalRecord.setPathologies(pathologies);
+                        }
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                         jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
@@ -645,7 +672,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         }
     }
 
-
 //    @Override
 //    public void onBackPressed() {
 //        long currentTime = System.currentTimeMillis();
@@ -662,34 +688,35 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 //        }
 //    }
 
-
     @Override
     public void updateFavouriteList(JsonMedicalMedicine jsonMedicalMedicine, boolean isAdded) {
         if (isAdded) {
-            if (medicalRecordFavouriteList.contains(jsonMedicalMedicine))
-                Toast.makeText(getActivity(), "medicine already marked as favroite", Toast.LENGTH_LONG).show();
-            else
+            if (medicalRecordFavouriteList.contains(jsonMedicalMedicine)) {
+                Toast.makeText(getActivity(), "Medicine already marked as favorite", Toast.LENGTH_LONG).show();
+            } else {
                 medicalRecordFavouriteList.add(jsonMedicalMedicine);
-        } else
+            }
+        } else {
             medicalRecordFavouriteList.remove(jsonMedicalMedicine);
+        }
         LaunchActivity.getLaunchActivity().setFavouriteMedicines(medicalRecordFavouriteList);
         adapterFavourite = new MedicalRecordFavouriteAdapter(getActivity(), medicalRecordFavouriteList, this);
-        listview_favroite.setAdapter(adapterFavourite);
+        listview_favourite.setAdapter(adapterFavourite);
         tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override
     public void updateNonFavouriteList(JsonMedicalMedicine jsonMedicalMedicine, boolean isAdded) {
         if (isAdded) {
-            if (medicalRecordList.contains(jsonMedicalMedicine))
-                Toast.makeText(getActivity(), "medicine already added", Toast.LENGTH_LONG).show();
-            else
+            if (medicalRecordList.contains(jsonMedicalMedicine)) {
+                Toast.makeText(getActivity(), "Medicine already added", Toast.LENGTH_LONG).show();
+            } else {
                 medicalRecordList.add(jsonMedicalMedicine);
+            }
         } else {
             medicalRecordList.remove(jsonMedicalMedicine);
             jsonMedicalMedicine.setFavourite(false);
             medicalRecordList.add(jsonMedicalMedicine);
-
         }
         adapter = new MedicalRecordAdapter(getActivity(), medicalRecordList, this);
         listview.setAdapter(adapter);
@@ -729,4 +756,14 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             lv_radiology.setAdapter(radiologyAdapter);
         }
     }
+
+    private boolean containsIgnoreCase(List<String> list, String soughtFor) {
+        for (String current : list) {
+            if (current.equalsIgnoreCase(soughtFor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
