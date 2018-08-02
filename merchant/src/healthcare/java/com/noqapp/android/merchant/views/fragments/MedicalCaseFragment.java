@@ -3,9 +3,9 @@ package com.noqapp.android.merchant.views.fragments;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.beans.medical.JsonPathology;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -629,19 +629,19 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                                 .setWeight(edt_weight.getText().toString())
                                 .setOxygen(edt_oxygen.getText().toString())
                                 .setTemperature(edt_temperature.getText().toString());
-                        ArrayList<JsonPathology> pathologies = new ArrayList<>();
+                        ArrayList<JsonMedicalPathology> pathologies = new ArrayList<>();
                         if (lv_pathology_items.size() > 0) {
                             for (int i = 0; i < lv_pathology_items.size(); i++) {
-                                pathologies.add(new JsonPathology().setName(lv_pathology_items.get(i)));
+                                pathologies.add(new JsonMedicalPathology().setName(lv_pathology_items.get(i)));
                             }
                         }
                         if (lv_radiology_items.size() > 0) {
                             for (int i = 0; i < lv_radiology_items.size(); i++) {
-                                pathologies.add(new JsonPathology().setName(lv_radiology_items.get(i)));
+                                pathologies.add(new JsonMedicalPathology().setName(lv_radiology_items.get(i)));
                             }
                         }
                         if (pathologies.size() > 0) {
-                            jsonMedicalRecord.setPathologies(pathologies);
+                            jsonMedicalRecord.setMedicalPathologies(pathologies);
                         }
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);

@@ -125,7 +125,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             childLayout.addView(mType, 0);
             ll_physical.addView(childLayout);
         }
-        for (int i =0;i<jsonMedicalRecord.getPathologies().size();i++) {
+        for (int i = 0; i<jsonMedicalRecord.getMedicalPathologies().size(); i++) {
             LinearLayout childLayout = new LinearLayout(this);
             LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -136,7 +136,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             mType.setPadding(5, 3, 0, 3);
             mType.setTypeface(Typeface.DEFAULT_BOLD);
             mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-            mType.setText(jsonMedicalRecord.getPathologies().get(i).getName());
+            mType.setText(jsonMedicalRecord.getMedicalPathologies().get(i).getName());
             childLayout.addView(mType, 0);
             ll_investigation.addView(childLayout);
         }

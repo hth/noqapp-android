@@ -57,13 +57,13 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     private String provisionalDifferentialDiagnosis;
 
     @JsonProperty("le")
-    private List<JsonPathology> pathologies;
+    private List<JsonMedicalPathology> medicalPathologies;
 
     @JsonProperty("pr")
     private String pathologyTestResult;
 
     @JsonProperty("re")
-    private List<JsonMedicalRadiologyXRay> medicalRadiologyXRays;
+    private List<JsonMedicalRadiology> medicalRadiologies;
 
     @JsonProperty("me")
     private List<JsonMedicalMedicine> medicalMedicines;
@@ -182,12 +182,12 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public List<JsonPathology> getPathologies() {
-        return pathologies;
+    public List<JsonMedicalPathology> getMedicalPathologies() {
+        return medicalPathologies;
     }
 
-    public JsonMedicalRecord setPathologies(List<JsonPathology> pathologies) {
-        this.pathologies = pathologies;
+    public JsonMedicalRecord setMedicalPathologies(List<JsonMedicalPathology> medicalPathologies) {
+        this.medicalPathologies = medicalPathologies;
         return this;
     }
 
@@ -200,12 +200,12 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public List<JsonMedicalRadiologyXRay> getMedicalRadiologyXRays() {
-        return medicalRadiologyXRays;
+    public List<JsonMedicalRadiology> getMedicalRadiologies() {
+        return medicalRadiologies;
     }
 
-    public JsonMedicalRecord setMedicalRadiologyXRays(List<JsonMedicalRadiologyXRay> medicalRadiologyXRays) {
-        this.medicalRadiologyXRays = medicalRadiologyXRays;
+    public JsonMedicalRecord setMedicalRadiologies(List<JsonMedicalRadiology> medicalRadiologies) {
+        this.medicalRadiologies = medicalRadiologies;
         return this;
     }
 
@@ -320,9 +320,9 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
                 ", medicalPhysical=" + medicalPhysical +
                 ", clinicalFinding='" + clinicalFinding + '\'' +
                 ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
-                ", pathologies=" + pathologies +
+                ", medicalPathologies=" + medicalPathologies +
                 ", pathologyTestResult='" + pathologyTestResult + '\'' +
-                ", medicalRadiologyXRays=" + medicalRadiologyXRays +
+                ", medicalRadiologies=" + medicalRadiologies +
                 ", medicalMedicines=" + medicalMedicines +
                 ", diagnosedById='" + diagnosedById + '\'' +
                 ", recordAccess=" + recordAccess +
