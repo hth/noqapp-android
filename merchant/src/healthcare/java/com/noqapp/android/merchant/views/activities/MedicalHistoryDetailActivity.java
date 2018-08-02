@@ -9,7 +9,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.beans.medical.JsonPathology;
+import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -590,19 +590,19 @@ public class MedicalHistoryDetailActivity extends AppCompatActivity implements M
                                 .setWeight(edt_weight.getText().toString())
                                 .setOxygen(edt_oxygen.getText().toString())
                                 .setTemperature(edt_temperature.getText().toString());
-                        ArrayList<JsonPathology> pathologies = new ArrayList<>();
+                        ArrayList<JsonMedicalPathology> pathologies = new ArrayList<>();
                         if (sc_urine_data.size() > 0) {
                             for (int i = 0; i < sc_urine_data.size(); i++) {
-                                pathologies.add(new JsonPathology().setName(sc_urine_data.get(i)));
+                                pathologies.add(new JsonMedicalPathology().setName(sc_urine_data.get(i)));
                             }
                         }
                         if (sc_blood_data.size() > 0) {
                             for (int i = 0; i < sc_blood_data.size(); i++) {
-                                pathologies.add(new JsonPathology().setName(sc_blood_data.get(i)));
+                                pathologies.add(new JsonMedicalPathology().setName(sc_blood_data.get(i)));
                             }
                         }
                         if (sc_urine_data.size() > 0 || sc_blood_data.size() > 0)
-                            jsonMedicalRecord.setPathologies(pathologies);
+                            jsonMedicalRecord.setMedicalPathologies(pathologies);
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                         jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());

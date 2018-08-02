@@ -22,7 +22,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonMedicalRadiologyXRay extends AbstractDomain implements Serializable {
+public class JsonMedicalPathology extends AbstractDomain implements Serializable {
 
     @JsonProperty("na")
     private String name;
@@ -34,7 +34,7 @@ public class JsonMedicalRadiologyXRay extends AbstractDomain implements Serializ
         return name;
     }
 
-    public JsonMedicalRadiologyXRay setName(String name) {
+    public JsonMedicalPathology setName(String name) {
         this.name = name;
         return this;
     }
@@ -43,16 +43,17 @@ public class JsonMedicalRadiologyXRay extends AbstractDomain implements Serializ
         return testResult;
     }
 
-    public JsonMedicalRadiologyXRay setTestResult(String testResult) {
+    public JsonMedicalPathology setTestResult(String testResult) {
         this.testResult = testResult;
         return this;
     }
 
     @Override
     public String toString() {
-        return "JsonMedicalRadiologyXRay{" +
+        return "JsonMedicalPathology{" +
                 "name='" + name + '\'' +
                 ", testResult='" + testResult + '\'' +
                 '}';
     }
 }
+
