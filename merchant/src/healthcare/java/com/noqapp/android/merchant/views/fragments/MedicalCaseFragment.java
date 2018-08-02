@@ -21,9 +21,9 @@ import com.noqapp.android.merchant.views.Utils.GridItem;
 import com.noqapp.android.merchant.views.Utils.TestCaseString;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.GridAdapter;
-import com.noqapp.android.merchant.views.adapters.TestListAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordFavouriteAdapter;
+import com.noqapp.android.merchant.views.adapters.TestListAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
 import com.noqapp.android.merchant.views.interfaces.GridCommunication;
 import com.noqapp.android.merchant.views.interfaces.ListCommunication;
@@ -154,7 +154,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private final String PATHOLOGY = "pathology";
     private final String RADIOLOGY = "radiology";
     private ListCommunication listCommunication;
-    private ImageView iv_add_pathology,iv_add_radiology;
+    private ImageView iv_add_pathology, iv_add_radiology;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -189,11 +189,11 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         GridView gv_blood = view.findViewById(R.id.gv_blood);
         gv_blood.setAdapter(new GridAdapter(getActivity(), gridItems, this, PATHOLOGY));
         lv_pathology = view.findViewById(R.id.lv_pathology);
-        pathologyAdapter = new TestListAdapter(getActivity(), lv_pathology_items, PATHOLOGY,this);
+        pathologyAdapter = new TestListAdapter(getActivity(), lv_pathology_items, PATHOLOGY, this);
         lv_pathology.setAdapter(pathologyAdapter);
 
         lv_radiology = view.findViewById(R.id.lv_radiology);
-        radiologyAdapter = new TestListAdapter(getActivity(), lv_radiology_items, RADIOLOGY,this);
+        radiologyAdapter = new TestListAdapter(getActivity(), lv_radiology_items, RADIOLOGY, this);
         lv_radiology.setAdapter(radiologyAdapter);
 
         actv_pathology = view.findViewById(R.id.actv_pathology);
@@ -202,11 +202,10 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         actv_pathology.setThreshold(1);
         actv_pathology.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
-                                    long id) {
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
                 if (!lv_pathology_items.contains(actv_patholoy_adapter.getItem(pos))) {
                     lv_pathology_items.add(actv_patholoy_adapter.getItem(pos));
-                    pathologyAdapter = new TestListAdapter(getActivity(), lv_pathology_items, PATHOLOGY,listCommunication);
+                    pathologyAdapter = new TestListAdapter(getActivity(), lv_pathology_items, PATHOLOGY, listCommunication);
                     lv_pathology.setAdapter(pathologyAdapter);
                 } else {
                     Toast.makeText(getActivity(), "Selected test case already added", Toast.LENGTH_LONG).show();
@@ -225,7 +224,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
                 if (!lv_radiology_items.contains(actv_radiology_adapter.getItem(pos))) {
                     lv_radiology_items.add(actv_radiology_adapter.getItem(pos));
-                    radiologyAdapter = new TestListAdapter(getActivity(), lv_radiology_items, RADIOLOGY,listCommunication);
+                    radiologyAdapter = new TestListAdapter(getActivity(), lv_radiology_items, RADIOLOGY, listCommunication);
                     lv_radiology.setAdapter(radiologyAdapter);
                 } else {
                     Toast.makeText(getActivity(), "Selected test case already added", Toast.LENGTH_LONG).show();
@@ -578,14 +577,12 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
-
             case R.id.iv_add_pathology:
-                if(TextUtils.isEmpty(actv_pathology.getText().toString())){
+                if (TextUtils.isEmpty(actv_pathology.getText().toString())) {
                     Toast.makeText(getActivity(), "Pathology field is empty", Toast.LENGTH_LONG).show();
-                }else {
-                    if (containsIgnoreCase(lv_pathology_items,actv_pathology.getText().toString().trim())) {
+                } else {
+                    if (containsIgnoreCase(lv_pathology_items, actv_pathology.getText().toString().trim())) {
                         Toast.makeText(getActivity(), "Selected test case already added", Toast.LENGTH_LONG).show();
                     } else {
                         lv_pathology_items.add(actv_pathology.getText().toString());
@@ -659,9 +656,11 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                                 jsonMedicalRecord.setFollowUpInDays(value);
                             }
                         }
-                        medicalHistoryModel.add(LaunchActivity.getLaunchActivity().getDeviceID(),
+                        medicalHistoryModel.add(
+                                LaunchActivity.getLaunchActivity().getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                jsonMedicalRecord);
                     } else {
                         Toast.makeText(getActivity(), "It seems you forget to add the medicine which you  entered.", Toast.LENGTH_LONG).show();
                     }
@@ -765,5 +764,4 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         }
         return false;
     }
-
 }
