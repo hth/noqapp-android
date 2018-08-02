@@ -37,7 +37,7 @@ android {
     }
     archivesBaseName = "merchant"
 
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion "27.0.3"
 
     def versionPropsFile = file('version.properties')
@@ -101,7 +101,7 @@ android {
     defaultConfig {
         applicationId "com.noqapp.android.merchant"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 28
         multiDexEnabled true
         testHandleProfiling true
         testFunctionalTest true

@@ -337,26 +337,42 @@
 
                         <TextView
                                 style="@style/style_mdh_header"
-                                android:text="Pathology"/>
+                                android:text="Radiology"/>
 
                         <com.noqapp.android.merchant.views.customviews.FixedHeightListView
-                                android:id="@+id/lv_pathology"
+                                android:id="@+id/lv_radiology"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:minHeight="50dp"
                                 android:layout_marginBottom="5dp"
                                 android:background="@drawable/square_border"/>
 
-                        <AutoCompleteTextView
-                                android:id="@+id/actv_pathology"
+                        <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:background="@drawable/square_white_bg_drawable"
-                                android:hint="Search pathology tests"
-                                android:padding="5dp"
-                                android:layout_height="40dp"/>
+                                android:layout_height="wrap_content">
+
+                            <AutoCompleteTextView
+                                    android:id="@+id/actv_radiology"
+                                    android:layout_width="match_parent"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:hint="Search radiology tests"
+                                    android:padding="5dp"
+                                    android:layout_height="40dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_toLeftOf="@+id/iv_add_radiology"/>
+
+                            <ImageView
+                                    android:id="@+id/iv_add_radiology"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_alignParentRight="true"
+                                    android:background="@drawable/add_medic"/>
+
+                        </RelativeLayout>
 
                         <com.noqapp.android.merchant.views.customviews.FixedHeightGridView
-                                android:id="@+id/gv_blood"
+                                android:id="@+id/gv_blood1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:visibility="gone"
@@ -372,26 +388,44 @@
 
                         <TextView
                                 style="@style/style_mdh_header"
-                                android:text="Radiology"/>
+                                android:text="Pathology"/>
 
                         <com.noqapp.android.merchant.views.customviews.FixedHeightListView
-                                android:id="@+id/lv_radiology"
+                                android:id="@+id/lv_pathology"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:minHeight="50dp"
                                 android:layout_marginBottom="5dp"
                                 android:background="@drawable/square_border"/>
 
-                        <AutoCompleteTextView
-                                android:id="@+id/actv_radiology"
+                        <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:background="@drawable/square_white_bg_drawable"
-                                android:hint="Search radiology tests"
-                                android:padding="5dp"
-                                android:layout_height="40dp"/>
+                                android:layout_height="wrap_content">
+
+                            <AutoCompleteTextView
+                                    android:id="@+id/actv_pathology"
+                                    android:layout_width="match_parent"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:hint="Search pathology tests"
+                                    android:layout_alignParentLeft="true"
+                                    android:padding="5dp"
+                                    android:layout_toLeftOf="@+id/iv_add_pathology"
+                                    android:layout_height="40dp"
+                                    />
+
+                            <ImageView
+                                    android:id="@+id/iv_add_pathology"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_alignParentRight="true"
+                                    android:background="@drawable/add_medic"/>
+
+                        </RelativeLayout>
+
 
                         <com.noqapp.android.merchant.views.customviews.FixedHeightGridView
-                                android:id="@+id/gv_blood1"
+                                android:id="@+id/gv_blood"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:visibility="gone"

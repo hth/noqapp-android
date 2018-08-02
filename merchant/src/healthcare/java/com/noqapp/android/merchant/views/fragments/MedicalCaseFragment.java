@@ -52,6 +52,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -153,6 +154,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private final String PATHOLOGY = "pathology";
     private final String RADIOLOGY = "radiology";
     private ListCommunication listCommunication;
+    private ImageView iv_add_pathology,iv_add_radiology;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -163,6 +165,9 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             e.printStackTrace();
         }
         listCommunication = this;
+
+        iv_add_pathology = view.findViewById(R.id.iv_add_pathology);
+        iv_add_radiology = view.findViewById(R.id.iv_add_radiology);
         medicalHistoryModel = new MedicalHistoryModel(this);
         listview = view.findViewById(R.id.listview);
         listview_favroite = view.findViewById(R.id.listview_favroite);
@@ -210,7 +215,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 actv_pathology.setText("");
             }
         });
-
+        iv_add_pathology.setOnClickListener(this);
 
         actv_radiology = view.findViewById(R.id.actv_radiology);
         final ArrayAdapter<String> actv_radiology_adapter = new ArrayAdapter<String>
@@ -232,7 +237,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 actv_radiology.setText("");
             }
         });
-
+        iv_add_radiology.setOnClickListener(this);
         actv_complaints = view.findViewById(R.id.actv_complaints);
         actv_past_history = view.findViewById(R.id.actv_past_history);
         actv_family_history = view.findViewById(R.id.actv_family_history);
@@ -583,9 +588,38 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     public void onClick(View v) {
 
         switch (v.getId()) {
+
+            case R.id.iv_add_pathology:
+                if(TextUtils.isEmpty(actv_pathology.getText().toString())){
+                    Toast.makeText(getActivity(), "Pathology field is empty ", Toast.LENGTH_LONG).show();
+                }else {
+                    if (containsIgnoreCase(lv_pathology_items,actv_pathology.getText().toString().trim())) {
+                        Toast.makeText(getActivity(), "Selected test case already added", Toast.LENGTH_LONG).show();
+                    } else {
+                        lv_pathology_items.add(actv_pathology.getText().toString());
+                        pathologyAdapter = new TestListAdapter(getActivity(), lv_pathology_items, PATHOLOGY, listCommunication);
+                        lv_pathology.setAdapter(pathologyAdapter);
+                    }
+                    actv_pathology.setText("");
+                }
+                break;
+
+            case R.id.iv_add_radiology:
+                if (TextUtils.isEmpty(actv_radiology.getText().toString())) {
+                    Toast.makeText(getActivity(), "Radiology field is empty ", Toast.LENGTH_LONG).show();
+                } else {
+                    if (containsIgnoreCase(lv_radiology_items, actv_radiology.getText().toString().trim())) {
+                        Toast.makeText(getActivity(), "Selected test case already added", Toast.LENGTH_LONG).show();
+                    } else {
+                        lv_radiology_items.add(actv_radiology.getText().toString());
+                        radiologyAdapter = new TestListAdapter(getActivity(), lv_radiology_items, RADIOLOGY, listCommunication);
+                        lv_radiology.setAdapter(radiologyAdapter);
+                    }
+                    actv_radiology.setText("");
+                }
+                break;
             case R.id.btn_update:
                 if (validate()) {
-
                     if (TextUtils.isEmpty(actv_medicine_name.getText().toString())) {
                         JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                         jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
@@ -729,4 +763,14 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             lv_radiology.setAdapter(radiologyAdapter);
         }
     }
+
+    private boolean containsIgnoreCase(List<String> list, String soughtFor) {
+        for (String current : list) {
+            if (current.equalsIgnoreCase(soughtFor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

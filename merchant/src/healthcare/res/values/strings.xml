@@ -29,7 +29,7 @@
     <string name="mds_instruction">Instruction/Plan to patient: </string>
 
     <string name="pe_oxygen">Oxygen </string>
-    <string name="pe_temperature">Temperature </string>
+    <string name="pe_temperature">Temp(F) </string>
     <string name="pe_weight">Weight(Kg) </string>
     <string name="pe_bp">B.P </string>
     <string name="pe_pulse">Pulse</string>
