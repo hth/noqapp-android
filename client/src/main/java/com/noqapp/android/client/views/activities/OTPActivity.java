@@ -335,8 +335,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
                 // Set the verification text based on the credential
                 if (cred != null) {
                     if (!TextUtils.isEmpty(cred.getSmsCode()) && cred.getSmsCode().length() ==6) {
-
-                        Toast.makeText(this,"SMS arrived: "+cred.getSmsCode(),Toast.LENGTH_LONG).show();
                         edt_one.setText(String.valueOf(cred.getSmsCode().charAt(0)));
                         edt_two.setText(String.valueOf(cred.getSmsCode().charAt(1)));
                         edt_three.setText(String.valueOf(cred.getSmsCode().charAt(2)));
