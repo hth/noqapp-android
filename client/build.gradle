@@ -352,7 +352,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     implementation 'net.danlew:android.joda:2.9.9.3'
-    implementation 'com.google.guava:guava:23.6-android'
+    implementation 'com.google.guava:guava:23.6.1-android'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.firebase:firebase-messaging:17.1.0'

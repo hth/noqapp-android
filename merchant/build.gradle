@@ -374,7 +374,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation 'net.danlew:android.joda:2.9.9.3'
-    implementation 'com.google.guava:guava:23.6-android'
+    implementation 'com.google.guava:guava:23.6.1-android'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
