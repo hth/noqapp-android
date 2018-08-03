@@ -25,6 +25,7 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -264,6 +265,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
     @OnClick(R.id.btn_joinQueue)
     public void joinQueue() {
+        sp_name_list.setBackground(ContextCompat.getDrawable(this,R.drawable.sp_background));
         if (isJoinNotPossible) {
             Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
             if (joinErrorMsg.startsWith("Please login to join")) {
@@ -285,26 +287,24 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_not_available) + "\n";
                     isValid = false;
                 }
-//                if (jsonQueue.getRemoteJoinCount() == 0) {
-//                    errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_available);
-//                    //TODO(hth) Forced change to true when Remote Join fails.
-//                    isValid = true;
-//                }
-                if (sp_name_list.getSelectedItemPosition() == 0) {
-                    errorMsg += getString(R.string.bullet) + getString(R.string.error_patient_name_missing) + "\n";
-                    isValid = false;
-                }
+
+
 
                 if (isValid) {
-                    Intent in = new Intent(this, AfterJoinActivity.class);
-                    in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
-                    in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);
-                    in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-                    //     in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true);
-                    in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
-                    in.putExtra(Constants.FROM_JOIN_SCREEN, true);
-                    in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
-                    startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+                    if (sp_name_list.getSelectedItemPosition() == 0) {
+                        Toast.makeText(this, getString(R.string.error_patient_name_missing),Toast.LENGTH_LONG ).show();
+                        sp_name_list.setBackground(ContextCompat.getDrawable(this,R.drawable.sp_background_red));
+                    }else {
+                        Intent in = new Intent(this, AfterJoinActivity.class);
+                        in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
+                        in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);
+                        in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+                        //     in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true);
+                        in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
+                        in.putExtra(Constants.FROM_JOIN_SCREEN, true);
+                        in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
+                        startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+                    }
                 } else {
                     ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), errorMsg, true);
                 }
@@ -312,8 +312,9 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
                     if (UserUtils.isLogin()) {
                         if (sp_name_list.getSelectedItemPosition() == 0) {
-                            Toast.makeText(this, getString(R.string.bullet) + getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
-                        } else {
+                            Toast.makeText(this, getString(R.string.error_patient_name_missing),Toast.LENGTH_LONG ).show();
+                            sp_name_list.setBackground(ContextCompat.getDrawable(this,R.drawable.sp_background_red));
+                        }else {
                             callAfterJoin();
                         }
                     } else {
@@ -391,8 +392,9 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             profileList.add(0, new JsonProfile().setName("Select Patient"));
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             sp_name_list.setAdapter(adapter);
-            if (profileList.size() == 0)
+            if (profileList.size() == 2) {
                 sp_name_list.setSelection(1);
+            }
         }
     }
 }

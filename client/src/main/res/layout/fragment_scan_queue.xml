@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#f2f2f2"
-    android:fillViewport="true">
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#f2f2f2"
+            android:fillViewport="true">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_deviceId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:maxLength="60"
-            android:padding="10dp"/>
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/tv_deviceId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:maxLength="60"
+                android:padding="10dp"/>
 
         <android.support.v7.widget.CardView
                 android:id="@+id/cv_update_location"
@@ -43,7 +43,7 @@
                         android:layout_height="40dp"
                         android:layout_alignParentLeft="true"
                         android:layout_margin="5dp"
-                        android:src="@drawable/ic_location" />
+                        android:src="@drawable/ic_location"/>
 
                 <TextView
                         android:id="@+id/tv_location_title"
@@ -69,6 +69,7 @@
                         android:textAllCaps="true"
                         android:textSize="16sp"
                         android:textColor="@color/colorAccent"/>
+
                 <TextView
                         android:id="@+id/tv_update"
                         android:layout_width="wrap_content"
@@ -76,11 +77,11 @@
                         android:layout_below="@+id/tv_location_title"
                         android:layout_marginTop="5dp"
                         android:padding="10dp"
-                       android:layout_alignParentRight="true"
+                        android:layout_alignParentRight="true"
                         android:text="@string/update"
                         android:textAllCaps="true"
                         android:textColor="@color/colorAccent"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
 
             </RelativeLayout>
@@ -90,97 +91,97 @@
 
 
         <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            card_view:cardCornerRadius="4dp">
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                card_view:cardCornerRadius="4dp">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                 <AutoCompleteTextView
-                    android:id="@+id/autoCompleteTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:background="@android:color/transparent"
-                    android:drawablePadding="10dp"
-                    android:drawableRight="@drawable/cancel_grey"
-                    android:ems="10"
-                    android:hint="Search location..."
-                    android:inputType="textNoSuggestions"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:padding="10dp"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/darker_gray"
-                    android:textSize="16sp" />
+                        android:id="@+id/autoCompleteTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@drawable/cancel_grey"
+                        android:ems="10"
+                        android:hint="Search location..."
+                        android:inputType="textNoSuggestions"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@android:color/darker_gray"
+                        android:textSize="16sp"/>
 
                 <TextView
-                    android:id="@+id/tv_auto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_gps_location"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:text="Auto-detect Location"
-                    android:textSize="14sp" />
+                        android:id="@+id/tv_auto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/ic_gps_location"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Auto-detect Location"
+                        android:textSize="14sp"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/cv_scan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            card_view:cardCornerRadius="4dp">
+                android:id="@+id/cv_scan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                card_view:cardCornerRadius="4dp">
 
 
             <RelativeLayout
-                android:id="@+id/rl_scan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#d75b71"
-                android:gravity="center_vertical"
-                android:minHeight="@dimen/cell_size"
-                android:paddingLeft="@dimen/screen_padding_home"
-                android:paddingRight="@dimen/screen_padding_home">
+                    android:id="@+id/rl_scan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#d75b71"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/cell_size"
+                    android:paddingLeft="@dimen/screen_padding_home"
+                    android:paddingRight="@dimen/screen_padding_home">
 
                 <ImageView
-                    android:id="@+id/iv_scan"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/barcode" />
+                        android:id="@+id/iv_scan"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/barcode"/>
 
                 <TextView
-                    android:id="@+id/tv_scan_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@id/iv_scan"
-                    android:text="@string/scan_qr"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                        android:id="@+id/tv_scan_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_toRightOf="@id/iv_scan"
+                        android:text="@string/scan_qr"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_scan_title"
-                    android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@id/iv_scan"
-                    android:text="@string/scan_info"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_scan_title"
+                        android:layout_marginTop="5dp"
+                        android:layout_toRightOf="@id/iv_scan"
+                        android:text="@string/scan_info"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"/>
 
 
             </RelativeLayout>
@@ -190,192 +191,172 @@
 
 
         <LinearLayout
-            android:id="@+id/rl_current_activity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:background="@android:color/white"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/cell_size"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/screen_padding_home"
-            android:paddingRight="@dimen/screen_padding_home">
-
-            <RelativeLayout
+                android:id="@+id/rl_current_activity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/tv_current_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/active_queue"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                        android:id="@+id/tv_current_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/active_queue"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
 
             </RelativeLayout>
 
             <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_current_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="horizontal" />
+                        android:id="@+id/rv_current_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="horizontal"/>
 
                 <ProgressBar
-                    android:id="@+id/pb_current"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="gone" />
+                        android:id="@+id/pb_current"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"/>
             </FrameLayout>
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/rl_recent_activity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:background="@android:color/white"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/cell_size"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/screen_padding_home"
-            android:paddingRight="@dimen/screen_padding_home">
-
-            <RelativeLayout
+                android:id="@+id/rl_recent_activity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/tv_recent_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/recent_activity"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                        android:id="@+id/tv_recent_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/recent_activity"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/tv_recent_view_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/view_all"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="16sp"
-                    android:visibility="invisible" />
+                        android:id="@+id/tv_recent_view_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/view_all"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="16sp"
+                        android:visibility="invisible"/>
 
             </RelativeLayout>
 
             <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_recent_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="horizontal" />
+                        android:id="@+id/rv_recent_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="horizontal"/>
 
                 <ProgressBar
-                    android:id="@+id/pb_recent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="gone" />
+                        android:id="@+id/pb_recent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"/>
             </FrameLayout>
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/rl_merchant_around_you"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:background="@android:color/white"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/cell_size"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/screen_padding_home"
-            android:paddingRight="@dimen/screen_padding_home">
-
-            <RelativeLayout
+                android:id="@+id/rl_merchant_around_you"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp">
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/tv_merchant_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/merchant_near"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                        android:id="@+id/tv_merchant_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/merchant_near"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/tv_near_view_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/view_all"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="16sp"
-                    android:visibility="gone"/>
+                        android:id="@+id/tv_near_view_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/view_all"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="16sp"
+                        android:visibility="gone"/>
 
             </RelativeLayout>
 
             <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_merchant_around_you"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="horizontal" />
+                        android:id="@+id/rv_merchant_around_you"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="horizontal"/>
 
                 <ProgressBar
-                    android:id="@+id/pb_near"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="gone" />
+                        android:id="@+id/pb_near"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"/>
             </FrameLayout>
         </LinearLayout>
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/iv_temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/launcher"
-                android:src="@mipmap/launcher" />
-
-            <Button
-                android:id="@+id/btn_temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TEMP" />
-        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

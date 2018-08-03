@@ -18,7 +18,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -68,9 +70,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
     private static final int MSG_CURRENT_QUEUE = 0;
@@ -96,8 +102,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected TextView tv_recent_view_all;
     @BindView(R.id.tv_near_view_all)
     protected TextView tv_near_view_all;
-    @BindView(R.id.btn_temp)
-    protected Button btn_temp;
     @BindView(R.id.pb_current)
     protected ProgressBar pb_current;
     @BindView(R.id.pb_recent)
@@ -108,7 +112,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected AutoCompleteTextView autoCompleteTextView;
 
     @BindView(R.id.cv_update_location)
-    protected  CardView cv_update_location;
+    protected CardView cv_update_location;
+
+    @BindView(R.id.rl_current_activity)
+    protected LinearLayout rl_current_activity;
 
     @BindView(R.id.tv_no_thanks)
     protected TextView tv_no_thanks;
@@ -127,13 +134,15 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     private double lat, log;
     private String city = "";
     private boolean isFirstTimeUpdate = true;
+    private static final String SHOWCASE_ID = "sequence example";
+    private boolean isNotShown = true;
 
     public ScanQueueFragment() {
 
     }
 
     public void updateUIWithNewLocation(final double latitude, final double longitude, final String cityName) {
-        if (latitude != 0.0 && latitude != LaunchActivity.getLaunchActivity().getDefaultLatitude() && Double.compare(lat, latitude) != 0) {
+        if (latitude != 0.0 && latitude != LaunchActivity.getLaunchActivity().getDefaultLatitude() && Double.compare(lat, latitude) != 0 && !cityName.equals(city)) {
             if (isFirstTimeUpdate) {
                 getNearMeInfo(cityName, "" + latitude, "" + longitude);
                 lat = latitude;
@@ -219,16 +228,16 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         tv_auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
+                if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().getCity())) {
                     lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
                     log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
                     city = LaunchActivity.getLaunchActivity().getDefaultCity();
                     AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
                     getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
                 } else {
-                    lat = LaunchActivity.getLaunchActivity().latitute;
-                    log = LaunchActivity.getLaunchActivity().longitute;
-                    city = LaunchActivity.getLaunchActivity().cityName;
+                    lat = LaunchActivity.getLaunchActivity().getLatitude();
+                    log = LaunchActivity.getLaunchActivity().getLongitude();
+                    city = LaunchActivity.getLaunchActivity().getCity();
                     AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
                     getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
                     new AppUtilities().hideKeyBoard(getActivity());
@@ -289,10 +298,16 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
 
-        if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
+        if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().getCity())) {
             lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
             log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
             city = LaunchActivity.getLaunchActivity().getDefaultCity();
+            AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
+            getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
+        } else {
+            lat = LaunchActivity.getLaunchActivity().getLatitude();
+            log = LaunchActivity.getLaunchActivity().getLongitude();
+            city = LaunchActivity.getLaunchActivity().getCity();
             AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
             getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
         }
@@ -441,6 +456,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         intent.putExtra("long", "" + log);
         intent.putExtra("city", city);
         startActivity(intent);
+        // presentShowcaseSequence();
     }
 
     @OnClick(R.id.tv_recent_view_all)
@@ -450,42 +466,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         // bundle.putSerializable("data", data1);
         intent.putExtras(bundle);
         // startActivity(intent);
-    }
-
-    @OnClick(R.id.btn_temp)
-    public void tempClick() {
-        Intent intent = new Intent(getActivity(), DoctorProfile1Activity.class);
-        // startActivity(intent);
-//
-//        // Extract Bitmap from ImageView drawable
-//        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.mipmap.launcher);
-//        if (drawable instanceof BitmapDrawable) {
-//            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-//
-//            // Store image to default external storage directory
-//            Uri bitmapUri = null;
-//            try {
-//                File file = new File(Environment.getExternalStoragePublicDirectory(
-//                        Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
-//                file.getParentFile().mkdirs();
-//                FileOutputStream out = new FileOutputStream(file);
-//                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-//                out.close();
-//                bitmapUri = Uri.fromFile(file);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            if (bitmapUri != null) {
-//                Intent shareIntent = new Intent();
-//                shareIntent.putExtra(Intent.EXTRA_TEXT, "I am inviting you to join our app. A simple and secure app developed by us. https://www.google.co.in/");
-//                shareIntent.setAction(Intent.ACTION_SEND);
-//                shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
-//                shareIntent.setType("*/*");
-//                startActivity(Intent.createChooser(shareIntent, "Share my app"));
-//            }
-//        }
-
-
     }
 
     @Override
@@ -640,4 +620,53 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             }
         }
     }
+
+    private void presentShowcaseSequence() {
+        isNotShown = false;
+        MaterialShowcaseView.resetSingleUse(getActivity(), SHOWCASE_ID);
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+                // Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        sequence.setConfig(config);
+        sequence.addSequenceItem(
+                //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
+
+
+                new MaterialShowcaseView.Builder(getActivity())
+                        .setTarget(autoCompleteTextView)
+                        .setDismissText("GOT IT")
+                        .setContentText("Click here to scan the store QRCode to join their queue")
+                        .withRectangleShape(true)
+                        .build()
+
+
+        );
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(getActivity())
+                        .setTarget(cv_scan)
+                        .setDismissText("GOT IT")
+                        .setContentText("Click here to scan the store QRCode to join their queue")
+                        .withRectangleShape(true)
+                        .build()
+        );
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(getActivity())
+                        .setTarget(rl_current_activity)
+                        .setDismissText("GOT IT")
+                        .setContentText("Your current join queue will be visible here")
+                        .withRectangleShape(true)
+                        .build()
+        );
+        sequence.start();
+
+    }
+
+
 }
