@@ -126,8 +126,9 @@
                         <Spinner
                             android:id="@+id/sp_name_list"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
+                            android:background="@drawable/sp_background"
                             android:layout_weight=".6" />
 
                     </LinearLayout>
