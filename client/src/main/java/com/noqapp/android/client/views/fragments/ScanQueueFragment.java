@@ -228,16 +228,16 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         tv_auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().getCity())) {
+                if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
                     lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
                     log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
                     city = LaunchActivity.getLaunchActivity().getDefaultCity();
                     AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
                     getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
                 } else {
-                    lat = LaunchActivity.getLaunchActivity().getLatitude();
-                    log = LaunchActivity.getLaunchActivity().getLongitude();
-                    city = LaunchActivity.getLaunchActivity().getCity();
+                    lat = LaunchActivity.getLaunchActivity().latitute;
+                    log = LaunchActivity.getLaunchActivity().longitute;
+                    city = LaunchActivity.getLaunchActivity().cityName;
                     AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
                     getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
                     new AppUtilities().hideKeyBoard(getActivity());
@@ -298,16 +298,16 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
 
-        if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().getCity())) {
+        if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
             lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
             log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
             city = LaunchActivity.getLaunchActivity().getDefaultCity();
             AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
             getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
         } else {
-            lat = LaunchActivity.getLaunchActivity().getLatitude();
-            log = LaunchActivity.getLaunchActivity().getLongitude();
-            city = LaunchActivity.getLaunchActivity().getCity();
+            lat = LaunchActivity.getLaunchActivity().latitute;
+            log = LaunchActivity.getLaunchActivity().longitute;
+            city = LaunchActivity.getLaunchActivity().cityName;
             AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
             getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
         }
