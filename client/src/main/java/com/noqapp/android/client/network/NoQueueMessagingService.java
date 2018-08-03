@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -140,7 +141,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             if (null == userStatus) {
                                 String businessType = remoteMessage.getData().get(BusinessType);
                                 NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title,businessType);
-                                sendNotification(title, body);
+                                sendNotification(title, body,false);
                             } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                                 ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token,"",quserID);
                                 sendNotification(title, body, codeQR, true,token);//pass codeQR to open review screen
@@ -163,7 +164,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 //                                "priority": "high",
 //                                "to": "XXXXX"
 //                            }
-                            sendNotification(title, body);
+                            sendNotification(title, body,false);
                             // add notification to DB
                             String userStatus = remoteMessage.getData().get(QueueUserState);
                             if (null == userStatus) {
@@ -193,14 +194,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 }
 
                                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-                                sendNotification(title, body); // pass null to show only notification with no action
+                                sendNotification(title, body,true); // pass null to show only notification with no action
                             }
                         }
                     }
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error reading message " + e.getLocalizedMessage(), e);
-                sendNotification(title, body);
+                sendNotification(title, body,false);
             }
         }
     }
@@ -230,7 +231,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
     }
 
-    private void sendNotification(String title, String messageBody) {
+    private void sendNotification(String title, String messageBody, boolean isVibrate) {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
 
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
@@ -244,8 +245,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+                .setLights(Color.parseColor("#ffb400"), 50, 10)
+                .setSound(defaultSoundUri);
+        if(isVibrate)
+        notificationBuilder.setVibrate(new long[]{500, 500});
+        notificationBuilder.setContentIntent(pendingIntent);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
     }
