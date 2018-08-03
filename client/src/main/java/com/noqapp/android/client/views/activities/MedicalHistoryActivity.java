@@ -99,14 +99,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
             listview.setVisibility(View.VISIBLE);
             tv_empty.setVisibility(View.GONE);
         }
-        if (UserUtils.isLogin()) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
-                new MedicalRecordApiModel(this).getMedicalRecord(UserUtils.getEmail(), UserUtils.getAuth());
-            } else {
-                ShowAlertInformation.showNetworkDialog(this);
-            }
-        } else {
+        if (!UserUtils.isLogin()) {
             Toast.makeText(this, "Please login to see the details", Toast.LENGTH_LONG).show();
         }
 
@@ -158,8 +151,12 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
         if (NetworkUtils.isConnectingToInternet(context)) {
             //Toast.makeText(context, "Connection true", Toast.LENGTH_SHORT).show();
             showSnackBar(true);
-            if (jsonMedicalRecords.size() == 0)
-                new MedicalRecordApiModel(this).getMedicalRecord(UserUtils.getEmail(), UserUtils.getAuth());
+            if (UserUtils.isLogin()) {
+                if (jsonMedicalRecords.size() == 0) {
+                    new MedicalRecordApiModel(this).getMedicalRecord(UserUtils.getEmail(), UserUtils.getAuth());
+                    progressDialog.show();
+                }
+            }
         } else {
             // Toast.makeText(context, "Not Connect", Toast.LENGTH_SHORT).show();
             showSnackBar(false);

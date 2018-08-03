@@ -289,4 +289,19 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="checkup_done_success">Your check up has been done Successfully</string>
     <!-- Language select dialog -->
 
+
+
+    <string name="mds_chief_complaints">Chief Complaint:</string>
+    <string name="mds_past_history">Past History:</string>
+    <string name="mds_family_history">Family History:</string>
+    <string name="mds_known_allergies">Known Allergies:</string>
+    <string name="mds_physical_exam">Physical Examination: </string>
+    <string name="mds_clinical_findings">Clinical Findings:</string>
+    <string name="mds_provisional_diagnosis">Provisional /Differential Diagnosis:</string>
+    <string name="mds_investigation_advice">Investigation Advised:   </string>
+    <string name="mds_medication">Medication:  </string>
+    <string name="mds_assist">Assist </string>
+    <string name="mds_follow_up">Follow up: </string>
+    <string name="mds_instruction">Instruction/Plan to patient: </string>
+
 </resources>
