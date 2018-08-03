@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
+import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.merchant.BuildConfig;
@@ -385,7 +386,15 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             hashmap.put(FOLLOW_UP, new ArrayList<String>());
             hashmap.put(INSTRUCTIONS, new ArrayList<String>());
 
-            hashmap.put(MEDICINES_TYPE, new ArrayList<String>());
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add("Capsule");
+            temp.add("Cream");
+            temp.add("Inhaler");
+            temp.add("Injection");
+            temp.add("Powder");
+            temp.add("Syrup");
+            temp.add("Tablet");
+            hashmap.put(MEDICINES_TYPE, temp);
             hashmap.put(MEDICINES_DOSE, new ArrayList<String>());
             hashmap.put(MEDICINES_FREQUENCY, new ArrayList<String>());
             hashmap.put(MEDICINES_DOSE_TIMINGS, new ArrayList<String>());
@@ -629,20 +638,22 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                                 .setWeight(edt_weight.getText().toString())
                                 .setOxygen(edt_oxygen.getText().toString())
                                 .setTemperature(edt_temperature.getText().toString());
-                        ArrayList<JsonMedicalPathology> pathologies = new ArrayList<>();
+
                         if (lv_pathology_items.size() > 0) {
+                            ArrayList<JsonMedicalPathology> pathologies = new ArrayList<>();
                             for (int i = 0; i < lv_pathology_items.size(); i++) {
                                 pathologies.add(new JsonMedicalPathology().setName(lv_pathology_items.get(i)));
                             }
-                        }
-                        if (lv_radiology_items.size() > 0) {
-                            for (int i = 0; i < lv_radiology_items.size(); i++) {
-                                pathologies.add(new JsonMedicalPathology().setName(lv_radiology_items.get(i)));
-                            }
-                        }
-                        if (pathologies.size() > 0) {
                             jsonMedicalRecord.setMedicalPathologies(pathologies);
                         }
+                        if (lv_radiology_items.size() > 0) {
+                            ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
+                            for (int i = 0; i < lv_radiology_items.size(); i++) {
+                                medicalRadiologies.add(new JsonMedicalRadiology().setName(lv_radiology_items.get(i)));
+                            }
+                            jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
+                        }
+
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                         jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
