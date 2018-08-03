@@ -310,9 +310,12 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 }
             } else {
                 if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
-
                     if (UserUtils.isLogin()) {
-                        callAfterJoin();
+                        if (sp_name_list.getSelectedItemPosition() == 0) {
+                            Toast.makeText(this, getString(R.string.bullet) + getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
+                        } else {
+                            callAfterJoin();
+                        }
                     } else {
                         // please login to avail this feature
                         Toast.makeText(JoinActivity.this, "please login to avail this feature", Toast.LENGTH_LONG).show();

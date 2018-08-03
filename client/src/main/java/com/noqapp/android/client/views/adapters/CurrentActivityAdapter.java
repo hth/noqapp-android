@@ -63,7 +63,10 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         holder.tv_total_value.setText(String.valueOf(dataSet.get(listPosition).getServingNumber()));
         if(dataSet.get(listPosition).getToken() - dataSet.get(listPosition).getServingNumber() == 0){
             holder.tv_total.setText("It's your turn!!!");
-            holder.tv_total_value.setVisibility(View.INVISIBLE);
+            holder.tv_total_value.setVisibility(View.GONE);
+        }else if(dataSet.get(listPosition).getServingNumber() == 0){
+            holder.tv_total.setText("Queue not yet started");
+            holder.tv_total_value.setVisibility(View.GONE);
         }else{
             holder.tv_total.setText(context.getString(R.string.serving_now));
             holder.tv_total_value.setVisibility(View.VISIBLE);
