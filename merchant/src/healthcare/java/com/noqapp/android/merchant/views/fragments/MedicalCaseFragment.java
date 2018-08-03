@@ -399,7 +399,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             hashmap.put(MEDICINES_FREQUENCY, new ArrayList<String>());
             hashmap.put(MEDICINES_DOSE_TIMINGS, new ArrayList<String>());
             hashmap.put(MEDICINES_COURSE, new ArrayList<String>());
-
+            setSuggestions(actv_medicine_name, MEDICINES_NAME, false); // set the default suggestion initially
             LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
         } else {
             try {
