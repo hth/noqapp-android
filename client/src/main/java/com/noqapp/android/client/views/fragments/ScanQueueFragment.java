@@ -47,7 +47,6 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AfterJoinActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
-import com.noqapp.android.client.views.activities.DoctorProfile1Activity;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
@@ -70,7 +69,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
