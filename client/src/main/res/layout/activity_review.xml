@@ -32,6 +32,7 @@
                 android:src="@drawable/ic_check" />
 
             <TextView
+                    android:id="@+id/tv_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
