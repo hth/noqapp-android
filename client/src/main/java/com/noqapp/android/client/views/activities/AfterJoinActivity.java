@@ -183,7 +183,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
                 tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
                 tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
-                setBackGround(jsonTokenAndQueue.afterHowLong());
+                setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
                 tv_add.setText(AppUtilities.getNameFromQueueUserID(jsonTokenAndQueue.getQueueUserId(), profileList));
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -207,7 +207,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         tv_token.setText(String.valueOf(token.getToken()));
         tokenValue = String.valueOf(token.getToken());
         tv_how_long.setText(String.valueOf(token.afterHowLong()));
-        setBackGround(token.afterHowLong());
+        setBackGround(token.afterHowLong() > 0 ? token.afterHowLong() : 0);
         NoQueueMessagingService.subscribeTopics(topic);
         jsonTokenAndQueue.setServingNumber(token.getServingNumber());
         jsonTokenAndQueue.setToken(token.getToken());

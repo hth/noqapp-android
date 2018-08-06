@@ -103,6 +103,11 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:text="@string/add_dependent"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
+                        android:drawableRight="@drawable/add_user_small"
+                        android:drawablePadding="5dp"
                         android:textSize="16sp" />
 
                     <LinearLayout
