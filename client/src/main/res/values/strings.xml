@@ -222,11 +222,11 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="english">English</string>
     <string name="current_location">Current location</string>
     <string name="scan_qr">SCAN QR</string>
-    <string name="active_queue">Active Queue/ Order</string>
+    <string name="active_queue">Active Queue/Order</string>
     <string name="recent_activity">Recent Activity</string>
     <string name="merchant_near">Merchants around you</string>
     <string name="view_all">View All</string>
-    <string name="scan_info">Scan QR code to join the Queue/ place order on the spot</string>
+    <string name="scan_info">Scan NoQueue QR code to join Queue or place an order</string>
     <string name="prompt_address_status">Address</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
     <string name="medical_history_alert">You don\'t have any medical history.</string>
@@ -244,7 +244,7 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="height">Height</string>
     <string name="education">Education</string>
     <string name="experience">Experience</string>
-    <string name="available_other_place">Avaliable at other places</string>
+    <string name="available_other_place">Available at other places</string>
     <string name="whole_day">24 Hours</string>
     <string name="error_patient_name_missing">Please select a patient name</string>
     <string name="dependent_list">Dependent List</string>
