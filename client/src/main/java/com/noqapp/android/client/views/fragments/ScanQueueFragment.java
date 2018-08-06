@@ -269,31 +269,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            mHandler = new QueueHandler();
-
-            if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
-                //Call the current queue
-                QueueApiModel queueApiModel = new QueueApiModel();
-                queueApiModel.setTokenAndQueuePresenter(this);
-                Log.e("DEVICE ID NULL", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
-                queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
-
-                //Call the history queue
-                DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-                queueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
-            } else {
-                //Call the current queue
-                QueueModel queueModel = new QueueModel();
-                queueModel.setTokenAndQueuePresenter(this);
-                queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
-                Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
-                //Call the history queue
-                DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-                queueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
-            }
-            pb_current.setVisibility(View.VISIBLE);
-            pb_recent.setVisibility(View.VISIBLE);
-
+           callCurrentAndRecentQueue();
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -319,13 +295,44 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_scan));
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
-        fetchCurrentAndHistoryList();
+        /* Update the current Queue & history queue so that user get the latest queue status & get reflected in DB. */
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            callCurrentAndRecentQueue();
+        }
         try {
             tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getFCMToken());
             tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void callCurrentAndRecentQueue() {
+            mHandler = new QueueHandler();
+
+            if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
+                //Call the current queue
+                QueueApiModel queueApiModel = new QueueApiModel();
+                queueApiModel.setTokenAndQueuePresenter(this);
+                //Log.e("DEVICE ID NULL", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
+                queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+
+                //Call the history queue
+                DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
+                queueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+            } else {
+                //Call the current queue
+                QueueModel queueModel = new QueueModel();
+                queueModel.setTokenAndQueuePresenter(this);
+                queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
+                //Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
+                //Call the history queue
+                DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
+                queueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
+            }
+            pb_current.setVisibility(View.VISIBLE);
+            pb_recent.setVisibility(View.VISIBLE);
+
     }
 
     @OnClick(R.id.cv_scan)
@@ -667,6 +674,5 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         sequence.start();
 
     }
-
 
 }

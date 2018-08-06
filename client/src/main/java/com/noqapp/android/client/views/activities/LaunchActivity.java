@@ -121,7 +121,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private boolean showLocationPopup = true;
     private long lastPress;
     private Toast backPressToast;
-    private BroadcastReceiver broadcastReceiver;
+   // private BroadcastReceiver broadcastReceiver;
+    FcmNotificationReceiver fcmNotificationReceiver;
     private ImageView iv_profile;
     private TextView tv_login, tv_name, tv_email;
     private ScanQueueFragment scanFragment;
@@ -143,6 +144,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public String getDefaultCity() {
         return "Mumbai";
     }
+
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
     }
@@ -157,16 +159,17 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
         launchActivity = this;
-        if(null != getIntent().getExtras()){
+        if (null != getIntent().getExtras()) {
             NoQueueBaseActivity.setFCMToken(getIntent().getStringExtra("fcmToken"));
             SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
                     NoQueueBaseActivity.APP_PREF, Context.MODE_PRIVATE);
-            setSharedPreferenceDeviceID(sharedpreferences,getIntent().getStringExtra("deviceId"));
+            setSharedPreferenceDeviceID(sharedpreferences, getIntent().getStringExtra("deviceId"));
         }
         Log.v("device id check", getDeviceID());
         setReviewShown(false);//Reset the flag when app is killed
         networkUtil = new NetworkUtil(this);
-
+        fcmNotificationReceiver = new FcmNotificationReceiver();
+        fcmNotificationReceiver.register(this,new IntentFilter(Constants.PUSH_NOTIFICATION));
         //Language setup
         languagepref = PreferenceManager.getDefaultSharedPreferences(this);
         languagepref.registerOnSharedPreferenceChangeListener(this);
@@ -193,7 +196,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             ActivityCompat.requestPermissions(this, new String[]{mPermission},
                     REQUEST_CODE_PERMISSION);
             return;
-        }else {
+        } else {
             gpsTracker = new GPSTracker(this);
 
             if (gpsTracker.canGetLocation()) {
@@ -239,7 +242,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         tv_name = mParent.findViewById(R.id.tv_name);
         tv_email = mParent.findViewById(R.id.tv_email);
 
-        broadcastReceiver = new BroadcastReceiver() {
+       /* broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
@@ -252,23 +255,23 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         String userStatus = intent.getStringExtra("u");
                         String token = intent.getStringExtra(Constants.TOKEN);
                         String quserID = intent.getStringExtra(Constants.QuserID);
-                        /**
+                        *//**
                          * Save codeQR of review & show the review screen on app
                          * resume if there is any record in Review DB for review key
-                         */
+                         *//*
                         if (null == userStatus) {
                             updateNotification(intent, codeQR, false);
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                            ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token,"",quserID);
-                            callReviewActivity(codeQR ,token);
+                            ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token, "", quserID);
+                            callReviewActivity(codeQR, token);
                             // this code is added to close the join & after join screen if the request is processed
                             if (activityCommunicator != null) {
-                                activityCommunicator.requestProcessed(codeQR,token);
+                                activityCommunicator.requestProcessed(codeQR, token);
                             }
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                            ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, token,"",quserID);
+                            ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, token, "", quserID);
                             //TODO @CHANDRA implement it for activtiy
-                            callSkipScreen(codeQR,token,quserID);
+                            callSkipScreen(codeQR, token, quserID);
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         updateNotification(intent, codeQR, true);
@@ -279,14 +282,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
 
             }
-        };
+        };*/
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             DeviceModel deviceModel = new DeviceModel();
             deviceModel.setAppBlacklistPresenter(this);
             deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
-        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
+       // LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
 
     }
 
@@ -314,9 +317,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 String quserID = extras.getString(Constants.QuserID);
                 boolean isReview = extras.getBoolean(Constants.ISREVIEW, false);
                 if (isReview) {
-                    callReviewActivity(codeQR,token);
+                    callReviewActivity(codeQR, token);
                 } else {
-                    callSkipScreen(codeQR,token,quserID);
+                    callSkipScreen(codeQR, token, quserID);
                 }
             }
         }
@@ -344,7 +347,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 } else {
                     Toast.makeText(launchActivity, "Please login to view the profile", Toast.LENGTH_LONG).show();
                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
-                    loginIntent.putExtra("fromLogin",true);
+                    loginIntent.putExtra("fromLogin", true);
                     startActivity(loginIntent);
                 }
                 drawer.closeDrawer(GravityCompat.START);
@@ -386,7 +389,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     protected void onStop() {
         super.onStop();
-        if(null != gpsTracker)
+        if (null != gpsTracker)
             gpsTracker.stopUsingGPS();
     }
 
@@ -421,6 +424,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             }
         }
     }
+
     private void showSettingsAlert() {
         final android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(this);
         dialog.setTitle("Enable GPS")
@@ -439,6 +443,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 });
         dialog.show();
     }
+
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
@@ -497,6 +502,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
         //  LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
+        if(null != fcmNotificationReceiver)
+            fcmNotificationReceiver.register(this,new IntentFilter(Constants.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
@@ -504,13 +511,13 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         ReviewData reviewData = ReviewDB.getValue(ReviewDB.KEY_REVIEW);
         // shown only one time if the review is canceled
         if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !isReviewShown()) {
-            callReviewActivity(reviewData.getCodeQR(),reviewData.getToken());
+            callReviewActivity(reviewData.getCodeQR(), reviewData.getToken());
         }
 
         ReviewData reviewDataSkip = ReviewDB.getValue(ReviewDB.KEY_SKIP);
         // shown only one time if it is skipped
         if (StringUtils.isNotBlank(reviewDataSkip.getCodeQR())) {
-            ReviewDB.deleteReview(ReviewDB.KEY_SKIP, reviewData.getCodeQR(),reviewData.getToken());
+            ReviewDB.deleteReview(ReviewDB.KEY_SKIP, reviewData.getCodeQR(), reviewData.getToken());
             Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
         }
     }
@@ -518,6 +525,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     protected void onPause() {
         // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+//        if(null != fcmNotificationReceiver)
+//            fcmNotificationReceiver.unregister(this);
         super.onPause();
         languagepref.unregisterOnSharedPreferenceChangeListener(this);
     }
@@ -526,6 +535,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if(null != fcmNotificationReceiver)
+            fcmNotificationReceiver.unregister(this);
     }
 
     @Subscribe
@@ -566,9 +577,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
     private void callReviewActivity(String codeQR, String token) {
-        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR,token);
+        JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, token);
         if (null == jtk)
-            jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR,token);
+            jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR, token);
         if (null != jtk) {
             Intent in = new Intent(launchActivity, ReviewActivity.class);
             Bundle bundle = new Bundle();
@@ -577,12 +588,12 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             startActivityForResult(in, Constants.requestCodeJoinQActivity);
             NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
         } else {
-            ReviewDB.deleteReview(ReviewDB.KEY_REVIEW,codeQR,token);
+            ReviewDB.deleteReview(ReviewDB.KEY_REVIEW, codeQR, token);
         }
     }
 
-    private void callSkipScreen(String codeQR,String token, String quserID) {
-        ReviewDB.deleteReview(ReviewDB.KEY_SKIP,codeQR,token);
+    private void callSkipScreen(String codeQR, String token, String quserID) {
+        ReviewDB.deleteReview(ReviewDB.KEY_SKIP, codeQR, token);
         Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
         Bundle b = new Bundle();
         b.putString(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
@@ -618,10 +629,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                  * Review DB for review key && current serving == token no.
                  */
                 if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
-                    ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR,current_serving, go_to,jtk.getQueueUserId());
+                    ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, current_serving, go_to, jtk.getQueueUserId());
                 }
 
-                if (jtk.isTokenExpired()&& jsonTokenAndQueueArrayList.size() == 1) {
+                if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
                     //un subscribe the topic
                     //TODO @chandra write logic for unsubscribe
                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
@@ -689,6 +700,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             case R.id.nav_medical: {
                 Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
                 startActivity(in);
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                   AppUtilities.exportDatabase(this);
                 break;
             }
             case R.id.nav_app_setting: {
@@ -708,21 +721,21 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 break;
             case R.id.nav_logout:
                 new AlertDialog.Builder(launchActivity)
-                            .setTitle(getString(R.string.logout))
-                            .setMessage(getString(R.string.logout_msg))
-                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    NoQueueBaseActivity.clearPreferences();
-                                    Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
-                                    startActivity(loginIntent);
-                                }
-                            })
-                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // user doesn't want to logout
-                                }
-                            })
-                            .show();
+                        .setTitle(getString(R.string.logout))
+                        .setMessage(getString(R.string.logout_msg))
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                NoQueueBaseActivity.clearPreferences();
+                                Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                                startActivity(loginIntent);
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // user doesn't want to logout
+                            }
+                        })
+                        .show();
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -782,7 +795,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public boolean isCurrentActivityLaunchActivity() {
         boolean isCurrentActivity = false;
         try {
-            ActivityManager am = (ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
+            ActivityManager am = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
             List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
             Log.d("topActivity", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName());
             if (taskInfo.get(0).topActivity.getClassName().equals(LaunchActivity.class.getCanonicalName()))
@@ -790,9 +803,74 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             else
                 isCurrentActivity = false;
         } catch (Exception e) {
-            Log.e("getCurrentAct error: ",e.getMessage());
+            Log.e("getCurrentAct error: ", e.getMessage());
             e.printStackTrace();
         }
         return isCurrentActivity;
     }
+
+    public class FcmNotificationReceiver extends BroadcastReceiver {
+        public boolean isRegistered;
+
+        public void register(Context context, IntentFilter filter) {
+            try {
+                    if(!isRegistered) {
+                        LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
+                        Log.e("FCM Reciver: ","register");
+                        isRegistered = true;
+                    }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+
+        private void unregister(Context context) {
+            if(isRegistered) {
+                LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
+                Log.e("FCM Reciver: ","unregister");
+                isRegistered = false;
+            }
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
+                // new push notification is received
+                String payload = intent.getStringExtra(Constants.Firebase_Type);
+                String codeQR = intent.getStringExtra(Constants.CodeQR);
+                Log.d(TAG, "payload=" + payload + " codeQR=" + codeQR);
+
+                if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                    String userStatus = intent.getStringExtra("u");
+                    String token = intent.getStringExtra(Constants.TOKEN);
+                    String quserID = intent.getStringExtra(Constants.QuserID);
+                    /**
+                     * Save codeQR of review & show the review screen on app
+                     * resume if there is any record in Review DB for review key
+                     */
+                    if (null == userStatus) {
+                        updateNotification(intent, codeQR, false);
+                    } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                        ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token, "", quserID);
+                        callReviewActivity(codeQR, token);
+                        // this code is added to close the join & after join screen if the request is processed
+                        if (activityCommunicator != null) {
+                            activityCommunicator.requestProcessed(codeQR, token);
+                        }
+                    } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
+                        ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, token, "", quserID);
+                        //TODO @CHANDRA implement it for activtiy
+                        callSkipScreen(codeQR, token, quserID);
+                    }
+                } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
+                    updateNotification(intent, codeQR, true);
+                } else {
+                    // Toast.makeText(launchActivity, "Notification : " + payload, Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+    }
+
 }

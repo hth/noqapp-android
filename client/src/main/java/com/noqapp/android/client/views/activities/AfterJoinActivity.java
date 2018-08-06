@@ -318,6 +318,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (!isResumeFirst) {
             JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR,tokenValue);
             if (null != jtk) {
+                if(TextUtils.isEmpty(gotoPerson))
+                  gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR,tokenValue);
                 setObject(jtk, gotoPerson);
             }
         }

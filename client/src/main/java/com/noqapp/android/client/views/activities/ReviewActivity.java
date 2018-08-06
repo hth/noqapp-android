@@ -5,6 +5,7 @@ package com.noqapp.android.client.views.activities;
  */
 
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewApiModel;
 import com.noqapp.android.client.model.ReviewModel;
@@ -14,10 +15,12 @@ import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.customviews.SeekbarWithIntervals;
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 
 import android.app.Activity;
@@ -67,6 +70,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     @BindView(R.id.tv_hr_saved)
     protected TextView tv_hr_saved;
 
+    @BindView(R.id.tv_details)
+    protected TextView tv_details;
+
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
 
@@ -103,6 +109,13 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             tv_address.setText(jtk.getStoreAddress());
             String datetime = DateFormat.getDateTimeInstance().format(new Date());
             tv_mobile.setText(datetime);
+            List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
+            profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
+            if (BuildConfig.BUILD_TYPE.equals("debug")) {
+                tv_details.setText("Token: " + jtk.getToken() + " : " + jtk.getQueueUserId());
+            } else {
+                tv_details.setText("Token: " + jtk.getToken() + " : " + AppUtilities.getNameFromQueueUserID(jtk.getQueueUserId(), profileList));
+            }
         } else {
             //Do nothing as of now
         }
@@ -180,15 +193,15 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         rr.setToken(jtk.getToken());
                         rr.setHoursSaved(seekbarAppCompact.getProgress() + 1);
                         rr.setRatingCount(Math.round(ratingBar.getRating()));
-                        rr.setReview(TextUtils.isEmpty(edt_review.getText().toString())?null:edt_review.getText().toString());
+                        rr.setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
                         /* New instance of progressbar because it is a new activity. */
                         progressDialog = new ProgressDialog(ReviewActivity.this);
                         progressDialog.setIndeterminate(true);
                         progressDialog.setMessage("Updating...");
                         progressDialog.show();
-                        if(UserUtils.isLogin()){
-                            new ReviewApiModel(ReviewActivity.this).review(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),rr);
-                        }else {
+                        if (UserUtils.isLogin()) {
+                            new ReviewApiModel(ReviewActivity.this).review(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
+                        } else {
                             new ReviewModel(ReviewActivity.this).review(UserUtils.getDeviceId(), rr);
                         }
                     } else {
