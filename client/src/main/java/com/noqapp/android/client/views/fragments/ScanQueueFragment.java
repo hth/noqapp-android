@@ -47,6 +47,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AfterJoinActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
+import com.noqapp.android.client.views.activities.DoctorProfile1Activity;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
@@ -69,12 +70,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-//import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-//import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-//import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
     private static final int MSG_CURRENT_QUEUE = 0;
@@ -628,48 +630,48 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     private void presentShowcaseSequence() {
         isNotShown = false;
-//        MaterialShowcaseView.resetSingleUse(getActivity(), SHOWCASE_ID);
-//        ShowcaseConfig config = new ShowcaseConfig();
-//        config.setDelay(500); // half second between each showcase view
-//
-//        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
-//        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
-//            @Override
-//            public void onShow(MaterialShowcaseView itemView, int position) {
-//                // Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        sequence.setConfig(config);
-//        sequence.addSequenceItem(
-//                //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
-//
-//
-//                new MaterialShowcaseView.Builder(getActivity())
-//                        .setTarget(autoCompleteTextView)
-//                        .setDismissText("GOT IT")
-//                        .setContentText("Click here to scan the store QRCode to join their queue")
-//                        .withRectangleShape(true)
-//                        .build()
-//
-//
-//        );
-//        sequence.addSequenceItem(
-//                new MaterialShowcaseView.Builder(getActivity())
-//                        .setTarget(cv_scan)
-//                        .setDismissText("GOT IT")
-//                        .setContentText("Click here to scan the store QRCode to join their queue")
-//                        .withRectangleShape(true)
-//                        .build()
-//        );
-//        sequence.addSequenceItem(
-//                new MaterialShowcaseView.Builder(getActivity())
-//                        .setTarget(rl_current_activity)
-//                        .setDismissText("GOT IT")
-//                        .setContentText("Your current join queue will be visible here")
-//                        .withRectangleShape(true)
-//                        .build()
-//        );
-//        sequence.start();
+        MaterialShowcaseView.resetSingleUse(getActivity(), SHOWCASE_ID);
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+                // Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        sequence.setConfig(config);
+        sequence.addSequenceItem(
+                //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
+
+
+                new MaterialShowcaseView.Builder(getActivity())
+                        .setTarget(autoCompleteTextView)
+                        .setDismissText("GOT IT")
+                        .setContentText("Click here to scan the store QRCode to join their queue")
+                        .withRectangleShape(true)
+                        .build()
+
+
+        );
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(getActivity())
+                        .setTarget(cv_scan)
+                        .setDismissText("GOT IT")
+                        .setContentText("Click here to scan the store QRCode to join their queue")
+                        .withRectangleShape(true)
+                        .build()
+        );
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(getActivity())
+                        .setTarget(rl_current_activity)
+                        .setDismissText("GOT IT")
+                        .setContentText("Your current join queue will be visible here")
+                        .withRectangleShape(true)
+                        .build()
+        );
+        sequence.start();
 
     }
 
