@@ -47,38 +47,39 @@ public class CirclePagerIndicatorDecoration extends RecyclerView.ItemDecoration 
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
+        if(null != parent.getAdapter()) {
+            int itemCount = parent.getAdapter().getItemCount();
 
-        int itemCount = parent.getAdapter().getItemCount();
+            // center horizontally, calculate width and subtract half from center
+            float totalLength = mIndicatorItemLength * itemCount;
+            float paddingBetweenItems = Math.max(0, itemCount - 1) * mIndicatorItemPadding;
+            float indicatorTotalWidth = totalLength + paddingBetweenItems;
+            float indicatorStartX = (parent.getWidth() - indicatorTotalWidth) / 2F;
 
-        // center horizontally, calculate width and subtract half from center
-        float totalLength = mIndicatorItemLength * itemCount;
-        float paddingBetweenItems = Math.max(0, itemCount - 1) * mIndicatorItemPadding;
-        float indicatorTotalWidth = totalLength + paddingBetweenItems;
-        float indicatorStartX = (parent.getWidth() - indicatorTotalWidth) / 2F;
+            // center vertically in the allotted space
+            float indicatorPosY = parent.getHeight() - mIndicatorHeight / 2F;
 
-        // center vertically in the allotted space
-        float indicatorPosY = parent.getHeight() - mIndicatorHeight / 2F;
-
-        drawInactiveIndicators(c, indicatorStartX, indicatorPosY, itemCount);
+            drawInactiveIndicators(c, indicatorStartX, indicatorPosY, itemCount);
 
 
-        // find active page (which should be highlighted)
-        LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();
-        int activePosition = layoutManager.findFirstVisibleItemPosition();
-        if (activePosition == RecyclerView.NO_POSITION) {
-            return;
+            // find active page (which should be highlighted)
+            LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();
+            int activePosition = layoutManager.findFirstVisibleItemPosition();
+            if (activePosition == RecyclerView.NO_POSITION) {
+                return;
+            }
+
+            // find offset of active page (if the user is scrolling)
+            final View activeChild = layoutManager.findViewByPosition(activePosition);
+            int left = activeChild.getLeft();
+            int width = activeChild.getWidth();
+
+            // on swipe the active item will be positioned from [-width, 0]
+            // interpolate offset for smooth animation
+            float progress = mInterpolator.getInterpolation(left * -1 / (float) width);
+
+            drawHighlights(c, indicatorStartX, indicatorPosY, activePosition, progress, itemCount);
         }
-
-        // find offset of active page (if the user is scrolling)
-        final View activeChild = layoutManager.findViewByPosition(activePosition);
-        int left = activeChild.getLeft();
-        int width = activeChild.getWidth();
-
-        // on swipe the active item will be positioned from [-width, 0]
-        // interpolate offset for smooth animation
-        float progress = mInterpolator.getInterpolation(left * -1 / (float) width);
-
-        drawHighlights(c, indicatorStartX, indicatorPosY, activePosition, progress, itemCount);
     }
 
     private void drawInactiveIndicators(Canvas c, float indicatorStartX, float indicatorPosY, int itemCount) {
