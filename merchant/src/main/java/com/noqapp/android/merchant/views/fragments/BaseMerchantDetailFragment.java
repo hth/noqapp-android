@@ -79,8 +79,9 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     private ProgressBar progressDialog;
     private View itemView;
     protected JsonTopic jsonTopic = null;
+    protected TextView tv_counter_name;
 
-    private TextView tv_title, tv_total_value, tv_current_value, tv_counter_name, tv_timing, tv_start, tv_next;
+    private TextView tv_title, tv_total_value, tv_current_value,  tv_timing, tv_start, tv_next;
     private Chronometer chronometer;
     private int currrentpos = 0;
     private static AdapterCallback mAdapterCallback;

@@ -3,7 +3,10 @@ package com.noqapp.android.merchant.views.adapters;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.body.Served;
+import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import android.content.Context;
@@ -24,6 +27,11 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
     private List<JsonPurchaseOrder> dataSet;
     protected String qCodeQR = "";
 
+    public interface PeopleInQOrderAdapterClick {
+
+        void PeopleInQOrderClick(int position);
+    }
+    private PeopleInQOrderAdapterClick peopleInQOrderAdapterClick;
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_customer_name;
         TextView tv_customer_mobile;
@@ -48,10 +56,11 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
     }
 
 
-    public PeopleInQOrderAdapter(List<JsonPurchaseOrder> data, Context context, String qCodeQR) {
+    public PeopleInQOrderAdapter(List<JsonPurchaseOrder> data, Context context, String qCodeQR, PeopleInQOrderAdapterClick peopleInQOrderAdapterClick) {
         this.dataSet = data;
         this.context = context;
         this.qCodeQR = qCodeQR;
+        this.peopleInQOrderAdapterClick = peopleInQOrderAdapterClick;
     }
 
     @Override
@@ -85,7 +94,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         recordHolder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                peopleInQOrderAdapterClick.PeopleInQOrderClick(position);
             }
         });
     }

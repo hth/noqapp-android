@@ -1,15 +1,23 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.types.QueueStatusEnum;
+import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.body.Served;
+import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
 import com.noqapp.android.merchant.presenter.beans.order.JsonPurchaseOrderList;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQOrderAdapter;
+import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.model.PurchaseOrderModel;
 
@@ -28,7 +36,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MerchantDetailFragment extends BaseMerchantDetailFragment implements PurchaseOrderPresenter {
+public class MerchantDetailFragment extends BaseMerchantDetailFragment implements PurchaseOrderPresenter,AcquireOrderPresenter, PeopleInQOrderAdapter.PeopleInQOrderAdapterClick {
 
     private PeopleInQOrderAdapter peopleInQOrderAdapter;
     private List<JsonPurchaseOrder> purchaseOrders = new ArrayList<>();
@@ -49,7 +57,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void getAllPeopleInQ(JsonTopic jsonTopic) {
         if(jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
-            PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel(this);
+            PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
+            purchaseOrderModel.setPurchaseOrderPresenter(this);
             purchaseOrderModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
         }else{
             manageQueueModel.setQueuePersonListPresenter(this);
@@ -70,7 +79,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         }
                     }
             );
-            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR());
+            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(),this);
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
         }
         dismissProgress();
@@ -85,7 +94,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     protected void resetList() {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             purchaseOrders = new ArrayList<>();
-            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR());
+            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(),this);
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
         } else {
             super.resetList();
@@ -131,5 +140,51 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             }
         });
         mAlertDialog.show();
+    }
+
+    @Override
+    public void PeopleInQClick(int position) {
+        if(jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+
+        }else{
+            super.PeopleInQClick(position);
+        }
+
+    }
+
+    @Override
+    public void PeopleInQOrderClick(int position) {
+        if (tv_counter_name.getText().toString().trim().equals("")) {
+            Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+        } else {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                //progressDialog.setVisibility(View.VISIBLE);
+                // lastSelectedPos = position;
+                OrderServed orderServed = new OrderServed();
+                orderServed.setCodeQR(jsonTopic.getCodeQR());
+                orderServed.setServedNumber(purchaseOrders.get(position).getToken());
+                orderServed.setGoTo(tv_counter_name.getText().toString());
+                orderServed.setQueueStatus(QueueStatusEnum.N);
+                orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPurchaseOrderState());
+
+
+                PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
+                purchaseOrderModel.setAcquireOrderPresenter(this);
+                purchaseOrderModel.acquire(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+            } else {
+                ShowAlertInformation.showNetworkDialog(getActivity());
+            }
+        }
+    }
+
+    @Override
+    public void acquireOrderResponse(JsonToken token) {
+        Log.v("Order acquire response",token.toString());
+
+    }
+
+    @Override
+    public void acquireOrderError(ErrorEncounteredJson errorEncounteredJson) {
+
     }
 }
