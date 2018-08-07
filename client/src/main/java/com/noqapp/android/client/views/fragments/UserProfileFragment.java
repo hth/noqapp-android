@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.common.beans.JsonHour;
-import com.noqapp.android.common.utils.Formatter;
 
 import java.util.List;
 
@@ -27,8 +25,6 @@ public class UserProfileFragment extends Fragment {
 
     @BindView(R.id.ll_multiple_store)
     protected LinearLayout ll_multiple_store;
-
-    private String[] days = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
