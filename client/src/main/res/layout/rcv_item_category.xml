@@ -1,166 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:tag="cards main container">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:tag="cards main container">
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        card_view:cardBackgroundColor="@color/white"
-        card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="2dp"
-        card_view:cardUseCompatPadding="true">
+                                        android:id="@+id/card_view"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:padding="10dp"
+                                        card_view:cardBackgroundColor="@color/white"
+                                        card_view:cardCornerRadius="10dp"
+                                        card_view:cardElevation="2dp"
+                                        card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:padding="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:padding="10dp">
 
             <RelativeLayout
-                android:id="@+id/rl_top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_main"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginTop="5dp"
-                    android:elevation="5dp"
-                    android:padding="20dp"
-                    android:scaleType="centerCrop"
-                    app:border_color="#FFFFFFFF"
-                    app:border_width="3dp" />
-
-                <LinearLayout
-                    android:id="@+id/ll_side"
+                    android:id="@+id/rl_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toLeftOf="@+id/tv_store_rating"
-                    android:layout_toRightOf="@+id/iv_main"
-                    android:orientation="vertical">
+                    android:layout_alignParentTop="true">
 
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_main"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="5dp"
+                        android:elevation="5dp"
+                        android:padding="20dp"
+                        android:scaleType="centerCrop"
+                        app:border_color="#FFFFFFFF"
+                        app:border_width="3dp"/>
 
-                    <TextView
-                        android:id="@+id/tv_name"
+                <LinearLayout
+                        android:id="@+id/ll_side"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Abha Agrawal"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/tv_specialization"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:text="MBBS"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tv_phoneno"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginTop="3dp"
-                        android:drawablePadding="3dp"
-                        android:drawableRight="@drawable/ic_phone"
-                        android:drawableTint="@color/colorPrimary"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:layout_marginLeft="5dp"
+                        android:layout_toLeftOf="@+id/tv_store_rating"
+                        android:layout_toRightOf="@+id/iv_main"
+                        android:orientation="vertical">
 
 
                     <TextView
-                        android:id="@+id/tv_store_special"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:text="6 years exp *Consult fees Rs 200"
-                        android:textSize="14sp" />
+                            android:id="@+id/tv_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"/>
+
+                    <TextView
+                            android:id="@+id/tv_specialization"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text=""
+                            android:textSize="14sp"/>
+
+                    <TextView
+                            android:id="@+id/tv_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:textSize="12sp"/>
+
+                    <TextView
+                            android:id="@+id/tv_phoneno"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dp"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="3dp"
+                            android:drawableRight="@drawable/ic_phone"
+                            android:drawableTint="@color/colorPrimary"
+                            android:textSize="12sp"
+                            android:visibility="gone"/>
+
+
+                    <TextView
+                            android:id="@+id/tv_store_special"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text=""
+                            android:textSize="14sp"/>
+
 
                 </LinearLayout>
 
 
                 <TextView
-                    android:id="@+id/tv_store_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="right|top"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:drawableLeft="@drawable/ic_star_white_fill"
-                    android:drawablePadding="3dp"
-                    android:drawableTint="@color/colorPrimary"
-                    android:gravity="center"
-                    android:text="0.0"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/rating_text_size" />
+                        android:id="@+id/tv_store_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right|top"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:drawableLeft="@drawable/ic_star_white_fill"
+                        android:drawablePadding="3dp"
+                        android:drawableTint="@color/colorPrimary"
+                        android:gravity="center"
+                        android:text="0.0"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/rating_text_size"/>
 
                 <TextView
-                    android:id="@+id/tv_store_review"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/tv_store_rating"
-                    android:layout_gravity="right|top"
-                    android:gravity="center"
-                    android:textSize="12sp" />
+                        android:id="@+id/tv_store_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/tv_store_rating"
+                        android:layout_gravity="right|top"
+                        android:gravity="center"
+                        android:textSize="12sp"/>
 
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rl_top">
-
-                <TextView
-                    android:id="@+id/tv_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="3dp"
-                    android:layout_toLeftOf="@+id/tv_join"
                     android:gravity="center_vertical"
-                    android:paddingRight="10dp"
-                    android:text=""
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="6dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_below="@+id/rl_top">
 
                 <TextView
-                    android:id="@+id/tv_join"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="2dp"
-                    android:background="@color/colorActionbar"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="25dp"
-                    android:paddingRight="25dp"
-                    android:paddingTop="10dp"
-                    android:text="Walk-in"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                        android:id="@+id/tv_store_timing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="3dp"
+                        android:layout_toLeftOf="@+id/tv_join"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"/>
+
+                <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/tv_join"
+                        android:layout_below="@+id/tv_store_timing"
+                        android:gravity="center_vertical"
+                        android:paddingRight="10dp"
+                        android:text=""
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="14sp"/>
+
+
+                <TextView
+                        android:id="@+id/tv_join"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/colorActionbar"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="25dp"
+                        android:paddingRight="25dp"
+                        android:paddingTop="10dp"
+                        android:text="Walk-in"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"/>
             </RelativeLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>

@@ -63,7 +63,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         StoreHourElastic storeHourElastic = jsonQueue.getStoreHourElasticList().get(AppUtilities.getDayOfWeek());
         if (storeHourElastic.isDayClosed()) {
             holder.tv_status.setText(context.getString(R.string.store_closed));
+            holder.tv_store_timing.setVisibility(View.GONE);
         } else {
+            holder.tv_store_timing.setVisibility(View.VISIBLE);
             holder.tv_status.setText(
                     context.getString(R.string.store_hour)
                             + " "
@@ -154,6 +156,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
 
         holder.tv_store_special.setText(dataSet.get(listPosition).getFamousFor());
+        holder.tv_store_timing.setText("Today: "+ " "
+                + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
+                + " - "
+                + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour()));
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,6 +199,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         private TextView tv_specialization;
         private TextView tv_store_special;
         private TextView tv_store_review;
+        private TextView tv_store_timing;
         private TextView tv_status;
         private TextView tv_join;
         private ImageView iv_main;
@@ -207,6 +214,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             this.tv_specialization = itemView.findViewById(R.id.tv_specialization);
             this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
             this.tv_store_review = itemView.findViewById(R.id.tv_store_review);
+            this.tv_store_timing = itemView.findViewById(R.id.tv_store_timing);
             this.tv_status = itemView.findViewById(R.id.tv_status);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.tv_join = itemView.findViewById(R.id.tv_join);
