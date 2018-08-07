@@ -17,7 +17,6 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.utils.ViewAnimationUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.utils.Formatter;
@@ -29,10 +28,10 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -59,10 +58,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_open_status;
-    private LinearLayout ll_store_open_status;
-    private boolean isUp;
-    private ImageView iv_store_open_status;
+    private TextView tv_contact_no, tv_address, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_open_status,tv_store_timings;
     private BizStoreElastic bizStoreElastic;
     private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView rv_thumb_images, rv_photos;
@@ -87,6 +83,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_contact_no = findViewById(R.id.tv_contact_no);
         tv_known_for = findViewById(R.id.tv_known_for);
         tv_store_open_status = findViewById(R.id.tv_store_open_status);
+        tv_store_timings = findViewById(R.id.tv_store_timings);
         tv_menu = findViewById(R.id.tv_menu);
         tv_rating_review = findViewById(R.id.tv_rating_review);
         tv_rating = findViewById(R.id.tv_rating);
@@ -94,9 +91,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         sc_payment_mode = findViewById(R.id.sc_payment_mode);
         sc_delivery_types = findViewById(R.id.sc_delivery_types);
         sc_amenities = findViewById(R.id.sc_amenities);
-
-        ll_store_open_status = findViewById(R.id.ll_store_open_status);
-        iv_store_open_status = findViewById(R.id.iv_store_open_status);
         collapseImageView = findViewById(R.id.backdrop);
         rl_mid_content = findViewById(R.id.rl_mid_content);
         iv_business_icon = findViewById(R.id.iv_business_icon);
@@ -141,22 +135,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         else {
             Picasso.with(this).load(ImageUtils.getBannerPlaceholder()).into(collapseImageView);
         }
-
-
-        iv_store_open_status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isUp) {
-                    ViewAnimationUtils.expand(ll_store_open_status);
-                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this, R.drawable.arrow_down));
-                } else {
-                    ViewAnimationUtils.collapse(ll_store_open_status);
-                    iv_store_open_status.setBackground(ContextCompat.getDrawable(StoreDetailActivity.this, R.drawable.arrow_up));
-                }
-                isUp = !isUp;
-            }
-        });
-
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             StoreModel.storePresenter = this;
@@ -341,26 +319,10 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             tv_menu.setClickable(false);
             tv_menu.setText("Closed");
         }
-        ll_store_open_status.removeAllViews();
-        JsonHour jsonHourt = jsonStore.getJsonHours().get(6);
-        tv_store_open_status.setText(Formatter.convertMilitaryTo12HourFormat(jsonHourt.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHourt.getEndHour()));
-        for (int j = 0; j < 6; j++) {
-            JsonHour jsonHour = jsonStore.getJsonHours().get(j);
-            LinearLayout childLayout = new LinearLayout(this);
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            childLayout.setLayoutParams(linearParams);
-            TextView textView = new TextView(this);
-            textView.setTextSize(17);
-            textView.setPadding(5, 3, 0, 3);
-            textView.setGravity(Gravity.LEFT | Gravity.CENTER);
-            textView.setTextColor(getResources().getColor(android.R.color.darker_gray));
-            textView.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
-            childLayout.addView(textView, 0);
-            ll_store_open_status.addView(childLayout);
-        }
-        iv_store_open_status.performClick();// to collapse the view on start
+
+        JsonHour jsonHour = AppUtilities.getJsonHour(jsonStore.getJsonHours());
+        tv_store_open_status.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
+        tv_store_timings.setText(Html.fromHtml(new AppUtilities().orderTheTimings(this,jsonStore.getJsonHours())));
     }
 
     @Override
@@ -375,7 +337,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     private boolean isStoreOpenToday(JsonStore jsonStore) {
         List<JsonHour> jsonHourList = jsonStore.getJsonHours();
-        JsonHour jsonHour = jsonHourList.get(AppUtilities.getDayOfWeek());
+        JsonHour jsonHour = AppUtilities.getJsonHour(jsonHourList);
         DateFormat df = new SimpleDateFormat("HH:mm", Locale.US);
         String time = df.format(Calendar.getInstance().getTime());
         int timeData = Integer.parseInt(time.replace(":", ""));

@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -39,6 +40,7 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 
 import org.joda.time.LocalDateTime;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -263,7 +265,7 @@ public class AppUtilities extends CommonHelper {
     }
 
     public static String getAdditionalCardText(BizStoreElastic bizStoreElastic) {
-        StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(getDayOfWeek());
+        StoreHourElastic storeHourElastic = getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
         String additionalText;
         if (storeHourElastic.isDayClosed()) {
             //Fetch for tomorrow when closed
@@ -291,7 +293,7 @@ public class AppUtilities extends CommonHelper {
 
     public static String getStoreOpenStatus(BizStoreElastic bizStoreElastic) {
 
-        StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(getDayOfWeek());
+        StoreHourElastic storeHourElastic = getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
         String additionalText;
         if (storeHourElastic.isDayClosed()) {
             additionalText = "Closed";
@@ -316,11 +318,37 @@ public class AppUtilities extends CommonHelper {
         return additionalText;
     }
 
-    public static int getDayOfWeek() {
-        Calendar mondayFirst = new GregorianCalendar();
-        return mondayFirst.getFirstDayOfWeek() - 1;
+    private static int getDayOfWeek() {
+        Calendar calendar = Calendar.getInstance();
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (dayOfWeek == 0)
+            dayOfWeek = 7;
+        return dayOfWeek;
     }
 
+    public static JsonHour getJsonHour(List<JsonHour> jsonHourList) {
+        if (null != jsonHourList && jsonHourList.size() > 0) {
+            int todayDay = getDayOfWeek();
+            for (int i = 0; i < jsonHourList.size(); i++) {
+                if (jsonHourList.get(i).getDayOfWeek() == todayDay) {
+                    return jsonHourList.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    public static StoreHourElastic getStoreHourElastic(List<StoreHourElastic> jsonHourList) {
+        if (null != jsonHourList && jsonHourList.size() > 0) {
+            int todayDay = getDayOfWeek();
+            for (int i = 0; i < jsonHourList.size(); i++) {
+                if (jsonHourList.get(i).getDayOfWeek() == todayDay) {
+                    return jsonHourList.get(i);
+                }
+            }
+        }
+        return null;
+    }
 
     public static LatLng getLocationFromAddress(Context context, String strAddress) {
 
@@ -395,7 +423,7 @@ public class AppUtilities extends CommonHelper {
 
     public static String getNameFromQueueUserID(String queueUserID, List<JsonProfile> list) {
         String name = "";
-        if(!TextUtils.isEmpty(queueUserID)) {
+        if (!TextUtils.isEmpty(queueUserID)) {
             if (null != list && list.size() > 0) {
                 for (int i = 0; i < list.size(); i++) {
                     if (queueUserID.equalsIgnoreCase(list.get(i).getQueueUserId())) {
@@ -446,7 +474,7 @@ public class AppUtilities extends CommonHelper {
 
     public String orderTheTimings(Context context, List<JsonHour> jsonHoursList) {
         String output = "";
-     //   ArrayList<JsonHour> timings = new ArrayList<>();
+        //   ArrayList<JsonHour> timings = new ArrayList<>();
         //Case 1- O/P >>>>>>>>E/mapValue:: Key: 08:00 AM-12:00 PM , value: Sun-Mon-Tue-Wed-Thu-Fri-Sat
 
 //        timings.add(new JsonHour().setDayOfWeek(1).setStartHour(800).setEndHour(1200));
@@ -527,7 +555,7 @@ public class AppUtilities extends CommonHelper {
                 String key = entry.getKey();
                 String value = entry.getValue();
                 Log.e("mapValue: ", "Key: " + key + " , value: " + value);
-                output +=   "<font color=\"black\"><b>" + value + "</b></font> "+ " : " +key+"<br>";
+                output += "<font color=\"black\"><b>" + value + "</b></font> " + " : " + key + "<br>";
             }
         }
         return output;

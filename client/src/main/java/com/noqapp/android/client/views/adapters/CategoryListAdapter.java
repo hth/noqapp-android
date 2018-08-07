@@ -60,7 +60,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             }
         });
         holder.tv_specialization.setText(jsonQueue.getCompleteEducation());
-        StoreHourElastic storeHourElastic = jsonQueue.getStoreHourElasticList().get(AppUtilities.getDayOfWeek());
+        StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(jsonQueue.getStoreHourElasticList());
         if (storeHourElastic.isDayClosed()) {
             holder.tv_status.setText(context.getString(R.string.store_closed));
             holder.tv_store_timing.setVisibility(View.GONE);

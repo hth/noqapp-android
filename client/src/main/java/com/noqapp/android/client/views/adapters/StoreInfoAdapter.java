@@ -59,7 +59,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
             default:
                 holder.tv_name.setText(item.getDisplayName());
                 holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
-                StoreHourElastic storeHourElastic = item.getStoreHourElasticList().get(AppUtilities.getDayOfWeek());
+                StoreHourElastic storeHourElastic =  AppUtilities.getStoreHourElastic(item.getStoreHourElasticList());
                 String time = Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()) +
                         " - " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour());
 

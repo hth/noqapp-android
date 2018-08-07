@@ -134,7 +134,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             else
                 holder.tv_store_rating.setVisibility(View.VISIBLE);
             // holder.tv_store_special.setText();
-            StoreHourElastic storeHourElastic = bizStoreElastic.getStoreHourElasticList().get(AppUtilities.getDayOfWeek());
+            StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
                 case BK:
