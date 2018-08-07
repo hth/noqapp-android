@@ -1,8 +1,11 @@
 package com.noqapp.android.merchant.model.response.api.order;
 
+import com.noqapp.android.merchant.presenter.beans.JsonToken;
+import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
 import com.noqapp.android.merchant.presenter.beans.order.JsonPurchaseOrderList;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -25,5 +28,23 @@ public interface PurchaseOrderService {
 
             @Path("codeQR")
             String codeQR
+    );
+
+    @POST("api/m/o/purchaseOrder/acquire.json")
+    Call<JsonToken> acquire(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            OrderServed OrderServed
     );
 }
