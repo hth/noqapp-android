@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -293,9 +294,13 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_scan));
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
-        /* Update the current Queue & history queue so that user get the latest queue status & get reflected in DB. */
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            callCurrentAndRecentQueue();
+
+        Activity activity = getActivity();
+        if (null != activity && isAdded()) {
+            /* Update the current Queue & history queue so that user get the latest queue status & get reflected in DB. */
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                callCurrentAndRecentQueue();
+            }
         }
         try {
             tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getFCMToken());
