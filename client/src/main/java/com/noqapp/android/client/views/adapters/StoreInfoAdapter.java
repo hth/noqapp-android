@@ -62,6 +62,10 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
                 StoreHourElastic storeHourElastic = item.getStoreHourElasticList().get(AppUtilities.getDayOfWeek());
                 String time = Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()) +
                         " - " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour());
+
+                if (Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()).equals("12:01 AM") &&
+                        Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour()).equals("11:59 PM"))
+                    time= context.getString(R.string.whole_day) ;
                 holder.tv_detail.setText(time);
         }
         String address = "";

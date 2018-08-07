@@ -32,6 +32,7 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -60,6 +61,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -120,7 +122,7 @@ public class AppUtilities extends CommonHelper {
     }
 
 
-    static void setRatingStarColor(Drawable drawable, @ColorInt int color) {
+    private static void setRatingStarColor(Drawable drawable, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             DrawableCompat.setTint(drawable, color);
         } else {
@@ -441,5 +443,124 @@ public class AppUtilities extends CommonHelper {
 
         }
     }
+
+    public String orderTheTimings(Context context, List<JsonHour> jsonHoursList) {
+        String output = "";
+     //   ArrayList<JsonHour> timings = new ArrayList<>();
+        //Case 1- O/P >>>>>>>>E/mapValue:: Key: 08:00 AM-12:00 PM , value: Sun-Mon-Tue-Wed-Thu-Fri-Sat
+
+//        timings.add(new JsonHour().setDayOfWeek(1).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(2).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(3).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(4).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(5).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(6).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(7).setStartHour(800).setEndHour(1200));
+
+
+        //Case-2 >>>>>>>> E/mapValue:: Key: 08:00 AM-12:00 PM , value: Sun-Mon-Tue
+        //                             Key: 04:00 PM-07:00 PM , value: Wed-Thu-Fri-Sat
+//        timings.add(new JsonHour().setDayOfWeek(1).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(2).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(3).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(4).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(5).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(6).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(7).setStartHour(1600).setEndHour(1900));
+
+        //Case - 3 >>>>>>>>>. E/mapValue:: Key: 08:00 AM-12:00 PM , value: Sun-Mon-Tue
+        //                                 Key: 04:00 PM-07:00 PM , value: Wed-Thu-Fri
+        //                                 Key: 09:00 PM-11:00 PM , value: Sat
+//        timings.add(new JsonHour().setDayOfWeek(1).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(2).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(3).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(4).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(5).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(6).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(7).setStartHour(2100).setEndHour(2300));
+
+        // Case-4  E/mapValue:: Key: 08:00 AM-12:00 PM , value: Sun-Tue-Thu
+//                      Key: 04:00 PM-07:00 PM , value: Mon-Wed-Fri
+//                      Key: 09:00 PM-11:00 PM , value: Sat
+//        timings.add(new JsonHour().setDayOfWeek(1).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(2).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(3).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(4).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(5).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(6).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(7).setStartHour(2100).setEndHour(2300));
+
+
+        //Case- 5   E/mapValue:: Key: Closed , value: Sun-Sat
+        //                         Key: 04:00 PM-07:00 PM , value: Mon-Wed-Fri
+        //                      Key: 08:00 AM-12:00 PM , value: Tue-Thu
+
+//        timings.add(new JsonHour().setDayOfWeek(1).setStartHour(800).setEndHour(1200).setDayClosed(true));
+//        timings.add(new JsonHour().setDayOfWeek(2).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(3).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(4).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(5).setStartHour(800).setEndHour(1200));
+//        timings.add(new JsonHour().setDayOfWeek(6).setStartHour(1600).setEndHour(1900));
+//        timings.add(new JsonHour().setDayOfWeek(7).setStartHour(0001).setEndHour(2359));
+        if (null != jsonHoursList && jsonHoursList.size() > 0) {
+            HashMap<String, String> temp = new LinkedHashMap<>();
+            for (int i = 0; i < jsonHoursList.size(); i++) {
+                JsonHour jsonHour = jsonHoursList.get(i);
+                String key = "";
+                if (jsonHour.isDayClosed()) {
+                    key = "Closed";
+                } else {
+                    key = Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + "-" + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour());
+                    if (key.equals("12:01 AM-11:59 PM"))
+                        key = context.getString(R.string.whole_day);
+                }
+                if (null == temp.get(key)) {
+                    temp.put(key, getDayName(jsonHour.getDayOfWeek()));
+                } else {
+                    String value = temp.get(key) + "-" + getDayName(jsonHour.getDayOfWeek());
+                    temp.put(key, value);
+                }
+
+            }
+
+            for (Map.Entry<String, String> entry : temp.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                Log.e("mapValue: ", "Key: " + key + " , value: " + value);
+                output +=   "<font color=\"black\"><b>" + value + "</b></font> "+ " : " +key+"<br>";
+            }
+        }
+        return output;
+    }
+
+    private String getDayName(int dayOfWeek) {
+
+        String dayName = null;
+        switch (dayOfWeek) {
+            case 1:
+                dayName = "Mon";
+                break;
+            case 2:
+                dayName = "Tue";
+                break;
+            case 3:
+                dayName = "Wed";
+                break;
+            case 4:
+                dayName = "Thu";
+                break;
+            case 5:
+                dayName = "Fri";
+                break;
+            case 6:
+                dayName = "Sat";
+                break;
+            case 7:
+                dayName = "Sun";
+                break;
+        }
+        return dayName;
+    }
+
 }
 
