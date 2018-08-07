@@ -17,7 +17,6 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkStateChanged;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -38,7 +37,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import android.Manifest;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -48,15 +46,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -83,11 +77,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
-    private String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final int REQUEST_CODE_PERMISSION = 2;
-    private final int GPS_ENABLE_REQUEST = 0x1001;
     public static DatabaseHelper dbHandler;
     public static Locale locale;
     public static SharedPreferences languagepref;
@@ -128,22 +119,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private ScanQueueFragment scanFragment;
     private DrawerLayout drawer;
     private Menu nav_Menu;
-    public double latitute = 0;
-    public double longitute = 0;
-    public String cityName = "";
-    private GPSTracker gpsTracker;
-
-    public double getDefaultLatitude() {
-        return 19.0760;
-    }
-
-    public double getDefaultLongitude() {
-        return 72.8777;
-    }
-
-    public String getDefaultCity() {
-        return "Mumbai";
-    }
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -191,22 +166,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             language = "en_US";
         }
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{mPermission},
-                    REQUEST_CODE_PERMISSION);
-            return;
-        } else {
-            gpsTracker = new GPSTracker(this);
-
-            if (gpsTracker.canGetLocation()) {
-                latitute = gpsTracker.getLatitude();
-                longitute = gpsTracker.getLongitude();
-                cityName = gpsTracker.getAddress(latitute, longitute);
-            } else {
-                showSettingsAlert();
-            }
-        }
         iv_search.setOnClickListener(this);
         actionbarBack.setOnClickListener(this);
         iv_notification.setOnClickListener(this);
@@ -293,6 +252,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     }
 
+    @Override
+    public void updateLocationUI() {
+
+    }
+
     private void setSharedPreferenceDeviceID(SharedPreferences sharedpreferences, String deviceId) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(NoQueueBaseActivity.XR_DID, deviceId);
@@ -374,74 +338,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 dismissProgress();
             }
         }
-        if (requestCode == GPS_ENABLE_REQUEST) {
-            gpsTracker = new GPSTracker(this);
-
-            if (gpsTracker.canGetLocation()) {
-                latitute = gpsTracker.getLatitude();
-                longitute = gpsTracker.getLongitude();
-                cityName = gpsTracker.getAddress(latitute, longitute);
-            }
-
-        }
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (null != gpsTracker)
-            gpsTracker.stopUsingGPS();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_CODE_PERMISSION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission was granted.
-                    if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_GRANTED) {
-                        gpsTracker = new GPSTracker(this);
-
-                        if (gpsTracker.canGetLocation()) {
-                            latitute = gpsTracker.getLatitude();
-                            longitute = gpsTracker.getLongitude();
-                            cityName = gpsTracker.getAddress(latitute, longitute);
-                        } else {
-                            showSettingsAlert();
-                        }
-                    }
-                } else {
-                    // Permission denied, Disable the functionality that depends on this permission.
-                    Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
-        }
-    }
-
-    private void showSettingsAlert() {
-        final android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(this);
-        dialog.setTitle("Enable GPS")
-                .setMessage("Gps is disabled, in order to use the application properly you need to enable GPS of your device")
-                .setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivityForResult(myIntent, GPS_ENABLE_REQUEST);
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    }
-                });
-        dialog.show();
     }
 
     private void initProgress() {
