@@ -32,7 +32,7 @@ public interface PurchaseOrderService {
     );
 
     @POST("api/m/o/purchaseOrder/served.json")
-    Call<JsonTopicOrderData> served(
+    Call<JsonToken> served(
             @Header("X-R-DID")
             String did,
 
@@ -51,6 +51,24 @@ public interface PurchaseOrderService {
 
     @POST("api/m/o/purchaseOrder/acquire.json")
     Call<JsonToken> acquire(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            OrderServed OrderServed
+    );
+
+    @POST("api/m/o/purchaseOrder/processed.json")
+    Call<JsonPurchaseOrderList> processed(
             @Header("X-R-DID")
             String did,
 
