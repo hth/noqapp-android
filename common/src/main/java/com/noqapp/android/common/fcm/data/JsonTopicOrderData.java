@@ -1,5 +1,6 @@
 package com.noqapp.android.common.fcm.data;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.FCMTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
@@ -64,6 +65,9 @@ public class JsonTopicOrderData extends JsonData {
 
     @JsonProperty("mi")
     private String messageId;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public JsonTopicOrderData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
         super(firebaseMessageType);
@@ -158,5 +162,30 @@ public class JsonTopicOrderData extends JsonData {
     public JsonTopicOrderData setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonTopicOrderData{" +
+                "fcmType=" + fcmType +
+                ", message='" + message + '\'' +
+                ", lastNumber=" + lastNumber +
+                ", currentlyServing=" + currentlyServing +
+                ", codeQR='" + codeQR + '\'' +
+                ", queueStatus=" + queueStatus +
+                ", goTo='" + goTo + '\'' +
+                ", businessType=" + businessType +
+                ", purchaseOrderState=" + purchaseOrderState +
+                ", messageId='" + messageId + '\'' +
+                ", error=" + error +
+                '}';
     }
 }

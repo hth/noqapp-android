@@ -1,24 +1,27 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.body.Served;
-import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAdapter.MyViewHolder> {
@@ -30,6 +33,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
     public interface PeopleInQOrderAdapterClick {
 
         void PeopleInQOrderClick(int position);
+
+        void orderDoneClick(int position);
     }
     private PeopleInQOrderAdapterClick peopleInQOrderAdapterClick;
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -39,6 +44,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         TextView tv_status_msg;
         TextView tv_order_data;
         TextView tv_order_status;
+        TextView tv_order_done;
         ImageView iv_info;
         CardView cardview;
 
@@ -50,6 +56,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             this.tv_status_msg = itemView.findViewById(R.id.tv_status_msg);
             this.tv_order_data = itemView.findViewById(R.id.tv_order_data);
             this.tv_order_status = itemView.findViewById(R.id.tv_order_status);
+            this.tv_order_done = itemView.findViewById(R.id.tv_order_done);
             this.iv_info = itemView.findViewById(R.id.iv_info);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
@@ -83,7 +90,24 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                 //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
                 PhoneFormatterUtil.formatNumber("IN", phoneNo));
         recordHolder.tv_order_data.setText(jsonPurchaseOrder.getPurchaseOrderProducts().toString());
+        recordHolder.tv_order_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOrderDetailDialog(context,jsonPurchaseOrder.getPurchaseOrderProducts());
+            }
+        });
         recordHolder.tv_order_status.setText(jsonPurchaseOrder.getPurchaseOrderState().getDescription());
+        if(jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.OP){
+            recordHolder.tv_order_done.setVisibility(View.VISIBLE);
+        }else{
+            recordHolder.tv_order_done.setVisibility(View.GONE);
+        }
+        recordHolder.tv_order_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                peopleInQOrderAdapterClick.orderDoneClick(position);
+            }
+        });
         recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,4 +129,30 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
     }
 
 
+    private void showOrderDetailDialog(final Context mContext, List<JsonPurchaseOrderProduct> jsonPurchaseOrderProductList) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_order_detail, null, false);
+        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
+        ListView listview = customDialogView.findViewById(R.id.listview);
+        builder.setView(customDialogView);
+        ArrayList<String> data = new ArrayList<>();
+        if(null != jsonPurchaseOrderProductList & jsonPurchaseOrderProductList.size()>0){
+            for (int i = 0; i < jsonPurchaseOrderProductList.size(); i++) {
+                data.add(jsonPurchaseOrderProductList.get(i).getProductName() +"                               "+jsonPurchaseOrderProductList.get(i).getProductQuantity());
+            }
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, data);
+        listview.setAdapter(adapter);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertDialog.dismiss();
+            }
+        });
+        mAlertDialog.show();
+    }
 }

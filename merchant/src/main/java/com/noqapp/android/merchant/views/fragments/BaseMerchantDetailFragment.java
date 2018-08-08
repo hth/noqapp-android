@@ -76,24 +76,25 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     private List<JsonQueuedPerson> jsonQueuedPersonArrayList= new ArrayList<>();
     protected EditText edt_mobile;
     protected RecyclerView rv_queue_people;
-    private ProgressBar progressDialog;
+    protected ProgressBar progressDialog;
     private View itemView;
     protected JsonTopic jsonTopic = null;
     protected TextView tv_counter_name;
 
-    private TextView tv_title, tv_total_value, tv_current_value,  tv_timing, tv_start, tv_next;
+    protected TextView tv_title, tv_total_value, tv_current_value,  tv_timing, tv_start, tv_next;
     private Chronometer chronometer;
-    private int currrentpos = 0;
-    private static AdapterCallback mAdapterCallback;
-    private Button btn_skip;
-    private Button btn_next;
-    private Button btn_start;
+    protected int currrentpos = 0;
+    protected static AdapterCallback mAdapterCallback;
+    protected Button btn_skip;
+    protected Button btn_next;
+    protected Button btn_start;
     private ImageView iv_edit;
-    private boolean queueStatusOuter = false;
+    protected boolean queueStatusOuter = false;
     private int lastSelectedPos = -1;
     private LinearLayoutManager horizontalLayoutManagaer;
     protected ManageQueueModel manageQueueModel;
     protected ArrayList<JsonTopic> topicsList;
+    protected ImageView iv_generate_token;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -155,7 +156,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                 }
             }
         });
-        ImageView iv_generate_token = itemView.findViewById(R.id.iv_generate_token);
+        iv_generate_token = itemView.findViewById(R.id.iv_generate_token);
         iv_generate_token.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -411,7 +412,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     }
 
 
-    private void updateUI() {
+    protected void updateUI() {
 
         final QueueStatusEnum queueStatus = jsonTopic.getQueueStatus();
         queueStatusOuter = queueStatus == QueueStatusEnum.N;
