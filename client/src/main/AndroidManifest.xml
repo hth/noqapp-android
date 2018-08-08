@@ -55,6 +55,7 @@
             android:name=".views.activities.LaunchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
