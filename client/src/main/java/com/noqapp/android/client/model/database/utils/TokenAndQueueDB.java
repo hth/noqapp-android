@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
-import com.noqapp.android.client.model.types.QueueStatusEnum;
+import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.interfaces.NOQueueDBPresenterInterface;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;

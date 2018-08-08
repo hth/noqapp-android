@@ -1,8 +1,8 @@
 package com.noqapp.android.merchant.network;
 
+import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
-import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 

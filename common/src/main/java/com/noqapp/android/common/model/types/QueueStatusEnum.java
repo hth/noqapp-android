@@ -1,20 +1,21 @@
-package com.noqapp.android.client.model.types;
+package com.noqapp.android.common.model.types;
 
 /**
  * User: hitender
- * Date: 5/7/17 8:21 AM
+ * Date: 3/27/17 1:50 PM
  */
+public enum QueueStatusEnum {
+    S("S", "Start"),
+    R("R", "Re-Start"),
+    N("N", "Next"),
+    P("P", "Pause"),
+    D("D", "Done"),
+    C("C", "Closed");
 
-public enum FirebaseMessageTypeEnum {
-
-    C("C", "Client"),
-    M("M", "Merchant"),
-    P("P", "Personal");
-
-    private final String description;
     private final String name;
+    private final String description;
 
-    FirebaseMessageTypeEnum(String name, String description) {
+    QueueStatusEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

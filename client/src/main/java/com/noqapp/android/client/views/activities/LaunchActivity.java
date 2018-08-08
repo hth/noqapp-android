@@ -9,7 +9,7 @@ import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.network.VersionCheckAsync;
