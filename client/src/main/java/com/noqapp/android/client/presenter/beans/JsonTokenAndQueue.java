@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -98,6 +99,9 @@ public class JsonTokenAndQueue implements Serializable {
 
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
+
+    @JsonProperty ("os")
+    private PurchaseOrderStateEnum purchaseOrderState;
 
     @JsonProperty("se")
     private String serviceEndTime;
@@ -289,6 +293,15 @@ public class JsonTokenAndQueue implements Serializable {
 
     public void setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+    }
+
+    public PurchaseOrderStateEnum getPurchaseOrderState() {
+        return purchaseOrderState;
+    }
+
+    public JsonTokenAndQueue setPurchaseOrderState(PurchaseOrderStateEnum purchaseOrderState) {
+        this.purchaseOrderState = purchaseOrderState;
+        return this;
     }
 
     public String getServiceEndTime() {
