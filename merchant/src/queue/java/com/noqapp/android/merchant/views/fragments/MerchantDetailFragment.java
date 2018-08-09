@@ -168,6 +168,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 //progressDialog.setVisibility(View.VISIBLE);
                 // lastSelectedPos = position;
+                LaunchActivity.getLaunchActivity().progressDialog.show();
                 OrderServed orderServed = new OrderServed();
                 orderServed.setCodeQR(jsonTopic.getCodeQR());
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
@@ -191,6 +192,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
+                LaunchActivity.getLaunchActivity().progressDialog.show();
                 OrderServed orderServed = new OrderServed();
                 orderServed.setCodeQR(jsonTopic.getCodeQR());
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
@@ -442,6 +444,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
         peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this);
         rv_queue_people.setAdapter(peopleInQOrderAdapter);
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override

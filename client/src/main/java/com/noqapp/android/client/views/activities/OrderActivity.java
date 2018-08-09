@@ -8,6 +8,7 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.model.PurchaseApiModel;
+import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -27,16 +28,25 @@ import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.CompoundButtonCompat;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -55,8 +65,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     protected TextView tv_tax_amt;
     @BindView(R.id.tv_due_amt)
     protected TextView tv_due_amt;
-    @BindView(R.id.spinner)
-    protected AppCompatSpinner spinner;
+    @BindView(R.id.rg_address)
+    protected RadioGroup rg_address;
     @BindView(R.id.edt_address)
     protected EditText edt_address;
     @BindView(R.id.edt_phone)
@@ -173,7 +183,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
                 in.putExtras(bundle);
                 startActivity(in);
-
+                NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
                 profileModel.setProfilePresenter(this);
                 if (TextUtils.isEmpty(NoQueueBaseActivity.getAddress())) {
                     String address = edt_address.getText().toString();
@@ -225,22 +235,31 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         ArrayAdapter adapter = new SpinAdapter(OrderActivity.this,
                 android.R.layout.simple_spinner_item,
                 notificationsList);
-        spinner.setAdapter(adapter);
-        spinner.setVisibility(View.VISIBLE);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                String addressId = notificationsList.get(i).getId();
-                String addressName = notificationsList.get(i).getAddress();
-                Toast.makeText(OrderActivity.this, "Address Name: " + addressName, Toast.LENGTH_SHORT).show();
-            }
+        for (int i = 0; i < notificationsList.size(); i++) {
+            AppCompatRadioButton rdbtn = new AppCompatRadioButton(this);
+            rdbtn.setId((i * 2) + i);
+            rdbtn.setText(notificationsList.get(i).getAddress());
+            ColorStateList colorStateList = new ColorStateList(
+                    new int[][]{
+                            new int[]{-android.R.attr.state_checked},
+                            new int[]{android.R.attr.state_checked}
+                    },
+                    new int[]{
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+                            Color.DKGRAY
+                            , Color.rgb (242,81,112),
+                    }
+            );
+            CompoundButtonCompat.setButtonTintList(rdbtn, colorStateList);
+            float paddingDp = 10f;
+            // Convert to pixels
+            int paddingPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, paddingDp, this.getResources().getDisplayMetrics());
+            rdbtn.setPadding(paddingPx, paddingPx, paddingPx, paddingPx);
+            rg_address.addView(rdbtn);
+        }
+        rg_address.setVisibility(View.VISIBLE);
 
-            }
-        });
 
     }
 

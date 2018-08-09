@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        JsonTokenAndQueue jsonTokenAndQueue = dataSet.get(listPosition);
+        final JsonTokenAndQueue jsonTokenAndQueue = dataSet.get(listPosition);
         holder.tv_name.setText(jsonTokenAndQueue.getDisplayName());
 
         String address = "";
@@ -54,24 +56,43 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.currentItemClick(dataSet.get(listPosition), v, listPosition);
+                listener.currentItemClick(jsonTokenAndQueue, v, listPosition);
             }
         });
 
 
         setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType());
         holder.tv_total_value.setText(String.valueOf(dataSet.get(listPosition).getServingNumber()));
-        if(dataSet.get(listPosition).getToken() - dataSet.get(listPosition).getServingNumber() == 0){
-            holder.tv_total.setText("It's your turn!!!");
-            holder.tv_total_value.setVisibility(View.GONE);
-        }else if(dataSet.get(listPosition).getServingNumber() == 0){
-            holder.tv_total.setText("Queue not yet started");
-            holder.tv_total_value.setVisibility(View.GONE);
-        }else{
-            holder.tv_total.setText(context.getString(R.string.serving_now));
-            holder.tv_total_value.setVisibility(View.VISIBLE);
+        if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
+            if(jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() == 0){
+                holder.tv_total.setText("It's your turn!!!");
+                holder.tv_total_value.setVisibility(View.GONE);
+            }else if(jsonTokenAndQueue.getServingNumber() == 0){
+                holder.tv_total.setText("Queue not yet started");
+                holder.tv_total_value.setVisibility(View.GONE);
+            }else{
+                holder.tv_total.setText(context.getString(R.string.serving_now));
+                holder.tv_total_value.setVisibility(View.VISIBLE);
+            }
+        }else if(jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+            if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() <= 0) {
+                if (jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.OP) {
+                    holder.tv_total.setText("Order being prepared");
+                } else if (jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
+                        jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.RP) {
+                    holder.tv_total.setText(jsonTokenAndQueue.getPurchaseOrderState().getDescription());
+                }
+                holder.tv_total_value.setVisibility(View.GONE);
+            } else if (jsonTokenAndQueue.getServingNumber() == 0) {
+                holder.tv_total.setText("Queue not yet started");
+                holder.tv_total_value.setVisibility(View.GONE);
+            } else {
+                holder.tv_total.setText(context.getString(R.string.serving_now));
+                holder.tv_total_value.setVisibility(View.VISIBLE);
+            }
         }
-        holder.tv_current_value.setText(String.valueOf(dataSet.get(listPosition).getToken()));
+
+        holder.tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
     }
 
     @Override

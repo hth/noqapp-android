@@ -62,12 +62,11 @@
                         android:hint="@string/add_address"
                         android:textSize="18sp"/>
 
-                <android.support.v7.widget.AppCompatSpinner
-                        android:id="@+id/spinner"
-                        android:dividerHeight="1px"
-                        android:layout_width="fill_parent"
-                        android:layout_height="50dp"
-                        android:layout_margin="10dip"
+                <RadioGroup
+                        android:id="@+id/rg_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:visibility="gone"/>
 
                 <EditText

@@ -12,6 +12,7 @@ import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.interfaces.NOQueueDBPresenterInterface;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setArea(cursor.getString(21));
                     tokenAndQueue.setDisplayImage(cursor.getString(22));
                     tokenAndQueue.setQueueUserId(cursor.getString(23));
+                    tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
                     listJsonQueue.add(tokenAndQueue);
                 }
             } catch (Exception e) {
@@ -108,6 +110,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setArea(cursor.getString(21));
                         tokenAndQueue.setDisplayImage(cursor.getString(22));
                         tokenAndQueue.setQueueUserId(cursor.getString(23));
+                        tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
@@ -155,6 +158,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setArea(cursor.getString(21));
                         tokenAndQueue.setDisplayImage(cursor.getString(22));
                         tokenAndQueue.setQueueUserId(cursor.getString(23));
+                        tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
                         tokenAndQueueList.add(tokenAndQueue);
                     }
                 } catch (Exception e) {
@@ -202,6 +206,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setArea(cursor.getString(21));
                     tokenAndQueue.setDisplayImage(cursor.getString(22));
                     tokenAndQueue.setQueueUserId(cursor.getString(23));
+                    tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
@@ -250,6 +255,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setArea(cursor.getString(21));
                         tokenAndQueue.setDisplayImage(cursor.getString(22));
                         tokenAndQueue.setQueueUserId(cursor.getString(23));
+                        tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
                         listJsonQueue.add(tokenAndQueue);
                     }
                 } finally {
@@ -324,6 +330,7 @@ public class TokenAndQueueDB {
             cv.put(TokenQueue.GEOHASH, tokenAndQueue.getGeoHash());
             cv.put(TokenQueue.DISPLAY_IMAGE, tokenAndQueue.getDisplayImage());
             cv.put(TokenQueue.QUEUE_USER_ID, tokenAndQueue.getQueueUserId());
+            cv.put(TokenQueue.PURCHASE_ORDER_STATE, tokenAndQueue.getPurchaseOrderState().name());
         } catch (Exception e) {
             Log.e(TAG, "Error createQueueContentValue reason=" + e.getLocalizedMessage(), e);
         }

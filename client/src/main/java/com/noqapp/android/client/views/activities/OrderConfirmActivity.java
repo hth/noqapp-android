@@ -7,6 +7,7 @@ import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -33,13 +34,12 @@ public class OrderConfirmActivity extends BaseActivity {
     @BindView(R.id.tv_address)
     protected TextView tv_address;
     private JsonPurchaseOrder jsonPurchaseOrder, oldjsonPurchaseOrder;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirm);
         ButterKnife.bind(this);
-        initActionsViews(false);
+        initActionsViews(true);
 
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
