@@ -1,10 +1,9 @@
-package com.noqapp.android.merchant.model.types;
+package com.noqapp.android.common.model.types;
 
 /**
- * Created by chandra on 4/23/17.
+ * User: hitender
+ * Date: 5/7/17 8:21 AM
  */
-
-
 public enum FirebaseMessageTypeEnum {
 
     C("C", "Client"),
@@ -32,4 +31,3 @@ public enum FirebaseMessageTypeEnum {
         return description;
     }
 }
-

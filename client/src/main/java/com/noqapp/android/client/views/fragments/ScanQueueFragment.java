@@ -61,6 +61,7 @@ import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 
 import java.io.Serializable;
@@ -70,6 +71,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -247,6 +249,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         currentClickListner = this;
         recentClickListner = this;
         storeListener = this;
+        mHandler = new QueueHandler();
         rv_recent_activity.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rv_recent_activity.setLayoutManager(horizontalLayoutManager);
@@ -311,8 +314,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
     private void callCurrentAndRecentQueue() {
-            mHandler = new QueueHandler();
-
             if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
                 //Call the current queue
                 QueueApiModel queueApiModel = new QueueApiModel();
@@ -437,24 +438,36 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @Override
     public void currentItemClick(JsonTokenAndQueue item, View view, int pos) {
-        Intent in = new Intent(getActivity(), AfterJoinActivity.class);
-        in.putExtra(KEY_CODE_QR, item.getCodeQR());
-        in.putExtra(KEY_FROM_LIST, true);
-        in.putExtra(KEY_JSON_TOKEN_QUEUE, item);
-        in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true);
-        in.putExtra(KEY_IS_HISTORY, false);
-        startActivity(in);
+        if (null != item) {
+            if (item.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
+                Intent in = new Intent(getActivity(), AfterJoinActivity.class);
+                in.putExtra(KEY_CODE_QR, item.getCodeQR());
+                in.putExtra(KEY_FROM_LIST, true);
+                in.putExtra(KEY_JSON_TOKEN_QUEUE, item);
+                in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true);
+                in.putExtra(KEY_IS_HISTORY, false);
+                startActivity(in);
+            } else {
+                Toast.makeText(getActivity(), "call the order detail screen", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
     public void recentItemClick(JsonTokenAndQueue item, View view, int pos) {
-        Intent in = new Intent(getActivity(), JoinActivity.class);
-        in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
-        in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
-        in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, true);
-        in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, false);
-        in.putExtra("isCategoryData", false);
-        startActivity(in);
+        if(null != item){
+            if(item.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q){
+                Intent in = new Intent(getActivity(), JoinActivity.class);
+                in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
+                in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
+                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, true);
+                in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, false);
+                in.putExtra("isCategoryData", false);
+                startActivity(in);
+            }else{
+                Toast.makeText(getActivity(),"call the store detail screen",Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @OnClick(R.id.tv_near_view_all)
@@ -533,15 +546,18 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
     private void passMsgToHandler(boolean isCurrentQueue) {
-        // pass msg to handler to load the data from DB
-        if (isCurrentQueue) {
-            Message msg = new Message();
-            msg.what = MSG_CURRENT_QUEUE;
-            mHandler.sendMessage(msg);
-        } else {
-            Message msg = new Message();
-            msg.what = MSG_HISTORY_QUEUE;
-            mHandler.sendMessage(msg);
+        Activity activity = getActivity();
+        if (null != activity && isAdded()) {
+            // pass msg to handler to load the data from DB
+            if (isCurrentQueue) {
+                Message msg = new Message();
+                msg.what = MSG_CURRENT_QUEUE;
+                mHandler.sendMessage(msg);
+            } else {
+                Message msg = new Message();
+                msg.what = MSG_HISTORY_QUEUE;
+                mHandler.sendMessage(msg);
+            }
         }
     }
 

@@ -243,7 +243,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
                     cityName = addresses.get(0).getAddressLine(0);
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

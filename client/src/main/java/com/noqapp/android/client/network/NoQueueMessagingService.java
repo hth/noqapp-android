@@ -24,7 +24,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.client.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.Constants;

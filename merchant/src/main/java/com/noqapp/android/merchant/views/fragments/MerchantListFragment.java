@@ -1,9 +1,9 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
-import com.noqapp.android.merchant.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;

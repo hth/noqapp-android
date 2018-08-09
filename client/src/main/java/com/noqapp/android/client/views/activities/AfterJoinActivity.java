@@ -135,7 +135,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 public void onClick(View v) {
                     returnResultBack();
                     LaunchActivity.getLaunchActivity().activityCommunicator = null;
-                    finish();
+                    Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
+                    goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(goToA);
                 }
             });
             if (UserUtils.isLogin()) {

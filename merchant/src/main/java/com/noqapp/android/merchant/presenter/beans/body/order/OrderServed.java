@@ -1,7 +1,7 @@
-package com.noqapp.android.merchant.presenter.beans.body;
+package com.noqapp.android.merchant.presenter.beans.body.order;
 
 import com.noqapp.android.common.model.types.QueueStatusEnum;
-import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 /**
  * User: hitender
- * Date: 4/22/17 6:38 PM
+ * Date: 8/7/18 6:08 PM
  */
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
@@ -28,15 +28,15 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Served implements Serializable {
+public class OrderServed implements Serializable {
     @JsonProperty("qr")
     private String codeQR;
 
     @JsonProperty("t")
     private int servedNumber;
 
-    @JsonProperty("q")
-    private QueueUserStateEnum queueUserState;
+    @JsonProperty("p")
+    private PurchaseOrderStateEnum purchaseOrderState;
 
     @JsonProperty("s")
     private QueueStatusEnum queueStatus;
@@ -60,20 +60,22 @@ public class Served implements Serializable {
         this.servedNumber = servedNumber;
     }
 
-    public QueueUserStateEnum getQueueUserState() {
-        return queueUserState;
+    public PurchaseOrderStateEnum getPurchaseOrderState() {
+        return purchaseOrderState;
     }
 
-    public void setQueueUserState(QueueUserStateEnum queueUserState) {
-        this.queueUserState = queueUserState;
+    public OrderServed setPurchaseOrderState(PurchaseOrderStateEnum purchaseOrderState) {
+        this.purchaseOrderState = purchaseOrderState;
+        return this;
     }
 
     public QueueStatusEnum getQueueStatus() {
         return queueStatus;
     }
 
-    public void setQueueStatus(QueueStatusEnum queueStatus) {
+    public OrderServed setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+        return this;
     }
 
     public String getGoTo() {
@@ -84,4 +86,3 @@ public class Served implements Serializable {
         this.goTo = goTo;
     }
 }
-
