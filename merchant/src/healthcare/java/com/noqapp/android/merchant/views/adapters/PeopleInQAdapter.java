@@ -1,9 +1,9 @@
 package com.noqapp.android.merchant.views.adapters;
 
 
+import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
