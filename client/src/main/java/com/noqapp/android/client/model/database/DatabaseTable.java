@@ -32,7 +32,7 @@ public class DatabaseTable {
         public static final String AREA = "area";
         public static final String DISPLAY_IMAGE = "displayImage";
         public static final String QUEUE_USER_ID = "queueUserID";
-        public static final String PURCHASE_ORDER_STATE = "PurchaseOrderState";
+        public static final String PURCHASE_ORDER_STATE = "purchaseOrderState";
 
         private TokenQueue() {
         }
