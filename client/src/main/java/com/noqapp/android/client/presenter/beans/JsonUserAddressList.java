@@ -42,4 +42,11 @@ public class JsonUserAddressList extends AbstractDomain {
         this.jsonUserAddresses = jsonUserAddresses;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonUserAddressList{" +
+                "jsonUserAddresses=" + jsonUserAddresses +
+                '}';
+    }
 }

@@ -75,5 +75,15 @@ public class JsonUserAddress extends AbstractDomain {
         this.countryShortName = countryShortName;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonUserAddress{" +
+                "id='" + id + '\'' +
+                ", address='" + address + '\'' +
+                ", geoHash='" + geoHash + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
+                '}';
+    }
 }
 

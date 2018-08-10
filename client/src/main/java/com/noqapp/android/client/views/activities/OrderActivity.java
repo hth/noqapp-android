@@ -32,18 +32,20 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.CompoundButtonCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatSpinner;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -92,6 +94,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_user_name.setText(NoQueueBaseActivity.getUserName());
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
         edt_address.setText(NoQueueBaseActivity.getAddress());
+        edt_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         profileModel = new ProfileModel();
         profileModel.setProfilePresenter(this);
         profileModel.setProfileAddressPresenter(this);
@@ -102,10 +105,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
-            TextView tv_title = (TextView) inflatedLayout.findViewById(R.id.tv_title);
-            TextView tv_qty = (TextView) inflatedLayout.findViewById(R.id.tv_qty);
-            TextView tv_price = (TextView) inflatedLayout.findViewById(R.id.tv_price);
-            TextView tv_total_price = (TextView) inflatedLayout.findViewById(R.id.tv_total_price);
+            TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
+            TextView tv_qty = inflatedLayout.findViewById(R.id.tv_qty);
+            TextView tv_price = inflatedLayout.findViewById(R.id.tv_price);
+            TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
             tv_title.setText(jsonPurchaseOrderProduct.getProductName());
             tv_qty.setText("Quantity: " + jsonPurchaseOrderProduct.getProductQuantity());
             tv_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() / 100);
@@ -119,6 +122,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 if (validateForm()) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
+                        progressDialog.setMessage("Order placing in progress..");
                         jsonPurchaseOrder.setDeliveryAddress(edt_address.getText().toString());
                         jsonPurchaseOrder.setDeliveryType(DeliveryTypeEnum.HD);
                         jsonPurchaseOrder.setPaymentType(PaymentTypeEnum.CA);
@@ -240,18 +244,75 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     @Override
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
-        Toast.makeText(this, "" + jsonUserAddressList.getJsonUserAddresses().size(), Toast.LENGTH_LONG).show();
         final List<JsonUserAddress> notificationsList = jsonUserAddressList.getJsonUserAddresses();
-
-
+        Log.e("address list: ",notificationsList.toString());
         ArrayAdapter adapter = new SpinAdapter(OrderActivity.this,
                 android.R.layout.simple_spinner_item,
                 notificationsList);
-
+        rg_address.removeAllViews();
         for (int i = 0; i < notificationsList.size(); i++) {
-            AppCompatRadioButton rdbtn = new AppCompatRadioButton(this);
+            final AppCompatRadioButton rdbtn = new AppCompatRadioButton(this);
             rdbtn.setId((i * 2) + i);
+            rdbtn.setTag(notificationsList.get(i).getId());
             rdbtn.setText(notificationsList.get(i).getAddress());
+            rdbtn.setLayoutParams(
+                    new RadioGroup.LayoutParams(
+                            android.view.ViewGroup.LayoutParams.FILL_PARENT,
+                            android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+            );
+            rdbtn.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    final int DRAWABLE_RIGHT = 2;
+                    if(event.getAction() == MotionEvent.ACTION_UP) {
+                        if(event.getRawX() >= (rdbtn.getRight() - rdbtn.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                            // your action here
+                            AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
+                            LayoutInflater inflater = LayoutInflater.from(OrderActivity.this);
+                            builder.setTitle(null);
+                            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+                            builder.setView(customDialogView);
+                            final AlertDialog mAlertDialog = builder.create();
+                            mAlertDialog.setCanceledOnTouchOutside(false);
+                            TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+                            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+                            tvtitle.setText("Delete Address");
+                            tv_msg.setText("Do you want to delete address from address list.");
+                            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+                            Button btn_no = customDialogView.findViewById(R.id.btn_no);
+                            View separator = customDialogView.findViewById(R.id.seperator);
+                            btn_no.setVisibility(View.VISIBLE);
+                            separator.setVisibility(View.VISIBLE);
+                            btn_yes.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                        progressDialog.show();
+                                        profileModel.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(),new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
+                                    }else {
+                                        ShowAlertInformation.showNetworkDialog(OrderActivity.this);
+                                    }
+                                    mAlertDialog.dismiss();
+                                }
+                            });
+                            btn_no.setOnClickListener(new View.OnClickListener() {
+
+                                @Override
+                                public void onClick(View v) {
+
+                                    mAlertDialog.dismiss();
+                                }
+                            });
+                            mAlertDialog.show();
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            });
+            rdbtn.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.cancel_grey),null);
+            rdbtn.setCompoundDrawablePadding(20);
             ColorStateList colorStateList = new ColorStateList(
                     new int[][]{
                             new int[]{-android.R.attr.state_checked},
@@ -271,7 +332,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             rg_address.addView(rdbtn);
         }
         rg_address.setVisibility(View.VISIBLE);
-
+        dismissProgress();
 
     }
 

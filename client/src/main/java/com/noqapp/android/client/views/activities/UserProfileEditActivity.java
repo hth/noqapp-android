@@ -115,6 +115,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         edt_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
+        edt_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
