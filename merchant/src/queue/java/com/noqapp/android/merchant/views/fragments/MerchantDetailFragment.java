@@ -203,7 +203,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
                 PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
                 purchaseOrderModel.setOrderProcessedPresenter(this);
-                purchaseOrderModel.processed(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+                purchaseOrderModel.actionOnOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }

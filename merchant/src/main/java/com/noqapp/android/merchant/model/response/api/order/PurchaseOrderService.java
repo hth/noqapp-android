@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.model.response.api.order;
 
-import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
 import com.noqapp.android.merchant.presenter.beans.order.JsonPurchaseOrderList;
@@ -67,8 +66,8 @@ public interface PurchaseOrderService {
             OrderServed OrderServed
     );
 
-    @POST("api/m/o/purchaseOrder/processed.json")
-    Call<JsonPurchaseOrderList> processed(
+    @POST("api/m/o/purchaseOrder/actionOnOrder.json")
+    Call<JsonPurchaseOrderList> actionOnOrder(
             @Header("X-R-DID")
             String did,
 
