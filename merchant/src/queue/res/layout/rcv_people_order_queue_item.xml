@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Abha Agrawal"
+                android:text=""
                 android:textColor="@android:color/black"
                 android:textSize="18sp"/>
 
@@ -87,7 +87,7 @@
                 android:textSize="12sp"/>
 
         <TextView
-                android:id="@+id/tv_order_done"
+                android:id="@+id/tv_order_prepared"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
@@ -98,6 +98,20 @@
                 android:background="@color/colorAccent"
                 android:textColor="@android:color/white"
                 android:text="Order prepared"
+                android:layout_marginTop="3dp"
+                android:textSize="12sp"/>
+        <TextView
+                android:id="@+id/tv_order_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@color/colorAccent"
+                android:textColor="@android:color/white"
+                android:text="Order Done"
                 android:layout_marginTop="3dp"
                 android:textSize="12sp"/>
 

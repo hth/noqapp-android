@@ -79,7 +79,8 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
                 if (jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.OP) {
                     holder.tv_total.setText("Order being prepared");
                 } else if (jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
-                        jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.RP) {
+                        jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
+                        jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.OD) {
                     holder.tv_total.setText(jsonTokenAndQueue.getPurchaseOrderState().getDescription());
                 }
                 holder.tv_total_value.setVisibility(View.GONE);

@@ -375,6 +375,21 @@ public class TokenAndQueueDB {
         }
     }
 
+    public static boolean updateCurrentListOrderObject(String codeQR, String orderState, String token) {
+        try {
+            ContentValues con = new ContentValues();
+            con.put(TokenQueue.PURCHASE_ORDER_STATE, orderState);
+            //  con.put(TokenQueue.TOKEN, token);
+            int successCount = dbHandler.getWritableDb().update(TokenQueue.TABLE_NAME, con, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token});
+            Log.d(TAG, "Data Saved " + TokenQueue.TABLE_NAME + " queue " + String.valueOf(successCount));
+
+            return successCount > 0;
+        } catch (Exception e) {
+            Log.e(TAG, "Error updateJoinQueueObject reason=" + e.getLocalizedMessage(), e);
+            return false;
+        }
+    }
+
     public boolean isTokenExist(String table_name, String codeQR, String date) {
         String whereClause = TokenQueue.CODE_QR + " = ?" + " AND " + TokenQueue.CREATE_DATE + " = ?";
         return DatabaseUtils.longForQuery(

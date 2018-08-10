@@ -45,6 +45,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         TextView tv_status_msg;
         TextView tv_order_data;
         TextView tv_order_status;
+        TextView tv_order_prepared;
         TextView tv_order_done;
         ImageView iv_info;
         CardView cardview;
@@ -57,6 +58,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             this.tv_status_msg = itemView.findViewById(R.id.tv_status_msg);
             this.tv_order_data = itemView.findViewById(R.id.tv_order_data);
             this.tv_order_status = itemView.findViewById(R.id.tv_order_status);
+            this.tv_order_prepared = itemView.findViewById(R.id.tv_order_prepared);
             this.tv_order_done = itemView.findViewById(R.id.tv_order_done);
             this.iv_info = itemView.findViewById(R.id.iv_info);
             this.cardview = itemView.findViewById(R.id.cardview);
@@ -96,13 +98,25 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                 showOrderDetailDialog(context,jsonPurchaseOrder,jsonPurchaseOrder.getPurchaseOrderProducts());
             }
         });
-        recordHolder.tv_order_status.setText(jsonPurchaseOrder.getPurchaseOrderState().getDescription());
-        if(jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.OP){
+        if(jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
+                jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.RD){
             recordHolder.tv_order_done.setVisibility(View.VISIBLE);
         }else{
             recordHolder.tv_order_done.setVisibility(View.GONE);
         }
         recordHolder.tv_order_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                peopleInQOrderAdapterClick.orderDoneClick(position);
+            }
+        });
+        recordHolder.tv_order_status.setText(jsonPurchaseOrder.getPurchaseOrderState().getDescription());
+        if(jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.OP){
+            recordHolder.tv_order_prepared.setVisibility(View.VISIBLE);
+        }else{
+            recordHolder.tv_order_prepared.setVisibility(View.GONE);
+        }
+        recordHolder.tv_order_prepared.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 peopleInQOrderAdapterClick.orderDoneClick(position);

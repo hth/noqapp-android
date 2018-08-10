@@ -62,6 +62,7 @@ import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoratio
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
 
 import java.io.Serializable;
@@ -594,8 +595,16 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated && LaunchActivity.getLaunchActivity().isCurrentActivityLaunchActivity()) {
-            Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
-            startActivity(blinker);
+            if(jq.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
+                Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
+                startActivity(blinker);
+            }else{
+                if(jq.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
+                        jq.getPurchaseOrderState() == PurchaseOrderStateEnum.RP){
+                    Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
+                    startActivity(blinker);
+                }
+            }
         }
         //fetch the
         fetchCurrentAndHistoryList();

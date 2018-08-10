@@ -9,6 +9,7 @@ import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.common.model.types.FCMTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.network.NoQueueMessagingService;
@@ -25,6 +26,7 @@ import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
 
 import com.crashlytics.android.answers.Answers;
@@ -518,7 +520,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private void updateNotification(Intent intent, String codeQR, boolean isReview) {
         String current_serving = intent.getStringExtra(Constants.CurrentlyServing);
         String go_to = intent.getStringExtra(Constants.GoTo_Counter);
-
+        String fcm_type = intent.getStringExtra(Constants.FCM_TYPE);
         ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
         for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
             JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
@@ -548,6 +550,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     }
                 }
                 try {
+                    // In case of order update the order status
+                    if (fcm_type.equalsIgnoreCase(FCMTypeEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
+                        jtk.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(intent.getStringExtra(Constants.ORDER_STATE)));
+                        TokenAndQueueDB.updateCurrentListOrderObject(codeQR, intent.getStringExtra(Constants.ORDER_STATE), String.valueOf(jtk.getToken()));
+                    }
                     scanFragment.updateListFromNotification(jtk, go_to);
                 } catch (Exception e) {
                     e.printStackTrace();
