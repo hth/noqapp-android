@@ -32,11 +32,6 @@ public class MePresenter implements ProfilePresenter {
     }
 
     @Override
-    public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
-
-    }
-
-    @Override
     public void queueError() {
         meView.queueError();
     }

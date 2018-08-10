@@ -211,11 +211,6 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         updateUI();
     }
 
-    @Override
-    public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
-
-    }
-
 
     @Override
     public void queueError() {

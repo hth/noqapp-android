@@ -36,6 +36,9 @@ public class JsonProfessionalProfilePersonal implements Serializable {
     @JsonProperty("ps")
     private Date practiceStart;
 
+    @JsonProperty("am")
+    private String aboutMe;
+
     /* Required to mark as a valid profile. */
     @JsonProperty("ed")
     private List<JsonNameDatePair> education = new LinkedList<>();
@@ -65,6 +68,15 @@ public class JsonProfessionalProfilePersonal implements Serializable {
 
     public JsonProfessionalProfilePersonal setPracticeStart(Date practiceStart) {
         this.practiceStart = practiceStart;
+        return this;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public JsonProfessionalProfilePersonal setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
         return this;
     }
 

@@ -306,11 +306,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         finish();
     }
 
-    @Override
-    public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
-
-    }
-
 
     @Override
     public void queueError() {
