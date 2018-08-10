@@ -9,6 +9,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.model.PurchaseApiModel;
 import com.noqapp.android.client.network.NoQueueMessagingService;
+import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -55,7 +56,7 @@ import butterknife.ButterKnife;
 import java.util.List;
 import java.util.TimeZone;
 
-public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter {
+public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter,ProfilePresenter, ProfileAddressPresenter {
 
     @BindView(R.id.tv_user_name)
     protected TextView tv_user_name;
@@ -92,6 +93,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
         edt_address.setText(NoQueueBaseActivity.getAddress());
         profileModel = new ProfileModel();
+        profileModel.setProfilePresenter(this);
+        profileModel.setProfileAddressPresenter(this);
         tv_tax_amt.setText(getString(R.string.rupee)+""+"0.0");
         tv_due_amt.setText(getString(R.string.rupee)+""+Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/100);
         tv_total_order_amt.setText(getString(R.string.rupee)+""+Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/100);
@@ -129,7 +132,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             }
         });
         if (LaunchActivity.getLaunchActivity().isOnline() ){//&& !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
-            profileModel.setProfilePresenter(this);
             profileModel.getProfileAllAddress(UserUtils.getEmail(), UserUtils.getAuth());
         }
     }
@@ -227,6 +229,16 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     @Override
+    public void queueError() {
+        dismissProgress();
+    }
+
+    @Override
+    public void queueError(String error) {
+        dismissProgress();
+    }
+
+    @Override
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
         Toast.makeText(this, "" + jsonUserAddressList.getJsonUserAddresses().size(), Toast.LENGTH_LONG).show();
         final List<JsonUserAddress> notificationsList = jsonUserAddressList.getJsonUserAddresses();
@@ -264,13 +276,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     @Override
-    public void queueError() {
+    public void profileAddressError() {
         dismissProgress();
-    }
-
-    @Override
-    public void queueError(String error) {
-
     }
 
 }

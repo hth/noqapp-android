@@ -8,13 +8,11 @@ import com.noqapp.android.common.beans.JsonProfile;
  * Date: 4/8/17 8:28 PM
  */
 
-public interface ProfilePresenter {
+public interface ProfileAddressPresenter {
 
-    void queueResponse(JsonProfile profile, String email, String auth);
+    void profileAddressResponse(JsonUserAddressList jsonUserAddressList);
 
-    void queueError();
-
-    void queueError(String error);
+    void profileAddressError();
 
     void authenticationFailure(int errorCode);
 }

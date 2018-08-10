@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.noqapp.android.client.model.response.api.ProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
@@ -27,6 +28,11 @@ public class ProfileModel {
     private static final ProfileService profileService;
     private ProfilePresenter profilePresenter;
     private ImageUploadPresenter imageUploadPresenter;
+    private ProfileAddressPresenter profileAddressPresenter;
+
+    public void setProfileAddressPresenter(ProfileAddressPresenter profileAddressPresenter) {
+        this.profileAddressPresenter = profileAddressPresenter;
+    }
 
     public void setProfilePresenter(ProfilePresenter profilePresenter) {
         this.profilePresenter = profilePresenter;
@@ -122,24 +128,25 @@ public class ProfileModel {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
                 if (response.code() == 401) {
-                    profilePresenter.authenticationFailure(response.code());
+                    profileAddressPresenter.authenticationFailure(response.code());
                     return;
                 }
 
                 if (null != response.body() //&& null == response.body().getError()
                         ) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.profileAddressResponse(response.body());
+                    profileAddressPresenter.profileAddressResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed migrating profile");
+                    profileAddressPresenter.profileAddressError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profileAddressPresenter.profileAddressError();
             }
         });
     }
@@ -149,24 +156,25 @@ public class ProfileModel {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
                 if (response.code() == 401) {
-                    profilePresenter.authenticationFailure(response.code());
+                    profileAddressPresenter.authenticationFailure(response.code());
                     return;
                 }
 
                 if (null != response.body() //&& null == response.body().getError()
                         ) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.profileAddressResponse(response.body());
+                    profileAddressPresenter.profileAddressResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed migrating profile");
+                    profileAddressPresenter.profileAddressError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profileAddressPresenter.profileAddressError();
             }
         });
     }
@@ -176,24 +184,25 @@ public class ProfileModel {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
                 if (response.code() == 401) {
-                    profilePresenter.authenticationFailure(response.code());
+                    profileAddressPresenter.authenticationFailure(response.code());
                     return;
                 }
 
                 if (null != response.body() //&& null == response.body().getError()
                         ) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.profileAddressResponse(response.body());
+                    profileAddressPresenter.profileAddressResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed migrating profile");
+                    profileAddressPresenter.profileAddressError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profileAddressPresenter.profileAddressError();
             }
         });
     }

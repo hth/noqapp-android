@@ -471,11 +471,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     }
 
     @Override
-    public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
-
-    }
-
-    @Override
     public void queueError() {
         dismissProgress();
     }
