@@ -24,6 +24,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.common.model.types.FCMTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -38,10 +39,12 @@ import java.util.List;
 import static com.noqapp.android.client.utils.Constants.BusinessType;
 import static com.noqapp.android.client.utils.Constants.CodeQR;
 import static com.noqapp.android.client.utils.Constants.CurrentlyServing;
+import static com.noqapp.android.client.utils.Constants.FCM_TYPE;
 import static com.noqapp.android.client.utils.Constants.Firebase_Type;
 import static com.noqapp.android.client.utils.Constants.GoTo_Counter;
 import static com.noqapp.android.client.utils.Constants.ISREVIEW;
 import static com.noqapp.android.client.utils.Constants.LastNumber;
+import static com.noqapp.android.client.utils.Constants.ORDER_STATE;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
 import static com.noqapp.android.client.utils.Constants.QueueUserState;
 import static com.noqapp.android.client.utils.Constants.QuserID;
@@ -96,6 +99,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                     pushNotification.putExtra(Firebase_Type, remoteMessage.getData().get(Firebase_Type));
                     pushNotification.putExtra(CodeQR, remoteMessage.getData().get(CodeQR));
+                    pushNotification.putExtra(FCM_TYPE, remoteMessage.getData().get(FCM_TYPE));
                     if (remoteMessage.getData().get(Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                         pushNotification.putExtra(CurrentlyServing, remoteMessage.getData().get(CurrentlyServing));
                         pushNotification.putExtra(LastNumber, remoteMessage.getData().get(LastNumber));
@@ -113,6 +117,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             String businessType = remoteMessage.getData().get(BusinessType);
                             NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title,businessType);
                         }
+                    }
+                    if (remoteMessage.getData().get(FCM_TYPE).equalsIgnoreCase(FCMTypeEnum.O.name())) {
+                        pushNotification.putExtra(ORDER_STATE, remoteMessage.getData().get(ORDER_STATE));
                     }
                     LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
                 } else {

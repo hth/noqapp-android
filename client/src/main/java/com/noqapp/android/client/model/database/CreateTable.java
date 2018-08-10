@@ -47,6 +47,7 @@ public class CreateTable {
                     + TokenQueue.AREA + " TEXT , "
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
                     + TokenQueue.QUEUE_USER_ID + " TEXT , "
+                    + TokenQueue.PURCHASE_ORDER_STATE + " TEXT , "
                     + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                     ");");
@@ -85,6 +86,7 @@ public class CreateTable {
                     + TokenQueue.AREA + " TEXT , "
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
                     + TokenQueue.QUEUE_USER_ID + " TEXT , "
+                    + TokenQueue.PURCHASE_ORDER_STATE + " TEXT , "
                     + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                     ");");
@@ -98,9 +100,9 @@ public class CreateTable {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Review.TABLE_NAME + "("
                 + Review.KEY + " TEXT, "
                 + Review.CODE_QR + " TEXT, "
-                + Review.VALUE+ " TEXT, "
-                + Review.TOKEN+ " TEXT, "
-                + Review.Q_USER_ID+ " TEXT, "
+                + Review.VALUE + " TEXT, "
+                + Review.TOKEN + " TEXT, "
+                + Review.Q_USER_ID + " TEXT, "
                 + "PRIMARY KEY(`" + Review.CODE_QR + "`,`" + Review.TOKEN + "`)" +
 
                 ");");
@@ -137,7 +139,7 @@ public class CreateTable {
             db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.AREA + " TEXT  ");
             db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.DISPLAY_IMAGE + " TEXT  ");
             db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.QUEUE_USER_ID + " TEXT  ");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -155,8 +157,8 @@ public class CreateTable {
 
         db.execSQL("DROP TABLE IF EXISTS '" + TokenQueue.TABLE_NAME + "'");
         db.execSQL("DROP TABLE IF EXISTS '" + TokenQueueHistory.TABLE_NAME + "'");
-        db.execSQL("DROP TABLE IF EXISTS '" + Review.TABLE_NAME  + "'");
-        db.execSQL("DROP TABLE IF EXISTS '" + Notification.TABLE_NAME  + "'");
+        db.execSQL("DROP TABLE IF EXISTS '" + Review.TABLE_NAME + "'");
+        db.execSQL("DROP TABLE IF EXISTS '" + Notification.TABLE_NAME + "'");
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);
         createTableReview(db);
@@ -169,5 +171,15 @@ public class CreateTable {
         createTableTokenQueueHistory(db);
         createTableReview(db);
         createTableNotification(db);
+    }
+
+    public static void addOrderState(SQLiteDatabase db) {
+        try {
+            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.PURCHASE_ORDER_STATE + " TEXT  ");
+            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.PURCHASE_ORDER_STATE + " TEXT  ");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -12,6 +12,7 @@ import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         TextView tv_status_msg;
         TextView tv_order_data;
         TextView tv_order_status;
+        TextView tv_order_prepared;
         TextView tv_order_done;
         ImageView iv_info;
         CardView cardview;
@@ -56,6 +58,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             this.tv_status_msg = itemView.findViewById(R.id.tv_status_msg);
             this.tv_order_data = itemView.findViewById(R.id.tv_order_data);
             this.tv_order_status = itemView.findViewById(R.id.tv_order_status);
+            this.tv_order_prepared = itemView.findViewById(R.id.tv_order_prepared);
             this.tv_order_done = itemView.findViewById(R.id.tv_order_done);
             this.iv_info = itemView.findViewById(R.id.iv_info);
             this.cardview = itemView.findViewById(R.id.cardview);
@@ -89,20 +92,31 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                 //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
                 PhoneFormatterUtil.formatNumber("IN", phoneNo));
-        recordHolder.tv_order_data.setText(jsonPurchaseOrder.getPurchaseOrderProducts().toString());
         recordHolder.tv_order_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOrderDetailDialog(context,jsonPurchaseOrder.getPurchaseOrderProducts());
+                showOrderDetailDialog(context,jsonPurchaseOrder,jsonPurchaseOrder.getPurchaseOrderProducts());
             }
         });
-        recordHolder.tv_order_status.setText(jsonPurchaseOrder.getPurchaseOrderState().getDescription());
-        if(jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.OP){
+        if(jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
+                jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.RD){
             recordHolder.tv_order_done.setVisibility(View.VISIBLE);
         }else{
             recordHolder.tv_order_done.setVisibility(View.GONE);
         }
         recordHolder.tv_order_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                peopleInQOrderAdapterClick.orderDoneClick(position);
+            }
+        });
+        recordHolder.tv_order_status.setText(jsonPurchaseOrder.getPurchaseOrderState().getDescription());
+        if(jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.OP){
+            recordHolder.tv_order_prepared.setVisibility(View.VISIBLE);
+        }else{
+            recordHolder.tv_order_prepared.setVisibility(View.GONE);
+        }
+        recordHolder.tv_order_prepared.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 peopleInQOrderAdapterClick.orderDoneClick(position);
@@ -129,13 +143,19 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
     }
 
 
-    private void showOrderDetailDialog(final Context mContext, List<JsonPurchaseOrderProduct> jsonPurchaseOrderProductList) {
+    private void showOrderDetailDialog(final Context mContext, JsonPurchaseOrder jsonPurchaseOrder,List<JsonPurchaseOrderProduct> jsonPurchaseOrderProductList) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_order_detail, null, false);
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
         ListView listview = customDialogView.findViewById(R.id.listview);
+        TextView tv_payment_mode = customDialogView.findViewById(R.id.tv_payment_mode);
+        TextView tv_address = customDialogView.findViewById(R.id.tv_address);
+        TextView tv_cost = customDialogView.findViewById(R.id.tv_cost);
+        tv_address.setText(Html.fromHtml("<font color=\"black\"><b>Delivery Address: </b></font>"+jsonPurchaseOrder.getDeliveryAddress()));
+        tv_payment_mode.setText(Html.fromHtml("<font color=\"black\"><b>Payment Mode: </b></font>"+jsonPurchaseOrder.getPaymentType().getDescription()));
+        tv_cost.setText(Html.fromHtml("<font color=\"black\"><b>Total Cost: </b></font>"+(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()))/100));
         builder.setView(customDialogView);
         ArrayList<String> data = new ArrayList<>();
         if(null != jsonPurchaseOrderProductList & jsonPurchaseOrderProductList.size()>0){
@@ -146,7 +166,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, data);
         listview.setAdapter(adapter);
         final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
+        //mAlertDialog.setCanceledOnTouchOutside(false);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -69,8 +69,8 @@ public class PurchaseOrderModel {
         });
     }
 
-    public void processed(String did, String mail, String auth,  OrderServed orderServed) {
-        purchaseOrderService.processed(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonPurchaseOrderList>() {
+    public void actionOnOrder(String did, String mail, String auth,  OrderServed orderServed) {
+        purchaseOrderService.actionOnOrder(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonPurchaseOrderList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
                 if (response.code() == 401) {
