@@ -58,7 +58,7 @@ android {
     }
 
     def versionBuildPropsFile = file('version.build.properties')
-    def versionBuild = 0;
+    def versionBuild = 1
 
     if (env == "release" || env == "sandbox") {
         if (versionBuildPropsFile.canRead()) {
