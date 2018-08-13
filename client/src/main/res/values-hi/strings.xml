@@ -205,4 +205,5 @@
     <string name="female">female</string>
     <string name="great">Great!!</string>
     <string name="checkup_done_success">Your check up has been done Successfully</string>
+    <string name="about_me">About Doctor</string>
 </resources>

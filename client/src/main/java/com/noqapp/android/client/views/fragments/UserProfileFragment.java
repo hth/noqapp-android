@@ -27,6 +27,9 @@ public class UserProfileFragment extends Fragment {
     @BindView(R.id.ll_multiple_store)
     protected LinearLayout ll_multiple_store;
 
+    @BindView(R.id.tv_about_me)
+    protected  TextView tv_about_me;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -35,9 +38,10 @@ public class UserProfileFragment extends Fragment {
         return view;
     }
 
-    public void updateUI(List<JsonStore> stores) {
+    public void updateUI(List<JsonStore> stores, String aboutme) {
         Activity activity = getActivity();
         if (null != activity && isAdded()) {
+            tv_about_me.setText(aboutme);
             if (null != stores && stores.size() > 0) {
                 for (int i = 0; i < stores.size(); i++) {
                     View inflatedLayout = getLayoutInflater().inflate(R.layout.store_items, null);

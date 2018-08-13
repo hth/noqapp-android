@@ -121,6 +121,7 @@ public class JsonProfessionalProfilePersonal implements Serializable {
         return "JsonProfessionalProfilePersonal{" +
                 "webProfileId='" + webProfileId + '\'' +
                 ", practiceStart=" + practiceStart +
+                ", aboutMe='" + aboutMe + '\'' +
                 ", education=" + education +
                 ", licenses=" + licenses +
                 ", awards=" + awards +

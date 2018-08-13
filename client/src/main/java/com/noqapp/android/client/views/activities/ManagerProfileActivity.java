@@ -96,7 +96,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     public void queueManagerResponse(JsonProfessionalProfile jsonProfessionalProfile) {
         Log.v("queueManagerResponse", jsonProfessionalProfile.toString());
         userAdditionalInfoFragment.updateUI(jsonProfessionalProfile);
-        userProfileFragment.updateUI(jsonProfessionalProfile.getStores());
+        userProfileFragment.updateUI(jsonProfessionalProfile.getStores(),jsonProfessionalProfile.getAboutMe());
     }
 
     @Override

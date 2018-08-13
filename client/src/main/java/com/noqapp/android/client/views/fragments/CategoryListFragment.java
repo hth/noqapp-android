@@ -35,6 +35,9 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
     private CategoryListAdapter.OnItemClickListener listener;
 
 
+    public CategoryListFragment() {
+    }
+
     public CategoryListFragment(ArrayList<BizStoreElastic> jsonQueues) {
         this.jsonQueues = jsonQueues;
     }
