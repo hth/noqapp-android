@@ -2,8 +2,6 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.ChildData;
-import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -12,6 +10,8 @@ import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
 import com.noqapp.android.client.views.adapters.MenuAdapter;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.fragments.FragmentDummy;
+import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
 
 import android.content.Intent;
 import android.os.Bundle;

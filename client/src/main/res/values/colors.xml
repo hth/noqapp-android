@@ -16,8 +16,8 @@
     <color name="color_me_bg">#E7E7E7</color>
     <color name="color_tab">#F8F9F9</color>
     <color name="white">#ffffff</color>
-    <color name="rating_select">#e92270</color>
-    <color name="rating_unselect">#80e92270</color>
+    <color name="rating_select">#d24760</color>
+    <color name="rating_unselect">#dc7083</color>
     <color name="progress_unselect">#4de92270</color>
     <color name="open_queue">@android:color/black</color>
     <color name="before_opening_queue">@android:color/black</color>
@@ -30,6 +30,6 @@
     <color name="segment_bg_color">#FDE6E6</color>
     <color name="segment_text_color">#928c9d</color>
 
-    <color name="button_color">#F31130</color>
+    <color name="button_color">#CD334E</color>
 
 </resources>

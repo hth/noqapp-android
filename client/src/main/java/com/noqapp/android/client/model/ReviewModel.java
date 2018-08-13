@@ -1,7 +1,6 @@
 package com.noqapp.android.client.model;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
+import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
 import com.noqapp.android.client.model.response.open.ReviewService;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -9,11 +8,11 @@ import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
 import com.noqapp.android.common.beans.JsonResponse;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
 /**
  * User: hitender

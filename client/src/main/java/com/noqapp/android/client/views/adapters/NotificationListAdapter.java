@@ -1,5 +1,12 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.GetTimeAgoUtils;
+import com.noqapp.android.common.beans.NotificationBeans;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -11,13 +18,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.GetTimeAgoUtils;
-import com.noqapp.android.common.beans.NotificationBeans;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

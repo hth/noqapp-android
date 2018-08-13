@@ -10,7 +10,6 @@ import com.noqapp.android.client.model.DependencyModel;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.DependencyPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;

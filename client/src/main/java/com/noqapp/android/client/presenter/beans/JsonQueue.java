@@ -1,18 +1,20 @@
 package com.noqapp.android.client.presenter.beans;
 
+import com.noqapp.android.client.model.types.AmenityEnum;
+import com.noqapp.android.client.model.types.FacilityEnum;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.QueueStatusEnum;
+import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
+import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import com.google.common.base.Objects;
-import com.noqapp.android.client.model.types.AmenityEnum;
-import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
-import com.noqapp.android.client.model.types.FacilityEnum;
-import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
-import com.noqapp.android.common.model.types.QueueStatusEnum;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 

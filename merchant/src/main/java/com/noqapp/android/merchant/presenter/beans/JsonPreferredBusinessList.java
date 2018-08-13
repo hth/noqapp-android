@@ -1,19 +1,17 @@
-package com.noqapp.android.client.presenter.beans;
-
-import com.noqapp.android.common.beans.AbstractDomain;
+package com.noqapp.android.merchant.presenter.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * hitender
- * 5/16/18 10:12 AM
+ * User: hitender
+ * Date: 8/12/18 11:40 PM
  */
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
@@ -29,25 +27,21 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonUserAddressList extends AbstractDomain {
+public class JsonPreferredBusinessList implements Serializable {
+    @JsonProperty("pbs")
+    private List<JsonPreferredBusiness> preferredBusinesses = new ArrayList<>();
 
-    @JsonProperty("ads")
-    private List<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
-
-    public List<JsonUserAddress> getJsonUserAddresses() {
-        return jsonUserAddresses;
+    public List<JsonPreferredBusiness> getPreferredBusinesses() {
+        return preferredBusinesses;
     }
 
-    public JsonUserAddressList setJsonUserAddresses(List<JsonUserAddress> jsonUserAddresses) {
-        this.jsonUserAddresses = jsonUserAddresses;
+    public JsonPreferredBusinessList setPreferredBusinesses(List<JsonPreferredBusiness> preferredBusinesses) {
+        this.preferredBusinesses = preferredBusinesses;
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "JsonUserAddressList{" +
-                "jsonUserAddresses=" + jsonUserAddresses +
-                '}';
+    public JsonPreferredBusinessList addPreferredBusinesses(List<JsonPreferredBusiness> preferredBusinesses) {
+        this.preferredBusinesses.addAll(preferredBusinesses);
+        return this;
     }
 }

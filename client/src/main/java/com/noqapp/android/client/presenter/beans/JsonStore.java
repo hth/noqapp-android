@@ -1,11 +1,12 @@
 package com.noqapp.android.client.presenter.beans;
 
+import com.noqapp.android.common.beans.JsonHour;
+import com.noqapp.android.common.beans.order.JsonStoreProduct;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.common.beans.JsonHour;
-import com.noqapp.android.common.beans.order.JsonStoreProduct;
 
 import java.io.Serializable;
 import java.util.LinkedList;

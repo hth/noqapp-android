@@ -1,5 +1,12 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ImageUtils;
+
+import com.squareup.picasso.Picasso;
+
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -7,13 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ImageUtils;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

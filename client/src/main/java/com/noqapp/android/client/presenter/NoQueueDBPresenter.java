@@ -1,11 +1,11 @@
 package com.noqapp.android.client.presenter;
 
-import android.content.Context;
-
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.interfaces.NOQueueDBPresenterInterface;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
+
+import android.content.Context;
 
 import java.util.List;
 

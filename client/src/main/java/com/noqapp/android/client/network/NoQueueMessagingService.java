@@ -1,5 +1,36 @@
 package com.noqapp.android.client.network;
 
+import static com.noqapp.android.client.utils.Constants.BusinessType;
+import static com.noqapp.android.client.utils.Constants.CodeQR;
+import static com.noqapp.android.client.utils.Constants.CurrentlyServing;
+import static com.noqapp.android.client.utils.Constants.FCM_TYPE;
+import static com.noqapp.android.client.utils.Constants.Firebase_Type;
+import static com.noqapp.android.client.utils.Constants.GoTo_Counter;
+import static com.noqapp.android.client.utils.Constants.ISREVIEW;
+import static com.noqapp.android.client.utils.Constants.LastNumber;
+import static com.noqapp.android.client.utils.Constants.ORDER_STATE;
+import static com.noqapp.android.client.utils.Constants.QRCODE;
+import static com.noqapp.android.client.utils.Constants.QueueUserState;
+import static com.noqapp.android.client.utils.Constants.QuserID;
+import static com.noqapp.android.client.utils.Constants.TOKEN;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.model.types.QueueUserStateEnum;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.common.model.types.FCMTypeEnum;
+import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,38 +48,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
-import com.google.firebase.messaging.RemoteMessage;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
-import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.common.model.types.FCMTypeEnum;
-import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.client.model.types.QueueUserStateEnum;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.noqapp.android.client.utils.Constants.BusinessType;
-import static com.noqapp.android.client.utils.Constants.CodeQR;
-import static com.noqapp.android.client.utils.Constants.CurrentlyServing;
-import static com.noqapp.android.client.utils.Constants.FCM_TYPE;
-import static com.noqapp.android.client.utils.Constants.Firebase_Type;
-import static com.noqapp.android.client.utils.Constants.GoTo_Counter;
-import static com.noqapp.android.client.utils.Constants.ISREVIEW;
-import static com.noqapp.android.client.utils.Constants.LastNumber;
-import static com.noqapp.android.client.utils.Constants.ORDER_STATE;
-import static com.noqapp.android.client.utils.Constants.QRCODE;
-import static com.noqapp.android.client.utils.Constants.QueueUserState;
-import static com.noqapp.android.client.utils.Constants.QuserID;
-import static com.noqapp.android.client.utils.Constants.TOKEN;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 

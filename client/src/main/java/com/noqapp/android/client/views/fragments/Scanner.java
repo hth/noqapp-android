@@ -1,5 +1,13 @@
 package com.noqapp.android.client.views.fragments;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -12,13 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
-
-import org.apache.commons.lang3.StringUtils;
 
 public abstract class Scanner extends NoQueueBaseFragment {
     private static final int RC_BARCODE_CAPTURE = 9001;

@@ -1,5 +1,8 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
@@ -9,9 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 
 import java.util.List;
 

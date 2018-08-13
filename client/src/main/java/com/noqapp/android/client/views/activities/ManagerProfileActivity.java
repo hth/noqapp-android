@@ -14,16 +14,11 @@ import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
-import com.noqapp.android.common.utils.ImagePathReader;
 
 import com.squareup.picasso.Picasso;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,18 +26,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

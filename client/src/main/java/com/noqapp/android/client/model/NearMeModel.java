@@ -1,7 +1,6 @@
 package com.noqapp.android.client.model;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
+import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
 import com.noqapp.android.client.model.response.open.NearMeService;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -9,11 +8,11 @@ import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
 /**
  * User: hitender
