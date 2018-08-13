@@ -1,13 +1,13 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.presenter.beans.JsonUserAddress;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 
 import java.util.ArrayList;
 import java.util.List;

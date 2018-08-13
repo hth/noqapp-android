@@ -1,5 +1,8 @@
 package com.noqapp.android.client.views.fragments;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.DatabaseTable;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,9 +12,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.DatabaseTable;
 
 
 public class NoQueueBaseFragment extends Fragment {

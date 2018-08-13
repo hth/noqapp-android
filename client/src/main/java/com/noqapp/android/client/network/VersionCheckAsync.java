@@ -1,14 +1,14 @@
 package com.noqapp.android.client.network;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 
 import org.jsoup.Jsoup;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.IOException;
 

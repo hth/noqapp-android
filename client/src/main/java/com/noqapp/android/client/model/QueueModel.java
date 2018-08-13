@@ -1,8 +1,5 @@
 package com.noqapp.android.client.model;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.noqapp.android.client.model.response.open.QueueService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -18,11 +15,13 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.DeviceToken;
 
-import java.util.List;
-
+import android.support.annotation.NonNull;
+import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.util.List;
 
 /**
  * Unregistered client access.

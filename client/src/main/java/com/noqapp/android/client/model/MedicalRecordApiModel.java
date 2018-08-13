@@ -1,14 +1,13 @@
 package com.noqapp.android.client.model;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.noqapp.android.client.model.response.api.health.MedicalRecordService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.MedicalRecordPresenter;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

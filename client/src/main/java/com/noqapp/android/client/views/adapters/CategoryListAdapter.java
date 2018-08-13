@@ -1,5 +1,16 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.views.activities.ManagerProfileActivity;
+import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.squareup.picasso.Picasso;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,16 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.views.activities.ManagerProfileActivity;
-import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 

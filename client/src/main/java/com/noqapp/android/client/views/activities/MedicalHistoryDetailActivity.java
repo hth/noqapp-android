@@ -15,7 +15,6 @@ import com.noqapp.android.common.model.types.medical.PhysicalGeneralExamEnum;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;

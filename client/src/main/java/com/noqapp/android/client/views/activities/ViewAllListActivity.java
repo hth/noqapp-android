@@ -5,10 +5,7 @@ import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
-import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
-import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 

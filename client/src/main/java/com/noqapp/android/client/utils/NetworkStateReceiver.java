@@ -1,12 +1,12 @@
 package com.noqapp.android.client.utils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
-import org.greenrobot.eventbus.EventBus;
 
 
 /**

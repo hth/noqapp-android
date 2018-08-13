@@ -15,12 +15,13 @@
  */
 package com.noqapp.android.client.barcode;
 
-import android.app.Activity;
+import com.noqapp.android.client.barcode.camera.GraphicOverlay;
 
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;
-import com.noqapp.android.client.barcode.camera.GraphicOverlay;
+
+import android.app.Activity;
 
 /**
  * Factory for creating a tracker and associated graphic to be associated with a new barcode.  The

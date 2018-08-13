@@ -1,5 +1,13 @@
 package com.noqapp.android.client.views.fragments;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.client.views.activities.WebViewActivity;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -13,15 +21,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
-import com.noqapp.android.client.views.activities.WebViewActivity;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

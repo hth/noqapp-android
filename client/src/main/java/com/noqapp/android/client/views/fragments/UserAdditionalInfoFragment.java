@@ -5,22 +5,20 @@ package com.noqapp.android.client.views.fragments;
  */
 
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.common.beans.JsonNameDatePair;
 
-import java.util.List;
-
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import java.util.List;
 
 
 public class UserAdditionalInfoFragment extends Fragment {

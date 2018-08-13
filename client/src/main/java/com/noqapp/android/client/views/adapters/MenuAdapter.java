@@ -1,5 +1,10 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.ChildData;
+import com.noqapp.android.client.views.activities.StoreMenuActivity;
+import com.noqapp.android.common.beans.order.JsonStoreProduct;
+
 import android.content.Context;
 import android.graphics.Paint;
 import android.text.TextUtils;
@@ -9,11 +14,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.ChildData;
-import com.noqapp.android.common.beans.order.JsonStoreProduct;
-import com.noqapp.android.client.views.activities.StoreMenuActivity;
 
 import java.util.List;
 

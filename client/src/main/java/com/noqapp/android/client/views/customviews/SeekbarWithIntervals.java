@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.customviews;
 
+import com.noqapp.android.client.R;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
@@ -14,8 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;

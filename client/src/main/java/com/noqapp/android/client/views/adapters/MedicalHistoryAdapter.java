@@ -1,5 +1,8 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -7,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 
 import java.util.List;
 

@@ -9,8 +9,6 @@ import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.common.model.types.FCMTypeEnum;
-import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.network.VersionCheckAsync;
@@ -26,6 +24,8 @@ import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
+import com.noqapp.android.common.model.types.FCMTypeEnum;
+import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
 

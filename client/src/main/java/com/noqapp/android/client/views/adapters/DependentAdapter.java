@@ -1,5 +1,8 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.common.beans.JsonProfile;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -7,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.common.beans.JsonProfile;
 
 import java.util.List;
 

@@ -1,17 +1,17 @@
 package com.noqapp.android.client.utils;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.noqapp.android.client.R;
-import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
+import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.Formatter;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+
+import android.content.Context;
+import android.util.Log;
 
 /**
  * User: hitender

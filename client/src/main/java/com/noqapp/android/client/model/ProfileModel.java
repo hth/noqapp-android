@@ -1,8 +1,5 @@
 package com.noqapp.android.client.model;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.noqapp.android.client.model.response.api.ProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
@@ -16,6 +13,8 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
