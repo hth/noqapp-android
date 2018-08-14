@@ -70,12 +70,14 @@ public class MerchantProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history");
+                    merchantPresenter.merchantError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonMerchant> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
+                merchantPresenter.merchantError();
             }
         });
     }
@@ -95,6 +97,7 @@ public class MerchantProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed updating profile " + response.body().getError());
+                    profilePresenter.profileError();
                 }
             }
 
@@ -121,6 +124,7 @@ public class MerchantProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed updating profile " + response.body().getError());
+                    merchantProfessionalPresenter.merchantProfessionalError();
                 }
             }
 
@@ -146,6 +150,7 @@ public class MerchantProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed image upload");
+                    imageUploadPresenter.imageUploadError();
                 }
             }
 

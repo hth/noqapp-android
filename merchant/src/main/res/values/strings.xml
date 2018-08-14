@@ -153,4 +153,6 @@
     <string name="order_details">Order Details</string>
     <string name="about_me">About Me</string>
     <string name="awards">Awards</string>
+    <string name="license">License</string>
+    <string name="practice_start">Practice Start</string>
 </resources>

@@ -96,4 +96,6 @@
     <string name="error_customer_id_exist">This Customer Id already associated with the customer</string>
     <string name="about_me">About Me</string>
     <string name="awards">Awards</string>
+    <string name="license">License</string>
+    <string name="practice_start">Practice Start</string>
 </resources>

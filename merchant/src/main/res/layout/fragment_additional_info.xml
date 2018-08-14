@@ -36,6 +36,18 @@
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:text="@string/practice_start"/>
+
+        <TextView
+                android:id="@+id/edt_practice_start"
+                style="@style/style_register_edt"
+                android:textColor="@android:color/black"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:text="@string/education"/>
@@ -136,6 +148,63 @@
 
             <ImageView
                     android:id="@+id/iv_award_add"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/add_medic"
+                    android:layout_gravity="center_vertical"
+                    android:layout_alignParentRight="true"
+                    android:padding="10dp"
+                    android:textColor="@android:color/transparent"/>
+
+
+        </LinearLayout>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:text="@string/license"/>
+
+        <LinearLayout
+                android:id="@+id/ll_license"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+
+
+            <EditText
+                    android:id="@+id/edt_license_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    android:padding="10dp"
+                    android:layout_weight=".6"
+                    android:inputType="textCapSentences"
+                    android:background="@drawable/square_white_bg_drawable"/>
+
+            <TextView
+                    android:id="@+id/tv_license_date"
+                    android:layout_width="0dp"
+                    android:layout_weight=".4"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center_vertical"
+                    android:padding="10dp"
+                    android:background="@drawable/square_white_bg_drawable"/>
+
+            <ImageView
+                    android:id="@+id/iv_license_add"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_margin="5dp"
