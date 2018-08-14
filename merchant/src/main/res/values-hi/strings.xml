@@ -94,4 +94,6 @@
     <string name="patient_details">Business Patient ID</string>
     <string name="customer_id">Patient ID</string>
     <string name="error_customer_id_exist">This Customer Id already associated with the customer</string>
+    <string name="about_me">About Me</string>
+    <string name="awards">Awards</string>
 </resources>

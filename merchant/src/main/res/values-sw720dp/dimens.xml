@@ -3,5 +3,6 @@
 
     <dimen name="edit_icon_size">32dp</dimen>
     <dimen name="title_size">24sp</dimen>
-
+    <dimen name="profile_image_size">100sp</dimen>
+    <dimen name="profile_image_padding">15sp</dimen>
 </resources>

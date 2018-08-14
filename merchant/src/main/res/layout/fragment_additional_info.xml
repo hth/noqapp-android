@@ -1,72 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#99ffffff"
-    android:orientation="vertical">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:id="@+id/layout"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#99ffffff"
+            android:orientation="vertical">
 
 
-            <android.support.constraint.ConstraintLayout
+    <LinearLayout
+            android:id="@+id/email_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+
+        <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_marginTop="5dp"
-                android:background="#fff"
-                android:elevation="0dp"
-                android:orientation="vertical"
-                android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="20dp">
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:text="@string/about_me"/>
+
+        <EditText
+                android:id="@+id/edt_about_me"
+                style="@style/style_register_edt"
+                android:maxLength="256"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
+                android:textColor="@android:color/black"
+                android:lines="3"
+                android:maxLines="3"
+                android:minLines="3"
+                android:singleLine="false"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:text="@string/education"/>
+
+        <LinearLayout
+                android:id="@+id/ll_education"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
 
 
-                <LinearLayout
-                    android:id="@+id/email_login_form"
-                    android:layout_width="match_parent"
+            <EditText
+                    android:id="@+id/edt_edu_name"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:padding="10dp"
+                    android:layout_weight=".6"
+                    android:textColor="@android:color/black"
+                    android:inputType="textCapSentences"
+                    android:background="@drawable/square_white_bg_drawable"/>
+
+            <TextView
+                    android:id="@+id/tv_edu_date"
+                    android:layout_width="0dp"
+                    android:layout_weight=".4"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    android:padding="10dp"
+                    android:background="@drawable/square_white_bg_drawable"/>
+
+            <ImageView
+                    android:id="@+id/iv_edu_add"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/add_medic"
+                    android:layout_gravity="center_vertical"
+                    android:layout_alignParentRight="true"
+                    android:padding="10dp"
+                    android:textColor="@android:color/transparent"/>
 
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:text="@string/education" />
+        </LinearLayout>
 
 
-                    <TextView
-                        android:id="@+id/tv_education"
-                        android:layout_width="match_parent"
-                        android:textSize="16sp"
-                        android:layout_height="wrap_content" />
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:text="@string/awards"/>
+
+        <LinearLayout
+                android:id="@+id/ll_experience"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
 
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:text="@string/experience" />
+            <EditText
+                    android:id="@+id/edt_award_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    android:padding="10dp"
+                    android:layout_weight=".6"
+                    android:inputType="textCapSentences"
+                    android:background="@drawable/square_white_bg_drawable"/>
+
+            <TextView
+                    android:id="@+id/tv_award_date"
+                    android:layout_width="0dp"
+                    android:layout_weight=".4"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center_vertical"
+                    android:padding="10dp"
+                    android:background="@drawable/square_white_bg_drawable"/>
+
+            <ImageView
+                    android:id="@+id/iv_award_add"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/add_medic"
+                    android:layout_gravity="center_vertical"
+                    android:layout_alignParentRight="true"
+                    android:padding="10dp"
+                    android:textColor="@android:color/transparent"/>
 
 
-                    <TextView
-                        android:id="@+id/tv_experience"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:inputType="text|textMultiLine" />
-                </LinearLayout>
+        </LinearLayout>
 
-            </android.support.constraint.ConstraintLayout>
-        </RelativeLayout>
-    </ScrollView>
+        <Button
+                android:id="@+id/btn_update"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:paddingRight="100dp"
+                android:paddingLeft="100dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_drawable"
+                android:gravity="center"
+                android:text="@string/action_update"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

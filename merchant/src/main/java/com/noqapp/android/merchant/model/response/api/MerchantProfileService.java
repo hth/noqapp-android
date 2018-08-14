@@ -45,7 +45,7 @@ public interface MerchantProfileService {
 
 
     @POST("api/m/profile/updateProfessionalProfile.json")
-    Call<JsonProfile> update(
+    Call<JsonProfessionalProfilePersonal> update(
             @Header("X-R-MAIL")
             String mail,
 

@@ -12,4 +12,6 @@
     <dimen name="mhd_header_size">16sp</dimen>
     <dimen name="mhd_sub_header_size">14dp</dimen>
     <dimen name="title_size">20sp</dimen>
+    <dimen name="profile_image_size">75sp</dimen>
+    <dimen name="profile_image_padding">5sp</dimen>
 </resources>
