@@ -155,4 +155,5 @@
     <string name="awards">Awards</string>
     <string name="license">License</string>
     <string name="practice_start">Practice Start</string>
+    <string name="error_customer_id_input">Dot and space not allowed</string>
 </resources>
