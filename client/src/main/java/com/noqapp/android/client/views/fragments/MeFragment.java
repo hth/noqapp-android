@@ -112,45 +112,6 @@ public class MeFragment extends NoQueueBaseFragment {
         replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, inf, TAG);
     }
 
-    @OnClick(R.id.btn_register_login_logout)
-    public void actionLogout() {
-        if (btn_register_login_logout.getText().equals(getString(R.string.logout))) {
-            new AlertDialog.Builder(getActivity())
-                    .setTitle(getString(R.string.logout))
-                    .setMessage(getString(R.string.logout_msg))
-                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // logout
-                            NoQueueBaseActivity.clearPreferences();
-                            //navigate to signup/login
-                            replaceFragmentWithoutBackStack(getActivity(), R.id.frame_layout, new MeFragment(), TAG);
-                        }
-                    })
-                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // user doesn't want to logout
-                        }
-                    })
-                    .show();
-        } else {
-            // replaceFragmentWithBackStack(getActivity(), R.id.frame_layout, new LoginFragment(), TAG, LaunchActivity.tabMe);
-        }
-    }
-
-    @OnClick({R.id.ll_rate_app})
-    public void action_RateApp() {
-        Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
-        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-        try {
-            startActivity(goToMarket);
-        } catch (ActivityNotFoundException e) {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=" + getActivity().getPackageName())));
-        }
-    }
 
     @OnClick({R.id.ll_legal})
     public void action_Legal() {

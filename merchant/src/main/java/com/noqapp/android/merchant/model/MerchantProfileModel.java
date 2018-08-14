@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model;
 
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
@@ -9,6 +10,7 @@ import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
+import com.noqapp.android.merchant.views.interfaces.MerchantProfessionalPresenter;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
 import android.support.annotation.NonNull;
@@ -30,7 +32,11 @@ public class MerchantProfileModel {
     public ImageUploadPresenter imageUploadPresenter;
     public MerchantPresenter merchantPresenter;
     public ProfilePresenter profilePresenter;
+    public MerchantProfessionalPresenter merchantProfessionalPresenter;
 
+    public void setMerchantProfessionalPresenter(MerchantProfessionalPresenter merchantProfessionalPresenter) {
+        this.merchantProfessionalPresenter = merchantProfessionalPresenter;
+    }
     public void setMerchantPresenter(MerchantPresenter merchantPresenter) {
         this.merchantPresenter = merchantPresenter;
     }
@@ -64,12 +70,14 @@ public class MerchantProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history");
+                    merchantPresenter.merchantError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonMerchant> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
+                merchantPresenter.merchantError();
             }
         });
     }
@@ -89,6 +97,7 @@ public class MerchantProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed updating profile " + response.body().getError());
+                    profilePresenter.profileError();
                 }
             }
 
@@ -96,6 +105,33 @@ public class MerchantProfileModel {
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 profilePresenter.profileError();
+            }
+        });
+    }
+
+    public void updateProfessionalProfile(final String mail, final String auth, JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal) {
+        merchantProfileService.update(mail, auth, jsonProfessionalProfilePersonal).enqueue(new Callback<JsonProfessionalProfilePersonal>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonProfessionalProfilePersonal> call, @NonNull Response<JsonProfessionalProfilePersonal> response) {
+                if (response.code() == 401) {
+                    merchantProfessionalPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("Update profile", String.valueOf(response.body()));
+                    merchantProfessionalPresenter.merchantProfessionalResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Failed updating profile " + response.body().getError());
+                    merchantProfessionalPresenter.merchantProfessionalError();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonProfessionalProfilePersonal> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                merchantProfessionalPresenter.merchantProfessionalError();
             }
         });
     }
@@ -114,6 +150,7 @@ public class MerchantProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed image upload");
+                    imageUploadPresenter.imageUploadError();
                 }
             }
 

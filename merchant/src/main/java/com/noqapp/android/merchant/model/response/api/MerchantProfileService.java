@@ -43,6 +43,19 @@ public interface MerchantProfileService {
             UpdateProfile updateProfile
     );
 
+
+    @POST("api/m/profile/updateProfessionalProfile.json")
+    Call<JsonProfessionalProfilePersonal> update(
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal
+    );
+
     @Multipart
     @POST("api/m/profile/upload.json")
     Call<JsonResponse> upload(

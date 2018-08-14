@@ -1,118 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#99ffffff"
-    android:orientation="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99ffffff"
+            android:orientation="vertical">
 
 
     <LinearLayout
-        android:id="@+id/email_login_form"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-
-        <TextView
-            style="@style/style_register_tv"
-            android:text="@string/phone" />
-
-
-        <EditText
-            android:id="@+id/edt_phone"
-            style="@style/style_register_edt"
-            android:inputType="phone"
-            android:maxLength="15" />
-
-
-        <TextView
-            style="@style/style_register_tv"
-            android:text="@string/name" />
-
-
-        <EditText
-            android:id="@+id/edt_name"
-            style="@style/style_register_edt"
-            android:inputType="text"
-
-
-            />
-
-        <TextView
-            style="@style/style_register_tv"
-            android:text="@string/mail" />
-
-
-        <EditText
-            android:id="@+id/edt_email"
-            style="@style/style_register_edt"
-            android:inputType="textEmailAddress" />
-
-        <LinearLayout
+            android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:orientation="vertical"
+            android:padding="10dp">
+
+
+        <TextView
+                style="@style/style_register_tv"
+                android:text="@string/phone"/>
+
+
+        <EditText
+                android:id="@+id/edt_phone"
+                style="@style/style_register_edt"
+                android:inputType="phone"
+                android:maxLength="15"/>
+
+
+        <TextView
+                style="@style/style_register_tv"
+                android:text="@string/name"/>
+
+
+        <EditText
+                android:id="@+id/edt_name"
+                style="@style/style_register_edt"
+                android:inputType="text"/>
+
+        <TextView
+                style="@style/style_register_tv"
+                android:text="@string/mail"/>
+
+
+        <EditText
+                android:id="@+id/edt_email"
+                style="@style/style_register_edt"
+                android:inputType="textEmailAddress"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".50"
-                android:orientation="vertical"
-                android:paddingRight="10dp">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".50"
+                    android:orientation="vertical"
+                    android:paddingRight="10dp">
 
                 <TextView
-                    style="@style/style_register_tv"
-                    android:text="@string/birthday" />
+                        style="@style/style_register_tv"
+                        android:text="@string/birthday"/>
 
                 <EditText
-                    android:id="@+id/edt_birthday"
-                    style="@style/style_register_edt" />
+                        android:id="@+id/edt_birthday"
+                        style="@style/style_register_edt"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".50"
-                android:orientation="vertical">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".50"
+                    android:orientation="vertical">
 
                 <TextView
-                    style="@style/style_register_tv"
-                    android:text="@string/gender" />
+                        style="@style/style_register_tv"
+                        android:text="@string/gender"/>
 
                 <LinearLayout
-                    android:id="@+id/ll_gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1">
+                        android:id="@+id/ll_gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="1">
 
                     <EditText
-                        android:id="@+id/tv_male"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal|center_vertical"
-                        android:layout_weight=".5"
-                        android:focusable="false"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="male "
-                        android:textSize="14sp" />
+                            android:id="@+id/tv_male"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_weight=".5"
+                            android:focusable="false"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:text="Male "
+                            android:editable="false"
+                            android:textSize="14sp"/>
 
                     <EditText
-                        android:id="@+id/tv_female"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal|center_vertical"
-                        android:layout_weight=".5"
-                        android:focusable="false"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="female "
-                        android:textSize="14sp" />
+                            android:id="@+id/tv_female"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_weight=".5"
+                            android:focusable="false"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:text="Female "
+                            android:editable="false"
+                            android:textSize="14sp"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -120,39 +119,38 @@
 
 
         <TextView
-            style="@style/style_register_tv"
-            android:text="@string/prompt_address_status" />
+                style="@style/style_register_tv"
+                android:text="@string/prompt_address_status"/>
 
 
         <EditText
-            android:id="@+id/edt_address"
-            style="@style/style_register_edt"
-            android:layout_marginBottom="10dp"
-            android:gravity="top|left"
-            android:inputType="textMultiLine"
-            android:lines="2"
-            android:maxLines="2"
-            android:minLines="2"
-            android:singleLine="false" />
+                android:id="@+id/edt_address"
+                style="@style/style_register_edt"
+                android:layout_marginBottom="10dp"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:maxLines="2"
+                android:minLines="2"
+                android:singleLine="false"/>
 
 
         <Button
-            android:id="@+id/btn_update"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="300dp"
-            android:layout_marginRight="300dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/button_drawable"
-            android:gravity="center"
-            android:text="@string/action_update"
-            android:textAllCaps="false"
-            android:textColor="@color/colorAccent"
-            android:textSize="15sp" />
-
+                android:id="@+id/btn_update"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:paddingRight="100dp"
+                android:paddingLeft="100dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_drawable"
+                android:gravity="center"
+                android:text="@string/action_update"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp"/>
     </LinearLayout>
 
 
-</LinearLayout>
+</ScrollView>

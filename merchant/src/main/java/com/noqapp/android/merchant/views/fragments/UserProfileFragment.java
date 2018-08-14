@@ -15,6 +15,7 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -56,6 +57,8 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     private MerchantProfileModel merchantProfileModel;
+    private ProgressDialog progressDialog;
+    private String qUserId = "";
 
 
     @Override
@@ -63,6 +66,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         merchantProfileModel = new MerchantProfileModel();
+        initProgress();
         tv_male = view.findViewById(R.id.tv_male);
         tv_female = view.findViewById(R.id.tv_female);
 
@@ -155,7 +159,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             btn_update.setCompoundDrawablesWithIntrinsicBounds(
                     0, 0, R.drawable.arrow_white, 0);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-             //   progressDialog.show();
+                progressDialog.show();
                 //   String phoneNo = edt_phoneNo.getText().toString();
                 String name = edt_name.getText().toString();
                 //   String mail = edt_Mail.getText().toString();
@@ -167,6 +171,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 updateProfile.setBirthday(convertDOBToValidFormat(birthday));
                 updateProfile.setGender(gender);
                 updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
+                updateProfile.setQueueUserId(qUserId);
                 merchantProfileModel.setProfilePresenter(this);
                 merchantProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
             } else {
@@ -189,24 +194,25 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
        // NoQueueBaseActivity.commitProfile(profile, email, auth);
-       // dismissProgress();
+        dismissProgress();
         //updateUI();
     }
 
     @Override
     public void profileError() {
-       // dismissProgress();
+        dismissProgress();
     }
 
     @Override
     public void profileError(String error) {
-
+        dismissProgress();
     }
 
 
     @Override
     public void authenticationFailure(int errorCode) {
         //TODO(chandra)
+        dismissProgress();
     }
 
     public void updateUI(JsonProfile jsonProfile) {
@@ -228,6 +234,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         } catch (Exception e) {
             e.printStackTrace();
         }
+        qUserId = jsonProfile.getQueueUserId();
     }
 
 
@@ -266,6 +273,14 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         }
         return isValid;
     }
-
+    private void initProgress() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Updating data...");
+    }
+    private void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
 }
 

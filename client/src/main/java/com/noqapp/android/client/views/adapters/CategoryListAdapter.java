@@ -14,6 +14,8 @@ import com.squareup.picasso.Picasso;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -49,9 +51,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
         final BizStoreElastic jsonQueue = dataSet.get(listPosition);
-        holder.tv_name.setText(dataSet.get(listPosition).getDisplayName());
+        holder.tv_name.setText(jsonQueue.getDisplayName());
         holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getPhone()));
-        holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(dataSet.get(listPosition).getRating())));
+        holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
         holder.tv_address.setText(jsonQueue.getAddress());
         holder.tv_store_review.setText(String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount()) + " Reviews");
         holder.tv_phoneno.setOnClickListener(new View.OnClickListener() {
@@ -62,9 +64,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         });
         holder.tv_specialization.setText(jsonQueue.getCompleteEducation());
         StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(jsonQueue.getStoreHourElasticList());
+        holder.tv_join.setEnabled(!storeHourElastic.isDayClosed());
         if (storeHourElastic.isDayClosed()) {
             holder.tv_status.setText(context.getString(R.string.store_closed));
             holder.tv_store_timing.setVisibility(View.GONE);
+            holder.tv_join.setBackground(ContextCompat.getDrawable(context,R.drawable.grey_background));
+            holder.tv_join.setText("Closed");
         } else {
             holder.tv_store_timing.setVisibility(View.VISIBLE);
             holder.tv_status.setText(
@@ -73,6 +78,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                             + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
                             + " - "
                             + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour()));
+            holder.tv_join.setBackgroundColor(ContextCompat.getColor(context, R.color.colorActionbar));
+            holder.tv_join.setText("Walk-in");
         }
 
 
@@ -146,9 +153,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_status.setText("Closed Today");
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         }
-        if (!TextUtils.isEmpty(dataSet.get(listPosition).getDisplayImage())) {
+        if (!TextUtils.isEmpty(jsonQueue.getDisplayImage())) {
 
-            Picasso.with(context).load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, dataSet.get(listPosition).getDisplayImage())).
+            Picasso.with(context).load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonQueue.getDisplayImage())).
                     placeholder(context.getResources().getDrawable(R.drawable.profile_red)).
                     error(context.getResources().getDrawable(R.drawable.profile_red)).into(holder.iv_main);
         } else {
@@ -156,7 +163,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         }
 
 
-        holder.tv_store_special.setText(dataSet.get(listPosition).getFamousFor());
+        holder.tv_store_special.setText(jsonQueue.getFamousFor());
         holder.tv_store_timing.setText("Today: "+ " "
                 + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
                 + " - "
@@ -164,7 +171,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onCategoryItemClick(dataSet.get(listPosition), v, listPosition);
+                listener.onCategoryItemClick(jsonQueue, v, listPosition);
             }
         });
 
@@ -173,8 +180,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             public void onClick(View v) {
                 Intent intent = new Intent(context, ManagerProfileActivity.class);
                 intent.putExtra("webProfileId", jsonQueue.getWebProfileId());
-                intent.putExtra("managerName", dataSet.get(listPosition).getDisplayName());
-                intent.putExtra("managerImage", dataSet.get(listPosition).getDisplayImage());
+                intent.putExtra("managerName", jsonQueue.getDisplayName());
+                intent.putExtra("managerImage", jsonQueue.getDisplayImage());
                 context.startActivity(intent);
 
 

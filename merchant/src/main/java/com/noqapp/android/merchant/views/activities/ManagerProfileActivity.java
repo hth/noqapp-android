@@ -12,6 +12,7 @@ import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
@@ -22,9 +23,11 @@ import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 import com.squareup.picasso.Picasso;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -67,10 +70,17 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
     private ImageView actionbarBack;
     private MerchantProfileModel merchantProfileModel;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (!new AppUtils().isTablet(getApplicationContext())) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
+        initProgress();
         setContentView(R.layout.activity_queue_manager_profile);
         actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +98,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         loadTabs = new LoadTabs();
         loadTabs.execute();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
             merchantProfileModel.setMerchantPresenter(this);
             merchantProfileModel.fetch(LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
@@ -110,17 +121,17 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
             loadProfilePic(jsonMerchant.getJsonProfile().getProfileImage());
         }
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
     public void merchantError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         if (errorCode == Constants.INVALID_CREDENTIAL) {
             LaunchActivity.getLaunchActivity().clearLoginData(true);
         }
@@ -282,5 +293,16 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     @Override
     public void imageUploadError() {
 
+    }
+
+    private void initProgress() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("fetching data...");
+    }
+
+    protected void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 }

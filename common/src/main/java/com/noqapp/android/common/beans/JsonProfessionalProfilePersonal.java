@@ -34,7 +34,7 @@ public class JsonProfessionalProfilePersonal implements Serializable {
     private String webProfileId;
 
     @JsonProperty("ps")
-    private Date practiceStart;
+    private String practiceStart;
 
     @JsonProperty("am")
     private String aboutMe;
@@ -53,6 +53,9 @@ public class JsonProfessionalProfilePersonal implements Serializable {
     @JsonProperty("dd")
     private String dataDictionary;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public String getWebProfileId() {
         return webProfileId;
     }
@@ -62,11 +65,11 @@ public class JsonProfessionalProfilePersonal implements Serializable {
         return this;
     }
 
-    public Date getPracticeStart() {
+    public String getPracticeStart() {
         return practiceStart;
     }
 
-    public JsonProfessionalProfilePersonal setPracticeStart(Date practiceStart) {
+    public JsonProfessionalProfilePersonal setPracticeStart(String practiceStart) {
         this.practiceStart = practiceStart;
         return this;
     }
@@ -115,16 +118,25 @@ public class JsonProfessionalProfilePersonal implements Serializable {
         this.dataDictionary = dataDictionary;
         return this;
     }
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
 
     @Override
     public String toString() {
         return "JsonProfessionalProfilePersonal{" +
                 "webProfileId='" + webProfileId + '\'' +
-                ", practiceStart=" + practiceStart +
+                ", practiceStart='" + practiceStart + '\'' +
+                ", aboutMe='" + aboutMe + '\'' +
                 ", education=" + education +
                 ", licenses=" + licenses +
                 ", awards=" + awards +
                 ", dataDictionary='" + dataDictionary + '\'' +
+                ", error=" + error +
                 '}';
     }
 }
