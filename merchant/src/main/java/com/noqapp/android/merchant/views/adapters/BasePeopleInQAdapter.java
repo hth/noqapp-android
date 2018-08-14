@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -100,6 +101,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         TextView tv_business_customer_id;
         ImageView iv_info;
         ImageView iv_new;
+        RelativeLayout rl_status;
         CardView cardview;
 
         public MyViewHolder(View itemView) {
@@ -113,6 +115,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
             this.iv_info = itemView.findViewById(R.id.iv_info);
             this.iv_new = itemView.findViewById(R.id.iv_new);
+            this.rl_status = itemView.findViewById(R.id.rl_status);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
     }
@@ -167,7 +170,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                     new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
             }
         });
-        recordHolder.cardview.setOnClickListener(new View.OnClickListener() {
+        recordHolder.rl_status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 peopleInQAdapterClick.PeopleInQClick(position);
