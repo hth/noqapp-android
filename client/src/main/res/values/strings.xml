@@ -283,8 +283,8 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="payment_mode_online">Online</string>
     <string name="pwd">Password</string>
     <string name="cnf_pwd">Confirm Password</string>
-    <string name="male">male</string>
-    <string name="female">female</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
     <string name="great">Great !!</string>
     <string name="checkup_done_success">Your check up has been done Successfully</string>
     <!-- Language select dialog -->

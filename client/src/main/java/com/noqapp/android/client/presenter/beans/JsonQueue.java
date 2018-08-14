@@ -8,6 +8,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -583,6 +584,7 @@ public class JsonQueue implements Serializable {
         jsonTokenAndQueue.setCreateDate(created);
         jsonTokenAndQueue.setBizCategoryId(bizCategoryId);
         jsonTokenAndQueue.setBusinessType(businessType);
+        jsonTokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.IN);
         return jsonTokenAndQueue;
     }
 

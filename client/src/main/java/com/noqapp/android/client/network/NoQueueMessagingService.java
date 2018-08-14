@@ -135,12 +135,29 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         if (StringUtils.isNotBlank(codeQR)) {
-                            String token = remoteMessage.getData().get(Constants.TOKEN);
-                            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR,token);
+                            String current_serving = remoteMessage.getData().get(Constants.CurrentlyServing);
                             String userStatus = remoteMessage.getData().get(Constants.QueueUserState);
                             String quserID = remoteMessage.getData().get(Constants.QuserID);
-                            // un-subscribe from the topic
-                            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                            String token = remoteMessage.getData().get(Constants.TOKEN);
+                            ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+                            for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
+                                JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
+                                if (null != jtk && null != current_serving) {
+                                    //update DB & after join screen
+                                    jtk.setServingNumber(Integer.parseInt(current_serving));
+                                    /*
+                                     * Save codeQR of goto & show it in after join screen on app
+                                     * Review DB for review key && current serving == token no.
+                                     */
+
+                                    if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
+                                        //un subscribe the topic
+                                        //TODO @chandra write logic for unsubscribe
+                                        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                                    }
+                                    TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                                }
+                            }
 
                             /*
                              * Save codeQR of review & show the review screen on app
@@ -148,9 +165,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                              */
                             if (null == userStatus) {
                                 String businessType = remoteMessage.getData().get(BusinessType);
-                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title,businessType);
+                               // NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title,businessType);
                                 sendNotification(title, body,false);
-                            } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                            }else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                                 ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token,"",quserID);
                                 sendNotification(title, body, codeQR, true,token);//pass codeQR to open review screen
                             } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
