@@ -114,7 +114,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private boolean showLocationPopup = true;
     private long lastPress;
     private Toast backPressToast;
-   // private BroadcastReceiver broadcastReceiver;
+    // private BroadcastReceiver broadcastReceiver;
     FcmNotificationReceiver fcmNotificationReceiver;
     private ImageView iv_profile;
     private TextView tv_login, tv_name, tv_email;
@@ -146,7 +146,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         setReviewShown(false);//Reset the flag when app is killed
         networkUtil = new NetworkUtil(this);
         fcmNotificationReceiver = new FcmNotificationReceiver();
-        fcmNotificationReceiver.register(this,new IntentFilter(Constants.PUSH_NOTIFICATION));
+        fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
         //Language setup
         languagepref = PreferenceManager.getDefaultSharedPreferences(this);
         languagepref.registerOnSharedPreferenceChangeListener(this);
@@ -217,9 +217,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         String token = intent.getStringExtra(Constants.TOKEN);
                         String quserID = intent.getStringExtra(Constants.QuserID);
                         *//**
-                         * Save codeQR of review & show the review screen on app
-                         * resume if there is any record in Review DB for review key
-                         *//*
+         * Save codeQR of review & show the review screen on app
+         * resume if there is any record in Review DB for review key
+         *//*
                         if (null == userStatus) {
                             updateNotification(intent, codeQR, false);
                         } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
@@ -250,7 +250,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             deviceModel.setAppBlacklistPresenter(this);
             deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
-       // LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
+        // LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
 
     }
 
@@ -405,8 +405,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
         //  LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
-        if(null != fcmNotificationReceiver)
-            fcmNotificationReceiver.register(this,new IntentFilter(Constants.PUSH_NOTIFICATION));
+        if (null != fcmNotificationReceiver)
+            fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
@@ -438,7 +438,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if(null != fcmNotificationReceiver)
+        if (null != fcmNotificationReceiver)
             fcmNotificationReceiver.unregister(this);
     }
 
@@ -609,7 +609,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
                 startActivity(in);
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                   AppUtilities.exportDatabase(this);
+                    AppUtilities.exportDatabase(this);
                 break;
             }
             case R.id.nav_app_setting: {
@@ -722,21 +722,21 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         public void register(Context context, IntentFilter filter) {
             try {
-                    if(!isRegistered) {
-                        LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
-                        Log.e("FCM Reciver: ","register");
-                        isRegistered = true;
-                    }
-            }catch (Exception e){
+                if (!isRegistered) {
+                    LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
+                    Log.e("FCM Reciver: ", "register");
+                    isRegistered = true;
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
 
         private void unregister(Context context) {
-            if(isRegistered) {
+            if (isRegistered) {
                 LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
-                Log.e("FCM Reciver: ","unregister");
+                Log.e("FCM Reciver: ", "unregister");
                 isRegistered = false;
             }
         }

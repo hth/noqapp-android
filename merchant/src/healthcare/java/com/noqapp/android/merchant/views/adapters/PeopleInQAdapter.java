@@ -122,9 +122,9 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                 if (TextUtils.isEmpty(edt_id.getText().toString())) {
                     edt_id.setError(mContext.getString(R.string.error_customer_id));
                 } else {
-                    if(edt_id.getText().toString().contains(" ")||edt_id.getText().toString().contains(".")){
+                    if (!edt_id.getText().toString().matches("^[a-zA-Z0-9]+$")) {
                         edt_id.setError(mContext.getString(R.string.error_customer_id_input));
-                    }else if (!TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) && jsonQueuedPerson.getBusinessCustomerId().equalsIgnoreCase(edt_id.getText().toString())) {
+                    } else if (!TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) && jsonQueuedPerson.getBusinessCustomerId().equalsIgnoreCase(edt_id.getText().toString())) {
                         edt_id.setError(mContext.getString(R.string.error_customer_id_exist));
                     } else {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
@@ -165,14 +165,14 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson) {
         if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
             if (!TextUtils.isEmpty(jsonQueuedPerson.getQueueUserId())) {
-              if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId())||jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
-                  Intent intent = new Intent(context, MedicalCaseHistoryTabbed.class);
-                  intent.putExtra("qCodeQR", qCodeQR);
-                  intent.putExtra("data", jsonQueuedPerson);
-                  context.startActivity(intent);
-                }else{
-                  Toast.makeText(context, context.getString(R.string.msg_client_already_acquired), Toast.LENGTH_LONG).show();
-              }
+                if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
+                    Intent intent = new Intent(context, MedicalCaseHistoryTabbed.class);
+                    intent.putExtra("qCodeQR", qCodeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    context.startActivity(intent);
+                } else {
+                    Toast.makeText(context, context.getString(R.string.msg_client_already_acquired), Toast.LENGTH_LONG).show();
+                }
 
             } else {
                 Toast.makeText(context, "This person in not the register user. You cannot create the case history", Toast.LENGTH_LONG).show();

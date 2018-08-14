@@ -55,7 +55,6 @@
             android:name=".views.activities.LaunchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"
-            android:launchMode="singleInstance"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         <activity
