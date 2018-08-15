@@ -15,9 +15,7 @@
             android:id="@+id/myWebView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-
-            />
+            android:background="@android:color/transparent"/>
 
         <RelativeLayout
             android:id="@+id/rl_blinker"
@@ -47,7 +45,7 @@
             android:background="@drawable/green_round_corner"
             android:padding="10dp"
             android:text="@string/ack"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
     </FrameLayout>
