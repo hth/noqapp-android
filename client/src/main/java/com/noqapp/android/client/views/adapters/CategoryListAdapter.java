@@ -68,16 +68,20 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         if (storeHourElastic.isDayClosed()) {
             holder.tv_status.setText(context.getString(R.string.store_closed));
             holder.tv_store_timing.setVisibility(View.GONE);
-            holder.tv_join.setBackground(ContextCompat.getDrawable(context,R.drawable.grey_background));
+            holder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.grey_background));
             holder.tv_join.setText("Closed");
         } else {
             holder.tv_store_timing.setVisibility(View.VISIBLE);
-            holder.tv_status.setText(
-                    context.getString(R.string.store_hour)
-                            + " "
-                            + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
-                            + " - "
-                            + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour()));
+            String key = Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
+                    + "-"
+                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour());
+            if (key.equalsIgnoreCase("12:01 AM-11:59 PM")) {
+                key = context.getString(R.string.whole_day);
+                holder.tv_store_timing.setText(key);
+            } else {
+                holder.tv_store_timing.setText(
+                        context.getString(R.string.store_hour) + " " + key);
+            }
             holder.tv_join.setBackgroundColor(ContextCompat.getColor(context, R.color.colorActionbar));
             holder.tv_join.setText("Walk-in");
         }
@@ -164,10 +168,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
 
         holder.tv_store_special.setText(jsonQueue.getFamousFor());
-        holder.tv_store_timing.setText("Today: "+ " "
-                + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
-                + " - "
-                + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour()));
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

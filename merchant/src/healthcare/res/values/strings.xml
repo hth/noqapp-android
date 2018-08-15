@@ -19,23 +19,22 @@
     <string name="mds_past_history">Past History:</string>
     <string name="mds_family_history">Family History:</string>
     <string name="mds_known_allergies">Known Allergies:</string>
-    <string name="mds_physical_exam">Physical Examination: </string>
+    <string name="mds_physical_exam">Physical Examination:</string>
     <string name="mds_clinical_findings">Clinical Findings:</string>
-    <string name="mds_provisional_diagnosis">Provisional /Differential Diagnosis:</string>
-    <string name="mds_investigation_advice">Investigation Advised:   </string>
-    <string name="mds_medication">Medication:  </string>
-    <string name="mds_assist">Assist </string>
-    <string name="mds_follow_up">Follow up: </string>
-    <string name="mds_instruction">Instruction/Plan to patient: </string>
+    <string name="mds_provisional_diagnosis">Provisional/Differential Diagnosis:</string>
+    <string name="mds_investigation_advice">Investigation Advised:</string>
+    <string name="mds_medication">Medication:</string>
+    <string name="mds_assist">Assist</string>
+    <string name="mds_follow_up">Follow up:</string>
+    <string name="mds_instruction">Instruction/Plan to patient:</string>
 
     <string name="pe_oxygen">Oxygen </string>
     <string name="pe_temperature">Temp(F) </string>
-    <string name="pe_weight">Weight(Kg) </string>
+    <string name="pe_weight">Weight(kg) </string>
     <string name="pe_bp">B.P </string>
     <string name="pe_pulse">Pulse</string>
 
-
-    <string name="personal_info">Personal Informations</string>
+    <string name="personal_info">Personal Information</string>
     <string name="dependent_list">Dependent List</string>
     <string name="medical_history_alert">You don\'t have any medical history.</string>
 </resources>

@@ -1,62 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#99ffffff"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#99ffffff"
+              android:orientation="vertical">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:id="@+id/layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
 
             <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_marginTop="5dp"
-                android:background="#fff"
-                android:elevation="0dp"
-                android:orientation="vertical"
-                android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="20dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="#fff"
+                    android:elevation="0dp"
+                    android:orientation="vertical"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="20dp">
 
 
                 <LinearLayout
-                    android:id="@+id/email_login_form"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible">
+                        android:id="@+id/email_login_form"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    <TextView
+                            style="@style/style_register_tv"
+                            android:text="@string/education"
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
 
 
                     <TextView
-                        style="@style/style_register_tv"
-                        android:text="@string/education" />
+                            android:id="@+id/tv_education"
+                            style="@style/style_register_tv"
+                            android:layout_width="match_parent"/>
 
 
                     <TextView
-                        android:id="@+id/tv_education"
-                        style="@style/style_register_tv"
-                        android:layout_width="match_parent" />
+                            style="@style/style_register_tv"
+                            android:text="@string/awards"
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
 
 
                     <TextView
-                        style="@style/style_register_tv"
-                        android:text="@string/awards" />
+                            android:id="@+id/tv_experience"
+                            style="@style/style_register_tv"/>
 
-
-                    <TextView
-                        android:id="@+id/tv_experience"
-                        style="@style/style_register_tv"
-                        />
                 </LinearLayout>
 
             </android.support.constraint.ConstraintLayout>

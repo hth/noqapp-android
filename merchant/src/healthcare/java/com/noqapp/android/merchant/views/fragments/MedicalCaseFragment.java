@@ -315,7 +315,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                         actv_medicine_type.setText("");
                         actv_dose_timing.setText("");
                     } else {
-                        Toast.makeText(getActivity(), "medicine already added", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Medicine already added", Toast.LENGTH_LONG).show();
                     }
                 }
             }

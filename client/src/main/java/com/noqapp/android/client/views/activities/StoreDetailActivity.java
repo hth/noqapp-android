@@ -56,7 +56,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_open_status,tv_store_timings;
+    private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_open_status, tv_store_timings;
     private BizStoreElastic bizStoreElastic;
     private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView rv_thumb_images, rv_photos;
@@ -76,6 +76,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         setContentView(R.layout.activity_store_detail);
 
         tv_address = findViewById(R.id.tv_address);
+        tv_address_title = findViewById(R.id.tv_address_title);
         tv_store_name = findViewById(R.id.tv_store_name);
         tv_store_address = findViewById(R.id.tv_store_address);
         tv_contact_no = findViewById(R.id.tv_contact_no);
@@ -201,6 +202,12 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
             }
         });
+        tv_address_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
+            }
+        });
         String address = "";
 
         if (!TextUtils.isEmpty(jsonQueue.getTown())) {
@@ -218,7 +225,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             payment_data.add(temp.get(i).getDescription());
         }
         sc_payment_mode.addSegments(payment_data);
-
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;
             int scrollRange = -1;
@@ -240,7 +246,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
 
         tv_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
-        if(tv_rating.getText().toString().equals("0.0"))
+        if (tv_rating.getText().toString().equals("0.0"))
             tv_rating.setVisibility(View.INVISIBLE);
         else
             tv_rating.setVisibility(View.VISIBLE);
@@ -317,10 +323,9 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             tv_menu.setClickable(false);
             tv_menu.setText("Closed");
         }
-
         JsonHour jsonHour = AppUtilities.getJsonHour(jsonStore.getJsonHours());
         tv_store_open_status.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
-        tv_store_timings.setText(Html.fromHtml(new AppUtilities().orderTheTimings(this,jsonStore.getJsonHours())));
+        tv_store_timings.setText(Html.fromHtml(new AppUtilities().orderTheTimings(this, jsonStore.getJsonHours())));
     }
 
     @Override

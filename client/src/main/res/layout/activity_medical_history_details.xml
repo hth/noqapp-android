@@ -256,7 +256,7 @@
 
                 <TextView
                         style="@style/style_mdh_header"
-                        android:text="Investigation Advised -> Pathology: "/>
+                        android:text="@string/mds_pathology_invs_advice"/>
 
                 <LinearLayout
                         android:id="@+id/ll_investigation_pathology"
@@ -274,7 +274,7 @@
 
                 <TextView
                         style="@style/style_mdh_header"
-                        android:text="Investigation Advised -> Radiology: "/>
+                        android:text="@string/mds_radiology_invs_advice"/>
 
                 <LinearLayout
                         android:id="@+id/ll_investigation_radiology"

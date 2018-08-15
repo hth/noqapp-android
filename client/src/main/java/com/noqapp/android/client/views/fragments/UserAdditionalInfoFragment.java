@@ -47,16 +47,15 @@ public class UserAdditionalInfoFragment extends Fragment {
         this.jsonProfessionalProfile = jsonProfessionalProfile;
         List<JsonNameDatePair> experience = jsonProfessionalProfile.getAwards();
         List<JsonNameDatePair> education = jsonProfessionalProfile.getEducation();
-
         StringBuilder text_edu = new StringBuilder();
         for (int i = 0; i < education.size(); i++) {
-           // text_edu.append(TextUtils.isEmpty(education.get(i).getMonthYear()) ? "" : AppUtilities.getYearFromDate(education.get(i).getMonthYear()) + ", ");
+            // text_edu.append(TextUtils.isEmpty(education.get(i).getMonthYear()) ? "" : AppUtilities.getYearFromDate(education.get(i).getMonthYear()) + ", ");
             text_edu.append(education.get(i).getName() + "\n");
         }
 
         StringBuilder text_exp = new StringBuilder();
         for (int i = 0; i < experience.size(); i++) {
-           // text_exp.append(TextUtils.isEmpty(experience.get(i).getMonthYear()) ? "" : AppUtilities.getYearFromDate(experience.get(i).getMonthYear()) + ", ");
+            // text_exp.append(TextUtils.isEmpty(experience.get(i).getMonthYear()) ? "" : AppUtilities.getYearFromDate(experience.get(i).getMonthYear()) + ", ");
             text_exp.append(experience.get(i).getName() + "\n");
         }
         tv_experience.setText(text_exp);
