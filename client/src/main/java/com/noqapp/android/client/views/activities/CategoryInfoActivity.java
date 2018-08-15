@@ -79,6 +79,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     protected TextView tv_mobile;
     @BindView(R.id.tv_complete_address)
     protected TextView tv_complete_address;
+    @BindView(R.id.tv_address_title)
+    protected TextView tv_address_title;
     @BindView(R.id.tv_rating_review)
     protected TextView tv_rating_review;
     @BindView(R.id.tv_rating)
@@ -193,6 +195,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_address.setText(address);
             tv_complete_address.setText(bizStoreElastic.getAddress());
             tv_complete_address.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
+                }
+            });
+            tv_address_title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());

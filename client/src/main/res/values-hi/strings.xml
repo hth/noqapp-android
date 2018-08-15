@@ -206,4 +206,8 @@
     <string name="great">Great!!</string>
     <string name="checkup_done_success">Your check up has been done Successfully</string>
     <string name="about_me">About Doctor</string>
+    <string name="license">License</string>
+    <string name="mds_pathology_invs_advice"><![CDATA[Investigation Advised >> Pathology:]]></string>
+    <string name="mds_radiology_invs_advice"><![CDATA[Investigation Advised >> Radiology:]]></string>
+    <string name="maps_direction"><![CDATA[Maps &amp; Directions]]></string>
 </resources>

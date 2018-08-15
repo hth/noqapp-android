@@ -220,9 +220,9 @@
                                 android:id="@+id/tv_mobile"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginBottom="3dp"
-                                android:drawablePadding="3dp"
-                                android:drawableRight="@drawable/ic_phone"
-                                android:drawableTint="@color/colorPrimary"
+                                android:drawableLeft="@drawable/phone_new"
+                                android:drawableTint="@color/rating_select"
+                                android:drawablePadding="5dp"
                                 android:textColor="@android:color/black"
                                 android:textSize="14sp"/>
 
@@ -236,13 +236,21 @@
                         <TextView
                                 android:id="@+id/tv_complete_address"
                                 style="@style/style_join_queue_tv"
-                                android:layout_marginBottom="10dp"
-                                android:ellipsize="end"
-                                android:maxLines="2"
                                 android:textColor="@color/colorAddress"
                                 android:textSize="14sp"/>
 
-
+                        <TextView
+                                android:id="@+id/tv_address_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/maps_direction"
+                                android:drawableLeft="@drawable/show_in_map"
+                                android:drawableTint="@color/rating_select"
+                                android:layout_marginBottom="10dp"
+                                android:drawablePadding="5dp"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/store_sub_headers"/>
                     </LinearLayout>
 
                     <android.support.v7.widget.RecyclerView

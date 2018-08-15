@@ -17,6 +17,7 @@ import com.noqapp.android.client.views.fragments.UserProfileFragment;
 
 import com.squareup.picasso.Picasso;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -51,7 +52,6 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     private String managerName = "";
     private String managerImageUrl = "";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +81,8 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         loadTabs.execute();
 
         if(LaunchActivity.getLaunchActivity().isOnline()){
+            progressDialog.setMessage("Fetching doctor profile...");
+            progressDialog.show();
             new ProfessionalProfileModel(this).profile(UserUtils.getDeviceId(),webProfileId);
         }
 
@@ -89,7 +91,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
 
     @Override
     public void authenticationFailure(int errorCode) {
-
+        dismissProgress();
     }
 
     @Override
@@ -97,11 +99,12 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         Log.v("queueManagerResponse", jsonProfessionalProfile.toString());
         userAdditionalInfoFragment.updateUI(jsonProfessionalProfile);
         userProfileFragment.updateUI(jsonProfessionalProfile.getStores(),jsonProfessionalProfile.getAboutMe());
+        dismissProgress();
     }
 
     @Override
     public void queueManagerError() {
-
+        dismissProgress();
     }
 
 
@@ -172,4 +175,5 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
             return mFragmentTitleList.get(position);
         }
     }
+
 }

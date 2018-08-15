@@ -304,5 +304,9 @@ Praesent tincidunt lorem sit amet mi consequat cursus. Interdum et malesuada fam
     <string name="mds_follow_up">Follow up:</string>
     <string name="mds_instruction">Instruction/Plan to patient:</string>
     <string name="about_me">About Doctor</string>
+    <string name="license">License</string>
+    <string name="mds_pathology_invs_advice"><![CDATA[Investigation Advised >> Pathology:]]></string>
+    <string name="mds_radiology_invs_advice"><![CDATA[Investigation Advised >> Radiology:]]></string>
+    <string name="maps_direction"><![CDATA[Maps &amp; Directions]]></string>
 
 </resources>

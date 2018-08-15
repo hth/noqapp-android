@@ -46,7 +46,7 @@ public class FragmentDummy extends Fragment {
             return view;
         }
         view = inflater.inflate(R.layout.fragment_dummy, container, false);
-        listView = (ListView) view.findViewById(R.id.listView);
+        listView = view.findViewById(R.id.listView);
         MenuAdapter menuAdapter = new MenuAdapter(getActivity(), childData, storeMenuActivity, cartOrderUpdate);
         listView.setAdapter(menuAdapter);
         return view;

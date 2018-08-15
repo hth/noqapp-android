@@ -78,7 +78,7 @@
             android:layout_height="@dimen/btn_height"
             android:background="@drawable/green_round_corner"
             android:text="-"
-            android:textColor="@android:color/white"
+            android:textColor="@color/button_color"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -97,7 +97,7 @@
             android:layout_height="@dimen/btn_height"
             android:background="@drawable/green_round_corner"
             android:text="+"
-            android:textColor="@android:color/white"
+            android:textColor="@color/button_color"
             android:textSize="20sp"
             android:textStyle="bold" />
 
