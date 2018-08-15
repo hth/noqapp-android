@@ -62,7 +62,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
                 holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
                 StoreHourElastic storeHourElastic =  AppUtilities.getStoreHourElastic(item.getStoreHourElasticList());
                 String time = Formatter.duration(storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
-                if (storeHourElastic.getStartHour() == 1 && storeHourElastic.getEndHour() == 2359) {
+                if (1 == storeHourElastic.getStartHour() && 2359 == storeHourElastic.getEndHour()) {
                     time = context.getString(R.string.whole_day);
                 }
                 holder.tv_detail.setText(time);
