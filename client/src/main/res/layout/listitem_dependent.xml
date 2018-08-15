@@ -44,16 +44,6 @@
                 android:layout_toLeftOf="@+id/iv_delete"
                 android:background="@drawable/edit" />
 
-            <ImageView
-                android:id="@+id/iv_delete"
-                android:layout_width="@dimen/image_height"
-                android:layout_height="@dimen/image_height"
-                android:layout_alignParentRight="true"
-                android:visibility="gone"
-                android:scaleType="centerInside"
-                android:layout_centerVertical="true"
-                android:layout_margin="5dp"
-                android:background="@drawable/delete" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

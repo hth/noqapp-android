@@ -96,6 +96,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginBottom="10dp"
                             android:text="@string/personal_info"
+                            android:textStyle="bold"
                             android:textSize="18sp" />
 
                         <ImageView
@@ -215,7 +216,7 @@
                                     android:gravity="center_horizontal|center_vertical"
                                     android:paddingBottom="10dp"
                                     android:paddingTop="10dp"
-                                    android:text="male "
+                                    android:text="@string/male"
                                     android:textSize="14sp" />
 
                                 <EditText
@@ -228,7 +229,7 @@
                                     android:gravity="center_horizontal|center_vertical"
                                     android:paddingBottom="10dp"
                                     android:paddingTop="10dp"
-                                    android:text="female "
+                                    android:text="@string/female"
                                     android:textSize="14sp" />
 
                             </LinearLayout>
@@ -268,6 +269,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginBottom="10dp"
                             android:text="@string/dependent_list"
+                            android:textStyle="bold"
                             android:textSize="18sp" />
 
                         <ImageView
