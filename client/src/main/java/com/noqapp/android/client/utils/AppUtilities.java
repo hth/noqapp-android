@@ -68,8 +68,6 @@ import java.util.Locale;
 import java.util.Map;
 
 public class AppUtilities extends CommonHelper {
-
-
     private static final String TAG = AppUtilities.class.getSimpleName();
     private static Map<String, Locale> localeMap;
 
@@ -93,7 +91,7 @@ public class AppUtilities extends CommonHelper {
     public static void makeCall(Activity context, String phoneNumber) {
         if (!TextUtils.isEmpty(phoneNumber)) {
             int checkPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
-            if (checkPermission != PackageManager.PERMISSION_GRANTED) {
+            if (PackageManager.PERMISSION_GRANTED != checkPermission) {
                 ActivityCompat.requestPermissions(
                         context,
                         new String[]{Manifest.permission.CALL_PHONE},
@@ -250,7 +248,6 @@ public class AppUtilities extends CommonHelper {
             } else {
                 LaunchActivity.language = "hi";
                 LaunchActivity.locale = new Locale("hi");
-                ;
                 LaunchActivity.languagepref.edit()
                         .putString("pref_language", "hi").apply();
             }
@@ -291,7 +288,6 @@ public class AppUtilities extends CommonHelper {
     }
 
     public static String getStoreOpenStatus(BizStoreElastic bizStoreElastic) {
-
         StoreHourElastic storeHourElastic = getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
         String additionalText;
         if (storeHourElastic.isDayClosed()) {
@@ -303,13 +299,11 @@ public class AppUtilities extends CommonHelper {
     }
 
     public static String getStoreOpenStatus(JsonTokenAndQueue jsonTokenAndQueue) {
-
         String additionalText;
-        DateFormat df = new SimpleDateFormat("HH:mm");
+        DateFormat df = new SimpleDateFormat("HH:mm", Locale.US);
         String time = df.format(Calendar.getInstance().getTime());
         int timedata = Integer.parseInt(time.replace(":", ""));
-        if (jsonTokenAndQueue.getStartHour() <= timedata &&
-                timedata <= jsonTokenAndQueue.getEndHour()) {
+        if (jsonTokenAndQueue.getStartHour() <= timedata && timedata <= jsonTokenAndQueue.getEndHour()) {
             additionalText = "Open";
         } else {
             additionalText = "Closed";
@@ -320,8 +314,9 @@ public class AppUtilities extends CommonHelper {
     private static int getDayOfWeek() {
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-        if (dayOfWeek == 0)
+        if (dayOfWeek == 0) {
             dayOfWeek = 7;
+        }
         return dayOfWeek;
     }
 
@@ -350,7 +345,6 @@ public class AppUtilities extends CommonHelper {
     }
 
     public static LatLng getLocationFromAddress(Context context, String strAddress) {
-
         Geocoder coder = new Geocoder(context);
         List<Address> address;
         LatLng latLng = null;
@@ -374,13 +368,12 @@ public class AppUtilities extends CommonHelper {
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();
         try {
-            StringBuilder sb = new StringBuilder(Constants.PLACES_API_BASE + Constants.TYPE_AUTOCOMPLETE + Constants.OUT_JSON);
-            sb.append("?key=" + Constants.API_KEY);
-            sb.append("&components=country:" + Constants.COUNTRY_CODE);
-            sb.append("&types=(regions)");
-            sb.append("&input=" + URLEncoder.encode(input, "utf8"));
-
-            URL url = new URL(sb.toString());
+            String sb = Constants.PLACES_API_BASE + Constants.TYPE_AUTOCOMPLETE + Constants.OUT_JSON +
+                    "?key=" + Constants.API_KEY +
+                    "&components=country:" + Constants.COUNTRY_CODE +
+                    "&types=(regions)" +
+                    "&input=" + URLEncoder.encode(input, "utf8");
+            URL url = new URL(sb);
 
             System.out.println("URL: " + url);
             conn = (HttpURLConnection) url.openConnection();
@@ -477,7 +470,7 @@ public class AppUtilities extends CommonHelper {
             HashMap<String, String> temp = new LinkedHashMap<>();
             for (int i = 0; i < jsonHoursList.size(); i++) {
                 JsonHour jsonHour = jsonHoursList.get(i);
-                String key = "";
+                String key;
                 if (jsonHour.isDayClosed()) {
                     key = "Closed";
                 } else {
@@ -489,7 +482,7 @@ public class AppUtilities extends CommonHelper {
                 if (null == temp.get(key)) {
                     temp.put(key, getDayName(jsonHour.getDayOfWeek()));
                 } else {
-                    String value = temp.get(key) + " - " + getDayName(jsonHour.getDayOfWeek());
+                    String value = temp.get(key) + "-" + getDayName(jsonHour.getDayOfWeek());
                     temp.put(key, value);
                 }
             }
@@ -498,14 +491,13 @@ public class AppUtilities extends CommonHelper {
                 String key = entry.getKey();
                 String value = entry.getValue();
                 //Log.e("mapValue: ", "Key: " + key + " , value: " + value);
-                output += "<font color=\"black\"><b>" + value + "</b></font> " + ": " + key + "<br>";
+                output += "<font color=\"black\"><b>" + value + "</b></font>" + ": " + key + "<br>";
             }
         }
         return output;
     }
 
     private String getDayName(int dayOfWeek) {
-
         String dayName = null;
         switch (dayOfWeek) {
             case 1:
@@ -532,6 +524,4 @@ public class AppUtilities extends CommonHelper {
         }
         return dayName;
     }
-
 }
-
