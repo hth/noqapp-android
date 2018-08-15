@@ -77,7 +77,7 @@ public class Formatter {
     }
 
     private static String convertMilitaryTo12HourFormat(String rawTimestamp) {
-        return outputFormatter.print(parseLocalTime(rawTimestamp));
+        return outputFormatter.print(parseLocalTime(rawTimestamp)).toUpperCase();
     }
 
     private static String convertMilitaryTo24HourFormat(String rawTimestamp) {
@@ -98,5 +98,15 @@ public class Formatter {
 
     public static String convertMilitaryTo24HourFormat(int rawTimestamp) {
         return convertMilitaryTo24HourFormat(formatMilitaryTime(rawTimestamp));
+    }
+
+    /**
+     * Returns string format XX:XX AM - XX:XX PM
+     * @param startHour
+     * @param endHour
+     * @return
+     */
+    public static String duration(int startHour, int endHour) {
+        return Formatter.convertMilitaryTo12HourFormat(startHour) + " - " + Formatter.convertMilitaryTo12HourFormat(endHour);
     }
 }

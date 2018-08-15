@@ -72,15 +72,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_join.setText("Closed");
         } else {
             holder.tv_store_timing.setVisibility(View.VISIBLE);
-            String key = Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour())
-                    + "-"
-                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour());
-            if (key.equalsIgnoreCase("12:01 AM-11:59 PM")) {
+            String key = Formatter.duration(storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
+            if (1 == storeHourElastic.getStartHour() && 2359 == storeHourElastic.getEndHour()) {
                 key = context.getString(R.string.whole_day);
                 holder.tv_store_timing.setText(key);
             } else {
-                holder.tv_store_timing.setText(
-                        context.getString(R.string.store_hour) + " " + key);
+                holder.tv_store_timing.setText(context.getString(R.string.store_hour) + " " + key);
             }
             holder.tv_join.setBackgroundColor(ContextCompat.getColor(context, R.color.colorActionbar));
             holder.tv_join.setText("Walk-in");

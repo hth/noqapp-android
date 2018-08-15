@@ -129,10 +129,11 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
                 }
             });
-            if(holder.tv_store_rating.getText().toString().equals("0.0"))
+            if (holder.tv_store_rating.getText().toString().equals("0.0")) {
                 holder.tv_store_rating.setVisibility(View.INVISIBLE);
-            else
+            } else {
                 holder.tv_store_rating.setVisibility(View.VISIBLE);
+            }
             // holder.tv_store_special.setText();
             StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
             switch (bizStoreElastic.getBusinessType()) {
@@ -148,8 +149,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.VISIBLE);
                     holder.tv_status.setText(AppUtilities.getStoreOpenStatus(bizStoreElastic));
-                    String time = Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()) +
-                            " - " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour());
+                    String time = Formatter.duration(storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
                     holder.tv_category_name.setText(time);
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());
                     break;

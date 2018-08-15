@@ -61,12 +61,10 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
                 holder.tv_name.setText(item.getDisplayName());
                 holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
                 StoreHourElastic storeHourElastic =  AppUtilities.getStoreHourElastic(item.getStoreHourElasticList());
-                String time = Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()) +
-                        " - " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour());
-
-                if (Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()).equals("12:01 AM") &&
-                        Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getEndHour()).equals("11:59 PM"))
-                    time= context.getString(R.string.whole_day) ;
+                String time = Formatter.duration(storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
+                if (storeHourElastic.getStartHour() == 1 && storeHourElastic.getEndHour() == 2359) {
+                    time = context.getString(R.string.whole_day);
+                }
                 holder.tv_detail.setText(time);
         }
         String address = "";

@@ -474,8 +474,8 @@ public class AppUtilities extends CommonHelper {
                 if (jsonHour.isDayClosed()) {
                     key = "Closed";
                 } else {
-                    key = Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour());
-                    if (key.equalsIgnoreCase("12:01 AM - 11:59 PM")) {
+                    key = Formatter.duration(jsonHour.getStartHour(), jsonHour.getEndHour());
+                    if (1 == jsonHour.getStartHour() && 2359 == jsonHour.getEndHour()) {
                         key = context.getString(R.string.whole_day);
                     }
                 }
