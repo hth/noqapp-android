@@ -481,24 +481,24 @@ public class AppUtilities extends CommonHelper {
                 if (jsonHour.isDayClosed()) {
                     key = "Closed";
                 } else {
-                    key = Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + "-" + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour());
-                    if (key.equalsIgnoreCase("12:01 AM-11:59 PM"))
+                    key = Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour());
+                    if (key.equalsIgnoreCase("12:01 AM - 11:59 PM")) {
                         key = context.getString(R.string.whole_day);
+                    }
                 }
                 if (null == temp.get(key)) {
                     temp.put(key, getDayName(jsonHour.getDayOfWeek()));
                 } else {
-                    String value = temp.get(key) + "-" + getDayName(jsonHour.getDayOfWeek());
+                    String value = temp.get(key) + " - " + getDayName(jsonHour.getDayOfWeek());
                     temp.put(key, value);
                 }
-
             }
 
             for (Map.Entry<String, String> entry : temp.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
                 //Log.e("mapValue: ", "Key: " + key + " , value: " + value);
-                output += "<font color=\"black\"><b>" + value + "</b></font> " + " : " + key + "<br>";
+                output += "<font color=\"black\"><b>" + value + "</b></font> " + ": " + key + "<br>";
             }
         }
         return output;
