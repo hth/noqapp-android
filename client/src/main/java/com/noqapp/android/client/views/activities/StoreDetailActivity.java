@@ -323,8 +323,8 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             tv_menu.setClickable(false);
             tv_menu.setText("Closed");
         }
-        JsonHour jsonHour = AppUtilities.getJsonHour(jsonStore.getJsonHours());
-        tv_store_open_status.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
+        //JsonHour jsonHour = AppUtilities.getJsonHour(jsonStore.getJsonHours());
+       // tv_store_open_status.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
         tv_store_timings.setText(Html.fromHtml(new AppUtilities().orderTheTimings(this, jsonStore.getJsonHours())));
     }
 

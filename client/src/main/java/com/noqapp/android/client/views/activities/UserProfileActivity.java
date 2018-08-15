@@ -290,20 +290,12 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 final JsonProfile jsonProfile = jsonProfiles.get(j);
                 LayoutInflater inflater = LayoutInflater.from(this);
                 final View listitem_dependent = inflater.inflate(R.layout.listitem_dependent, null);
-                ImageView iv_delete = listitem_dependent.findViewById(R.id.iv_delete);
                 ImageView iv_edit = listitem_dependent.findViewById(R.id.iv_edit);
                 TextView tv_title = listitem_dependent.findViewById(R.id.tv_title);
                 tv_title.setText(jsonProfile.getName());
-                iv_delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(UserProfileActivity.this, "Delete: " + jsonProfile.toString(), Toast.LENGTH_LONG).show();
-                    }
-                });
                 iv_edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Toast.makeText(UserProfileActivity.this,"Edit: "+jsonProfile.toString(),Toast.LENGTH_LONG).show();
                         Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
                         in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, true);
                         in.putExtra(NoQueueBaseActivity.DEPENDENT_PROFILE, jsonProfile);
