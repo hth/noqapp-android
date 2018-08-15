@@ -214,7 +214,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             address = jsonQueue.getTown();
         }
         if (!TextUtils.isEmpty(jsonQueue.getArea())) {
-            address = jsonQueue.getArea() + "," + address;
+            address = jsonQueue.getArea() + ", " + address;
         }
         tv_store_address.setText(address);
         tv_store_name.setText(jsonQueue.getDisplayName());

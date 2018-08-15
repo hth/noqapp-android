@@ -110,7 +110,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:gravity="left"
-                            android:text="Open now : "
+                            android:text="Open now: "
                             android:textColor="@android:color/darker_gray"
                             android:textSize="@dimen/store_info"/>
 
