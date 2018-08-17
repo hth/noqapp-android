@@ -63,6 +63,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         webProfileId = getIntent().getStringExtra("webProfileId");
         managerName = getIntent().getStringExtra("managerName");
         managerImageUrl = getIntent().getStringExtra("managerImage");
+        tv_name.setText(managerName);
         Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(managerImageUrl)) {
@@ -97,6 +98,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     @Override
     public void queueManagerResponse(JsonProfessionalProfile jsonProfessionalProfile) {
         Log.v("queueManagerResponse", jsonProfessionalProfile.toString());
+        tv_name.setText(jsonProfessionalProfile.getName());
         userAdditionalInfoFragment.updateUI(jsonProfessionalProfile);
         userProfileFragment.updateUI(jsonProfessionalProfile.getStores(),jsonProfessionalProfile.getAboutMe());
         dismissProgress();
@@ -127,7 +129,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     @Override
     protected void onResume() {
         super.onResume();
-        tv_name.setText(managerName);
+        //tv_name.setText(managerName);
     }
 
     private class LoadTabs extends AsyncTask<String, String, String> {

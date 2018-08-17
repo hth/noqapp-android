@@ -6,6 +6,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceModel;
 import com.noqapp.android.client.model.database.DatabaseHelper;
+import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
@@ -43,6 +44,7 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -411,16 +413,16 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
 
-        ReviewData reviewData = ReviewDB.getValue(ReviewDB.KEY_REVIEW);
+        ReviewData reviewData = ReviewDB.getPendingReview();
         // shown only one time if the review is canceled
         if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !isReviewShown()) {
             callReviewActivity(reviewData.getCodeQR(), reviewData.getToken());
         }
 
-        ReviewData reviewDataSkip = ReviewDB.getValue(ReviewDB.KEY_SKIP);
+        ReviewData reviewDataSkip = ReviewDB.getSkippedQueue();
         // shown only one time if it is skipped
         if (StringUtils.isNotBlank(reviewDataSkip.getCodeQR())) {
-            ReviewDB.deleteReview(ReviewDB.KEY_SKIP, reviewData.getCodeQR(), reviewData.getToken());
+            ReviewDB.deleteReview(reviewData.getCodeQR(), reviewData.getToken());
             Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
         }
     }
@@ -489,14 +491,32 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             bundle.putSerializable("object", jtk);
             in.putExtras(bundle);
             startActivityForResult(in, Constants.requestCodeJoinQActivity);
+            Log.v("Review screen call: ",jtk.toString());
            // NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
         } else {
-            ReviewDB.deleteReview(ReviewDB.KEY_REVIEW, codeQR, token);
+            ReviewDB.deleteReview(codeQR, token);
         }
     }
 
     private void callSkipScreen(String codeQR, String token, String quserID) {
-        ReviewDB.deleteReview(ReviewDB.KEY_SKIP, codeQR, token);
+        ReviewData reviewData = ReviewDB.getValue(codeQR,token);
+        if(null != reviewData){
+            ContentValues cv = new ContentValues();
+            cv.put(DatabaseTable.Review.KEY_SKIP,-1);
+            ReviewDB.updateReviewRecord(codeQR,token,cv);
+            // update
+        }else{
+            //insert
+            ContentValues cv = new ContentValues();
+            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
+            cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+            cv.put(DatabaseTable.Review.TOKEN, token);
+            cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
+            cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
+            cv.put(DatabaseTable.Review.KEY_GOTO,"");
+            ReviewDB.insert(cv);
+        }
         Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
         Bundle b = new Bundle();
         b.putString(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
@@ -513,7 +533,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             // clear the stack till first screen of current tab
             currentTabFragments.subList(1, size).clear();
         }
-        //
         //  NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
     }
 
@@ -532,7 +551,24 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                  * Review DB for review key && current serving == token no.
                  */
                 if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
-                    ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, current_serving, go_to, jtk.getQueueUserId());
+                    ReviewData reviewData = ReviewDB.getValue(codeQR,current_serving);
+                    if(null != reviewData){
+                        ContentValues cv = new ContentValues();
+                        cv.put(DatabaseTable.Review.KEY_GOTO,go_to);
+                        ReviewDB.updateReviewRecord(codeQR,current_serving,cv);
+                        // update
+                    }else{
+                        //insert
+                        ContentValues cv = new ContentValues();
+                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
+                        cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                        cv.put(DatabaseTable.Review.TOKEN, current_serving);
+                        cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
+                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
+                        cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
+                        cv.put(DatabaseTable.Review.KEY_GOTO,go_to);
+                        ReviewDB.insert(cv);
+                    }
                 }
 
                 if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
@@ -544,9 +580,34 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
                 if (activityCommunicator != null) {
                     boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
-                    if (isUpdated) {
-                        Intent blinker = new Intent(this, BlinkerActivity.class);
-                        startActivity(blinker);
+
+                    if (isUpdated ) {
+                        ReviewData reviewData = ReviewDB.getValue(codeQR,current_serving);
+                        if(null != reviewData){
+                            if(!reviewData.getIsBuzzerShow().equals("1")) {
+                                ContentValues cv = new ContentValues();
+                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                                ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
+                                Intent blinker = new Intent(this, BlinkerActivity.class);
+                                startActivity(blinker);
+                            }else{
+                                //Blinker already shown
+                            }
+                            // update
+                        }else{
+                            //insert
+                            ContentValues cv = new ContentValues();
+                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
+                            cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                            cv.put(DatabaseTable.Review.TOKEN, current_serving);
+                            cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
+                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"1");
+                            cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
+                            cv.put(DatabaseTable.Review.KEY_GOTO,"");
+                            ReviewDB.insert(cv);
+                            Intent blinker = new Intent(this, BlinkerActivity.class);
+                            startActivity(blinker);
+                        }
                     }
                 }
                 try {
@@ -760,15 +821,48 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     if (null == userStatus) {
                         updateNotification(intent, codeQR, false);
                     } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                        ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token, "", quserID);
+                        ReviewData reviewData = ReviewDB.getValue(codeQR,token);
+                        if(null != reviewData){
+                            ContentValues cv = new ContentValues();
+                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,1);
+                            ReviewDB.updateReviewRecord(codeQR,token,cv);
+                            // update
+                        }else{
+                            //insert
+                            ContentValues cv = new ContentValues();
+                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,1);
+                            cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                            cv.put(DatabaseTable.Review.TOKEN, token);
+                            cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
+                            cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
+                            cv.put(DatabaseTable.Review.KEY_GOTO,"");
+                            ReviewDB.insert(cv);
+                        }
                         callReviewActivity(codeQR, token);
                         // this code is added to close the join & after join screen if the request is processed
                         if (activityCommunicator != null) {
                             activityCommunicator.requestProcessed(codeQR, token);
                         }
                     } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                        ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, token, "", quserID);
-                        //TODO @CHANDRA implement it for activtiy
+                        ReviewData reviewData = ReviewDB.getValue(codeQR,token);
+                        if(null != reviewData){
+                            ContentValues cv = new ContentValues();
+                            cv.put(DatabaseTable.Review.KEY_SKIP,1);
+                            ReviewDB.updateReviewRecord(codeQR,token,cv);
+                            // update
+                        }else{
+                            //insert
+                            ContentValues cv = new ContentValues();
+                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
+                            cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                            cv.put(DatabaseTable.Review.TOKEN, token);
+                            cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
+                            cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
+                            cv.put(DatabaseTable.Review.KEY_GOTO,"");
+                            ReviewDB.insert(cv);
+                        }
                         callSkipScreen(codeQR, token, quserID);
                     }
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {

@@ -228,8 +228,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             Toast.makeText(this, getString(R.string.review_thanks), Toast.LENGTH_LONG).show();
             returnResultBack();
         }
-        //Reset the value in ReviewDB
-        ReviewDB.deleteReview(ReviewDB.KEY_REVIEW, jtk.getCodeQR(), String.valueOf(jtk.getToken()));
+        //Delete the value in ReviewDB
+        ReviewDB.deleteReview(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
         TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
         finish();
         progressDialog.dismiss();

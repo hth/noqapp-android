@@ -141,8 +141,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 }
             });
             if (UserUtils.isLogin()) {
-                profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
-                profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
+                profileList = NoQueueBaseActivity.getUserProfile().getDependents();
+                profileList.add(0, NoQueueBaseActivity.getUserProfile());
                 profileList.add(0, new JsonProfile().setName("Select Patient"));
                 DependentAdapter adapter = new DependentAdapter(this, profileList);
                 sp_name_list.setAdapter(adapter);
@@ -180,7 +180,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     AppUtilities.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
                 }
             });
-            gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR,tokenValue);
+            gotoPerson = null != ReviewDB.getValue(codeQR,tokenValue)?ReviewDB.getValue(codeQR,tokenValue).getGotoCounter():"";
             if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_FROM_LIST, false)) {
                 tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
                 tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
@@ -321,7 +321,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR,tokenValue);
             if (null != jtk) {
                 if(TextUtils.isEmpty(gotoPerson))
-                  gotoPerson = ReviewDB.getValue(ReviewDB.KEY_GOTO, codeQR,tokenValue);
+                    gotoPerson = null != ReviewDB.getValue(codeQR,tokenValue)?ReviewDB.getValue(codeQR,tokenValue).getGotoCounter():"";
                 setObject(jtk, gotoPerson);
             }
         }

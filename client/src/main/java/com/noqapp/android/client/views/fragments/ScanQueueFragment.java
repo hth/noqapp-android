@@ -5,6 +5,8 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.model.database.DatabaseTable;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
@@ -12,6 +14,7 @@ import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
@@ -42,6 +45,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -592,14 +596,44 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated && LaunchActivity.getLaunchActivity().isCurrentActivityLaunchActivity()) {
-            if(jq.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
-                Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
-                startActivity(blinker);
+            boolean showBuzzer = false;
+            ReviewData reviewData = ReviewDB.getValue(jq.getCodeQR(), "" + jq.getToken());
+            if(null != reviewData){
+                if(!reviewData.getIsBuzzerShow().equals("1")) {
+                    showBuzzer = true;
+                }else{
+                    showBuzzer = false;
+                }
+                // update
             }else{
-                if(jq.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
-                        jq.getPurchaseOrderState() == PurchaseOrderStateEnum.RP){
+                //insert
+                ContentValues cv = new ContentValues();
+                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
+                cv.put(DatabaseTable.Review.CODE_QR, jq.getCodeQR());
+                cv.put(DatabaseTable.Review.TOKEN, "" + jq.getToken());
+                cv.put(DatabaseTable.Review.Q_USER_ID, jq.getQueueUserId());
+                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
+                cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
+                cv.put(DatabaseTable.Review.KEY_GOTO,"");
+                ReviewDB.insert(cv);
+                showBuzzer = true;
+            }
+            if (showBuzzer) {
+                if (jq.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
+                    ContentValues cv = new ContentValues();
+                    cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                    ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
                     Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                     startActivity(blinker);
+                } else {
+                    if (jq.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
+                            jq.getPurchaseOrderState() == PurchaseOrderStateEnum.RD) {
+                        ContentValues cv = new ContentValues();
+                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                        ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
+                        Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
+                        startActivity(blinker);
+                    }
                 }
             }
         }

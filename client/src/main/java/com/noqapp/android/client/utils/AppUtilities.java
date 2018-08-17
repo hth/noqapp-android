@@ -460,7 +460,7 @@ public class AppUtilities extends CommonHelper {
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

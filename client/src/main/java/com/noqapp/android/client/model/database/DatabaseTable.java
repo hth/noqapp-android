@@ -47,11 +47,13 @@ public class DatabaseTable {
 
     public static class Review {
         public static final String TABLE_NAME = "REVIEW";
-        public static final String KEY = "key";
         public static final String CODE_QR = "codeQR";
         public static final String TOKEN = "token";
-        public static final String VALUE = "value";
         public static final String Q_USER_ID = "qUserId";
+        public static final String KEY_REVIEW_SHOWN = "isReviewShown";  // default value is -1, toShow value is 1 to not show value is 0
+        public static final String KEY_SKIP = "isSkipped";  // default value -1 , for skip value is 1
+        public static final String KEY_GOTO = "gotoCounter"; // default value ""
+        public static final String KEY_BUZZER_SHOWN ="isBuzzerShown"; //default value is -1, toShow value is 0 buzzer already shown value is 1
 
         private Review() {
         }
@@ -59,7 +61,7 @@ public class DatabaseTable {
 
     public static class Notification {
         public static final String TABLE_NAME = "NOTIFICATION";
-        public static final String KEY = "key";
+        public static final String KEY = "type";
         public static final String CODE_QR = "codeQR";
         public static final String BODY = "body";
         public static final String TITLE = "title";
