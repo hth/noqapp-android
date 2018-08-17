@@ -30,6 +30,9 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonProfessionalProfilePersonal implements Serializable {
 
+    @JsonProperty ("nm")
+    private String name;
+
     @JsonProperty("wp")
     private String webProfileId;
 
@@ -55,6 +58,15 @@ public class JsonProfessionalProfilePersonal implements Serializable {
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    public String getName() {
+        return name;
+    }
+
+    public JsonProfessionalProfilePersonal setName(String name) {
+        this.name = name;
+        return this;
+    }
 
     public String getWebProfileId() {
         return webProfileId;
