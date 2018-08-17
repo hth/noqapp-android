@@ -32,6 +32,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.ActivityManager;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -44,6 +45,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -111,12 +113,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         pushNotification.putExtra(CurrentlyServing, remoteMessage.getData().get(CurrentlyServing));
                         pushNotification.putExtra(GoTo_Counter, remoteMessage.getData().get(GoTo_Counter));
                         pushNotification.putExtra(TOKEN, remoteMessage.getData().get(TOKEN));
-                        pushNotification.putExtra(QuserID,remoteMessage.getData().get(QuserID));
+                        pushNotification.putExtra(QuserID, remoteMessage.getData().get(QuserID));
                         // add notification to DB
                         String userStatus = remoteMessage.getData().get(QueueUserState);
                         if (null == userStatus) {
                             String businessType = remoteMessage.getData().get(BusinessType);
-                            NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title,businessType);
+                            NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title, businessType);
                         }
                     }
                     if (remoteMessage.getData().get(FCM_TYPE).equalsIgnoreCase(FCMTypeEnum.O.name())) {
@@ -165,14 +167,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                              */
                             if (null == userStatus) {
                                 String businessType = remoteMessage.getData().get(BusinessType);
-                               // NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title,businessType);
-                                sendNotification(title, body,false);
-                            }else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                                ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token,"",quserID);
-                                sendNotification(title, body, codeQR, true,token);//pass codeQR to open review screen
+                                // NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title,businessType);
+                                sendNotification(title, body, false);
+                            } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                                ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token, "", quserID);
+                                sendNotification(title, body, codeQR, true, token);//pass codeQR to open review screen
                             } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                                ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, token,"",quserID);
-                                sendNotification(title, body, codeQR, false,token);//pass codeQR to open skip screen
+                                ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, token, "", quserID);
+                                sendNotification(title, body, codeQR, false, token);//pass codeQR to open skip screen
                             }
                         } else {
                             Log.w(TAG, "To implement this when a message like this is received");
@@ -189,12 +191,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 //                                "priority": "high",
 //                                "to": "XXXXX"
 //                            }
-                            sendNotification(title, body,false);
+                            sendNotification(title, body, false);
                             // add notification to DB
                             String userStatus = remoteMessage.getData().get(QueueUserState);
                             if (null == userStatus) {
                                 String businessType = remoteMessage.getData().get(BusinessType);
-                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title,businessType);
+                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title, businessType);
                             }
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
@@ -210,7 +212,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                  * Review DB for review key && current serving == token no.
                                  */
                                 if (Integer.parseInt(current_serving) == jtk.getToken())
-                                    ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, current_serving,go_to,jtk.getQueueUserId());
+                                    ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, current_serving, go_to, jtk.getQueueUserId());
                                 //update DB & after join screen
                                 jtk.setServingNumber(Integer.parseInt(current_serving));
                                 if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
@@ -219,14 +221,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 }
 
                                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-                                sendNotification(title, body,true); // pass null to show only notification with no action
+                                sendNotification(title, body, true); // pass null to show only notification with no action
                             }
                         }
                     }
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error reading message " + e.getLocalizedMessage(), e);
-                sendNotification(title, body,false);
+                sendNotification(title, body, false);
             }
         }
     }
@@ -237,33 +239,37 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         if (null != codeQR) {
             notificationIntent.putExtra(QRCODE, codeQR);
             notificationIntent.putExtra(ISREVIEW, isReview);
-            notificationIntent.putExtra(TOKEN,token);
+            notificationIntent.putExtra(TOKEN, token);
 
         }
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
-                .setSmallIcon(getNotificationIcon())
-                .setLargeIcon(bm)
-                .setContentTitle(title)
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//        android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+//                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
+//                .setSmallIcon(getNotificationIcon())
+//                .setLargeIcon(bm)
+//                .setContentTitle(title)
+//                .setContentText(messageBody)
+//                .setAutoCancel(true)
+//                .setSound(defaultSoundUri)
+//                .setContentIntent(pendingIntent);
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
-    }
 
-    private void sendNotification(String title, String messageBody, boolean isVibrate) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
+        int notificationId = 1;
 
-        Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        String channelId = "channel-01";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String channelName = "Channel Name";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(
+                    channelId, channelName, importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                 .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
                 .setSmallIcon(getNotificationIcon())
                 .setLargeIcon(bm)
@@ -272,11 +278,56 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setLights(Color.parseColor("#ffb400"), 50, 10)
                 .setSound(defaultSoundUri);
-        if(isVibrate)
-        notificationBuilder.setVibrate(new long[]{500, 500});
-        notificationBuilder.setContentIntent(pendingIntent);
+        // PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+        stackBuilder.addNextIntent(notificationIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
+                Constants.requestCodeNotification,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        notificationManager.notify(notificationId, mBuilder.build());
+    }
+
+    private void sendNotification(String title, String messageBody, boolean isVibrate) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
+        int notificationId = 1;
+        String channelId = "channel-01";
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String channelName = "Channel Name";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(
+                    channelId, channelName, importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
+                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
+                .setSmallIcon(getNotificationIcon())
+                .setLargeIcon(bm)
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setLights(Color.parseColor("#ffb400"), 50, 10)
+                .setSound(defaultSoundUri);
+        if (isVibrate)
+            mBuilder.setVibrate(new long[]{500, 500});
+        Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+        stackBuilder.addNextIntent(notificationIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
+                Constants.requestCodeNotification,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        notificationManager.notify(notificationId, mBuilder.build());
+
     }
 
     /**
