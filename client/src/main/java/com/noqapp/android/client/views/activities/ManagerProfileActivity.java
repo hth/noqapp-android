@@ -14,6 +14,7 @@ import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 
 import com.squareup.picasso.Picasso;
 
@@ -49,6 +50,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     private String webProfileId = "";
     private String managerName = "";
     private String managerImageUrl = "";
+    private MedicalDepartmentEnum medicalDepartmentEnum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         webProfileId = getIntent().getStringExtra("webProfileId");
         managerName = getIntent().getStringExtra("managerName");
         managerImageUrl = getIntent().getStringExtra("managerImage");
+        medicalDepartmentEnum = MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId"));
         tv_name.setText(managerName);
         Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
@@ -95,7 +98,13 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     @Override
     public void queueManagerResponse(JsonProfessionalProfile jsonProfessionalProfile) {
         Log.v("queueManagerResponse", jsonProfessionalProfile.toString());
-        tv_name.setText("Dr. " + jsonProfessionalProfile.getName());
+        switch (medicalDepartmentEnum) {
+            case PHY:
+                tv_name.setText(jsonProfessionalProfile.getName());
+                break;
+            default:
+                tv_name.setText("Dr. " + jsonProfessionalProfile.getName());
+        }
         userAdditionalInfoFragment.updateUI(jsonProfessionalProfile);
         userProfileFragment.updateUI(jsonProfessionalProfile.getStores(), jsonProfessionalProfile.getAboutMe());
         dismissProgress();
