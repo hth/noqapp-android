@@ -492,7 +492,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             in.putExtras(bundle);
             startActivityForResult(in, Constants.requestCodeJoinQActivity);
             Log.v("Review screen call: ",jtk.toString());
-           // NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+            ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+            if ( jsonTokenAndQueueArrayList.size() == 1) {
+                //un subscribe the topic
+                NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+            }
         } else {
             ReviewDB.deleteReview(codeQR, token);
         }
@@ -574,7 +578,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
                     //un subscribe the topic
                     //TODO @chandra write logic for unsubscribe
-                   // NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                 }
                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
 
