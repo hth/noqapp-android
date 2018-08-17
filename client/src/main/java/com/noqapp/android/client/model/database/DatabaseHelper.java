@@ -11,7 +11,7 @@ import android.util.Log;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "noqueue.db";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 5;
     private static final Patch[] PATCHES = new Patch[]{
             new Patch(1, 3, "1.0.200") {
                 public void apply(SQLiteDatabase db) {
@@ -23,6 +23,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }, new Patch(3, 4, "1.2.15") {
         public void apply(SQLiteDatabase db) {
             CreateTable.addOrderState(db);
+        }
+    },new Patch(4,5,"1.2.19"){
+        public void apply(SQLiteDatabase db) {
+            CreateTable.updateColoumnName(db);
         }
     }
 

@@ -15,11 +15,13 @@ import static com.noqapp.android.client.utils.Constants.QuserID;
 import static com.noqapp.android.client.utils.Constants.TOKEN;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.model.types.FCMTypeEnum;
@@ -36,6 +38,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -170,10 +173,44 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 // NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title,businessType);
                                 sendNotification(title, body, false);
                             } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                                ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token, "", quserID);
+                                ReviewData reviewData = ReviewDB.getValue(codeQR,token);
+                                if(null != reviewData){
+                                    ContentValues cv = new ContentValues();
+                                    cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,1);
+                                    ReviewDB.updateReviewRecord(codeQR,token,cv);
+                                    // update
+                                }else{
+                                    //insert
+                                    ContentValues cv = new ContentValues();
+                                    cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,1);
+                                    cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                    cv.put(DatabaseTable.Review.TOKEN, token);
+                                    cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                                    cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
+                                    cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
+                                    cv.put(DatabaseTable.Review.KEY_GOTO,"");
+                                    ReviewDB.insert(cv);
+                                }
                                 sendNotification(title, body, codeQR, true, token);//pass codeQR to open review screen
                             } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                                ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, token, "", quserID);
+                                ReviewData reviewData = ReviewDB.getValue(codeQR,token);
+                                if(null != reviewData){
+                                    ContentValues cv = new ContentValues();
+                                    cv.put(DatabaseTable.Review.KEY_SKIP,-1);
+                                    ReviewDB.updateReviewRecord(codeQR,token,cv);
+                                    // update
+                                }else{
+                                    //insert
+                                    ContentValues cv = new ContentValues();
+                                    cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
+                                    cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                    cv.put(DatabaseTable.Review.TOKEN, token);
+                                    cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                                    cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
+                                    cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
+                                    cv.put(DatabaseTable.Review.KEY_GOTO,"");
+                                    ReviewDB.insert(cv);
+                                }
                                 sendNotification(title, body, codeQR, false, token);//pass codeQR to open skip screen
                             }
                         } else {
@@ -211,8 +248,26 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                  * Save codeQR of goto & show it in after join screen on app
                                  * Review DB for review key && current serving == token no.
                                  */
-                                if (Integer.parseInt(current_serving) == jtk.getToken())
-                                    ReviewDB.insert(ReviewDB.KEY_GOTO, codeQR, current_serving, go_to, jtk.getQueueUserId());
+                                if (Integer.parseInt(current_serving) == jtk.getToken()) {
+                                    ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
+                                    if (null != reviewData) {
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
+                                        ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
+                                        // update
+                                    } else {
+                                        //insert
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
+                                        cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                        cv.put(DatabaseTable.Review.TOKEN, current_serving);
+                                        cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
+                                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                                        cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
+                                        ReviewDB.insert(cv);
+                                    }
+                                }
                                 //update DB & after join screen
                                 jtk.setServingNumber(Integer.parseInt(current_serving));
                                 if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {

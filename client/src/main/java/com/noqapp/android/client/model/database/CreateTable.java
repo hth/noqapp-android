@@ -98,13 +98,14 @@ public class CreateTable {
     private static void createTableReview(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableReview");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Review.TABLE_NAME + "("
-                + Review.KEY + " TEXT, "
                 + Review.CODE_QR + " TEXT, "
-                + Review.VALUE + " TEXT, "
                 + Review.TOKEN + " TEXT, "
                 + Review.Q_USER_ID + " TEXT, "
+                + Review.KEY_REVIEW_SHOWN + " TEXT, "
+                + Review.KEY_SKIP + " TEXT, "
+                + Review.KEY_GOTO + " TEXT, "
+                + Review.KEY_BUZZER_SHOWN + " TEXT, "
                 + "PRIMARY KEY(`" + Review.CODE_QR + "`,`" + Review.TOKEN + "`)" +
-
                 ");");
     }
 
@@ -181,5 +182,12 @@ public class CreateTable {
             e.printStackTrace();
         }
 
+    }
+
+    static void updateColoumnName(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS '" + Review.TABLE_NAME + "'");
+        db.execSQL("DROP TABLE IF EXISTS '" + Notification.TABLE_NAME + "'");
+        createTableReview(db);
+        createTableNotification(db);
     }
 }
