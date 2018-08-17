@@ -63,7 +63,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         webProfileId = getIntent().getStringExtra("webProfileId");
         managerName = getIntent().getStringExtra("managerName");
         managerImageUrl = getIntent().getStringExtra("managerImage");
-        tv_name.setText(managerName);
+        tv_name.setText("Dr. " + managerName);
         Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(managerImageUrl)) {
@@ -82,11 +82,10 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         loadTabs.execute();
 
         if(LaunchActivity.getLaunchActivity().isOnline()){
-            progressDialog.setMessage("Fetching doctor profile...");
+            progressDialog.setMessage("Fetching doctor's profile...");
             progressDialog.show();
             new ProfessionalProfileModel(this).profile(UserUtils.getDeviceId(),webProfileId);
         }
-
     }
 
 
@@ -98,7 +97,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     @Override
     public void queueManagerResponse(JsonProfessionalProfile jsonProfessionalProfile) {
         Log.v("queueManagerResponse", jsonProfessionalProfile.toString());
-        tv_name.setText(jsonProfessionalProfile.getName());
+        tv_name.setText("Dr. " + jsonProfessionalProfile.getName());
         userAdditionalInfoFragment.updateUI(jsonProfessionalProfile);
         userProfileFragment.updateUI(jsonProfessionalProfile.getStores(),jsonProfessionalProfile.getAboutMe());
         dismissProgress();
@@ -115,7 +114,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         userAdditionalInfoFragment = new UserAdditionalInfoFragment();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(userProfileFragment, "Profile");
-        adapter.addFragment(userAdditionalInfoFragment, "Additional Infos");
+        adapter.addFragment(userAdditionalInfoFragment, "Additional Info");
         viewPager.setAdapter(adapter);
     }
 
