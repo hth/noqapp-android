@@ -179,6 +179,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 intent.putExtra("webProfileId", jsonQueue.getWebProfileId());
                 intent.putExtra("managerName", jsonQueue.getDisplayName());
                 intent.putExtra("managerImage", jsonQueue.getDisplayImage());
+                intent.putExtra("bizCategoryId", jsonQueue.getBizCategoryId());
                 context.startActivity(intent);
 
 

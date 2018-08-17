@@ -6,8 +6,8 @@ package com.noqapp.android.common.model.types;
  */
 public enum FCMTypeEnum {
     Q,  //Queued
+    QR, //Queue Review
     O,  //Order
-    D,   //Display
-    OR,  //Order Review
-    QR   //Queue Review
+    OR, //Order Review
+    D   //Display
 }

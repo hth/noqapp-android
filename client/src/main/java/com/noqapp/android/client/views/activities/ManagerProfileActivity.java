@@ -14,10 +14,10 @@ import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 
 import com.squareup.picasso.Picasso;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -35,7 +35,6 @@ import butterknife.ButterKnife;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ManagerProfileActivity extends ProfileActivity implements QueueManagerPresenter {
 
     @BindView(R.id.tv_name)
@@ -51,6 +50,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     private String webProfileId = "";
     private String managerName = "";
     private String managerImageUrl = "";
+    private MedicalDepartmentEnum medicalDepartmentEnum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,8 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         webProfileId = getIntent().getStringExtra("webProfileId");
         managerName = getIntent().getStringExtra("managerName");
         managerImageUrl = getIntent().getStringExtra("managerImage");
-        tv_name.setText("Dr. " + managerName);
+        medicalDepartmentEnum = MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId"));
+        tv_name.setText(managerName);
         Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(managerImageUrl)) {
@@ -81,10 +82,10 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         loadTabs = new LoadTabs();
         loadTabs.execute();
 
-        if(LaunchActivity.getLaunchActivity().isOnline()){
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setMessage("Fetching doctor's profile...");
             progressDialog.show();
-            new ProfessionalProfileModel(this).profile(UserUtils.getDeviceId(),webProfileId);
+            new ProfessionalProfileModel(this).profile(UserUtils.getDeviceId(), webProfileId);
         }
     }
 
@@ -97,9 +98,15 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     @Override
     public void queueManagerResponse(JsonProfessionalProfile jsonProfessionalProfile) {
         Log.v("queueManagerResponse", jsonProfessionalProfile.toString());
-        tv_name.setText("Dr. " + jsonProfessionalProfile.getName());
+        switch (medicalDepartmentEnum) {
+            case PHY:
+                tv_name.setText(jsonProfessionalProfile.getName());
+                break;
+            default:
+                tv_name.setText("Dr. " + jsonProfessionalProfile.getName());
+        }
         userAdditionalInfoFragment.updateUI(jsonProfessionalProfile);
-        userProfileFragment.updateUI(jsonProfessionalProfile.getStores(),jsonProfessionalProfile.getAboutMe());
+        userProfileFragment.updateUI(jsonProfessionalProfile.getStores(), jsonProfessionalProfile.getAboutMe());
         dismissProgress();
     }
 
@@ -121,8 +128,9 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != loadTabs)
+        if (null != loadTabs) {
             loadTabs.cancel(true);
+        }
     }
 
     @Override
@@ -132,7 +140,6 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     }
 
     private class LoadTabs extends AsyncTask<String, String, String> {
-
         @Override
         protected String doInBackground(String... params) {
             return null;
@@ -176,5 +183,4 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
             return mFragmentTitleList.get(position);
         }
     }
-
 }
