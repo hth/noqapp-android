@@ -144,6 +144,7 @@
     <string name="status_sign_in_failed">Sign-in failed</string>
     <string name="instant_validation">Enter OTP</string>
     <string name="store_hour">Hours:</string>
+    <string name="store_today_hour">Today:</string>
     <string name="store_closed">Closed Today</string>
 
 

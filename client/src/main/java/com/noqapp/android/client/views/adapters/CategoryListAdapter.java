@@ -77,7 +77,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 key = context.getString(R.string.whole_day);
                 holder.tv_store_timing.setText(key);
             } else {
-                holder.tv_store_timing.setText(context.getString(R.string.store_hour) + " " + key);
+                holder.tv_store_timing.setText(context.getString(R.string.store_today_hour) + " " + key);
             }
             holder.tv_join.setBackgroundColor(ContextCompat.getColor(context, R.color.colorActionbar));
             holder.tv_join.setText("Walk-in");
