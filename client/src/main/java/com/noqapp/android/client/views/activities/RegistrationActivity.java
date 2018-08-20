@@ -101,7 +101,7 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
                 finish();
             }
         });
-        tv_toolbar_title.setText("Register");
+        tv_toolbar_title.setText(getString(R.string.register));
         dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         edt_birthday.setInputType(InputType.TYPE_NULL);
         edt_birthday.setOnClickListener(this);
