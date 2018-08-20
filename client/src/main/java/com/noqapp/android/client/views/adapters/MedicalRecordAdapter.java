@@ -2,6 +2,8 @@ package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
+import com.noqapp.android.common.model.types.medical.MedicineTypeEnum;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -59,9 +61,9 @@ public class MedicalRecordAdapter extends BaseAdapter {
         }
 
         final JsonMedicalMedicine medicalRecord = medicalRecordList.get(position);
-        recordHolder.tv_medication.setText(medicalRecord.getMedicationType());
+        recordHolder.tv_medication.setText(MedicineTypeEnum.getValueOfField(medicalRecord.getMedicationType()));
         recordHolder.tv_dose.setText(medicalRecord.getStrength());
-        recordHolder.tv_frequency.setText(medicalRecord.getDailyFrequency());
+        recordHolder.tv_frequency.setText(DailyFrequencyEnum.getValueOfField(medicalRecord.getDailyFrequency()));
         recordHolder.tv_dose_timing.setText(medicalRecord.getMedicationWithFood());
         recordHolder.tv_course.setText(medicalRecord.getCourse());
         recordHolder.tv_medicine_name.setText(medicalRecord.getName());

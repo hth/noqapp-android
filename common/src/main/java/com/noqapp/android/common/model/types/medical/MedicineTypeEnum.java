@@ -76,4 +76,12 @@ public enum MedicineTypeEnum {
             return input;
         }
     }
+
+    public static String getValueOfField(String input) {
+        try {
+            return MedicineTypeEnum.valueOf(input).description;
+        } catch (Exception e) {
+            return input;
+        }
+    }
 }
