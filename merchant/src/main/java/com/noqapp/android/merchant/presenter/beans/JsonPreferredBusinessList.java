@@ -44,4 +44,11 @@ public class JsonPreferredBusinessList implements Serializable {
         this.preferredBusinesses.addAll(preferredBusinesses);
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonPreferredBusinessList{" +
+                "preferredBusinesses=" + preferredBusinesses +
+                '}';
+    }
 }

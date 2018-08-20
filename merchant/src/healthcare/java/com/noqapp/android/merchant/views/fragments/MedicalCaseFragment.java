@@ -29,6 +29,7 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.GridAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordFavouriteAdapter;
+import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
 import com.noqapp.android.merchant.views.adapters.TestListAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
 import com.noqapp.android.merchant.views.interfaces.GridCommunication;
@@ -62,6 +63,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -161,6 +163,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private final String RADIOLOGY = "radiology";
     private ListCommunication listCommunication;
     private JsonPreferredBusinessList jsonPreferredBusinessList;
+    private Spinner sp_preferred_list;
 
 
     @Override
@@ -176,6 +179,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         ImageView iv_add_pathology = view.findViewById(R.id.iv_add_pathology);
         ImageView iv_add_radiology = view.findViewById(R.id.iv_add_radiology);
         medicalHistoryModel = new MedicalHistoryModel(this);
+        sp_preferred_list = view.findViewById(R.id.sp_preferred_list);
         listview = view.findViewById(R.id.listview);
         listview_favourite = view.findViewById(R.id.listview_favroite);
         adapter = new MedicalRecordAdapter(getActivity(), medicalRecordList, this);
@@ -588,6 +592,10 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     @Override
     public void preferredBusinessResponse(JsonPreferredBusinessList jsonPreferredBusinessList) {
         this.jsonPreferredBusinessList = jsonPreferredBusinessList;
+
+        CustomSpinnerAdapter spinAdapter = new CustomSpinnerAdapter(getActivity(),jsonPreferredBusinessList.getPreferredBusinesses());
+        sp_preferred_list.setAdapter(spinAdapter);
+
     }
 
     @Override
@@ -670,6 +678,8 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                             jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
                         }
 
+                        if(null != jsonPreferredBusinessList & jsonPreferredBusinessList.getPreferredBusinesses().size()>0)
+                            jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(sp_preferred_list.getSelectedItemPosition()).getBizStoreId());
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                         jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
