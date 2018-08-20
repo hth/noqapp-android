@@ -387,8 +387,8 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             }
         }
         if (UserUtils.isLogin()) {
-            List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
-            profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
+            List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
+            profileList.add(0, NoQueueBaseActivity.getUserProfile());
             profileList.add(0, new JsonProfile().setName("Select Patient"));
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             sp_name_list.setAdapter(adapter);

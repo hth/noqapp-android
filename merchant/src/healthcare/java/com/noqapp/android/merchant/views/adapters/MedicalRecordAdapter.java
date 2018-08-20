@@ -1,6 +1,8 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
+import com.noqapp.android.common.model.types.medical.MedicineTypeEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
 
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MedicalRecordAdapter extends BaseAdapter {
@@ -129,6 +132,20 @@ public class MedicalRecordAdapter extends BaseAdapter {
 
     public List<JsonMedicalMedicine> getJsonMedicineList() {
         return medicalRecordList;
+    }
+    public List<JsonMedicalMedicine> getJsonMedicineListWithEnum() {
+      if(medicalRecordList.size()==0)
+         return medicalRecordList;
+      else{
+          List<JsonMedicalMedicine> temp = new ArrayList<>();
+          for (int i = 0; i < medicalRecordList.size(); i++) {
+              JsonMedicalMedicine jsonMedicalMedicine = medicalRecordList.get(i);
+              jsonMedicalMedicine.setMedicationType(MedicineTypeEnum.getValue(jsonMedicalMedicine.getMedicationType()));
+              jsonMedicalMedicine.setDailyFrequency(DailyFrequencyEnum.getValue(jsonMedicalMedicine.getDailyFrequency()));
+              temp.add(jsonMedicalMedicine);
+          }
+          return temp;
+      }
     }
 
     static class RecordHolder {

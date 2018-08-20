@@ -11,5 +11,7 @@ public interface TokenQueueViewInterface {
 
     void historyQueueSaved();
 
-    void tokenQueueList(List<JsonTokenAndQueue> currentQueueList, List<JsonTokenAndQueue> historyQueueList);
+    void tokenCurrentQueueList(List<JsonTokenAndQueue> currentQueueList);
+
+    void tokenHistoryQueueList(List<JsonTokenAndQueue> historyQueueList);
 }

@@ -2,58 +2,42 @@ package com.noqapp.android.client.presenter;
 
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.interfaces.NOQueueDBPresenterInterface;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
-
-import android.content.Context;
 
 import java.util.List;
 
 
-public class NoQueueDBPresenter implements NOQueueDBPresenterInterface {
+public class NoQueueDBPresenter {
 
     public TokenQueueViewInterface tokenQueueViewInterface;
-    private Context context;
 
-    public NoQueueDBPresenter(Context context) {
-        this.context = context;
-    }
-
-    public void saveTokenQueue(List<JsonTokenAndQueue> tokenAndQueues, boolean isCurrentQueueCall, boolean sinceBeginning) {
-        TokenAndQueueDB.queueDBPresenterInterface = this;
-
-        if (isCurrentQueueCall) {
-            /* Delete before inserting as this is always a fresh data on every call. */
-            TokenAndQueueDB.deleteCurrentQueue();
-            TokenAndQueueDB.saveCurrentQueue(tokenAndQueues);
-        } else {
-            if (sinceBeginning) {
-                TokenAndQueueDB.deleteHistoryQueue();
-            }
-            TokenAndQueueDB.saveHistoryQueue(tokenAndQueues);
+    public void saveHistoryTokenQueue(List<JsonTokenAndQueue> tokenAndQueues, boolean sinceBeginning) {
+        if (sinceBeginning) {
+            TokenAndQueueDB.deleteHistoryQueue();
         }
-        //TokenAndQueueDB.save(tokenAndQueues, isCurrentQueueCall);
-    }
-
-    public void getCurrentAndHistoryTokenQueueListFromDB() {
-        TokenAndQueueDB.queueDBPresenterInterface = this;
-        List<JsonTokenAndQueue> currentQueueList = TokenAndQueueDB.getCurrentQueueList();
-        List<JsonTokenAndQueue> historyQueueList = TokenAndQueueDB.getHistoryQueueList();
-
-        this.token_QueueList(currentQueueList, historyQueueList);
-    }
-
-    @Override
-    public void dbSaved(boolean msg) {
+        boolean msg = TokenAndQueueDB.saveHistoryQueue(tokenAndQueues);
         if (msg) {
-            tokenQueueViewInterface.currentQueueSaved();
-        } else {
             tokenQueueViewInterface.historyQueueSaved();
         }
     }
 
-    @Override
-    public void token_QueueList(List<JsonTokenAndQueue> currentQueueList, List<JsonTokenAndQueue> historyQueueList) {
-        tokenQueueViewInterface.tokenQueueList(currentQueueList, historyQueueList);
+
+    public void saveCurrentTokenQueue(List<JsonTokenAndQueue> tokenAndQueues) {
+        /* Delete before inserting as this is always a fresh data on every call. */
+        TokenAndQueueDB.deleteCurrentQueue();
+        boolean msg = TokenAndQueueDB.saveCurrentQueue(tokenAndQueues);
+        if (msg) {
+            tokenQueueViewInterface.currentQueueSaved();
+        }
+    }
+
+    public void getCurrentTokenQueueListFromDB() {
+        List<JsonTokenAndQueue> currentQueueList = TokenAndQueueDB.getCurrentQueueList();
+        tokenQueueViewInterface.tokenCurrentQueueList(currentQueueList);
+    }
+
+    public void getHistoryTokenQueueListFromDB() {
+        List<JsonTokenAndQueue> historyQueueList = TokenAndQueueDB.getHistoryQueueList();
+        tokenQueueViewInterface.tokenHistoryQueueList(historyQueueList);
     }
 }

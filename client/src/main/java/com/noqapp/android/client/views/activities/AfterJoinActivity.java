@@ -339,13 +339,13 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         tv_how_long.setTextColor(Color.WHITE);
         // tv_estimated_time.setTextColor(Color.WHITE);
         tv_after.setText("Soon is your turn! You are:");
-        //tv_after.setVisibility(View.VISIBLE);
+        btn_cancel_queue.setEnabled(true);
         switch (pos) {
             case 0:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_1);
                 tv_after.setText("It's your turn!!!");
                 tv_how_long.setText(gotoPerson);
-                // tv_after.setVisibility(View.GONE);
+                btn_cancel_queue.setVisibility(View.GONE);
                 break;
             case 1:
                 ll_change_bg.setBackgroundResource(R.drawable.turn_1);

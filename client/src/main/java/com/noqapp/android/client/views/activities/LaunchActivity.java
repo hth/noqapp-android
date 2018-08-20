@@ -40,7 +40,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -581,7 +580,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                 }
                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-
                 if (activityCommunicator != null) {
                     boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
 
@@ -720,15 +718,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                           String key) {
         if (key.equals("pref_language")) {
             ((MyApplication) getApplication()).setLocale();
-            restartActivity();
+            this.recreate();
         }
     }
-
-    private void restartActivity() {
-        Intent intent = getIntent();
-        startActivity(intent);
-        finish();
-    }
+    
 
     public void showChangeLangDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -748,38 +741,24 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             rb_en.setChecked(true);
             rb_hi.setChecked(false);
         }
+        final AlertDialog b = dialogBuilder.create();
         ll_hindi.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtilities.changeLanguage("hi");
+                b.dismiss();
             }
         });
         ll_english.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtilities.changeLanguage("en");
+                b.dismiss();
             }
         });
         dialogBuilder.setTitle("");
-        AlertDialog b = dialogBuilder.create();
-        b.show();
-    }
 
-    public boolean isCurrentActivityLaunchActivity() {
-        boolean isCurrentActivity = false;
-        try {
-            ActivityManager am = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-            Log.d("topActivity", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName());
-            if (taskInfo.get(0).topActivity.getClassName().equals(LaunchActivity.class.getCanonicalName()))
-                isCurrentActivity = true;
-            else
-                isCurrentActivity = false;
-        } catch (Exception e) {
-            Log.e("getCurrentAct error: ", e.getMessage());
-            e.printStackTrace();
-        }
-        return isCurrentActivity;
+        b.show();
     }
 
     public class FcmNotificationReceiver extends BroadcastReceiver {

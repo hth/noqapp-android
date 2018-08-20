@@ -495,23 +495,23 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @Override
     public void currentQueueResponse(List<JsonTokenAndQueue> tokenAndQueues) {
-        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(getActivity());
+        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter();
         dbPresenter.tokenQueueViewInterface = this;
-        dbPresenter.saveTokenQueue(tokenAndQueues, true, false);
+        dbPresenter.saveCurrentTokenQueue(tokenAndQueues);
         pb_current.setVisibility(View.GONE);
     }
 
     @Override
     public void historyQueueResponse(List<JsonTokenAndQueue> tokenAndQueues, boolean sinceBeginning) {
-        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(getActivity());
+        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter();
         dbPresenter.tokenQueueViewInterface = this;
-        dbPresenter.saveTokenQueue(tokenAndQueues, false, sinceBeginning);
+        dbPresenter.saveHistoryTokenQueue(tokenAndQueues, sinceBeginning);
         pb_recent.setVisibility(View.GONE);
     }
 
     @Override
     public void historyQueueError() {
-        Log.d(TAG, "Token and queue Error");
+        Log.d(TAG, "History queue Error");
         LaunchActivity.getLaunchActivity().dismissProgress();
         passMsgToHandler(false);
         pb_recent.setVisibility(View.GONE);
@@ -519,7 +519,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @Override
     public void currentQueueError() {
-        Log.d(TAG, "Token and queue Error");
+        Log.d(TAG, "Current queue Error");
         LaunchActivity.getLaunchActivity().dismissProgress();
         passMsgToHandler(true);
         pb_current.setVisibility(View.GONE);
@@ -564,16 +564,20 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
     @Override
-    public void tokenQueueList(List<JsonTokenAndQueue> currentlist, List<JsonTokenAndQueue> historylist) {
+    public void tokenCurrentQueueList(List<JsonTokenAndQueue> currentQueueList) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        Log.d(TAG, "Current Queue Count : " + String.valueOf(currentlist.size()) + ":History Queue Count:" + String.valueOf(historylist.size()));
-
-        currentActivityAdapter = new CurrentActivityAdapter(currentlist, getActivity(), currentClickListner);
+        Log.d(TAG, "Current Queue Count : " + String.valueOf(currentQueueList.size()));
+        currentActivityAdapter = new CurrentActivityAdapter(currentQueueList, getActivity(), currentClickListner);
         rv_current_activity.setAdapter(currentActivityAdapter);
-        tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentlist.size()) + ")");
+        tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentQueueList.size()) + ")");
         currentActivityAdapter.notifyDataSetChanged();
+    }
 
-        Collections.sort(historylist, new Comparator<JsonTokenAndQueue>() {
+    @Override
+    public void tokenHistoryQueueList(List<JsonTokenAndQueue> historyQueueList) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        Log.d(TAG, ":History Queue Count:" + String.valueOf(historyQueueList.size()));
+        Collections.sort(historyQueueList, new Comparator<JsonTokenAndQueue>() {
             DateFormat f = Formatter.formatRFC822;
 
             @Override
@@ -586,16 +590,16 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 }
             }
         });
-
-        recentActivityAdapter = new RecentActivityAdapter(historylist, getActivity(), recentClickListner, lat, log);
+        recentActivityAdapter = new RecentActivityAdapter(historyQueueList, getActivity(), recentClickListner, lat, log);
         rv_recent_activity.setAdapter(recentActivityAdapter);
         recentActivityAdapter.notifyDataSetChanged();
     }
 
+
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
-        if (isUserTurn && isUpdated && LaunchActivity.getLaunchActivity().isCurrentActivityLaunchActivity()) {
+        if (isUserTurn && isUpdated) {
             boolean showBuzzer = false;
             ReviewData reviewData = ReviewDB.getValue(jq.getCodeQR(), "" + jq.getToken());
             if(null != reviewData){
@@ -642,9 +646,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
     public void fetchCurrentAndHistoryList() {
-        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(getActivity());
+        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter();
         dbPresenter.tokenQueueViewInterface = this;
-        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
+        dbPresenter.getCurrentTokenQueueListFromDB();
+        dbPresenter.getHistoryTokenQueueListFromDB();
     }
 
     public void callSearch() {
@@ -657,29 +662,18 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
     private static class QueueHandler extends Handler {
-        private boolean isCurrentExecute = false;
-        private boolean isHistoryExecute = false;
+        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter();
 
-        // This method is used to handle received messages
         public void handleMessage(Message msg) {
-            // switch to identify the message by its code
             switch (msg.what) {
                 case MSG_CURRENT_QUEUE:
-                    isCurrentExecute = true;
-                    if (isHistoryExecute && isCurrentExecute) {
-                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(LaunchActivity.getLaunchActivity());
-                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
-                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
-                    }
+                    dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
+                    dbPresenter.getCurrentTokenQueueListFromDB();
                     break;
 
                 case MSG_HISTORY_QUEUE:
-                    isHistoryExecute = true;
-                    if (isHistoryExecute && isCurrentExecute) {
-                        NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter(LaunchActivity.getLaunchActivity());
-                        dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
-                        dbPresenter.getCurrentAndHistoryTokenQueueListFromDB();
-                    }
+                    dbPresenter.tokenQueueViewInterface = tokenQueueViewInterface;
+                    dbPresenter.getHistoryTokenQueueListFromDB();
                     break;
                 default:
                     break;

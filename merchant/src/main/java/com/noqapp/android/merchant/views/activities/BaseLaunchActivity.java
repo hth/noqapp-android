@@ -71,6 +71,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -327,9 +328,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         return sharedpreferences.getString(KEY_SUGGESTION, null);
     }
 
-    public void setSuggestions(HashMap<String, ArrayList<String>> mHashmap) {
+    public void setSuggestions(Map<String, List<String>> map) {
         Gson gson = new Gson();
-        String strInput = gson.toJson(mHashmap);
+        String strInput = gson.toJson(map);
         sharedpreferences.edit().putString(KEY_SUGGESTION, strInput).apply();
     }
 

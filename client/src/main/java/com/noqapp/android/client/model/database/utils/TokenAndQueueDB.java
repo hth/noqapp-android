@@ -5,7 +5,6 @@ import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandle
 
 import com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.interfaces.NOQueueDBPresenterInterface;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -26,8 +25,6 @@ import java.util.List;
  */
 public class TokenAndQueueDB {
     private static final String TAG = TokenAndQueueDB.class.getSimpleName();
-
-    public static NOQueueDBPresenterInterface queueDBPresenterInterface;
 
     public static void deleteTokenQueue(String codeQR , String token) {
         boolean resultStatus = dbHandler.getReadableDatabase().delete(TokenQueue.TABLE_NAME, TokenQueue.CODE_QR + "=?"+ " AND " + TokenQueue.TOKEN + " = ?", new String[]{codeQR,token}) > 0;
@@ -270,7 +267,7 @@ public class TokenAndQueueDB {
         dbHandler.getWritableDb().execSQL("delete from " + TokenQueue.TABLE_NAME);
     }
 
-    public static void saveCurrentQueue(List<JsonTokenAndQueue> list) {
+    public static boolean saveCurrentQueue(List<JsonTokenAndQueue> list) {
 
         for (JsonTokenAndQueue tokenAndQueue : list) {
             ContentValues values = createQueueContentValues(tokenAndQueue);
@@ -281,14 +278,14 @@ public class TokenAndQueueDB {
                 Log.e(TAG, "Error saveCurrentQueue reason=" + e.getLocalizedMessage(), e);
             }
         }
-        queueDBPresenterInterface.dbSaved(true);
+        return true;
     }
 
     public static void deleteHistoryQueue() {
         dbHandler.getWritableDb().execSQL("delete from " + TokenQueueHistory.TABLE_NAME);
     }
 
-    public static void saveHistoryQueue(List<JsonTokenAndQueue> list) {
+    public static boolean saveHistoryQueue(List<JsonTokenAndQueue> list) {
         for (JsonTokenAndQueue tokenAndQueue : list) {
             ContentValues values = createQueueContentValues(tokenAndQueue);
             try {
@@ -298,7 +295,7 @@ public class TokenAndQueueDB {
                 Log.e(TAG, "Error saveHistoryQueue reason=" + e.getLocalizedMessage(), e);
             }
         }
-        queueDBPresenterInterface.dbSaved(false);
+        return true;
     }
 
     private static ContentValues createQueueContentValues(JsonTokenAndQueue tokenAndQueue) {
