@@ -581,7 +581,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                 }
                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-
                 if (activityCommunicator != null) {
                     boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
 
@@ -761,23 +760,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         dialogBuilder.setTitle("");
 
         b.show();
-    }
-
-    public boolean isCurrentActivityLaunchActivity() {
-        boolean isCurrentActivity = false;
-        try {
-            ActivityManager am = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-            Log.d("topActivity", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName());
-            if (taskInfo.get(0).topActivity.getClassName().equals(LaunchActivity.class.getCanonicalName()))
-                isCurrentActivity = true;
-            else
-                isCurrentActivity = false;
-        } catch (Exception e) {
-            Log.e("getCurrentAct error: ", e.getMessage());
-            e.printStackTrace();
-        }
-        return isCurrentActivity;
     }
 
     public class FcmNotificationReceiver extends BroadcastReceiver {
