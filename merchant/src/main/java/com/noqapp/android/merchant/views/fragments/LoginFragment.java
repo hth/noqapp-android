@@ -42,11 +42,13 @@ import android.widget.Toast;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class LoginFragment extends Fragment implements LoginPresenter, MerchantPresenter {
 
     private Button btn_login;
-    private EditText  edt_pwd;
+    private EditText edt_pwd;
     private AutoCompleteTextView actv_email;
     private String email, pwd;
     private ArrayList<String> userList = new ArrayList<>();
@@ -122,7 +124,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             LaunchActivity.getLaunchActivity().setUserInformation("", "", email, auth, true);
             merchantProfileModel.setMerchantPresenter(this);
             merchantProfileModel.fetch(email, auth);
-            if(!userList.contains(email)){
+            if (!userList.contains(email)) {
                 userList.add(email);
                 LaunchActivity.getLaunchActivity().setUserList(userList);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>
@@ -150,19 +152,20 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         if (null != jsonMerchant) {
             LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
             LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
-            if(null != jsonMerchant.getJsonProfessionalProfile()) {
+            if (null != jsonMerchant.getJsonProfessionalProfile()) {
                 Type type = new TypeToken<HashMap<String, ArrayList<String>>>() {
                 }.getType();
                 Gson gson = new Gson();
-                HashMap<String, ArrayList<String>> hashmap = gson.fromJson(jsonMerchant.getJsonProfessionalProfile().getDataDictionary(), type);
-                if (null != hashmap && hashmap.size() > 0)
-                    LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
+                Map<String, List<String>> map = gson.fromJson(jsonMerchant.getJsonProfessionalProfile().getDataDictionary(), type);
+                if (null != map && map.size() > 0) {
+                    LaunchActivity.getLaunchActivity().setSuggestions(map);
+                }
             }
-            if(jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.Q_SUPERVISOR || jsonMerchant.getJsonProfile().getUserLevel()== UserLevelEnum.S_MANAGER ) {
-                if((getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare") &&
-                        jsonMerchant.getJsonProfile().getBusinessType() == BusinessTypeEnum.DO)||
+            if (jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.Q_SUPERVISOR || jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
+                if ((getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare") &&
+                        jsonMerchant.getJsonProfile().getBusinessType() == BusinessTypeEnum.DO) ||
                         (getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant") &&
-                        jsonMerchant.getJsonProfile().getBusinessType() != BusinessTypeEnum.DO)) {
+                                jsonMerchant.getJsonProfile().getBusinessType() != BusinessTypeEnum.DO)) {
                     if (new AppUtils().isTablet(getActivity())) {
                         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
                         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
@@ -179,7 +182,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                     mlf.setArguments(b);
                     LaunchActivity.setMerchantListFragment(mlf);
                     LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, mlf);
-                }else{
+                } else {
                     // unauthorised to see the screen
                     LaunchActivity.getLaunchActivity().setAccessGrant(false);
                     AccessDeniedFragment adf = new AccessDeniedFragment();
@@ -189,7 +192,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                     LaunchActivity.getLaunchActivity().clearLoginData(false);
                     LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
                 }
-            }else{
+            } else {
                 // unauthorised to see the screen
                 LaunchActivity.getLaunchActivity().setAccessGrant(false);
                 AccessDeniedFragment adf = new AccessDeniedFragment();

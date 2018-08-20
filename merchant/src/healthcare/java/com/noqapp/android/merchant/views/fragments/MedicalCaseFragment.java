@@ -8,6 +8,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
+import com.noqapp.android.common.model.types.medical.MedicineTypeEnum;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
@@ -64,6 +65,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MedicalCaseFragment extends Fragment implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate, GridCommunication, ListCommunication {
 
@@ -122,7 +124,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
     //
 
-    private HashMap<String, ArrayList<String>> hashmap = null;
+    private Map<String, List<String>> map = null;
     private String qCodeQR = "";
     private AutoCompleteTextView actv_medicine_name, actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation, actv_instruction, actv_followup;
     private EditText edt_weight, edt_bp, edt_pulse, edt_temperature, edt_oxygen;
@@ -307,7 +309,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                         updateSuggestions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
                         setSuggestions(actv_dose_timing, MEDICINES_DOSE_TIMINGS, false);
                         // update medicine related info because we are setting the fields blank
-                        LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
+                        LaunchActivity.getLaunchActivity().setSuggestions(map);
                         actv_medicine_name.setText("");
                         actv_dose.setText("");
                         actv_frequency.setText("");
@@ -374,36 +376,29 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         Gson gson = new Gson();
         if (TextUtils.isEmpty(strOutput) || strOutput.equalsIgnoreCase("null")) {
             Log.v("JSON", "empty json");
-            hashmap = new HashMap<>();
-            hashmap.put(CHIEF, new ArrayList<String>());
-            hashmap.put(PAST_HISTORY, new ArrayList<String>());
-            hashmap.put(FAMILY_HISTORY, new ArrayList<String>());
-            hashmap.put(CLINICAL_FINDINGS, new ArrayList<String>());
-            hashmap.put(PROVISIONAL_DIAGNOSIS, new ArrayList<String>());
-            hashmap.put(INVESTIGATION, new ArrayList<String>());
-            hashmap.put(KNOWN_ALLERGIES, new ArrayList<String>());
-            hashmap.put(MEDICINES_NAME, new ArrayList<String>());
-            hashmap.put(FOLLOW_UP, new ArrayList<String>());
-            hashmap.put(INSTRUCTIONS, new ArrayList<String>());
+            map = new HashMap<>();
+            map.put(CHIEF, new ArrayList<String>());
+            map.put(PAST_HISTORY, new ArrayList<String>());
+            map.put(FAMILY_HISTORY, new ArrayList<String>());
+            map.put(CLINICAL_FINDINGS, new ArrayList<String>());
+            map.put(PROVISIONAL_DIAGNOSIS, new ArrayList<String>());
+            map.put(INVESTIGATION, new ArrayList<String>());
+            map.put(KNOWN_ALLERGIES, new ArrayList<String>());
+            map.put(MEDICINES_NAME, new ArrayList<String>());
+            map.put(FOLLOW_UP, new ArrayList<String>());
+            map.put(INSTRUCTIONS, new ArrayList<String>());
 
-            ArrayList<String> temp = new ArrayList<>();
-            temp.add("Capsule");
-            temp.add("Cream");
-            temp.add("Inhaler");
-            temp.add("Injection");
-            temp.add("Powder");
-            temp.add("Syrup");
-            temp.add("Tablet");
-            hashmap.put(MEDICINES_TYPE, temp);
-            hashmap.put(MEDICINES_DOSE, new ArrayList<String>());
-            hashmap.put(MEDICINES_FREQUENCY, new ArrayList<String>());
-            hashmap.put(MEDICINES_DOSE_TIMINGS, new ArrayList<String>());
-            hashmap.put(MEDICINES_COURSE, new ArrayList<String>());
+            List<String> temp = MedicineTypeEnum.asListOfDescription();
+            map.put(MEDICINES_TYPE, temp);
+            map.put(MEDICINES_DOSE, new ArrayList<String>());
+            map.put(MEDICINES_FREQUENCY, new ArrayList<String>());
+            map.put(MEDICINES_DOSE_TIMINGS, new ArrayList<String>());
+            map.put(MEDICINES_COURSE, new ArrayList<String>());
             setSuggestions(actv_medicine_name, MEDICINES_NAME, false); // set the default suggestion initially
-            LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
+            LaunchActivity.getLaunchActivity().setSuggestions(map);
         } else {
             try {
-                hashmap = gson.fromJson(strOutput, type);
+                map = gson.fromJson(strOutput, type);
 
                 setSuggestions(actv_complaints, CHIEF, true);
                 setSuggestions(actv_past_history, PAST_HISTORY, true);
@@ -421,7 +416,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 setSuggestions(actv_frequency, MEDICINES_FREQUENCY, false);
                 setSuggestions(actv_dose_timing, MEDICINES_DOSE_TIMINGS, false);
                 setSuggestions(actv_course, MEDICINES_COURSE, false);
-                Log.v("JSON", hashmap.toString());
+                Log.v("JSON", map.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -466,11 +461,11 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     }
 
     private void setSuggestions(final AutoCompleteTextView actv, String key, boolean isThreashold) {
-        if (null == hashmap.get(key)) {
-            hashmap.put(key, new ArrayList<String>());
+        if (null == map.get(key)) {
+            map.put(key, new ArrayList<String>());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, hashmap.get(key));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, map.get(key));
         actv.setAdapter(adapter);
         if (isThreashold) {
             actv.setThreshold(1);
@@ -487,8 +482,8 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
     private void updateSuggestions(AutoCompleteTextView actv, String key) {
         if (!actv.getText().toString().equals("")) {
-            if (!hashmap.get(key).contains(actv.getText().toString())) {
-                hashmap.get(key).add(actv.getText().toString());
+            if (!map.get(key).contains(actv.getText().toString())) {
+                map.get(key).add(actv.getText().toString());
             }
         }
     }
@@ -524,7 +519,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 //        updateSuggestions(actv_dose_timing, MEDICINES_DOSE_TIMINGS);
 //        updateSuggestions(actv_course, MEDICINES_COURSE);
 
-        LaunchActivity.getLaunchActivity().setSuggestions(hashmap);
+        LaunchActivity.getLaunchActivity().setSuggestions(map);
         M_MerchantProfileModel m_merchantProfileModel = new M_MerchantProfileModel(this);
         m_merchantProfileModel.uploadIntellisense(
                 UserUtils.getDeviceId(),
