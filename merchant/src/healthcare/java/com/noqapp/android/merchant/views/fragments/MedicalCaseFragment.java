@@ -678,7 +678,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                             jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
                         }
 
-                        if(null != jsonPreferredBusinessList & jsonPreferredBusinessList.getPreferredBusinesses().size()>0)
+                        if(null != jsonPreferredBusinessList && null!= jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size()>0)
                             jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(sp_preferred_list.getSelectedItemPosition()).getBizStoreId());
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);

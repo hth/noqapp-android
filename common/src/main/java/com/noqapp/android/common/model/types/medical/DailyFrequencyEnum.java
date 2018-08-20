@@ -75,4 +75,12 @@ public enum DailyFrequencyEnum {
             return input;
         }
     }
+
+    public static String getValueOfField(String input) {
+        try {
+            return DailyFrequencyEnum.valueOf(input).description;
+        } catch (Exception e) {
+            return input;
+        }
+    }
 }
