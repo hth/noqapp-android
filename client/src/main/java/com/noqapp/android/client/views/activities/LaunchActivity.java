@@ -720,15 +720,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                           String key) {
         if (key.equals("pref_language")) {
             ((MyApplication) getApplication()).setLocale();
-            restartActivity();
+            this.recreate();
         }
     }
-
-    private void restartActivity() {
-        Intent intent = getIntent();
-        startActivity(intent);
-        finish();
-    }
+    
 
     public void showChangeLangDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -748,20 +743,23 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             rb_en.setChecked(true);
             rb_hi.setChecked(false);
         }
+        final AlertDialog b = dialogBuilder.create();
         ll_hindi.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtilities.changeLanguage("hi");
+                b.dismiss();
             }
         });
         ll_english.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtilities.changeLanguage("en");
+                b.dismiss();
             }
         });
         dialogBuilder.setTitle("");
-        AlertDialog b = dialogBuilder.create();
+
         b.show();
     }
 
