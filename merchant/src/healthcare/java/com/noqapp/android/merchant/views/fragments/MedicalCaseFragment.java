@@ -7,13 +7,17 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.model.types.medical.MedicineTypeEnum;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
+import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
 import com.noqapp.android.merchant.model.M_MerchantProfileModel;
 import com.noqapp.android.merchant.model.MedicalHistoryModel;
+import com.noqapp.android.merchant.model.PreferredBusinessModel;
+import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -67,7 +71,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MedicalCaseFragment extends Fragment implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate, GridCommunication, ListCommunication {
+public class MedicalCaseFragment extends Fragment implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate, GridCommunication, ListCommunication, PreferredBusinessPresenter {
 
 
     private String jsonText = "{\n" +
@@ -142,7 +146,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private AutoCompleteTextView actv_dose_timing;
     private AutoCompleteTextView actv_course;
     private AutoCompleteTextView actv_dose;
-    private Button tv_add;
     private TextView tv_assist, tv_favourite_text;
     private LinearLayout ll_fav_medicines;
     private boolean isExpand;
@@ -157,7 +160,8 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private final String PATHOLOGY = "pathology";
     private final String RADIOLOGY = "radiology";
     private ListCommunication listCommunication;
-    private ImageView iv_add_pathology, iv_add_radiology;
+    private JsonPreferredBusinessList jsonPreferredBusinessList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -169,8 +173,8 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         }
         listCommunication = this;
 
-        iv_add_pathology = view.findViewById(R.id.iv_add_pathology);
-        iv_add_radiology = view.findViewById(R.id.iv_add_radiology);
+        ImageView iv_add_pathology = view.findViewById(R.id.iv_add_pathology);
+        ImageView iv_add_radiology = view.findViewById(R.id.iv_add_radiology);
         medicalHistoryModel = new MedicalHistoryModel(this);
         listview = view.findViewById(R.id.listview);
         listview_favourite = view.findViewById(R.id.listview_favroite);
@@ -260,7 +264,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         actv_frequency = view.findViewById(R.id.actv_frequency);
         actv_dose_timing = view.findViewById(R.id.actv_dose_timing);
         actv_course = view.findViewById(R.id.actv_course);
-        tv_add = view.findViewById(R.id.tv_add);
+        Button tv_add = view.findViewById(R.id.tv_add);
         tv_assist = view.findViewById(R.id.tv_assist);
         rg_duration = view.findViewById(R.id.rg_duration);
         tv_favourite_text = view.findViewById(R.id.tv_favourite_text);
@@ -389,12 +393,15 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             map.put(INSTRUCTIONS, new ArrayList<String>());
 
             List<String> temp = MedicineTypeEnum.asListOfDescription();
+            List<String> temp_daily_frequency = DailyFrequencyEnum.asListOfDescription();
             map.put(MEDICINES_TYPE, temp);
             map.put(MEDICINES_DOSE, new ArrayList<String>());
-            map.put(MEDICINES_FREQUENCY, new ArrayList<String>());
+            map.put(MEDICINES_FREQUENCY, temp_daily_frequency);
             map.put(MEDICINES_DOSE_TIMINGS, new ArrayList<String>());
             map.put(MEDICINES_COURSE, new ArrayList<String>());
             setSuggestions(actv_medicine_name, MEDICINES_NAME, false); // set the default suggestion initially
+            setSuggestions(actv_medicine_type, MEDICINES_TYPE, false);
+            setSuggestions(actv_frequency, MEDICINES_FREQUENCY, false);
             LaunchActivity.getLaunchActivity().setSuggestions(map);
         } else {
             try {
@@ -420,6 +427,10 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if(LaunchActivity.getLaunchActivity().isOnline()){
+            PreferredBusinessModel preferredBusinessModel = new PreferredBusinessModel(this);
+            preferredBusinessModel.getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),qCodeQR);
         }
         return view;
     }
@@ -575,6 +586,16 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     }
 
     @Override
+    public void preferredBusinessResponse(JsonPreferredBusinessList jsonPreferredBusinessList) {
+        this.jsonPreferredBusinessList = jsonPreferredBusinessList;
+    }
+
+    @Override
+    public void preferredBusinessError() {
+
+    }
+
+    @Override
     public void authenticationFailure(int errorCode) {
 
     }
@@ -651,7 +672,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
-                        jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineList());
+                        jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
                         jsonMedicalRecord.setPlanToPatient(actv_instruction.getText().toString());
                         if (!actv_followup.getText().toString().equals("")) {
                             String value = actv_followup.getText().toString();
@@ -676,22 +697,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 break;
         }
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        long currentTime = System.currentTimeMillis();
-//        if (currentTime - lastPress > 3000) {
-//            backPressToast = Toast.makeText(getActivity(), getString(R.string.exit_medical_screen), Toast.LENGTH_LONG);
-//            backPressToast.show();
-//            lastPress = currentTime;
-//        } else {
-//            if (backPressToast != null) {
-//                backPressToast.cancel();
-//            }
-//            //super.onBackPressed();
-//            finish();
-//        }
-//    }
 
     @Override
     public void updateFavouriteList(JsonMedicalMedicine jsonMedicalMedicine, boolean isAdded) {

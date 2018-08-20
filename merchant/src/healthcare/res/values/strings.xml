@@ -3,7 +3,7 @@
 
 
     <string name="dose_prompt"> 250 mg</string>
-    <string name="frequency_prompt">OD</string>
+    <string name="frequency_prompt">Two times</string>
     <string name="course_prompt">1 Day</string>
     <string name="medicine_type">Tablet</string>
     <string name="medicine_name">Paracetamol</string>

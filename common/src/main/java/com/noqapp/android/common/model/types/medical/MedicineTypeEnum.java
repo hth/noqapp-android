@@ -51,4 +51,29 @@ public enum MedicineTypeEnum {
     public String toString() {
         return description;
     }
+
+    public static String getValue(String input) {
+        try {
+            switch (input) {
+                case "Capsule":
+                    return "CA";
+                case "Cream":
+                    return "CR";
+                case "Inhaler":
+                    return "IH";
+                case "Injection":
+                    return "IJ";
+                case "Powder":
+                    return "PW";
+                case "Syrup":
+                    return "SY";
+                case "Tablet":
+                    return "TA";
+                default:
+                    return input;
+            }
+        } catch (Exception e) {
+            return input;
+        }
+    }
 }
