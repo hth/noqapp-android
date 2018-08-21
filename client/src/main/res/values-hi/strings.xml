@@ -1,58 +1,49 @@
 <resources>
     <string name="app_name">NoQApp</string>LaunchActivity
     <string name="title_activity_launch">NoQApp</string>
-    <string name="btnBarcodeScanner">Me</string>
 
     <string name="action_settings">सेटिंग्स</string>
     <string name="join">जुड़ें</string>
-    <string name="cancel">Cancel</string>
-    <string name="scan">Click to Scan NoQueue QR Code</string>
-    <string name="title_activity_join_queue">JoinQueueActivity</string>
-    <string name="registration">Registration</string>
-    <string name="autojoinon">Auto QJoin On Scan</string>
-    <string name="remoteJoinAvail">Remote QJoin Available</string>
+    <string name="cancel">रद्द करें</string>
     <string name="ratetheapp">एप्लिकेशन का मूल्यांकन करें</string>
     <string name="legal">वैधानिक</string>
     <string name="invite">आमंत्रित करें</string>
-    <string name="firstname">First Name</string>
+    <string name="firstname">प्रथम नाम</string>
 
     <!--Invite Screen-->
-    <string name="how_it_works">How it works?</string>
-    <string name="your_invite_code">Your Invite Code</string>
-    <string name="copy">Copy</string>
-    <string name="send_invite">Send Invites -></string>
-
-
-    <string name="empty_history">You don\'t have any \n recent history.</string>
-    <string name="close">Close</string>
+    <string name="how_it_works">यह किस प्रकार काम करता है?</string>
+    <string name="your_invite_code">आपका आमंत्रण कोड</string>
+    <string name="copy">प्रतिलिपि</string>
+    <string name="send_invite">आमंत्रण भेजें -></string>
+    <string name="empty_history">आपके पास कोई \n हालिया इतिहास नहीं है।</string>
+    <string name="close">बंद करे</string>
 
 
     <!--Legal Screen-->
-    <string name="privacy_policy">Privacy policy</string>
-    <string name="term_condition">Term &amp; Conditions</string>
-    <string name="about_us">About us</string>
+    <string name="privacy_policy">गोपनीयता नीति</string>
+    <string name="term_condition">अवधि और शर्तेँ</string>
+    <string name="about_us">हमारे बारे में</string>
+    <string name="version_no">एप्लिकेशन  संस्करण: %1$s</string>
 
     <!--Register Screen-->
 
-    <string name="phonenumber">Phone Number</string>
-    <string name="freeRemoteJoin">Get Free Remote Join</string>
-    <string name="register">Register</string>
+    <string name="phonenumber">फोन नंबर</string>
+    <string name="register">पंजीकरण</string>
 
-    <string name="login">Login</string>
-    <string name="phone">Phone <font color='red'>\u2731</font></string>
-    <string name="name">Name <font color='red'>\u2731</font></string>
-    <string name="mail">Mail </string>
-    <string name="birthday">Birthday <font color='red'>\u2731</font></string>
-    <string name="gender">Gender <font color='red'>\u2731</font></string>
-    <string name="invitecode">Invite code</string>
-    <string name="btnregister">Continue Register</string>
-    <string name="error_name_blank">Please enter name</string>
+    <string name="login">लॉग इन</string>
+    <string name="phone">फोन <font color='red'>\u2731</font></string>
+    <string name="name">नाम <font color='red'>\u2731</font></string>
+    <string name="mail">ई-मेल </string>
+    <string name="birthday">जन्मदिवस  <font color='red'>\u2731</font></string>
+    <string name="gender">लिंग  <font color='red'>\u2731</font></string>
+    <string name="invitecode">निमंत्रण कोड</string>
+    <string name="btnregister">पंजीकरण जारी रखें</string>
+    <string name="error_name_blank">कृपया नाम दर्ज करें</string>
     <string name="error_name_length">Name length should be at least 4 or higher</string>
-    <string name="error_invalid_email">Please enter valid email</string>
-    <string name="error_invalid_date">Please select a valid date</string>
-    <string name="error_dob_blank">Please enter date of birth</string>
-    <!--- Queue List -->
-    <string name="history">History</string>
+    <string name="error_invalid_email">कृपया वैध ईमेल दर्ज़ करें</string>
+    <string name="error_invalid_date">कृपया एक वैध तिथि चुनें</string>
+    <string name="error_dob_blank">कृपया जन्म तिथि दर्ज करें</string>
+
 
     <!--Error and message-->
     <string name="networkerror">नेटवर्क त्रुटि</string>
@@ -60,56 +51,65 @@
     <!--- Join Screen -->
     <string name="you_are_after">You are after</string>
     <string name="serving_now">Serving now</string>
-    <string name="your_token">Your Token</string>
-    <string name="remotejoin">Remote QJoin</string>
+    <string name="your_token">आपका टोकन नंबर</string>
+
 
     <!--- Scan Screen -->
     <string name="currently_serving">Currently serving</string>
-    <string name="people_in_queue">People in queue</string>
+    <string name="people_in_queue">कतार में लोगों की संख्या</string>
 
-    <string name="cancel_queue">You successfully cancel the queue</string>
-    <string name="fail_to_cancel">Failed to cancel the queue</string>
+    <string name="cancel_queue">आपने सफलतापूर्वक कतार रद्द कर दी है</string>
+    <string name="fail_to_cancel">कतार रद्द करने में विफल रहा</string>
 
 
     <!--- Review Screen -->
-    <string name="radio_save_30min">Saved 30 min </string>
-    <string name="radio_save_1hr">Saved 1 hour </string>
-    <string name="radio_save_2hr">Saved 2 hour </string>
-    <string name="radio_save_3hr">Saved 3 hour </string>
-    <string name="radio_save_4hr">Saved 4 hour </string>
-    <string name="submit">Review</string>
+    <string name="radio_save_30min">शून्य</string>
+    <string name="radio_save_1hr">एक</string>
+    <string name="radio_save_2hr">दो</string>
+    <string name="radio_save_3hr">तीन</string>
+    <string name="radio_save_4hr">चार</string>
+    <string name="submit">समीक्षा करें</string>
 
+    <string name="radio_save_30min_f">30 मिनट </string>
+    <string name="radio_save_1hr_f">एक घंटा </string>
+    <string name="radio_save_2hr_f">दो घंटे </string>
+    <string name="radio_save_3hr_f">तीन घंटे </string>
+    <string name="radio_save_4hr_f">चार घंटे </string>
 
-    <!-- Custom Fonts -->
-    <string name="raleway_bold_font">fonts/raleway_bold.ttf</string>
-    <string name="raleway_regular_font">fonts/raleway_regular.ttf</string>
-    <string name="roboto_regular_font">fonts/roboto_regular.ttf</string>
-    <string name="roboto_light_font">fonts/roboto_light.ttf</string>
+    <string name="time_saved">समय की बचत:&#160;</string>
 
 
     <!-- Others -->
     <string name="ok">OK</string>
     <string name="exit_app">बाहर निकलने के लिए वापस फिर से दबाएं</string>
-    <string name="app_missing">No app to share invitation</string>
-    <string name="select_country">Select Country</string>
+    <string name="app_missing">आमंत्रण साझा करने के लिए कोई ऐप नहीं है</string>
+    <string name="select_country">देश चुनिए</string>
 
     <!--Me Screen-->
-
-
     <string name="logout">लॉग आउट</string>
-    <string name="login_register">Login / Register</string>
+    <string name="login_register">लॉग इन / रजिस्टर</string>
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
     <string name="logout_msg">लॉग इन नहीं होने पर बनाए गए डेटा को हमेशा के लिए खो दिया जा सकता है</string>
-    <string name="error_mobile_blank">Please enter phone number</string>
-    <string name="error_login">Please login to remote join</string>
-    <string name="error_remote_join_available">Yoy don\'t have enough remote join available</string>
-    <string name="error_rateservice">Please rate the service</string>
-    <string name="review_thanks">Thanks for feedback.</string>
-    <string name="error_timesaved">Please provide how many no. of hour(s) you saved.</string>
-    <string name="store_hour">Hours:</string>
-    <string name="store_today_hour">Today:</string>
-    <string name="store_closed">Closed Today</string>
+    <string name="error_mobile_blank">कृपया फोन नंबर दर्ज करें</string>
+    <string name="error_login">रिमोट जॉइन के लिए लॉग इन करें</string>
+     <string name="error_rateservice">कृपया सेवा को रेट करें</string>
+    <string name="review_thanks">प्रतिक्रिया के लिए धन्यवाद।</string>
+    <string name="error_timesaved">आपके समय की बचत हुई</string>
+    <string name="error_qrcode_scan">वैध NoQueue क्यूआर कोड नहीं है।</string>
+
+    <string name="verify_phone_auth">सत्यापित करें</string>
+    <string name="hint_verification_code">पुष्टि कोड</string>
+    <string name="status_code_sent">कोड भेज दिया गया</string>
+    <string name="status_verification_failed">सत्यापन असफल</string>
+    <string name="status_verification_succeeded">सत्यापन सफल हुआ</string>
+    <string name="status_sign_in_failed">साइन इन विफल हुआ</string>
+    <string name="instant_validation">ओटीपी दर्ज करें</string>
+    <string name="store_hour">समय:</string>
+    <string name="store_today_hour">आज:</string>
+    <string name="store_closed">आज बंद है।</string>
+
+    <!--Error  messages-->
     <string name="error_prevent_joining">%1$s %2$s is no longer accepting new token for the day</string>
     <string name="error_day_closed">%1$s %2$s is closed for the day</string>
     <string name="error_token_available_from">%1$s %2$s will start issuing new token after %3$s. Please try again after %3$s.</string>
@@ -117,13 +117,16 @@
     <string name="error_business_closed_permanent">%1$s %2$s is closed permanently</string>
     <string name="error_user_needs_to_be_logged_in">Please login to join %1$s %2$s</string>
     <string name="text_time_saved">How much time did you save ?</string>
+    <string name="authentication_fail_title">Authentication failure</string>
+    <string name="authentication_fail_msg">Please login again.</string>
     <string name="barcode_error">Queue not found</string>
     <string name="barcode_error_msg">No merchant is associated with this NoQueue code</string>
     <string name="copy_right">NoQApp &#174; is a trademark of NoQueue Inc.\n 2018 \u00a9 NoQueue &#174; Inc</string>
+    <string name="alert">सावधान</string>
     <string name="estimated_time">You will be serviced: %1$s</string>
     <string name="error_remote_join_not_available">This facility has not allowed joining queue remotely</string>
     <string name="error_join">QJoin</string>
-    <string name="login_hint">Enter phone no. without country code</string>
+    <string name="login_hint">देश के कोड के बिना फोन नंबर दर्ज करें। </string>
 
     <string name="btn_playstore">Open Play Store</string>
 
@@ -134,7 +137,7 @@
     <string name="notification_alert">You don\'t have any notifications.</string>
     <string name="home">होम</string>
     <string name="share">शेयर/साझा करें</string>
-    <string name="medical_history">Past Doctor Visits</string>
+    <string name="medical_history">पिछले डॉक्टर का दौरा</string>
     <string name="language_setting">भाषा बदलें</string>
     <string name="lang_dialog_title">भाषा बदलें</string>
     <string name="hindi"> हिंदी</string>
@@ -149,12 +152,12 @@
     <string name="prompt_address_status">पता</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
     <string name="medical_history_alert">You don\'t have any medical history.</string>
-    <string name="screen_order">Order Summary</string>
-    <string name="screen_order_confirm">Order Confirmation</string>
+    <string name="screen_order">ऑर्डर विवरण</string>
+    <string name="screen_order_confirm">ऑर्डर Confirmation</string>
     <string name="transaction_history">लेन-देन</string>
-    <string name="error_mobile_no_same">Please enter new mobile no</string>
-    <string name="password">Password <font color='red'>\u2731</font></string>
-    <string name="error_pwd_blank">Please enter password</string>
+    <string name="error_mobile_no_same">कृपया नया मोबाइल नंबर दर्ज करें</string>
+    <string name="password">पासवर्ड <font color='red'>\u2731</font></string>
+    <string name="error_pwd_blank">कृपया पासवर्ड भरें</string>
     <string name="error_pwd_not_match">Both password should match</string>
     <string name="error_pwd_length">Password should contains more than 6 characters</string>
     <string name="action_update_additional">Update Additional Info</string>
@@ -165,50 +168,65 @@
     <string name="experience">Experience</string>
     <string name="available_other_place">Avaliable at other places</string>
     <string name="whole_day">24 Hours</string>
-    <string name="error_patient_name_missing">Please select a patient name</string>
-    <string name="dependent_list">Dependent List</string>
-    <string name="personal_info">Personal Information</string>
+    <string name="error_patient_name_missing">कृपया एक रोगी का नाम चुनें</string>
+    <string name="dependent_list">निर्भर सूची</string>
+    <string name="personal_info">व्यक्तिगत जानकारी</string>
     <string name="location_change">Location update</string>
-    <string name="location_msg">It seems your location has been changed.Do you want to update it?</string>
+    <string name="location_msg">ऐसा लगता है कि आपका स्थान बदल गया है। क्या आप इसे अपडेट करना चाहते हैं?</string>
     <string name="token">TOKEN</string>
-    <string name="login_via_otp">Login/Register via OTP</string>
-    <string name="resend_otp">Resend OTP</string>
-    <string name="awards">Awards</string>
+    <string name="login_via_otp">ओटीपी के माध्यम से लॉगिन / पंजीकरण करें</string>
+    <string name="resend_otp">ओटीपी पुनः भेजें</string>
+    <string name="awards">पुरस्कार</string>
     <string name="new_location">We\'ve detected a change in your location. Would you like to update?</string>
     <string name="no_thanks">No Thanks</string>
-    <string name="update">Update</string>
-    <string name="patient_name">Patient Name</string>
-    <string name="add_dependent">Add Dependent</string>
-    <string name="queue_details">Queue Details</string>
+    <string name="update"> सुधार </string>
+    <string name="patient_name">रोगी का नाम</string>
+    <string name="add_dependent">आश्रित जोड़ें</string>
+    <string name="queue_details">कतार विवरण</string>
     <string name="will_be_served">will be served in</string>
     <string name="ack">Acknowledge</string>
     <string name="your_turn">It\'s your turn !!!</string>
-    <string name="photo">Photos</string>
-    <string name="amenities">Amenities</string>
-    <string name="facility">Facility</string>
+    <string name="photo">तस्वीरें</string>
+    <string name="amenities"> सुख-साधन</string>
+    <string name="facility">सुविधाएँ</string>
     <string name="skip_msg">You were skiped. \\nPress yes to join the queue again.</string>
     <string name="order_now">Order Now</string>
-    <string name="payment_due">Payment Due:</string>
-    <string name="total_tax">Total Tax:</string>
-    <string name="total_amount">Total Amount:</string>
-    <string name="order_details">Order details</string>
-    <string name="deliver_address">Delivery Address</string>
-    <string name="add_address">Add address</string>
-    <string name="mobile_no">Mobile no</string>
-    <string name="payment_mode">Payment mode</string>
-    <string name="payment_mode_cash">Cash</string>
+    <string name="payment_due">भुगतान राशि-</string>
+    <string name="total_tax">समस्त टैक्स-</string>
+    <string name="total_amount">कुल रकम-</string>
+    <string name="order_details">ऑर्डर का विवरण</string>
+    <string name="deliver_address">डिलिवरी का पता</string>
+    <string name="add_address">पता जोड़ें</string>
+    <string name="mobile_no">मोबाइल नंबर</string>
+    <string name="payment_mode">भुगतान के तरीके</string>
+    <string name="payment_mode_cash"> नकद</string>
     <string name="payment_mode_wallet">Wallet</string>
-    <string name="payment_mode_cards">Credit/Debit Card</string>
-    <string name="payment_mode_online">Online</string>
-    <string name="pwd">Password</string>
-    <string name="cnf_pwd">Confirm Password</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <string name="great">Great!!</string>
-    <string name="checkup_done_success">Your check up has been done Successfully</string>
+    <string name="payment_mode_cards">क्रेडिट / डेबिट कार्ड</string>
+    <string name="payment_mode_online">ऑनलाइन</string>
+    <string name="pwd">पासवर्ड</string>
+    <string name="cnf_pwd">पासवर्ड की पुष्टि कीजिये</string>
+    <string name="male">पुरुष</string>
+    <string name="female">स्त्री</string>
+    <string name="great">बहुत बढ़िया!!</string>
+    <string name="checkup_done_success">आपका चेक अप सफलतापूर्वक हो गया है</string>
+
+
+    <string name="mds_chief_complaints">Chief Complaint:</string>
+    <string name="mds_past_history">Past History:</string>
+    <string name="mds_family_history">Family History:</string>
+    <string name="mds_known_allergies">Known Allergies:</string>
+    <string name="mds_physical_exam">Physical Examination:</string>
+    <string name="mds_clinical_findings">Clinical Findings:</string>
+    <string name="mds_provisional_diagnosis">Provisional/Differential Diagnosis:</string>
+    <string name="mds_investigation_advice">Investigation Advised:</string>
+    <string name="mds_medication">Medication:</string>
+    <string name="mds_assist">Assist</string>
+    <string name="mds_follow_up">Follow up:</string>
+    <string name="mds_instruction">Instruction/Plan to patient:</string>
     <string name="about_me">About Doctor</string>
     <string name="license">License</string>
-    <string name="mds_pathology_invs_advice"><![CDATA[Investigation Advised >> Pathology:]]></string>
-    <string name="mds_radiology_invs_advice"><![CDATA[Investigation Advised >> Radiology:]]></string>
-    <string name="maps_direction"><![CDATA[Maps &amp; Directions]]></string>
+    <string name="mds_pathology_invs_advice">Investigation Advised >> Pathology:</string>
+    <string name="mds_radiology_invs_advice">Investigation Advised >> Radiology:</string>
+    <string name="maps_direction">मानचित्र और दिशा-निर्देश</string>
+
 </resources>

@@ -91,7 +91,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.75"
                         android:gravity="center_vertical"
-                        android:text="@string/autojoinon"
+                        android:text="Auto QJoin On Scan"
                         android:textColor="@color/color_total_val"
                         android:textSize="18sp" />
 
@@ -129,7 +129,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.75"
                         android:gravity="center_vertical"
-                        android:text="@string/remoteJoinAvail"
+                        android:text="Remote QJoin Available"
                         android:textColor="@color/color_total_val"
                         android:textSize="18sp" />
 
@@ -181,7 +181,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight=".5"
-                            android:text="@string/freeRemoteJoin"
+                            android:text="Get Free Remote Join"
                             android:textColor="@color/color_list_text"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -243,7 +243,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight=".5"
-                            android:text="@string/freeRemoteJoin"
+                            android:text="Get Free Remote Join"
                             android:textColor="@color/color_list_text"
                             android:textSize="16sp" />
                     </LinearLayout>

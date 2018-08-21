@@ -72,7 +72,7 @@ public class MeFragment extends NoQueueBaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_me));
+        //LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_me));
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
 
         String name = NoQueueBaseActivity.getUserName();

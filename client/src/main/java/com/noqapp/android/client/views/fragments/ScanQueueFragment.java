@@ -126,8 +126,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected TextView tv_update;
 
     private boolean fromList = false;
-    private CurrentActivityAdapter currentActivityAdapter;
-    private StoreInfoAdapter storeInfoAdapter;
     private RecentActivityAdapter recentActivityAdapter;
     private ArrayList<BizStoreElastic> nearMeData;
     private CurrentActivityAdapter.OnItemClickListener currentClickListner;
@@ -394,7 +392,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         //sort the list, give the Comparator the current location
         Collections.sort(nearMeData, new SortPlaces(new LatLng(lat, log)));
-        storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener, lat, log);
+        StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener, lat, log);
         rv_merchant_around_you.setAdapter(storeInfoAdapter);
         Log.v("NearMe", bizStoreElasticList.toString());
         scrollId = bizStoreElasticList.getScrollId();
@@ -567,7 +565,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void tokenCurrentQueueList(List<JsonTokenAndQueue> currentQueueList) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentQueueList.size()));
-        currentActivityAdapter = new CurrentActivityAdapter(currentQueueList, getActivity(), currentClickListner);
+        CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(currentQueueList, getActivity(), currentClickListner);
         rv_current_activity.setAdapter(currentActivityAdapter);
         tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentQueueList.size()) + ")");
         currentActivityAdapter.notifyDataSetChanged();

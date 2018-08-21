@@ -101,7 +101,7 @@ android {
 
     defaultConfig {
         applicationId "com.noqapp.android.client"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 27
         multiDexEnabled true
         testHandleProfiling true
@@ -354,8 +354,8 @@ dependencies {
     implementation 'net.danlew:android.joda:2.9.9.3'
     implementation 'com.google.guava:guava:23.6.1-android'
     implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-auth:16.0.2'
-    implementation 'com.google.firebase:firebase-messaging:17.1.0'
+    implementation 'com.google.firebase:firebase-auth:16.0.3'
+    implementation 'com.google.firebase:firebase-messaging:17.3.0'
     implementation 'com.google.android.gms:play-services-vision:15.0.2'
     implementation 'com.google.android.gms:play-services-location:15.0.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'

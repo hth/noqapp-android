@@ -6,11 +6,12 @@ package com.noqapp.android.client.views.activities;
 
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.MePresenter;
+import com.noqapp.android.client.model.RegisterModel;
+import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.views.interfaces.MeView;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 
@@ -45,7 +46,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class RegistrationActivity extends BaseActivity implements MeView, View.OnClickListener {
+public class RegistrationActivity extends BaseActivity implements ProfilePresenter, View.OnClickListener {
 
 
     private final String TAG = RegistrationActivity.class.getSimpleName();
@@ -101,7 +102,7 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
                 finish();
             }
         });
-        tv_toolbar_title.setText("Register");
+        tv_toolbar_title.setText(getString(R.string.register));
         dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         edt_birthday.setInputType(InputType.TYPE_NULL);
         edt_birthday.setOnClickListener(this);
@@ -198,6 +199,16 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
     @Override
     public void queueError() {
         Log.d(TAG, "Error");
+        dismissProgress();
+    }
+
+    @Override
+    public void queueError(String error) {
+        dismissProgress();
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
         dismissProgress();
     }
 
@@ -307,9 +318,6 @@ public class RegistrationActivity extends BaseActivity implements MeView, View.O
         registration.setTimeZoneId(tz.getID());
         registration.setCountryShortName(getIntent().getStringExtra("countryShortName"));
         registration.setInviteCode("");
-
-        MePresenter mePresenter = new MePresenter(this);
-        mePresenter.meView = this;
-        mePresenter.callProfile(registration);
+        new RegisterModel(this).register(UserUtils.getDeviceId(), registration);
     }
 }
