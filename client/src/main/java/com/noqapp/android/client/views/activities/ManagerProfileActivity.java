@@ -15,8 +15,14 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import com.squareup.picasso.Picasso;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.joda.time.Years;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,15 +38,18 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ManagerProfileActivity extends ProfileActivity implements QueueManagerPresenter {
 
     @BindView(R.id.tv_name)
     protected TextView tv_name;
-    @BindView(R.id.iv_edit)
-    protected ImageView iv_edit;
+    @BindView(R.id.tv_experience)
+    protected TextView tv_experience;
     private ImageView iv_profile;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -97,16 +106,32 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
 
     @Override
     public void queueManagerResponse(JsonProfessionalProfile jsonProfessionalProfile) {
-        Log.v("queueManagerResponse", jsonProfessionalProfile.toString());
-        switch (medicalDepartmentEnum) {
-            case PHY:
-                tv_name.setText(jsonProfessionalProfile.getName());
-                break;
-            default:
-                tv_name.setText("Dr. " + jsonProfessionalProfile.getName());
+        if(null != jsonProfessionalProfile ) {
+            Log.v("queueManagerResponse", jsonProfessionalProfile.toString());
+            switch (medicalDepartmentEnum) {
+                case PHY:
+                    tv_name.setText(jsonProfessionalProfile.getName());
+                    break;
+                default:
+                    tv_name.setText("Dr. " + jsonProfessionalProfile.getName());
+            }
+            if (!TextUtils.isEmpty(jsonProfessionalProfile.getPracticeStart())) {
+                try {
+                    // Format - practiceStart='2017-08-07'
+                    DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(jsonProfessionalProfile.getPracticeStart()));
+                    Period period = new Period(dateTime,new DateTime());
+                    tv_experience.setText(String.valueOf(period.getYears()) + "+ yrs experience");
+                    if(0==period.getYears())
+                       tv_experience.setText(" ");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            userAdditionalInfoFragment.updateUI(jsonProfessionalProfile);
+            userProfileFragment.updateUI(jsonProfessionalProfile.getStores(), jsonProfessionalProfile.getAboutMe());
+        }else{
+            Log.v("queueManagerResponse", "null data received");
         }
-        userAdditionalInfoFragment.updateUI(jsonProfessionalProfile);
-        userProfileFragment.updateUI(jsonProfessionalProfile.getStores(), jsonProfessionalProfile.getAboutMe());
         dismissProgress();
     }
 
