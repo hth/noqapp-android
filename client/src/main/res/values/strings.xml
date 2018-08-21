@@ -107,14 +107,10 @@
     <string name="logout_msg">Data created when not logged in could be lost forever</string>
     <string name="error_mobile_blank">Please enter phone number</string>
     <string name="error_login">Please login to remote join</string>
-    <string name="error_remote_join_available">You don\'t have enough remote join available</string>
-    <string name="error_rateservice">Please rate the service</string>
+     <string name="error_rateservice">Please rate the service</string>
     <string name="review_thanks">Thanks for feedback.</string>
     <string name="error_timesaved">Please provide how many no. of hour(s) you saved.</string>
-    <string name="scan_label">To join a Queue, please scan NoQueue QR Code</string>
     <string name="error_qrcode_scan">Not a valid NoQueue QR Code</string>
-
-
     <string name="verify_phone_auth">Verify</string>
     <string name="hint_verification_code">Verification Code</string>
     <string name="status_code_sent">Code Sent</string>
