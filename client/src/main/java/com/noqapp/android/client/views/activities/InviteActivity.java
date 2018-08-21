@@ -21,7 +21,6 @@ import butterknife.ButterKnife;
 
 public class InviteActivity extends AppCompatActivity {
 
-
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
     @BindView(R.id.fl_notification)
@@ -55,6 +54,5 @@ public class InviteActivity extends AppCompatActivity {
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_invite, inf, "").commit();
     }
-
 
 }

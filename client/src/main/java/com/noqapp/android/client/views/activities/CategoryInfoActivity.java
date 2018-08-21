@@ -6,7 +6,6 @@ package com.noqapp.android.client.views.activities;
 
 
 import static com.google.common.cache.CacheBuilder.newBuilder;
-import static com.noqapp.android.client.utils.AppUtilities.getTimeIn24HourFormat;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
@@ -19,7 +18,6 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -130,7 +128,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
             codeQR = bundle.getString(NoQueueBaseFragment.KEY_CODE_QR);
-            boolean callingFromHistory = bundle.getBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 QueueModel queueModel = new QueueModel();
@@ -162,14 +159,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            NoQueueBaseActivity.clearPreferences();
-            ShowAlertInformation.showAuthenticErrorDialog(this);
-        }
-        if (errorCode == Constants.INVALID_BAR_CODE) {
-            ShowAlertInformation.showBarcodeErrorDialog(LaunchActivity.getLaunchActivity());
-
-        }
+        AppUtilities.authenticationProcessing(this,errorCode);
     }
 
     @Override
@@ -300,7 +290,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         categoryMap.put("", new JsonCategory().setBizCategoryId("").setCategoryName(bizStoreElasticList.getBizStoreElastics().get(0).getBusinessName()));
         cacheCategory.put(CATEGORY, categoryMap);
 
-        int systemHourMinutes = getTimeIn24HourFormat();
         Map<String, ArrayList<BizStoreElastic>> queueMap = new HashMap<>();
         float ratingQueue = 0;
         int ratingCountQueue = 0, queueWithRating = 0;

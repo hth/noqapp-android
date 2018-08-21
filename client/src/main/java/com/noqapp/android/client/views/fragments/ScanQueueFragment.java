@@ -444,7 +444,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 in.putExtra(KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(KEY_FROM_LIST, true);
                 in.putExtra(KEY_JSON_TOKEN_QUEUE, item);
-                in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true);
                 in.putExtra(KEY_IS_HISTORY, false);
                 startActivity(in);
             } else {
@@ -461,7 +460,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
                 in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, true);
-                in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, false);
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
             }else{

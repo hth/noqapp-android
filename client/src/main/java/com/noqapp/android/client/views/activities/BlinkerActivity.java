@@ -17,9 +17,6 @@ import android.widget.TextView;
 
 
 public class BlinkerActivity extends Activity {
-
-    private RelativeLayout rl_blinker;
-    private TextView tv_close;
     private Thread thread;
     private Vibrator vibrator;
     private boolean stopVibrate = false;
@@ -28,14 +25,12 @@ public class BlinkerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blinker);
-
-
         WebView view = findViewById(R.id.myWebView);
         view.loadUrl("file:///android_asset/temp.gif");
         view.getSettings().setLoadWithOverviewMode(true);
         view.getSettings().setUseWideViewPort(true);
-        rl_blinker = findViewById(R.id.rl_blinker);
-        tv_close = findViewById(R.id.tv_close);
+        RelativeLayout rl_blinker = findViewById(R.id.rl_blinker);
+        TextView tv_close = findViewById(R.id.tv_close);
         tv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

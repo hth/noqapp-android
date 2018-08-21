@@ -11,8 +11,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 
@@ -21,22 +19,17 @@ import java.util.ArrayList;
  */
 public class CategoryListActivity extends BaseActivity implements CategoryListAdapter.OnItemClickListener {
 
-
-    @BindView(R.id.rv_category_list)
-    protected RecyclerView rv_category_list;
     private ArrayList<BizStoreElastic> jsonQueues;
-    private CategoryListAdapter categoryListAdapter;
-    private CategoryListAdapter.OnItemClickListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_list);
-        ButterKnife.bind(this);
-        initActionsViews(true);
-        listener = this;
-        String categoryName = getIntent().getStringExtra("categoryName");
 
+        initActionsViews(true);
+        CategoryListAdapter.OnItemClickListener listener = this;
+        String categoryName = getIntent().getStringExtra("categoryName");
+        RecyclerView rv_category_list = findViewById(R.id.rv_category_list);
         tv_toolbar_title.setText(categoryName);
         try {
             jsonQueues = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
@@ -45,7 +38,7 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
             jsonQueues = new ArrayList<>();
         }
 
-        categoryListAdapter = new CategoryListAdapter(jsonQueues, this, listener);
+        CategoryListAdapter categoryListAdapter = new CategoryListAdapter(jsonQueues, this, listener);
         rv_category_list.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

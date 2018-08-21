@@ -106,13 +106,13 @@ public final class QueueModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
+                    queuePresenter.queueError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-
                 queuePresenter.queueError();
             }
         });
@@ -132,13 +132,13 @@ public final class QueueModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
+                    queuePresenter.queueError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-
                 queuePresenter.queueError();
             }
         });
