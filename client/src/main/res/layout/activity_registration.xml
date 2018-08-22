@@ -149,7 +149,7 @@
                                 android:paddingBottom="10dp"
                                 android:paddingTop="10dp"
                                 android:text="@string/male"
-                                android:textSize="14sp"/>
+                                android:textSize="@dimen/text_size_fourteen"/>
 
                         <EditText
                                 android:id="@+id/tv_female"
@@ -162,7 +162,7 @@
                                 android:paddingBottom="10dp"
                                 android:paddingTop="10dp"
                                 android:text="@string/female"
-                                android:textSize="14sp"/>
+                                android:textSize="@dimen/text_size_fourteen"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -195,8 +195,7 @@
                     android:text="@string/btnregister"
                     android:textAllCaps="false"
                     android:textColor="@color/colorMobile"
-                    android:textSize="15sp"
-
+                    android:textSize="@dimen/text_size_fourteen"
                     />
         </LinearLayout>
     </ScrollView>

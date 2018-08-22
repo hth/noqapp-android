@@ -38,26 +38,28 @@
                     <TextView
                             style="@style/style_register_tv"
                             android:text="@string/education"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold"/>
 
 
                     <TextView
                             android:id="@+id/tv_education"
                             style="@style/style_register_tv"
-                            android:layout_width="match_parent"/>
+                            android:layout_width="match_parent"
+                            android:textSize="@dimen/text_size_twelve"/>
 
 
                     <TextView
                             style="@style/style_register_tv"
                             android:text="@string/awards"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold"/>
 
 
                     <TextView
                             android:id="@+id/tv_experience"
-                            style="@style/style_register_tv"/>
+                            style="@style/style_register_tv"
+                            android:textSize="@dimen/text_size_twelve"/>
 
                 </LinearLayout>
 

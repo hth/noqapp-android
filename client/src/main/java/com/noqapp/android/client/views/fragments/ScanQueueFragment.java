@@ -110,13 +110,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected ProgressBar pb_near;
     @BindView(R.id.autoCompleteTextView)
     protected AutoCompleteTextView autoCompleteTextView;
-
     @BindView(R.id.cv_update_location)
     protected CardView cv_update_location;
-
     @BindView(R.id.rl_current_activity)
     protected LinearLayout rl_current_activity;
-
     @BindView(R.id.tv_no_thanks)
     protected TextView tv_no_thanks;
     @BindView(R.id.tv_update)

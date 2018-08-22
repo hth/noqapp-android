@@ -1,110 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#99ffffff"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#99ffffff"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar_layout"/>
 
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-            <ImageView
-                android:id="@+id/header_cover_image"
+        <RelativeLayout
+                android:id="@+id/layout"
                 android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:scaleType="centerCrop"
-                android:src="@color/colorPrimary" />
+                android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-
-                android:id="@+id/iv_profile"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_below="@+id/header_cover_image"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="-90dp"
-                android:clickable="true"
-                android:elevation="5dp"
-                android:padding="20dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/profile_avatar"
-                app:border_color="#FFFFFFFF"
-                app:border_width="3dp" />
 
             <RelativeLayout
-                android:id="@+id/profile_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/header_cover_image"
-                android:background="@color/colorPrimary"
-                android:elevation="0dp"
-                android:paddingBottom="24dp">
+                    android:id="@+id/profile_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:layout_alignParentTop="true"
+                    android:elevation="0dp"
+                    android:paddingBottom="15dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_profile"
+                        android:layout_width="@dimen/profile_image_size"
+                        android:layout_height="@dimen/profile_image_size"
+                        android:layout_centerHorizontal="true"
+                        android:clickable="true"
+                        android:elevation="5dp"
+                        android:padding="20dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/profile_avatar"
+                        app:border_color="#FFFFFFFF"
+                        app:border_width="3dp"/>
 
                 <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="70dp"
-                    android:text=""
-                    android:textColor="#fff"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/iv_profile"
+                        android:layout_marginTop="10dp"
+                        android:text=""
+                        android:textColor="#fff"
+                        android:textSize="@dimen/text_size_sixteen"
+                        android:textStyle="bold"/>
 
 
             </RelativeLayout>
 
 
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/profile_layout"
-                android:layout_margin="5dp"
-                android:layout_marginTop="5dp"
-                android:background="#fff"
-                android:orientation="vertical"
-                android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="20dp">
-
-
-                <LinearLayout
+            <LinearLayout
                     android:id="@+id/email_login_form"
                     android:layout_width="match_parent"
+                    android:layout_below="@+id/profile_layout"
+                    android:padding="10dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
 
-                    <TextView
+                <TextView
                         style="@style/style_register_tv"
-                        android:text="@string/phone" />
+                        android:text="@string/phone"/>
 
 
-                    <EditText
+                <EditText
                         android:id="@+id/edt_phone"
                         style="@style/style_register_edt"
                         android:inputType="phone"
-                        android:maxLength="15" />
+                        android:maxLength="15"/>
 
 
-                    <TextView
+                <TextView
                         style="@style/style_register_tv"
-                        android:text="@string/name" />
+                        android:text="@string/name"/>
 
 
-                    <EditText
+                <EditText
                         android:id="@+id/edt_name"
                         style="@style/style_register_edt"
                         android:inputType="text"
@@ -112,56 +91,56 @@
 
                         />
 
-                    <TextView
+                <TextView
                         style="@style/style_register_tv"
-                        android:text="@string/mail" />
+                        android:text="@string/mail"/>
 
 
-                    <EditText
+                <EditText
                         android:id="@+id/edt_email"
                         style="@style/style_register_edt"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="textEmailAddress"/>
 
-                    <LinearLayout
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="1">
 
 
-                        <LinearLayout
+                    <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".50"
                             android:orientation="vertical"
                             android:paddingRight="10dp">
 
-                            <TextView
+                        <TextView
                                 style="@style/style_register_tv"
-                                android:text="@string/birthday" />
+                                android:text="@string/birthday"/>
 
-                            <EditText
+                        <EditText
                                 android:id="@+id/edt_birthday"
-                                style="@style/style_register_edt" />
-                        </LinearLayout>
+                                style="@style/style_register_edt"/>
+                    </LinearLayout>
 
-                        <LinearLayout
+                    <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".50"
                             android:orientation="vertical">
 
-                            <TextView
+                        <TextView
                                 style="@style/style_register_tv"
-                                android:text="@string/gender" />
+                                android:text="@string/gender"/>
 
-                            <LinearLayout
+                        <LinearLayout
                                 android:id="@+id/ll_gender"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:weightSum="1">
 
-                                <EditText
+                            <EditText
                                     android:id="@+id/tv_male"
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
@@ -172,9 +151,9 @@
                                     android:paddingBottom="10dp"
                                     android:paddingTop="10dp"
                                     android:text="@string/male"
-                                    android:textSize="14sp" />
+                                    android:textSize="@dimen/text_size_fourteen"/>
 
-                                <EditText
+                            <EditText
                                     android:id="@+id/tv_female"
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
@@ -185,19 +164,19 @@
                                     android:paddingBottom="10dp"
                                     android:paddingTop="10dp"
                                     android:text="@string/female"
-                                    android:textSize="14sp" />
+                                    android:textSize="@dimen/text_size_fourteen"/>
 
-                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
+                </LinearLayout>
 
 
-                    <TextView
+                <TextView
                         style="@style/style_register_tv"
-                        android:text="@string/prompt_address_status" />
+                        android:text="@string/prompt_address_status"/>
 
 
-                    <EditText
+                <EditText
                         android:id="@+id/edt_address"
                         style="@style/style_register_edt"
                         android:gravity="top|left"
@@ -205,12 +184,12 @@
                         android:lines="2"
                         android:maxLines="2"
                         android:minLines="2"
-                        android:singleLine="false" />
+                        android:singleLine="false"/>
 
 
-                    <Button
+                <Button
                         android:id="@+id/btn_update"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_gravity="center"
@@ -226,11 +205,10 @@
                         android:text="@string/action_update"
                         android:textAllCaps="false"
                         android:textColor="@color/colorMobile"
-                        android:textSize="15sp" />
+                        android:textSize="@dimen/text_size_fourteen"/>
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.constraint.ConstraintLayout>
         </RelativeLayout>
     </ScrollView>
 

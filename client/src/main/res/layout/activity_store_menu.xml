@@ -50,8 +50,7 @@
             android:layout_margin="10dp"
             android:textColor="@android:color/white"
             android:drawableRight="@drawable/order_arrow"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="@dimen/text_size_fourteen"/>
     </RelativeLayout>
 
 </LinearLayout>

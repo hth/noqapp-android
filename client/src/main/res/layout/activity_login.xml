@@ -40,7 +40,7 @@
                     android:inputType="numberSigned"
                     android:maxLength="3"
                     android:layout_marginRight="5dp"
-                    android:textSize="18sp"/>
+                    android:textSize="@dimen/text_size_fourteen"/>
 
             <EditText
                     android:id="@+id/edt_phone"
@@ -49,7 +49,7 @@
                     android:hint="@string/login_hint"
                     android:inputType="phone"
                     android:maxLength="15"
-                    android:textSize="18sp"/>
+                    android:textSize="@dimen/text_size_fourteen"/>
         </LinearLayout>
 
         <LinearLayout
@@ -97,7 +97,7 @@
                 android:text="@string/verify_phone_auth"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/text_size_fourteen"/>
 
         <Button
                 android:id="@+id/btn_login"
@@ -111,7 +111,7 @@
                 android:text="@string/login_via_otp"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/text_size_fourteen"/>
 
         <TextView
                 android:id="@+id/tv_detail"
@@ -119,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
+                android:textSize="@dimen/text_size_fourteen"
                 android:text="Hello"/>
     </LinearLayout>
 </LinearLayout>

@@ -25,14 +25,27 @@
     <dimen name="spacing_normal">16dp</dimen>
     <dimen name="history_detail_padding">10dp</dimen>
 
-    <dimen name="store_info">16sp</dimen>
-    <dimen name="store_sub_headers">16sp</dimen>
+    <dimen name="store_info">12sp</dimen>
+    <dimen name="store_sub_headers">12sp</dimen>
     <dimen name="btn_height">25dp</dimen>
-    <dimen name="rating_radius">40dp</dimen>
+    <dimen name="rating_radius">35dp</dimen>
     <dimen name="rating_padding">8dp</dimen>
-    <dimen name="rating_text_size">14dp</dimen>
-    <dimen name="mhd_header_size">16sp</dimen>
-    <dimen name="mhd_sub_header_size">14dp</dimen>
+    <dimen name="rating_text_size">12sp</dimen>
+    <dimen name="mhd_header_size">14sp</dimen>
+    <dimen name="mhd_sub_header_size">12dp</dimen>
     <dimen name="image_height">30dp</dimen>
     <dimen name="edt_height">40dp</dimen>
+
+    <dimen name="text_size_ten">10sp</dimen>
+    <dimen name="text_size_twelve">12sp</dimen>
+    <dimen name="text_size_fourteen">14sp</dimen>
+    <dimen name="text_size_sixteen">16sp</dimen>
+
+
+    <dimen name="segment_text_size">14sp</dimen>
+    <dimen name="segment_margin">3dp</dimen>
+
+    <dimen name="profile_image_size">120dp</dimen>
+
+
 </resources>

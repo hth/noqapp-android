@@ -36,14 +36,14 @@
                         android:gravity="center"
                         android:text=""
                         android:textColor="@android:color/black"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
 
                 <TextView
                         style="@style/style_join_queue_tv"
                         android:gravity="center"
                         android:text="@string/serving_now"
                         android:textColor="@color/colorAddress"
-                        android:textSize="15sp"/>
+                        android:textSize="@dimen/text_size_fourteen"/>
 
             </LinearLayout>
 
@@ -64,14 +64,14 @@
                         android:gravity="center"
                         android:text=""
                         android:textColor="@android:color/black"
-                        android:textSize="24sp"/>
+                        android:textSize="22sp"/>
 
                 <TextView
                         style="@style/style_join_queue_tv"
                         android:layout_marginTop="5dp"
                         android:gravity="center"
                         android:text="@string/your_token"
-                        android:textSize="15sp"/>
+                        android:textSize="@dimen/text_size_fourteen"/>
             </LinearLayout>
 
             <LinearLayout
@@ -90,13 +90,13 @@
                         android:gravity="center"
                         android:text=""
                         android:textColor="@android:color/black"
-                        android:textSize="24sp"/>
+                        android:textSize="18sp"/>
 
                 <TextView
                         style="@style/style_join_queue_tv"
                         android:text="@string/will_be_served"
                         android:textColor="@color/colorAddress"
-                        android:textSize="15sp"/>
+                        android:textSize="@dimen/text_size_twelve"/>
 
 
             </LinearLayout>
@@ -190,7 +190,7 @@
                     android:gravity="left"
                     android:text="@string/payment_due"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="@dimen/text_size_fourteen"/>
 
             <TextView
                     android:id="@+id/tv_due_amt"
@@ -199,7 +199,7 @@
                     android:layout_alignParentRight="true"
                     android:gravity="right"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="@dimen/text_size_fourteen"/>
         </RelativeLayout>
 
         <TextView
@@ -209,7 +209,7 @@
                 android:padding="10dp"
                 android:textColor="@color/colorAddress"
                 android:textStyle="bold"
-                android:textSize="20sp"/>
+                android:textSize="@dimen/text_size_sixteen"/>
 
         <TextView
                 android:id="@+id/tv_address"
@@ -222,7 +222,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textColor="@color/colorAddress"
-                android:textSize="16sp"/>
+                android:textSize="@dimen/text_size_fourteen"/>
 
     </LinearLayout>
 </LinearLayout>

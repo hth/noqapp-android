@@ -39,13 +39,14 @@
                     <TextView
                             style="@style/style_register_tv"
                             android:textStyle="bold"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size_fourteen"
                             android:text="@string/about_me"/>
 
 
                     <TextView
                             android:id="@+id/tv_about_me"
-                            style="@style/style_register_tv"/>
+                            style="@style/style_register_tv"
+                            android:textSize="@dimen/text_size_twelve"/>
 
 
                     <TextView
@@ -53,7 +54,7 @@
                             android:text="@string/available_other_place"
                             android:layout_marginBottom="10dp"
                             android:textStyle="bold"
-                            android:textSize="18sp"/>
+                            android:textSize="@dimen/text_size_fourteen"/>
 
 
                 </LinearLayout>

@@ -38,7 +38,8 @@
                 android:hint="Search Store/Queue"
                 android:maxLines="1"
                 android:minLines="1"
-                android:padding="10dp" />
+                android:padding="10dp"
+                android:textSize="@dimen/text_size_twelve"/>
 
             <AutoCompleteTextView
                 android:id="@+id/autoCompleteTextView"
@@ -56,7 +57,7 @@
                 android:padding="10dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/darker_gray"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_size_twelve"/>
 
             <TextView
                 android:id="@+id/tv_auto"
@@ -69,7 +70,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:text="Auto-detect Location"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_size_ten"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

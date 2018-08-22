@@ -41,7 +41,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_marginLeft="5dp"
-                        android:textSize="20sp"/>
+                        android:textSize="@dimen/text_size_fourteen"/>
 
 
                 <TextView
@@ -51,7 +51,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginBottom="5dp"
                         android:textColor="@color/color_btn_select"
-                        android:textSize="15sp"/>
+                        android:textSize="@dimen/text_size_twelve"/>
 
                 <TextView
                         android:id="@+id/tv_create"
@@ -59,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:textColor="@android:color/black"
-                        android:textSize="15sp"/>
+                        android:textSize="@dimen/text_size_twelve"/>
 
             </LinearLayout>
         </RelativeLayout>
