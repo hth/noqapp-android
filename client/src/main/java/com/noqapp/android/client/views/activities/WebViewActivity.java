@@ -6,7 +6,6 @@ import com.noqapp.android.client.utils.Constants;
 
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -67,15 +66,7 @@ public class WebViewActivity extends AppCompatActivity {
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
         webView.getSettings().setRenderPriority(RenderPriority.HIGH);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // chromium, enable hardware acceleration
-            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        } else {
-            // older android version, disable hardware acceleration
-            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
-
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.loadUrl(url);
         webView.setOnKeyListener(new OnKeyListener() {
@@ -147,9 +138,7 @@ public class WebViewActivity extends AppCompatActivity {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            // TODO Auto-generated method stub
             //super.onPageFinished(view, url);
-
             try {
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();

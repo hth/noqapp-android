@@ -40,7 +40,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     protected static boolean display = true;
     static SplashScreen splashScreen;
     protected boolean isActive = true;
-    protected int splashTime = 400000;
+    protected int splashTime = 40000;
     private String TAG = SplashScreen.class.getSimpleName();
     private String fcmToken = "";
     private String APP_PREF = "splashPref";

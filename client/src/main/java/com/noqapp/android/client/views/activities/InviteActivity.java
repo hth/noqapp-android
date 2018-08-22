@@ -44,7 +44,7 @@ public class InviteActivity extends AppCompatActivity {
                 finish();
             }
         });
-        tv_toolbar_title.setText("Invite");
+        tv_toolbar_title.setText(getString(R.string.screen_invite));
         Bundle b = new Bundle();
         b.putString("invite_code", NoQueueBaseActivity.getInviteCode());
         InviteFragment inf = new InviteFragment();

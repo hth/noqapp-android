@@ -47,33 +47,6 @@ public abstract class Scanner extends NoQueueBaseFragment {
         }
     }
 
-//    @Override
-//    public void barcodeScannedResult(String rawData) {
-//        Log.v(TAG, "Scanned CodeQR=" + rawData);
-//        if (StringUtils.isBlank(rawData)) {
-//            Log.d("MainActivity", "Cancelled scan");
-//            Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
-//        } else {
-//            if (rawData.startsWith("https://q.noqapp.com")) {
-//                try {
-//                    String[] codeQR = rawData.split("/");
-//                    //endswith - q.htm or b.htm
-//                    // to define weather we need to show category screen or join screen
-//                    boolean isCategoryData = rawData.endsWith("b.htm");
-//                    barcodeResult(codeQR[3], isCategoryData);
-//
-//                    Answers.getInstance().logCustom(new CustomEvent("Scan")
-//                            .putCustomAttribute("codeQR", codeQR[3]));
-//                } catch (Exception e) {
-//                    Log.e(TAG, "Failed parsing codeQR reason=" + e.getLocalizedMessage(), e);
-//                }
-//            } else {
-//                Toast toast = Toast.makeText(getActivity(), getString(R.string.error_qrcode_scan), Toast.LENGTH_SHORT);
-//                toast.show();
-//            }
-//        }
-//    }
-
     protected abstract void barcodeResult(String codeQR, boolean isCategoryData);
 
     @Override
@@ -82,21 +55,9 @@ public abstract class Scanner extends NoQueueBaseFragment {
     }
 
     private void scanBarcode() {
-//        Display display = getActivity().getWindowManager().getDefaultDisplay();
-//        DisplayMetrics dm = new DisplayMetrics();
-//        display.getMetrics(dm);
-//        int width = dm.widthPixels * 2 / 3;
-//        int height = dm.heightPixels / 2;
-//        Intent intent = new Intent(getActivity(), BarcodeScannerActivity.class);
-//        intent.setAction("com.google.zxing.client.android.SCAN");
-//        intent.putExtra("SCAN_WIDTH", width);
-//        intent.putExtra("SCAN_HEIGHT", height);
-//        startActivityForResult(intent, 0);
-
         Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
         intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
         intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
-
         startActivityForResult(intent, RC_BARCODE_CAPTURE);
     }
 

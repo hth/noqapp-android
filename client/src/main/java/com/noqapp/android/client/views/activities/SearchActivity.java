@@ -47,9 +47,9 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
     protected TextView tv_auto;
     @BindView(R.id.autoCompleteTextView)
     protected AutoCompleteTextView autoCompleteTextView;
+
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
-    private StoreInfoViewAllAdapter.OnItemClickListener listener;
     private String scrollId = "";
     private String city = "";
     private String lat = "";
@@ -62,8 +62,7 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
         initActionsViews(false);
-        tv_toolbar_title.setText("Search");
-        listener = this;
+        tv_toolbar_title.setText(getString(R.string.screen_search));
         nearMeModel = new NearMeModel(this);
         //getString(R.string.medical_history));
         city = getIntent().getStringExtra("city");
@@ -77,7 +76,7 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
         rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
         // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
-        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, listener, rv_merchant_around_you);
+        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, this, rv_merchant_around_you);
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
         storeInfoViewAllAdapter.setOnLoadMoreListener(new StoreInfoViewAllAdapter.OnLoadMoreListener() {
             @Override
@@ -235,8 +234,7 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
 
     @Override
     public void nearMeError() {
-        //LaunchActivity.getLaunchActivity().dismissProgress();
-
+        dismissProgress();
     }
 
 }

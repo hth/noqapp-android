@@ -19,7 +19,6 @@ import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.order.JsonStoreProduct;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
-import com.noqapp.android.common.utils.Formatter;
 
 import com.squareup.picasso.Picasso;
 
@@ -60,15 +59,12 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private BizStoreElastic bizStoreElastic;
     private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView rv_thumb_images, rv_photos;
-    private ImageView collapseImageView;
     private AppBarLayout appBarLayout;
     private ImageView iv_business_icon;
     private boolean canAddItem = true;
     private RelativeLayout rl_mid_content;
-    private RatingBar ratingBar;
     private TextView tv_rating, tv_rating_review;
     private SegmentedControl sc_amenities, sc_delivery_types, sc_payment_mode;
-    private String defaultCategory = "Un-Categorized";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,11 +86,11 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         sc_payment_mode = findViewById(R.id.sc_payment_mode);
         sc_delivery_types = findViewById(R.id.sc_delivery_types);
         sc_amenities = findViewById(R.id.sc_amenities);
-        collapseImageView = findViewById(R.id.backdrop);
+        ImageView collapseImageView = findViewById(R.id.backdrop);
         rl_mid_content = findViewById(R.id.rl_mid_content);
         iv_business_icon = findViewById(R.id.iv_business_icon);
         appBarLayout = findViewById(R.id.appbar);
-        ratingBar = findViewById(R.id.ratingBar);
+        RatingBar ratingBar = findViewById(R.id.ratingBar);
         collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -277,7 +273,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         ThumbnailGalleryAdapter adapter1 = new ThumbnailGalleryAdapter(this, storeInteriorImages);
         rv_photos.setAdapter(adapter1);
         //
-
+        String defaultCategory = "Un-Categorized";
         //  {
         //TODO @Chandra Optimize the loop
         final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
@@ -323,8 +319,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             tv_menu.setClickable(false);
             tv_menu.setText("Closed");
         }
-        //JsonHour jsonHour = AppUtilities.getJsonHour(jsonStore.getJsonHours());
-       // tv_store_open_status.setText(Formatter.convertMilitaryTo12HourFormat(jsonHour.getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonHour.getEndHour()));
         tv_store_timings.setText(Html.fromHtml(new AppUtilities().orderTheTimings(this, jsonStore.getJsonHours())));
     }
 
@@ -336,6 +330,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
+        AppUtilities.authenticationProcessing(this,errorCode);
     }
 
     private boolean isStoreOpenToday(JsonStore jsonStore) {

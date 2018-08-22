@@ -23,13 +23,10 @@ import java.util.ArrayList;
 
 public class SliderActivity extends AppCompatActivity {
 
-    private ViewPager vp_slider;
     private LinearLayout ll_dots;
-    private SliderPagerAdapter sliderPagerAdapter;
     private ArrayList<String> slider_image_list = null;
-    private TextView[] dots;
     private int page_position = 0;
-    private ImageView actionbarBack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +35,7 @@ public class SliderActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_slider_pager);
-        actionbarBack = findViewById(R.id.actionbarBack);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
         page_position = getIntent().getIntExtra("pos", 0);
         init();
         addBottomDots(page_position);
@@ -53,15 +50,14 @@ public class SliderActivity extends AppCompatActivity {
     }
 
     private void init() {
-
-        // setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        // getSupportActionBar().hide();
-        vp_slider = findViewById(R.id.vp_slider);
+        ViewPager vp_slider = findViewById(R.id.vp_slider);
         ll_dots = findViewById(R.id.ll_dots);
         Bundle b = getIntent().getExtras();
-        slider_image_list = b.getStringArrayList("imageurls");
-
-        sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list);
+        if (null != b)
+            slider_image_list = b.getStringArrayList("imageurls");
+        else
+            slider_image_list = new ArrayList<>();
+        SliderPagerAdapter sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list);
         vp_slider.setAdapter(sliderPagerAdapter);
         vp_slider.setCurrentItem(page_position);
         vp_slider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -83,7 +79,7 @@ public class SliderActivity extends AppCompatActivity {
     }
 
     private void addBottomDots(int currentPage) {
-        dots = new TextView[slider_image_list.size()];
+        TextView[] dots = new TextView[slider_image_list.size()];
         ll_dots.removeAllViews();
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);

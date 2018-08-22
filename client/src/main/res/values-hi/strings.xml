@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">NoQApp</string>LaunchActivity
     <string name="title_activity_launch">NoQApp</string>
+    <!--Screen Name-->
+    <string name="tab_scan">NoQueue</string>
+    <string name="screen_qdetails">QDetails</string>
+    <string name="screen_invite">आमंत्रण</string>
+    <string name="screen_review">समीक्षा</string>
+    <string name="screen_notification">सूचनाएं</string>
+    <string name="screen_legal">वैधानिक</string>
+    <string name="screen_invite_details">आमंत्रण विवरण</string>
+    <string name="screen_join">QJoin</string>
+    <string name="screen_search">तलाशी</string>
+    <string name="screen_profile">प्रोफाइल</string>
+    <string name="screen_edit_profile">प्रोफाइल एडिट करें</string>
+    <string name="screen_view_all">समग्र अवलोकन</string>
 
     <string name="action_settings">सेटिंग्स</string>
     <string name="join">जुड़ें</string>
@@ -223,10 +236,11 @@
     <string name="mds_assist">Assist</string>
     <string name="mds_follow_up">Follow up:</string>
     <string name="mds_instruction">Instruction/Plan to patient:</string>
-    <string name="about_me">About Doctor</string>
-    <string name="license">License</string>
+    <string name="about_me">डॉक्टर के बारे में</string>
+    <string name="license">लाइसेंस</string>
     <string name="mds_pathology_invs_advice">Investigation Advised >> Pathology:</string>
     <string name="mds_radiology_invs_advice">Investigation Advised >> Radiology:</string>
     <string name="maps_direction">मानचित्र और दिशा-निर्देश</string>
+
 
 </resources>

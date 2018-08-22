@@ -50,11 +50,13 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
 
     private final String TAG = RegistrationActivity.class.getSimpleName();
-    public String gender = "";
+
     @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
+
     @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
+
     @BindView(R.id.edt_phone)
     protected EditText edt_phoneNo;
 
@@ -90,6 +92,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
+    public String gender = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

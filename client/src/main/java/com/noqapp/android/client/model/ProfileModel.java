@@ -50,19 +50,24 @@ public class ProfileModel {
         profileService.fetch(mail, auth).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    profilePresenter.authenticationFailure(response.code());
+                    return;
+                }
+
                 if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.queueResponse(response.body(), mail, auth);
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
+                    profilePresenter.queueError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-
                 profilePresenter.queueError();
             }
         });
@@ -72,7 +77,7 @@ public class ProfileModel {
         profileService.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     profilePresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -83,6 +88,7 @@ public class ProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed updating profile " + response.body().getError());
+                    profilePresenter.queueError(response.body().getError().getReason());
                 }
             }
 
@@ -98,7 +104,7 @@ public class ProfileModel {
         profileService.migrate(mail, auth, migrateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     profilePresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -126,7 +132,7 @@ public class ProfileModel {
         profileService.address(mail, auth).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     profileAddressPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -150,11 +156,11 @@ public class ProfileModel {
         });
     }
 
-    public void addProfileAddress(final String mail, final String auth,JsonUserAddress jsonUserAddress) {
-        profileService.addressAdd(mail, auth,jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
+    public void addProfileAddress(final String mail, final String auth, JsonUserAddress jsonUserAddress) {
+        profileService.addressAdd(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     profileAddressPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -178,11 +184,11 @@ public class ProfileModel {
         });
     }
 
-    public void deleteProfileAddress(final String mail, final String auth,JsonUserAddress jsonUserAddress) {
-        profileService.addressDelete(mail, auth,jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
+    public void deleteProfileAddress(final String mail, final String auth, JsonUserAddress jsonUserAddress) {
+        profileService.addressDelete(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     profileAddressPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -220,6 +226,7 @@ public class ProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed image upload");
+                    imageUploadPresenter.imageUploadError();
                 }
             }
 

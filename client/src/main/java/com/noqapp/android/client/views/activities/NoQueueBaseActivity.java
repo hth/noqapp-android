@@ -125,8 +125,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(PREKEY_GENDER, profile.getGender().name());
         editor.putString(PREKEY_DOB, profile.getBirthday());
         editor.putString(PREKEY_MAIL, profile.getMail());
-        // editor.putInt(PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
-        // editor.putBoolean(PREKEY_AUTOJOIN, true);
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
         editor.putString(PREKEY_ADD, profile.getAddress());

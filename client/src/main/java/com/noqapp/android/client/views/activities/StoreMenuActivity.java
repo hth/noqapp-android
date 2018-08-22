@@ -9,15 +9,13 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
 import com.noqapp.android.client.views.adapters.MenuAdapter;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
+import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.FragmentDummy;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,10 +44,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
     protected TextView tv_place_order;
     @BindView(R.id.rcv_header)
     protected RecyclerView rcv_header;
-    private ExpandableListView expandableListView;
-    private CustomExpandableListAdapter expandableListAdapter;
-    private List<JsonStoreCategory> expandableListTitle;
-    private HashMap<String, List<ChildData>> expandableListDetail;
+
     private JsonQueue jsonQueue;
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
@@ -67,15 +62,15 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
             }
         });
         tv_toolbar_title.setText("Menu");
-        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
+        ExpandableListView expandableListView = findViewById(R.id.expandableListView);
         jsonQueue = (JsonQueue) getIntent().getSerializableExtra("jsonQueue");
-        expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
-        expandableListDetail = (HashMap<String, List<ChildData>>) getIntent().getExtras().getSerializable("listDataChild");
-        expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail, this);
+        List<JsonStoreCategory> expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
+        HashMap<String, List<ChildData>> expandableListDetail = (HashMap<String, List<ChildData>>) getIntent().getExtras().getSerializable("listDataChild");
+        CustomExpandableListAdapter expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail, this);
         expandableListView.setAdapter(expandableListAdapter);
 
         viewPager = findViewById(R.id.pager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         ArrayList<Integer> removeEmptyData = new ArrayList<>();
         for (int i = 0; i < expandableListTitle.size(); i++) {
             if (expandableListDetail.get(expandableListTitle.get(i).getCategoryId()).size() > 0)
@@ -123,7 +118,6 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                         //HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();  old one
                         HashMap<String, ChildData> getOrder = getOrders();
 
-
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                         int price = 0;
                         for (ChildData value : getOrder.values()) {
@@ -168,13 +162,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
 
     @Override
     public void updateCartInfo(int amountString) {
-        if (amountString > 0) {
-            tv_place_order.setVisibility(View.VISIBLE);
-            tv_place_order.setText("Your cart amount is: " + amountString);
-        } else {
-            tv_place_order.setVisibility(View.GONE);
-            tv_place_order.setText("");
-        }
+        updateCartOrderInfo(amountString);
     }
 
     @Override
@@ -197,32 +185,4 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
         return orders;
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }
 }

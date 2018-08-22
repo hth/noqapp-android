@@ -196,7 +196,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
         private ImageView iv_main;
         private CardView card_view;
 
-        public MyViewHolder(View itemView) {
+        private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
             this.tv_address = itemView.findViewById(R.id.tv_address);
@@ -214,7 +214,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     public static class ProgressViewHolder extends RecyclerView.ViewHolder {
         public ProgressBar progressBar;
 
-        public ProgressViewHolder(View v) {
+        private ProgressViewHolder(View v) {
             super(v);
             progressBar = v.findViewById(R.id.progressBar);
         }

@@ -74,7 +74,9 @@
                         android:id="@+id/tv_invite_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="5dp"
                         android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:textSize="18sp" />
 
                     <EditText

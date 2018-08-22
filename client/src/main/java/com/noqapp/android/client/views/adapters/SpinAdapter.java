@@ -13,16 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpinAdapter extends ArrayAdapter<JsonUserAddress> {
-
-    // Your sent context
-    private Context context;
-    // Your custom values for the spinner (User)
     private List<JsonUserAddress> values = new ArrayList<>();
 
     public SpinAdapter(Context context, int textViewResourceId,
                        List<JsonUserAddress> values) {
         super(context, textViewResourceId, values);
-        this.context = context;
         this.values = values;
     }
 

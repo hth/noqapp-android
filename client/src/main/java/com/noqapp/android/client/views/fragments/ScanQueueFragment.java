@@ -82,10 +82,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
-    private static final int MSG_CURRENT_QUEUE = 0;
-    private static final int MSG_HISTORY_QUEUE = 1;
-    private static TokenQueueViewInterface tokenQueueViewInterface;
-    private static QueueHandler mHandler;
+
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     @BindView(R.id.cv_scan)
     protected CardView cv_scan;
@@ -137,6 +134,11 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     private boolean isFirstTimeUpdate = true;
     private static final String SHOWCASE_ID = "sequence example";
     private boolean isNotShown = true;
+    private static final int MSG_CURRENT_QUEUE = 0;
+    private static final int MSG_HISTORY_QUEUE = 1;
+    private static TokenQueueViewInterface tokenQueueViewInterface;
+    private static QueueHandler mHandler;
+
 
     public ScanQueueFragment() {
 

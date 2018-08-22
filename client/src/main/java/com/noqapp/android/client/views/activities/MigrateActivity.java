@@ -35,8 +35,6 @@ public class MigrateActivity extends OTPActivity {
     protected void callApi(String phoneNumber) {
         progressDialog.setMessage("Account migration in progress");
         TimeZone tz = TimeZone.getDefault();
-        Log.d(TAG, "TimeZone=" + tz.getDisplayName(false, TimeZone.SHORT) + " TimezoneId=" + tz.getID());
-
         MigrateProfile migrateProfile = new MigrateProfile();
         migrateProfile.setCountryShortName(countryShortName);
         migrateProfile.setTimeZoneId(tz.getID());

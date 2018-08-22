@@ -17,7 +17,6 @@ import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.SpinAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
@@ -42,7 +41,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -75,6 +73,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     protected TextView tv_place_order;
     @BindView(R.id.ll_order_details)
     protected LinearLayout ll_order_details;
+
     private JsonPurchaseOrder jsonPurchaseOrder;
     private ProfileModel profileModel;
     private PurchaseApiModel purchaseApiModel;
@@ -155,7 +154,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         } else {
             LatLng latLng_d = AppUtilities.getLocationFromAddress(this, edt_address.getText().toString());
             LatLng latLng_s = AppUtilities.getLocationFromAddress(this, getIntent().getExtras().getString("storeAddress"));
-            if (null != latLng_d) {
+            if (null != latLng_d && null != latLng_s) {
                 float distance = (float) AppUtilities.calculateDistance(
                         (float) latLng_s.latitude,
                         (float) latLng_s.longitude,
@@ -219,8 +218,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     @Override
     public void authenticationFailure(int errorCode) {
-        Toast.makeText(this, "Error code : " + "" + errorCode, Toast.LENGTH_LONG).show();
         dismissProgress();
+        AppUtilities.authenticationProcessing(this,errorCode);
     }
 
     @Override
@@ -243,9 +242,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
         final List<JsonUserAddress> notificationsList = jsonUserAddressList.getJsonUserAddresses();
         Log.e("address list: ",notificationsList.toString());
-        ArrayAdapter adapter = new SpinAdapter(OrderActivity.this,
-                android.R.layout.simple_spinner_item,
-                notificationsList);
         rg_address.removeAllViews();
         for (int i = 0; i < notificationsList.size(); i++) {
             final AppCompatRadioButton rdbtn = new AppCompatRadioButton(this);
