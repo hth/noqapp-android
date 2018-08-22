@@ -12,6 +12,7 @@ import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
@@ -20,59 +21,42 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.joda.time.Period;
-import org.joda.time.Years;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class ManagerProfileActivity extends ProfileActivity implements QueueManagerPresenter {
 
-    @BindView(R.id.tv_name)
-    protected TextView tv_name;
-    @BindView(R.id.tv_experience)
-    protected TextView tv_experience;
-    private ImageView iv_profile;
+    private TextView tv_name;
+    private TextView tv_experience;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private LoadTabs loadTabs;
     private UserProfileFragment userProfileFragment;
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
-    private String webProfileId = "";
-    private String managerName = "";
-    private String managerImageUrl = "";
     private MedicalDepartmentEnum medicalDepartmentEnum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue_manager_profile);
-        ButterKnife.bind(this);
         initActionsViews(false);
         tv_toolbar_title.setText("Doctor Profile");
-        iv_profile = findViewById(R.id.iv_profile);
-        webProfileId = getIntent().getStringExtra("webProfileId");
-        managerName = getIntent().getStringExtra("managerName");
-        managerImageUrl = getIntent().getStringExtra("managerImage");
+        ImageView iv_profile = findViewById(R.id.iv_profile);
+        String webProfileId = getIntent().getStringExtra("webProfileId");
+        String managerName = getIntent().getStringExtra("managerName");
+        String managerImageUrl = getIntent().getStringExtra("managerImage");
         medicalDepartmentEnum = MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId"));
+        tv_name = findViewById(R.id.tv_name);
+        tv_experience = findViewById(R.id.tv_experience);
         tv_name.setText(managerName);
         Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
@@ -100,13 +84,8 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
 
 
     @Override
-    public void authenticationFailure(int errorCode) {
-        dismissProgress();
-    }
-
-    @Override
     public void queueManagerResponse(JsonProfessionalProfile jsonProfessionalProfile) {
-        if(null != jsonProfessionalProfile ) {
+        if (null != jsonProfessionalProfile) {
             Log.v("queueManagerResponse", jsonProfessionalProfile.toString());
             switch (medicalDepartmentEnum) {
                 case PHY:
@@ -119,17 +98,17 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
                 try {
                     // Format - practiceStart='2017-08-07'
                     DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(jsonProfessionalProfile.getPracticeStart()));
-                    Period period = new Period(dateTime,new DateTime());
+                    Period period = new Period(dateTime, new DateTime());
                     tv_experience.setText(String.valueOf(period.getYears()) + "+ yrs experience");
-                    if(0==period.getYears())
-                       tv_experience.setText(" ");
+                    if (0 == period.getYears())
+                        tv_experience.setText(" ");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             userAdditionalInfoFragment.updateUI(jsonProfessionalProfile);
             userProfileFragment.updateUI(jsonProfessionalProfile.getStores(), jsonProfessionalProfile.getAboutMe());
-        }else{
+        } else {
             Log.v("queueManagerResponse", "null data received");
         }
         dismissProgress();
@@ -144,7 +123,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     private void setupViewPager(ViewPager viewPager) {
         userProfileFragment = new UserProfileFragment();
         userAdditionalInfoFragment = new UserAdditionalInfoFragment();
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(userProfileFragment, "Profile");
         adapter.addFragment(userAdditionalInfoFragment, "Additional Info");
         viewPager.setAdapter(adapter);
@@ -177,35 +156,6 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
         }
     }
 }

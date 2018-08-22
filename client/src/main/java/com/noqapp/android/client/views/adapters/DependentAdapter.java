@@ -15,10 +15,8 @@ import java.util.List;
 
 public class DependentAdapter extends ArrayAdapter<JsonProfile> {
 
-
     private final Context mContext;
     private final List<JsonProfile> items;
-
 
     public DependentAdapter(Context context,
                             List<JsonProfile> items) {

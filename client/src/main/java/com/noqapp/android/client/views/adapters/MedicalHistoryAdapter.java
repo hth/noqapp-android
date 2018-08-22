@@ -14,7 +14,6 @@ import android.widget.TextView;
 import java.util.List;
 
 public class MedicalHistoryAdapter extends BaseAdapter {
-    private static final String TAG = MedicalHistoryAdapter.class.getSimpleName();
     private Context context;
     private List<JsonMedicalRecord> jsonMedicalRecordList;
 

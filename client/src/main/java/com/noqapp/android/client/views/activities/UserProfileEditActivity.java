@@ -100,7 +100,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         setContentView(R.layout.activity_user_edit_profile);
         ButterKnife.bind(this);
         initActionsViews(false);
-        tv_toolbar_title.setText("Edit Profile");
+        tv_toolbar_title.setText(getString(R.string.screen_edit_profile));
         iv_profile = findViewById(R.id.iv_profile);
         profileModel = new ProfileModel();
         loadProfilePic();
@@ -335,7 +335,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
 
     @Override
     public void authenticationFailure(int errorCode) {
-        //TODO(chandra)
+        dismissProgress();
+        AppUtilities.authenticationProcessing(this,errorCode);
     }
 
     private void updateUI() {

@@ -104,17 +104,19 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
         if (null != extras) {
             jtk = (JsonTokenAndQueue) extras.getSerializable("object");
-            tv_store_name.setText(jtk.getBusinessName());
-            tv_queue_name.setText(jtk.getDisplayName());
-            tv_address.setText(jtk.getStoreAddress());
-            String datetime = DateFormat.getDateTimeInstance().format(new Date());
-            tv_mobile.setText(datetime);
-            List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
-            profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
-            if (BuildConfig.BUILD_TYPE.equals("debug")) {
-                tv_details.setText("Token: " + jtk.getToken() + " : " + jtk.getQueueUserId());
-            } else {
-                tv_details.setText("Token: " + jtk.getToken() + " : " + AppUtilities.getNameFromQueueUserID(jtk.getQueueUserId(), profileList));
+            if(null != jtk) {
+                tv_store_name.setText(jtk.getBusinessName());
+                tv_queue_name.setText(jtk.getDisplayName());
+                tv_address.setText(jtk.getStoreAddress());
+                String datetime = DateFormat.getDateTimeInstance().format(new Date());
+                tv_mobile.setText(datetime);
+                List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
+                profileList.add(0, NoQueueBaseActivity.getUserProfile());
+                if (BuildConfig.BUILD_TYPE.equals("debug")) {
+                    tv_details.setText("Token: " + jtk.getToken() + " : " + jtk.getQueueUserId());
+                } else {
+                    tv_details.setText("Token: " + jtk.getToken() + " : " + AppUtilities.getNameFromQueueUserID(jtk.getQueueUserId(), profileList));
+                }
             }
         } else {
             //Do nothing as of now
@@ -237,7 +239,13 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
     @Override
     public void reviewError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void authenticationFailure(int errorCode) {
+        progressDialog.dismiss();
+        AppUtilities.authenticationProcessing(this,errorCode);
     }
 
 

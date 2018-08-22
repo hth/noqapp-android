@@ -67,6 +67,7 @@ public class NearMeModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history");
+                    nearMePresenter.nearMeError();
                 }
             }
 

@@ -69,7 +69,7 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
         public ImageView iv_photo;
         public TextView tv_title;
 
-        public MyViewHolder(View itemView) {
+        private MyViewHolder(View itemView) {
             super(itemView);
             iv_photo = itemView.findViewById(R.id.iv_photo);
             tv_title = itemView.findViewById(R.id.tv_title);

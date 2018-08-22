@@ -98,7 +98,7 @@
                                     android:layout_marginTop="10dp"
                                     android:padding="5dp"
                                     android:textColor="@color/colorAddress"
-                                    android:textSize="14sp"/>
+                                    android:textSize="@dimen/text_size_twelve"/>
                         </RelativeLayout>
                     </RelativeLayout>
 
@@ -117,7 +117,7 @@
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginTop="3dp"
                                 android:textColor="@android:color/black"
-                                android:textSize="18sp"
+                                android:textSize="@dimen/text_size_fourteen"
                                 android:textStyle="bold"/>
 
                         <TextView
@@ -125,7 +125,7 @@
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginBottom="3dp"
                                 android:textColor="@color/colorAddress"
-                                android:textSize="14sp"/>
+                                android:textSize="@dimen/text_size_twelve"/>
 
                         <Button
                                 android:id="@+id/btn_join_queues"
@@ -137,7 +137,7 @@
                                 android:padding="10dp"
                                 android:textAllCaps="false"
                                 android:textColor="@android:color/white"
-                                android:textSize="15sp"/>
+                                android:textSize="@dimen/text_size_fourteen"/>
 
                         <View
                                 android:layout_width="match_parent"
@@ -151,7 +151,7 @@
                                 android:layout_marginBottom="5dp"
                                 android:text="@string/photo"
                                 android:textColor="@android:color/black"
-                                android:textSize="14sp"/>
+                                android:textSize="@dimen/text_size_twelve"/>
 
                         <android.support.v7.widget.RecyclerView
                                 android:id="@+id/rv_thumb_images"
@@ -165,24 +165,13 @@
                                 android:layout_marginBottom="5dp"
                                 android:text="@string/amenities"
                                 android:textColor="@android:color/black"
-                                android:textSize="14sp"/>
+                                android:textSize="@dimen/text_size_twelve"/>
 
-                        <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+
+                        <include
+                                layout="@layout/lay_segment"
                                 android:id="@+id/sc_amenities"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                app:distributeEvenly="false"
-                                app:radius="6dp"
-                                app:radiusForEverySegment="true"
-                                app:segmentHorizontalMargin="4dp"
-                                app:segmentVerticalMargin="4dp"
-                                app:selectedBackgroundColor="@color/segment_bg_color"
-                                app:selectedStrokeColor="@color/segment_bg_color"
-                                app:selectedTextColor="@color/segment_text_color"
-                                app:textVerticalPadding="3dp"
-                                app:unSelectedBackgroundColor="@color/segment_bg_color"
-                                app:unSelectedStrokeColor="@color/segment_bg_color"
-                                app:unSelectedTextColor="@color/segment_text_color"/>
+                                />
 
                         <TextView
                                 android:id="@+id/tv_facilities"
@@ -190,31 +179,19 @@
                                 android:layout_marginBottom="5dp"
                                 android:text="@string/facility"
                                 android:textColor="@android:color/black"
-                                android:textSize="14sp"/>
+                                android:textSize="@dimen/text_size_twelve"/>
 
-                        <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                        <include
+                                layout="@layout/lay_segment"
                                 android:id="@+id/sc_facility"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                app:distributeEvenly="false"
-                                app:radius="6dp"
-                                app:radiusForEverySegment="true"
-                                app:segmentHorizontalMargin="4dp"
-                                app:segmentVerticalMargin="4dp"
-                                app:selectedBackgroundColor="@color/segment_bg_color"
-                                app:selectedStrokeColor="@color/segment_bg_color"
-                                app:selectedTextColor="@color/segment_text_color"
-                                app:textVerticalPadding="3dp"
-                                app:unSelectedBackgroundColor="@color/segment_bg_color"
-                                app:unSelectedStrokeColor="@color/segment_bg_color"
-                                app:unSelectedTextColor="@color/segment_text_color"/>
+                                />
 
                         <TextView
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginBottom="5dp"
                                 android:text="@string/phonenumber"
                                 android:textColor="@android:color/black"
-                                android:textSize="14sp"/>
+                                android:textSize="@dimen/text_size_twelve"/>
 
                         <TextView
                                 android:id="@+id/tv_mobile"
@@ -224,7 +201,7 @@
                                 android:drawableTint="@color/rating_select"
                                 android:drawablePadding="5dp"
                                 android:textColor="@android:color/black"
-                                android:textSize="14sp"/>
+                                android:textSize="@dimen/text_size_twelve"/>
 
                         <View
                                 android:layout_width="match_parent"
@@ -237,7 +214,7 @@
                                 android:id="@+id/tv_complete_address"
                                 style="@style/style_join_queue_tv"
                                 android:textColor="@color/colorAddress"
-                                android:textSize="14sp"/>
+                                android:textSize="@dimen/text_size_twelve"/>
 
                         <TextView
                                 android:id="@+id/tv_address_title"
@@ -250,7 +227,7 @@
                                 android:layout_marginBottom="10dp"
                                 android:drawablePadding="5dp"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/store_sub_headers"/>
+                                android:textSize="@dimen/text_size_twelve"/>
                     </LinearLayout>
 
                     <android.support.v7.widget.RecyclerView

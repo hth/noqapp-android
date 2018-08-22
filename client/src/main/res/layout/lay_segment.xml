@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:android="http://schemas.android.com/apk/res/android"
+                                                                               xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                                               android:layout_width="match_parent"
+                                                                               android:layout_height="match_parent"
+                                                                               app:distributeEvenly="false"
+                                                                               app:radius="6dp"
+                                                                               app:radiusForEverySegment="true"
+                                                                               app:segmentHorizontalMargin="@dimen/segment_margin"
+                                                                               app:segmentVerticalMargin="@dimen/segment_margin"
+                                                                               app:textSize="@dimen/text_size_ten"
+                                                                               app:selectedBackgroundColor="@color/segment_bg_color"
+                                                                               app:selectedStrokeColor="@color/segment_bg_color"
+                                                                               app:selectedTextColor="@color/segment_text_color"
+                                                                               app:textVerticalPadding="3dp"
+                                                                               app:unSelectedBackgroundColor="@color/segment_bg_color"
+                                                                               app:unSelectedStrokeColor="@color/segment_bg_color"
+                                                                               app:unSelectedTextColor="@color/segment_text_color">
+
+</segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl>

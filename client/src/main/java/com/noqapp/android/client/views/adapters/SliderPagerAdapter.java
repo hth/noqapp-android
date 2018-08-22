@@ -23,9 +23,8 @@ import java.util.ArrayList;
 
 
 public class SliderPagerAdapter extends PagerAdapter {
-    Activity activity;
-    ArrayList<String> image_arraylist;
-    private LayoutInflater layoutInflater;
+    private Activity activity;
+    private ArrayList<String> image_arraylist;
 
     public SliderPagerAdapter(Activity activity, ArrayList<String> image_arraylist) {
         this.activity = activity;
@@ -34,7 +33,7 @@ public class SliderPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = layoutInflater.inflate(R.layout.layout_slider, container, false);
         ImageView im_slider = view.findViewById(R.id.im_slider);

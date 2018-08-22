@@ -19,7 +19,6 @@ public class MyApplication extends MultiDexApplication {
 
     public MyApplication() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**

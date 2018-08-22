@@ -7,6 +7,7 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -523,5 +524,15 @@ public class AppUtilities extends CommonHelper {
                 break;
         }
         return dayName;
+    }
+
+    public static void authenticationProcessing(Context context , int errorCode){
+        if (errorCode == Constants.INVALID_CREDENTIAL) {
+            NoQueueBaseActivity.clearPreferences();
+            ShowAlertInformation.showAuthenticErrorDialog(context);
+        }
+        if (errorCode == Constants.INVALID_BAR_CODE) {
+            ShowAlertInformation.showBarcodeErrorDialog(context);
+        }
     }
 }

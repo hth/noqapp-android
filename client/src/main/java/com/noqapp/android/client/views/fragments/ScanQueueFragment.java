@@ -82,10 +82,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
-    private static final int MSG_CURRENT_QUEUE = 0;
-    private static final int MSG_HISTORY_QUEUE = 1;
-    private static TokenQueueViewInterface tokenQueueViewInterface;
-    private static QueueHandler mHandler;
+
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     @BindView(R.id.cv_scan)
     protected CardView cv_scan;
@@ -113,13 +110,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     protected ProgressBar pb_near;
     @BindView(R.id.autoCompleteTextView)
     protected AutoCompleteTextView autoCompleteTextView;
-
     @BindView(R.id.cv_update_location)
     protected CardView cv_update_location;
-
     @BindView(R.id.rl_current_activity)
     protected LinearLayout rl_current_activity;
-
     @BindView(R.id.tv_no_thanks)
     protected TextView tv_no_thanks;
     @BindView(R.id.tv_update)
@@ -137,6 +131,11 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     private boolean isFirstTimeUpdate = true;
     private static final String SHOWCASE_ID = "sequence example";
     private boolean isNotShown = true;
+    private static final int MSG_CURRENT_QUEUE = 0;
+    private static final int MSG_HISTORY_QUEUE = 1;
+    private static TokenQueueViewInterface tokenQueueViewInterface;
+    private static QueueHandler mHandler;
+
 
     public ScanQueueFragment() {
 
@@ -297,9 +296,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_scan));
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
-
-        Activity activity = getActivity();
-        if (null != activity && isAdded()) {
+        if (null != getActivity() && isAdded()) {
             /* Update the current Queue & history queue so that user get the latest queue status & get reflected in DB. */
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 callCurrentAndRecentQueue();
@@ -444,7 +441,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 in.putExtra(KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(KEY_FROM_LIST, true);
                 in.putExtra(KEY_JSON_TOKEN_QUEUE, item);
-                in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, true);
                 in.putExtra(KEY_IS_HISTORY, false);
                 startActivity(in);
             } else {
@@ -461,7 +457,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
                 in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, true);
-                in.putExtra(KEY_IS_AUTOJOIN_ELIGIBLE, false);
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
             }else{
@@ -546,8 +541,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
     private void passMsgToHandler(boolean isCurrentQueue) {
-        Activity activity = getActivity();
-        if (null != activity && isAdded()) {
+        if (null != getActivity() && isAdded()) {
             // pass msg to handler to load the data from DB
             if (isCurrentQueue) {
                 Message msg = new Message();
@@ -565,10 +559,12 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void tokenCurrentQueueList(List<JsonTokenAndQueue> currentQueueList) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentQueueList.size()));
-        CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(currentQueueList, getActivity(), currentClickListner);
-        rv_current_activity.setAdapter(currentActivityAdapter);
-        tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentQueueList.size()) + ")");
-        currentActivityAdapter.notifyDataSetChanged();
+        if (null != getActivity() && isAdded()) {
+            CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(currentQueueList, getActivity(), currentClickListner);
+            rv_current_activity.setAdapter(currentActivityAdapter);
+            tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentQueueList.size()) + ")");
+            currentActivityAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -588,9 +584,11 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 }
             }
         });
-        recentActivityAdapter = new RecentActivityAdapter(historyQueueList, getActivity(), recentClickListner, lat, log);
-        rv_recent_activity.setAdapter(recentActivityAdapter);
-        recentActivityAdapter.notifyDataSetChanged();
+        if (null != getActivity() && isAdded()) {
+            recentActivityAdapter = new RecentActivityAdapter(historyQueueList, getActivity(), recentClickListner, lat, log);
+            rv_recent_activity.setAdapter(recentActivityAdapter);
+            recentActivityAdapter.notifyDataSetChanged();
+        }
     }
 
 

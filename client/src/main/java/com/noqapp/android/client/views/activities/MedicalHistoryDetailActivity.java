@@ -13,6 +13,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.PhysicalGeneralExamEnum;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -36,8 +37,6 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
     protected TextView tv_past_history;
     @BindView(R.id.tv_family_history)
     protected TextView tv_family_history;
-
-
     @BindView(R.id.tv_patient_name)
     protected TextView tv_patient_name;
     @BindView(R.id.tv_diagnosed_by)
@@ -122,8 +121,8 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
 
         tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedById() + " (" + jsonMedicalRecord.getBizCategoryName() + ")");
         tv_business_name.setText(jsonMedicalRecord.getBusinessName());
-        List<JsonProfile> profileList = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
-        profileList.add(0, LaunchActivity.getLaunchActivity().getUserProfile());
+        List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
+        profileList.add(0, NoQueueBaseActivity.getUserProfile());
         tv_patient_name.setText(AppUtilities.getNameFromQueueUserID(jsonMedicalRecord.getQueueUserId(), profileList));
 
         if (tv_complaints.getText().toString().equals("")) {
@@ -172,9 +171,9 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             childLayout.setLayoutParams(linearParams);
             TextView mType = new TextView(this);
-            mType.setTextSize(17);
+            mType.setTextSize(12);
             mType.setPadding(5, 3, 0, 3);
-            mType.setTypeface(Typeface.DEFAULT_BOLD);
+            mType.setTextColor(Color.BLACK);
             mType.setGravity(Gravity.LEFT | Gravity.CENTER);
             switch (physicalExam) {
                 case TE:
@@ -211,9 +210,9 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 childLayout.setLayoutParams(linearParams);
                 TextView mType = new TextView(this);
-                mType.setTextSize(17);
+                mType.setTextSize(12);
+                mType.setTextColor(Color.BLACK);
                 mType.setPadding(5, 3, 0, 3);
-                mType.setTypeface(Typeface.DEFAULT_BOLD);
                 mType.setGravity(Gravity.LEFT | Gravity.CENTER);
                 mType.setText(jsonMedicalRecord.getMedicalPathologies().get(i).getName());
                 childLayout.addView(mType, 0);
@@ -230,9 +229,9 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 childLayout.setLayoutParams(linearParams);
                 TextView mType = new TextView(this);
-                mType.setTextSize(17);
+                mType.setTextSize(12);
+                mType.setTextColor(Color.BLACK);
                 mType.setPadding(5, 3, 0, 3);
-                mType.setTypeface(Typeface.DEFAULT_BOLD);
                 mType.setGravity(Gravity.LEFT | Gravity.CENTER);
                 mType.setText(jsonMedicalRecord.getMedicalRadiologies().get(i).getName());
                 childLayout.addView(mType, 0);

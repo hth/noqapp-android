@@ -17,8 +17,6 @@ import android.widget.TextView;
 
 public class LegalFragment extends NoQueueBaseFragment implements View.OnClickListener {
 
-    private LinearLayout ll_term_condition, ll_privacy_policy, ll_about_us;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -26,9 +24,9 @@ public class LegalFragment extends NoQueueBaseFragment implements View.OnClickLi
         TextView tv_version = (TextView) view.findViewById(R.id.tv_version);
         tv_version.setText(BuildConfig.BUILD_TYPE.equalsIgnoreCase("release") ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                 : getString(R.string.version_no, "Not for release"));
-        ll_term_condition = (LinearLayout) view.findViewById(R.id.ll_term_condition);
-        ll_privacy_policy = (LinearLayout) view.findViewById(R.id.ll_privacy_policy);
-        ll_about_us = (LinearLayout) view.findViewById(R.id.ll_about_us);
+        LinearLayout ll_term_condition = view.findViewById(R.id.ll_term_condition);
+        LinearLayout ll_privacy_policy = view.findViewById(R.id.ll_privacy_policy);
+        LinearLayout ll_about_us = view.findViewById(R.id.ll_about_us);
         ll_term_condition.setOnClickListener(this);
         ll_privacy_policy.setOnClickListener(this);
         ll_about_us.setOnClickListener(this);

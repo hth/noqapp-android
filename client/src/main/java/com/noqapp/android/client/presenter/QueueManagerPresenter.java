@@ -13,5 +13,4 @@ public interface QueueManagerPresenter {
 
     void queueManagerError();
 
-    void authenticationFailure(int errorCode);
 }

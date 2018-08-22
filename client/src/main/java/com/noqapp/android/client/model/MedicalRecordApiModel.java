@@ -40,13 +40,13 @@ public class MedicalRecordApiModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
+                    medicalRecordPresenter.medicalRecordError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-
                 medicalRecordPresenter.medicalRecordError();
             }
         });

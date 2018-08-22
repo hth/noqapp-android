@@ -32,7 +32,6 @@ import butterknife.OnClick;
  * Created by chandra on 4/9/17.
  */
 public class InviteFragment extends NoQueueBaseFragment {
-    private final String TAG = InviteFragment.class.getSimpleName();
 
     @BindView(R.id.tv_how_it_works)
     protected TextView tv_how_it_works;
@@ -127,7 +126,5 @@ public class InviteFragment extends NoQueueBaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        // LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_invite));
-        // LaunchActivity.getLaunchActivity().enableDisableBack(true);
     }
 }

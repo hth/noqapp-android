@@ -4,18 +4,14 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.views.adapters.CategoryHeaderAdapter;
+import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.CategoryListFragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +23,6 @@ import java.util.Map;
 public class CategoryPagerActivity extends BaseActivity implements CategoryHeaderAdapter.OnItemClickListener {
 
 
-    @BindView(R.id.rcv_header)
-    protected RecyclerView rcv_header;
     private ViewPager viewPager;
     private List<JsonCategory> categoryMap;
     private Map<String, ArrayList<BizStoreElastic>> queueMap;
@@ -38,7 +32,6 @@ public class CategoryPagerActivity extends BaseActivity implements CategoryHeade
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_pager);
-        ButterKnife.bind(this);
         initActionsViews(true);
         try {
             categoryMap = (List<JsonCategory>) getIntent().getExtras().getSerializable("list");
@@ -49,6 +42,7 @@ public class CategoryPagerActivity extends BaseActivity implements CategoryHeade
             e.printStackTrace();
 
         }
+        final RecyclerView rcv_header = findViewById(R.id.rcv_header);
         viewPager = findViewById(R.id.pager);
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
@@ -56,7 +50,7 @@ public class CategoryPagerActivity extends BaseActivity implements CategoryHeade
         rcv_header.setLayoutManager(horizontalLayoutManagaer);
         rcv_header.setItemAnimator(new DefaultItemAnimator());
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         for (int i = 0; i < categoryMap.size(); i++) {
             adapter.addFragment(new CategoryListFragment(queueMap.get(categoryMap.get(i).getBizCategoryId())), "FRAG" + i);
         }
@@ -112,32 +106,4 @@ public class CategoryPagerActivity extends BaseActivity implements CategoryHeade
 //        }
 //    }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }
 }

@@ -40,12 +40,11 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
     protected RecyclerView rv_merchant_around_you;
     private ArrayList<BizStoreElastic> listData;
     private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
-    private StoreInfoViewAllAdapter.OnItemClickListener listener;
+
     private String scrollId = "";
-    private String city = "";
     private String lat = "";
     private String longitute = "";
-    private NearMeModel nearMeModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +57,12 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
                 finish();
             }
         });
-        tv_toolbar_title.setText("View All");
-        listener = this;
-        //getString(R.string.medical_history));
-        nearMeModel = new NearMeModel(this);
+        tv_toolbar_title.setText(getString(R.string.screen_view_all));
+        NearMeModel nearMeModel = new NearMeModel(this);
         listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
         if(null == listData)
         listData = new ArrayList<>();
-        city = getIntent().getStringExtra("city");
+        String city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         longitute = getIntent().getStringExtra("long");
         scrollId = getIntent().getStringExtra("scrollId");
@@ -75,7 +72,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
         // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
-        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, listener, rv_merchant_around_you);
+        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, this, rv_merchant_around_you);
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
 //        storeInfoViewAllAdapter.setOnLoadMoreListener(new StoreInfoViewAllAdapter.OnLoadMoreListener() {
 //            @Override

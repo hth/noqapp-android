@@ -48,6 +48,7 @@ public final class StoreModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
+                    storePresenter.storeError();
                 }
             }
 

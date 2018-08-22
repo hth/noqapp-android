@@ -12,4 +12,6 @@ public interface ReviewPresenter {
     void reviewResponse(JsonResponse jsonResponse);
 
     void reviewError();
+
+    void authenticationFailure(int errorCode);
 }

@@ -72,13 +72,13 @@ public class QueueApiModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
+                    queuePresenter.queueError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonQueue> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-
                 queuePresenter.queueError();
             }
         });
@@ -207,56 +207,5 @@ public class QueueApiModel {
         });
     }
 
-    public void remoteScanQueueState(String did, String mail, String auth, String codeQR) {
-        queueService.remoteScanQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
 
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePresenter.authenticationFailure(response.code());
-                    return;
-                }
-                if (null != response.body()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    queuePresenter.queueResponse(response.body());
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Get state of queue upon scan");
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonQueue> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
-
-                queuePresenter.queueError();
-            }
-        });
-    }
-
-//    public static void remoteJoinQueue(String did, String mail, String auth, String codeQR) {
-//        queueService.remoteJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
-//            @Override
-//            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-//                if (response.code() == Constants.INVALID_CREDENTIAL) {
-//                    tokenPresenter.authenticationFailure(response.code());
-//                    return;
-//                }
-//                if (null != response.body() && null == response.body().getError()) {
-//                    Log.d("Response", response.body().toString());
-//                    tokenPresenter.tokenPresenterResponse(response.body());
-//                } else {
-//                    //TODO something logical
-//                    Log.e(TAG, "Failed to join queue" + response.body().getError());
-//                    tokenPresenter.tokenPresenterError();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
-//                Log.e("Response", t.getLocalizedMessage(), t);
-//                tokenPresenter.tokenPresenterError();
-//            }
-//        });
-//    }
 }

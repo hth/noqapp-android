@@ -39,8 +39,8 @@ public class ProfessionalProfileModel {
                     Log.d("QueueManagerProfile", String.valueOf(response.body()));
                     queueManagerPresenter.queueManagerResponse(response.body());
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history");
+                    Log.e(TAG, "Empty QueueManagerProfile");
+                    queueManagerPresenter.queueManagerError();
                 }
             }
 

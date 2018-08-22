@@ -15,20 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.util.List;
 
 
 public class UserAdditionalInfoFragment extends Fragment {
 
-
-    @BindView(R.id.tv_education)
-    protected TextView tv_education;
-
-    @BindView(R.id.tv_experience)
-    protected TextView tv_experience;
+    private TextView tv_education;
+    private TextView tv_experience;
 
     private JsonProfessionalProfile jsonProfessionalProfile;
 
@@ -36,7 +30,8 @@ public class UserAdditionalInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_additional_info, container, false);
-        ButterKnife.bind(this, view);
+        tv_experience = view.findViewById(R.id.tv_experience);
+        tv_education = view.findViewById(R.id.tv_education);
         if (null != jsonProfessionalProfile)
             updateUI(jsonProfessionalProfile);
         return view;

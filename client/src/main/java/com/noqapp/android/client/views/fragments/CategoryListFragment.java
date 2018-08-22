@@ -15,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import java.util.ArrayList;
@@ -24,16 +23,7 @@ import java.util.ArrayList;
  * Created by chandra on 5/7/17.
  */
 public class CategoryListFragment extends Fragment implements CategoryListAdapter.OnItemClickListener {
-
-
-    @BindView(R.id.rv_category_list)
-    protected RecyclerView rv_category_list;
     private ArrayList<BizStoreElastic> jsonQueues;
-    private CategoryListAdapter categoryListAdapter;
-    private View view;
-
-    private CategoryListAdapter.OnItemClickListener listener;
-
 
     public CategoryListFragment() {
     }
@@ -52,10 +42,11 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.fragment_category_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_category_list, container, false);
         ButterKnife.bind(this, view);
-        listener = this;
-        categoryListAdapter = new CategoryListAdapter(jsonQueues, getActivity(), listener);
+        CategoryListAdapter.OnItemClickListener listener = this;
+        CategoryListAdapter categoryListAdapter = new CategoryListAdapter(jsonQueues, getActivity(), listener);
+        RecyclerView rv_category_list = view.findViewById(R.id.rv_category_list);
         rv_category_list.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);

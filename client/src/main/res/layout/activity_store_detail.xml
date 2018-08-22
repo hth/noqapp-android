@@ -84,7 +84,7 @@
                         android:maxLines="2"
                         android:text=""
                         android:textColor="@android:color/black"
-                        android:textSize="24sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"/>
 
 
@@ -147,8 +147,7 @@
                         android:padding="10dp"
                         android:text="Order Now"
                         android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
+                        android:textSize="@dimen/text_size_fourteen"/>
 
                 <View
                         android:layout_width="match_parent"
@@ -173,7 +172,7 @@
                             android:maxLines="2"
                             android:text="Menu"
                             android:textColor="@android:color/black"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold"/>
 
                     <android.support.v7.widget.RecyclerView
@@ -198,7 +197,7 @@
                             android:maxLines="2"
                             android:text="Photos"
                             android:textColor="@android:color/black"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold"/>
 
                     <android.support.v7.widget.RecyclerView
@@ -217,7 +216,7 @@
                         android:maxLines="2"
                         android:text="Details"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_size_fourteen"
                         android:textStyle="bold"/>
 
                 <TextView
@@ -244,22 +243,10 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/store_sub_headers"/>
 
-                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                <include
+                        layout="@layout/lay_segment"
                         android:id="@+id/sc_payment_mode"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:distributeEvenly="false"
-                        app:radius="6dp"
-                        app:radiusForEverySegment="true"
-                        app:segmentHorizontalMargin="4dp"
-                        app:segmentVerticalMargin="4dp"
-                        app:selectedBackgroundColor="@color/segment_bg_color"
-                        app:selectedStrokeColor="@color/segment_bg_color"
-                        app:selectedTextColor="@color/segment_text_color"
-                        app:textVerticalPadding="3dp"
-                        app:unSelectedBackgroundColor="@color/segment_bg_color"
-                        app:unSelectedStrokeColor="@color/segment_bg_color"
-                        app:unSelectedTextColor="@color/segment_text_color"/>
+                        />
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -269,23 +256,10 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/store_sub_headers"/>
 
-
-                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                <include
+                        layout="@layout/lay_segment"
                         android:id="@+id/sc_amenities"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:distributeEvenly="false"
-                        app:radius="6dp"
-                        app:radiusForEverySegment="true"
-                        app:segmentHorizontalMargin="4dp"
-                        app:segmentVerticalMargin="4dp"
-                        app:selectedBackgroundColor="@color/segment_bg_color"
-                        app:selectedStrokeColor="@color/segment_bg_color"
-                        app:selectedTextColor="@color/segment_text_color"
-                        app:textVerticalPadding="3dp"
-                        app:unSelectedBackgroundColor="@color/segment_bg_color"
-                        app:unSelectedStrokeColor="@color/segment_bg_color"
-                        app:unSelectedTextColor="@color/segment_text_color"/>
+                        />
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -295,22 +269,11 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/store_sub_headers"/>
 
-                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                <include
+                        layout="@layout/lay_segment"
                         android:id="@+id/sc_delivery_types"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:distributeEvenly="false"
-                        app:radius="6dp"
-                        app:radiusForEverySegment="true"
-                        app:segmentHorizontalMargin="4dp"
-                        app:segmentVerticalMargin="4dp"
-                        app:selectedBackgroundColor="@color/segment_bg_color"
-                        app:selectedStrokeColor="@color/segment_bg_color"
-                        app:selectedTextColor="@color/segment_text_color"
-                        app:textVerticalPadding="3dp"
-                        app:unSelectedBackgroundColor="@color/segment_bg_color"
-                        app:unSelectedStrokeColor="@color/segment_bg_color"
-                        app:unSelectedTextColor="@color/segment_text_color"/>
+                        />
+
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -426,7 +389,7 @@
                     android:layout_marginTop="10dp"
                     android:padding="5dp"
                     android:textColor="@color/colorAddress"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/rating_text_size"/>
         </RelativeLayout>
     </RelativeLayout>
 

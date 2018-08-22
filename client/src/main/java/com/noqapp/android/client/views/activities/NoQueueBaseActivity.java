@@ -28,8 +28,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String PREKEY_PROFILE_IMAGE = "imageUri";
     //TODO add address from profile
     public static final String PREKEY_GENDER = "gender";
-    // public static final String PREKEY_REMOTE_JOIN = "remoteJoin";
-    //public static final String PREKEY_AUTOJOIN = "autojoin";
     public static final String PREKEY_INVITECODE = "invitecode";
     public static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
     public static final int ACCOUNTKIT_REQUEST_CODE = 99;
@@ -40,7 +38,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String KEY_FROM_LIST = "fromList";
     public static final String KEY_IS_HISTORY = "isHistory";
     public static final String KEY_IS_REJOIN = "isRejoin";
-    //  public static final String KEY_IS_AUTOJOIN_ELIGIBLE = "autoJoinEligible";
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
     public static final String KEY_USER_PROFILE = "userProfile";
     public static final String IS_DEPENDENT = "isDependent";
@@ -55,22 +52,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static SharedPreferences.Editor getSharedPreferencesEditor() {
         return sharedPreferences.edit();
     }
-
-//    public static int getRemoteJoinCount() {
-//        return sharedPreferences.getInt(PREKEY_REMOTE_JOIN, 0);
-//    }
-//
-//    public static void setRemoteJoinCount(int remoteJoinCount) {
-//        sharedPreferences.edit().putInt(PREKEY_REMOTE_JOIN, remoteJoinCount < 0 ? 0 : remoteJoinCount).commit();
-//    }
-
-//    public static boolean getAutoJoinStatus() {
-//        return sharedPreferences.getBoolean(PREKEY_AUTOJOIN, true);
-//    }
-//
-//    public static void setAutoJoinStatus(boolean autoJoinStatus) {
-//        sharedPreferences.edit().putBoolean(NoQueueBaseActivity.PREKEY_AUTOJOIN, autoJoinStatus).commit();
-//    }
 
     public static String getFCMToken() {
         return sharedPreferences.getString(FCM_TOKEN, "");
@@ -144,8 +125,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(PREKEY_GENDER, profile.getGender().name());
         editor.putString(PREKEY_DOB, profile.getBirthday());
         editor.putString(PREKEY_MAIL, profile.getMail());
-        // editor.putInt(PREKEY_REMOTE_JOIN, profile.getRemoteJoin());
-        // editor.putBoolean(PREKEY_AUTOJOIN, true);
         editor.putString(PREKEY_INVITECODE, profile.getInviteCode());
         editor.putString(PREKEY_COUNTRY_SHORT_NAME, profile.getCountryShortName());
         editor.putString(PREKEY_ADD, profile.getAddress());

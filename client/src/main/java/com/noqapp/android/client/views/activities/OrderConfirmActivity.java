@@ -32,6 +32,7 @@ public class OrderConfirmActivity extends BaseActivity {
     protected TextView tv_store_name;
     @BindView(R.id.tv_address)
     protected TextView tv_address;
+
     private JsonPurchaseOrder jsonPurchaseOrder, oldjsonPurchaseOrder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

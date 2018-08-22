@@ -38,7 +38,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.MediaType;
@@ -55,8 +54,6 @@ import java.util.Locale;
 
 public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
 
-    public ImageView iv_profile;
-    public String gender = "";
     @BindView(R.id.tv_name)
     protected TextView tv_name;
     @BindView(R.id.iv_edit)
@@ -83,7 +80,10 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     protected LinearLayout ll_gender;
     @BindView(R.id.ll_dependent)
     protected LinearLayout ll_dependent;
+
     private SimpleDateFormat dateFormatter;
+    public ImageView iv_profile;
+    public String gender = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +94,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         iv_profile = findViewById(R.id.iv_profile);
         iv_edit.setOnClickListener(this);
         loadProfilePic();
-        tv_toolbar_title.setText("Profile");
+        tv_toolbar_title.setText(getString(R.string.screen_profile));
         iv_profile.setOnClickListener(this);
         dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         updateUI();

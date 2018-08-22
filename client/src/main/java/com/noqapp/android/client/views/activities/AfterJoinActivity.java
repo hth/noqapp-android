@@ -180,7 +180,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     AppUtilities.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
                 }
             });
-            gotoPerson = null != ReviewDB.getValue(codeQR,tokenValue)?ReviewDB.getValue(codeQR,tokenValue).getGotoCounter():"";
+            gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_FROM_LIST, false)) {
                 tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
                 tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
@@ -217,14 +217,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         updateEstimatedTime();
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
-        /* Update the remote join count */
-//        NoQueueBaseActivity.setRemoteJoinCount(NoQueueBaseActivity.getRemoteJoinCount() - 1);
         dismissProgress();
     }
 
     @Override
     public void responsePresenterResponse(JsonResponse response) {
-        // To cancel
         if (null != response) {
             if (response.getResponse() == 1) {
                 Toast.makeText(this, getString(R.string.cancel_queue), Toast.LENGTH_LONG).show();
@@ -232,10 +229,10 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 Toast.makeText(this, getString(R.string.fail_to_cancel), Toast.LENGTH_LONG).show();
             }
         } else {
-            //Show error
+            Toast.makeText(this, getString(R.string.fail_to_cancel), Toast.LENGTH_LONG).show();
         }
         NoQueueMessagingService.unSubscribeTopics(topic);
-        TokenAndQueueDB.deleteTokenQueue(codeQR,tokenValue);
+        TokenAndQueueDB.deleteTokenQueue(codeQR, tokenValue);
         onBackPressed();
         dismissProgress();
     }
@@ -254,13 +251,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            NoQueueBaseActivity.clearPreferences();
-            ShowAlertInformation.showAuthenticErrorDialog(this);
-        }
-        if (errorCode == Constants.INVALID_BAR_CODE) {
-            ShowAlertInformation.showBarcodeErrorDialog(this);
-        }
+        AppUtilities.authenticationProcessing(this, errorCode);
     }
 
     @OnClick(R.id.btn_cancel_queue)
@@ -283,7 +274,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (codeQR != null) {
             Log.d("CodeQR=", codeQR);
             if (UserUtils.isLogin()) {
-                JsonProfile jsonProfile = LaunchActivity.getLaunchActivity().getUserProfile();
+                JsonProfile jsonProfile = NoQueueBaseActivity.getUserProfile();
                 String queueUserId;
                 String guardianId = null;
                 Log.v("dependent size: ", "" + jsonProfile.getDependents().size());
@@ -296,16 +287,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserId).setGuardianQid(guardianId);
                 queueApiModel.setTokenPresenter(this);
                 queueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
-//                boolean callingFromHistory = getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false);
-//                if (!callingFromHistory && getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
-//                    QueueApiModel.tokenPresenter = this;
-//                    QueueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-//                } else if (callingFromHistory) {
-//                    if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, false)) {
-//                        QueueApiModel.tokenPresenter = this;
-//                        QueueApiModel.remoteJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-//                    }
-//                }
             } else {
                 queueModel.setTokenPresenter(this);
                 queueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
@@ -318,10 +299,10 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         super.onResume();
         /* Added to update the screen if app is in background & notification received */
         if (!isResumeFirst) {
-            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR,tokenValue);
+            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, tokenValue);
             if (null != jtk) {
-                if(TextUtils.isEmpty(gotoPerson))
-                    gotoPerson = null != ReviewDB.getValue(codeQR,tokenValue)?ReviewDB.getValue(codeQR,tokenValue).getGotoCounter():"";
+                if (TextUtils.isEmpty(gotoPerson))
+                    gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
                 setObject(jtk, gotoPerson);
             }
         }
@@ -422,7 +403,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 
     @Override
     public boolean updateUI(String qrCode, JsonTokenAndQueue jq, String go_to) {
-        if (codeQR.equals(qrCode)&& tokenValue.equals(String.valueOf(jq.getToken()))) {
+        if (codeQR.equals(qrCode) && tokenValue.equals(String.valueOf(jq.getToken()))) {
             //updating the serving status
             setObject(jq, go_to);
             if (jq.afterHowLong() > 0)
@@ -461,6 +442,4 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             }
         }
     }
-
-
 }

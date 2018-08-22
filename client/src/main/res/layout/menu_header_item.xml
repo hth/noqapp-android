@@ -14,7 +14,7 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center"
         android:padding="5dp"
-        android:textSize="18sp"
+        android:textSize="@dimen/text_size_fourteen"
         android:textStyle="bold" />
 
 </LinearLayout>

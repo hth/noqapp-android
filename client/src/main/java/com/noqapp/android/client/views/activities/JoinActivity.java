@@ -42,7 +42,7 @@ import butterknife.OnClick;
 import java.util.List;
 
 public class JoinActivity extends BaseActivity implements QueuePresenter {
-
+    private final String TAG = JoinActivity.class.getSimpleName();
     @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
 
@@ -169,27 +169,20 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
     @Override
     public void queueError() {
-        Log.d("TAG", "Queue=Error");
+        Log.d(TAG, "Queue=Error");
         dismissProgress();
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            NoQueueBaseActivity.clearPreferences();
-            ShowAlertInformation.showAuthenticErrorDialog(this);
-        }
-
-        if (errorCode == Constants.INVALID_BAR_CODE) {
-            ShowAlertInformation.showBarcodeErrorDialog(this);
-        }
+        AppUtilities.authenticationProcessing(this,errorCode);
     }
 
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
 
-        Log.d("TAG", "Queue=" + jsonQueue.toString());
+        Log.d(TAG, "Queue=" + jsonQueue.toString());
         this.jsonQueue = jsonQueue;
         tv_store_name.setText(jsonQueue.getBusinessName());
         tv_queue_name.setText(jsonQueue.getDisplayName());
@@ -205,10 +198,8 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         }
         tv_hour_saved.setText(Html.fromHtml(time));
         ratingBar.setRating(jsonQueue.getRating());
-        // tv_rating.setText(String.valueOf(Math.round(jsonQueue.getRating())));
         String reviewText = String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount()) + " Reviews";
         tv_rating_review.setText(reviewText);
-
         codeQR = jsonQueue.getCodeQR();
         /* Check weather join is possible or not today due to some reason */
         JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, JoinActivity.this);
@@ -225,35 +216,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             default:
                 ll_patient_name.setVisibility(View.GONE);
         }
-        /* Update the remote join count */
-//        NoQueueBaseActivity.setRemoteJoinCount(jsonQueue.getRemoteJoinCount());
-
-
-        /**
-         * Below code block is commented to avoid false joining
-         * **/
-       /* if (isJoinNotPossible) {
-            Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
-        } else {
-            *//* Auto join after scan if auto-join status is true in me screen && it is not coming from skip notification as well as history queue. *//*
-          //  if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true) && NoQueueBaseActivity.getAutoJoinStatus()) {
-                if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
-
-                    if (UserUtils.isLogin()) {
-                        joinQueue();
-                    } else {
-                        // please login to avail this feature
-                        Toast.makeText(JoinActivity.this, "please login to avail this feature", Toast.LENGTH_LONG).show();
-                        // Navigate to login screen
-                        Intent loginIntent = new Intent(JoinActivity.this, LoginActivity.class);
-                        startActivity(loginIntent);
-                    }
-                } else {
-                    // any user can join
-                    joinQueue();
-                }
-           // }
-        }*/
         dismissProgress();
     }
 
@@ -299,7 +261,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                         in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
                         in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);
                         in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-                        //     in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true);
                         in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
                         in.putExtra(Constants.FROM_JOIN_SCREEN, true);
                         in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
@@ -341,7 +302,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
         //TODO // previously KEY_FROM_LIST  was false need to verify
         in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
-        //in.putExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_AUTOJOIN_ELIGIBLE, true));
         in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
         in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.FROM_JOIN_SCREEN, true);

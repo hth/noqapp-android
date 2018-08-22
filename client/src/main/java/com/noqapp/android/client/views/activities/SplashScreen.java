@@ -40,11 +40,11 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     protected static boolean display = true;
     static SplashScreen splashScreen;
     protected boolean isActive = true;
-    protected int splashTime = 400000;
+    protected int splashTime = 40000;
     private String TAG = SplashScreen.class.getSimpleName();
-    private String fcmToken = "";
+    private static String fcmToken = "";
     private String APP_PREF = "splashPref";
-    private String deviceId = "";
+    private static String deviceId = "";
     //BuildConfig.BUILD_TYPE.equals("debug") ? 1000 : 4000;
 
     @Override
@@ -116,6 +116,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if(deviceRegistered.getRegistered() == 1) {
             Intent i = new Intent(splashScreen, LaunchActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.putExtra("fcmToken", fcmToken);
             i.putExtra("deviceId", deviceId);
             splashScreen.startActivity(i);
@@ -135,6 +136,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                     super.handleMessage(msg);
                     if (display) {
                         Intent i = new Intent(splashScreen, LaunchActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        i.putExtra("fcmToken",fcmToken);
+                        i.putExtra("deviceId",deviceId);
                         splashScreen.startActivity(i);
                         splashScreen.finish();
                     } else {
@@ -161,6 +165,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         } else {
             Log.d(TAG, "Exist deviceId=" + deviceId);
             Intent i = new Intent(splashScreen, LaunchActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.putExtra("fcmToken",fcmToken);
             i.putExtra("deviceId",deviceId);
             splashScreen.startActivity(i);

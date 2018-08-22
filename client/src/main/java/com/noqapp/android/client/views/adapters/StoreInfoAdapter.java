@@ -127,7 +127,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         private ImageView iv_store_icon;
         private CardView card_view;
 
-        public MyViewHolder(View itemView) {
+        private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
             this.tv_detail = itemView.findViewById(R.id.tv_detail);

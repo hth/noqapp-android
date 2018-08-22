@@ -8,6 +8,7 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.MedicalRecordApiModel;
 import com.noqapp.android.client.presenter.MedicalRecordPresenter;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.NetworkChangeReceiver;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.UserUtils;
@@ -33,8 +34,6 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,23 +41,23 @@ import java.util.List;
 
 public class MedicalHistoryActivity extends BaseActivity implements MedicalRecordPresenter {
 
-    @BindView(R.id.listview)
-    protected ListView listview;
-    @BindView(R.id.tv_empty)
-    protected TextView tv_empty;
-    @BindView(R.id.frame_layout)
-    protected FrameLayout frame_layout;
+
+    private ListView listview;
+    private TextView tv_empty;
+    private FrameLayout frame_layout;
     private EventBus bus = EventBus.getDefault();
     private NetworkChangeReceiver myReceiver = new NetworkChangeReceiver();
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
-    Context context;
+    private Context context;
     private Snackbar snackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
-        ButterKnife.bind(this);
+        listview = findViewById(R.id.listview);
+        frame_layout = findViewById(R.id.frame_layout);
+        tv_empty = findViewById(R.id.tv_empty);
         initActionsViews(false);
         context = this;
         snackbar = Snackbar
@@ -68,11 +67,9 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
                     public void onClick(View view) {
                     }
                 });
-        // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-        // Changing action button text color
         View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(Color.YELLOW);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -141,6 +138,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
+        AppUtilities.authenticationProcessing(this,errorCode);
     }
 
     @Subscribe
@@ -164,14 +162,12 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             unregisterReceiver(myReceiver);
         }
     }
 
     private void showSnackBar(boolean isHide) {
-
         if (isHide)
             snackbar.dismiss();
         else

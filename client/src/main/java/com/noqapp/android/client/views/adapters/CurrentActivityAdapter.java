@@ -133,7 +133,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         private TextView tv_estimated_time;
         private TextView tv_total;
 
-        public MyViewHolder(View itemView) {
+        private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
             this.tv_detail = itemView.findViewById(R.id.tv_detail);

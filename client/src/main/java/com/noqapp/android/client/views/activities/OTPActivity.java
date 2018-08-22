@@ -482,6 +482,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
     @Override
     public void authenticationFailure(int errorCode) {
-        //TODO(chandra)
+        dismissProgress();
+        AppUtilities.authenticationProcessing(this,errorCode);
     }
 }

@@ -14,7 +14,6 @@ import com.squareup.picasso.Picasso;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -211,7 +210,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         private ImageView iv_main;
         private CardView card_view;
 
-        public MyViewHolder(View itemView) {
+        private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
             this.tv_address = itemView.findViewById(R.id.tv_address);

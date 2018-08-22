@@ -35,12 +35,17 @@ public class ReviewApiModel {
         reviewApiService.review(did, Constants.DEVICE_TYPE, mail, auth, reviewRating).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    reviewPresenter.authenticationFailure(response.code());
+                    return;
+                }
                 if (response.body() != null) {
                     Log.d("Response Review", String.valueOf(response.body()));
                     reviewPresenter.reviewResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history");
+                    reviewPresenter.reviewError();
                 }
             }
 

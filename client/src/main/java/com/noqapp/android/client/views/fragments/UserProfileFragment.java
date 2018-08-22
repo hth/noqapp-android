@@ -17,24 +17,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.util.List;
 
 public class UserProfileFragment extends Fragment {
 
-    @BindView(R.id.ll_multiple_store)
-    protected LinearLayout ll_multiple_store;
-
-    @BindView(R.id.tv_about_me)
-    protected  TextView tv_about_me;
+    private LinearLayout ll_multiple_store;
+    private TextView tv_about_me;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
-        ButterKnife.bind(this, view);
+        tv_about_me = view.findViewById(R.id.tv_about_me);
+        ll_multiple_store = view.findViewById(R.id.ll_multiple_store);
         return view;
     }
 

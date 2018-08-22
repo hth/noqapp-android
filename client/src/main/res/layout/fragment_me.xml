@@ -191,7 +191,7 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/right_arrow" />
+                        android:src="@drawable/arrow_down" />
                 </LinearLayout>
 
 
@@ -252,7 +252,7 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/right_arrow" />
+                        android:src="@drawable/arrow_down" />
                 </LinearLayout>
 
                 <View
@@ -320,7 +320,7 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/right_arrow" />
+                        android:src="@drawable/arrow_down" />
                 </LinearLayout>
 
             </LinearLayout>

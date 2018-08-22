@@ -60,7 +60,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/text_size_twelve" />
 
                     <TextView
                         android:id="@+id/tv_address"
@@ -68,14 +68,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
                         android:layout_marginTop="3dp"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/text_size_ten" />
 
                     <TextView
                         android:id="@+id/tv_phoneno"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/text_size_ten" />
 
 
                     <TextView
@@ -83,7 +83,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/text_size_ten" />
 
                     <TextView
                         android:id="@+id/tv_status"
@@ -92,7 +92,7 @@
                         android:layout_marginTop="3dp"
                         android:gravity="center_vertical"
                         android:text=""
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_size_twelve" />
 
                 </LinearLayout>
 
@@ -108,7 +108,7 @@
                     android:layout_below="@+id/tv_store_rating"
                     android:layout_gravity="right|top"
                     android:gravity="center"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_size_ten" />
             </RelativeLayout>
 
 
@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rl_top"
                 android:text=""
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_ten"
                 android:visibility="gone" />
 
         </RelativeLayout>
