@@ -299,9 +299,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_scan));
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
-
-        Activity activity = getActivity();
-        if (null != activity && isAdded()) {
+        if (null != getActivity() && isAdded()) {
             /* Update the current Queue & history queue so that user get the latest queue status & get reflected in DB. */
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 callCurrentAndRecentQueue();
@@ -546,8 +544,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
     private void passMsgToHandler(boolean isCurrentQueue) {
-        Activity activity = getActivity();
-        if (null != activity && isAdded()) {
+        if (null != getActivity() && isAdded()) {
             // pass msg to handler to load the data from DB
             if (isCurrentQueue) {
                 Message msg = new Message();
@@ -565,10 +562,12 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public void tokenCurrentQueueList(List<JsonTokenAndQueue> currentQueueList) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentQueueList.size()));
-        CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(currentQueueList, getActivity(), currentClickListner);
-        rv_current_activity.setAdapter(currentActivityAdapter);
-        tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentQueueList.size()) + ")");
-        currentActivityAdapter.notifyDataSetChanged();
+        if (null != getActivity() && isAdded()) {
+            CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(currentQueueList, getActivity(), currentClickListner);
+            rv_current_activity.setAdapter(currentActivityAdapter);
+            tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentQueueList.size()) + ")");
+            currentActivityAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -588,9 +587,11 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 }
             }
         });
-        recentActivityAdapter = new RecentActivityAdapter(historyQueueList, getActivity(), recentClickListner, lat, log);
-        rv_recent_activity.setAdapter(recentActivityAdapter);
-        recentActivityAdapter.notifyDataSetChanged();
+        if (null != getActivity() && isAdded()) {
+            recentActivityAdapter = new RecentActivityAdapter(historyQueueList, getActivity(), recentClickListner, lat, log);
+            rv_recent_activity.setAdapter(recentActivityAdapter);
+            recentActivityAdapter.notifyDataSetChanged();
+        }
     }
 
 

@@ -116,6 +116,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if(deviceRegistered.getRegistered() == 1) {
             Intent i = new Intent(splashScreen, LaunchActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.putExtra("fcmToken", fcmToken);
             i.putExtra("deviceId", deviceId);
             splashScreen.startActivity(i);
