@@ -23,7 +23,7 @@ public class NoQueueBaseFragment extends Fragment {
     public static void replaceFragmentWithBackStack(FragmentActivity activity, int container, Fragment fragment, String tag) {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+        //transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
         // transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
         transaction.replace(container, fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
 

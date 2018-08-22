@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.Comparator;
 
 public class SortPlaces implements Comparator<BizStoreElastic> {
-    LatLng currentLoc;
+    private LatLng currentLoc;
 
     public SortPlaces(LatLng current) {
         currentLoc = current;
@@ -27,7 +27,7 @@ public class SortPlaces implements Comparator<BizStoreElastic> {
         return (int) (distanceToPlace1 - distanceToPlace2);
     }
 
-    public double distance(double fromLat, double fromLon, double toLat, double toLon) {
+    private double distance(double fromLat, double fromLon, double toLat, double toLon) {
         double radius = 6378137;   // approximate Earth radius, *in meters*
         double deltaLat = toLat - fromLat;
         double deltaLon = toLon - fromLon;
