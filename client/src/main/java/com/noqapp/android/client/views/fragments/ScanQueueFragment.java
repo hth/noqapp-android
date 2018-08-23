@@ -225,6 +225,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 return false;
             }
         });
+        tv_auto.setVisibility(View.GONE);
         tv_auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -84,7 +84,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
         }
         else {
             Log.e("URL:",null == jsonTokenAndQueue.getDisplayImage()?"NULL":"Empty data");
-            Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
+            Picasso.with(context).load("https://s3.ap-south-1.amazonaws.com/sandbox.noqapp/service/5b3924c8783cea3482064bd8/m6n04mtkxukyxzes67qvr7qz.jpg").into(holder.iv_main);
         }
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
