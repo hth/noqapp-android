@@ -17,7 +17,7 @@
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_fourteen"
                 android:textColor="@android:color/black"
                 android:text="@string/about_me"/>
 
@@ -31,12 +31,13 @@
                 android:lines="3"
                 android:maxLines="3"
                 android:minLines="3"
+                android:textSize="@dimen/text_size_fourteen"
                 android:singleLine="false"/>
 
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_fourteen"
                 android:textColor="@android:color/black"
                 android:text="@string/practice_start"/>
 
@@ -49,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_fourteen"
                 android:text="@string/education"/>
 
         <LinearLayout
@@ -74,6 +75,7 @@
                     android:padding="10dp"
                     android:layout_weight=".6"
                     android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_fourteen"
                     android:inputType="textCapSentences"
                     android:background="@drawable/square_white_bg_drawable"/>
 
@@ -86,12 +88,13 @@
                     android:layout_gravity="center_vertical"
                     android:textColor="@android:color/black"
                     android:padding="10dp"
+                    android:textSize="@dimen/text_size_fourteen"
                     android:background="@drawable/square_white_bg_drawable"/>
 
             <ImageView
                     android:id="@+id/iv_edu_add"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/action_image_size"
+                    android:layout_height="@dimen/action_image_size"
                     android:layout_margin="5dp"
                     android:background="@drawable/add_medic"
                     android:layout_gravity="center_vertical"
@@ -107,7 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_fourteen"
                 android:text="@string/awards"/>
 
         <LinearLayout
@@ -132,6 +135,7 @@
                     android:textColor="@android:color/black"
                     android:padding="10dp"
                     android:layout_weight=".6"
+                    android:textSize="@dimen/text_size_fourteen"
                     android:inputType="textCapSentences"
                     android:background="@drawable/square_white_bg_drawable"/>
 
@@ -144,12 +148,13 @@
                     android:textColor="@android:color/black"
                     android:layout_gravity="center_vertical"
                     android:padding="10dp"
+                    android:textSize="@dimen/text_size_fourteen"
                     android:background="@drawable/square_white_bg_drawable"/>
 
             <ImageView
                     android:id="@+id/iv_award_add"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/action_image_size"
+                    android:layout_height="@dimen/action_image_size"
                     android:layout_margin="5dp"
                     android:background="@drawable/add_medic"
                     android:layout_gravity="center_vertical"
@@ -164,7 +169,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_fourteen"
                 android:text="@string/license"/>
 
         <LinearLayout
@@ -189,6 +194,7 @@
                     android:textColor="@android:color/black"
                     android:padding="10dp"
                     android:layout_weight=".6"
+                    android:textSize="@dimen/text_size_fourteen"
                     android:inputType="textCapSentences"
                     android:background="@drawable/square_white_bg_drawable"/>
 
@@ -201,12 +207,13 @@
                     android:textColor="@android:color/black"
                     android:layout_gravity="center_vertical"
                     android:padding="10dp"
+                    android:textSize="@dimen/text_size_fourteen"
                     android:background="@drawable/square_white_bg_drawable"/>
 
             <ImageView
                     android:id="@+id/iv_license_add"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/action_image_size"
+                    android:layout_height="@dimen/action_image_size"
                     android:layout_margin="5dp"
                     android:background="@drawable/add_medic"
                     android:layout_gravity="center_vertical"
@@ -228,10 +235,10 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/button_drawable"
                 android:gravity="center"
-                android:text="@string/action_update"
+                android:text="@string/update"
                 android:textAllCaps="false"
                 android:textColor="@color/colorAccent"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/text_size_fourteen"/>
 
     </LinearLayout>
 

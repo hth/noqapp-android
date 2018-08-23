@@ -111,7 +111,8 @@
     <string name="mail">Mail </string>
     <string name="gender">Gender <font color='red'>\u2731</font></string>
     <string name="prompt_address_status">Address</string>
-
+    <string name="male">Male</string>
+    <string name="female">Female</string>
 
     <string name="error_name_blank">Please enter name</string>
     <string name="error_name_length">Name length should be at least 4 or higher</string>

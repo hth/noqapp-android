@@ -42,7 +42,7 @@
                 android:singleLine="true"
                 android:textColor="@android:color/black"
                 android:textColorHint="@color/color_login_hint"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_fourteen" />
 
             <EditText
                 android:id="@+id/edt_pwd"
@@ -57,18 +57,18 @@
                 android:singleLine="true"
                 android:textColor="@android:color/black"
                 android:textColorHint="@color/color_login_hint"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_fourteen" />
 
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/button_drawable"
                 android:text="@string/sign_in"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_fourteen" />
 
 
             <TextView
@@ -77,7 +77,8 @@
                 android:layout_below="@+id/btn_login"
                 android:gravity="center"
                 android:text="@string/copy_right"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_twelve"/>
 
         </LinearLayout>
 

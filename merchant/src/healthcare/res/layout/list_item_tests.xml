@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
     <TextView
             android:id="@+id/tv_sequence"
             android:layout_alignParentLeft="true"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="@dimen/action_image_size"
+            android:layout_height="@dimen/action_image_size"
             android:layout_margin="5dp"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_twelve"
             android:textStyle="bold"
-            android:text="45"/>
+            android:text=""/>
 
     <ImageView
             android:id="@+id/iv_favourite"
             android:layout_width="1dp"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/action_image_size"
             android:layout_margin="5dp"
             android:background="@drawable/ic_favorite_border"
             android:layout_gravity="center_vertical"
             android:layout_alignParentLeft="true"
-            android:padding="10dp"
             android:visibility="invisible"
             android:textColor="@android:color/transparent"/>
 
@@ -32,6 +31,7 @@
             android:id="@+id/tv_test_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_twelve"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/iv_delete"
@@ -39,13 +39,13 @@
 
     <ImageView
             android:id="@+id/iv_delete"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="5dp"
+            android:layout_width="@dimen/action_image_size"
+            android:layout_height="@dimen/action_image_size"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:background="@drawable/delete_medic"
-            android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:padding="10dp"
             android:textColor="@android:color/transparent"/>
 
 </RelativeLayout>

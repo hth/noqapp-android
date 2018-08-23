@@ -13,6 +13,7 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
             address = jsonTokenAndQueue.getArea() + ", " + address;
         }
         holder.tv_address.setText(address);
-        holder.tv_detail.setText("Last visit " + jsonTokenAndQueue.getServiceEndTime());
+        holder.tv_detail.setText("Last visit: " + jsonTokenAndQueue.getServiceEndTime());
         holder.tv_status.setText(AppUtilities.getStoreOpenStatus(jsonTokenAndQueue));
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType(), holder.tv_store_rating);
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonTokenAndQueue.getRatingCount())));
@@ -72,13 +73,17 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
             holder.tv_store_rating.setVisibility(View.INVISIBLE);
         else
             holder.tv_store_rating.setVisibility(View.VISIBLE);
-        if (!TextUtils.isEmpty(jsonTokenAndQueue.getDisplayImage()))
+        if (!TextUtils.isEmpty(jsonTokenAndQueue.getDisplayImage())) {
+            String url = AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonTokenAndQueue.getDisplayImage());
+            Log.e("URL:",url);
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonTokenAndQueue.getDisplayImage()))
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
                     .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(holder.iv_main);
+        }
         else {
+            Log.e("URL:",null == jsonTokenAndQueue.getDisplayImage()?"NULL":"Empty data");
             Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
         holder.card_view.setOnClickListener(new View.OnClickListener() {

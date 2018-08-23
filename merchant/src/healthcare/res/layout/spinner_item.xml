@@ -5,5 +5,5 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:padding="5dp"
-    android:textColor="@color/color_login_hint"
-    android:textSize="@dimen/text_size_fourteen" />
+    android:textColor="@color/colorAddress"
+    android:textSize="@dimen/text_size_twelve" />

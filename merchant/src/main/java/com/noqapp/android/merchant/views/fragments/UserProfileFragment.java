@@ -194,6 +194,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
        // NoQueueBaseActivity.commitProfile(profile, email, auth);
+        Toast.makeText(getActivity(), "Profile updated", Toast.LENGTH_LONG).show();
         dismissProgress();
         //updateUI();
     }

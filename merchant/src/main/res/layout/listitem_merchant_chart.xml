@@ -35,7 +35,7 @@
                     android:gravity="center"
                     android:text=""
                     android:textColor="@color/colorMobile"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/text_size_fourteen" />
             </LinearLayout>
 
             <LinearLayout
@@ -50,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_action_bar"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/text_size_sixteen" />
 
 
             </LinearLayout>

@@ -22,6 +22,6 @@
         android:layout_marginTop="30dp"
         android:text="@string/error_access_denied"
         android:textColor="@android:color/black"
-        android:textSize="20sp" />
+        android:textSize="@dimen/text_size_fourteen" />
 
 </RelativeLayout>

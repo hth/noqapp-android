@@ -18,7 +18,7 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/medical_history_alert"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_twelve" />
 
         <ListView
                 android:id="@+id/listview"

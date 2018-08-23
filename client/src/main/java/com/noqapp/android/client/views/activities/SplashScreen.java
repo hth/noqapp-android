@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import io.fabric.sdk.android.Fabric;
 
 import java.util.UUID;
@@ -123,6 +124,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             splashScreen.finish();
         }else{
             Log.e("Device register error: ",deviceRegistered.toString());
+            Toast.makeText(this,"Device register error: ",Toast.LENGTH_LONG).show();
         }
     }
 
