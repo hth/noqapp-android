@@ -52,4 +52,22 @@ public interface PreferredStoreService {
             @Path("codeQR")
             String codeQR
     );
+
+    @GET("api/m/h/preferredStore/file/{bizStoreId}.json")
+    void file(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("bizStoreId")
+            String bizStoreId
+    );
 }
