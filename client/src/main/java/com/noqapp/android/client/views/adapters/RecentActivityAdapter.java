@@ -65,7 +65,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
             address = jsonTokenAndQueue.getArea() + ", " + address;
         }
         holder.tv_address.setText(address);
-        holder.tv_detail.setText("Last visit " + jsonTokenAndQueue.getServiceEndTime());
+        holder.tv_detail.setText("Last visit: " + jsonTokenAndQueue.getServiceEndTime());
         holder.tv_status.setText(AppUtilities.getStoreOpenStatus(jsonTokenAndQueue));
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType(), holder.tv_store_rating);
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonTokenAndQueue.getRatingCount())));
