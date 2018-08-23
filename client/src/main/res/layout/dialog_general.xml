@@ -21,7 +21,7 @@
             android:gravity="center_horizontal"
             android:text=""
             android:textColor="@color/colorActionbar"
-            android:textSize="24sp" />
+            android:textSize="@dimen/text_size_sixteen" />
 
         <TextView
             android:id="@+id/tv_msg"
@@ -34,7 +34,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text=""
-            android:textSize="16sp" />
+            android:textSize="@dimen/text_size_fourteen" />
 
         <View
             android:id="@+id/seperator"
@@ -62,7 +62,7 @@
                 android:text="@string/no"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_size_fourteen"
                 android:visibility="gone" />
 
             <View
@@ -75,7 +75,6 @@
                 android:id="@+id/btn_yes"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_below="@+id/llotp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="0.5"
@@ -83,7 +82,7 @@
                 android:text="@string/ok"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_fourteen" />
 
         </LinearLayout>
 

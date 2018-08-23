@@ -19,15 +19,6 @@
             android:padding="20dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:text=" "
-                android:textColor="@color/colorActionbar"
-                android:textSize="20sp" />
-
-            <TextView
                 style="@style/style_register_tv"
                 android:text="@string/phone" />
 
@@ -148,8 +139,8 @@
                             android:gravity="center_horizontal|center_vertical"
                             android:paddingBottom="10dp"
                             android:paddingTop="10dp"
-                            android:text="male "
-                            android:textSize="14sp" />
+                            android:text="Male "
+                            android:textSize="@dimen/text_size_fourteen" />
 
                         <EditText
                             android:id="@+id/tv_female"
@@ -161,8 +152,8 @@
                             android:gravity="center_horizontal|center_vertical"
                             android:paddingBottom="10dp"
                             android:paddingTop="10dp"
-                            android:text="female "
-                            android:textSize="14sp" />
+                            android:text="Female "
+                            android:textSize="@dimen/text_size_fourteen" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -195,9 +186,7 @@
                 android:text="@string/btnregister"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
-                android:textSize="15sp"
-
-                />
+                android:textSize="@dimen/text_size_fourteen"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

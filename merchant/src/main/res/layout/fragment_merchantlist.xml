@@ -37,7 +37,8 @@
                     android:hint="Search"
                     android:maxLines="1"
                     android:minLines="1"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:textSize="@dimen/text_size_fourteen"/>
 
             </android.support.v7.widget.CardView>
 
@@ -84,7 +85,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center_horizontal"
                 android:text="@string/empty_list"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_size_twelve" />
 
         </RelativeLayout>
 

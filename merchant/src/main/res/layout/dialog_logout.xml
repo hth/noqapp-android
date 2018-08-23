@@ -21,7 +21,7 @@
             android:gravity="center_horizontal"
             android:text="@string/title_logout"
             android:textColor="@color/color_action_bar"
-            android:textSize="24sp" />
+            android:textSize="@dimen/text_size_sixteen" />
 
         <TextView
             android:id="@+id/tv_msg"
@@ -30,7 +30,7 @@
             android:layout_below="@+id/tvtitle"
             android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_fourteen"
             android:text="@string/msg_logout" />
 
         <View
@@ -58,7 +58,7 @@
                 android:text="@string/no"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_fourteen" />
 
             <View
                 android:layout_width="1dp"
@@ -74,11 +74,10 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="0.5"
                 android:background="@android:color/transparent"
-
                 android:text="@string/yes"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_fourteen" />
 
         </LinearLayout>
 

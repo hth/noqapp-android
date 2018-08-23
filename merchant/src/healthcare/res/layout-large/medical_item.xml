@@ -7,8 +7,8 @@
 
     <ImageView
             android:id="@+id/iv_favourite"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="@dimen/action_image_size"
+            android:layout_height="@dimen/action_image_size"
             android:layout_margin="1dp"
             android:background="@drawable/ic_favorite_border"
             android:layout_gravity="center_vertical"
@@ -22,7 +22,8 @@
             android:layout_margin="1dp"
             android:layout_weight=".15"
             android:background="@drawable/square_grey_bg"
-            android:padding="10dp"/>
+            android:textSize="@dimen/text_size_medication"
+            android:padding="5dp"/>
 
     <TextView
             android:id="@+id/tv_medicine_name"
@@ -31,7 +32,8 @@
             android:layout_margin="1dp"
             android:layout_weight=".25"
             android:background="@drawable/square_grey_bg"
-            android:padding="10dp"/>
+            android:textSize="@dimen/text_size_medication"
+            android:padding="5dp"/>
 
     <TextView
             android:id="@+id/tv_dose"
@@ -40,7 +42,8 @@
             android:layout_margin="1dp"
             android:layout_weight=".15"
             android:background="@drawable/square_grey_bg"
-            android:padding="10dp"/>
+            android:textSize="@dimen/text_size_medication"
+            android:padding="5dp"/>
 
     <TextView
             android:id="@+id/tv_frequency"
@@ -49,7 +52,8 @@
             android:layout_margin="1dp"
             android:layout_weight=".15"
             android:background="@drawable/square_grey_bg"
-            android:padding="10dp"/>
+            android:textSize="@dimen/text_size_medication"
+            android:padding="5dp"/>
 
     <TextView
             android:id="@+id/tv_dose_timing"
@@ -58,7 +62,8 @@
             android:layout_margin="1dp"
             android:layout_weight=".15"
             android:background="@drawable/square_grey_bg"
-            android:padding="10dp"/>
+            android:textSize="@dimen/text_size_medication"
+            android:padding="5dp"/>
 
     <TextView
             android:id="@+id/tv_course"
@@ -67,17 +72,19 @@
             android:layout_margin="1dp"
             android:layout_weight=".15"
             android:background="@drawable/square_grey_bg"
-            android:padding="10dp"/>
+            android:textSize="@dimen/text_size_medication"
+            android:padding="5dp"/>
 
 
     <ImageView
             android:id="@+id/iv_delete"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="@dimen/action_image_size"
+            android:layout_height="@dimen/action_image_size"
             android:layout_margin="1dp"
             android:background="@drawable/delete_medic"
             android:layout_gravity="center_vertical"
             android:padding="10dp"
+            android:textSize="@dimen/text_size_medication"
             android:textColor="@android:color/transparent"/>
 
 </LinearLayout>

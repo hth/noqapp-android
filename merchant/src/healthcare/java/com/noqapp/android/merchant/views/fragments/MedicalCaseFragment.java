@@ -208,7 +208,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         lv_radiology.setAdapter(radiologyAdapter);
 
         actv_pathology = view.findViewById(R.id.actv_pathology);
-        final ArrayAdapter<String> actv_patholoy_adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, data);
+        final ArrayAdapter<String> actv_patholoy_adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, data);
         actv_pathology.setAdapter(actv_patholoy_adapter);
         actv_pathology.setThreshold(1);
         actv_pathology.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -227,7 +227,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         iv_add_pathology.setOnClickListener(this);
 
         actv_radiology = view.findViewById(R.id.actv_radiology);
-        final ArrayAdapter<String> actv_radiology_adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, testCaseString.getRadiology());
+        final ArrayAdapter<String> actv_radiology_adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, testCaseString.getRadiology());
         actv_radiology.setAdapter(actv_radiology_adapter);
         actv_radiology.setThreshold(1);
         actv_radiology.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -480,7 +480,8 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             map.put(key, new ArrayList<String>());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, map.get(key));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, map.get(key));
+        //adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         actv.setAdapter(adapter);
         if (isThreashold) {
             actv.setThreshold(1);

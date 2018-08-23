@@ -57,6 +57,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:layout_below="@+id/tv_title"
+                            android:textSize="@dimen/text_size_ten"
                             android:layout_centerHorizontal="true"/>
 
                     <TextView
@@ -68,11 +69,10 @@
                             android:layout_centerVertical="true"
                             android:layout_marginBottom="10dp"
                             android:gravity="center"
-                            android:hint="@string/setting"
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp"
                             android:textColor="@color/colorAddress"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/text_size_twelve"/>
 
                 </RelativeLayout>
 
@@ -92,22 +92,19 @@
                             android:id="@+id/top"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="50dp"
-                            android:layout_marginRight="50dp"
                             android:gravity="center">
 
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_marginBottom="10dp"
                                 android:layout_toLeftOf="@+id/iv_settings"
                                 android:gravity="center"
                                 android:hint="@string/setting"
                                 android:paddingLeft="5dp"
                                 android:paddingRight="5dp"
                                 android:textColor="@color/colorAddress"
-                                android:textSize="16sp"/>
+                                android:textSize="@dimen/text_size_twelve"/>
 
                         <ImageView
                                 android:id="@+id/iv_settings"
@@ -130,8 +127,6 @@
                         <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="50dp"
-                                android:layout_marginRight="50dp"
                                 android:layout_marginTop="10dp"
                                 android:gravity="center">
 
@@ -140,7 +135,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="40dp"
                                     android:layout_centerVertical="true"
-                                    android:layout_marginBottom="10dp"
                                     android:layout_marginRight="5dp"
                                     android:layout_toLeftOf="@+id/iv_edit"
                                     android:background="@drawable/square_white_bg_drawable"
@@ -149,7 +143,7 @@
                                     android:paddingLeft="5dp"
                                     android:paddingRight="5dp"
                                     android:textColor="@color/colorAddress"
-                                    android:textSize="18sp"/>
+                                    android:textSize="@dimen/text_size_fourteen"/>
 
                             <ImageView
                                     android:id="@+id/iv_edit"
@@ -193,13 +187,13 @@
                                 style="@style/style_join_queue_tv"
                                 android:text="@string/serving"
                                 android:textColor="@color/colorAddress"
-                                android:textSize="15sp"/>
+                                android:textSize="@dimen/text_size_twelve"/>
 
                         <TextView
                                 android:id="@+id/tv_current_value"
                                 style="@style/style_join_queue_tv"
                                 android:textColor="@color/colorMobile"
-                                android:textSize="36sp"/>
+                                android:textSize="@dimen/value_text_size"/>
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -229,13 +223,13 @@
                                 style="@style/style_join_queue_tv"
                                 android:text="@string/in_Queue"
                                 android:textColor="@color/colorAddress"
-                                android:textSize="15sp"/>
+                                android:textSize="@dimen/text_size_twelve"/>
 
                         <TextView
                                 android:id="@+id/tv_total_value"
                                 style="@style/style_join_queue_tv"
                                 android:textColor="@color/color_total_val"
-                                android:textSize="36sp"/>
+                                android:textSize="@dimen/value_text_size"/>
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -262,7 +256,7 @@
                                 style="@style/style_join_queue_tv"
                                 android:text="@string/service_time"
                                 android:textColor="@color/colorAddress"
-                                android:textSize="15sp"/>
+                                android:textSize="@dimen/text_size_twelve"/>
 
                         <Chronometer
                                 android:id="@+id/chronometer"
@@ -272,7 +266,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:gravity="center"
                                 android:textColor="@android:color/black"
-                                android:textSize="40sp"/>
+                                android:textSize="@dimen/value_text_size"/>
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -303,15 +297,15 @@
                             android:text="@string/skip"
                             android:textAllCaps="false"
                             android:textColor="@android:color/transparent"
-                            android:textSize="15sp"/>
+                            android:textSize="@dimen/text_size_twelve"/>
 
                     <TextView
                             android:id="@+id/tv_skip"
                             style="@style/style_join_queue_tv"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="2dp"
                             android:text="@string/skip"
                             android:textColor="@color/colorAddress"
-                            android:textSize="16sp"/>
+                            android:textSize="@dimen/text_size_fourteen"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -330,15 +324,15 @@
                             android:text="@string/start"
                             android:textAllCaps="false"
                             android:textColor="@android:color/transparent"
-                            android:textSize="15sp"/>
+                            android:textSize="@dimen/text_size_fourteen"/>
 
                     <TextView
                             android:id="@+id/tv_start"
                             style="@style/style_join_queue_tv"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="2dp"
                             android:text="@string/start"
                             android:textColor="@color/colorAddress"
-                            android:textSize="16sp"/>
+                            android:textSize="@dimen/text_size_fourteen"/>
 
                 </LinearLayout>
 
@@ -357,15 +351,15 @@
                             android:text="@string/next"
                             android:textAllCaps="false"
                             android:textColor="@android:color/transparent"
-                            android:textSize="15sp"/>
+                            android:textSize="@dimen/text_size_fourteen"/>
 
                     <TextView
                             android:id="@+id/tv_next"
                             style="@style/style_join_queue_tv"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="2dp"
                             android:text="@string/next"
                             android:textColor="@color/colorAddress"
-                            android:textSize="16sp"/>
+                            android:textSize="@dimen/text_size_fourteen"/>
                 </LinearLayout>
             </LinearLayout>
 

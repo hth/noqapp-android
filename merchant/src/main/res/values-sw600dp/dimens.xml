@@ -4,4 +4,7 @@
     <dimen name="edit_icon_size">32dp</dimen>
     <dimen name="profile_image_size">100sp</dimen>
     <dimen name="profile_image_padding">15sp</dimen>
+    <dimen name="token_banner_image_height">125sp</dimen>
+    <dimen name="edit_field_width">300dp</dimen>
+    <dimen name="text_size_medication">12sp</dimen>
 </resources>

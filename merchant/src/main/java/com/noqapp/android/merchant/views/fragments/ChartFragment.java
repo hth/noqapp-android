@@ -126,6 +126,7 @@ public class ChartFragment extends Fragment {
         dataSet.setSliceSpace(3f);
         dataSet.setIconsOffset(new MPPointF(0, 40));
         dataSet.setSelectionShift(5f);
+        dataSet.setValueTextSize(12f);
 
         // add a lot of colors
 
@@ -144,7 +145,7 @@ public class ChartFragment extends Fragment {
         dataSet.setColors(colors);
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new MyValueFormatter());
-        data.setValueTextSize(16f);
+        data.setValueTextSize(12f);
         data.setValueTextColor(Color.BLACK);
         pieChart.setData(data);
         // undo all highlights

@@ -70,13 +70,10 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         userList = LaunchActivity.getLaunchActivity().getUserList();
         loginModel = new LoginModel(this);
         merchantProfileModel = new MerchantProfileModel();
-        //Creating the instance of ArrayAdapter containing list of fruit names
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getActivity(), android.R.layout.select_dialog_item, userList);
-        //Getting the instance of AutoCompleteTextView
-
+                (getActivity(), R.layout.spinner_item, userList);
         actv_email.setThreshold(1);//will start working from first character
-        actv_email.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+        actv_email.setAdapter(adapter);
         btn_login.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -104,7 +101,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity();
         LaunchActivity.getLaunchActivity().setActionBarTitle("");
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.GONE);
     }

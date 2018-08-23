@@ -13,8 +13,6 @@
         android:clipToPadding="true"
         android:divider="@null"
         android:listSelector="@android:color/transparent"
-        android:paddingBottom="50dp">
-
-    </ListView>
+        android:paddingBottom="50dp"/>
 
 </LinearLayout>

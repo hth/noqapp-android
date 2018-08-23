@@ -20,7 +20,7 @@
             android:gravity="center"
             android:padding="10dp"
             android:text="@string/notification_alert"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size_fourteen" />
 
         <ListView
             android:id="@+id/listview"

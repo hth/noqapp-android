@@ -283,7 +283,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<JsonProfile> jsonProfiles = LaunchActivity.getLaunchActivity().getUserProfile().getDependents();
+        List<JsonProfile> jsonProfiles = NoQueueBaseActivity.getUserProfile().getDependents();
         ll_dependent.removeAllViews();
         if (null != jsonProfiles && jsonProfiles.size() > 0) {
             for (int j = 0; j < jsonProfiles.size(); j++) {

@@ -131,7 +131,8 @@ public class PatientProfileFragment extends Fragment implements PatientProfilePr
         edt_Name.setText(jsonProfile.getName());
         tv_name.setText(jsonProfile.getName());
         edt_phoneNo.setText(jsonProfile.getPhoneRaw());
-        edt_Mail.setText(jsonProfile.getMail());
+        edt_Mail.setText(jsonProfile.getMail().contains("noqapp.com") ? "" :
+                jsonProfile.getMail());
         edt_address.setText(jsonProfile.getAddress());
         int id = 0;
         if (jsonProfile.getGender().equals("M")) {
