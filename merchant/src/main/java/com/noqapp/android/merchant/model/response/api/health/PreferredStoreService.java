@@ -53,7 +53,7 @@ public interface PreferredStoreService {
             String codeQR
     );
 
-    @GET("api/m/h/preferredStore/file/{bizStoreId}.json")
+    @GET("api/m/h/preferredStore/file/{codeQR}/{bizStoreId}.json")
     void file(
             @Header("X-R-DID")
             String did,
@@ -66,6 +66,9 @@ public interface PreferredStoreService {
 
             @Header("X-R-AUTH")
             String auth,
+
+            @Path("codeQR")
+            String codeQR,
 
             @Path("bizStoreId")
             String bizStoreId
