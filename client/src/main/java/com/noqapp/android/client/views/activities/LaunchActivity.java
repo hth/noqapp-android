@@ -82,14 +82,7 @@ import java.util.Locale;
 
 public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
-    public static DatabaseHelper dbHandler;
-    public static Locale locale;
-    public static SharedPreferences languagepref;
-    public static String language;
-    private static LaunchActivity launchActivity;
-    public NetworkUtil networkUtil;
-    public ProgressDialog progressDialog;
-    public ActivityCommunicator activityCommunicator;
+
     @BindView(R.id.tv_badge)
     protected TextView tv_badge;
 
@@ -115,13 +108,21 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private boolean showLocationPopup = true;
     private long lastPress;
     private Toast backPressToast;
-    // private BroadcastReceiver broadcastReceiver;
-    FcmNotificationReceiver fcmNotificationReceiver;
+    private FcmNotificationReceiver fcmNotificationReceiver;
     private ImageView iv_profile;
     private TextView tv_login, tv_name, tv_email;
     private ScanQueueFragment scanFragment;
     private DrawerLayout drawer;
     private Menu nav_Menu;
+    public static DatabaseHelper dbHandler;
+    public static Locale locale;
+    public static SharedPreferences languagepref;
+    public static String language;
+    private static LaunchActivity launchActivity;
+    public NetworkUtil networkUtil;
+    public ProgressDialog progressDialog;
+    public ActivityCommunicator activityCommunicator;
+
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -203,48 +204,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         iv_profile.setOnClickListener(this);
         tv_name = mParent.findViewById(R.id.tv_name);
         tv_email = mParent.findViewById(R.id.tv_email);
-
-       /* broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
-                    // new push notification is received
-                    String payload = intent.getStringExtra(Constants.Firebase_Type);
-                    String codeQR = intent.getStringExtra(Constants.CodeQR);
-                    Log.d(TAG, "payload=" + payload + " codeQR=" + codeQR);
-
-                    if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                        String userStatus = intent.getStringExtra("u");
-                        String token = intent.getStringExtra(Constants.TOKEN);
-                        String quserID = intent.getStringExtra(Constants.QuserID);
-                        *//**
-         * Save codeQR of review & show the review screen on app
-         * resume if there is any record in Review DB for review key
-         *//*
-                        if (null == userStatus) {
-                            updateNotification(intent, codeQR, false);
-                        } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                            ReviewDB.insert(ReviewDB.KEY_REVIEW, codeQR, token, "", quserID);
-                            callReviewActivity(codeQR, token);
-                            // this code is added to close the join & after join screen if the request is processed
-                            if (activityCommunicator != null) {
-                                activityCommunicator.requestProcessed(codeQR, token);
-                            }
-                        } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                            ReviewDB.insert(ReviewDB.KEY_SKIP, codeQR, token, "", quserID);
-                            //TODO @CHANDRA implement it for activtiy
-                            callSkipScreen(codeQR, token, quserID);
-                        }
-                    } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                        updateNotification(intent, codeQR, true);
-                    } else {
-                        // Toast.makeText(launchActivity, "Notification : " + payload, Toast.LENGTH_LONG).show();
-                    }
-                }
-
-
-            }
-        };*/
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             DeviceModel deviceModel = new DeviceModel();
@@ -255,10 +214,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     }
 
-    @Override
-    public void updateLocationUI() {
 
-    }
 
     private void setSharedPreferenceDeviceID(SharedPreferences sharedpreferences, String deviceId) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -266,12 +222,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         editor.apply();
     }
 
-//    @Override
-//    public void updateLocationUI() {
-//        if (null != scanFragment) {
-//            scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
-//        }
-//    }
+    @Override
+    public void updateLocationUI() {
+        if (null != scanFragment) {
+            scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
+        }
+    }
 
     @Override
     public void onNewIntent(Intent intent) {
@@ -405,7 +361,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
-        //  LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
         if (null != fcmNotificationReceiver)
             fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
 
