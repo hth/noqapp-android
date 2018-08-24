@@ -32,10 +32,8 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                           int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rcv_item_current_activity, parent, false);
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_current_activity, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -64,24 +62,27 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType());
         holder.tv_total_value.setText(String.valueOf(dataSet.get(listPosition).getServingNumber()));
         if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
-            if(jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() == 0){
+            if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() == 0) {
                 holder.tv_total.setText("It's your turn!!!");
                 holder.tv_total_value.setVisibility(View.GONE);
-            }else if(jsonTokenAndQueue.getServingNumber() == 0){
+            } else if (jsonTokenAndQueue.getServingNumber() == 0) {
                 holder.tv_total.setText("Queue not yet started");
                 holder.tv_total_value.setVisibility(View.GONE);
-            }else{
+            } else {
                 holder.tv_total.setText(context.getString(R.string.serving_now));
                 holder.tv_total_value.setVisibility(View.VISIBLE);
             }
-        }else if(jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+        } else if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() <= 0) {
-                if (jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.OP) {
-                    holder.tv_total.setText("Order being prepared");
-                } else if (jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
-                        jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
-                        jsonTokenAndQueue.getPurchaseOrderState() == PurchaseOrderStateEnum.OD) {
-                    holder.tv_total.setText(jsonTokenAndQueue.getPurchaseOrderState().getDescription());
+                switch (jsonTokenAndQueue.getPurchaseOrderState()) {
+                    case OP:
+                        holder.tv_total.setText("Order being prepared");
+                        break;
+                    case RD:
+                    case RP:
+                    case OD:
+                        holder.tv_total.setText(jsonTokenAndQueue.getPurchaseOrderState().getDescription());
+                        break;
                 }
                 holder.tv_total_value.setVisibility(View.GONE);
             } else if (jsonTokenAndQueue.getServingNumber() == 0) {
@@ -122,7 +123,6 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-
         private TextView tv_name;
         private TextView tv_detail;
         private TextView tv_address;
