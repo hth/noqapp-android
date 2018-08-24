@@ -41,24 +41,19 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     protected static boolean display = true;
     static SplashScreen splashScreen;
     protected boolean isActive = true;
-    protected int splashTime = 40000;
+
     private String TAG = SplashScreen.class.getSimpleName();
     private static String fcmToken = "";
     private String APP_PREF = "splashPref";
     private static String deviceId = "";
-    //BuildConfig.BUILD_TYPE.equals("debug") ? 1000 : 4000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         //   getSupportActionBar().hide();
-        SplashHandler mHandler = new SplashHandler();
         setContentView(R.layout.splash);
         splashScreen = this;
-        Message msg = new Message();
-        msg.what = 0;
-        mHandler.sendMessageDelayed(msg, splashTime); // 4 sec delay
         LottieAnimationView animationView = findViewById(R.id.animation_view);
         animationView.setAnimation("data.json");
         animationView.playAnimation();
@@ -116,6 +111,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     @Override
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if(deviceRegistered.getRegistered() == 1) {
+            Log.e("Launch", "launching from deviceRegisterResponse");
             Intent i = new Intent(splashScreen, LaunchActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.putExtra("fcmToken", fcmToken);
@@ -128,27 +124,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         }
     }
 
-    private static class SplashHandler extends Handler {
-        // This method is used to handle received messages
-        public void handleMessage(Message msg) {
-            // switch to identify the message by its code
-            switch (msg.what) {
-                default:
-                case 0:
-                    super.handleMessage(msg);
-                    if (display) {
-                        Intent i = new Intent(splashScreen, LaunchActivity.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        i.putExtra("fcmToken",fcmToken);
-                        i.putExtra("deviceId",deviceId);
-                        splashScreen.startActivity(i);
-                        splashScreen.finish();
-                    } else {
-                        splashScreen.finish();
-                    }
-            }
-        }
-    }
+
     private void sendRegistrationToServer(String refreshToken) {
         DeviceToken deviceToken = new DeviceToken(refreshToken);
       //  NoQueueBaseActivity.setFCMToken(refreshToken);
@@ -165,6 +141,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             deviceModel.setDeviceRegisterPresenter(this);
             deviceModel.register(deviceId, deviceToken);
         } else {
+            Log.e("Launch", "launching from sendRegistrationToServer");
             Log.d(TAG, "Exist deviceId=" + deviceId);
             Intent i = new Intent(splashScreen, LaunchActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
