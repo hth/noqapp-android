@@ -30,7 +30,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:text="01"
-                    android:textSize="22sp"/>
+                    android:textSize="18sp"/>
 
 
         </RelativeLayout>
@@ -43,7 +43,7 @@
                 android:layout_marginTop="3dp"
                 android:text=""
                 android:textColor="@android:color/black"
-                android:textSize="18sp"/>
+                android:textSize="@dimen/text_size_fourteen"/>
 
         <TextView
                 android:id="@+id/tv_customer_mobile"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
                 android:layout_marginTop="3dp"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/text_size_ten"/>
 
 
         <RelativeLayout
@@ -70,7 +70,7 @@
                     android:layout_toLeftOf="@+id/iv_info"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/text_size_ten"/>
 
             <ImageView
                     android:id="@+id/iv_info"
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
                 android:layout_marginTop="3dp"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/text_size_ten"/>
 
         <TextView
                 android:id="@+id/tv_order_prepared"
@@ -100,7 +100,8 @@
                 android:textColor="@android:color/white"
                 android:text="Order prepared"
                 android:layout_marginTop="3dp"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/text_size_ten"/>
+
         <TextView
                 android:id="@+id/tv_order_done"
                 android:layout_width="wrap_content"
@@ -114,7 +115,7 @@
                 android:textColor="@android:color/white"
                 android:text="Order Done"
                 android:layout_marginTop="3dp"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/text_size_ten"/>
 
 
         <TextView
@@ -127,7 +128,7 @@
                 android:textColor="@android:color/white"
                 android:layout_marginTop="3dp"
                 android:text="View order details"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/text_size_ten"/>
 
     </LinearLayout>
 

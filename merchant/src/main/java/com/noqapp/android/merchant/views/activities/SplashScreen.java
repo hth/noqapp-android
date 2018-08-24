@@ -39,7 +39,7 @@ public class SplashScreen extends AppCompatActivity {
         Message msg = new Message();
         msg.what = 0;
         mHandler.sendMessageDelayed(msg, splashTime); // 4 sec delay
-        LottieAnimationView animationView = (LottieAnimationView) findViewById(R.id.animation_view);
+        LottieAnimationView animationView = findViewById(R.id.animation_view);
         animationView.setAnimation("data.json");
         animationView.playAnimation();
         animationView.loop(true);
