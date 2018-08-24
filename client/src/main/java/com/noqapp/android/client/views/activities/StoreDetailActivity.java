@@ -12,7 +12,8 @@ import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.NetworkChangeReceiver;
+import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.JsonHour;
@@ -22,11 +23,19 @@ import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.drawable.LayerDrawable;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +45,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -65,12 +75,28 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private RelativeLayout rl_mid_content;
     private TextView tv_rating, tv_rating_review;
     private SegmentedControl sc_amenities, sc_delivery_types, sc_payment_mode;
+    private NetworkChangeReceiver myReceiver = new NetworkChangeReceiver();
+    private EventBus bus = EventBus.getDefault();
+    private Snackbar snackbar;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_detail);
-
+        FrameLayout fl_order = findViewById(R.id.fl_order);
+        snackbar = Snackbar
+                .make(fl_order, "No internet connection!", Snackbar.LENGTH_INDEFINITE);
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.RED);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(myReceiver,
+                    new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (!bus.isRegistered(this)) {
+            bus.register(this);
+        }
         tv_address = findViewById(R.id.tv_address);
         tv_address_title = findViewById(R.id.tv_address_title);
         tv_store_name = findViewById(R.id.tv_store_name);
@@ -130,15 +156,40 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         else {
             Picasso.with(this).load(ImageUtils.getBannerPlaceholder()).into(collapseImageView);
         }
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
+        progressDialog.setMessage("Loading "+bizStoreElastic.getBusinessName()+"...");
+        if (NetworkUtils.isConnectingToInternet(this)) {
+            showSnackBar(true);
+
             progressDialog.show();
             StoreModel.storePresenter = this;
             StoreModel.getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
         } else {
-            ShowAlertInformation.showNetworkDialog(this);
+            showSnackBar(false);
+            //ShowAlertInformation.showNetworkDialog(this);
+        }
+    }
+    @Subscribe
+    public void onEvent(Boolean name) {
+        Log.e("name value: ", String.valueOf(name));
+        if (NetworkUtils.isConnectingToInternet(this)) {
+            showSnackBar(true);
+            if (null == jsonStore) {
+                progressDialog.show();
+                StoreModel.storePresenter = this;
+                StoreModel.getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
+            }
+        } else {
+            showSnackBar(false);
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            unregisterReceiver(myReceiver);
+        }
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -340,5 +391,12 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         String time = df.format(Calendar.getInstance().getTime());
         int timeData = Integer.parseInt(time.replace(":", ""));
         return jsonHour.getStartHour() <= timeData && timeData <= jsonHour.getEndHour();
+    }
+
+    private void showSnackBar(boolean isHide) {
+        if (isHide)
+            snackbar.dismiss();
+        else
+            snackbar.show();
     }
 }

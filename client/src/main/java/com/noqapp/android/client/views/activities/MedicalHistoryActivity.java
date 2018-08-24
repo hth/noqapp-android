@@ -44,7 +44,6 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
 
     private ListView listview;
     private TextView tv_empty;
-    private FrameLayout frame_layout;
     private EventBus bus = EventBus.getDefault();
     private NetworkChangeReceiver myReceiver = new NetworkChangeReceiver();
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
@@ -56,21 +55,21 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
         listview = findViewById(R.id.listview);
-        frame_layout = findViewById(R.id.frame_layout);
+        FrameLayout frame_layout = findViewById(R.id.frame_layout);
         tv_empty = findViewById(R.id.tv_empty);
         initActionsViews(false);
         context = this;
         snackbar = Snackbar
-                .make(frame_layout, "No internet connection!", Snackbar.LENGTH_INDEFINITE)
-                .setAction("RETRY", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                    }
-                });
-        snackbar.setActionTextColor(Color.RED);
+                .make(frame_layout, "No internet connection!", Snackbar.LENGTH_INDEFINITE);
+//                .setAction("RETRY", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                    }
+//                });
+//        snackbar.setActionTextColor(Color.RED);
         View sbView = snackbar.getView();
         TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(Color.YELLOW);
+        textView.setTextColor(Color.RED);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             registerReceiver(myReceiver,
@@ -154,7 +153,6 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
                 }
             }
         } else {
-            // Toast.makeText(context, "Not Connect", Toast.LENGTH_SHORT).show();
             showSnackBar(false);
         }
     }

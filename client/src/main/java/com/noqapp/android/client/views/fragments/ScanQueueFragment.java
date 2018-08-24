@@ -130,7 +130,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     private String city = "";
     private boolean isFirstTimeUpdate = true;
     private static final String SHOWCASE_ID = "sequence example";
-    private boolean isNotShown = true;
+    private boolean isProgressFirstTime = true;
     private static final int MSG_CURRENT_QUEUE = 0;
     private static final int MSG_HISTORY_QUEUE = 1;
     private static TokenQueueViewInterface tokenQueueViewInterface;
@@ -331,8 +331,10 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
                 queueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
             }
+        if(isProgressFirstTime) {
             pb_current.setVisibility(View.VISIBLE);
             pb_recent.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -376,7 +378,9 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             storeInfoParam.setLongitude(longitute);
             storeInfoParam.setFilters("xyz");
             storeInfoParam.setScrollId("");
-            pb_near.setVisibility(View.VISIBLE);
+            if(isProgressFirstTime) {
+                pb_near.setVisibility(View.VISIBLE);
+            }
             new NearMeModel(this).nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -399,11 +403,15 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             recentActivityAdapter.notifyDataSetChanged();
         }
         tv_near_view_all.setVisibility(nearMeData.size() == 0 ? View.GONE : View.VISIBLE);
+        isProgressFirstTime = false;
+        if(NoQueueBaseActivity.getShowHelper()) {
+            presentShowcaseSequence();
+            NoQueueBaseActivity.setShowHelper(false);
+        }
     }
 
     @Override
     public void nearMeError() {
-        //LaunchActivity.getLaunchActivity().dismissProgress();
         pb_near.setVisibility(View.GONE);
     }
 
@@ -419,6 +427,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 b.putBoolean(KEY_IS_HISTORY, false);
                 b.putBoolean("CallCategory", true);
                 b.putBoolean("isCategoryData", false);
+                b.putSerializable("BizStoreElastic", item);
                 Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
                 in.putExtra("bundle", b);
                 startActivity(in);
@@ -474,7 +483,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         intent.putExtra("long", "" + log);
         intent.putExtra("city", city);
         startActivity(intent);
-        // presentShowcaseSequence();
     }
 
     @OnClick(R.id.tv_recent_view_all)
@@ -678,7 +686,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
     private void presentShowcaseSequence() {
-        isNotShown = false;
         MaterialShowcaseView.resetSingleUse(getActivity(), SHOWCASE_ID);
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
@@ -698,7 +705,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 new MaterialShowcaseView.Builder(getActivity())
                         .setTarget(autoCompleteTextView)
                         .setDismissText("GOT IT")
-                        .setContentText("Click here to scan the store QRCode to join their queue")
+                        .setContentText("Search your preferred location.")
                         .withRectangleShape(true)
                         .build()
 
@@ -715,7 +722,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(getActivity())
                         .setTarget(rl_current_activity)
-                        .setDismissText("GOT IT")
+                        .setDismissText("DONE")
                         .setContentText("Your current join queue will be visible here")
                         .withRectangleShape(true)
                         .build()

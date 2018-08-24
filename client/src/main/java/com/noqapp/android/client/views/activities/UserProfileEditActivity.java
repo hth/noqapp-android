@@ -105,6 +105,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         profileModel = new ProfileModel();
         loadProfilePic();
         iv_profile.setOnClickListener(this);
+        progressDialog.setMessage("Updating profile....");
         isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
         dependentProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.DEPENDENT_PROFILE);
         // gaurdianProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.KEY_USER_PROFILE);
@@ -341,6 +342,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
 
     private void updateUI() {
         if (isDependent) {
+
             onClick(tv_male);// set default
             if (null != dependentProfile) {
                 edt_Name.setText(dependentProfile.getName());
@@ -360,6 +362,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 }
             } else {
                 btn_update.setText("Add Dependent");
+                progressDialog.setMessage("Adding dependent....");
             }
         } else {
             edt_Name.setText(NoQueueBaseActivity.getUserName());

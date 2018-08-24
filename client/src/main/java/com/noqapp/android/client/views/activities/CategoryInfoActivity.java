@@ -19,6 +19,8 @@ import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.client.utils.NetworkChangeReceiver;
+import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
@@ -30,16 +32,26 @@ import com.google.common.cache.Cache;
 
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.drawable.LayerDrawable;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -99,6 +111,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     protected SegmentedControl sc_amenities;
     @BindView(R.id.sc_facility)
     protected SegmentedControl sc_facility;
+    @BindView(R.id.ll_cat_info)
+    protected LinearLayout ll_cat_info;
     private String codeQR;
     private BizStoreElastic bizStoreElastic;
     private boolean isFuture = false;
@@ -108,6 +122,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     private Bundle bundle;
     private String title = "";
+    private NetworkChangeReceiver myReceiver = new NetworkChangeReceiver();
+    private EventBus bus = EventBus.getDefault();
+    private Snackbar snackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,11 +141,29 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
             }
         });
+        snackbar = Snackbar
+                .make(ll_cat_info, "No internet connection!", Snackbar.LENGTH_INDEFINITE);
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.RED);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(myReceiver,
+                    new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (!bus.isRegistered(this)) {
+            bus.register(this);
+        }
 
         bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
             codeQR = bundle.getString(NoQueueBaseFragment.KEY_CODE_QR);
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
+            BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
+            if(null != bizStoreElastic)
+              progressDialog.setMessage("Loading "+bizStoreElastic.getBusinessName()+"...");
+            else
+                progressDialog.setMessage("Loading ...");
+            if (NetworkUtils.isConnectingToInternet(this)) {
+                showSnackBar(true);
                 progressDialog.show();
                 QueueModel queueModel = new QueueModel();
                 queueModel.setQueuePresenter(this);
@@ -138,7 +173,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     queueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
                 }
             } else {
-                ShowAlertInformation.showNetworkDialog(this);
+                showSnackBar(false);
+                //ShowAlertInformation.showNetworkDialog(this);
             }
         }
         recyclerViewLayoutManager = new GridLayoutManager(this, 2);
@@ -146,6 +182,33 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     }
 
+    @Subscribe
+    public void onEvent(Boolean name) {
+        Log.e("name value: ", String.valueOf(name));
+        if (NetworkUtils.isConnectingToInternet(this)) {
+            showSnackBar(true);
+            if (null == bizStoreElastic) {
+                progressDialog.show();
+                QueueModel queueModel = new QueueModel();
+                queueModel.setQueuePresenter(this);
+                if (bundle.getBoolean("CallCategory", false)) {
+                    queueModel.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
+                } else {
+                    queueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
+                }
+            }
+        } else {
+            showSnackBar(false);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            unregisterReceiver(myReceiver);
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -361,5 +424,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             startActivity(in);
         }
     }
-
+    private void showSnackBar(boolean isHide) {
+        if (isHide)
+            snackbar.dismiss();
+        else
+            snackbar.show();
+    }
 }
