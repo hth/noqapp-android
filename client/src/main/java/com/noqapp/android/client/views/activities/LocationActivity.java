@@ -155,10 +155,10 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
         updateLocationUI();
     }
 
-    public boolean checkLocation() {
+    public void checkLocation() {
         if (!isLocationEnabled())
             showAlert();
-        return isLocationEnabled();
+        //return isLocationEnabled();
     }
 
     private void showAlert() {

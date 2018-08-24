@@ -105,7 +105,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @BindView(R.id.fl_notification)
     protected FrameLayout fl_notification;
 
-    private boolean showLocationPopup = true;
     private long lastPress;
     private Toast backPressToast;
     private FcmNotificationReceiver fcmNotificationReceiver;
@@ -210,7 +209,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             deviceModel.setAppBlacklistPresenter(this);
             deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
-        // LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(broadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
 
     }
 
@@ -591,9 +589,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public void appBlacklistResponse() {
         if (isOnline() && !BUILD_TYPE.equals("debug")) {
             //TODO(hth) This can be replaced with version received when looking for blacklist
-            if (null != launchActivity) {
-                new VersionCheckAsync(launchActivity).execute();
-            }
+            new VersionCheckAsync(this).execute();
         }
     }
 

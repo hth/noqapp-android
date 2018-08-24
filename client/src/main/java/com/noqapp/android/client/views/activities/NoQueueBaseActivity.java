@@ -42,6 +42,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String KEY_USER_PROFILE = "userProfile";
     public static final String IS_DEPENDENT = "isDependent";
     public static final String DEPENDENT_PROFILE = "dependentProfile";
+    public static final String KEY_SHOW_HELPER = "showHelper";
     /* Secured Shared Preference. */
     public static final String APP_PREF = "shared_pref";
     public static final String FCM_TOKEN = "fcmToken";
@@ -158,6 +159,16 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         String json = gson.toJson(jsonProfile);
         editor.putString(KEY_USER_PROFILE, json);
         editor.apply();
+    }
+    public static void setShowHelper(boolean showHelper) {
+        SharedPreferences.Editor editor = getSharedPreferencesEditor();
+        editor.putBoolean(KEY_SHOW_HELPER, showHelper);
+        editor.apply();
+    }
+
+    public static boolean getShowHelper() {
+        // Show only first time in the app lifecycle
+        return sharedPreferences.getBoolean(KEY_SHOW_HELPER, true);
     }
 
     public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {

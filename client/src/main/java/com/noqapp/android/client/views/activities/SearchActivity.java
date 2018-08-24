@@ -196,6 +196,7 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
                 b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
                 b.putBoolean("CallCategory", true);
                 b.putBoolean("isCategoryData", false);
+                b.putSerializable("BizStoreElastic", item);
                 Intent in = new Intent(this, CategoryInfoActivity.class);
                 in.putExtra("bundle", b);
                 startActivity(in);
