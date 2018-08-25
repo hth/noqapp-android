@@ -13,6 +13,7 @@ public enum PharmacyCategoryEnum {
     CR("CR", "Cream"),
     IH("IH", "Inhaler"),
     IJ("IJ", "Injection"),
+    LO("LO", "Lotion"),
     PW("PW", "Powder"),
     SY("SY", "Syrup"),
     TA("TA", "Tablet");
@@ -40,8 +41,8 @@ public enum PharmacyCategoryEnum {
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
-        for(PharmacyCategoryEnum medicineType : PharmacyCategoryEnum.values()) {
-            a.add(medicineType.description);
+        for (PharmacyCategoryEnum pharmacyCategory : PharmacyCategoryEnum.values()) {
+            a.add(pharmacyCategory.description);
         }
 
         return a;
@@ -63,6 +64,8 @@ public enum PharmacyCategoryEnum {
                     return "IH";
                 case "Injection":
                     return "IJ";
+                case "Lotion":
+                    return "LO";
                 case "Powder":
                     return "PW";
                 case "Syrup":
