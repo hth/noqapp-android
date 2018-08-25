@@ -2,7 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
-import com.noqapp.android.common.model.types.medical.MedicineTypeEnum;
+import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
 
@@ -71,7 +71,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
         }
 
         final JsonMedicalMedicine medicalRecord = medicalRecordList.get(position);
-        recordHolder.tv_medication.setText(medicalRecord.getMedicationType());
+        recordHolder.tv_medication.setText(medicalRecord.getPharmacyCategory());
         recordHolder.tv_dose.setText(medicalRecord.getStrength());
         recordHolder.tv_frequency.setText(medicalRecord.getDailyFrequency());
         recordHolder.tv_dose_timing.setText(medicalRecord.getMedicationWithFood());
@@ -140,7 +140,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
           List<JsonMedicalMedicine> temp = new ArrayList<>();
           for (int i = 0; i < medicalRecordList.size(); i++) {
               JsonMedicalMedicine jsonMedicalMedicine = medicalRecordList.get(i);
-              jsonMedicalMedicine.setMedicationType(MedicineTypeEnum.getValue(jsonMedicalMedicine.getMedicationType()));
+              jsonMedicalMedicine.setPharmacyCategory(PharmacyCategoryEnum.getValue(jsonMedicalMedicine.getPharmacyCategory()));
               jsonMedicalMedicine.setDailyFrequency(DailyFrequencyEnum.getValue(jsonMedicalMedicine.getDailyFrequency()));
               temp.add(jsonMedicalMedicine);
           }

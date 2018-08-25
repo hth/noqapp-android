@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
 
     defaultConfig {
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -22,5 +22,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.squareup.retrofit2:converter-jackson:2.4.0'
     implementation 'net.danlew:android.joda:2.9.9.3'
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.9.9'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.9.12'
 }

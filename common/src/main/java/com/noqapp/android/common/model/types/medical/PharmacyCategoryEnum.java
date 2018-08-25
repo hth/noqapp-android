@@ -8,7 +8,7 @@ import java.util.List;
  * hitender
  * 8/18/18 2:34 PM
  */
-public enum MedicineTypeEnum {
+public enum PharmacyCategoryEnum {
     CA("CA", "Capsule"),
     CR("CR", "Cream"),
     IH("IH", "Inhaler"),
@@ -20,7 +20,7 @@ public enum MedicineTypeEnum {
     private final String description;
     private final String name;
 
-    MedicineTypeEnum(String name, String description) {
+    PharmacyCategoryEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -33,14 +33,14 @@ public enum MedicineTypeEnum {
         return description;
     }
 
-    public static List<MedicineTypeEnum> asList() {
-        MedicineTypeEnum[] all = MedicineTypeEnum.values();
+    public static List<PharmacyCategoryEnum> asList() {
+        PharmacyCategoryEnum[] all = PharmacyCategoryEnum.values();
         return Arrays.asList(all);
     }
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
-        for(MedicineTypeEnum medicineType : MedicineTypeEnum.values()) {
+        for(PharmacyCategoryEnum medicineType : PharmacyCategoryEnum.values()) {
             a.add(medicineType.description);
         }
 
@@ -79,7 +79,7 @@ public enum MedicineTypeEnum {
 
     public static String getValueOfField(String input) {
         try {
-            return MedicineTypeEnum.valueOf(input).description;
+            return PharmacyCategoryEnum.valueOf(input).description;
         } catch (Exception e) {
             return input;
         }

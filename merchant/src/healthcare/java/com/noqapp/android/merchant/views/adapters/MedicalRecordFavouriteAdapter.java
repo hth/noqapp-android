@@ -69,7 +69,7 @@ public class MedicalRecordFavouriteAdapter extends BaseAdapter {
         }
 
         final JsonMedicalMedicine medicalRecord = medicalRecordList.get(position);
-        recordHolder.tv_medication.setText(medicalRecord.getMedicationType());
+        recordHolder.tv_medication.setText(medicalRecord.getPharmacyCategory());
         recordHolder.tv_dose.setText(medicalRecord.getStrength());
         recordHolder.tv_frequency.setText(medicalRecord.getDailyFrequency());
         recordHolder.tv_dose_timing.setText(medicalRecord.getMedicationWithFood());
@@ -91,7 +91,7 @@ public class MedicalRecordFavouriteAdapter extends BaseAdapter {
                     TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
                     TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
                     tvtitle.setText("Delete Favourite");
-                    tv_msg.setText("Do you want to delete it from favroite list.");
+                    tv_msg.setText("Do you want to delete it from favourite list.");
                     Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
                     Button btn_no = customDialogView.findViewById(R.id.btn_no);
                     btn_no.setOnClickListener(new View.OnClickListener() {

@@ -9,7 +9,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
-import com.noqapp.android.common.model.types.medical.MedicineTypeEnum;
+import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
@@ -297,7 +297,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                     JsonMedicalMedicine jsonMedicalMedicine = new JsonMedicalMedicine();
                     jsonMedicalMedicine.setDailyFrequency(actv_frequency.getText().toString());
                     jsonMedicalMedicine.setStrength(actv_dose.getText().toString());
-                    jsonMedicalMedicine.setMedicationType(actv_medicine_type.getText().toString());
+                    jsonMedicalMedicine.setPharmacyCategory(actv_medicine_type.getText().toString());
                     jsonMedicalMedicine.setMedicationWithFood(actv_dose_timing.getText().toString());
                     jsonMedicalMedicine.setCourse(actv_course.getText().toString());
                     jsonMedicalMedicine.setName(actv_medicine_name.getText().toString());
@@ -396,7 +396,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             map.put(FOLLOW_UP, new ArrayList<String>());
             map.put(INSTRUCTIONS, new ArrayList<String>());
 
-            List<String> temp = MedicineTypeEnum.asListOfDescription();
+            List<String> temp = PharmacyCategoryEnum.asListOfDescription();
             List<String> temp_daily_frequency = DailyFrequencyEnum.asListOfDescription();
             map.put(MEDICINES_TYPE, temp);
             map.put(MEDICINES_DOSE, new ArrayList<String>());

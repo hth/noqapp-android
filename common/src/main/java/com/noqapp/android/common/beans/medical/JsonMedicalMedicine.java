@@ -1,10 +1,11 @@
 package com.noqapp.android.common.beans.medical;
 
+import com.noqapp.android.common.beans.AbstractDomain;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.common.beans.AbstractDomain;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -40,8 +41,8 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
     @JsonProperty("mf")
     private String medicationWithFood;
 
-    @JsonProperty("mt")
-    private String medicationType;
+    @JsonProperty("pc")
+    private String pharmacyCategory;
 
     private boolean isFavourite = false;
 
@@ -90,12 +91,12 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
         return this;
     }
 
-    public String getMedicationType() {
-        return medicationType;
+    public String getPharmacyCategory() {
+        return pharmacyCategory;
     }
 
-    public JsonMedicalMedicine setMedicationType(String medicationType) {
-        this.medicationType = medicationType;
+    public JsonMedicalMedicine setPharmacyCategory(String pharmacyCategory) {
+        this.pharmacyCategory = pharmacyCategory;
         return this;
     }
 
@@ -118,14 +119,13 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
         JsonMedicalMedicine user = (JsonMedicalMedicine) o;
         return
                 Objects.equals(name, user.name) &&
-                        Objects.equals(medicationType, user.medicationType);
+                        Objects.equals(pharmacyCategory, user.pharmacyCategory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, strength, dailyFrequency,course,medicationWithFood,medicationType,isFavourite);
+        return Objects.hash(name, strength, dailyFrequency, course, medicationWithFood, pharmacyCategory, isFavourite);
     }
-
 
     @Override
     public String toString() {
@@ -135,7 +135,7 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
                 ", dailyFrequency='" + dailyFrequency + '\'' +
                 ", course='" + course + '\'' +
                 ", medicationWithFood='" + medicationWithFood + '\'' +
-                ", medicationType='" + medicationType + '\'' +
+                ", pharmacyCategory='" + pharmacyCategory + '\'' +
                 ", isFavourite=" + isFavourite +
                 '}';
     }
