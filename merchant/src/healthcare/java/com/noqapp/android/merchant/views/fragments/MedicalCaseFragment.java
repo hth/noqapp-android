@@ -9,7 +9,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
-import com.noqapp.android.common.model.types.medical.MedicineTypeEnum;
+import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
@@ -26,10 +26,10 @@ import com.noqapp.android.merchant.views.Utils.AnimationUtils;
 import com.noqapp.android.merchant.views.Utils.GridItem;
 import com.noqapp.android.merchant.views.Utils.TestCaseString;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
 import com.noqapp.android.merchant.views.adapters.GridAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordFavouriteAdapter;
-import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
 import com.noqapp.android.merchant.views.adapters.TestListAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
 import com.noqapp.android.merchant.views.interfaces.GridCommunication;
@@ -74,7 +74,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MedicalCaseFragment extends Fragment implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate, GridCommunication, ListCommunication, PreferredBusinessPresenter {
-
 
     private String jsonText = "{\n" +
             "  \"pathology\": [\n" +
@@ -297,7 +296,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                     JsonMedicalMedicine jsonMedicalMedicine = new JsonMedicalMedicine();
                     jsonMedicalMedicine.setDailyFrequency(actv_frequency.getText().toString());
                     jsonMedicalMedicine.setStrength(actv_dose.getText().toString());
-                    jsonMedicalMedicine.setMedicationType(actv_medicine_type.getText().toString());
+                    jsonMedicalMedicine.setPharmacyCategory(actv_medicine_type.getText().toString());
                     jsonMedicalMedicine.setMedicationWithFood(actv_dose_timing.getText().toString());
                     jsonMedicalMedicine.setCourse(actv_course.getText().toString());
                     jsonMedicalMedicine.setName(actv_medicine_name.getText().toString());
@@ -396,7 +395,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             map.put(FOLLOW_UP, new ArrayList<String>());
             map.put(INSTRUCTIONS, new ArrayList<String>());
 
-            List<String> temp = MedicineTypeEnum.asListOfDescription();
+            List<String> temp = PharmacyCategoryEnum.asListOfDescription();
             List<String> temp_daily_frequency = DailyFrequencyEnum.asListOfDescription();
             map.put(MEDICINES_TYPE, temp);
             map.put(MEDICINES_DOSE, new ArrayList<String>());
@@ -432,9 +431,9 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 e.printStackTrace();
             }
         }
-        if(LaunchActivity.getLaunchActivity().isOnline()){
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
             PreferredBusinessModel preferredBusinessModel = new PreferredBusinessModel(this);
-            preferredBusinessModel.getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),qCodeQR);
+            preferredBusinessModel.getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), qCodeQR);
         }
         return view;
     }
@@ -475,7 +474,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         return isValid;
     }
 
-    private void setSuggestions(final AutoCompleteTextView actv, String key, boolean isThreashold) {
+    private void setSuggestions(final AutoCompleteTextView actv, String key, boolean isThreshold) {
         if (null == map.get(key)) {
             map.put(key, new ArrayList<String>());
         }
@@ -483,7 +482,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, map.get(key));
         //adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         actv.setAdapter(adapter);
-        if (isThreashold) {
+        if (isThreshold) {
             actv.setThreshold(1);
         } else {
             actv.setOnTouchListener(new View.OnTouchListener() {
@@ -594,7 +593,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     public void preferredBusinessResponse(JsonPreferredBusinessList jsonPreferredBusinessList) {
         this.jsonPreferredBusinessList = jsonPreferredBusinessList;
 
-        CustomSpinnerAdapter spinAdapter = new CustomSpinnerAdapter(getActivity(),jsonPreferredBusinessList.getPreferredBusinesses());
+        CustomSpinnerAdapter spinAdapter = new CustomSpinnerAdapter(getActivity(), jsonPreferredBusinessList.getPreferredBusinesses());
         sp_preferred_list.setAdapter(spinAdapter);
 
     }
@@ -679,7 +678,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                             jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
                         }
 
-                        if(null != jsonPreferredBusinessList && null!= jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size()>0)
+                        if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0)
                             jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(sp_preferred_list.getSelectedItemPosition()).getBizStoreId());
 
                         jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
@@ -700,7 +699,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                                 LaunchActivity.getLaunchActivity().getAuth(),
                                 jsonMedicalRecord);
                     } else {
-                        Toast.makeText(getActivity(), "It seems you forget to add the medicine which you  entered.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "It seems you forget to add the medicine which you entered.", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(getActivity(), "Please fill at least one field", Toast.LENGTH_LONG).show();

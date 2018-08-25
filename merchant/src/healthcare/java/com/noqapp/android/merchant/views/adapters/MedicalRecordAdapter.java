@@ -2,7 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
-import com.noqapp.android.common.model.types.medical.MedicineTypeEnum;
+import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
 
@@ -27,7 +27,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
     private List<JsonMedicalMedicine> medicalRecordList;
     private AdapterCommunicate adapterCommunicate;
 
-    public MedicalRecordAdapter(Context context, List<JsonMedicalMedicine> medicalRecordList,AdapterCommunicate adapterCommunicate) {
+    public MedicalRecordAdapter(Context context, List<JsonMedicalMedicine> medicalRecordList, AdapterCommunicate adapterCommunicate) {
         this.context = context;
         this.medicalRecordList = medicalRecordList;
         this.adapterCommunicate = adapterCommunicate;
@@ -71,17 +71,17 @@ public class MedicalRecordAdapter extends BaseAdapter {
         }
 
         final JsonMedicalMedicine medicalRecord = medicalRecordList.get(position);
-        recordHolder.tv_medication.setText(medicalRecord.getMedicationType());
+        recordHolder.tv_medication.setText(medicalRecord.getPharmacyCategory());
         recordHolder.tv_dose.setText(medicalRecord.getStrength());
         recordHolder.tv_frequency.setText(medicalRecord.getDailyFrequency());
         recordHolder.tv_dose_timing.setText(medicalRecord.getMedicationWithFood());
         recordHolder.tv_course.setText(medicalRecord.getCourse());
         recordHolder.tv_medicine_name.setText(medicalRecord.getName());
-        recordHolder.iv_favourite.setBackgroundResource(medicalRecord.isFavourite()?R.drawable.ic_favorite:R.drawable.ic_favorite_border);
+        recordHolder.iv_favourite.setBackgroundResource(medicalRecord.isFavourite() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
         recordHolder.iv_favourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(medicalRecord.isFavourite()){
+                if (medicalRecord.isFavourite()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     LayoutInflater inflater = LayoutInflater.from(context);
                     builder.setTitle(null);
@@ -92,7 +92,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
                     TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
                     TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
                     tvtitle.setText("Delete Favourite");
-                    tv_msg.setText("Do you want to delete it from favroite list.");
+                    tv_msg.setText("Do you want to delete it from favourite list.");
                     Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
                     Button btn_no = customDialogView.findViewById(R.id.btn_no);
                     btn_no.setOnClickListener(new View.OnClickListener() {
@@ -105,17 +105,17 @@ public class MedicalRecordAdapter extends BaseAdapter {
 
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(context,"Deleted from Favourite",Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Deleted from Favourite", Toast.LENGTH_LONG).show();
                             medicalRecord.setFavourite(false);
-                            adapterCommunicate.updateFavouriteList(medicalRecord,false);
+                            adapterCommunicate.updateFavouriteList(medicalRecord, false);
                             notifyDataSetChanged();
                             mAlertDialog.dismiss();
                         }
                     });
                     mAlertDialog.show();
-                }else{
+                } else {
                     medicalRecord.setFavourite(true);
-                    adapterCommunicate.updateFavouriteList(medicalRecord,true);
+                    adapterCommunicate.updateFavouriteList(medicalRecord, true);
                     notifyDataSetChanged();
                 }
             }
@@ -133,19 +133,20 @@ public class MedicalRecordAdapter extends BaseAdapter {
     public List<JsonMedicalMedicine> getJsonMedicineList() {
         return medicalRecordList;
     }
+
     public List<JsonMedicalMedicine> getJsonMedicineListWithEnum() {
-      if(medicalRecordList.size()==0)
-         return medicalRecordList;
-      else{
-          List<JsonMedicalMedicine> temp = new ArrayList<>();
-          for (int i = 0; i < medicalRecordList.size(); i++) {
-              JsonMedicalMedicine jsonMedicalMedicine = medicalRecordList.get(i);
-              jsonMedicalMedicine.setMedicationType(MedicineTypeEnum.getValue(jsonMedicalMedicine.getMedicationType()));
-              jsonMedicalMedicine.setDailyFrequency(DailyFrequencyEnum.getValue(jsonMedicalMedicine.getDailyFrequency()));
-              temp.add(jsonMedicalMedicine);
-          }
-          return temp;
-      }
+        if (medicalRecordList.size() == 0)
+            return medicalRecordList;
+        else {
+            List<JsonMedicalMedicine> temp = new ArrayList<>();
+            for (int i = 0; i < medicalRecordList.size(); i++) {
+                JsonMedicalMedicine jsonMedicalMedicine = medicalRecordList.get(i);
+                jsonMedicalMedicine.setPharmacyCategory(PharmacyCategoryEnum.getValue(jsonMedicalMedicine.getPharmacyCategory()));
+                jsonMedicalMedicine.setDailyFrequency(DailyFrequencyEnum.getValue(jsonMedicalMedicine.getDailyFrequency()));
+                temp.add(jsonMedicalMedicine);
+            }
+            return temp;
+        }
     }
 
     static class RecordHolder {
