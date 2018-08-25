@@ -225,7 +225,6 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                 return false;
             }
         });
-        tv_auto.setVisibility(View.GONE);
         tv_auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -305,7 +304,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         }
         try {
             tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getFCMToken());
-            tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.GONE : View.GONE);
+            tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
         }
