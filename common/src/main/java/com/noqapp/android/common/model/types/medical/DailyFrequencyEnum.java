@@ -9,11 +9,11 @@ import java.util.List;
  * 8/17/18 5:31 PM
  */
 public enum DailyFrequencyEnum {
-    OD("OD", "One time a day", 1),
-    TD("TD", "Two times a day", 2),
-    HD("HD", "Three times a day", 3),
-    FD("FD", "Four times a day", 4),
-    VD("VD", "Five times a day", 5);
+    OD("OD", "1 time a day", 1),
+    TD("TD", "2 times a day", 2),
+    HD("HD", "3 times a day", 3),
+    FD("FD", "4 times a day", 4),
+    VD("VD", "5 times a day", 5);
 
     private final String description;
     private final String name;
@@ -58,15 +58,15 @@ public enum DailyFrequencyEnum {
     public static String getValue(String input){
         try {
             switch (input) {
-                case "One time a day":
+                case "1 time a day":
                     return "OD";
-                case "Two times a day":
+                case "2 times a day":
                     return "TD";
-                case "Three times a day":
+                case "3 times a day":
                     return "HD";
-                case "Four times a day":
+                case "4 times a day":
                     return "FD";
-                case "Five times a day":
+                case "5 times a day":
                     return "VD";
                 default:
                     return input;
