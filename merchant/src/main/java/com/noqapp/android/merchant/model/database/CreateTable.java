@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.model.database;
 
 import static com.noqapp.android.merchant.model.database.DatabaseTable.Notification;
+import static com.noqapp.android.merchant.model.database.DatabaseTable.PreferredStore;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -31,7 +32,23 @@ public class CreateTable {
                 ");");
     }
 
+    static void createTablePreferredStore(SQLiteDatabase db) {
+        Log.d(TAG, "executing createTableNotification");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + PreferredStore.TABLE_NAME + "("
+                + PreferredStore.PRODUCT_ID + " TEXT, "
+                + PreferredStore.BIZ_STORE_ID + " TEXT, "
+                + PreferredStore.DISPLAY_PRICE + " TEXT, "
+                + PreferredStore.PRODUCT_NAME + " TEXT, "
+                + PreferredStore.PRODUCT_INFO + " TEXT, "
+                + PreferredStore.STORE_CAT_ID + " TEXT, "
+                + PreferredStore.PRODUCT_TYPE + " TEXT, "
+                + PreferredStore.PRODUCT_UNIT_VALUE + " TEXT, "
+                + PreferredStore.PRODUCT_UNIT_MESAURE + " TEXT "+
+                ");");
+    }
+
     static void createAllTable(SQLiteDatabase db) {
         createTableNotification(db);
+        createTablePreferredStore(db);
     }
 }

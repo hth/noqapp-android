@@ -12,11 +12,13 @@ import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.FilePresenter;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
 import com.noqapp.android.merchant.model.M_MerchantProfileModel;
 import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.model.PreferredBusinessModel;
+import com.noqapp.android.merchant.model.database.utils.PreferredStoreDB;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
@@ -38,12 +40,18 @@ import com.noqapp.android.merchant.views.interfaces.ListCommunication;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.rauschig.jarchivelib.Archiver;
+import org.rauschig.jarchivelib.ArchiverFactory;
+
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -67,13 +75,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MedicalCaseFragment extends Fragment implements MedicalRecordPresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate, GridCommunication, ListCommunication, PreferredBusinessPresenter {
+public class MedicalCaseFragment extends Fragment implements MedicalRecordPresenter, FilePresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate, GridCommunication, ListCommunication, PreferredBusinessPresenter {
 
     private String jsonText = "{\n" +
             "  \"pathology\": [\n" +
@@ -108,7 +119,10 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             "    \"cag\"\n" +
             "  ]\n" +
             "}";
-
+    private final int STORAGE_PERMISSION_CODE = 102;
+    private final String[] STORAGE_PERMISSION_PERMS = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
     private final String packageName = "com.google.android.apps.handwriting.ime";
     private final String CHIEF = "chief_complaint";
     private final String PAST_HISTORY = "past_history";
@@ -128,7 +142,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private final String MEDICINES_COURSE = "medicines_course";
 
     //
-
     private Map<String, List<String>> map = null;
     private String qCodeQR = "";
     private AutoCompleteTextView actv_medicine_name, actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation, actv_instruction, actv_followup;
@@ -395,11 +408,10 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             map.put(FOLLOW_UP, new ArrayList<String>());
             map.put(INSTRUCTIONS, new ArrayList<String>());
 
-            List<String> temp = PharmacyCategoryEnum.asListOfDescription();
-            List<String> temp_daily_frequency = DailyFrequencyEnum.asListOfDescription();
-            map.put(MEDICINES_TYPE, temp);
+
+            map.put(MEDICINES_TYPE, new ArrayList<String>());
             map.put(MEDICINES_DOSE, new ArrayList<String>());
-            map.put(MEDICINES_FREQUENCY, temp_daily_frequency);
+            map.put(MEDICINES_FREQUENCY, new ArrayList<String>());
             map.put(MEDICINES_DOSE_TIMINGS, new ArrayList<String>());
             map.put(MEDICINES_COURSE, new ArrayList<String>());
             setSuggestions(actv_medicine_name, MEDICINES_NAME, false); // set the default suggestion initially
@@ -431,9 +443,17 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 e.printStackTrace();
             }
         }
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            PreferredBusinessModel preferredBusinessModel = new PreferredBusinessModel(this);
-            preferredBusinessModel.getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), qCodeQR);
+        List<String> temp = PharmacyCategoryEnum.asListOfDescription();
+        List<String> temp_daily_frequency = DailyFrequencyEnum.asListOfDescription();
+        updateDefineSuggestions(MEDICINES_TYPE, temp);
+        updateDefineSuggestions(MEDICINES_FREQUENCY, temp_daily_frequency);
+        if (isStoragePermissionAllowed()) {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                PreferredBusinessModel preferredBusinessModel = new PreferredBusinessModel(this);
+                preferredBusinessModel.getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), qCodeQR);
+            }
+        } else {
+            requestStoragePermission();
         }
         return view;
     }
@@ -478,9 +498,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         if (null == map.get(key)) {
             map.put(key, new ArrayList<String>());
         }
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, map.get(key));
-        //adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         actv.setAdapter(adapter);
         if (isThreshold) {
             actv.setThreshold(1);
@@ -544,12 +562,8 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     }
 
     private boolean validate() {
-        btn_update.setBackgroundResource(R.drawable.button_drawable);
-        btn_update.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
-        btn_update.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
         boolean isValid = true;
         new AppUtils().hideKeyBoard(getActivity());
-
         if (TextUtils.isEmpty(actv_complaints.getText()) &&
                 TextUtils.isEmpty(actv_past_history.getText()) &&
                 TextUtils.isEmpty(actv_family_history.getText()) &&
@@ -560,6 +574,10 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 TextUtils.isEmpty(actv_followup.getText()) &&
                 TextUtils.isEmpty(actv_investigation.getText())) {
             isValid = false;
+        } else {
+            btn_update.setBackgroundResource(R.drawable.button_drawable);
+            btn_update.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
+            btn_update.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
         }
         return isValid;
     }
@@ -595,11 +613,66 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
         CustomSpinnerAdapter spinAdapter = new CustomSpinnerAdapter(getActivity(), jsonPreferredBusinessList.getPreferredBusinesses());
         sp_preferred_list.setAdapter(spinAdapter);
-
+        PreferredBusinessModel preferredBusinessModel = new PreferredBusinessModel(this);
+        preferredBusinessModel.setFilePresenter(this);
+        preferredBusinessModel.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), qCodeQR, jsonPreferredBusinessList.getPreferredBusinesses().get(0).getBizStoreId());
     }
 
     @Override
     public void preferredBusinessError() {
+
+    }
+
+    @Override
+    public void fileResponse(File temp) {
+        if (null != temp) {
+            try {
+                File destination = new File(Environment.getExternalStorageDirectory() + "/UnZipped/");
+
+                Archiver archiver = ArchiverFactory.createArchiver("tar", "gz");
+                archiver.extract(temp, destination);
+                String path = Environment.getExternalStorageDirectory() + "/UnZipped";
+                Log.d("Files", "Path: " + path);
+                File directory = new File(path);
+                File[] files = directory.listFiles();
+                Log.d("Files", "Size: " + files.length);
+                for (int i = 0; i < files.length; i++) {
+                    String fileName = files[i].getName();
+                    Log.d("Files", "FileName:" + fileName);
+                    if (fileName.endsWith(".csv")) {
+                        PreferredStoreDB.deletePreferredStore(fileName.substring(0, fileName.lastIndexOf(".")));
+                        FileReader file = new FileReader(files[i].getAbsolutePath());
+                        BufferedReader buffer = new BufferedReader(file);
+                        String line = "";
+                        while ((line = buffer.readLine()) != null) {
+                            PreferredStoreDB.insertPreferredStore(line);
+                        }
+                    }
+                }
+                for (int i = 0; i < files.length; i++) {
+                    new File(path, files[i].getName()).delete();
+                }
+                directory.delete();
+                //TODO @Chandra pass dynamic value of product id
+                List<String> data = PreferredStoreDB.getPreferredStoreDataList("5b7a7079783cea2a6c2556fa");
+                updateDefineSuggestions(MEDICINES_NAME, data);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void updateDefineSuggestions(String key, List<String> data) {
+        for (int k = 0; k < data.size(); k++) {
+            if (!map.get(key).contains(data.get(k))) {
+                map.get(key).add(data.get(k));
+            }
+        }
+    }
+
+    @Override
+    public void fileError() {
 
     }
 
@@ -655,7 +728,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                         jsonMedicalRecord.setKnownAllergies(actv_known_allergy.getText().toString());
                         jsonMedicalRecord.setClinicalFinding(actv_clinical_finding.getText().toString());
                         jsonMedicalRecord.setProvisionalDifferentialDiagnosis(actv_provisional.getText().toString());
-
                         JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical()
                                 .setBloodPressure(new String[]{edt_bp.getText().toString()})
                                 .setPluse(edt_pulse.getText().toString())
@@ -785,4 +857,25 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         }
         return false;
     }
+
+    private boolean isStoragePermissionAllowed() {
+        //Getting the permission status
+        int result_read = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        int result_write = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //If permission is granted returning true
+        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
+            return true;
+        //If permission is not granted returning false
+        return false;
+    }
+
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(
+                getActivity(),
+                STORAGE_PERMISSION_PERMS,
+                STORAGE_PERMISSION_CODE);
+    }
+
+
 }

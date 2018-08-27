@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.model.response.api.health;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -53,8 +54,10 @@ public interface PreferredStoreService {
             String codeQR
     );
 
+
     @GET("api/m/h/preferredStore/file/{codeQR}/{bizStoreId}.json")
-    void file(
+    Call<ResponseBody> file(
+
             @Header("X-R-DID")
             String did,
 
