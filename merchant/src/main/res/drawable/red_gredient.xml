@@ -2,15 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
     <gradient
         android:type="linear"
-        android:startColor="#FFFF5CF7"
-        android:endColor="#FFF50031"
+        android:startColor="#f3e5e5"
+        android:endColor="#e8cccc"
         android:angle="180"/>
 </shape>
-<!--<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >-->
-    <!--<gradient-->
-        <!--android:type="linear"-->
-        <!--android:startColor="#FFFF333C"-->
-        <!--android:endColor="#FFE7266D"-->
-        <!--android:angle="360"/>-->
-<!--</shape>-->
-    <!--http://angrytools.com/gradient/-->
