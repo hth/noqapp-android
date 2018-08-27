@@ -19,4 +19,21 @@ public class DatabaseTable {
         private Notification() {
         }
     }
+
+    public static class PreferredStore {
+        public static final String TABLE_NAME = "PREFERREDSTORE";
+        public static final String PRODUCT_ID = "productID";
+        public static final String BIZ_STORE_ID = "bizStoreID";
+        public static final String DISPLAY_PRICE = "displayPrice";
+        public static final String PRODUCT_NAME = "productName";
+        public static final String PRODUCT_INFO = "productInfo";
+        public static final String STORE_CAT_ID = "storeCatID";
+        public static final String PRODUCT_TYPE = "productType";
+        public static final String PRODUCT_UNIT_VALUE = "productUnitValue";
+        public static final String PRODUCT_UNIT_MESAURE = "productUnitMeasure";
+
+
+        private PreferredStore() {
+        }
+    }
 }

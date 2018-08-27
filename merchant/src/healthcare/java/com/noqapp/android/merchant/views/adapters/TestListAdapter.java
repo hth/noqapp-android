@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.Utils.GridItem;
 import com.noqapp.android.merchant.views.interfaces.ListCommunication;
 
 import android.content.Context;

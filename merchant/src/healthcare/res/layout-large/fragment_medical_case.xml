@@ -377,13 +377,6 @@
                                     android:background="@drawable/add_medic"/>
 
                         </RelativeLayout>
-
-                        <com.noqapp.android.merchant.views.customviews.FixedHeightGridView
-                                android:id="@+id/gv_blood1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:numColumns="3"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -431,14 +424,6 @@
                                     android:background="@drawable/add_medic"/>
 
                         </RelativeLayout>
-
-
-                        <com.noqapp.android.merchant.views.customviews.FixedHeightGridView
-                                android:id="@+id/gv_blood"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:numColumns="3"/>
                     </LinearLayout>
                 </LinearLayout>
 
