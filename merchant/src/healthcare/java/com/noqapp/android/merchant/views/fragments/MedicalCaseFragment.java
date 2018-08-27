@@ -25,16 +25,13 @@ import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.Utils.AnimationUtils;
-import com.noqapp.android.merchant.views.Utils.GridItem;
 import com.noqapp.android.merchant.views.Utils.TestCaseString;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
-import com.noqapp.android.merchant.views.adapters.GridAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordFavouriteAdapter;
 import com.noqapp.android.merchant.views.adapters.TestListAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCommunicate;
-import com.noqapp.android.merchant.views.interfaces.GridCommunication;
 import com.noqapp.android.merchant.views.interfaces.ListCommunication;
 
 import com.google.gson.Gson;
@@ -66,7 +63,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -84,7 +80,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MedicalCaseFragment extends Fragment implements MedicalRecordPresenter, FilePresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate, GridCommunication, ListCommunication, PreferredBusinessPresenter {
+public class MedicalCaseFragment extends Fragment implements MedicalRecordPresenter, FilePresenter, View.OnClickListener, IntellisensePresenter, AdapterCommunicate, ListCommunication, PreferredBusinessPresenter {
 
     private String jsonText = "{\n" +
             "  \"pathology\": [\n" +
@@ -204,13 +200,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         adapterFavourite = new MedicalRecordFavouriteAdapter(getActivity(), medicalRecordFavouriteList, this);
         listview_favourite.setAdapter(adapterFavourite);
 
-        ArrayList<String> data = testCaseString.getPathology();
-        ArrayList<GridItem> gridItems = new ArrayList<>();
-        for (int i = 0; i < data.size(); i++) {
-            gridItems.add(new GridItem().setFavourite(false).setKey(PATHOLOGY).setLabel(data.get(i)).setSelect(false).setFavourite(true));
-        }
-        GridView gv_blood = view.findViewById(R.id.gv_blood);
-        gv_blood.setAdapter(new GridAdapter(getActivity(), gridItems, this, PATHOLOGY));
         lv_pathology = view.findViewById(R.id.lv_pathology);
         pathologyAdapter = new TestListAdapter(getActivity(), lv_pathology_items, PATHOLOGY, this);
         lv_pathology.setAdapter(pathologyAdapter);
@@ -220,7 +209,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         lv_radiology.setAdapter(radiologyAdapter);
 
         actv_pathology = view.findViewById(R.id.actv_pathology);
-        final ArrayAdapter<String> actv_patholoy_adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, data);
+        final ArrayAdapter<String> actv_patholoy_adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, testCaseString.getPathology());
         actv_pathology.setAdapter(actv_patholoy_adapter);
         actv_pathology.setThreshold(1);
         actv_pathology.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -815,26 +804,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         tv_favourite_text.setVisibility(medicalRecordFavouriteList.size() != 0 ? View.GONE : View.VISIBLE);
     }
 
-    @Override
-    public void addDeleteItems(GridItem value, boolean isAdded, String key) {
-//        if(key.equals(PATHOLOGY)) {
-//            if (isAdded) {
-//                lv_pathology_items.add(value);
-//            } else {
-//                lv_pathology_items.remove(value);
-//            }
-//            pathologyAdapter = new TestListAdapter(getActivity(),lv_pathology_items,PATHOLOGY);
-//            lv_pathology.setAdapter(pathologyAdapter);
-//        }else if(key.equals(RADIOLOGY)) {
-//            if (isAdded) {
-//                lv_radiology_items.add(value);
-//            } else {
-//                lv_radiology_items.remove(value);
-//            }
-//            radiologyAdapter = new TestListAdapter(getActivity(),lv_radiology_items,RADIOLOGY);
-//            lv_radiology.setAdapter(radiologyAdapter);
-//        }
-    }
 
     @Override
     public void updateList(ArrayList<String> list, String key) {
