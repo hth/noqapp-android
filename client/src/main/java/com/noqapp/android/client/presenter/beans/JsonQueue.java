@@ -603,36 +603,50 @@ public class JsonQueue implements Serializable {
 
     @Override
     public String toString() {
-        return "JsonQueue{" +
-                "codeQR='" + codeQR + '\'' +
-                ", geoHash=" + geoHash +
-                ", businessName='" + businessName + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", storeAddress='" + storeAddress + '\'' +
-                ", countryShortName='" + countryShortName + '\'' +
-                ", storePhone='" + storePhone + '\'' +
-                ", businessType=" + businessType +
-                ", tokenAvailableFrom=" + tokenAvailableFrom +
-                ", startHour=" + startHour +
-                ", tokenNotAvailableFrom=" + tokenNotAvailableFrom +
-                ", endHour=" + endHour +
-                ", delayedInMinutes=" + delayedInMinutes +
-                ", preventJoining=" + preventJoining +
-                ", dayClosed=" + dayClosed +
-                ", topic='" + topic + '\'' +
-                ", servingNumber=" + servingNumber +
-                ", lastNumber=" + lastNumber +
-                ", queueStatus=" + queueStatus +
-                ", serviceEndTime='" + serviceEndTime + '\'' +
-                ", created='" + created + '\'' +
-                ", rating=" + rating +
-                ", ratingCount=" + ratingCount +
-                ", averageServiceTime=" + averageServiceTime +
-                ", remoteJoinAvailable=" + remoteJoinAvailable +
-                ", allowLoggedInUser=" + allowLoggedInUser +
-                ", availableTokenCount=" + availableTokenCount +
-                ", bizCategoryId='" + bizCategoryId + '\'' +
-                ", error=" + error +
-                '}';
+        final StringBuffer sb = new StringBuffer("JsonQueue{");
+        sb.append("bizStoreId='").append(bizStoreId).append('\'');
+        sb.append(", codeQR='").append(codeQR).append('\'');
+        sb.append(", geoHash='").append(geoHash).append('\'');
+        sb.append(", businessName='").append(businessName).append('\'');
+        sb.append(", displayName='").append(displayName).append('\'');
+        sb.append(", businessType=").append(businessType);
+        sb.append(", storeAddress='").append(storeAddress).append('\'');
+        sb.append(", area='").append(area).append('\'');
+        sb.append(", town='").append(town).append('\'');
+        sb.append(", countryShortName='").append(countryShortName).append('\'');
+        sb.append(", storePhone='").append(storePhone).append('\'');
+        sb.append(", tokenAvailableFrom=").append(tokenAvailableFrom);
+        sb.append(", startHour=").append(startHour);
+        sb.append(", tokenNotAvailableFrom=").append(tokenNotAvailableFrom);
+        sb.append(", endHour=").append(endHour);
+        sb.append(", delayedInMinutes=").append(delayedInMinutes);
+        sb.append(", preventJoining=").append(preventJoining);
+        sb.append(", dayClosed=").append(dayClosed);
+        sb.append(", topic='").append(topic).append('\'');
+        sb.append(", servingNumber=").append(servingNumber);
+        sb.append(", lastNumber=").append(lastNumber);
+        sb.append(", queueStatus=").append(queueStatus);
+        sb.append(", serviceEndTime='").append(serviceEndTime).append('\'');
+        sb.append(", created='").append(created).append('\'');
+        sb.append(", rating=").append(rating);
+        sb.append(", ratingCount=").append(ratingCount);
+        sb.append(", averageServiceTime=").append(averageServiceTime);
+        sb.append(", remoteJoinAvailable=").append(remoteJoinAvailable);
+        sb.append(", allowLoggedInUser=").append(allowLoggedInUser);
+        sb.append(", availableTokenCount=").append(availableTokenCount);
+        sb.append(", bizCategoryId='").append(bizCategoryId).append('\'');
+        sb.append(", famousFor='").append(famousFor).append('\'');
+        sb.append(", discount=").append(discount);
+        sb.append(", minimumDeliveryOrder=").append(minimumDeliveryOrder);
+        sb.append(", deliveryRange=").append(deliveryRange);
+        sb.append(", storeServiceImages=").append(storeServiceImages);
+        sb.append(", storeInteriorImages=").append(storeInteriorImages);
+        sb.append(", paymentTypes=").append(paymentTypes);
+        sb.append(", deliveryTypes=").append(deliveryTypes);
+        sb.append(", amenities=").append(amenities);
+        sb.append(", facilities=").append(facilities);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }
