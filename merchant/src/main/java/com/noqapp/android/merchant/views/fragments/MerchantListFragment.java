@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -155,6 +156,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         final View v = snackbar.getView();
         final TextView tv =  v.findViewById(android.support.design.R.id.snackbar_text);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12.0f);
+        tv.setTextColor(Color.BLACK);
 
         snackbar.addCallback(new Snackbar.Callback() {
             @Override
