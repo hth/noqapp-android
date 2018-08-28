@@ -173,7 +173,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private JsonPreferredBusinessList jsonPreferredBusinessList;
     private Spinner sp_preferred_list;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_medical_case, container, false);
@@ -396,7 +395,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             map.put(MEDICINES_NAME, new ArrayList<String>());
             map.put(FOLLOW_UP, new ArrayList<String>());
             map.put(INSTRUCTIONS, new ArrayList<String>());
-
 
             map.put(MEDICINES_TYPE, new ArrayList<String>());
             map.put(MEDICINES_DOSE, new ArrayList<String>());
@@ -623,31 +621,40 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 String path = Environment.getExternalStorageDirectory() + "/UnZipped";
                 Log.d("Files", "Path: " + path);
                 File directory = new File(path);
+                directory.deleteOnExit();
+
                 File[] files = directory.listFiles();
                 Log.d("Files", "Size: " + files.length);
-                for (int i = 0; i < files.length; i++) {
-                    String fileName = files[i].getName();
+                for (File file : files) {
+                    String fileName = file.getName();
                     Log.d("Files", "FileName:" + fileName);
                     if (fileName.endsWith(".csv")) {
-                        PreferredStoreDB.deletePreferredStore(fileName.substring(0, fileName.lastIndexOf(".")));
-                        FileReader file = new FileReader(files[i].getAbsolutePath());
-                        BufferedReader buffer = new BufferedReader(file);
-                        String line = "";
-                        while ((line = buffer.readLine()) != null) {
-                            PreferredStoreDB.insertPreferredStore(line);
+                        int lineCount = 0;
+                        try {
+                            PreferredStoreDB.deletePreferredStore(fileName.substring(0, fileName.lastIndexOf(".")));
+                            BufferedReader buffer = new BufferedReader(new FileReader(file.getAbsolutePath()));
+                            String line;
+                            while ((line = buffer.readLine()) != null) {
+                                lineCount ++;
+                                PreferredStoreDB.insertPreferredStore(line);
+                            }
+                        } catch (Exception e) {
+                            Log.e("Loading file=" + fileName + " line=" + lineCount + " reason={}", e.getLocalizedMessage(), e);
+                            throw new RuntimeException("Loading file=" + fileName + " line=" + lineCount);
                         }
                     }
                 }
-                for (int i = 0; i < files.length; i++) {
-                    new File(path, files[i].getName()).delete();
+                for (File file : files) {
+                    new File(path, file.getName()).delete();
                 }
                 directory.delete();
-                //TODO @Chandra pass dynamic value of product id
+                //TODO(Chandra) pass dynamic value of product id
                 List<String> data = PreferredStoreDB.getPreferredStoreDataList("5b7a7079783cea2a6c2556fa");
                 updateDefineSuggestions(MEDICINES_NAME, data);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("Failed file loading {}", e.getLocalizedMessage(), e);
+                //TODO make sure to increase the date as not to fetch again
             }
         }
     }
@@ -838,13 +845,10 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         return false;
     }
 
-
     private void requestStoragePermission() {
         ActivityCompat.requestPermissions(
                 getActivity(),
                 STORAGE_PERMISSION_PERMS,
                 STORAGE_PERMISSION_CODE);
     }
-
-
 }
