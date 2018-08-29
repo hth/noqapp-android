@@ -109,7 +109,7 @@ public class CreateTable {
                 ");");
     }
 
-    static void createTableNotification(SQLiteDatabase db) {
+    private static void createTableNotification(SQLiteDatabase db) {
         Log.d(TAG, "executing createTableNotification");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Notification.TABLE_NAME + "("
                 + Notification.KEY + " TEXT, "
@@ -125,47 +125,15 @@ public class CreateTable {
                 ");");
     }
 
-    static void alterTable(SQLiteDatabase db) {
-        try {
-            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.BUSINESS_TYPE + " TEXT  ");
-            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.GEOHASH + " TEXT  ");
-            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.TOWN + " TEXT  ");
-            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.AREA + " TEXT  ");
-            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.DISPLAY_IMAGE + " TEXT  ");
-            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.QUEUE_USER_ID + " TEXT  ");
 
-            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.BUSINESS_TYPE + " TEXT  ");
-            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.GEOHASH + " TEXT  ");
-            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.TOWN + " TEXT  ");
-            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.AREA + " TEXT  ");
-            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.DISPLAY_IMAGE + " TEXT  ");
-            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.QUEUE_USER_ID + " TEXT  ");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    static void updateBusinessType(SQLiteDatabase db) {
-        try {
-            db.execSQL("UPDATE " + TokenQueue.TABLE_NAME + " SET " + TokenQueue.BUSINESS_TYPE + "= 'DO'  WHERE " + TokenQueue.BUSINESS_TYPE + " = 'HO'");
-            db.execSQL("UPDATE " + TokenQueueHistory.TABLE_NAME + " SET " + TokenQueue.BUSINESS_TYPE + "= 'DO'  WHERE " + TokenQueue.BUSINESS_TYPE + " = 'HO'");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     static void dropAndCreateTable(SQLiteDatabase db) {
-
         db.execSQL("DROP TABLE IF EXISTS '" + TokenQueue.TABLE_NAME + "'");
         db.execSQL("DROP TABLE IF EXISTS '" + TokenQueueHistory.TABLE_NAME + "'");
         db.execSQL("DROP TABLE IF EXISTS '" + Review.TABLE_NAME + "'");
         db.execSQL("DROP TABLE IF EXISTS '" + Notification.TABLE_NAME + "'");
-        createTableTokenQueue(db);
-        createTableTokenQueueHistory(db);
-        createTableReview(db);
-        createTableNotification(db);
+        createAllTable(db);
     }
-
 
     static void createAllTable(SQLiteDatabase db) {
         createTableTokenQueue(db);
@@ -174,20 +142,5 @@ public class CreateTable {
         createTableNotification(db);
     }
 
-    public static void addOrderState(SQLiteDatabase db) {
-        try {
-            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.PURCHASE_ORDER_STATE + " TEXT  ");
-            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.PURCHASE_ORDER_STATE + " TEXT  ");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-    }
-
-    static void updateColoumnName(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS '" + Review.TABLE_NAME + "'");
-        db.execSQL("DROP TABLE IF EXISTS '" + Notification.TABLE_NAME + "'");
-        createTableReview(db);
-        createTableNotification(db);
-    }
 }
