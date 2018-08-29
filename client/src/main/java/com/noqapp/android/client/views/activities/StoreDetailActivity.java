@@ -157,16 +157,16 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             Picasso.with(this).load(ImageUtils.getBannerPlaceholder()).into(collapseImageView);
         }
         progressDialog.setMessage("Loading "+bizStoreElastic.getBusinessName()+"...");
-        if (NetworkUtils.isConnectingToInternet(this)) {
-            showSnackBar(true);
-
-            progressDialog.show();
-            StoreModel.storePresenter = this;
-            StoreModel.getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
-        } else {
-            showSnackBar(false);
-            //ShowAlertInformation.showNetworkDialog(this);
-        }
+//        if (NetworkUtils.isConnectingToInternet(this)) {
+//            showSnackBar(true);
+//
+//            progressDialog.show();
+//            StoreModel.storePresenter = this;
+//            StoreModel.getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
+//        } else {
+//            showSnackBar(false);
+//            //ShowAlertInformation.showNetworkDialog(this);
+//        }
     }
     @Subscribe
     public void onEvent(Boolean name) {
@@ -226,9 +226,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     public void storeResponse(JsonStore tempjsonStore) {
         this.jsonStore = tempjsonStore;
         dismissProgress();
-        // Toast.makeText(getActivity(),"jsonStore response success",Toast.LENGTH_LONG).show();
-        Log.v("jsonStore response :", jsonStore.toString());
-
         switch (jsonStore.getJsonQueue().getBusinessType()) {
             case DO:
                 // open hospital profile

@@ -162,20 +162,20 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
               progressDialog.setMessage("Loading "+bizStoreElastic.getBusinessName()+"...");
             else
                 progressDialog.setMessage("Loading ...");
-            if (NetworkUtils.isConnectingToInternet(this)) {
-                showSnackBar(true);
-                progressDialog.show();
-                QueueModel queueModel = new QueueModel();
-                queueModel.setQueuePresenter(this);
-                if (bundle.getBoolean("CallCategory", false)) {
-                    queueModel.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
-                } else {
-                    queueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
-                }
-            } else {
-                showSnackBar(false);
-                //ShowAlertInformation.showNetworkDialog(this);
-            }
+//            if (NetworkUtils.isConnectingToInternet(this)) {
+//                showSnackBar(true);
+//                progressDialog.show();
+//                QueueModel queueModel = new QueueModel();
+//                queueModel.setQueuePresenter(this);
+//                if (bundle.getBoolean("CallCategory", false)) {
+//                    queueModel.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
+//                } else {
+//                    queueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
+//                }
+//            } else {
+//                showSnackBar(false);
+//                //ShowAlertInformation.showNetworkDialog(this);
+//            }
         }
         recyclerViewLayoutManager = new GridLayoutManager(this, 2);
         rv_categories.setLayoutManager(recyclerViewLayoutManager);

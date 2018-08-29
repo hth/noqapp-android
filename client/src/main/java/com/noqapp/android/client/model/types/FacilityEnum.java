@@ -43,6 +43,9 @@ public enum FacilityEnum {
 
     @Override
     public String toString() {
-        return description;
+        return "FacilityEnum{" +
+                "description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
