@@ -1,4 +1,4 @@
-package com.noqapp.android.client.model.types;
+package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.model.response.open.StoreService;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -59,6 +59,4 @@ public final class StoreModel {
             }
         });
     }
-
-
 }

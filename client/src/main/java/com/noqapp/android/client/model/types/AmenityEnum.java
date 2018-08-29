@@ -29,9 +29,6 @@ public enum AmenityEnum {
 
     @Override
     public String toString() {
-        return "AmenityEnum{" +
-                "description='" + description + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return description;
     }
 }
