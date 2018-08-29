@@ -3,7 +3,7 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.AmenityEnum;
-import com.noqapp.android.client.model.types.StoreModel;
+import com.noqapp.android.client.model.StoreModel;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.ChildData;
@@ -18,6 +18,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.order.JsonStoreProduct;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 
@@ -65,7 +66,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_open_status, tv_store_timings;
+    private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_timings,tv_header_menu,tv_header_famous;
     private BizStoreElastic bizStoreElastic;
     private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView rv_thumb_images, rv_photos;
@@ -103,8 +104,9 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_store_address = findViewById(R.id.tv_store_address);
         tv_contact_no = findViewById(R.id.tv_contact_no);
         tv_known_for = findViewById(R.id.tv_known_for);
-        tv_store_open_status = findViewById(R.id.tv_store_open_status);
         tv_store_timings = findViewById(R.id.tv_store_timings);
+        tv_header_menu = findViewById(R.id.tv_header_menu);
+        tv_header_famous = findViewById(R.id.tv_header_famous);
         tv_menu = findViewById(R.id.tv_menu);
         tv_rating_review = findViewById(R.id.tv_rating_review);
         tv_rating = findViewById(R.id.tv_rating);
@@ -156,18 +158,19 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         else {
             Picasso.with(this).load(ImageUtils.getBannerPlaceholder()).into(collapseImageView);
         }
-        progressDialog.setMessage("Loading "+bizStoreElastic.getBusinessName()+"...");
-        if (NetworkUtils.isConnectingToInternet(this)) {
-            showSnackBar(true);
-
-            progressDialog.show();
-            StoreModel.storePresenter = this;
-            StoreModel.getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
-        } else {
-            showSnackBar(false);
-            //ShowAlertInformation.showNetworkDialog(this);
-        }
+        progressDialog.setMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
+//        if (NetworkUtils.isConnectingToInternet(this)) {
+//            showSnackBar(true);
+//
+//            progressDialog.show();
+//            StoreModel.storePresenter = this;
+//            StoreModel.getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
+//        } else {
+//            showSnackBar(false);
+//            //ShowAlertInformation.showNetworkDialog(this);
+//        }
     }
+
     @Subscribe
     public void onEvent(Boolean name) {
         Log.e("name value: ", String.valueOf(name));
@@ -190,6 +193,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             unregisterReceiver(myReceiver);
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -226,9 +230,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     public void storeResponse(JsonStore tempjsonStore) {
         this.jsonStore = tempjsonStore;
         dismissProgress();
-        // Toast.makeText(getActivity(),"jsonStore response success",Toast.LENGTH_LONG).show();
-        Log.v("jsonStore response :", jsonStore.toString());
-
         switch (jsonStore.getJsonQueue().getBusinessType()) {
             case DO:
                 // open hospital profile
@@ -266,6 +267,8 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_store_address.setText(address);
         tv_store_name.setText(jsonQueue.getDisplayName());
         tv_known_for.setText(jsonQueue.getFamousFor());
+        if(TextUtils.isEmpty(jsonQueue.getFamousFor()))
+            tv_header_famous.setVisibility(View.GONE);
         List<PaymentTypeEnum> temp = jsonQueue.getPaymentTypes();
         ArrayList<String> payment_data = new ArrayList<>();
         for (int i = 0; i < temp.size(); i++) {
@@ -349,23 +352,32 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         if (null != listDataChild.get(defaultCategory)) {
             jsonStoreCategories.add(new JsonStoreCategory().setCategoryName(defaultCategory).setCategoryId(defaultCategory));
         }
-        //  }
 
         tv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
-                bundle.putSerializable("listDataChild", listDataChild);
-                bundle.putSerializable("jsonQueue", jsonQueue);
-                in.putExtras(bundle);
-                startActivity(in);
+                if (jsonQueue.getBusinessType() != BusinessTypeEnum.PH) {
+                    Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
+                    bundle.putSerializable("listDataChild", listDataChild);
+                    bundle.putSerializable("jsonQueue", jsonQueue);
+                    in.putExtras(bundle);
+                    startActivity(in);
+                } else {
+                    //Do nothing
+                    Toast.makeText(StoreDetailActivity.this,"Please visit store to purchase.", Toast.LENGTH_LONG).show();
+                }
             }
         });
         if (isStoreOpenToday(jsonStore)) {
             tv_menu.setClickable(true);
-            tv_menu.setText("Order Now");
+            if (jsonQueue.getBusinessType() != BusinessTypeEnum.PH) {
+                tv_menu.setText("Order Now");
+            } else {
+                tv_menu.setText("Visit Store");
+                tv_header_menu.setVisibility(View.GONE);
+            }
         } else {
             tv_menu.setClickable(false);
             tv_menu.setText("Closed");
@@ -381,7 +393,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this,errorCode);
+        AppUtilities.authenticationProcessing(this, errorCode);
     }
 
     private boolean isStoreOpenToday(JsonStore jsonStore) {

@@ -169,8 +169,7 @@
 
                         <include
                                 layout="@layout/lay_segment"
-                                android:id="@+id/sc_amenities"
-                                />
+                                android:id="@+id/sc_amenities"/>
 
                         <TextView
                                 android:id="@+id/tv_facilities"

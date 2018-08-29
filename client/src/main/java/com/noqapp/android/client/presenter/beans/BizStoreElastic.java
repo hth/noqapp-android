@@ -528,6 +528,7 @@ public class BizStoreElastic implements Serializable {
                 ", amenities=" + amenities +
                 ", facilities=" + facilities +
                 ", webProfileId='" + webProfileId + '\'' +
+                ", education=" + education +
                 '}';
     }
 }

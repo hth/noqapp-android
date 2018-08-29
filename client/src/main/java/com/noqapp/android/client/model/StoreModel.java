@@ -1,4 +1,4 @@
-package com.noqapp.android.client.model.types;
+package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.model.response.open.StoreService;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -43,22 +43,20 @@ public final class StoreModel {
                     return;
                 }
                 if (response.body() != null) {
-                    Log.d("Response", String.valueOf(response.body()));
+                    Log.d("jsonStore response", String.valueOf(response.body()));
                     storePresenter.storeResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Get state of queue upon scan");
+                    Log.e(TAG, "jsonStore error");
                     storePresenter.storeError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonStore> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("jsonStore response", t.getLocalizedMessage(), t);
                 storePresenter.storeError();
             }
         });
     }
-
-
 }

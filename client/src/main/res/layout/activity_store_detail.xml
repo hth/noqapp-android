@@ -78,14 +78,11 @@
                         android:id="@+id/tv_store_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
                         android:layout_marginTop="30dp"
-                        android:layout_toLeftOf="@+id/tv_store_rating"
-                        android:gravity="left"
                         android:maxLines="2"
                         android:text=""
                         android:textColor="@android:color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_size_fourteen"
                         android:textStyle="bold"/>
 
 
@@ -93,56 +90,25 @@
                         android:id="@+id/tv_store_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:gravity="left"
                         android:text=""
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/store_info"/>
+
+
+                <TextView
+                        android:id="@+id/tv_store_timings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/store_info"/>
 
-                <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                    <TextView
-                            android:id="@+id/tv_store_open_status_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="Open now: "
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="@dimen/store_info"/>
-
-                    <TextView
-                            android:id="@+id/tv_store_open_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/tv_store_open_status_label"
-                            android:orientation="vertical"
-                            android:text=""
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="17sp"
-                            android:textStyle="bold"/>
-
-                    <TextView
-                            android:id="@+id/tv_store_timings"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="@dimen/store_info"
-                            android:layout_below="@+id/tv_store_open_status_label"
-                            android:layout_alignParentLeft="true"/>
-
-                </RelativeLayout>
 
                 <TextView
                         android:id="@+id/tv_menu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="@color/button_color"
                         android:gravity="center"
                         android:padding="10dp"
@@ -164,16 +130,13 @@
                         android:orientation="vertical">
 
                     <TextView
-                            android:id="@+id/tv_store_name1"
+                            android:id="@+id/tv_header_menu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_toLeftOf="@+id/tv_store_rating"
-                            android:gravity="left"
                             android:maxLines="2"
                             android:text="Menu"
                             android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"
+                            android:textSize="@dimen/text_size_twelve"
                             android:textStyle="bold"/>
 
                     <android.support.v7.widget.RecyclerView
@@ -192,13 +155,10 @@
                             android:id="@+id/tv_store_name2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_toLeftOf="@+id/tv_store_rating"
-                            android:gravity="left"
                             android:maxLines="2"
-                            android:text="Photos"
+                            android:text="@string/photo"
                             android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"
+                            android:textSize="@dimen/text_size_twelve"
                             android:textStyle="bold"/>
 
                     <android.support.v7.widget.RecyclerView
@@ -207,67 +167,57 @@
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <TextView
-                        android:id="@+id/tv_store_name3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/tv_store_rating"
-                        android:gravity="left"
-                        android:maxLines="2"
-                        android:text="Details"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_fourteen"
-                        android:textStyle="bold"/>
 
                 <TextView
+                        android:id="@+id/tv_header_famous"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="Famous for:"
+                        android:text="Famous for"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/store_sub_headers"/>
+                        android:textSize="@dimen/store_sub_headers"
+                        android:textStyle="bold"/>
 
                 <TextView
                         android:id="@+id/tv_known_for"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=""
-                        android:textColor="@android:color/darker_gray"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/store_info"/>
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Payment Mode:"
+                        android:text="Payment Mode"
                         android:textColor="@android:color/black"
+                        android:textStyle="bold"
                         android:textSize="@dimen/store_sub_headers"/>
 
                 <include
                         layout="@layout/lay_segment"
-                        android:id="@+id/sc_payment_mode"
-                        />
+                        android:id="@+id/sc_payment_mode"/>
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Amenities:"
+                        android:text="@string/amenities"
                         android:textColor="@android:color/black"
+                        android:textStyle="bold"
                         android:textSize="@dimen/store_sub_headers"/>
 
                 <include
                         layout="@layout/lay_segment"
-                        android:id="@+id/sc_amenities"
-                        />
+                        android:id="@+id/sc_amenities"/>
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Delivery Mode:"
+                        android:text="Delivery Mode"
                         android:textColor="@android:color/black"
+                        android:textStyle="bold"
                         android:textSize="@dimen/store_sub_headers"/>
 
                 <include
@@ -280,8 +230,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Phone Number:"
+                        android:text="Phone Number"
                         android:textColor="@android:color/black"
+                        android:textStyle="bold"
                         android:textSize="@dimen/store_sub_headers"/>
 
                 <TextView
@@ -290,16 +241,15 @@
                         android:layout_height="wrap_content"
                         android:text=""
                         android:drawableLeft="@drawable/phone_new"
-                        android:drawableTint="@color/rating_select"
                         android:drawablePadding="5dp"
-                        android:textColor="@android:color/darker_gray"
+                        android:layout_marginBottom="3dp"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/store_info"/>
 
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginTop="5dp"
                         android:background="@android:color/darker_gray"/>
 
 
@@ -308,7 +258,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=""
-                        android:textColor="@android:color/darker_gray"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/store_info"/>
 
                 <TextView
