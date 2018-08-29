@@ -65,7 +65,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_open_status, tv_store_timings;
+    private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_timings;
     private BizStoreElastic bizStoreElastic;
     private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView rv_thumb_images, rv_photos;
@@ -103,7 +103,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_store_address = findViewById(R.id.tv_store_address);
         tv_contact_no = findViewById(R.id.tv_contact_no);
         tv_known_for = findViewById(R.id.tv_known_for);
-        tv_store_open_status = findViewById(R.id.tv_store_open_status);
         tv_store_timings = findViewById(R.id.tv_store_timings);
         tv_menu = findViewById(R.id.tv_menu);
         tv_rating_review = findViewById(R.id.tv_rating_review);
