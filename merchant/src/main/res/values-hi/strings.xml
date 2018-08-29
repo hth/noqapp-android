@@ -99,4 +99,5 @@
     <string name="license">License</string>
     <string name="practice_start">Practice Start</string>
     <string name="error_customer_id_input">Only letters or numbers are allowed</string>
+    <string name="give_discount">Applicable discount</string>
 </resources>

@@ -99,6 +99,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         TextView tv_create_case;
         TextView tv_change_name;
         TextView tv_business_customer_id;
+        TextView tv_first_time;
         ImageView iv_info;
         ImageView iv_new;
         RelativeLayout rl_status;
@@ -113,6 +114,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             this.tv_create_case = itemView.findViewById(R.id.tv_create_case);
             this.tv_change_name = itemView.findViewById(R.id.tv_change_name);
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
+            this.tv_first_time = itemView.findViewById(R.id.tv_first_time);
             this.iv_info = itemView.findViewById(R.id.iv_info);
             this.iv_new = itemView.findViewById(R.id.iv_new);
             this.rl_status = itemView.findViewById(R.id.rl_status);
@@ -219,6 +221,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
 
+        recordHolder.tv_first_time.setVisibility(jsonQueuedPerson.isClientVisitedThisBusiness()?View.GONE:View.VISIBLE);
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
