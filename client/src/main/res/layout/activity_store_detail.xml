@@ -96,18 +96,10 @@
 
 
                 <TextView
-                        android:id="@+id/tv_store_open_status_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Store timing: "
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/colorAddress"
-                        android:textSize="@dimen/store_info"/>
-
-                <TextView
                         android:id="@+id/tv_store_timings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/store_info"/>
 
@@ -138,7 +130,7 @@
                         android:orientation="vertical">
 
                     <TextView
-                            android:id="@+id/tv_store_name1"
+                            android:id="@+id/tv_header_menu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxLines="2"
@@ -175,22 +167,15 @@
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <TextView
-                        android:id="@+id/tv_store_name3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Details"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_twelve"
-                        android:textStyle="bold"/>
 
                 <TextView
+                        android:id="@+id/tv_header_famous"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="Famous for:"
+                        android:text="Famous for"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/store_sub_headers"/>
+                        android:textSize="@dimen/store_sub_headers"
+                        android:textStyle="bold"/>
 
                 <TextView
                         android:id="@+id/tv_known_for"
@@ -204,8 +189,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Payment Mode:"
+                        android:text="Payment Mode"
                         android:textColor="@android:color/black"
+                        android:textStyle="bold"
                         android:textSize="@dimen/store_sub_headers"/>
 
                 <include
@@ -216,8 +202,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Amenities:"
+                        android:text="@string/amenities"
                         android:textColor="@android:color/black"
+                        android:textStyle="bold"
                         android:textSize="@dimen/store_sub_headers"/>
 
                 <include
@@ -228,8 +215,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Delivery Mode:"
+                        android:text="Delivery Mode"
                         android:textColor="@android:color/black"
+                        android:textStyle="bold"
                         android:textSize="@dimen/store_sub_headers"/>
 
                 <include
@@ -242,8 +230,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Phone Number:"
+                        android:text="Phone Number"
                         android:textColor="@android:color/black"
+                        android:textStyle="bold"
                         android:textSize="@dimen/store_sub_headers"/>
 
                 <TextView
