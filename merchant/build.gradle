@@ -375,7 +375,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.8'
     implementation 'net.danlew:android.joda:2.9.9.3'
     implementation 'com.google.guava:guava:23.6.1-android'
-    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-auth:16.0.3'
     implementation 'com.google.firebase:firebase-messaging:17.3.0'
     implementation 'com.android.support:cardview-v7:27.1.1'
