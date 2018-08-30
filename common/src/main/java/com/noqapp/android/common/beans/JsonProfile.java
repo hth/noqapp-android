@@ -72,6 +72,9 @@ public final class JsonProfile implements Serializable {
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
+    @JsonProperty("av")
+    private boolean accountValidated;
+
     @JsonProperty("mp")
     private JsonUserMedicalProfile jsonUserMedicalProfile;
 
@@ -196,6 +199,15 @@ public final class JsonProfile implements Serializable {
 
     public void setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+    }
+
+    public boolean isAccountValidated() {
+        return accountValidated;
+    }
+
+    public JsonProfile setAccountValidated(boolean accountValidated) {
+        this.accountValidated = accountValidated;
+        return this;
     }
 
     public JsonUserMedicalProfile getJsonUserMedicalProfile() {
