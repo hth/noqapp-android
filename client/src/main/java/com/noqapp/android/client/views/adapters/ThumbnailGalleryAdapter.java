@@ -18,23 +18,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by chandra on 3/26/18.
  */
-
 public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalleryAdapter.MyViewHolder> {
     private final int baseVisibleCount = 4;
-    private ArrayList<String> imageUrls;
+    private List<String> imageUrls;
     private Context context;
-    public ThumbnailGalleryAdapter(Context context, ArrayList<String> imageUrls) {
+
+    public ThumbnailGalleryAdapter(Context context, List<String> imageUrls) {
         this.context = context;
         this.imageUrls = imageUrls;
     }
 
     @Override
     public ThumbnailGalleryAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View photoView = inflater.inflate(R.layout.layout_image_thumb, parent, false);
@@ -63,7 +63,6 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         public ImageView iv_photo;
         public TextView tv_title;
 
@@ -78,10 +77,8 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
         public void onClick(View view) {
             Intent intent = new Intent(context, SliderActivity.class);
             intent.putExtra("pos", getAdapterPosition());
-            intent.putExtra("imageurls", imageUrls);
+            intent.putExtra("imageurls", (ArrayList<String>) imageUrls);
             context.startActivity(intent);
         }
     }
-
-
 }
