@@ -6,7 +6,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
-import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
+import com.noqapp.android.client.presenter.beans.body.MigratePhone;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -35,13 +35,13 @@ public class MigrateActivity extends OTPActivity {
     protected void callApi(String phoneNumber) {
         progressDialog.setMessage("Account migration in progress");
         TimeZone tz = TimeZone.getDefault();
-        MigrateProfile migrateProfile = new MigrateProfile();
-        migrateProfile.setCountryShortName(countryShortName);
-        migrateProfile.setTimeZoneId(tz.getID());
-        migrateProfile.setPhone(phoneNumber);
+        MigratePhone migratePhone = new MigratePhone();
+        migratePhone.setCountryShortName(countryShortName);
+        migratePhone.setTimeZoneId(tz.getID());
+        migratePhone.setPhone(phoneNumber);
         ProfileModel profileModel = new ProfileModel();
         profileModel.setProfilePresenter(this);
-        profileModel.migrate(UserUtils.getEmail(), UserUtils.getAuth(), migrateProfile);
+        profileModel.migrate(UserUtils.getEmail(), UserUtils.getAuth(), migratePhone);
     }
 
     @Override

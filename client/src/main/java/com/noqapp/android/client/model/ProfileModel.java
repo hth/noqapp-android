@@ -8,8 +8,7 @@ import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.MigrateMail;
-import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
-import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.presenter.beans.body.MigratePhone;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -108,8 +107,8 @@ public class ProfileModel {
         });
     }
 
-    public void migrate(final String mail, final String auth, MigrateProfile migrateProfile) {
-        profileService.migrate(mail, auth, migrateProfile).enqueue(new Callback<JsonProfile>() {
+    public void migrate(final String mail, final String auth, MigratePhone migratePhone) {
+        profileService.migrate(mail, auth, migratePhone).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {

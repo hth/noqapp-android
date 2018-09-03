@@ -4,8 +4,7 @@ import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.ChangeMailOTP;
 import com.noqapp.android.client.presenter.beans.body.MigrateMail;
-import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
-import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.presenter.beans.body.MigratePhone;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
@@ -88,7 +87,7 @@ public interface ProfileService {
             String auth,
 
             @Body
-            MigrateProfile migrateProfile
+            MigratePhone migratePhone
     );
 
     @POST("api/c/profile/migrateMail.json")

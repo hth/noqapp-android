@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MigrateProfile {
+public class MigratePhone {
     @JsonProperty("PH")
     private String phone;
 
@@ -33,7 +33,7 @@ public class MigrateProfile {
         return phone;
     }
 
-    public MigrateProfile setPhone(String phone) {
+    public MigratePhone setPhone(String phone) {
         this.phone = phone;
         return this;
     }
@@ -42,7 +42,7 @@ public class MigrateProfile {
         return countryShortName;
     }
 
-    public MigrateProfile setCountryShortName(String countryShortName) {
+    public MigratePhone setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
         return this;
     }
@@ -51,7 +51,7 @@ public class MigrateProfile {
         return timeZoneId;
     }
 
-    public MigrateProfile setTimeZoneId(String timeZoneId) {
+    public MigratePhone setTimeZoneId(String timeZoneId) {
         this.timeZoneId = timeZoneId;
         return this;
     }
