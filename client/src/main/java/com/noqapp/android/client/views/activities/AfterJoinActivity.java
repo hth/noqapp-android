@@ -11,8 +11,8 @@ import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
-import com.noqapp.android.client.presenter.ResponsePresenter;
-import com.noqapp.android.client.presenter.TokenPresenter;
+import com.noqapp.android.client.presenter.interfaces.ResponsePresenter;
+import com.noqapp.android.client.presenter.interfaces.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -198,7 +198,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 }
             }
         }
-
     }
 
     @Override

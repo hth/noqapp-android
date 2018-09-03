@@ -1,4 +1,4 @@
-package com.noqapp.android.client.presenter;
+package com.noqapp.android.client.presenter.interfaces;
 
 import com.noqapp.android.common.beans.JsonProfile;
 

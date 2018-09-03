@@ -2,10 +2,10 @@ package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.model.response.api.QueueService;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.QueuePresenter;
-import com.noqapp.android.client.presenter.ResponsePresenter;
-import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
-import com.noqapp.android.client.presenter.TokenPresenter;
+import com.noqapp.android.client.presenter.interfaces.QueuePresenter;
+import com.noqapp.android.client.presenter.interfaces.ResponsePresenter;
+import com.noqapp.android.client.presenter.interfaces.TokenAndQueuePresenter;
+import com.noqapp.android.client.presenter.interfaces.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;

@@ -5,7 +5,7 @@ package com.noqapp.android.client.views.activities;
  */
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
-import com.noqapp.android.client.presenter.MigrateEmailPresenter;
+import com.noqapp.android.client.presenter.interfaces.MigrateEmailPresenter;
 import com.noqapp.android.client.presenter.beans.body.MigrateMail;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonResponse;

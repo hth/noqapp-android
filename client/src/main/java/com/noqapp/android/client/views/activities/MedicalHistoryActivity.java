@@ -7,7 +7,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.MedicalRecordApiModel;
-import com.noqapp.android.client.presenter.MedicalRecordPresenter;
+import com.noqapp.android.client.presenter.interfaces.MedicalRecordPresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.NetworkChangeReceiver;
 import com.noqapp.android.client.utils.NetworkUtils;

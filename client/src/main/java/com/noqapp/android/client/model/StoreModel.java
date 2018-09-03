@@ -2,7 +2,7 @@ package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.model.response.open.StoreService;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.StorePresenter;
+import com.noqapp.android.client.presenter.interfaces.StorePresenter;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.utils.Constants;
 

@@ -2,7 +2,7 @@ package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.model.response.open.RegisterService;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.presenter.interfaces.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.Constants;

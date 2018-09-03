@@ -7,7 +7,7 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
-import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.presenter.interfaces.ProfilePresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -45,8 +45,6 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
