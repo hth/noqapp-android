@@ -7,6 +7,7 @@ import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
+import com.noqapp.android.client.presenter.beans.body.MigrateMail;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.Constants;
@@ -245,8 +246,8 @@ public class ProfileModel {
         });
     }
 
-    public void changeMail(final String mail, final String auth, Registration registration) {
-        profileService.changeMail(mail, auth, registration).enqueue(new Callback<JsonResponse>() {
+    public void changeMail(final String mail, final String auth, MigrateMail migrateMail) {
+        profileService.changeMail(mail, auth, migrateMail).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {

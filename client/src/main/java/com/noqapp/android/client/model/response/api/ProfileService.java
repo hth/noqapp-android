@@ -3,6 +3,7 @@ package com.noqapp.android.client.model.response.api;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.ChangeMailOTP;
+import com.noqapp.android.client.presenter.beans.body.MigrateMail;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -62,13 +63,13 @@ public interface ProfileService {
     @POST("api/c/profile/changeMail.json")
     Call<JsonResponse> changeMail(
             @Header("X-R-MAIL")
-             String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-             String auth,
+            String auth,
 
             @Body
-            Registration registration
+            MigrateMail migrateMail
     );
 
     /**
@@ -93,10 +94,10 @@ public interface ProfileService {
     @POST("api/c/profile/migrateMail.json")
     Call<JsonProfile> migrateMail(
             @Header("X-R-MAIL")
-             String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-             String auth,
+            String auth,
 
             @Body
             ChangeMailOTP changeMailOTP
