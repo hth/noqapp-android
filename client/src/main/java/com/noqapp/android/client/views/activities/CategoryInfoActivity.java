@@ -237,15 +237,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             LaunchActivity.getLaunchActivity().dismissProgress();
             tv_store_name.setText(bizStoreElastic.getBusinessName());
-            String address = "";
-
-            if (!TextUtils.isEmpty(bizStoreElastic.getTown())) {
-                address = bizStoreElastic.getTown();
-            }
-            if (!TextUtils.isEmpty(bizStoreElastic.getArea())) {
-                address = bizStoreElastic.getArea() + ", " + address;
-            }
-            tv_address.setText(address);
+            tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(),bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
             tv_complete_address.setOnClickListener(new View.OnClickListener() {
                 @Override

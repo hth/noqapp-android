@@ -26,10 +26,9 @@ import java.util.ArrayList;
 public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalleryAdapter.MyViewHolder> {
     private final int baseVisibleCount = 4;
     private ArrayList<String> imageUrls;
-    private Context mContext;
-
+    private Context context;
     public ThumbnailGalleryAdapter(Context context, ArrayList<String> imageUrls) {
-        mContext = context;
+        this.context = context;
         this.imageUrls = imageUrls;
     }
 
@@ -45,11 +44,10 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
 
     @Override
     public void onBindViewHolder(ThumbnailGalleryAdapter.MyViewHolder holder, int position) {
-
-        Picasso.with(mContext)
+        Picasso.with(context)
                 .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrls.get(position)))
-                .placeholder(ImageUtils.getThumbPlaceholder(mContext))
-                .error(ImageUtils.getThumbErrorPlaceholder(mContext))
+                .placeholder(ImageUtils.getThumbPlaceholder(context))
+                .error(ImageUtils.getThumbErrorPlaceholder(context))
                 .into(holder.iv_photo);
         if (position < 3 || imageUrls.size() == 4) {
             holder.tv_title.setVisibility(View.GONE);
@@ -78,10 +76,10 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(mContext, SliderActivity.class);
+            Intent intent = new Intent(context, SliderActivity.class);
             intent.putExtra("pos", getAdapterPosition());
             intent.putExtra("imageurls", imageUrls);
-            mContext.startActivity(intent);
+            context.startActivity(intent);
         }
     }
 

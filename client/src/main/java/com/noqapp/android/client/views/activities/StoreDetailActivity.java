@@ -256,15 +256,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
             }
         });
-        String address = "";
-
-        if (!TextUtils.isEmpty(jsonQueue.getTown())) {
-            address = jsonQueue.getTown();
-        }
-        if (!TextUtils.isEmpty(jsonQueue.getArea())) {
-            address = jsonQueue.getArea() + ", " + address;
-        }
-        tv_store_address.setText(address);
+        tv_store_address.setText(AppUtilities.getStoreAddress(jsonQueue.getTown(),jsonQueue.getArea()));
         tv_store_name.setText(jsonQueue.getDisplayName());
         tv_known_for.setText(jsonQueue.getFamousFor());
         if(TextUtils.isEmpty(jsonQueue.getFamousFor()))
@@ -320,12 +312,18 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
         //
         ArrayList<String> storeServiceImages = new ArrayList<>(jsonQueue.getStoreServiceImages());
-        ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
-        rv_thumb_images.setAdapter(adapter);
+        for (int i = 0; i < storeServiceImages.size(); i++) {
+            storeServiceImages.set(i,jsonQueue.getCodeQR()+"/"+storeServiceImages.get(i));
+        }
+        ThumbnailGalleryAdapter serviceAdapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
+        rv_thumb_images.setAdapter(serviceAdapter);
         //
         ArrayList<String> storeInteriorImages = new ArrayList<>(jsonQueue.getStoreInteriorImages());
-        ThumbnailGalleryAdapter adapter1 = new ThumbnailGalleryAdapter(this, storeInteriorImages);
-        rv_photos.setAdapter(adapter1);
+        for (int i = 0; i < storeInteriorImages.size(); i++) {
+            storeInteriorImages.set(i,jsonQueue.getCodeQR()+"/"+storeInteriorImages.get(i));
+        }
+        ThumbnailGalleryAdapter interiorAdapter = new ThumbnailGalleryAdapter(this, storeInteriorImages);
+        rv_photos.setAdapter(interiorAdapter);
         //
         String defaultCategory = "Un-Categorized";
         //  {

@@ -102,14 +102,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
         if (viewHolder instanceof MyViewHolder) {
             MyViewHolder holder = (MyViewHolder) viewHolder;
             BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
-            String address = "";
-            if (!TextUtils.isEmpty(bizStoreElastic.getTown())) {
-                address = bizStoreElastic.getTown();
-            }
-            if (!TextUtils.isEmpty(bizStoreElastic.getArea())) {
-                address = bizStoreElastic.getArea() + ", " + address;
-            }
-            holder.tv_address.setText(address);
+            holder.tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(),bizStoreElastic.getArea()));
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));

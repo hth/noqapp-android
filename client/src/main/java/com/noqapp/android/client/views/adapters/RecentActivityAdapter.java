@@ -57,14 +57,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
                 (float) GeoHashUtils.decodeLatitude(jsonTokenAndQueue.getGeoHash()),
                 (float) GeoHashUtils.decodeLongitude(jsonTokenAndQueue.getGeoHash())));
         //   holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
-        String address = "";
-        if (!TextUtils.isEmpty(jsonTokenAndQueue.getTown())) {
-            address = jsonTokenAndQueue.getTown();
-        }
-        if (!TextUtils.isEmpty(jsonTokenAndQueue.getArea())) {
-            address = jsonTokenAndQueue.getArea() + ", " + address;
-        }
-        holder.tv_address.setText(address);
+        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonTokenAndQueue.getTown(),jsonTokenAndQueue.getArea()));
         holder.tv_detail.setText("Last visit: " + jsonTokenAndQueue.getServiceEndTime());
         holder.tv_status.setText(AppUtilities.getStoreOpenStatus(jsonTokenAndQueue));
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType(), holder.tv_store_rating);

@@ -288,7 +288,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     updateProfile.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
                     updateProfile.setGender(gender);
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
-                    updateProfile.setQueueUserId(LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
+                    updateProfile.setQueueUserId(NoQueueBaseActivity.getUserProfile().getQueueUserId());
                     profileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
