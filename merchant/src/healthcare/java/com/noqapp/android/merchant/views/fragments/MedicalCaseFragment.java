@@ -172,6 +172,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     private ListCommunication listCommunication;
     private JsonPreferredBusinessList jsonPreferredBusinessList;
     private Spinner sp_preferred_list;
+    private String bizStoreID = "5b7a7079783cea2a6c2556fa";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -304,8 +305,10 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                     if (!medicalRecordList.contains(jsonMedicalMedicine)) {
                         medicalRecordList.add(0, jsonMedicalMedicine);
                         adapter.notifyDataSetChanged();
-                        updateSuggestions(actv_medicine_name, MEDICINES_NAME);
-                        setSuggestions(actv_medicine_name, MEDICINES_NAME, false);
+                        if(!PreferredStoreDB.isMedicineExist(actv_medicine_name.getText().toString())) {
+                            updateSuggestions(actv_medicine_name, MEDICINES_NAME);
+                            setSuggestions(actv_medicine_name, MEDICINES_NAME, false);
+                        }
                         updateSuggestions(actv_dose, MEDICINES_DOSE);
                         setSuggestions(actv_dose, MEDICINES_DOSE, false);
                         updateSuggestions(actv_frequency, MEDICINES_FREQUENCY);
@@ -631,7 +634,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                     if (fileName.endsWith(".csv")) {
                         int lineCount = 0;
                         try {
-                            PreferredStoreDB.deletePreferredStore(fileName.substring(0, fileName.lastIndexOf(".")));
+                            PreferredStoreDB.deletePreferredStore(fileName.substring(0, fileName.lastIndexOf("_")));
                             BufferedReader buffer = new BufferedReader(new FileReader(file.getAbsolutePath()));
                             String line;
                             while ((line = buffer.readLine()) != null) {
@@ -649,9 +652,20 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                 }
                 directory.delete();
                 //TODO(Chandra) pass dynamic value of product id
-                List<String> data = PreferredStoreDB.getPreferredStoreDataList("5b7a7079783cea2a6c2556fa");
+                final List<String> data = PreferredStoreDB.getPreferredStoreDataList(bizStoreID);
                 updateDefineSuggestions(MEDICINES_NAME, data);
+                actv_medicine_type.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        List<String> tempdata = PreferredStoreDB.getPreferredStoreDataList(bizStoreID,PharmacyCategoryEnum.getValue(actv_medicine_type.getAdapter().getItem(position).toString()));
+                        removeDefineSuggestions(MEDICINES_NAME, data);
+                        updateDefineSuggestions(MEDICINES_NAME, tempdata);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, tempdata);
+                        actv_medicine_name.setAdapter(adapter);
+                    }
+                });
             } catch (Exception e) {
                 Log.e("Failed file loading {}", e.getLocalizedMessage(), e);
                 //TODO make sure to increase the date as not to fetch again
@@ -663,6 +677,13 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         for (int k = 0; k < data.size(); k++) {
             if (!map.get(key).contains(data.get(k))) {
                 map.get(key).add(data.get(k));
+            }
+        }
+    }
+    private void removeDefineSuggestions(String key, List<String> data) {
+        for (int k = 0; k < data.size(); k++) {
+            if (map.get(key).contains(data.get(k))) {
+                map.get(key).remove(data.get(k));
             }
         }
     }

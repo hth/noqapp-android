@@ -5,6 +5,7 @@ import static com.noqapp.android.merchant.views.activities.BaseLaunchActivity.db
 import com.noqapp.android.merchant.model.database.DatabaseTable;
 
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.content.ContentValues;
 import android.util.Log;
@@ -46,11 +47,11 @@ public class PreferredStoreDB {
 //        dbHandler.getWritableDb().execSQL("delete from "+ DatabaseTable.PreferredStore.TABLE_NAME);
 //    }
 
-    public static void deletePreferredStore(String productID) {
+    public static void deletePreferredStore(String bizStoreID) {
         try {
             int out = dbHandler.getWritableDb().delete(DatabaseTable.PreferredStore.TABLE_NAME,
-                            DatabaseTable.PreferredStore.PRODUCT_ID + "=?",
-                    new String[]{productID});
+                            DatabaseTable.PreferredStore.BIZ_STORE_ID + "=?",
+                    new String[]{bizStoreID});
             Log.v("PreferredStore deleted:", "" + out);
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,5 +74,30 @@ public class PreferredStoreDB {
             }
         }
         return dataList;
+    }
+    public static List<String> getPreferredStoreDataList(String bizStoreID,String medicineType) {
+        List<String> dataList = new ArrayList<>();
+        Cursor cursor = dbHandler.getWritableDb().query(true, DatabaseTable.PreferredStore.TABLE_NAME, null, DatabaseTable.PreferredStore.BIZ_STORE_ID + "=?" + " AND " + DatabaseTable.PreferredStore.STORE_CAT_ID + " = ?",
+                new String[]{bizStoreID, medicineType}, null, null, null, null);
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                try {
+                    while (cursor.moveToNext()) {
+                        dataList.add(cursor.getString(3));
+                    }
+                } finally {
+                    cursor.close();
+                }
+            }
+        }
+        return dataList;
+    }
+
+    public static boolean isMedicineExist( String productName) {
+        String whereClause = DatabaseTable.PreferredStore.PRODUCT_NAME + " = ?";
+        return DatabaseUtils.longForQuery(
+                dbHandler.getWritableDb(),
+                "SELECT COUNT(*) FROM " + DatabaseTable.PreferredStore.TABLE_NAME + " WHERE " + whereClause,
+                new String[]{productName}) > 0;
     }
 }
