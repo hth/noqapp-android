@@ -241,6 +241,11 @@
     <string name="mds_pathology_invs_advice">Investigation Advised >> Pathology:</string>
     <string name="mds_radiology_invs_advice">Investigation Advised >> Radiology:</string>
     <string name="maps_direction">मानचित्र और दिशा-निर्देश</string>
+    <string name="change_number">नंबर बदलें</string>
+    <string name="email_validate">Your email verification is pending.Please validate it.</string>
+    <string name="change_email">Change Email</string>
+    <string name="email_hint">Please enter email ID</string>
+    <string name="otp">Enter OTP</string>
 
 
 </resources>

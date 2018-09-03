@@ -2,11 +2,13 @@ package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.model.response.api.ProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.presenter.MigrateEmailPresenter;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
+import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -28,6 +30,11 @@ public class ProfileModel {
     private ProfilePresenter profilePresenter;
     private ImageUploadPresenter imageUploadPresenter;
     private ProfileAddressPresenter profileAddressPresenter;
+    private MigrateEmailPresenter migrateEmailPresenter;
+
+    public void setMigrateEmailPresenter(MigrateEmailPresenter migrateEmailPresenter) {
+        this.migrateEmailPresenter = migrateEmailPresenter;
+    }
 
     public void setProfileAddressPresenter(ProfileAddressPresenter profileAddressPresenter) {
         this.profileAddressPresenter = profileAddressPresenter;
@@ -234,6 +241,33 @@ public class ProfileModel {
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 imageUploadPresenter.imageUploadError();
+            }
+        });
+    }
+
+    public void changeMail(final String mail, final String auth, Registration registration) {
+        profileService.changeMail(mail, auth, registration).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    migrateEmailPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("Update profile", String.valueOf(response.body()));
+                    migrateEmailPresenter.migrateEmailResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Failed updating profile " + response.body().getError());
+                    migrateEmailPresenter.migrateEmailError();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                migrateEmailPresenter.migrateEmailError();
             }
         });
     }

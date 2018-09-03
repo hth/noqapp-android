@@ -252,6 +252,8 @@ public final class JsonProfile implements Serializable {
                 ", birthday='" + birthday + '\'' +
                 ", gender=" + gender +
                 ", userLevel=" + userLevel +
+                ", businessType=" + businessType +
+                ", accountValidated=" + accountValidated +
                 ", jsonUserMedicalProfile=" + jsonUserMedicalProfile +
                 ", dependents=" + dependents +
                 ", error=" + error +

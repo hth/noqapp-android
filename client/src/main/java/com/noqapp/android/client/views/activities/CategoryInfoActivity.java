@@ -268,14 +268,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 amenitiesdata.add(amenities.get(j).getDescription());
             }
             sc_amenities.addSegments(amenitiesdata);
-
             List<FacilityEnum> faclities = bizStoreElastic.getFacilities();
             ArrayList<String> data = new ArrayList<>();
             for (int j = 0; j < faclities.size(); j++) {
                 data.add(faclities.get(j).getDescription());
             }
             sc_facility.addSegments(data);
-
             Picasso.with(this)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                     .placeholder(ImageUtils.getBannerPlaceholder(this))

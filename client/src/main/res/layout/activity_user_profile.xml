@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#99ffffff"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#99ffffff"
+                android:orientation="vertical">
 
-    <include layout="@layout/toolbar_layout"/>
+    <include
+            layout="@layout/toolbar_layout"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_alignParentTop="true"/>
 
 
     <ScrollView
+            android:layout_below="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/tv_modify_email"
+            >
 
         <RelativeLayout
                 android:id="@+id/layout"
@@ -117,7 +125,7 @@
                             android:layout_weight=".4"
                             android:background="@drawable/gender_redbg"
                             android:gravity="center"
-                            android:text="Change Number"
+                            android:text="@string/change_number"
                             android:textColor="@color/white"
                             android:textSize="12sp"
                             android:textStyle="bold"/>
@@ -131,15 +139,18 @@
                 <EditText
                         android:id="@+id/edt_name"
                         style="@style/style_register_edt"
-                        android:inputType="text"
-
-
-                        />
+                        android:inputType="text"/>
 
                 <TextView
                         style="@style/style_register_tv"
                         android:text="@string/mail"/>
 
+                <TextView
+                        android:id="@+id/tv_email_verification"
+                        style="@style/style_register_tv"
+                        android:text="@string/email_validate"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:visibility="gone"/>
 
                 <EditText
                         android:id="@+id/edt_email"
@@ -271,9 +282,22 @@
 
                 </LinearLayout>
 
+
             </LinearLayout>
 
         </RelativeLayout>
     </ScrollView>
 
-</LinearLayout>
+    <TextView
+            android:id="@+id/tv_modify_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_fourteen"
+            android:background="@color/button_color"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            android:text="Update &amp; Verify your E-mail"/>
+</RelativeLayout>

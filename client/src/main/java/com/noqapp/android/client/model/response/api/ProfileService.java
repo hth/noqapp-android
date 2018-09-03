@@ -61,11 +61,11 @@ public interface ProfileService {
 
     @POST("api/c/profile/changeMail.json")
     Call<JsonResponse> changeMail(
-            @Header("X-R-DID")
-            String did,
+            @Header("X-R-MAIL")
+             String mail,
 
-            @Header("X-R-DT")
-            String dt,
+            @Header("X-R-AUTH")
+             String auth,
 
             @Body
             Registration registration
@@ -92,11 +92,11 @@ public interface ProfileService {
 
     @POST("api/c/profile/migrateMail.json")
     Call<JsonProfile> migrateMail(
-            @Header("X-R-DID")
-            String did,
+            @Header("X-R-MAIL")
+             String mail,
 
-            @Header("X-R-DT")
-            String dt,
+            @Header("X-R-AUTH")
+             String auth,
 
             @Body
             ChangeMailOTP changeMailOTP
