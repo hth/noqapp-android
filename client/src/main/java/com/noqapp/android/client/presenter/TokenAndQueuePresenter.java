@@ -1,4 +1,4 @@
-package com.noqapp.android.client.presenter.interfaces;
+package com.noqapp.android.client.presenter;
 
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 

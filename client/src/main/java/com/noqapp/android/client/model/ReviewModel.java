@@ -4,7 +4,7 @@ import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
 import com.noqapp.android.client.model.response.open.ReviewService;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.interfaces.ReviewPresenter;
+import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
 import com.noqapp.android.common.beans.JsonResponse;
 

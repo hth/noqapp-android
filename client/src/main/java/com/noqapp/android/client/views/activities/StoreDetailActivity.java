@@ -4,7 +4,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.StoreModel;
-import com.noqapp.android.client.presenter.interfaces.StorePresenter;
+import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.ChildData;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
