@@ -368,12 +368,15 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     }
 
     public List<JsonCategory> getCategoryThatArePopulated() {
-        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent(CATEGORY);
-        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
+        Map<String, JsonCategory> categoryMap = new HashMap<>();
+        Map<String, ArrayList<BizStoreElastic>> queueMap = new HashMap<>();
+        if (null != cacheCategory.getIfPresent(CATEGORY))
+            categoryMap = cacheCategory.getIfPresent(CATEGORY);
+        if (null != cacheQueue.getIfPresent(QUEUE))
+            queueMap = cacheQueue.getIfPresent(QUEUE);
 
         Set<String> categoryKey = categoryMap.keySet();
         Set<String> queueKey = queueMap.keySet();
-
         categoryKey.retainAll(queueKey);
         return new ArrayList<>(categoryMap.values());
     }
