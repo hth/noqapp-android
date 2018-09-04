@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.interfaces;
+package com.noqapp.android.client.presenter.interfaces;
 
 /**
  * Created by chandra on 11/4/17.

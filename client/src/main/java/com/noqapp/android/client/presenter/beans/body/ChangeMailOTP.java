@@ -36,4 +36,34 @@ public class ChangeMailOTP {
     public static ChangeMailOTP newInstance(String userId, String name, String mailOTP) {
         return new ChangeMailOTP(userId, name, mailOTP);
     }
+
+    public ChangeMailOTP() {
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public ChangeMailOTP setUserId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ChangeMailOTP setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getMailOTP() {
+        return mailOTP;
+    }
+
+    public ChangeMailOTP setMailOTP(String mailOTP) {
+        this.mailOTP = mailOTP;
+        return this;
+    }
 }

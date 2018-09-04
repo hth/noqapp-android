@@ -24,7 +24,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
-import com.noqapp.android.client.views.interfaces.AppBlacklistPresenter;
+import com.noqapp.android.client.presenter.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.common.model.types.FCMTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;

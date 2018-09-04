@@ -278,6 +278,8 @@
     <string name="change_email">Change Email</string>
     <string name="email_hint">Please enter email ID</string>
     <string name="otp">Enter OTP</string>
+    <string name="validate_via_otp">Validate email via OTP</string>
+    <string name="error_otp_blank">OTP is required</string>
 
     <!-- Category Info Screen -->
 

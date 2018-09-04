@@ -57,6 +57,8 @@ public class Constants {
     private static final String TAG = Constants.class.getName();
     private static String VERSION_RELEASE;
 
+    public static int SUCCESS = 1;
+
     /**
      * Computes App version.
      *

@@ -106,6 +106,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         tv_female.setOnClickListener(this);
         tv_migrate.setOnClickListener(this);
         edt_Mail.setOnClickListener(this);
+        tv_modify_email.setOnClickListener(this);
         iv_add_dependent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,6 +173,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 startActivity(migrate);
                 break;
             case R.id.edt_email:
+            case R.id.tv_modify_email:
                 Intent changeEmail = new Intent(this, ChangeEmailActivity.class);
                 startActivity(changeEmail);
                 break;
@@ -209,7 +211,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     @Override
-    public void queueResponse(JsonProfile profile, String email, String auth) {
+    public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
         dismissProgress();
@@ -218,12 +220,12 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
 
     @Override
-    public void queueError() {
+    public void profileError() {
         dismissProgress();
     }
 
     @Override
-    public void queueError(String error) {
+    public void profileError(String error) {
 
     }
 

@@ -2,6 +2,7 @@ package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.model.response.api.ProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.presenter.beans.body.ChangeMailOTP;
 import com.noqapp.android.client.presenter.interfaces.MigrateEmailPresenter;
 import com.noqapp.android.client.presenter.interfaces.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.interfaces.ProfilePresenter;
@@ -64,18 +65,18 @@ public class ProfileModel {
 
                 if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.queueResponse(response.body(), mail, auth);
+                    profilePresenter.profileResponse(response.body(), mail, auth);
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
-                    profilePresenter.queueError();
+                    profilePresenter.profileError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profilePresenter.profileError();
             }
         });
     }
@@ -91,18 +92,18 @@ public class ProfileModel {
 
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Update profile", String.valueOf(response.body()));
-                    profilePresenter.queueResponse(response.body(), mail, auth);
+                    profilePresenter.profileResponse(response.body(), mail, auth);
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed updating profile " + response.body().getError());
-                    profilePresenter.queueError(response.body().getError().getReason());
+                    profilePresenter.profileError(response.body().getError().getReason());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profilePresenter.profileError();
             }
         });
     }
@@ -118,19 +119,19 @@ public class ProfileModel {
 
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.queueResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                    profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
                             response.headers().get(APIConstant.Key.XR_AUTH));
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed migrating profile");
-                    profilePresenter.queueError(response.body().getError().getReason());
+                    profilePresenter.profileError(response.body().getError().getReason());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profilePresenter.profileError();
             }
         });
     }
@@ -268,6 +269,33 @@ public class ProfileModel {
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 migrateEmailPresenter.migrateEmailError();
+            }
+        });
+    }
+
+    public void migrateMail(final String mail, final String auth, ChangeMailOTP changeMailOTP) {
+        profileService.migrateMail(mail, auth, changeMailOTP).enqueue(new Callback<JsonProfile>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    profilePresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body()) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    profilePresenter.profileResponse(response.body(), mail, auth);
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Get state of queue upon scan");
+                    profilePresenter.profileError();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                profilePresenter.profileError();
             }
         });
     }
