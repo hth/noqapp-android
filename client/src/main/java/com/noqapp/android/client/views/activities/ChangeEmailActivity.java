@@ -80,9 +80,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
             case R.id.btn_verify_email:
                 if (TextUtils.isEmpty(edt_email.getText())) {
                     edt_email.setError(getString(R.string.error_email_blank));
-                } else if (!TextUtils.isEmpty(edt_email.getText()) && !isValidEmail(edt_email.getText())) {
-                    edt_email.setError(getString(R.string.error_invalid_email));
-                } else {
+                } else if (isValidEmail(edt_email.getText())) {
                     progressDialog.setMessage("Email migration in progress...");
                     progressDialog.show();
                     new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);
@@ -91,8 +89,10 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                     ProfileModel profileModel = new ProfileModel();
                     profileModel.setMigrateEmailPresenter(this);
                     profileModel.changeMail(UserUtils.getEmail(), UserUtils.getAuth(), migrateMail);
+                } else {
+                    edt_email.setError(getString(R.string.error_invalid_email));
                 }
-            break;
+                break;
 
         }
     }
