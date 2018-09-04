@@ -68,7 +68,6 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
             holder.tv_store_rating.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(jsonTokenAndQueue.getDisplayImage())) {
             String url = AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonTokenAndQueue.getDisplayImage());
-            Log.e("URL:",url);
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonTokenAndQueue.getDisplayImage()))
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
@@ -76,7 +75,6 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
                     .into(holder.iv_main);
         }
         else {
-            Log.e("URL:",null == jsonTokenAndQueue.getDisplayImage()?"NULL":"Empty data");
             Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
         holder.card_view.setOnClickListener(new View.OnClickListener() {

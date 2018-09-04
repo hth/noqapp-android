@@ -19,10 +19,13 @@ import retrofit2.Response;
  * Date: 3/26/17 11:49 PM
  */
 public final class StoreModel {
-    private static final String TAG = StoreModel.class.getSimpleName();
-
+    private final String TAG = StoreModel.class.getSimpleName();
     private static final StoreService storeService;
-    public static StorePresenter storePresenter;
+    private StorePresenter storePresenter;
+
+    public StoreModel (StorePresenter storePresenter) {
+        this.storePresenter = storePresenter;
+    }
 
     static {
         storeService = RetrofitClient.getClient().create(StoreService.class);
@@ -34,7 +37,7 @@ public final class StoreModel {
      * @param did
      * @param qrCode
      */
-    public static void getStoreService(String did, String qrCode) {
+    public void getStoreService(String did, String qrCode) {
         storeService.getStoreService(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonStore>() {
             @Override
             public void onResponse(@NonNull Call<JsonStore> call, @NonNull Response<JsonStore> response) {

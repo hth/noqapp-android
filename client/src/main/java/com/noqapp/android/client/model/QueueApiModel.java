@@ -34,24 +34,20 @@ public class QueueApiModel {
     private ResponsePresenter responsePresenter;
     private TokenAndQueuePresenter tokenAndQueuePresenter;
 
-    public QueueApiModel setQueuePresenter(QueuePresenter queuePresenter) {
+    public void setQueuePresenter(QueuePresenter queuePresenter) {
         this.queuePresenter = queuePresenter;
-        return this;
     }
 
-    public QueueApiModel setTokenPresenter(TokenPresenter tokenPresenter) {
+    public void setTokenPresenter(TokenPresenter tokenPresenter) {
         this.tokenPresenter = tokenPresenter;
-        return this;
     }
 
-    public QueueApiModel setResponsePresenter(ResponsePresenter responsePresenter) {
+    public void setResponsePresenter(ResponsePresenter responsePresenter) {
         this.responsePresenter = responsePresenter;
-        return this;
     }
 
-    public QueueApiModel setTokenAndQueuePresenter(TokenAndQueuePresenter tokenAndQueuePresenter) {
+    public void setTokenAndQueuePresenter(TokenAndQueuePresenter tokenAndQueuePresenter) {
         this.tokenAndQueuePresenter = tokenAndQueuePresenter;
-        return this;
     }
 
     static {

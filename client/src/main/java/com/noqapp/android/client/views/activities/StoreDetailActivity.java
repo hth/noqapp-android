@@ -178,8 +178,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             showSnackBar(true);
             if (null == jsonStore) {
                 progressDialog.show();
-                StoreModel.storePresenter = this;
-                StoreModel.getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
+                new StoreModel(this).getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
             }
         } else {
             showSnackBar(false);
