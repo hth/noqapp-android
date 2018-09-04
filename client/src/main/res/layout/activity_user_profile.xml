@@ -141,10 +141,22 @@
                         style="@style/style_register_edt"
                         android:inputType="text"/>
 
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
                 <TextView
                         style="@style/style_register_tv"
+                        android:layout_alignParentLeft="true"
                         android:text="@string/mail"/>
 
+                <ImageView
+                        android:id="@+id/iv_edit_mail"
+                        android:layout_width="@dimen/image_height"
+                        android:layout_height="@dimen/image_height"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/edit"
+                        android:scaleType="centerInside"/>
+                </RelativeLayout>
                 <TextView
                         android:id="@+id/tv_email_verification"
                         style="@style/style_register_tv"
