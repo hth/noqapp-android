@@ -106,7 +106,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
             edt_email.setVisibility(View.GONE);
             btn_verify_email.setVisibility(View.GONE);
             tv_header.setText("Verification code");
-            Toast.makeText(this,"Verification code is send to given email address",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Verification code is sent to above email address",Toast.LENGTH_LONG).show();
         }else {
             //Rejected from  server
             ErrorEncounteredJson eej = jsonResponse.getError();
