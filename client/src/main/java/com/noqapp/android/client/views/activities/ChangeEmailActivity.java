@@ -107,6 +107,12 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
             btn_verify_email.setVisibility(View.GONE);
             tv_header.setText("Verification code");
             Toast.makeText(this,"Verification code is send to given email address",Toast.LENGTH_LONG).show();
+        }else {
+            //Rejected from  server
+            ErrorEncounteredJson eej = jsonResponse.getError();
+            if (null != eej) {
+                ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
+            }
         }
         dismissProgress();
     }
@@ -114,6 +120,12 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void migrateEmailError() {
         dismissProgress();
+    }
+
+    @Override
+    public void migrateEmailError(String error) {
+        dismissProgress();
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
     @Override

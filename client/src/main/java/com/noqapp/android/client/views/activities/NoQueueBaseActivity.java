@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.database.DatabaseTable;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonProfile;
 
 import com.google.gson.Gson;
@@ -110,14 +111,14 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedPreferences.getString(APIConstant.Key.XR_MAIL, "");
     }
     public static String getActualMail() {
-        return getMail().contains("noqapp.com") ? "" :
+        return getMail().contains(Constants.EMAIL_SUFFIX) ? "" :
                 getMail();
     }
     public static boolean showEmailVerificationField(boolean isAccountValidated) {
         if (isAccountValidated)
             return false;
         else {
-            return !getMail().contains("noqapp.com");
+            return !getMail().contains(Constants.EMAIL_SUFFIX);
         }
     }
 

@@ -8,5 +8,7 @@ public interface MigrateEmailPresenter {
 
     void migrateEmailError();
 
+    void migrateEmailError(String error);
+
     void authenticationFailure(int errorCode);
 }

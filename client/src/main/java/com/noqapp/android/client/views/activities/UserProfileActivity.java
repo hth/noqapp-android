@@ -9,6 +9,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -241,7 +242,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         edt_Mail.setText(NoQueueBaseActivity.getActualMail());
         tv_email_verification.setVisibility(NoQueueBaseActivity.showEmailVerificationField(NoQueueBaseActivity.getUserProfile().isAccountValidated()) ? View.VISIBLE : View.GONE);
         tv_modify_email.setVisibility(NoQueueBaseActivity.getUserProfile().isAccountValidated() ? View.GONE : View.VISIBLE);
-        if (NoQueueBaseActivity.getMail().contains("noqapp.com")) {
+        if (NoQueueBaseActivity.getMail().contains(Constants.EMAIL_SUFFIX)) {
             tv_email_verification.setVisibility(View.VISIBLE);
             tv_email_verification.setText("Please add your email ID");
         }

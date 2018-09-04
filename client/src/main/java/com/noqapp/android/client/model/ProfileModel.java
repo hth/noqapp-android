@@ -256,12 +256,12 @@ public class ProfileModel {
                 }
 
                 if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Update profile", String.valueOf(response.body()));
+                    Log.d("changeMail response", String.valueOf(response.body()));
                     migrateEmailPresenter.migrateEmailResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Failed updating profile " + response.body().getError());
-                    migrateEmailPresenter.migrateEmailError();
+                    Log.e(TAG, "Failed updating changeMail " + response.body().getError());
+                    migrateEmailPresenter.migrateEmailError(response.body().getError().getReason());
                 }
             }
 
@@ -284,7 +284,8 @@ public class ProfileModel {
 
                 if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.profileResponse(response.body(), mail, auth);
+                    profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                            response.headers().get(APIConstant.Key.XR_AUTH));
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
