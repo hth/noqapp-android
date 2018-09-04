@@ -1,10 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
 import static com.google.common.cache.CacheBuilder.newBuilder;
 
 import com.noqapp.android.client.BuildConfig;
@@ -12,16 +7,15 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
-import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkChangeReceiver;
 import com.noqapp.android.client.utils.NetworkUtils;
-import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
@@ -46,7 +40,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -67,8 +60,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Created by chandra on 5/7/17.
+ */
 public class CategoryInfoActivity extends BaseActivity implements QueuePresenter, RecyclerViewGridAdapter.OnItemClickListener {
-
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
@@ -141,14 +136,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
             }
         });
-        snackbar = Snackbar
-                .make(ll_cat_info, "No internet connection!", Snackbar.LENGTH_INDEFINITE);
+        snackbar = Snackbar.make(ll_cat_info, "No internet connection!", Snackbar.LENGTH_INDEFINITE);
         View sbView = snackbar.getView();
         TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(Color.RED);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(myReceiver,
-                    new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+            registerReceiver(myReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
         if (!bus.isRegistered(this)) {
             bus.register(this);
@@ -158,9 +151,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         if (null != bundle) {
             codeQR = bundle.getString(NoQueueBaseFragment.KEY_CODE_QR);
             BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
-            if(null != bizStoreElastic)
-              progressDialog.setMessage("Loading "+bizStoreElastic.getBusinessName()+"...");
-            else
+            if (null != bizStoreElastic) {
+                progressDialog.setMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
+            } else {
                 progressDialog.setMessage("Loading ...");
 //            if (NetworkUtils.isConnectingToInternet(this)) {
 //                showSnackBar(true);
@@ -176,6 +169,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 //                showSnackBar(false);
 //                //ShowAlertInformation.showNetworkDialog(this);
 //            }
+            }
         }
         recyclerViewLayoutManager = new GridLayoutManager(this, 2);
         rv_categories.setLayoutManager(recyclerViewLayoutManager);
@@ -209,6 +203,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             unregisterReceiver(myReceiver);
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -222,7 +217,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this,errorCode);
+        AppUtilities.authenticationProcessing(this, errorCode);
     }
 
     @Override
@@ -237,15 +232,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             LaunchActivity.getLaunchActivity().dismissProgress();
             tv_store_name.setText(bizStoreElastic.getBusinessName());
-            String address = "";
-
-            if (!TextUtils.isEmpty(bizStoreElastic.getTown())) {
-                address = bizStoreElastic.getTown();
-            }
-            if (!TextUtils.isEmpty(bizStoreElastic.getArea())) {
-                address = bizStoreElastic.getArea() + ", " + address;
-            }
-            tv_address.setText(address);
+            tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
             tv_complete_address.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -262,28 +249,27 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             ratingBar.setRating(rating);
             tv_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
-            if(tv_rating.getText().toString().equals("0.0"))
+            if (tv_rating.getText().toString().equals("0.0")) {
                 tv_rating.setVisibility(View.INVISIBLE);
-            else
+            } else {
                 tv_rating.setVisibility(View.VISIBLE);
+            }
             tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
             codeQR = bizStoreElastic.getCodeQR();
             AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);
 
-            List<AmenityEnum> amenities = bizStoreElastic.getAmenities();
-            ArrayList<String> amenitiesdata = new ArrayList<>();
-            for (int j = 0; j < amenities.size(); j++) {
-                amenitiesdata.add(amenities.get(j).getDescription());
+            List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
+            List<String> amenities = new ArrayList<>();
+            for (int j = 0; j < amenityEnums.size(); j++) {
+                amenities.add(amenityEnums.get(j).getDescription());
             }
-            sc_amenities.addSegments(amenitiesdata);
-
-            List<FacilityEnum> faclities = bizStoreElastic.getFacilities();
-            ArrayList<String> data = new ArrayList<>();
-            for (int j = 0; j < faclities.size(); j++) {
-                data.add(faclities.get(j).getDescription());
+            sc_amenities.addSegments(amenities);
+            List<FacilityEnum> facilityEnums = bizStoreElastic.getFacilities();
+            List<String> facilities = new ArrayList<>();
+            for (int j = 0; j < facilityEnums.size(); j++) {
+                facilities.add(facilityEnums.get(j).getDescription());
             }
-            sc_facility.addSegments(data);
-
+            sc_facility.addSegments(facilities);
             Picasso.with(this)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                     .placeholder(ImageUtils.getBannerPlaceholder(this))
@@ -292,7 +278,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             rv_thumb_images.setHasFixedSize(true);
             rv_thumb_images.setLayoutManager(horizontalLayoutManager);
-            ArrayList<String> storeServiceImages = new ArrayList<>();
+            List<String> storeServiceImages = new ArrayList<>();
             // initialize list if we are receiving urls from server
             if (bizStoreElastic.getBizServiceImages().size() > 0) {
                 storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
@@ -382,12 +368,15 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     }
 
     public List<JsonCategory> getCategoryThatArePopulated() {
-        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent(CATEGORY);
-        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
+        Map<String, JsonCategory> categoryMap = new HashMap<>();
+        Map<String, ArrayList<BizStoreElastic>> queueMap = new HashMap<>();
+        if (null != cacheCategory.getIfPresent(CATEGORY))
+            categoryMap = cacheCategory.getIfPresent(CATEGORY);
+        if (null != cacheQueue.getIfPresent(QUEUE))
+            queueMap = cacheQueue.getIfPresent(QUEUE);
 
         Set<String> categoryKey = categoryMap.keySet();
         Set<String> queueKey = queueMap.keySet();
-
         categoryKey.retainAll(queueKey);
         return new ArrayList<>(categoryMap.values());
     }
@@ -424,6 +413,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             startActivity(in);
         }
     }
+
     private void showSnackBar(boolean isHide) {
         if (isHide)
             snackbar.dismiss();

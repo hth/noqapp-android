@@ -52,6 +52,7 @@
     <string name="invitecode">Invite code</string>
     <string name="btnregister">Continue Register</string>
     <string name="error_name_blank">Please enter name</string>
+    <string name="error_email_blank">Please enter email</string>
     <string name="error_name_length">Name length should be at least 4 or higher</string>
     <string name="error_invalid_email">Please enter valid email</string>
     <string name="error_invalid_date">Please select a valid date</string>
@@ -272,6 +273,13 @@
     <string name="mds_pathology_invs_advice">Investigation Advised >> Pathology:</string>
     <string name="mds_radiology_invs_advice">Investigation Advised >> Radiology:</string>
     <string name="maps_direction">Maps &amp; Directions</string>
+    <string name="change_number">Change Number</string>
+    <string name="email_validate">Your email verification is pending.Please validate it.</string>
+    <string name="change_email">Change Email</string>
+    <string name="email_hint">Please enter email ID</string>
+    <string name="otp">Enter OTP</string>
+    <string name="validate_via_otp">Validate email via OTP</string>
+    <string name="error_otp_blank">OTP is required</string>
 
     <!-- Category Info Screen -->
 

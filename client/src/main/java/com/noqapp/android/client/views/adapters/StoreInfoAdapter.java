@@ -67,23 +67,17 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
                 }
                 holder.tv_detail.setText(time);
         }
-        String address = "";
-        if (!TextUtils.isEmpty(item.getTown())) {
-            address = item.getTown();
-        }
-        if (!TextUtils.isEmpty(item.getArea())) {
-            address = item.getArea() + ", " + address;
-        }
-        if (!TextUtils.isEmpty(item.getDisplayImage()))
+        if (!TextUtils.isEmpty(item.getDisplayImage())) {
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, item.getDisplayImage()))
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
                     .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(holder.iv_main);
+        }
         else {
             Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
-        holder.tv_address.setText(address);
+        holder.tv_address.setText(AppUtilities.getStoreAddress(item.getTown(),item.getArea()));
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, item.getBusinessType(), holder.tv_store_rating);
         holder.tv_distance.setText(AppUtilities.calculateDistanceInKm(
                 (float) lat,

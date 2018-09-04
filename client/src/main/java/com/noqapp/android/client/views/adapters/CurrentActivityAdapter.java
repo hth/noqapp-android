@@ -2,15 +2,14 @@ package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
-import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,15 +41,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
         final JsonTokenAndQueue jsonTokenAndQueue = dataSet.get(listPosition);
         holder.tv_name.setText(jsonTokenAndQueue.getDisplayName());
-
-        String address = "";
-        if (!TextUtils.isEmpty(jsonTokenAndQueue.getTown())) {
-            address = jsonTokenAndQueue.getTown();
-        }
-        if (!TextUtils.isEmpty(jsonTokenAndQueue.getArea())) {
-            address = jsonTokenAndQueue.getArea() + ", " + address;
-        }
-        holder.tv_address.setText(address);
+        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonTokenAndQueue.getTown(),jsonTokenAndQueue.getArea()));
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

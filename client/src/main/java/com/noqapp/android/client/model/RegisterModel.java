@@ -41,19 +41,19 @@ public final class RegisterModel {
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.queueResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                    profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
                             response.headers().get(APIConstant.Key.XR_AUTH));
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history" + response.body().getError());
-                    profilePresenter.queueError();
+                    profilePresenter.profileError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profilePresenter.profileError();
             }
         });
     }
@@ -67,19 +67,19 @@ public final class RegisterModel {
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.queueResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                    profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
                             response.headers().get(APIConstant.Key.XR_AUTH));
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history" + response.body().getError());
-                    profilePresenter.queueError(response.body().getError().getReason());
+                    profilePresenter.profileError(response.body().getError().getReason());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profilePresenter.profileError();
             }
         });
     }

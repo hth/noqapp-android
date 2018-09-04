@@ -9,6 +9,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -45,8 +46,6 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -76,6 +75,10 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     protected EditText tv_female;
     @BindView(R.id.tv_migrate)
     protected TextView tv_migrate;
+    @BindView(R.id.tv_email_verification)
+    protected TextView tv_email_verification;
+    @BindView(R.id.tv_modify_email)
+    protected TextView tv_modify_email;
     @BindView(R.id.ll_gender)
     protected LinearLayout ll_gender;
     @BindView(R.id.ll_dependent)
@@ -97,12 +100,14 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         tv_toolbar_title.setText(getString(R.string.screen_profile));
         iv_profile.setOnClickListener(this);
         dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-        updateUI();
+        //updateUI();
         edt_birthday.setInputType(InputType.TYPE_NULL);
         edt_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
         tv_migrate.setOnClickListener(this);
+        edt_Mail.setOnClickListener(this);
+        tv_modify_email.setOnClickListener(this);
         iv_add_dependent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +173,12 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 Intent migrate = new Intent(this, MigrateActivity.class);
                 startActivity(migrate);
                 break;
+            case R.id.edt_email:
+            case R.id.tv_modify_email:
+                Intent changeEmail = new Intent(this, ChangeEmailActivity.class);
+                startActivity(changeEmail);
+                break;
+
         }
     }
 
@@ -188,14 +199,12 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                        RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
+                        RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), NoQueueBaseActivity.getUserProfile().getQueueUserId());
                         ProfileModel profileModel = new ProfileModel();
                         profileModel.setImageUploadPresenter(this);
                         profileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -203,7 +212,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     @Override
-    public void queueResponse(JsonProfile profile, String email, String auth) {
+    public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
         dismissProgress();
@@ -212,12 +221,12 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
 
     @Override
-    public void queueError() {
+    public void profileError() {
         dismissProgress();
     }
 
     @Override
-    public void queueError(String error) {
+    public void profileError(String error) {
 
     }
 
@@ -231,8 +240,15 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         tv_name.setText(NoQueueBaseActivity.getUserName());
         edt_phoneNo.setText(NoQueueBaseActivity.getPhoneNo());
         edt_Mail.setText(NoQueueBaseActivity.getActualMail());
+        tv_email_verification.setVisibility(NoQueueBaseActivity.showEmailVerificationField(NoQueueBaseActivity.getUserProfile().isAccountValidated()) ? View.VISIBLE : View.GONE);
+        tv_modify_email.setVisibility(NoQueueBaseActivity.getUserProfile().isAccountValidated() ? View.GONE : View.VISIBLE);
+        if (NoQueueBaseActivity.getMail().endsWith(Constants.MAIL_NOQAPP_COM)) {
+            tv_email_verification.setVisibility(View.VISIBLE);
+            tv_email_verification.setText("Please add your Email Id");
+        }
         edt_phoneNo.setEnabled(false);
-        edt_Mail.setEnabled(false);
+        edt_Mail.setFocusable(false);
+        edt_Mail.setClickable(true);
         edt_Name.setEnabled(false);
         edt_birthday.setEnabled(false);
         edt_address.setEnabled(false);

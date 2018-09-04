@@ -9,11 +9,11 @@ import com.noqapp.android.common.beans.JsonProfile;
 
 public interface ProfilePresenter {
 
-    void queueResponse(JsonProfile profile, String email, String auth);
+    void profileResponse(JsonProfile profile, String email, String auth);
 
-    void queueError();
+    void profileError();
 
-    void queueError(String error);
+    void profileError(String error);
 
     void authenticationFailure(int errorCode);
 }

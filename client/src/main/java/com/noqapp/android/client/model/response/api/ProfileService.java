@@ -2,7 +2,9 @@ package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
-import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
+import com.noqapp.android.client.presenter.beans.body.ChangeMailOTP;
+import com.noqapp.android.client.presenter.beans.body.MigrateMail;
+import com.noqapp.android.client.presenter.beans.body.MigratePhone;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
@@ -57,6 +59,18 @@ public interface ProfileService {
             UpdateProfile updateProfile
     );
 
+    @POST("api/c/profile/changeMail.json")
+    Call<JsonResponse> changeMail(
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            MigrateMail migrateMail
+    );
+
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
@@ -73,7 +87,19 @@ public interface ProfileService {
             String auth,
 
             @Body
-            MigrateProfile migrateProfile
+            MigratePhone migratePhone
+    );
+
+    @POST("api/c/profile/migrateMail.json")
+    Call<JsonProfile> migrateMail(
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            ChangeMailOTP changeMailOTP
     );
 
     /**

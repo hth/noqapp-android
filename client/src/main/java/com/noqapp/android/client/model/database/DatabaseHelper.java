@@ -11,22 +11,11 @@ import android.util.Log;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "noqueue.db";
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 6;
     private static final Patch[] PATCHES = new Patch[]{
-            new Patch(1, 3, "1.0.200") {
-                public void apply(SQLiteDatabase db) {
-                    CreateTable.createTableNotification(db);
-                    CreateTable.alterTable(db);
-                    CreateTable.updateBusinessType(db);
-                    CreateTable.dropAndCreateTable(db);
-                }
-            }, new Patch(3, 4, "1.2.15") {
+          new Patch(5,6,"1.2.27"){
         public void apply(SQLiteDatabase db) {
-            CreateTable.addOrderState(db);
-        }
-    },new Patch(4,5,"1.2.19"){
-        public void apply(SQLiteDatabase db) {
-            CreateTable.updateColoumnName(db);
+            CreateTable.dropAndCreateTable(db);
         }
     }
 

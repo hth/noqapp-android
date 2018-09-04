@@ -55,7 +55,10 @@ public class Constants {
     public static final String COUNTRY_CODE = "IN";
     public static final String API_KEY = "AIzaSyA9eHl3SHvjXmHFq9q5yPjRy0uqBd5awSc";
     private static final String TAG = Constants.class.getName();
+    public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
     private static String VERSION_RELEASE;
+
+    public static int SUCCESS = 1;
 
     /**
      * Computes App version.

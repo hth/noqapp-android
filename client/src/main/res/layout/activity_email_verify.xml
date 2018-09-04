@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#99ffffff"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout"/>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+
+        <TextView
+                android:id="@+id/tv_header"
+                style="@style/style_register_tv"
+                android:text="@string/prompt_email"
+                android:textSize="16sp"/>
+
+
+        <EditText
+                android:id="@+id/edt_email"
+                style="@style/style_register_edt"
+                android:layout_width="match_parent"
+                android:hint="@string/email_hint"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:minLines="1"
+                android:textSize="@dimen/text_size_fourteen"/>
+
+
+
+        <Button
+                android:id="@+id/btn_verify_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_drawable"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="@string/verify_phone_auth"
+                android:textAllCaps="false"
+                android:textColor="@color/colorMobile"
+                android:textSize="@dimen/text_size_fourteen"/>
+
+        <EditText
+                android:id="@+id/edt_otp"
+                style="@style/style_register_edt"
+                android:layout_width="match_parent"
+                android:hint="@string/otp"
+                android:textSize="@dimen/text_size_fourteen"
+                android:inputType="textCapCharacters"
+                android:maxLength="8"
+                android:maxLines="1"
+                android:minLines="1"
+                android:visibility="gone"/>
+
+        <Button
+                android:id="@+id/btn_validate_otp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_drawable"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/validate_via_otp"
+                android:textAllCaps="false"
+                android:textColor="@color/colorMobile"
+                android:textSize="@dimen/text_size_fourteen"
+                android:visibility="gone"/>
+
+
+    </LinearLayout>
+</LinearLayout>

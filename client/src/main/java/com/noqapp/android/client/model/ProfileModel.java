@@ -2,11 +2,14 @@ package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.model.response.api.ProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.presenter.beans.body.ChangeMailOTP;
+import com.noqapp.android.client.presenter.MigrateEmailPresenter;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
-import com.noqapp.android.client.presenter.beans.body.MigrateProfile;
+import com.noqapp.android.client.presenter.beans.body.MigrateMail;
+import com.noqapp.android.client.presenter.beans.body.MigratePhone;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -28,6 +31,11 @@ public class ProfileModel {
     private ProfilePresenter profilePresenter;
     private ImageUploadPresenter imageUploadPresenter;
     private ProfileAddressPresenter profileAddressPresenter;
+    private MigrateEmailPresenter migrateEmailPresenter;
+
+    public void setMigrateEmailPresenter(MigrateEmailPresenter migrateEmailPresenter) {
+        this.migrateEmailPresenter = migrateEmailPresenter;
+    }
 
     public void setProfileAddressPresenter(ProfileAddressPresenter profileAddressPresenter) {
         this.profileAddressPresenter = profileAddressPresenter;
@@ -57,18 +65,18 @@ public class ProfileModel {
 
                 if (null != response.body()) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.queueResponse(response.body(), mail, auth);
+                    profilePresenter.profileResponse(response.body(), mail, auth);
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
-                    profilePresenter.queueError();
+                    profilePresenter.profileError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profilePresenter.profileError();
             }
         });
     }
@@ -84,24 +92,24 @@ public class ProfileModel {
 
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Update profile", String.valueOf(response.body()));
-                    profilePresenter.queueResponse(response.body(), mail, auth);
+                    profilePresenter.profileResponse(response.body(), mail, auth);
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed updating profile " + response.body().getError());
-                    profilePresenter.queueError(response.body().getError().getReason());
+                    profilePresenter.profileError(response.body().getError().getReason());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profilePresenter.profileError();
             }
         });
     }
 
-    public void migrate(final String mail, final String auth, MigrateProfile migrateProfile) {
-        profileService.migrate(mail, auth, migrateProfile).enqueue(new Callback<JsonProfile>() {
+    public void migrate(final String mail, final String auth, MigratePhone migratePhone) {
+        profileService.migrate(mail, auth, migratePhone).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
@@ -111,19 +119,19 @@ public class ProfileModel {
 
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.queueResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                    profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
                             response.headers().get(APIConstant.Key.XR_AUTH));
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed migrating profile");
-                    profilePresenter.queueError(response.body().getError().getReason());
+                    profilePresenter.profileError(response.body().getError().getReason());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                profilePresenter.queueError();
+                profilePresenter.profileError();
             }
         });
     }
@@ -234,6 +242,61 @@ public class ProfileModel {
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 imageUploadPresenter.imageUploadError();
+            }
+        });
+    }
+
+    public void changeMail(final String mail, final String auth, MigrateMail migrateMail) {
+        profileService.changeMail(mail, auth, migrateMail).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    migrateEmailPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("changeMail response", String.valueOf(response.body()));
+                    migrateEmailPresenter.migrateEmailResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Failed updating changeMail " + response.body().getError());
+                    migrateEmailPresenter.migrateEmailError(response.body().getError().getReason());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                migrateEmailPresenter.migrateEmailError();
+            }
+        });
+    }
+
+    public void migrateMail(final String mail, final String auth, ChangeMailOTP changeMailOTP) {
+        profileService.migrateMail(mail, auth, changeMailOTP).enqueue(new Callback<JsonProfile>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    profilePresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body()) {
+                    Log.d("Response", String.valueOf(response.body()));
+                    profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                            response.headers().get(APIConstant.Key.XR_AUTH));
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Get state of queue upon scan");
+                    profilePresenter.profileError();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                profilePresenter.profileError();
             }
         });
     }

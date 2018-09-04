@@ -2,7 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceModel;
-import com.noqapp.android.client.views.interfaces.DeviceRegisterPresenter;
+import com.noqapp.android.client.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.utils.NetworkUtil;

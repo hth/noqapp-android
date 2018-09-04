@@ -13,7 +13,7 @@ import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
-import com.noqapp.android.client.presenter.interfaces.PurchaseOrderPresenter;
+import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -223,18 +223,18 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     @Override
-    public void queueResponse(JsonProfile profile, String email, String auth) {
+    public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
     }
 
     @Override
-    public void queueError() {
+    public void profileError() {
         dismissProgress();
     }
 
     @Override
-    public void queueError(String error) {
+    public void profileError(String error) {
         dismissProgress();
     }
 

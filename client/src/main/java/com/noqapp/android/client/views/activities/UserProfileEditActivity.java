@@ -288,7 +288,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     updateProfile.setBirthday(AppUtilities.convertDOBToValidFormat(birthday));
                     updateProfile.setGender(gender);
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
-                    updateProfile.setQueueUserId(LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
+                    updateProfile.setQueueUserId(NoQueueBaseActivity.getUserProfile().getQueueUserId());
                     profileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
@@ -299,7 +299,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
     @Override
-    public void queueResponse(JsonProfile profile, String email, String auth) {
+    public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
         dismissProgress();
@@ -309,12 +309,12 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
 
 
     @Override
-    public void queueError() {
+    public void profileError() {
         dismissProgress();
     }
 
     @Override
-    public void queueError(String error) {
+    public void profileError(String error) {
         dismissProgress();
     }
 

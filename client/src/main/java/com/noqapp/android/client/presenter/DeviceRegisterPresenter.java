@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.interfaces;
+package com.noqapp.android.client.presenter;
 
 import com.noqapp.android.common.beans.DeviceRegistered;
 

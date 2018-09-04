@@ -44,7 +44,6 @@ import com.noqapp.android.common.utils.Formatter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -190,13 +189,22 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String city_name = (String) parent.getItemAtPosition(position);
-                LatLng latLng = AppUtilities.getLocationFromAddress(getActivity(), city_name);
-                lat = latLng.latitude;
-                log = latLng.longitude;
-                city = city_name;
-                getNearMeInfo(city_name, String.valueOf(lat), String.valueOf(log));
-                new AppUtilities().hideKeyBoard(getActivity());
+                try {
+                    String city_name = (String) parent.getItemAtPosition(position);
+                    LatLng latLng = AppUtilities.getLocationFromAddress(getActivity(), city_name);
+                    if (null != latLng) {
+                        lat = latLng.latitude;
+                        log = latLng.longitude;
+                    } else {
+                        lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
+                        log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
+                    }
+                    city = city_name;
+                    getNearMeInfo(city_name, String.valueOf(lat), String.valueOf(log));
+                    new AppUtilities().hideKeyBoard(getActivity());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
             }
         });

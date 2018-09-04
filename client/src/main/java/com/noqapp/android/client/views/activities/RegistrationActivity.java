@@ -183,7 +183,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     }
 
     @Override
-    public void queueResponse(JsonProfile profile, String email, String auth) {
+    public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
@@ -200,13 +200,13 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     }
 
     @Override
-    public void queueError() {
+    public void profileError() {
         Log.d(TAG, "Error");
         dismissProgress();
     }
 
     @Override
-    public void queueError(String error) {
+    public void profileError(String error) {
         dismissProgress();
     }
 

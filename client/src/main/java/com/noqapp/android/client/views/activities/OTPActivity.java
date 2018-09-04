@@ -470,12 +470,12 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     }
 
     @Override
-    public void queueError() {
+    public void profileError() {
         dismissProgress();
     }
 
     @Override
-    public void queueError(String error) {
+    public void profileError(String error) {
         dismissProgress();
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
