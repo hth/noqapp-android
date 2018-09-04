@@ -83,7 +83,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                 } else if (!TextUtils.isEmpty(edt_email.getText()) && !isValidEmail(edt_email.getText())) {
                     edt_email.setError(getString(R.string.error_invalid_email));
                 } else {
-                    progressDialog.setMessage("Email migration is in progress...");
+                    progressDialog.setMessage("Email migration in progress...");
                     progressDialog.show();
                     new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);
                     MigrateMail migrateMail = new MigrateMail();
