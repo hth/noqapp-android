@@ -141,6 +141,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
         launchActivity = this;
+//        NoQueueBaseActivity.saveMailAuth("","");
         if (null != getIntent().getExtras()) {
             NoQueueBaseActivity.setFCMToken(getIntent().getStringExtra("fcmToken"));
             SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(

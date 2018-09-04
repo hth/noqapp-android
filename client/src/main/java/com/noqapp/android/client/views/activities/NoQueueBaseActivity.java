@@ -142,6 +142,12 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();
     }
+ public static void saveMailAuth(String email, String auth) {
+        SharedPreferences.Editor editor = getSharedPreferencesEditor();
+        editor.putString(APIConstant.Key.XR_MAIL, email);
+        editor.putString(APIConstant.Key.XR_AUTH, auth);
+        editor.commit();
+    }
 
     public static void clearPreferences() {
         // Clear all data except DID & FCM Token
