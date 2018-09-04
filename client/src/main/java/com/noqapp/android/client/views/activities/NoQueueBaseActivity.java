@@ -110,15 +110,17 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static String getMail() {
         return sharedPreferences.getString(APIConstant.Key.XR_MAIL, "");
     }
+
     public static String getActualMail() {
-        return getMail().contains(Constants.EMAIL_SUFFIX) ? "" :
+        return getMail().endsWith(Constants.MAIL_NOQAPP_COM) ? "" :
                 getMail();
     }
+
     public static boolean showEmailVerificationField(boolean isAccountValidated) {
         if (isAccountValidated)
             return false;
         else {
-            return !getMail().contains(Constants.EMAIL_SUFFIX);
+            return !getMail().endsWith(Constants.MAIL_NOQAPP_COM);
         }
     }
 
@@ -142,7 +144,8 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(APIConstant.Key.XR_AUTH, auth);
         editor.commit();
     }
- public static void saveMailAuth(String email, String auth) {
+
+    public static void saveMailAuth(String email, String auth) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(APIConstant.Key.XR_MAIL, email);
         editor.putString(APIConstant.Key.XR_AUTH, auth);
@@ -151,7 +154,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static void clearPreferences() {
         // Clear all data except DID & FCM Token
-        String did = sharedPreferences.getString(NoQueueBaseActivity.XR_DID, "");;
+        String did = sharedPreferences.getString(NoQueueBaseActivity.XR_DID, "");
         String fcmToken = getFCMToken();
         getSharedPreferencesEditor().clear().commit();
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
@@ -174,6 +177,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(KEY_USER_PROFILE, json);
         editor.apply();
     }
+
     public static void setShowHelper(boolean showHelper) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putBoolean(KEY_SHOW_HELPER, showHelper);
