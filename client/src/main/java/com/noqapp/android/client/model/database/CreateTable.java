@@ -5,6 +5,8 @@ import static com.noqapp.android.client.model.database.DatabaseTable.Review;
 import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueue;
 import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
 
+import com.noqapp.android.client.views.activities.LaunchActivity;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -133,6 +135,7 @@ public class CreateTable {
         db.execSQL("DROP TABLE IF EXISTS '" + Review.TABLE_NAME + "'");
         db.execSQL("DROP TABLE IF EXISTS '" + Notification.TABLE_NAME + "'");
         createAllTable(db);
+        LaunchActivity.getLaunchActivity().reCreateDeviceID();
     }
 
     static void createAllTable(SQLiteDatabase db) {

@@ -15,6 +15,7 @@ import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.network.VersionCheckAsync;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
+import com.noqapp.android.client.presenter.interfaces.DeviceRegisterPresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ImageUtils;
@@ -25,6 +26,8 @@ import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.presenter.interfaces.AppBlacklistPresenter;
+import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.FCMTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -79,8 +82,9 @@ import io.fabric.sdk.android.Fabric;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
-public class LaunchActivity extends LocationActivity implements OnClickListener, AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class LaunchActivity extends LocationActivity implements OnClickListener, DeviceRegisterPresenter,AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     @BindView(R.id.tv_badge)
@@ -211,7 +215,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
 
     }
-
 
 
     private void setSharedPreferenceDeviceID(SharedPreferences sharedpreferences, String deviceId) {
@@ -443,9 +446,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             bundle.putSerializable("object", jtk);
             in.putExtras(bundle);
             startActivityForResult(in, Constants.requestCodeJoinQActivity);
-            Log.v("Review screen call: ",jtk.toString());
+            Log.v("Review screen call: ", jtk.toString());
             ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
-            if ( jsonTokenAndQueueArrayList.size() == 1) {
+            if (jsonTokenAndQueueArrayList.size() == 1) {
                 //un subscribe the topic
                 NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
             }
@@ -455,22 +458,22 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     }
 
     private void callSkipScreen(String codeQR, String token, String quserID) {
-        ReviewData reviewData = ReviewDB.getValue(codeQR,token);
-        if(null != reviewData){
+        ReviewData reviewData = ReviewDB.getValue(codeQR, token);
+        if (null != reviewData) {
             ContentValues cv = new ContentValues();
-            cv.put(DatabaseTable.Review.KEY_SKIP,-1);
-            ReviewDB.updateReviewRecord(codeQR,token,cv);
+            cv.put(DatabaseTable.Review.KEY_SKIP, -1);
+            ReviewDB.updateReviewRecord(codeQR, token, cv);
             // update
-        }else{
+        } else {
             //insert
             ContentValues cv = new ContentValues();
-            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
+            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
             cv.put(DatabaseTable.Review.CODE_QR, codeQR);
             cv.put(DatabaseTable.Review.TOKEN, token);
             cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
-            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
-            cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
-            cv.put(DatabaseTable.Review.KEY_GOTO,"");
+            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+            cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+            cv.put(DatabaseTable.Review.KEY_GOTO, "");
             ReviewDB.insert(cv);
         }
         Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
@@ -506,22 +509,22 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                  * Review DB for review key && current serving == token no.
                  */
                 if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
-                    ReviewData reviewData = ReviewDB.getValue(codeQR,current_serving);
-                    if(null != reviewData){
+                    ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
+                    if (null != reviewData) {
                         ContentValues cv = new ContentValues();
-                        cv.put(DatabaseTable.Review.KEY_GOTO,go_to);
-                        ReviewDB.updateReviewRecord(codeQR,current_serving,cv);
+                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
+                        ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
                         // update
-                    }else{
+                    } else {
                         //insert
                         ContentValues cv = new ContentValues();
-                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
+                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                         cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                         cv.put(DatabaseTable.Review.TOKEN, current_serving);
                         cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
-                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
-                        cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
-                        cv.put(DatabaseTable.Review.KEY_GOTO,go_to);
+                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                        cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
                         ReviewDB.insert(cv);
                     }
                 }
@@ -535,29 +538,29 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 if (activityCommunicator != null) {
                     boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
 
-                    if (isUpdated ) {
-                        ReviewData reviewData = ReviewDB.getValue(codeQR,current_serving);
-                        if(null != reviewData){
-                            if(!reviewData.getIsBuzzerShow().equals("1")) {
+                    if (isUpdated) {
+                        ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
+                        if (null != reviewData) {
+                            if (!reviewData.getIsBuzzerShow().equals("1")) {
                                 ContentValues cv = new ContentValues();
                                 cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
                                 ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
                                 Intent blinker = new Intent(this, BlinkerActivity.class);
                                 startActivity(blinker);
-                            }else{
+                            } else {
                                 //Blinker already shown
                             }
                             // update
-                        }else{
+                        } else {
                             //insert
                             ContentValues cv = new ContentValues();
-                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
+                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                             cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                             cv.put(DatabaseTable.Review.TOKEN, current_serving);
                             cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
-                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"1");
-                            cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
-                            cv.put(DatabaseTable.Review.KEY_GOTO,"");
+                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                            cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                            cv.put(DatabaseTable.Review.KEY_GOTO, "");
                             ReviewDB.insert(cv);
                             Intent blinker = new Intent(this, BlinkerActivity.class);
                             startActivity(blinker);
@@ -671,7 +674,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             this.recreate();
         }
     }
-    
+
 
     public void showChangeLangDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -754,22 +757,22 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     if (null == userStatus) {
                         updateNotification(intent, codeQR, false);
                     } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                        ReviewData reviewData = ReviewDB.getValue(codeQR,token);
-                        if(null != reviewData){
+                        ReviewData reviewData = ReviewDB.getValue(codeQR, token);
+                        if (null != reviewData) {
                             ContentValues cv = new ContentValues();
-                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,1);
-                            ReviewDB.updateReviewRecord(codeQR,token,cv);
+                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
+                            ReviewDB.updateReviewRecord(codeQR, token, cv);
                             // update
-                        }else{
+                        } else {
                             //insert
                             ContentValues cv = new ContentValues();
-                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,1);
+                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
                             cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                             cv.put(DatabaseTable.Review.TOKEN, token);
                             cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
-                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
-                            cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
-                            cv.put(DatabaseTable.Review.KEY_GOTO,"");
+                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                            cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                            cv.put(DatabaseTable.Review.KEY_GOTO, "");
                             ReviewDB.insert(cv);
                         }
                         callReviewActivity(codeQR, token);
@@ -778,22 +781,22 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             activityCommunicator.requestProcessed(codeQR, token);
                         }
                     } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                        ReviewData reviewData = ReviewDB.getValue(codeQR,token);
-                        if(null != reviewData){
+                        ReviewData reviewData = ReviewDB.getValue(codeQR, token);
+                        if (null != reviewData) {
                             ContentValues cv = new ContentValues();
-                            cv.put(DatabaseTable.Review.KEY_SKIP,1);
-                            ReviewDB.updateReviewRecord(codeQR,token,cv);
+                            cv.put(DatabaseTable.Review.KEY_SKIP, 1);
+                            ReviewDB.updateReviewRecord(codeQR, token, cv);
                             // update
-                        }else{
+                        } else {
                             //insert
                             ContentValues cv = new ContentValues();
-                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
+                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                             cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                             cv.put(DatabaseTable.Review.TOKEN, token);
                             cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
-                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
-                            cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
-                            cv.put(DatabaseTable.Review.KEY_GOTO,"");
+                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                            cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                            cv.put(DatabaseTable.Review.KEY_GOTO, "");
                             ReviewDB.insert(cv);
                         }
                         callSkipScreen(codeQR, token, quserID);
@@ -806,6 +809,31 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             }
         }
 
+    }
+
+    public void reCreateDeviceID() {
+        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
+                APP_PREF, Context.MODE_PRIVATE);
+        String deviceId = UUID.randomUUID().toString().toUpperCase();
+        Log.d(TAG, "Re-Created deviceId=" + deviceId);
+        sharedpreferences.edit().putString(NoQueueBaseActivity.XR_DID, deviceId).apply();
+        DeviceModel deviceModel = new DeviceModel();
+        deviceModel.setDeviceRegisterPresenter(this);
+        deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken()));
+    }
+    @Override
+    public void deviceRegisterError() {
+
+    }
+
+    @Override
+    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
+        if(deviceRegistered.getRegistered() == 1) {
+            Log.e("Device register", "deviceRegister Success");
+        }else{
+            Log.e("Device register error: ",deviceRegistered.toString());
+            Toast.makeText(this,"Device register error: ",Toast.LENGTH_LONG).show();
+        }
     }
 
 }
