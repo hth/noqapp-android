@@ -173,6 +173,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                 mVerificationId = verificationId;
                 // Update UI
                 updateUI(STATE_CODE_SENT);
+                progressDialog.setMessage("OTP Generated and sent to the above mobile number");
 
             }
         };
@@ -184,6 +185,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
             if (isReadAndReceiveSMSPermissionAllowed()) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.show();
+                    progressDialog.setMessage("Generating OTP");
                     countryCode = edt_phone_code.getText().toString();
                     //@TODO @Chandra update the country code dynamic
                     startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
@@ -236,6 +238,8 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        progressDialog.setMessage("Validating OTP");
+        progressDialog.show();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

@@ -34,11 +34,11 @@ public class BlinkerActivity extends Activity {
         tv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopVibrate = true;
                 if (null != vibrator)
                     vibrator.cancel();
                 if (null != thread)
                     thread.interrupt();
-                stopVibrate = true;
                 finish();
             }
         });
@@ -61,6 +61,9 @@ public class BlinkerActivity extends Activity {
                             vibrator.vibrate(pattern, -1);
                             try {
                                 Thread.sleep(4000); //the time, the complete pattern needs
+                            } catch (InterruptedException e) {
+                                if (null != thread)
+                                    thread.interrupt();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -77,11 +80,11 @@ public class BlinkerActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        stopVibrate = true;
         if (null != vibrator)
             vibrator.cancel();
         if (null != thread)
             thread.interrupt();
-        stopVibrate = true;
+        super.onBackPressed();
     }
 }
