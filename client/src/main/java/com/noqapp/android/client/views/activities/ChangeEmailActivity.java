@@ -66,7 +66,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                 if (TextUtils.isEmpty(edt_otp.getText())) {
                     edt_otp.setError(getString(R.string.error_otp_blank));
                 } else {
-                    progressDialog.setMessage("OTP validation is in progress...");
+                    progressDialog.setMessage("OTP validation in progress...");
                     progressDialog.show();
                     new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);
                     ChangeMailOTP changeMailOTP = new ChangeMailOTP();
