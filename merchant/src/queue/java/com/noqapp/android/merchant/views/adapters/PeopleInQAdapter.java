@@ -10,7 +10,6 @@ import java.util.List;
 
 public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
-
     public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR) {
         super(data, context, peopleInQAdapterClick, qCodeQR);
     }
