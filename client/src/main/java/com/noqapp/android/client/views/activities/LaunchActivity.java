@@ -10,7 +10,6 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.client.model.types.QueueUserStateEnum;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.network.VersionCheckAsync;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -30,6 +29,7 @@ import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.FCMTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
 

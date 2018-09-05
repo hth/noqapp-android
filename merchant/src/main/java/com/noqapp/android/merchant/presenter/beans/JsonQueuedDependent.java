@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.model.types.GenderEnum;
-import com.noqapp.android.merchant.model.types.QueueUserStateEnum;
+import com.noqapp.android.common.model.types.QueueUserStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.model.types;
+package com.noqapp.android.common.model.types;
 
 /**
  * User: hitender
