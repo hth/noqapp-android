@@ -34,6 +34,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -45,14 +46,11 @@ import java.util.Locale;
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
 
     private ProgressDialog progressDialog;
-    private TextView tv_toolbar_title;
     protected ImageView actionbarBack;
-    private TextView tv_title;
     private ToggleButton toggleDayClosed, togglePreventJoin;
     private String codeQR;
     protected boolean isDialog = false;
     private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
-    private Button btn_update_time, btn_update_delay;
     private CheckBox cb_limit;
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
@@ -73,13 +71,16 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         if (isDialog) {
             DisplayMetrics metrics = getResources().getDisplayMetrics();
             int screenWidth = (int) (metrics.widthPixels * 0.60);
-            int height = (int) (metrics.heightPixels * 0.60);
+            int height = (int) (metrics.heightPixels * 0.70);
             getWindow().setLayout(screenWidth, height);
         }
-        tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack =  findViewById(R.id.actionbarBack);
+        ScrollView scroll_view =  findViewById(R.id.scroll_view);
+        scroll_view.setScrollBarFadeDuration(0);
+        scroll_view.setScrollbarFadingEnabled(false);
         initProgress();
-        tv_title = findViewById(R.id.tv_title);
+        TextView tv_title = findViewById(R.id.tv_title);
         toggleDayClosed =  findViewById(R.id.toggleDayClosed);
         togglePreventJoin =  findViewById(R.id.togglePreventJoin);
         String title = getIntent().getStringExtra("title");
@@ -103,7 +104,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     edt_token_no.setVisibility(View.INVISIBLE);
-                    tv_limited_label.setText("Un-Limited Tokens");
+                    tv_limited_label.setText(getString(R.string.unlimited_token));
                     View view = SettingActivity.this.getCurrentFocus();
                     if (view != null) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -112,7 +113,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 } else {
                     edt_token_no.setVisibility(View.VISIBLE);
                     // edt_token_no.setText("1");
-                    tv_limited_label.setText("Limited Tokens");
+                    tv_limited_label.setText(getString(R.string.limited_token));
                 }
             }
         });
@@ -147,8 +148,8 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         tv_limited_label = findViewById(R.id.tv_limited_label);
         tv_delay_in_minute = findViewById(R.id.tv_delay_in_minute);
         tv_delay_in_minute.setOnClickListener(new TextViewClickDelay(tv_delay_in_minute));
-        btn_update_time = findViewById(R.id.btn_update_time);
-        btn_update_delay = findViewById(R.id.btn_update_delay);
+        Button btn_update_time = findViewById(R.id.btn_update_time);
+        Button btn_update_delay = findViewById(R.id.btn_update_delay);
         btn_update_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,13 +207,13 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
             if (queueSetting.getAvailableTokenCount() <= 0) {
                 cb_limit.setChecked(true);
-                tv_limited_label.setText("Un-Limited Tokens");
+                tv_limited_label.setText(getString(R.string.unlimited_token));
                 edt_token_no.setVisibility(View.INVISIBLE);
             } else {
                 cb_limit.setChecked(false);
                 edt_token_no.setText(String.valueOf(queueSetting.getAvailableTokenCount()));
                 edt_token_no.setVisibility(View.VISIBLE);
-                tv_limited_label.setText("Limited Tokens");
+                tv_limited_label.setText(getString(R.string.limited_token));
                 if (edt_token_no != null) {
                     edt_token_no.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

@@ -52,7 +52,7 @@
     <string name="empty_counter">कृपया काउंटर नाम दर्ज करें</string>
     <string name="dayclosed">दिन बंद</string>
     <string name="preventjoining">शामिल होने से रोकें</string>
-    <string name="screen_settings">सेटिंग्स</string>
+    <string name="screen_settings">आज का सेटिंग्स</string>
     <string name="name_unavailable">नाम अनुपलब्ध</string>
     <string name="cancel">रद्द करना</string>
     <string name="update">नवीनतम</string>
@@ -73,7 +73,7 @@
     <string name="playstore_update_title">Newer App Version Available</string>
     <string name="playstore_update_msg">New version of NoQApp Merchant is available on play store. Please update your app to latest version.\n</string>
     <string name="create_token">Create Token</string>
-    <string name="unlimited_token">UnLimited Tokens</string>
+    <string name="unlimited_token">Un-limited tokens</string>
     <string name="error_time">Time has to be greater than 12:00 AM</string>
     <string name="error_access_denied">Not authorized to access. Please contact your admin for permission.</string>
 
@@ -100,4 +100,10 @@
     <string name="practice_start">Practice Start</string>
     <string name="error_customer_id_input">Only letters or numbers are allowed</string>
     <string name="give_discount">Applicable discount</string>
+    <string name="setting_token_timing">Token timing</string>
+    <string name="setting_issue_token_from">Issue token from</string>
+    <string name="setting_stop_issuing_token">Stop issuing token after</string>
+    <string name="setting_q_timing">Queue timing</string>
+    <string name="setting_q_start_time">Queue start time</string>
+    <string name="setting_q_close_time">Queue close time</string>
 </resources>
