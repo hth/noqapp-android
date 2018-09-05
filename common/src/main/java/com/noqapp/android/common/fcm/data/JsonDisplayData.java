@@ -1,5 +1,6 @@
 package com.noqapp.android.common.fcm.data;
 
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.FCMTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 
@@ -38,6 +39,12 @@ public class JsonDisplayData extends JsonData {
     @JsonProperty("mi")
     private String messageId;
 
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
+
+    @JsonProperty("qr")
+    private String codeQR;
+
     JsonDisplayData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
         super(firebaseMessageType);
         this.fcmType = fcmType;
@@ -46,5 +53,23 @@ public class JsonDisplayData extends JsonData {
 
     public FCMTypeEnum getFcmType() {
         return fcmType;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public JsonDisplayData setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonDisplayData setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
     }
 }
