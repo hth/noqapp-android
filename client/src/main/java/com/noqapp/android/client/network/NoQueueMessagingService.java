@@ -137,12 +137,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     pushNotification.putExtra("object", (Serializable) object);
                     pushNotification.putExtra(Firebase_Type, remoteMessage.getData().get(Firebase_Type));
                     pushNotification.putExtra(CodeQR, remoteMessage.getData().get(CodeQR));
-                    if (remoteMessage.getData().get(Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                        if (object instanceof JsonDisplayData) {
-                            Log.e("IN JsonDisplayData", ((JsonDisplayData) object).toString());
-                            NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, ((JsonDisplayData) object).getCodeQR(), body, title, ((JsonDisplayData) object).getBusinessType().getName());
-                        }
-                    }
                     if (remoteMessage.getData().get(FCM_TYPE).equalsIgnoreCase(FCMTypeEnum.O.name())) {
                         pushNotification.putExtra(ORDER_STATE, remoteMessage.getData().get(ORDER_STATE));
                     }

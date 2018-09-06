@@ -82,7 +82,6 @@ import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -323,7 +322,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     protected void onResume() {
         super.onResume();
         languagepref.registerOnSharedPreferenceChangeListener(this);
-        showHideBadge();
+        updateNotificationBadgeCount();
         nav_Menu.findItem(R.id.nav_logout).setVisible(UserUtils.isLogin());
         if (UserUtils.isLogin()) {
             tv_login.setText("Logout");
@@ -370,7 +369,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
     }
 
-    public void showHideBadge() {
+    public void updateNotificationBadgeCount() {
         int notify_count = NotificationDB.getNotificationCount();
         tv_badge.setText(String.valueOf(notify_count));
         if (notify_count > 0) {
@@ -654,8 +653,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     if (object instanceof JsonDisplayData) {
+                        NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, ((JsonDisplayData) object).getCodeQR(), ((JsonDisplayData) object).getBody(),
+                                ((JsonDisplayData) object).getTitle(), ((JsonDisplayData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
-                        showHideBadge();
+                        updateNotificationBadgeCount();
                     }else if (object instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) object).getToken());
                         String quserID = ((JsonClientData) object).getQueueUserId();
