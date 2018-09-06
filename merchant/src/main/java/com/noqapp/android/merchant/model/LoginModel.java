@@ -18,7 +18,7 @@ public class LoginModel {
     private static final String TAG = LoginModel.class.getSimpleName();
 
     private static final LoginService loginService;
-    public LoginPresenter loginPresenter;
+    private LoginPresenter loginPresenter;
 
     public LoginModel(LoginPresenter loginPresenter) {
         this.loginPresenter = loginPresenter;

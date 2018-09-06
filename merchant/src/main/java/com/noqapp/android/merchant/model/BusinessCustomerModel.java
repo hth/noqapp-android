@@ -35,7 +35,7 @@ public class BusinessCustomerModel {
         businessCustomerService.addId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     queuePersonListPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -63,7 +63,7 @@ public class BusinessCustomerModel {
         businessCustomerService.editId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     queuePersonListPresenter.authenticationFailure(response.code());
                     return;
                 }

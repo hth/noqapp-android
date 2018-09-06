@@ -17,7 +17,7 @@ import retrofit2.Response;
  */
 public class M_MerchantProfileModel extends MerchantProfileModel {
     private static final String TAG = M_MerchantProfileModel.class.getSimpleName();
-    public IntellisensePresenter intellisensePresenter;
+    private IntellisensePresenter intellisensePresenter;
 
     public M_MerchantProfileModel(IntellisensePresenter intellisensePresenter) {
         this.intellisensePresenter = intellisensePresenter;
@@ -37,6 +37,7 @@ public class M_MerchantProfileModel extends MerchantProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed image upload");
+                    intellisensePresenter.intellisenseError();
                 }
             }
 

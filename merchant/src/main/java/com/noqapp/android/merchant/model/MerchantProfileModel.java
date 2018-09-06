@@ -29,10 +29,10 @@ public class MerchantProfileModel {
     private static final String TAG = MerchantProfileModel.class.getSimpleName();
 
     protected static final MerchantProfileService merchantProfileService;
-    public ImageUploadPresenter imageUploadPresenter;
-    public MerchantPresenter merchantPresenter;
-    public ProfilePresenter profilePresenter;
-    public MerchantProfessionalPresenter merchantProfessionalPresenter;
+    private ImageUploadPresenter imageUploadPresenter;
+    private MerchantPresenter merchantPresenter;
+    private ProfilePresenter profilePresenter;
+    private MerchantProfessionalPresenter merchantProfessionalPresenter;
 
     public void setMerchantProfessionalPresenter(MerchantProfessionalPresenter merchantProfessionalPresenter) {
         this.merchantProfessionalPresenter = merchantProfessionalPresenter;
@@ -59,7 +59,7 @@ public class MerchantProfileModel {
         merchantProfileService.fetch(mail, auth).enqueue(new Callback<JsonMerchant>() {
             @Override
             public void onResponse(@NonNull Call<JsonMerchant> call, @NonNull Response<JsonMerchant> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     merchantPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -86,7 +86,7 @@ public class MerchantProfileModel {
         merchantProfileService.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     profilePresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -113,7 +113,7 @@ public class MerchantProfileModel {
         merchantProfileService.update(mail, auth, jsonProfessionalProfilePersonal).enqueue(new Callback<JsonProfessionalProfilePersonal>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfilePersonal> call, @NonNull Response<JsonProfessionalProfilePersonal> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     merchantProfessionalPresenter.authenticationFailure(response.code());
                     return;
                 }

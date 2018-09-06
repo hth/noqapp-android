@@ -22,7 +22,6 @@ public class CommonHelper {
     public static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
     public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
-
     public static String convertDOBToValidFormat(String dob) {
         try {
             Date date = SDF_DOB_FROM_UI.parse(dob);

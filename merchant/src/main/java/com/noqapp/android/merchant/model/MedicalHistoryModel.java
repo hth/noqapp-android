@@ -46,7 +46,7 @@ public class MedicalHistoryModel {
         medicalRecordService.add(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     medicalRecordPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -56,6 +56,7 @@ public class MedicalHistoryModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed to add");
+                    medicalRecordPresenter.medicalRecordError();
                 }
             }
 
@@ -72,7 +73,7 @@ public class MedicalHistoryModel {
         medicalRecordService.fetch(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     medicalRecordListPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -82,6 +83,7 @@ public class MedicalHistoryModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed to add");
+                    medicalRecordListPresenter.medicalRecordListError();
                 }
             }
 

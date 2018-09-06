@@ -23,7 +23,7 @@ public final class RegisterModel {
     private static final String TAG = RegisterModel.class.getSimpleName();
 
     private static final RegisterService registerService;
-    public ProfilePresenter profilePresenter;
+    private ProfilePresenter profilePresenter;
 
     public RegisterModel(ProfilePresenter profilePresenter) {
         this.profilePresenter = profilePresenter;

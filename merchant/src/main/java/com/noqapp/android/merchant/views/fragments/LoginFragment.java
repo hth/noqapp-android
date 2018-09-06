@@ -22,7 +22,6 @@ import com.crashlytics.android.answers.LoginEvent;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,7 +31,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -123,7 +121,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>
                         (getActivity(), android.R.layout.select_dialog_item, userList);
                 //Getting the instance of AutoCompleteTextView
-
                 actv_email.setThreshold(1);//will start working from first character
                 actv_email.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
             }

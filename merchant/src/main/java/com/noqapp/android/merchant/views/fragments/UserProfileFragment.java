@@ -6,6 +6,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -36,14 +37,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 
-public class UserProfileFragment extends Fragment implements View.OnClickListener , ProfilePresenter {
+public class UserProfileFragment extends Fragment implements View.OnClickListener, ProfilePresenter {
 
     private EditText edt_birthday;
     private EditText edt_address;
@@ -55,7 +54,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     private EditText tv_female;
     private String gender = "";
     private DatePickerDialog fromDatePickerDialog;
-    private SimpleDateFormat dateFormatter;
     private MerchantProfileModel merchantProfileModel;
     private ProgressDialog progressDialog;
     private String qUserId = "";
@@ -77,7 +75,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         btn_update = view.findViewById(R.id.btn_update);
         edt_address = view.findViewById(R.id.edt_address);
         edt_birthday = view.findViewById(R.id.edt_birthday);
-        dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         edt_birthday.setInputType(InputType.TYPE_NULL);
         btn_update = view.findViewById(R.id.btn_update);
         btn_update.setOnClickListener(this);
@@ -97,7 +94,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                     Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                     edt_birthday.setText("");
                 } else {
-                    edt_birthday.setText(dateFormatter.format(newDate.getTime()));
+                    edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                 }
 
             }
@@ -114,7 +111,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             case R.id.edt_birthday:
                 fromDatePickerDialog.show();
                 break;
-                case R.id.btn_update:
+            case R.id.btn_update:
                 updateProfile();
                 break;
             case R.id.tv_male:
@@ -179,21 +176,21 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             }
         }
     }
-    private static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-    private static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
     public static String convertDOBToValidFormat(String dob) {
         try {
-            Date date = SDF_DOB_FROM_UI.parse(dob);
-            return SDF_YYYY_MM_DD.format(date);
+            Date date = CommonHelper.SDF_DOB_FROM_UI.parse(dob);
+            return CommonHelper.SDF_YYYY_MM_DD.format(date);
         } catch (ParseException e) {
             Log.e(UserProfileFragment.class.getSimpleName(), "Error parsing DOB={}" + e.getLocalizedMessage(), e);
             return "";
         }
     }
+
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
-       // NoQueueBaseActivity.commitProfile(profile, email, auth);
+        // NoQueueBaseActivity.commitProfile(profile, email, auth);
         Toast.makeText(getActivity(), "Profile updated", Toast.LENGTH_LONG).show();
         dismissProgress();
         //updateUI();
@@ -229,9 +226,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             onClick(tv_female);
         }
         try {
-            SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd");
-            String reformattedStr = dateFormatter.format(fromUser.parse(jsonProfile.getBirthday()));
-            edt_birthday.setText(reformattedStr);
+            edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonProfile.getBirthday())));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -274,11 +269,13 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         }
         return isValid;
     }
+
     private void initProgress() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Updating data...");
     }
+
     private void dismissProgress() {
         if (null != progressDialog && progressDialog.isShowing())
             progressDialog.dismiss();

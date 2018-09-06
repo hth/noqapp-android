@@ -44,7 +44,7 @@ public class QueueSettingModel {
         queueSettingService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     queueSettingPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -55,6 +55,7 @@ public class QueueSettingModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
+                    queueSettingPresenter.queueSettingError();
                 }
             }
 
@@ -75,7 +76,7 @@ public class QueueSettingModel {
         queueSettingService.modify(did, Constants.DEVICE_TYPE, mail, auth, queueSetting).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     queueSettingPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -91,12 +92,14 @@ public class QueueSettingModel {
                 } else if (response.body() != null && response.body().getError() != null) {
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
                     Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
+                    queueSettingPresenter.queueSettingError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<QueueSetting> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
+                queueSettingPresenter.queueSettingError();
             }
         });
     }
