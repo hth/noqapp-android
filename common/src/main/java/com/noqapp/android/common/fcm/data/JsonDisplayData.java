@@ -1,5 +1,6 @@
 package com.noqapp.android.common.fcm.data;
 
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.FCMTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 
@@ -38,13 +39,56 @@ public class JsonDisplayData extends JsonData {
     @JsonProperty("mi")
     private String messageId;
 
-    JsonDisplayData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
-        super(firebaseMessageType);
-        this.fcmType = fcmType;
-        this.messageId = UUID.randomUUID().toString();
-    }
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
+
+    @JsonProperty("qr")
+    private String codeQR;
+
 
     public FCMTypeEnum getFcmType() {
         return fcmType;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public JsonDisplayData setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonDisplayData setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
+
+    public JsonDisplayData setFcmType(FCMTypeEnum fcmType) {
+        this.fcmType = fcmType;
+        return this;
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public JsonDisplayData setMessageId(String messageId) {
+        this.messageId = messageId;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()+"JsonDisplayData{" +
+                "fcmType=" + fcmType +
+                ", messageId='" + messageId + '\'' +
+                ", businessType=" + businessType +
+                ", codeQR='" + codeQR + '\'' +
+                '}';
     }
 }

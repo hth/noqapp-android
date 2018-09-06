@@ -1,17 +1,11 @@
 package com.noqapp.android.client.network;
 
-import static com.noqapp.android.client.utils.Constants.BusinessType;
 import static com.noqapp.android.client.utils.Constants.CodeQR;
-import static com.noqapp.android.client.utils.Constants.CurrentlyServing;
 import static com.noqapp.android.client.utils.Constants.FCM_TYPE;
 import static com.noqapp.android.client.utils.Constants.Firebase_Type;
-import static com.noqapp.android.client.utils.Constants.GoTo_Counter;
 import static com.noqapp.android.client.utils.Constants.ISREVIEW;
-import static com.noqapp.android.client.utils.Constants.LastNumber;
 import static com.noqapp.android.client.utils.Constants.ORDER_STATE;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
-import static com.noqapp.android.client.utils.Constants.QueueUserState;
-import static com.noqapp.android.client.utils.Constants.QuserID;
 import static com.noqapp.android.client.utils.Constants.TOKEN;
 
 import com.noqapp.android.client.R;
@@ -23,15 +17,22 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.common.fcm.data.JsonClientData;
+import com.noqapp.android.common.fcm.data.JsonDisplayData;
+import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.FCMTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.json.JSONObject;
 
 import android.app.ActivityManager;
 import android.app.NotificationChannel;
@@ -53,6 +54,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,29 +101,46 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData() != null) {
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");
+            String fcm_type = remoteMessage.getData().get(Constants.FCM_TYPE);
+            Object object = null;
+            if (fcm_type.equalsIgnoreCase(FCMTypeEnum.Q.name())) {
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicQueueData.class);
+                    Log.e("FCM", object.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (fcm_type.equalsIgnoreCase(FCMTypeEnum.QR.name())) {
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientData.class);
+                    Log.e("FCM Review", object.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (fcm_type.equalsIgnoreCase(FCMTypeEnum.A.name())) {
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonDisplayData.class);
+                    Log.e("FCM Review store", object.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // object = null;
+            }
             try {
                 if (!isAppIsInBackground(getApplicationContext())) {
                     // app is in foreground, broadcast the push message
                     Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
+                    pushNotification.putExtra("object", (Serializable) object);
                     pushNotification.putExtra(Firebase_Type, remoteMessage.getData().get(Firebase_Type));
                     pushNotification.putExtra(CodeQR, remoteMessage.getData().get(CodeQR));
-                    pushNotification.putExtra(FCM_TYPE, remoteMessage.getData().get(FCM_TYPE));
-                    if (remoteMessage.getData().get(Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                        pushNotification.putExtra(CurrentlyServing, remoteMessage.getData().get(CurrentlyServing));
-                        pushNotification.putExtra(LastNumber, remoteMessage.getData().get(LastNumber));
-                        pushNotification.putExtra(GoTo_Counter, remoteMessage.getData().get(GoTo_Counter));
-                    }
                     if (remoteMessage.getData().get(Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                        pushNotification.putExtra(QueueUserState, remoteMessage.getData().get(QueueUserState));
-                        pushNotification.putExtra(CurrentlyServing, remoteMessage.getData().get(CurrentlyServing));
-                        pushNotification.putExtra(GoTo_Counter, remoteMessage.getData().get(GoTo_Counter));
-                        pushNotification.putExtra(TOKEN, remoteMessage.getData().get(TOKEN));
-                        pushNotification.putExtra(QuserID, remoteMessage.getData().get(QuserID));
-                        // add notification to DB
-                        String userStatus = remoteMessage.getData().get(QueueUserState);
-                        if (null == userStatus) {
-                            String businessType = remoteMessage.getData().get(BusinessType);
-                            NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title, businessType);
+                        if (object instanceof JsonDisplayData) {
+                            Log.e("IN JsonDisplayData", ((JsonDisplayData) object).toString());
+                            NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, ((JsonDisplayData) object).getCodeQR(), body, title, ((JsonDisplayData) object).getBusinessType().getName());
                         }
                     }
                     if (remoteMessage.getData().get(FCM_TYPE).equalsIgnoreCase(FCMTypeEnum.O.name())) {
@@ -137,113 +156,103 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                      * When u==S then it is re-view
                      *      u==N then it is skip(Rejoin) Pending task
                      */
-
                     if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                         if (StringUtils.isNotBlank(codeQR)) {
                             String current_serving = remoteMessage.getData().get(Constants.CurrentlyServing);
-                            String userStatus = remoteMessage.getData().get(Constants.QueueUserState);
-                            String quserID = remoteMessage.getData().get(Constants.QuserID);
-                            String token = remoteMessage.getData().get(Constants.TOKEN);
-                            ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
-                            for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
-                                JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
-                                if (null != jtk && null != current_serving) {
-                                    //update DB & after join screen
-                                    jtk.setServingNumber(Integer.parseInt(current_serving));
-                                    /*
-                                     * Save codeQR of goto & show it in after join screen on app
-                                     * Review DB for review key && current serving == token no.
-                                     */
-
-                                    if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
-                                        //un subscribe the topic
-                                        //TODO @chandra write logic for unsubscribe
-                                        NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                            if (null != current_serving) {
+                                ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+                                for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
+                                    JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
+                                    if (null != jtk) {
+                                        //update DB & after join screen
+                                        jtk.setServingNumber(Integer.parseInt(current_serving));
+                                        /*
+                                         * Save codeQR of goto & show it in after join screen on app
+                                         * Review DB for review key && current serving == token no.
+                                         */
+                                        if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
+                                            //un subscribe the topic
+                                            //TODO @chandra write logic for unsubscribe
+                                            NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                                        }
+                                        TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                                     }
-                                    TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                                 }
                             }
-
-                            /*
-                             * Save codeQR of review & show the review screen on app
-                             * resume if there is any record in Review DB for review key
-                             */
-                            if (null == userStatus) {
-                                String businessType = remoteMessage.getData().get(BusinessType);
-                                // NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title,businessType);
+                            if (object instanceof JsonDisplayData) {
+                                Log.e("IN JsonDisplayData", ((JsonDisplayData) object).toString());
+                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, ((JsonDisplayData) object).getCodeQR(), body, title, ((JsonDisplayData) object).getBusinessType().getName());
                                 sendNotification(title, body, false);
-                            } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                                ReviewData reviewData = ReviewDB.getValue(codeQR,token);
-                                if(null != reviewData){
-                                    ContentValues cv = new ContentValues();
-                                    cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,1);
-                                    ReviewDB.updateReviewRecord(codeQR,token,cv);
-                                    // update
-                                }else{
-                                    //insert
-                                    ContentValues cv = new ContentValues();
-                                    cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,1);
-                                    cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                                    cv.put(DatabaseTable.Review.TOKEN, token);
-                                    cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
-                                    cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
-                                    cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
-                                    cv.put(DatabaseTable.Review.KEY_GOTO,"");
-                                    ReviewDB.insert(cv);
+                            } else if (object instanceof JsonClientData) {
+                                Log.e("IN JsonClientData", ((JsonClientData) object).toString());
+                                String token = String.valueOf(((JsonClientData) object).getToken());
+                                String quserID = ((JsonClientData) object).getQueueUserId();
+                                if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                                    /*
+                                     * Save codeQR of review & show the review screen on app
+                                     * resume if there is any record in Review DB for review key
+                                     */
+                                    ReviewData reviewData = ReviewDB.getValue(codeQR, token);
+                                    if (null != reviewData) {
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
+                                        ReviewDB.updateReviewRecord(codeQR, token, cv);
+                                        // update
+                                    } else {
+                                        //insert
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
+                                        cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                        cv.put(DatabaseTable.Review.TOKEN, token);
+                                        cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                                        cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                                        cv.put(DatabaseTable.Review.KEY_GOTO, "");
+                                        ReviewDB.insert(cv);
+                                    }
+                                    sendNotification(title, body, codeQR, true, token);//pass codeQR to open review screen
+                                } else if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
+                                    ReviewData reviewData = ReviewDB.getValue(codeQR, token);
+                                    if (null != reviewData) {
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(DatabaseTable.Review.KEY_SKIP, -1);
+                                        ReviewDB.updateReviewRecord(codeQR, token, cv);
+                                        // update
+                                    } else {
+                                        //insert
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
+                                        cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                        cv.put(DatabaseTable.Review.TOKEN, token);
+                                        cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                                        cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                                        cv.put(DatabaseTable.Review.KEY_GOTO, "");
+                                        ReviewDB.insert(cv);
+                                    }
+                                    sendNotification(title, body, codeQR, false, token);//pass codeQR to open skip screen
                                 }
-                                sendNotification(title, body, codeQR, true, token);//pass codeQR to open review screen
-                            } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                                ReviewData reviewData = ReviewDB.getValue(codeQR,token);
-                                if(null != reviewData){
-                                    ContentValues cv = new ContentValues();
-                                    cv.put(DatabaseTable.Review.KEY_SKIP,-1);
-                                    ReviewDB.updateReviewRecord(codeQR,token,cv);
-                                    // update
-                                }else{
-                                    //insert
-                                    ContentValues cv = new ContentValues();
-                                    cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
-                                    cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                                    cv.put(DatabaseTable.Review.TOKEN, token);
-                                    cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
-                                    cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
-                                    cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
-                                    cv.put(DatabaseTable.Review.KEY_GOTO,"");
-                                    ReviewDB.insert(cv);
-                                }
-                                sendNotification(title, body, codeQR, false, token);//pass codeQR to open skip screen
                             }
                         } else {
-                            Log.w(TAG, "To implement this when a message like this is received");
-                            //TODO something for this data
-//                            {
-//                                "content_available": true,
-//                                      "data": {
-//                                        "body": "World Android",
-//                                        "cs": 0,
-//                                        "f": "P",
-//                                        "ln": 0,
-//                                        "title": "Hello Android"
-//                                      },
-//                                "priority": "high",
-//                                "to": "XXXXX"
-//                            }
                             sendNotification(title, body, false);
                             // add notification to DB
-                            String userStatus = remoteMessage.getData().get(QueueUserState);
-                            if (null == userStatus) {
-                                String businessType = remoteMessage.getData().get(BusinessType);
-                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(CodeQR), body, title, businessType);
+                            if (object instanceof JsonDisplayData) {
+                                Log.e("IN JsonDisplayData", ((JsonDisplayData) object).toString());
+                                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, ((JsonDisplayData) object).getCodeQR(), body, title, ((JsonDisplayData) object).getBusinessType().getName());
                             }
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                        String current_serving = remoteMessage.getData().get(CurrentlyServing);
+                        String go_to = "";
+                        String current_serving = "";
+                        if (object instanceof JsonTopicQueueData) {
+                            Log.e("IN JsonTopicQueueData", ((JsonTopicQueueData) object).toString());
+                            current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());
+                            go_to = ((JsonTopicQueueData) object).getGoTo();
+                        }
                         ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
                         for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
                             JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
                             if (null != jtk) {
-                                String go_to = remoteMessage.getData().get(GoTo_Counter);
-
                                 /*
                                  * Save codeQR of goto & show it in after join screen on app
                                  * Review DB for review key && current serving == token no.
@@ -274,7 +283,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     //un-subscribe from the topic
                                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                                 }
-
                                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                                 sendNotification(title, body, true); // pass null to show only notification with no action
                             }
@@ -295,22 +303,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             notificationIntent.putExtra(QRCODE, codeQR);
             notificationIntent.putExtra(ISREVIEW, isReview);
             notificationIntent.putExtra(TOKEN, token);
-
         }
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//        android.support.v4.app.NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-//                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
-//                .setSmallIcon(getNotificationIcon())
-//                .setLargeIcon(bm)
-//                .setContentTitle(title)
-//                .setContentText(messageBody)
-//                .setAutoCancel(true)
-//                .setSound(defaultSoundUri)
-//                .setContentIntent(pendingIntent);
-//        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        notificationManager.notify(10 /* ID of notification */, notificationBuilder.build());
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         int notificationId = 1;
@@ -333,7 +327,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setLights(Color.parseColor("#ffb400"), 50, 10)
                 .setSound(defaultSoundUri);
-        // PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
         stackBuilder.addNextIntent(notificationIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(

@@ -27,6 +27,9 @@ import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.fcm.data.JsonClientData;
+import com.noqapp.android.common.fcm.data.JsonDisplayData;
+import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.FCMTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
@@ -56,7 +59,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -144,9 +146,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 //        NoQueueBaseActivity.saveMailAuth("","");
         if (null != getIntent().getExtras()) {
             NoQueueBaseActivity.setFCMToken(getIntent().getStringExtra("fcmToken"));
-            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
-                    NoQueueBaseActivity.APP_PREF, Context.MODE_PRIVATE);
-            setSharedPreferenceDeviceID(sharedpreferences, getIntent().getStringExtra("deviceId"));
+            NoQueueBaseActivity.setDeviceID(getIntent().getStringExtra("deviceId"));
         }
         Log.v("device id check", getDeviceID());
         setReviewShown(false);//Reset the flag when app is killed
@@ -215,13 +215,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
 
-    }
-
-
-    private void setSharedPreferenceDeviceID(SharedPreferences sharedpreferences, String deviceId) {
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString(NoQueueBaseActivity.XR_DID, deviceId);
-        editor.apply();
     }
 
     @Override
@@ -330,13 +323,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     protected void onResume() {
         super.onResume();
         languagepref.registerOnSharedPreferenceChangeListener(this);
-        int notify_count = NotificationDB.getNotificationCount();
-        tv_badge.setText(String.valueOf(notify_count));
-        if (notify_count > 0) {
-            tv_badge.setVisibility(View.VISIBLE);
-        } else {
-            tv_badge.setVisibility(View.INVISIBLE);
-        }
+        showHideBadge();
         nav_Menu.findItem(R.id.nav_logout).setVisible(UserUtils.isLogin());
         if (UserUtils.isLogin()) {
             tv_login.setText("Logout");
@@ -380,6 +367,16 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (StringUtils.isNotBlank(reviewDataSkip.getCodeQR())) {
             ReviewDB.deleteReview(reviewData.getCodeQR(), reviewData.getToken());
             Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void showHideBadge() {
+        int notify_count = NotificationDB.getNotificationCount();
+        tv_badge.setText(String.valueOf(notify_count));
+        if (notify_count > 0) {
+            tv_badge.setVisibility(View.VISIBLE);
+        } else {
+            tv_badge.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -432,10 +429,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         actionbarBack.setVisibility(isShown ? View.VISIBLE : View.GONE);
     }
 
-    public String getDeviceID() {
-        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, MODE_PRIVATE);
-        return sharedpreferences.getString(XR_DID, "");
-    }
+
 
     private void callReviewActivity(String codeQR, String token) {
         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, token);
@@ -485,103 +479,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         b.putBoolean("isCategoryData", false);
         //   JoinFragment jf = new JoinFragment();
         //   jf.setArguments(b);
-        // remove previous screens
-        List<Fragment> currentTabFragments = null;//fragmentsStack.get(getCurrentSelectedTabTag());
-        if (null != currentTabFragments && currentTabFragments.size() > 1) {
-            int size = currentTabFragments.size();
-            // clear the stack till first screen of current tab
-            currentTabFragments.subList(1, size).clear();
-        }
-        //  NoQueueBaseFragment.replaceFragmentWithBackStack(this, R.id.frame_layout, jf, TAG, currentSelectedTabTag);
-    }
-
-    private void updateNotification(Intent intent, String codeQR, boolean isReview) {
-        String current_serving = intent.getStringExtra(Constants.CurrentlyServing);
-        String go_to = intent.getStringExtra(Constants.GoTo_Counter);
-        String fcm_type = intent.getStringExtra(Constants.FCM_TYPE);
-        ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
-        for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
-            JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
-            if (null != jtk) {
-                //update DB & after join screen
-                jtk.setServingNumber(Integer.parseInt(current_serving));
-                /*
-                 * Save codeQR of goto & show it in after join screen on app
-                 * Review DB for review key && current serving == token no.
-                 */
-                if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
-                    ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
-                    if (null != reviewData) {
-                        ContentValues cv = new ContentValues();
-                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
-                        ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
-                        // update
-                    } else {
-                        //insert
-                        ContentValues cv = new ContentValues();
-                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
-                        cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                        cv.put(DatabaseTable.Review.TOKEN, current_serving);
-                        cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
-                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
-                        cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
-                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
-                        ReviewDB.insert(cv);
-                    }
-                }
-
-                if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
-                    //un subscribe the topic
-                    //TODO @chandra write logic for unsubscribe
-                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-                }
-                TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-                if (activityCommunicator != null) {
-                    boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
-
-                    if (isUpdated) {
-                        ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
-                        if (null != reviewData) {
-                            if (!reviewData.getIsBuzzerShow().equals("1")) {
-                                ContentValues cv = new ContentValues();
-                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
-                                ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
-                                Intent blinker = new Intent(this, BlinkerActivity.class);
-                                startActivity(blinker);
-                            } else {
-                                //Blinker already shown
-                            }
-                            // update
-                        } else {
-                            //insert
-                            ContentValues cv = new ContentValues();
-                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
-                            cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                            cv.put(DatabaseTable.Review.TOKEN, current_serving);
-                            cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
-                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
-                            cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
-                            cv.put(DatabaseTable.Review.KEY_GOTO, "");
-                            ReviewDB.insert(cv);
-                            Intent blinker = new Intent(this, BlinkerActivity.class);
-                            startActivity(blinker);
-                        }
-                    }
-                }
-                try {
-                    // In case of order update the order status
-                    if (fcm_type.equalsIgnoreCase(FCMTypeEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
-                        jtk.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(intent.getStringExtra(Constants.ORDER_STATE)));
-                        TokenAndQueueDB.updateCurrentListOrderObject(codeQR, intent.getStringExtra(Constants.ORDER_STATE), String.valueOf(jtk.getToken()));
-                    }
-                    scanFragment.updateListFromNotification(jtk, go_to);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Log.e(TAG, "codeQR=" + codeQR + " current_serving=" + current_serving + " goTo=" + go_to);
-            }
-        }
     }
 
     @Override
@@ -746,64 +643,167 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 String payload = intent.getStringExtra(Constants.Firebase_Type);
                 String codeQR = intent.getStringExtra(Constants.CodeQR);
                 Log.d(TAG, "payload=" + payload + " codeQR=" + codeQR);
+                Object object = intent.getSerializableExtra("object");
+                if (object instanceof JsonTopicQueueData) {
+                    Log.e("onReceiveJsonTopicQueue", ((JsonTopicQueueData) object).toString());
+                } else if (object instanceof JsonClientData) {
+                    Log.e("onReceiveJsonClientData", ((JsonClientData) object).toString());
+                } else if (object instanceof JsonDisplayData) {
+                    Log.e("onReceiveJsonClientData", ((JsonDisplayData) object).toString());
+                }
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                    String userStatus = intent.getStringExtra("u");
-                    String token = intent.getStringExtra(Constants.TOKEN);
-                    String quserID = intent.getStringExtra(Constants.QuserID);
-                    /**
-                     * Save codeQR of review & show the review screen on app
-                     * resume if there is any record in Review DB for review key
-                     */
-                    if (null == userStatus) {
-                        updateNotification(intent, codeQR, false);
-                    } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                        ReviewData reviewData = ReviewDB.getValue(codeQR, token);
-                        if (null != reviewData) {
-                            ContentValues cv = new ContentValues();
-                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
-                            ReviewDB.updateReviewRecord(codeQR, token, cv);
-                            // update
-                        } else {
-                            //insert
-                            ContentValues cv = new ContentValues();
-                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
-                            cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                            cv.put(DatabaseTable.Review.TOKEN, token);
-                            cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
-                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
-                            cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
-                            cv.put(DatabaseTable.Review.KEY_GOTO, "");
-                            ReviewDB.insert(cv);
+                    if (object instanceof JsonDisplayData) {
+                        //Show some meaningful msg to the end user
+                        showHideBadge();
+                    }else if (object instanceof JsonClientData) {
+                        String token = String.valueOf(((JsonClientData) object).getToken());
+                        String quserID = ((JsonClientData) object).getQueueUserId();
+                        if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+                            /**
+                             * Save codeQR of review & show the review screen on app
+                             * resume if there is any record in Review DB for review key
+                             */
+                            ReviewData reviewData = ReviewDB.getValue(codeQR, token);
+                            if (null != reviewData) {
+                                ContentValues cv = new ContentValues();
+                                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
+                                ReviewDB.updateReviewRecord(codeQR, token, cv);
+                                // update
+                            } else {
+                                //insert
+                                ContentValues cv = new ContentValues();
+                                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
+                                cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                cv.put(DatabaseTable.Review.TOKEN, token);
+                                cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                                cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                                cv.put(DatabaseTable.Review.KEY_GOTO, "");
+                                ReviewDB.insert(cv);
+                            }
+                            callReviewActivity(codeQR, token);
+                            // this code is added to close the join & after join screen if the request is processed
+                            if (activityCommunicator != null) {
+                                activityCommunicator.requestProcessed(codeQR, token);
+                            }
+                        } else if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
+                            ReviewData reviewData = ReviewDB.getValue(codeQR, token);
+                            if (null != reviewData) {
+                                ContentValues cv = new ContentValues();
+                                cv.put(DatabaseTable.Review.KEY_SKIP, 1);
+                                ReviewDB.updateReviewRecord(codeQR, token, cv);
+                                // update
+                            } else {
+                                //insert
+                                ContentValues cv = new ContentValues();
+                                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
+                                cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                cv.put(DatabaseTable.Review.TOKEN, token);
+                                cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                                cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                                cv.put(DatabaseTable.Review.KEY_GOTO, "");
+                                ReviewDB.insert(cv);
+                            }
+                            callSkipScreen(codeQR, token, quserID);
                         }
-                        callReviewActivity(codeQR, token);
-                        // this code is added to close the join & after join screen if the request is processed
-                        if (activityCommunicator != null) {
-                            activityCommunicator.requestProcessed(codeQR, token);
-                        }
-                    } else if (userStatus.equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
-                        ReviewData reviewData = ReviewDB.getValue(codeQR, token);
-                        if (null != reviewData) {
-                            ContentValues cv = new ContentValues();
-                            cv.put(DatabaseTable.Review.KEY_SKIP, 1);
-                            ReviewDB.updateReviewRecord(codeQR, token, cv);
-                            // update
-                        } else {
-                            //insert
-                            ContentValues cv = new ContentValues();
-                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
-                            cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                            cv.put(DatabaseTable.Review.TOKEN, token);
-                            cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
-                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
-                            cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
-                            cv.put(DatabaseTable.Review.KEY_GOTO, "");
-                            ReviewDB.insert(cv);
-                        }
-                        callSkipScreen(codeQR, token, quserID);
+
                     }
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
-                    updateNotification(intent, codeQR, true);
+                    String go_to = "";
+                    String fcm_type = "";
+                    String current_serving = "";
+                    if (object instanceof JsonTopicQueueData) {
+                        current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
+                        go_to = ((JsonTopicQueueData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
+                        fcm_type = ((JsonTopicQueueData) object).getFcmType().name();//intent.getStringExtra(Constants.FCM_TYPE);
+                    }
+                    ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+                    for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
+                        JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
+                        if (null != jtk) {
+                            //update DB & after join screen
+                            jtk.setServingNumber(Integer.parseInt(current_serving));
+                            /*
+                             * Save codeQR of goto & show it in after join screen on app
+                             * Review DB for review key && current serving == token no.
+                             */
+                            if (Integer.parseInt(current_serving) == jtk.getToken()) {
+                                // if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
+                                ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
+                                if (null != reviewData) {
+                                    ContentValues cv = new ContentValues();
+                                    cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
+                                    ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
+                                    // update
+                                } else {
+                                    //insert
+                                    ContentValues cv = new ContentValues();
+                                    cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
+                                    cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                    cv.put(DatabaseTable.Review.TOKEN, current_serving);
+                                    cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
+                                    cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                                    cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                                    cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
+                                    ReviewDB.insert(cv);
+                                }
+                            }
+
+                            if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
+                                //un subscribe the topic
+                                //TODO @chandra write logic for unsubscribe
+                                NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                            }
+                            TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                            if (activityCommunicator != null) {
+                                boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
+
+                                if (isUpdated) {
+                                    ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
+                                    if (null != reviewData) {
+                                        if (!reviewData.getIsBuzzerShow().equals("1")) {
+                                            ContentValues cv = new ContentValues();
+                                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                                            ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
+                                            Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
+                                            startActivity(blinker);
+                                        } else {
+                                            //Blinker already shown
+                                        }
+                                        // update
+                                    } else {
+                                        //insert
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
+                                        cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                        cv.put(DatabaseTable.Review.TOKEN, current_serving);
+                                        cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
+                                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                                        cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                                        cv.put(DatabaseTable.Review.KEY_GOTO, "");
+                                        ReviewDB.insert(cv);
+                                        Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
+                                        startActivity(blinker);
+                                    }
+                                }
+                            }
+                            try {
+                                // In case of order update the order status
+                                if (fcm_type.equalsIgnoreCase(FCMTypeEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
+                                    jtk.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(intent.getStringExtra(Constants.ORDER_STATE)));
+                                    TokenAndQueueDB.updateCurrentListOrderObject(codeQR, intent.getStringExtra(Constants.ORDER_STATE), String.valueOf(jtk.getToken()));
+                                }
+                                scanFragment.updateListFromNotification(jtk, go_to);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Log.e(TAG, "codeQR=" + codeQR + " current_serving=" + current_serving + " goTo=" + go_to);
+                        }
+                    }
+
                 } else {
                     // Toast.makeText(launchActivity, "Notification : " + payload, Toast.LENGTH_LONG).show();
                 }
@@ -813,11 +813,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     }
 
     public void reCreateDeviceID() {
-        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
-                APP_PREF, Context.MODE_PRIVATE);
         String deviceId = UUID.randomUUID().toString().toUpperCase();
         Log.d(TAG, "Re-Created deviceId=" + deviceId);
-        sharedpreferences.edit().putString(NoQueueBaseActivity.XR_DID, deviceId).apply();
+        NoQueueBaseActivity.setDeviceID(deviceId);
         DeviceModel deviceModel = new DeviceModel();
         deviceModel.setDeviceRegisterPresenter(this);
         deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken()));

@@ -21,18 +21,18 @@ import android.support.v7.app.AppCompatActivity;
  * Through out the App. So only one class can extend this Activity. Otherwise it was a serious issue.
  */
 public class NoQueueBaseActivity extends AppCompatActivity {
-    public static final String PREKEY_PHONE = "phone";
-    public static final String PREKEY_NAME = "name";
-    public static final String PREKEY_MAIL = "mail";
-    public static final String PREKEY_DOB = "dateOfBirth";
-    public static final String PREKEY_ADD = "address";
-    public static final String PREKEY_PROFILE_IMAGE = "imageUri";
+    private static final String PREKEY_PHONE = "phone";
+    private static final String PREKEY_NAME = "name";
+    private static final String PREKEY_MAIL = "mail";
+    private static final String PREKEY_DOB = "dateOfBirth";
+    private static final String PREKEY_ADD = "address";
+    private static final String PREKEY_PROFILE_IMAGE = "imageUri";
     //TODO add address from profile
-    public static final String PREKEY_GENDER = "gender";
-    public static final String PREKEY_INVITECODE = "invitecode";
-    public static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
-    public static final int ACCOUNTKIT_REQUEST_CODE = 99;
-    public static final String PREKEY_IS_REVIEW_SHOWN = "reviewScreen";
+    private static final String PREKEY_GENDER = "gender";
+    private static final String PREKEY_INVITECODE = "invitecode";
+    private static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
+    private static final int ACCOUNTKIT_REQUEST_CODE = 99;
+    private static final String PREKEY_IS_REVIEW_SHOWN = "reviewScreen";
 
 
     public static final String KEY_CODE_QR = DatabaseTable.TokenQueue.CODE_QR;
@@ -43,12 +43,16 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String KEY_USER_PROFILE = "userProfile";
     public static final String IS_DEPENDENT = "isDependent";
     public static final String DEPENDENT_PROFILE = "dependentProfile";
-    public static final String KEY_SHOW_HELPER = "showHelper";
+    private static final String KEY_SHOW_HELPER = "showHelper";
     /* Secured Shared Preference. */
-    public static final String APP_PREF = "shared_pref";
-    public static final String FCM_TOKEN = "fcmToken";
+    private static final String FCM_TOKEN = "fcmToken";
     public static final String XR_DID = "X-R-DID";
     public static NoQueueBaseActivity noQueueBaseActivity;
+
+    public static SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
+
     private static SharedPreferences sharedPreferences;
 
     public static SharedPreferences.Editor getSharedPreferencesEditor() {
@@ -128,6 +132,16 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedPreferences.getString(APIConstant.Key.XR_AUTH, "");
     }
 
+    public static String getDeviceID() {
+        return sharedPreferences.getString(XR_DID, "");
+    }
+
+    public static void setDeviceID(String did) {
+        SharedPreferences.Editor editor = getSharedPreferencesEditor();
+        editor.putString(XR_DID, did);
+        editor.apply();
+    }
+
     public static void commitProfile(JsonProfile profile, String email, String auth) {
         setUserProfile(profile);
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
@@ -166,8 +180,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static JsonProfile getUserProfile() {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(KEY_USER_PROFILE, "");
-        JsonProfile obj = gson.fromJson(json, JsonProfile.class);
-        return obj;
+        return gson.fromJson(json, JsonProfile.class);
     }
 
     public static void setUserProfile(JsonProfile jsonProfile) {

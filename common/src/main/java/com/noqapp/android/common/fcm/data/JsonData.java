@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
+
 /**
  * User: hitender
  * Date: 3/7/17 11:07 AM
@@ -28,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public abstract class JsonData extends AbstractDomain {
+public abstract class JsonData extends AbstractDomain implements Serializable{
 
     @JsonProperty("f")
     private FirebaseMessageTypeEnum firebaseMessageType;
@@ -39,8 +41,13 @@ public abstract class JsonData extends AbstractDomain {
     @JsonProperty("body")
     private String body;
 
-    JsonData(FirebaseMessageTypeEnum firebaseMessageType) {
+    public FirebaseMessageTypeEnum getFirebaseMessageType() {
+        return firebaseMessageType;
+    }
+
+    public JsonData setFirebaseMessageType(FirebaseMessageTypeEnum firebaseMessageType) {
         this.firebaseMessageType = firebaseMessageType;
+        return this;
     }
 
     public String getTitle() {
@@ -59,5 +66,14 @@ public abstract class JsonData extends AbstractDomain {
     public JsonData setBody(String body) {
         this.body = body;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonData{" +
+                "firebaseMessageType=" + firebaseMessageType +
+                ", title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                '}';
     }
 }

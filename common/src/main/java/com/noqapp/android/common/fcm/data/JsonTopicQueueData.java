@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
+
 /**
  * User: hitender
  * Date: 1/1/17 7:06 AM
@@ -30,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonTopicQueueData extends JsonData {
+public class JsonTopicQueueData extends JsonData implements Serializable{
 
     @JsonProperty("ft")
     private FCMTypeEnum fcmType;
@@ -58,11 +60,6 @@ public class JsonTopicQueueData extends JsonData {
 
     @JsonProperty("mi")
     private String messageId;
-
-    public JsonTopicQueueData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
-        super(firebaseMessageType);
-        this.fcmType = fcmType;
-    }
 
     public FCMTypeEnum getFcmType() {
         return fcmType;
@@ -143,5 +140,20 @@ public class JsonTopicQueueData extends JsonData {
     public JsonTopicQueueData setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()+"JsonTopicQueueData{" +
+                "fcmType=" + fcmType +
+                ", message='" + message + '\'' +
+                ", lastNumber=" + lastNumber +
+                ", currentlyServing=" + currentlyServing +
+                ", codeQR='" + codeQR + '\'' +
+                ", queueStatus=" + queueStatus +
+                ", goTo='" + goTo + '\'' +
+                ", businessType=" + businessType +
+                ", messageId='" + messageId + '\'' +
+                '}';
     }
 }
