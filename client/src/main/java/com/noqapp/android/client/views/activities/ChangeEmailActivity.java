@@ -17,6 +17,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -80,7 +81,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
             case R.id.btn_verify_email:
                 if (TextUtils.isEmpty(edt_email.getText())) {
                     edt_email.setError(getString(R.string.error_email_blank));
-                } else if (isValidEmail(edt_email.getText())) {
+                } else if (new CommonHelper().isValidEmail(edt_email.getText())) {
                     progressDialog.setMessage("Email migration in progress...");
                     progressDialog.show();
                     new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);
@@ -159,11 +160,4 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
         dismissProgress();
     }
 
-    private boolean isValidEmail(CharSequence target) {
-        if (TextUtils.isEmpty(target)) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-        }
-    }
 }

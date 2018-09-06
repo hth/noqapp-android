@@ -16,6 +16,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.ImagePathReader;
 
 import com.squareup.picasso.Picasso;
@@ -46,9 +47,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 
 public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
@@ -84,7 +83,6 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     @BindView(R.id.ll_dependent)
     protected LinearLayout ll_dependent;
 
-    private SimpleDateFormat dateFormatter;
     public ImageView iv_profile;
     public String gender = "";
 
@@ -99,7 +97,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         loadProfilePic();
         tv_toolbar_title.setText(getString(R.string.screen_profile));
         iv_profile.setOnClickListener(this);
-        dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+
+
         //updateUI();
         edt_birthday.setInputType(InputType.TYPE_NULL);
         edt_birthday.setOnClickListener(this);
@@ -293,9 +292,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
         }
         try {
-            SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd");
-            String reformattedStr = dateFormatter.format(fromUser.parse(NoQueueBaseActivity.getUserDOB()));
-            edt_birthday.setText(reformattedStr);
+            edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB())));
         } catch (Exception e) {
             e.printStackTrace();
         }
