@@ -27,10 +27,10 @@ import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
-import com.noqapp.android.common.fcm.data.JsonDisplayData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
-import com.noqapp.android.common.model.types.FCMTypeEnum;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -82,7 +82,6 @@ import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -323,7 +322,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     protected void onResume() {
         super.onResume();
         languagepref.registerOnSharedPreferenceChangeListener(this);
-        showHideBadge();
+        updateNotificationBadgeCount();
         nav_Menu.findItem(R.id.nav_logout).setVisible(UserUtils.isLogin());
         if (UserUtils.isLogin()) {
             tv_login.setText("Logout");
@@ -370,7 +369,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
     }
 
-    public void showHideBadge() {
+    public void updateNotificationBadgeCount() {
         int notify_count = NotificationDB.getNotificationCount();
         tv_badge.setText(String.valueOf(notify_count));
         if (notify_count > 0) {
@@ -648,14 +647,20 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     Log.e("onReceiveJsonTopicQueue", ((JsonTopicQueueData) object).toString());
                 } else if (object instanceof JsonClientData) {
                     Log.e("onReceiveJsonClientData", ((JsonClientData) object).toString());
-                } else if (object instanceof JsonDisplayData) {
-                    Log.e("onReceiveJsonClientData", ((JsonDisplayData) object).toString());
+                } else if (object instanceof JsonAlertData) {
+                    Log.e("onReceiveJsonClientData", ((JsonAlertData) object).toString());
                 }
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                    if (object instanceof JsonDisplayData) {
+                    if (object instanceof JsonAlertData) {
+                        NotificationDB.insertNotification(
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonAlertData) object).getCodeQR(),
+                                ((JsonAlertData) object).getBody(),
+                                ((JsonAlertData) object).getTitle(),
+                                ((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
-                        showHideBadge();
+                        updateNotificationBadgeCount();
                     }else if (object instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) object).getToken());
                         String quserID = ((JsonClientData) object).getQueueUserId();
@@ -712,12 +717,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     }
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                     String go_to = "";
-                    String fcm_type = "";
+                    String messageOrigin = "";
                     String current_serving = "";
                     if (object instanceof JsonTopicQueueData) {
                         current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
                         go_to = ((JsonTopicQueueData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
-                        fcm_type = ((JsonTopicQueueData) object).getFcmType().name();//intent.getStringExtra(Constants.FCM_TYPE);
+                        messageOrigin = ((JsonTopicQueueData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
                     }
                     ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
                     for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
@@ -791,7 +796,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             }
                             try {
                                 // In case of order update the order status
-                                if (fcm_type.equalsIgnoreCase(FCMTypeEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
+                                if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
                                     jtk.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(intent.getStringExtra(Constants.ORDER_STATE)));
                                     TokenAndQueueDB.updateCurrentListOrderObject(codeQR, intent.getStringExtra(Constants.ORDER_STATE), String.valueOf(jtk.getToken()));
                                 }

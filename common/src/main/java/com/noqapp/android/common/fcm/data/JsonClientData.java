@@ -1,7 +1,6 @@
 package com.noqapp.android.common.fcm.data;
 
-import com.noqapp.android.common.model.types.FCMTypeEnum;
-import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -34,8 +33,8 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonClientData extends JsonData implements Serializable{
 
-    @JsonProperty("ft")
-    private FCMTypeEnum fcmType;
+    @JsonProperty("mo")
+    private MessageOriginEnum messageOrigin;
 
     @JsonProperty("qr")
     private String codeQR;
@@ -52,12 +51,12 @@ public class JsonClientData extends JsonData implements Serializable{
     @JsonProperty("o")
     private String topic;
 
-    public FCMTypeEnum getFcmType() {
-        return fcmType;
+    public MessageOriginEnum getMessageOrigin() {
+        return messageOrigin;
     }
 
-    public JsonClientData setFcmType(FCMTypeEnum fcmType) {
-        this.fcmType = fcmType;
+    public JsonClientData setMessageOrigin(MessageOriginEnum messageOrigin) {
+        this.messageOrigin = messageOrigin;
         return this;
     }
 
@@ -109,7 +108,7 @@ public class JsonClientData extends JsonData implements Serializable{
     @Override
     public String toString() {
         return super.toString()+"JsonClientData{" +
-                "fcmType=" + fcmType +
+                "messageOrigin=" + messageOrigin +
                 ", codeQR='" + codeQR + '\'' +
                 ", queueUserId='" + queueUserId + '\'' +
                 ", token=" + token +

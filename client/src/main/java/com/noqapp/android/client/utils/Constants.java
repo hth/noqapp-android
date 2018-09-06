@@ -28,7 +28,7 @@ public class Constants {
     public static final String TOKEN = "t";
     public static final String QuserID = "qid";
     public static final String MESSAGE_ID = "mi";
-    public static final String FCM_TYPE = "ft";
+    public static final String MESSAGE_ORIGIN = "mo";
     public static final String ORDER_STATE = "os";
     public static final String ACTIVITY_TO_CLOSE = "activity_status";
     public static final String FROM_JOIN_SCREEN = "from_join_screen";

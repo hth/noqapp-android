@@ -2,8 +2,7 @@ package com.noqapp.android.common.fcm.data;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.FCMTypeEnum;
-import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
@@ -12,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import java.util.UUID;
 
 /**
  * hitender
@@ -36,8 +33,8 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonTopicOrderData extends JsonData {
 
-    @JsonProperty("ft")
-    private FCMTypeEnum fcmType;
+    @JsonProperty("mo")
+    private MessageOriginEnum messageOrigin;
 
     @JsonProperty("message")
     private String message;
@@ -69,12 +66,12 @@ public class JsonTopicOrderData extends JsonData {
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public FCMTypeEnum getFcmType() {
-        return fcmType;
+    public MessageOriginEnum getMessageOrigin() {
+        return messageOrigin;
     }
 
-    public JsonTopicOrderData setFcmType(FCMTypeEnum fcmType) {
-        this.fcmType = fcmType;
+    public JsonTopicOrderData setMessageOrigin(MessageOriginEnum messageOrigin) {
+        this.messageOrigin = messageOrigin;
         return this;
     }
 
@@ -171,7 +168,7 @@ public class JsonTopicOrderData extends JsonData {
     @Override
     public String toString() {
         return super.toString()+"JsonTopicOrderData{" +
-                "fcmType=" + fcmType +
+                "messageOrigin=" + messageOrigin +
                 ", message='" + message + '\'' +
                 ", lastNumber=" + lastNumber +
                 ", currentlyServing=" + currentlyServing +
