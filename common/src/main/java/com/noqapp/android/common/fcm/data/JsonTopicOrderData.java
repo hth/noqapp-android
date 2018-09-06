@@ -69,11 +69,6 @@ public class JsonTopicOrderData extends JsonData {
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public JsonTopicOrderData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
-        super(firebaseMessageType);
-        this.fcmType = fcmType;
-    }
-
     public FCMTypeEnum getFcmType() {
         return fcmType;
     }
@@ -168,13 +163,14 @@ public class JsonTopicOrderData extends JsonData {
         return error;
     }
 
-    public void setError(ErrorEncounteredJson error) {
+    public JsonTopicOrderData setError(ErrorEncounteredJson error) {
         this.error = error;
+        return this;
     }
 
     @Override
     public String toString() {
-        return "JsonTopicOrderData{" +
+        return super.toString()+"JsonTopicOrderData{" +
                 "fcmType=" + fcmType +
                 ", message='" + message + '\'' +
                 ", lastNumber=" + lastNumber +

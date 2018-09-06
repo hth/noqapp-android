@@ -45,11 +45,6 @@ public class JsonDisplayData extends JsonData {
     @JsonProperty("qr")
     private String codeQR;
 
-    JsonDisplayData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
-        super(firebaseMessageType);
-        this.fcmType = fcmType;
-        this.messageId = UUID.randomUUID().toString();
-    }
 
     public FCMTypeEnum getFcmType() {
         return fcmType;
@@ -71,5 +66,29 @@ public class JsonDisplayData extends JsonData {
     public JsonDisplayData setCodeQR(String codeQR) {
         this.codeQR = codeQR;
         return this;
+    }
+
+    public JsonDisplayData setFcmType(FCMTypeEnum fcmType) {
+        this.fcmType = fcmType;
+        return this;
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public JsonDisplayData setMessageId(String messageId) {
+        this.messageId = messageId;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()+"JsonDisplayData{" +
+                "fcmType=" + fcmType +
+                ", messageId='" + messageId + '\'' +
+                ", businessType=" + businessType +
+                ", codeQR='" + codeQR + '\'' +
+                '}';
     }
 }

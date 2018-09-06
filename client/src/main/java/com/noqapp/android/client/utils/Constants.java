@@ -22,16 +22,9 @@ public class Constants {
     public static final String MESSAGE = "message";
     public static final String STATUS = "status";
     public static final String ISREVIEW = "isreview";
-    public static final String CURRENT_SERVING = "current_serving";
-    public static final String LASTNO = "lastno";
     public static final String Firebase_Type = "f";
-    public static final String GoTo_Counter = "g";
-    public static final String LastNumber = "ln";
     public static final String CurrentlyServing = "cs";
-    public static final String QueueStatus = "q";
     public static final String CodeQR = "qr";
-    public static final String QueueUserState = "u";
-    public static final String BusinessType = "bt";
     public static final String TOKEN = "t";
     public static final String QuserID = "qid";
     public static final String MESSAGE_ID = "mi";

@@ -25,6 +25,6 @@ public class UserUtils {
     }
 
     public static String getDeviceId() {
-        return LaunchActivity.getLaunchActivity().getDeviceID();
+        return NoQueueBaseActivity.getDeviceID();
     }
 }

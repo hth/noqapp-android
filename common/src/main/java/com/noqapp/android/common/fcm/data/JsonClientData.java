@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
+
 /**
  * Data associated after client has been served or either was skipped for no show.
  * User: hitender
@@ -30,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonClientData extends JsonData {
+public class JsonClientData extends JsonData implements Serializable{
 
     @JsonProperty("ft")
     private FCMTypeEnum fcmType;
@@ -38,7 +40,7 @@ public class JsonClientData extends JsonData {
     @JsonProperty("qr")
     private String codeQR;
 
-    @JsonProperty ("qid")
+    @JsonProperty("qid")
     private String queueUserId;
 
     @JsonProperty("t")
@@ -50,9 +52,13 @@ public class JsonClientData extends JsonData {
     @JsonProperty("o")
     private String topic;
 
-    public JsonClientData(FirebaseMessageTypeEnum firebaseMessageType, FCMTypeEnum fcmType) {
-        super(firebaseMessageType);
+    public FCMTypeEnum getFcmType() {
+        return fcmType;
+    }
+
+    public JsonClientData setFcmType(FCMTypeEnum fcmType) {
         this.fcmType = fcmType;
+        return this;
     }
 
     public String getCodeQR() {
@@ -98,5 +104,17 @@ public class JsonClientData extends JsonData {
     public JsonClientData setTopic(String topic) {
         this.topic = topic;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()+"JsonClientData{" +
+                "fcmType=" + fcmType +
+                ", codeQR='" + codeQR + '\'' +
+                ", queueUserId='" + queueUserId + '\'' +
+                ", token=" + token +
+                ", queueUserState=" + queueUserState +
+                ", topic='" + topic + '\'' +
+                '}';
     }
 }
