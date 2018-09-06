@@ -49,6 +49,7 @@ public class MerchantListAdapter extends BaseAdapter {
             recordHolder.tv_serving_no = view.findViewById(R.id.tv_serving_no);
             recordHolder.tv_inqueue = view.findViewById(R.id.tv_inqueue);
             recordHolder.tv_label = view.findViewById(R.id.tv_label);
+            recordHolder.tv_status = view.findViewById(R.id.tv_status);
             recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
@@ -65,7 +66,16 @@ public class MerchantListAdapter extends BaseAdapter {
             recordHolder.tv_serving_no.setText("Serving Now: " + String.valueOf(jsonTopic.getServingNumber()));
         }
         recordHolder.tv_inqueue.setText(String.valueOf(jsonTopic.getRemaining()));
-
+        if (jsonTopic.getHour().isDayClosed()) {
+            recordHolder.tv_status.setText("Closed for the day");
+        } else if (jsonTopic.getHour().getDelayedInMinutes() != 0) {
+            int hours = jsonTopic.getHour().getDelayedInMinutes() / 60;
+            int minutes = jsonTopic.getHour().getDelayedInMinutes() % 60;
+            System.out.printf("%d:%02d", hours, minutes);
+            recordHolder.tv_status.setText("Delayed by " + hours+" Hrs " + minutes+" minutes");
+        } else {
+            recordHolder.tv_status.setText("");
+        }
         if (position == MerchantListFragment.selected_pos) {
             recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.pressed_color));
             recordHolder.tv_queue_name.setTextColor(Color.WHITE);
@@ -100,6 +110,7 @@ public class MerchantListAdapter extends BaseAdapter {
         TextView tv_serving_no;
         TextView tv_inqueue;
         TextView tv_label;
+        TextView tv_status;
         CardView cardview;
 
         RecordHolder() {
