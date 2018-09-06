@@ -1,8 +1,7 @@
 package com.noqapp.android.common.fcm.data;
 
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.FCMTypeEnum;
-import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -34,8 +33,8 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonTopicQueueData extends JsonData implements Serializable{
 
-    @JsonProperty("ft")
-    private FCMTypeEnum fcmType;
+    @JsonProperty("mo")
+    private MessageOriginEnum messageOrigin;
 
     @JsonProperty("message")
     private String message;
@@ -61,12 +60,12 @@ public class JsonTopicQueueData extends JsonData implements Serializable{
     @JsonProperty("mi")
     private String messageId;
 
-    public FCMTypeEnum getFcmType() {
-        return fcmType;
+    public MessageOriginEnum getMessageOrigin() {
+        return messageOrigin;
     }
 
-    public JsonTopicQueueData setFcmType(FCMTypeEnum fcmType) {
-        this.fcmType = fcmType;
+    public JsonTopicQueueData setMessageOrigin(MessageOriginEnum messageOrigin) {
+        this.messageOrigin = messageOrigin;
         return this;
     }
 
@@ -145,7 +144,7 @@ public class JsonTopicQueueData extends JsonData implements Serializable{
     @Override
     public String toString() {
         return super.toString()+"JsonTopicQueueData{" +
-                "fcmType=" + fcmType +
+                "messageOrigin=" + messageOrigin +
                 ", message='" + message + '\'' +
                 ", lastNumber=" + lastNumber +
                 ", currentlyServing=" + currentlyServing +

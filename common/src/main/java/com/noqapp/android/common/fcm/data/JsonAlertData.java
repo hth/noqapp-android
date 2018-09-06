@@ -1,16 +1,13 @@
 package com.noqapp.android.common.fcm.data;
 
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.FCMTypeEnum;
-import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import java.util.UUID;
 
 /**
  * hitender
@@ -31,10 +28,10 @@ import java.util.UUID;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonDisplayData extends JsonData {
+public class JsonAlertData extends JsonData {
 
-    @JsonProperty("ft")
-    private FCMTypeEnum fcmType;
+    @JsonProperty("mo")
+    private MessageOriginEnum messageOrigin;
 
     @JsonProperty("mi")
     private String messageId;
@@ -46,15 +43,15 @@ public class JsonDisplayData extends JsonData {
     private String codeQR;
 
 
-    public FCMTypeEnum getFcmType() {
-        return fcmType;
+    public MessageOriginEnum getMessageOrigin() {
+        return messageOrigin;
     }
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
 
-    public JsonDisplayData setBusinessType(BusinessTypeEnum businessType) {
+    public JsonAlertData setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
         return this;
     }
@@ -63,13 +60,13 @@ public class JsonDisplayData extends JsonData {
         return codeQR;
     }
 
-    public JsonDisplayData setCodeQR(String codeQR) {
+    public JsonAlertData setCodeQR(String codeQR) {
         this.codeQR = codeQR;
         return this;
     }
 
-    public JsonDisplayData setFcmType(FCMTypeEnum fcmType) {
-        this.fcmType = fcmType;
+    public JsonAlertData setMessageOrigin(MessageOriginEnum messageOrigin) {
+        this.messageOrigin = messageOrigin;
         return this;
     }
 
@@ -77,15 +74,15 @@ public class JsonDisplayData extends JsonData {
         return messageId;
     }
 
-    public JsonDisplayData setMessageId(String messageId) {
+    public JsonAlertData setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
 
     @Override
     public String toString() {
-        return super.toString()+"JsonDisplayData{" +
-                "fcmType=" + fcmType +
+        return super.toString()+"JsonAlertData{" +
+                "messageOrigin=" + messageOrigin +
                 ", messageId='" + messageId + '\'' +
                 ", businessType=" + businessType +
                 ", codeQR='" + codeQR + '\'' +
