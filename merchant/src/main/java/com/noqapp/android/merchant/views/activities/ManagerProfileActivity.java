@@ -5,6 +5,7 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.ImagePathReader;
@@ -114,9 +115,15 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             LaunchActivity.getLaunchActivity().setUserName();
             tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
             userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
-            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER ) {
                 // Additional profile will be only visible to store manager
-                userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
+                switch (jsonMerchant.getJsonProfile().getBusinessType()) {
+                    case DO:
+                        userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
+                        break;
+                    default:
+                        //Do nothing
+                }
             }
             Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
             loadProfilePic(jsonMerchant.getJsonProfile().getProfileImage());
@@ -247,8 +254,14 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         adapter.addFragment(userProfileFragment, "Profile");
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
             // Additional profile will be only visible to store manager
-            userAdditionalInfoFragment = new UserAdditionalInfoFragment();
-            adapter.addFragment(userAdditionalInfoFragment, "Professional Profile");
+            switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
+                case DO:
+                    userAdditionalInfoFragment = new UserAdditionalInfoFragment();
+                    adapter.addFragment(userAdditionalInfoFragment, "Professional Profile");
+                    break;
+                default:
+                    //Do nothing
+            }
         }
         viewPager.setAdapter(adapter);
     }
