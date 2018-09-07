@@ -176,4 +176,22 @@ public class JsonQueuedPerson implements Serializable {
         this.created = created;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonQueuedPerson{" +
+                "token=" + token +
+                ", queueUserId='" + queueUserId + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", customerPhone='" + customerPhone + '\'' +
+                ", queueUserState=" + queueUserState +
+                ", serverDeviceId='" + serverDeviceId + '\'' +
+                ", dependents=" + dependents +
+                ", businessCustomerId='" + businessCustomerId + '\'' +
+                ", clientVisitedThisStore=" + clientVisitedThisStore +
+                ", clientVisitedThisBusiness=" + clientVisitedThisBusiness +
+                ", recordReferenceId='" + recordReferenceId + '\'' +
+                ", created='" + created + '\'' +
+                '}';
+    }
 }

@@ -193,6 +193,34 @@ public class ManageQueueModel {
         });
     }
 
+    public void getAllQueuePersonListHistory(String did, String mail, String auth, String codeQR) {
+        manageQueueService.showClientsHistorical(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    queuePersonListPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("Get queue setting", String.valueOf(response.body()));
+                    queuePersonListPresenter.queuePersonListResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Found error while get queue setting");
+                    queuePersonListPresenter.queuePersonListError();
+                }
+            }
+
+
+            @Override
+            public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                queuePersonListPresenter.queuePersonListError();
+            }
+        });
+    }
+
 
     public void dispenseToken(String did, String mail, String auth, String codeQR) {
         manageQueueService.dispenseTokenWithoutClientInfo(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {

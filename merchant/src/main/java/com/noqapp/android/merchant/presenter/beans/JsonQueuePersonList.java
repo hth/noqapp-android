@@ -55,4 +55,12 @@ public class JsonQueuePersonList implements Serializable {
     public void setError(ErrorEncounteredJson error) {
         this.error = error;
     }
+
+    @Override
+    public String toString() {
+        return "JsonQueuePersonList{" +
+                "queuedPeople=" + queuedPeople +
+                ", error=" + error +
+                '}';
+    }
 }

@@ -25,6 +25,7 @@ import com.noqapp.android.merchant.views.activities.LoginActivity;
 import com.noqapp.android.merchant.views.activities.RegistrationActivity;
 import com.noqapp.android.merchant.views.activities.SettingActivity;
 import com.noqapp.android.merchant.views.activities.SettingDialogActivity;
+import com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
@@ -94,7 +95,8 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     private LinearLayoutManager horizontalLayoutManagaer;
     protected ManageQueueModel manageQueueModel;
     protected ArrayList<JsonTopic> topicsList;
-    protected ImageView iv_generate_token;
+    protected ImageView iv_generate_token,iv_queue_history;
+
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -162,6 +164,19 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             public void onClick(View view) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     createToken(context, jsonTopic.getCodeQR());
+                } else {
+                    ShowAlertInformation.showNetworkDialog(context);
+                }
+            }
+        });
+        iv_queue_history = itemView.findViewById(R.id.iv_queue_history);
+        iv_queue_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
+                    in.putExtra("codeQR", jsonTopic.getCodeQR());
+                    ((Activity) context).startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
                 }

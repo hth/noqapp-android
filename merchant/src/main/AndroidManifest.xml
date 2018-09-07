@@ -122,6 +122,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <service android:name="com.noqapp.android.merchant.network.NoQueueMessagingService" android:stopWithTask="false">
             <intent-filter>
