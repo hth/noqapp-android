@@ -7,15 +7,15 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
+import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.utils.NetworkChangeReceiver;
 import com.noqapp.android.client.utils.NetworkUtils;
+import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
@@ -26,21 +26,13 @@ import com.google.common.cache.Cache;
 
 import com.squareup.picasso.Picasso;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.drawable.LayerDrawable;
-import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -117,9 +109,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     private Bundle bundle;
     private String title = "";
-    private NetworkChangeReceiver myReceiver = new NetworkChangeReceiver();
-    private EventBus bus = EventBus.getDefault();
-    private Snackbar snackbar;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,16 +127,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
             }
         });
-        snackbar = Snackbar.make(ll_cat_info, "No internet connection!", Snackbar.LENGTH_INDEFINITE);
-        View sbView = snackbar.getView();
-        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(Color.RED);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(myReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-        if (!bus.isRegistered(this)) {
-            bus.register(this);
-        }
+
 
         bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
@@ -155,33 +137,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 progressDialog.setMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
             } else {
                 progressDialog.setMessage("Loading ...");
-//            if (NetworkUtils.isConnectingToInternet(this)) {
-//                showSnackBar(true);
-//                progressDialog.show();
-//                QueueModel queueModel = new QueueModel();
-//                queueModel.setQueuePresenter(this);
-//                if (bundle.getBoolean("CallCategory", false)) {
-//                    queueModel.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
-//                } else {
-//                    queueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
-//                }
-//            } else {
-//                showSnackBar(false);
-//                //ShowAlertInformation.showNetworkDialog(this);
-//            }
             }
-        }
-        recyclerViewLayoutManager = new GridLayoutManager(this, 2);
-        rv_categories.setLayoutManager(recyclerViewLayoutManager);
-
-    }
-
-    @Subscribe
-    public void onEvent(Boolean name) {
-        Log.e("name value: ", String.valueOf(name));
-        if (NetworkUtils.isConnectingToInternet(this)) {
-            showSnackBar(true);
-            if (null == bizStoreElastic) {
+            if (NetworkUtils.isConnectingToInternet(this)) {
                 progressDialog.show();
                 QueueModel queueModel = new QueueModel();
                 queueModel.setQueuePresenter(this);
@@ -190,19 +147,15 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 } else {
                     queueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
                 }
+            } else {
+                ShowAlertInformation.showNetworkDialog(this);
             }
-        } else {
-            showSnackBar(false);
         }
+        recyclerViewLayoutManager = new GridLayoutManager(this, 2);
+        rv_categories.setLayoutManager(recyclerViewLayoutManager);
+
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            unregisterReceiver(myReceiver);
-        }
-    }
 
     @Override
     public void onResume() {
@@ -263,12 +216,14 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             for (int j = 0; j < amenityEnums.size(); j++) {
                 amenities.add(amenityEnums.get(j).getDescription());
             }
+            sc_amenities.removeAllSegments();
             sc_amenities.addSegments(amenities);
             List<FacilityEnum> facilityEnums = bizStoreElastic.getFacilities();
             List<String> facilities = new ArrayList<>();
             for (int j = 0; j < facilityEnums.size(); j++) {
                 facilities.add(facilityEnums.get(j).getDescription());
             }
+            sc_facility.removeAllSegments();
             sc_facility.addSegments(facilities);
             Picasso.with(this)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
@@ -412,12 +367,5 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             in.putExtra("title", title);
             startActivity(in);
         }
-    }
-
-    private void showSnackBar(boolean isHide) {
-        if (isHide)
-            snackbar.dismiss();
-        else
-            snackbar.show();
     }
 }
