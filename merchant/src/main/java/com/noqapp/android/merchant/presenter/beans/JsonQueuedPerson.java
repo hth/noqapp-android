@@ -66,6 +66,9 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty ("rr")
     private String recordReferenceId;
 
+    @JsonProperty("c")
+    private String created;
+
     public int getToken() {
         return token;
     }
@@ -162,6 +165,15 @@ public class JsonQueuedPerson implements Serializable {
 
     public JsonQueuedPerson setRecordReferenceId(String recordReferenceId) {
         this.recordReferenceId = recordReferenceId;
+        return this;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public JsonQueuedPerson setCreated(String created) {
+        this.created = created;
         return this;
     }
 }
