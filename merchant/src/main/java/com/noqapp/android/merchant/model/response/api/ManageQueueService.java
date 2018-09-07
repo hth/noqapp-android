@@ -93,6 +93,24 @@ public interface ManageQueueService {
             String codeQR
     );
 
+    @POST("api/m/mq/showClients/{codeQR}/historical.json")
+    Call<JsonQueuePersonList> showClientsHistorical(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR
+    );
+
     @POST("api/m/mq/dispenseToken/{codeQR}.json")
     Call<JsonToken> dispenseTokenWithoutClientInfo(
             @Header("X-R-DID")
