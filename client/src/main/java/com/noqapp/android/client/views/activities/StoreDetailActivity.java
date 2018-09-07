@@ -2,8 +2,8 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.StoreModel;
+import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.ChildData;
@@ -12,8 +12,8 @@ import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.utils.NetworkChangeReceiver;
 import com.noqapp.android.client.utils.NetworkUtils;
+import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.JsonHour;
@@ -24,25 +24,16 @@ import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 
 import com.squareup.picasso.Picasso;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.drawable.LayerDrawable;
-import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,9 +67,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private RelativeLayout rl_mid_content;
     private TextView tv_rating, tv_rating_review;
     private SegmentedControl sc_amenities, sc_delivery_types, sc_payment_mode;
-    private NetworkChangeReceiver myReceiver = new NetworkChangeReceiver();
-    private EventBus bus = EventBus.getDefault();
-    private Snackbar snackbar;
 
 
     @Override
@@ -86,18 +74,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_detail);
         FrameLayout fl_order = findViewById(R.id.fl_order);
-        snackbar = Snackbar
-                .make(fl_order, "No internet connection!", Snackbar.LENGTH_INDEFINITE);
-        View sbView = snackbar.getView();
-        TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(Color.RED);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(myReceiver,
-                    new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-        if (!bus.isRegistered(this)) {
-            bus.register(this);
-        }
         tv_address = findViewById(R.id.tv_address);
         tv_address_title = findViewById(R.id.tv_address_title);
         tv_store_name = findViewById(R.id.tv_store_name);
@@ -159,37 +135,11 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             Picasso.with(this).load(ImageUtils.getBannerPlaceholder()).into(collapseImageView);
         }
         progressDialog.setMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
-//        if (NetworkUtils.isConnectingToInternet(this)) {
-//            showSnackBar(true);
-//
-//            progressDialog.show();
-//            StoreModel.storePresenter = this;
-//            StoreModel.getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
-//        } else {
-//            showSnackBar(false);
-//            //ShowAlertInformation.showNetworkDialog(this);
-//        }
-    }
-
-    @Subscribe
-    public void onEvent(Boolean name) {
-        Log.e("name value: ", String.valueOf(name));
         if (NetworkUtils.isConnectingToInternet(this)) {
-            showSnackBar(true);
-            if (null == jsonStore) {
-                progressDialog.show();
-                new StoreModel(this).getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
-            }
+            progressDialog.show();
+            new StoreModel(this).getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
         } else {
-            showSnackBar(false);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            unregisterReceiver(myReceiver);
+            ShowAlertInformation.showNetworkDialog(this);
         }
     }
 
@@ -265,6 +215,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         for (int i = 0; i < temp.size(); i++) {
             payment_data.add(temp.get(i).getDescription());
         }
+        sc_payment_mode.removeAllSegments();
         sc_payment_mode.addSegments(payment_data);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;
@@ -299,6 +250,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         for (int j = 0; j < amenities.size(); j++) {
             amenitiesdata.add(amenities.get(j).getDescription());
         }
+        sc_amenities.removeAllSegments();
         sc_amenities.addSegments(amenitiesdata);
 
         List<DeliveryTypeEnum> deliveryTypes = jsonQueue.getDeliveryTypes();
@@ -306,6 +258,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         for (int j = 0; j < deliveryTypes.size(); j++) {
             deliveryTypesdata.add(deliveryTypes.get(j).getDescription());
         }
+        sc_delivery_types.removeAllSegments();
         sc_delivery_types.addSegments(deliveryTypesdata);
 
 
@@ -402,10 +355,4 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         return jsonHour.getStartHour() <= timeData && timeData <= jsonHour.getEndHour();
     }
 
-    private void showSnackBar(boolean isHide) {
-        if (isHide)
-            snackbar.dismiss();
-        else
-            snackbar.show();
-    }
 }

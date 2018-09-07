@@ -12,26 +12,25 @@ import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.network.VersionCheckAsync;
+import com.noqapp.android.client.presenter.AppBlacklistPresenter;
+import com.noqapp.android.client.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
-import com.noqapp.android.client.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.utils.NetworkStateChanged;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
-import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
-import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
@@ -42,9 +41,6 @@ import com.squareup.picasso.Picasso;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -136,7 +132,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Answers());
-        EventBus.getDefault().register(this);
         JodaTimeAndroid.init(this);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
@@ -391,19 +386,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
         if (null != fcmNotificationReceiver)
             fcmNotificationReceiver.unregister(this);
     }
 
-    @Subscribe
-    public void onEvent(NetworkStateChanged networkStateChanged) {
-        if (networkStateChanged.isInternetConnected()) {
-            //Toast.makeText(this,"network available",Toast.LENGTH_LONG).show();
-        } else {
-            //Toast.makeText(this,"no network available",Toast.LENGTH_LONG).show();
-        }
-    }
 
     @Override
     public void onBackPressed() {

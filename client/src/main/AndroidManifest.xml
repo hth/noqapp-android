@@ -197,23 +197,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="fc745aa326a54082165c333f7a03cee25b12f3ff" />
-
-
-        <receiver android:name="com.noqapp.android.client.utils.NetworkStateReceiver">
-            <intent-filter>
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-                <action android:name="android.net.wifi.STATE_CHANGE" />
-            </intent-filter>
-        </receiver>
-
-        <receiver
-                android:name="com.noqapp.android.client.utils.NetworkChangeReceiver"
-                android:label="NetworkChangeReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>
