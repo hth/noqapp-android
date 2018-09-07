@@ -395,19 +395,39 @@
                                 android:layout_height="match_parent"
                                 android:layout_alignParentLeft="true"
                                 android:layout_marginLeft="5dp"
-                                android:layout_toLeftOf="@+id/iv_generate_token"
+                                android:layout_toLeftOf="@+id/ll_btn"
                                 android:scrollbars="vertical"/>
 
-                        <ImageView
-                                android:id="@+id/iv_generate_token"
+                        <LinearLayout
+                                android:id="@+id/ll_btn"
                                 android:layout_width="60dp"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentRight="true"
-                                android:layout_margin="5dp"
-                                android:background="@color/colorMobile"
-                                android:scaleType="centerInside"
-                                android:src="@drawable/add_token"
-                                android:tint="@android:color/white"/>
+                                android:orientation="vertical"
+                                android:weightSum="1">
+
+                            <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight=".5"
+                                    android:id="@+id/iv_generate_token"
+                                    android:layout_margin="5dp"
+                                    android:background="@color/colorMobile"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/add_token"
+                                    android:tint="@android:color/white"/>
+
+                            <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight=".5"
+                                    android:id="@+id/iv_queue_history"
+                                    android:layout_margin="5dp"
+                                    android:background="@color/colorMobile"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/history"
+                                    android:tint="@android:color/white"/>
+                        </LinearLayout>
                         <!--<FrameLayout-->
                         <!--android:id="@+id/rcv_frame"-->
                         <!--android:layout_width="match_parent"-->

@@ -23,23 +23,15 @@ import java.util.List;
 
 public class NotificationActivity extends AppCompatActivity  {
 
-
-
-    private FrameLayout fl_notification;
-    private ListView listview;
-    private TextView tv_empty;
-    private TextView tv_toolbar_title;
-    private ImageView actionbarBack;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
-        listview = (ListView) findViewById(R.id.listview);
-        fl_notification =(FrameLayout) findViewById(R.id.fl_notification);
-        tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
-        tv_empty = (TextView) findViewById(R.id.tv_empty);
-        actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
+        ListView listview = findViewById(R.id.listview);
+        FrameLayout fl_notification = findViewById(R.id.fl_notification);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        TextView tv_empty = findViewById(R.id.tv_empty);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override

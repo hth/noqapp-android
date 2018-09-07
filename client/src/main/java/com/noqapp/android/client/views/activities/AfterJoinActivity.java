@@ -83,10 +83,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
     private String codeQR;
-    private String displayName;
-    private String storePhone;
-    private String queueName;
-    private String address;
     private String tokenValue;
     private String topic;
     private boolean isResumeFirst = true;
@@ -112,15 +108,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE);
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
             codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
-            displayName = jsonTokenAndQueue.getBusinessName();
-            storePhone = jsonTokenAndQueue.getStorePhone();
-            queueName = jsonTokenAndQueue.getDisplayName();
-            address = jsonTokenAndQueue.getStoreAddress();
             topic = jsonTokenAndQueue.getTopic();
             tokenValue = String.valueOf(jsonTokenAndQueue.getToken());
-            tv_store_name.setText(displayName);
-            tv_queue_name.setText(queueName);
-            tv_address.setText(address);
+            tv_store_name.setText(jsonTokenAndQueue.getBusinessName());
+            tv_queue_name.setText(jsonTokenAndQueue.getDisplayName());
+            tv_address.setText(jsonTokenAndQueue.getStoreAddress());
             profile_pos = bundle.getIntExtra("profile_pos", 1);
             actionbarBack.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -167,7 +159,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 time = time + " " + red;
             }
             tv_hour_saved.setText(Html.fromHtml(time));
-            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), storePhone));
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
             tv_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
