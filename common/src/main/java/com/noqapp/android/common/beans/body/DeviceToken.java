@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import android.os.Build;
+import android.util.Log;
+
 /**
  * User: hitender
  * Date: 4/2/17 6:37 PM
@@ -34,9 +37,9 @@ public class DeviceToken {
     @JsonProperty("os")
     private String osVersion;
 
-    public DeviceToken(String fcmToken, String model, String osVersion) {
+    public DeviceToken(String fcmToken) {
         this.fcmToken = fcmToken;
-        this.model = model;
-        this.osVersion = osVersion;
+        this.model = Build.MODEL;
+        this.osVersion = Build.VERSION.RELEASE;
     }
 }
