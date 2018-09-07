@@ -27,7 +27,7 @@ public class DayAxisValueFormatter implements IAxisValueFormatter {
 
         try {
             int index = (int) value;
-            return mMonths[(int) value-1]; // minus 1 because array start with 0
+            return mMonths[(int) value - 1]; // minus 1 because array start with 0
         } catch (Exception e) {
             return "";
         }
