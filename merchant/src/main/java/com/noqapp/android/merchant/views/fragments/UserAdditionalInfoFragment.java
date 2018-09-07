@@ -7,6 +7,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -33,11 +34,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 
 public class UserAdditionalInfoFragment extends Fragment implements MerchantProfessionalPresenter {
@@ -73,7 +72,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
     @BindView(R.id.btn_update)
     protected Button btn_update;
     private JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal;
-    private SimpleDateFormat dateFormatter;
+
     Calendar calendar = Calendar.getInstance();
     private ProgressDialog progressDialog;
 
@@ -81,7 +80,6 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_additional_info, container, false);
-        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         initProgress();
         ButterKnife.bind(this, view);
         if (null != jsonProfessionalProfilePersonal)
@@ -99,7 +97,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                     Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                     edt_practice_start.setText("");
                 } else {
-                    edt_practice_start.setText(dateFormatter.format(newDate.getTime()));
+                    edt_practice_start.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                 }
 
             }
@@ -123,7 +121,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                     Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                     tv_edu_date.setText("");
                 } else {
-                    tv_edu_date.setText(dateFormatter.format(newDate.getTime()));
+                    tv_edu_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                 }
 
             }
@@ -166,7 +164,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                     Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                     tv_award_date.setText("");
                 } else {
-                    tv_award_date.setText(dateFormatter.format(newDate.getTime()));
+                    tv_award_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                 }
 
             }
@@ -211,7 +209,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                     Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                     tv_license_date.setText("");
                 } else {
-                    tv_license_date.setText(dateFormatter.format(newDate.getTime()));
+                    tv_license_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                 }
 
             }
@@ -278,7 +276,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                         Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                         tv_date.setText("");
                     } else {
-                        tv_date.setText(dateFormatter.format(newDate.getTime()));
+                        tv_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                     }
 
                 }
@@ -352,7 +350,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                         Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                         tv_date.setText("");
                     } else {
-                        tv_date.setText(dateFormatter.format(newDate.getTime()));
+                        tv_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                     }
 
                 }
@@ -425,7 +423,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                         Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                         tv_date.setText("");
                     } else {
-                        tv_date.setText(dateFormatter.format(newDate.getTime()));
+                        tv_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                     }
 
                 }

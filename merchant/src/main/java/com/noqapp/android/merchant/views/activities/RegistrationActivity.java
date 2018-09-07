@@ -7,6 +7,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.RegisterModel;
 import com.noqapp.android.merchant.presenter.beans.body.Registration;
@@ -42,10 +43,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class RegistrationActivity extends AppCompatActivity implements ProfilePresenter, View.OnClickListener {
@@ -99,7 +98,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     protected Button btnRegistration;
 
     private DatePickerDialog fromDatePickerDialog;
-    private SimpleDateFormat dateFormatter;
+
     private ProgressDialog progressDialog;
 
     @Override
@@ -115,7 +114,6 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
             }
         });
         tv_toolbar_title.setText("Register");
-        dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         edt_birthday.setInputType(InputType.TYPE_NULL);
         edt_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
@@ -134,7 +132,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
                     Toast.makeText(RegistrationActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                     edt_birthday.setText("");
                 } else {
-                    edt_birthday.setText(dateFormatter.format(newDate.getTime()));
+                    edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                 }
 
             }
@@ -259,14 +257,6 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
         }
     }
 
-    private boolean isValidEmail(CharSequence target) {
-        if (TextUtils.isEmpty(target)) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-        }
-    }
-
     private boolean validate() {
         btnRegistration.setBackgroundResource(R.drawable.button_drawable);
         btnRegistration.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
@@ -288,7 +278,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
         }
         if (!TextUtils.isEmpty(edt_Mail.getText())) {
 
-            if (!isValidEmail(edt_Mail.getText())) {
+            if (!new CommonHelper().isValidEmail(edt_Mail.getText())) {
                 edt_Mail.setError(getString(R.string.error_invalid_email));
                 isValid = false;
             }

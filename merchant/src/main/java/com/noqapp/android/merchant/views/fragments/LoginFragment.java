@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.LoginModel;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
@@ -21,7 +22,6 @@ import com.crashlytics.android.answers.LoginEvent;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,7 +31,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -55,7 +54,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     private LoginModel loginModel;
     private MerchantProfileModel merchantProfileModel;
 
-
     public LoginFragment() {
         super();
     }
@@ -78,7 +76,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
             @Override
             public void onClick(View v) {
-                hideKeyBoard();
+                new AppUtils().hideKeyBoard(getActivity());
                 if (isValidInput()) {
                     btn_login.setBackgroundResource(R.drawable.button_drawable_red);
                     btn_login.setTextColor(Color.WHITE);
@@ -110,9 +108,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         super.onActivityCreated(savedInstanceState);
     }
 
-    private boolean isValidEmail(CharSequence target) {
-        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-    }
 
     @Override
     public void loginResponse(String email, String auth) {
@@ -126,7 +121,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>
                         (getActivity(), android.R.layout.select_dialog_item, userList);
                 //Getting the instance of AutoCompleteTextView
-
                 actv_email.setThreshold(1);//will start working from first character
                 actv_email.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
             }
@@ -215,14 +209,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         }
     }
 
-    private void hideKeyBoard() {
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
     private boolean isValidInput() {
         boolean isValid = true;
         email = actv_email.getText().toString().trim();
@@ -235,7 +221,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             actv_email.setError(getString(R.string.error_email_blank));
             isValid = false;
         }
-        if (!TextUtils.isEmpty(email) && !isValidEmail(email)) {
+        if (!TextUtils.isEmpty(email) && !new CommonHelper().isValidEmail(email)) {
             actv_email.setError(getString(R.string.error_email_invalid));
             isValid = false;
         }

@@ -19,6 +19,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.ImagePathReader;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
@@ -55,12 +56,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 
@@ -89,7 +86,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     @BindView(R.id.ll_gender)
     protected LinearLayout ll_gender;
     private DatePickerDialog fromDatePickerDialog;
-    private SimpleDateFormat dateFormatter;
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
     private ProfileModel profileModel;
@@ -109,7 +105,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
         dependentProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.DEPENDENT_PROFILE);
         // gaurdianProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.KEY_USER_PROFILE);
-        dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         updateUI();
         edt_birthday.setInputType(InputType.TYPE_NULL);
         edt_birthday.setOnClickListener(this);
@@ -129,7 +124,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     Toast.makeText(UserProfileEditActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                     edt_birthday.setText("");
                 } else {
-                    edt_birthday.setText(dateFormatter.format(newDate.getTime()));
+                    edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                 }
 
             }
@@ -225,15 +220,11 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                        RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
+                        RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), NoQueueBaseActivity.getUserProfile().getQueueUserId());
                         profileModel.setImageUploadPresenter(this);
                         profileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
-                } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -267,7 +258,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                         updateProfile.setQueueUserId(dependentProfile.getQueueUserId());
                         profileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
-                    }else {
+                    } else {
                         Registration registration = new Registration();
                         registration.setPhone(PhoneFormatterUtil.phoneNumberWithCountryCode(NoQueueBaseActivity.getPhoneNo(), NoQueueBaseActivity.getCountryShortName()));
                         registration.setFirstName(name);
@@ -281,7 +272,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         DependencyModel dependencyModel = new DependencyModel(this);
                         dependencyModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
                     }
-                }else {
+                } else {
                     UpdateProfile updateProfile = new UpdateProfile();
                     updateProfile.setAddress(address);
                     updateProfile.setFirstName(name);
@@ -337,26 +328,23 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this,errorCode);
+        AppUtilities.authenticationProcessing(this, errorCode);
     }
 
     private void updateUI() {
         if (isDependent) {
-
             onClick(tv_male);// set default
             if (null != dependentProfile) {
                 edt_Name.setText(dependentProfile.getName());
                 tv_name.setText(dependentProfile.getName());
                 edt_address.setText(dependentProfile.getAddress());
-//                if (dependentProfile.getGender().name().equals("M")) {
-//                    onClick(tv_male);
-//                } else {
-//                    onClick(tv_female);
-//                }
+                if (dependentProfile.getGender().name().equals("M")) {
+                    onClick(tv_male);
+                } else {
+                    onClick(tv_female);
+                }
                 try {
-                    SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd");
-                    String reformattedStr = dateFormatter.format(fromUser.parse(dependentProfile.getBirthday()));
-                    edt_birthday.setText(reformattedStr);
+                    edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(dependentProfile.getBirthday())));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -374,15 +362,11 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 onClick(tv_female);
             }
             try {
-                SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd");
-                String reformattedStr = dateFormatter.format(fromUser.parse(NoQueueBaseActivity.getUserDOB()));
-                edt_birthday.setText(reformattedStr);
+                edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB())));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-
         edt_phoneNo.setText(NoQueueBaseActivity.getPhoneNo());
         edt_Mail.setText(NoQueueBaseActivity.getActualMail());
         edt_phoneNo.setEnabled(false);
@@ -409,7 +393,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             edt_Name.setError(getString(R.string.error_name_length));
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Mail.getText()) && !isValidEmail(edt_Mail.getText())) {
+        if (!TextUtils.isEmpty(edt_Mail.getText()) && !new CommonHelper().isValidEmail(edt_Mail.getText())) {
             edt_Mail.setError(getString(R.string.error_invalid_email));
             isValid = false;
         }

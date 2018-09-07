@@ -36,7 +36,7 @@ public class PatientProfileModel {
         medicalUserProfileService.fetch(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     patientProfilePresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -46,6 +46,7 @@ public class PatientProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed to fetch patient profile");
+                    patientProfilePresenter.patientProfileError();
                 }
             }
 

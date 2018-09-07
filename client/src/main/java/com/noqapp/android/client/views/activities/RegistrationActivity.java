@@ -14,6 +14,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import android.app.DatePickerDialog;
 import android.graphics.Color;
@@ -40,10 +41,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class RegistrationActivity extends BaseActivity implements ProfilePresenter, View.OnClickListener {
@@ -91,7 +90,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     protected Button btnRegistration;
 
     private DatePickerDialog fromDatePickerDialog;
-    private SimpleDateFormat dateFormatter;
+
     public String gender = "";
 
     @Override
@@ -106,7 +105,6 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             }
         });
         tv_toolbar_title.setText(getString(R.string.register));
-        dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         edt_birthday.setInputType(InputType.TYPE_NULL);
         edt_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
@@ -125,7 +123,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
                     Toast.makeText(RegistrationActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                     edt_birthday.setText("");
                 } else {
-                    edt_birthday.setText(dateFormatter.format(newDate.getTime()));
+                    edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                 }
 
             }

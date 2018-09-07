@@ -46,7 +46,7 @@ public class PurchaseOrderModel {
         purchaseOrderService.fetch(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonPurchaseOrderList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     purchaseOrderPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -73,7 +73,7 @@ public class PurchaseOrderModel {
         purchaseOrderService.actionOnOrder(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonPurchaseOrderList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     orderProcessedPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -100,7 +100,7 @@ public class PurchaseOrderModel {
         purchaseOrderService.acquire(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     acquireOrderPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -127,7 +127,7 @@ public class PurchaseOrderModel {
         purchaseOrderService.served(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     acquireOrderPresenter.authenticationFailure(response.code());
                     return;
                 }

@@ -25,7 +25,7 @@ public class DeviceModel {
     private final String TAG = DeviceModel.class.getSimpleName();
 
     private static final DeviceService deviceService;
-    public AppBlacklistPresenter appBlacklistPresenter;
+    private AppBlacklistPresenter appBlacklistPresenter;
 
     public DeviceModel(AppBlacklistPresenter appBlacklistPresenter) {
         this.appBlacklistPresenter = appBlacklistPresenter;

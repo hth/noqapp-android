@@ -31,10 +31,10 @@ public class ManageQueueModel {
     private static final String TAG = ManageQueueModel.class.getSimpleName();
 
     private static final ManageQueueService manageQueueService;
-    public ManageQueuePresenter manageQueuePresenter;
-    public DispenseTokenPresenter dispenseTokenPresenter;
-    public TopicPresenter topicPresenter;
-    public QueuePersonListPresenter queuePersonListPresenter;
+    private ManageQueuePresenter manageQueuePresenter;
+    private DispenseTokenPresenter dispenseTokenPresenter;
+    private TopicPresenter topicPresenter;
+    private QueuePersonListPresenter queuePersonListPresenter;
 
 
     public void setManageQueuePresenter(ManageQueuePresenter manageQueuePresenter) {
@@ -66,7 +66,7 @@ public class ManageQueueModel {
         manageQueueService.getQueues(did, Constants.DEVICE_TYPE, Constants.appVersion(), mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     topicPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -77,6 +77,7 @@ public class ManageQueueModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while getting all queues assigned");
+                    topicPresenter.topicPresenterError();
                 }
             }
 
@@ -97,7 +98,7 @@ public class ManageQueueModel {
         manageQueueService.served(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     manageQueuePresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -109,6 +110,7 @@ public class ManageQueueModel {
                     } else {
                         //TODO something logical
                         Log.e(TAG, "Failed to get response");
+                        manageQueuePresenter.manageQueueError(null);
                     }
                 } else if (response.body() != null && response.body().getError() != null) {
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
@@ -134,7 +136,7 @@ public class ManageQueueModel {
         manageQueueService.acquire(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     manageQueuePresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -146,6 +148,7 @@ public class ManageQueueModel {
                     } else {
                         //TODO something logical
                         Log.e(TAG, "Failed to get response");
+                        manageQueuePresenter.manageQueueError(null);
                     }
                 } else if (response.body() != null && response.body().getError() != null) {
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
@@ -166,7 +169,7 @@ public class ManageQueueModel {
         manageQueueService.showClients(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     queuePersonListPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -195,7 +198,7 @@ public class ManageQueueModel {
         manageQueueService.dispenseTokenWithoutClientInfo(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     dispenseTokenPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -225,7 +228,7 @@ public class ManageQueueModel {
         manageQueueService.dispenseTokenWithClientInfo(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomerLookup).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     dispenseTokenPresenter.authenticationFailure(response.code());
                     return;
                 }
@@ -255,7 +258,7 @@ public class ManageQueueModel {
         manageQueueService.changeUserInQueue(did, Constants.DEVICE_TYPE, mail, auth, changeUserInQueue).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == 401) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
                     queuePersonListPresenter.authenticationFailure(response.code());
                     return;
                 }

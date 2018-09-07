@@ -39,7 +39,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
@@ -205,8 +204,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
 
     private void hideAndReset() {
         auto_complete_search.setText("");
-        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(auto_complete_search.getWindowToken(), 0);
+        new AppUtils().hideKeyBoard(getActivity());
     }
 
     @Override
@@ -295,9 +293,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
         updateSnackbarTxt();
         snackbar.show();
-
-
-        if (new AppUtils().isTablet(getActivity())) {
+        if (new AppUtils().isTablet(getActivity()) && topics.size()>0) {
             merchantDetailFragment = new MerchantDetailFragment();
             Bundle b = new Bundle();
             b.putSerializable("jsonMerchant", topics);
