@@ -57,7 +57,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_timings,tv_header_menu,tv_header_famous;
+    private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_timings, tv_header_menu, tv_header_famous;
     private BizStoreElastic bizStoreElastic;
     private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView rv_thumb_images, rv_photos;
@@ -205,10 +205,10 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
             }
         });
-        tv_store_address.setText(AppUtilities.getStoreAddress(jsonQueue.getTown(),jsonQueue.getArea()));
+        tv_store_address.setText(AppUtilities.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
         tv_store_name.setText(jsonQueue.getDisplayName());
         tv_known_for.setText(jsonQueue.getFamousFor());
-        if(TextUtils.isEmpty(jsonQueue.getFamousFor()))
+        if (TextUtils.isEmpty(jsonQueue.getFamousFor()))
             tv_header_famous.setVisibility(View.GONE);
         List<PaymentTypeEnum> temp = jsonQueue.getPaymentTypes();
         ArrayList<String> payment_data = new ArrayList<>();
@@ -265,14 +265,14 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         //
         ArrayList<String> storeServiceImages = new ArrayList<>(jsonQueue.getStoreServiceImages());
         for (int i = 0; i < storeServiceImages.size(); i++) {
-            storeServiceImages.set(i,jsonQueue.getCodeQR()+"/"+storeServiceImages.get(i));
+            storeServiceImages.set(i, jsonQueue.getCodeQR() + "/" + storeServiceImages.get(i));
         }
         ThumbnailGalleryAdapter serviceAdapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
         rv_thumb_images.setAdapter(serviceAdapter);
         //
         ArrayList<String> storeInteriorImages = new ArrayList<>(jsonQueue.getStoreInteriorImages());
         for (int i = 0; i < storeInteriorImages.size(); i++) {
-            storeInteriorImages.set(i,jsonQueue.getCodeQR()+"/"+storeInteriorImages.get(i));
+            storeInteriorImages.set(i, jsonQueue.getCodeQR() + "/" + storeInteriorImages.get(i));
         }
         ThumbnailGalleryAdapter interiorAdapter = new ThumbnailGalleryAdapter(this, storeInteriorImages);
         rv_photos.setAdapter(interiorAdapter);
@@ -316,7 +316,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                     startActivity(in);
                 } else {
                     //Do nothing
-                    Toast.makeText(StoreDetailActivity.this,"Please visit store to purchase.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(StoreDetailActivity.this, "Please visit store to purchase.", Toast.LENGTH_LONG).show();
                 }
             }
         });

@@ -220,7 +220,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         edt_phoneNo.setEnabled(false);
         edt_email.setEnabled(false);
         edt_address.setText(jsonProfile.getAddress());
-        if (jsonProfile.getGender().equals("M")) {
+        if (jsonProfile.getGender().name().equals("M")) {
             onClick(tv_male);
         } else {
             onClick(tv_female);
