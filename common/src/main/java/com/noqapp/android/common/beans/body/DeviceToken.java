@@ -28,7 +28,15 @@ public class DeviceToken {
     @JsonProperty("tk")
     private String fcmToken;
 
-    public DeviceToken(String fcmToken) {
+    @JsonProperty("mo")
+    private String model;
+
+    @JsonProperty("os")
+    private String osVersion;
+
+    public DeviceToken(String fcmToken, String model, String osVersion) {
         this.fcmToken = fcmToken;
+        this.model = model;
+        this.osVersion = osVersion;
     }
 }
