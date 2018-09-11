@@ -160,7 +160,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             toggleDayClosed.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this,"Permission denied","You haven't enough permission to change this settings");
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this,"Permission denied","You don't have permission to change this settings");
                     return false;
                 }
             });
@@ -173,7 +173,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
                     callUpdate();
                 }else{
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this,"Permission denied","You haven't enough permission to change this settings");
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this,"Permission denied","You don't have permission to change this settings");
                 }
             }
         });

@@ -74,7 +74,7 @@ public class Formatter {
 
     public static String getTime(String inputDate) {
         try {
-            DateFormat outputFormat = new SimpleDateFormat("HH:mm a", Locale.getDefault());
+            DateFormat outputFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
             return outputFormat.format(formatRFC822.parse(inputDate));
         } catch (Exception e) {
             e.printStackTrace();
