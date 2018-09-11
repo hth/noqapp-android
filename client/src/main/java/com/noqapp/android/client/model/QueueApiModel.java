@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.api.QueueService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -120,7 +121,7 @@ public class QueueApiModel {
     }
 
     public void allHistoricalJoinedQueues(String did, String mail, String auth, DeviceToken deviceToken) {
-        queueService.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
+        queueService.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {

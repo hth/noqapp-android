@@ -29,8 +29,10 @@ import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
@@ -74,6 +76,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     protected TextView tv_estimated_time;
     @BindView(R.id.tv_add)
     protected TextView tv_add;
+    @BindView(R.id.tv_vibrator_off)
+    protected TextView tv_vibrator_off;
     @BindView(R.id.ll_change_bg)
     protected LinearLayout ll_change_bg;
     @BindView(R.id.sp_name_list)
@@ -179,6 +183,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
                 setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
                 tv_add.setText(AppUtilities.getNameFromQueueUserID(jsonTokenAndQueue.getQueueUserId(), profileList));
+                tv_vibrator_off.setVisibility(isVibratorOff()?View.VISIBLE:View.GONE);
+                if(isVibratorOff())
+                    ShowAlertInformation.showThemeDialog(this,"Vibrator off",getString(R.string.msg_vibrator_off));
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     if (isResumeFirst) {
@@ -208,6 +215,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         updateEstimatedTime();
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
+        tv_vibrator_off.setVisibility(isVibratorOff()?View.VISIBLE:View.GONE);
+        if(isVibratorOff())
+            ShowAlertInformation.showThemeDialog(this,"Vibrator off",getString(R.string.msg_vibrator_off));
         dismissProgress();
     }
 
@@ -433,4 +443,26 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             }
         }
     }
+
+    private boolean isVibratorOff() {
+        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        if(null != am) {
+            switch (am.getRingerMode()) {
+                case AudioManager.RINGER_MODE_SILENT:
+                    Log.e(TAG, "Silent mode");
+                    return true;
+                case AudioManager.RINGER_MODE_VIBRATE:
+                    Log.e(TAG, "Vibrate mode");
+                    return false;
+                case AudioManager.RINGER_MODE_NORMAL:
+                    Log.e(TAG, "Normal mode");
+                    return false;
+                default:
+                    return true;
+            }
+        }else{
+            return true;
+        }
+    }
+
 }

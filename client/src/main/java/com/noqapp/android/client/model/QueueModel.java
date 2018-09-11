@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.open.QueueService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -187,7 +188,7 @@ public final class QueueModel {
      * @param did
      */
     public void getHistoryQueueList(String did, DeviceToken deviceToken) {
-        queueService.getAllHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
+        queueService.getAllHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
                 if (response.body() != null && response.body().getError() == null) {

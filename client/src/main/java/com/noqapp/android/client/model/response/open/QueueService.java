@@ -100,6 +100,9 @@ public interface QueueService {
             @Header("X-R-DT")
             String dt,
 
+            @Header ("X-R-AF")
+            String appFlavor,
+
             @Body
             DeviceToken deviceToken
     );
