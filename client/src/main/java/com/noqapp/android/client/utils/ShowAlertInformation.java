@@ -100,6 +100,7 @@ public class ShowAlertInformation {
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
+        mAlertDialog.setCancelable(false);
         Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
         btn_yes.setText(context.getString(R.string.btn_playstore));
         Button btn_no = customDialogView.findViewById(R.id.btn_no);
@@ -107,6 +108,7 @@ public class ShowAlertInformation {
             btn_no.setVisibility(View.VISIBLE);
             separator.setVisibility(View.VISIBLE);
             mAlertDialog.setCanceledOnTouchOutside(true);
+            mAlertDialog.setCancelable(true);
         }
         btn_no.setOnClickListener(new View.OnClickListener() {
             @Override
