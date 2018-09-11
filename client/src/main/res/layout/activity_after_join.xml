@@ -7,194 +7,245 @@
 
     <include layout="@layout/toolbar_layout"/>
 
-    <ScrollView
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_above="@+id/tv_vibrator_off"
+                android:fillViewport="true">
 
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@android:color/white"
                     android:orientation="vertical"
-                    android:weightSum="1">
+                    android:padding="10dp">
+
 
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
                         android:weightSum="1">
 
                     <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight=".33"
-                            android:orientation="vertical">
-
-                        <TextView
-                                android:id="@+id/tv_serving_no"
-                                style="@style/style_join_queue_tv"
-                                android:gravity="center"
-                                android:text=""
-                                android:textColor="@android:color/black"
-                                android:textSize="18sp"/>
-
-                        <TextView
-                                style="@style/style_join_queue_tv"
-                                android:gravity="center"
-                                android:text="@string/serving_now"
-                                android:textColor="@color/colorAddress"
-                                android:textSize="@dimen/text_size_fourteen"/>
-
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".33"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                        <TextView
-                                android:id="@+id/tv_token"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:background="@drawable/round_corner_business"
-                                android:gravity="center"
-                                android:text=""
-                                android:textColor="@android:color/black"
-                                android:textSize="22sp"/>
-
-                        <TextView
-                                style="@style/style_join_queue_tv"
-                                android:layout_marginTop="5dp"
-                                android:gravity="center"
-                                android:text="@string/your_token"
-                                android:textSize="@dimen/text_size_fourteen"/>
-
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight=".33"
-                            android:orientation="vertical">
-
-                        <TextView
-                                android:id="@+id/tv_estimated_time"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text=""
-                                android:textColor="@android:color/black"
-                                android:textSize="18sp"/>
-
-                        <TextView
-                                style="@style/style_join_queue_tv"
-                                android:text="@string/will_be_served"
-                                android:textColor="@color/colorAddress"
-                                android:textSize="@dimen/text_size_fourteen"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-
-                <LinearLayout
-                        android:id="@+id/ll_change_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/square_bg_drawable"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:orientation="vertical"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
-
-                    <TextView
-                            android:id="@+id/tv_after"
-                            style="@style/style_join_queue_tv"
-                            android:gravity="center"
-                            android:text="@string/you_are_after"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"/>
-
-                    <TextView
-                            android:id="@+id/tv_how_long"
-                            style="@style/style_join_queue_tv"
-                            android:gravity="center"
-                            android:textColor="@android:color/black"
-                            android:textSize="28sp"/>
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@color/color_invite_details"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:paddingBottom="20dp"
-                        android:paddingTop="20dp">
-
-                    <LinearLayout
-                            android:id="@+id/ll_patient_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="horizontal"
+                            android:weightSum="1">
 
                         <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:weightSum="1">
+                                android:layout_gravity="center"
+                                android:layout_weight=".33"
+                                android:orientation="vertical">
 
                             <TextView
-                                    android:id="@+id/add_person"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".40"
-                                    android:text="@string/patient_name"
-                                    android:textColor="@color/colorAddress"
-                                    android:padding="10dp"
-                                    android:textSize="@dimen/text_size_sixteen"/>
-
-                            <Spinner
-                                    android:id="@+id/sp_name_list"
-                                    android:layout_width="0dp"
-                                    android:layout_height="10dp"
-                                    android:layout_weight=".10"
-                                    android:clickable="false"
-                                    android:visibility="invisible"/>
-
-                            <TextView
-                                    android:id="@+id/tv_add"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".50"
-                                    android:text="@string/add_dependent"
+                                    android:id="@+id/tv_serving_no"
+                                    style="@style/style_join_queue_tv"
+                                    android:gravity="center"
+                                    android:text=""
                                     android:textColor="@android:color/black"
-                                    android:textSize="@dimen/text_size_sixteen"/>
+                                    android:textSize="18sp"/>
+
+                            <TextView
+                                    style="@style/style_join_queue_tv"
+                                    android:gravity="center"
+                                    android:text="@string/serving_now"
+                                    android:textColor="@color/colorAddress"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
 
                         </LinearLayout>
+
+
+                        <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".33"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                            <TextView
+                                    android:id="@+id/tv_token"
+                                    android:layout_width="100dp"
+                                    android:layout_height="100dp"
+                                    android:background="@drawable/round_corner_business"
+                                    android:gravity="center"
+                                    android:text=""
+                                    android:textColor="@android:color/black"
+                                    android:textSize="22sp"/>
+
+                            <TextView
+                                    style="@style/style_join_queue_tv"
+                                    android:layout_marginTop="5dp"
+                                    android:gravity="center"
+                                    android:text="@string/your_token"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight=".33"
+                                android:orientation="vertical">
+
+                            <TextView
+                                    android:id="@+id/tv_estimated_time"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text=""
+                                    android:textColor="@android:color/black"
+                                    android:textSize="18sp"/>
+
+                            <TextView
+                                    style="@style/style_join_queue_tv"
+                                    android:text="@string/will_be_served"
+                                    android:textColor="@color/colorAddress"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                            android:id="@+id/ll_change_bg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/square_bg_drawable"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:orientation="vertical"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp">
+
+                        <TextView
+                                android:id="@+id/tv_after"
+                                style="@style/style_join_queue_tv"
+                                android:gravity="center"
+                                android:text="@string/you_are_after"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_fourteen"/>
+
+                        <TextView
+                                android:id="@+id/tv_how_long"
+                                style="@style/style_join_queue_tv"
+                                android:gravity="center"
+                                android:textColor="@android:color/black"
+                                android:textSize="28sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:background="@color/color_invite_details"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingBottom="20dp"
+                            android:paddingTop="20dp">
+
+                        <LinearLayout
+                                android:id="@+id/ll_patient_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                            <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"
+                                    android:weightSum="1">
+
+                                <TextView
+                                        android:id="@+id/add_person"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".40"
+                                        android:text="@string/patient_name"
+                                        android:textColor="@color/colorAddress"
+                                        android:padding="10dp"
+                                        android:textSize="@dimen/text_size_sixteen"/>
+
+                                <Spinner
+                                        android:id="@+id/sp_name_list"
+                                        android:layout_width="0dp"
+                                        android:layout_height="10dp"
+                                        android:layout_weight=".10"
+                                        android:clickable="false"
+                                        android:visibility="invisible"/>
+
+                                <TextView
+                                        android:id="@+id/tv_add"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".50"
+                                        android:text="@string/add_dependent"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/text_size_sixteen"/>
+
+                            </LinearLayout>
+
+                            <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="2dp"
+                                    android:layout_marginBottom="20dp"
+                                    android:layout_marginTop="20dp"
+                                    android:background="@android:color/white"/>
+                        </LinearLayout>
+
+                        <TextView
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginBottom="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:text="@string/queue_details"
+                                android:textColor="@color/colorAddress"
+                                android:textSize="@dimen/text_size_sixteen"/>
+
+                        <TextView
+                                android:id="@+id/tv_queue_name"
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"/>
+
+                        <TextView
+                                android:id="@+id/tv_hour_saved"
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@color/colorAddress"
+                                android:textSize="@dimen/text_size_fourteen"/>
+
+                        <TextView
+                                android:id="@+id/tv_mobile"
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@color/colorMobile"
+                                android:textSize="@dimen/text_size_fourteen"
+                                android:visibility="gone"/>
 
                         <View
                                 android:layout_width="match_parent"
@@ -202,94 +253,68 @@
                                 android:layout_marginBottom="20dp"
                                 android:layout_marginTop="20dp"
                                 android:background="@android:color/white"/>
+
+                        <TextView
+                                android:id="@+id/tv_store_name"
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@color/colorAddress"
+                                android:textSize="@dimen/text_size_sixteen"/>
+
+                        <TextView
+                                android:id="@+id/tv_address"
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginBottom="5dp"
+                                android:ellipsize="end"
+                                android:maxLines="2"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@color/colorAddress"
+                                android:textSize="@dimen/text_size_fourteen"/>
+
+
                     </LinearLayout>
 
-                    <TextView
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="10dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:text="@string/queue_details"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="@dimen/text_size_sixteen"/>
-
-                    <TextView
-                            android:id="@+id/tv_queue_name"
-                            style="@style/style_join_queue_tv"
+                    <Button
+                            android:id="@+id/btn_cancel_queue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:layout_marginBottom="5dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_sixteen"/>
-
-                    <TextView
-                            android:id="@+id/tv_hour_saved"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="5dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="@dimen/text_size_fourteen"/>
-
-                    <TextView
-                            android:id="@+id/tv_mobile"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="5dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
+                            android:layout_marginTop="25dp"
+                            android:background="@drawable/button_drawable"
+                            android:drawableLeft="@mipmap/cancel_button"
+                            android:drawablePadding="5dp"
+                            android:gravity="left|center_vertical"
+                            android:paddingLeft="50dp"
+                            android:paddingRight="50dp"
+                            android:text="@string/cancel"
+                            android:textAllCaps="false"
                             android:textColor="@color/colorMobile"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:visibility="gone"/>
-
-                    <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="20dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@android:color/white"/>
-
-                    <TextView
-                            android:id="@+id/tv_store_name"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="5dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="@dimen/text_size_sixteen"/>
-
-                    <TextView
-                            android:id="@+id/tv_address"
-                            style="@style/style_join_queue_tv"
-                            android:layout_marginBottom="5dp"
-                            android:ellipsize="end"
-                            android:maxLines="2"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textColor="@color/colorAddress"
                             android:textSize="@dimen/text_size_fourteen"/>
-
 
                 </LinearLayout>
-
-                <Button
-                        android:id="@+id/btn_cancel_queue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="25dp"
-                        android:background="@drawable/button_drawable"
-                        android:drawableLeft="@mipmap/cancel_button"
-                        android:drawablePadding="5dp"
-                        android:gravity="left|center_vertical"
-                        android:paddingLeft="50dp"
-                        android:paddingRight="50dp"
-                        android:text="@string/cancel"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorMobile"
-                        android:textSize="@dimen/text_size_fourteen"/>
-
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+
+
+        </ScrollView>
+
+        <TextView
+                android:id="@+id/tv_vibrator_off"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/msg_vibrator_off"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_sixteen"
+                android:layout_alignParentBottom="true"
+                android:background="#BF000000"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:padding="5dp"/>
+
+    </RelativeLayout>
 </LinearLayout>
