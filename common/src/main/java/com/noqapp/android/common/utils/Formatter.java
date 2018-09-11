@@ -3,7 +3,7 @@ package com.noqapp.android.common.utils;
 import android.util.Log;
 
 
-
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -70,6 +70,16 @@ public class Formatter {
         }
 
         return "";
+    }
+
+    public static String getTime(String inputDate) {
+        try {
+            DateFormat outputFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+            return outputFormat.format(formatRFC822.parse(inputDate));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     public static LocalTime parseLocalTime(String rawTimestamp) {
