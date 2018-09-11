@@ -192,7 +192,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         nav_Menu.findItem(R.id.nav_transaction).setVisible(false);
         nav_Menu.findItem(R.id.nav_app_setting).setVisible(false);
         nav_Menu.findItem(R.id.nav_logout).setVisible(UserUtils.isLogin());
-        nav_Menu.findItem(R.id.nav_version).setTitle(BuildConfig.BUILD_TYPE.equalsIgnoreCase("release") ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+        nav_Menu.findItem(R.id.nav_version).setTitle(BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
+                ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                 : getString(R.string.version_no, "Not for release"));
         navigationView.setNavigationItemSelectedListener(this);
         LinearLayout mParent = (LinearLayout) navigationView.getHeaderView(0);

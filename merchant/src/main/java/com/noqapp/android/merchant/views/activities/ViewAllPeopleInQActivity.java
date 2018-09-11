@@ -27,13 +27,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 public class ViewAllPeopleInQActivity extends AppCompatActivity implements QueuePersonListPresenter {
-    private List<String> expandableListTitle = new ArrayList<>();
-    private HashMap<String, List<JsonQueuePersonList>> expandableListDetail = new HashMap<>();
+
+    private Map<Date, List<JsonQueuePersonList>> expandableListDetail = new HashMap<>();
     private ProgressDialog progressDialog;
     private ExpandableListView listview;
     private TextView tv_empty;
@@ -84,10 +87,7 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
             Log.e("data", jsonQueuePersonList.toString());
             Log.e("data size", "" + jsonQueuePersonList.getQueuedPeople().size());
             createData(jsonQueuePersonList.getQueuedPeople());
-            // List<JsonQueuePersonList>temp = new ArrayList<>();
-            // temp.add(jsonQueuePersonList);
-            // expandableListDetail.put("Welcome User", temp);
-            expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+            List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
             ViewAllExpandableListAdapter adapter = new ViewAllExpandableListAdapter(ViewAllPeopleInQActivity.this, expandableListTitle, expandableListDetail);
             listview.setAdapter(adapter);
             if (expandableListTitle.size() <= 0) {
@@ -117,19 +117,22 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
 
     private void createData(List<JsonQueuedPerson> temp) {
         if (null != temp && temp.size() > 0) {
+            HashMap<Date, List<JsonQueuePersonList>> tempList = new HashMap<>();
             for (int i = 0; i < temp.size(); i++) {
                 try {
-                    String key = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreated()));
-                    if (null == expandableListDetail.get(key)) {
-                        expandableListDetail.put(key, new ArrayList<JsonQueuePersonList>());
+                    Date key = new Date(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreated()).getTime());
+                            //CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreated()));
+                    if (null == tempList.get(key)) {
+                        tempList.put(key, new ArrayList<JsonQueuePersonList>());
 
-                        expandableListDetail.get(key).add(new JsonQueuePersonList());
+                        tempList.get(key).add(new JsonQueuePersonList());
                     }
-                    expandableListDetail.get(key).get(0).getQueuedPeople().add(temp.get(i));
+                    tempList.get(key).get(0).getQueuedPeople().add(temp.get(i));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+            expandableListDetail = new TreeMap(tempList).descendingMap();
         }
     }
 }

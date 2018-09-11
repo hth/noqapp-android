@@ -41,7 +41,7 @@ public interface DeviceService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPGRADE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
      */
-    @POST("open/device/v1/version.json")
+    @POST("open/device/version.json")
     Call<JsonLatestAppVersion> isSupportedAppVersion(
             @Header("X-R-DID")
             String did,

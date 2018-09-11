@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 
@@ -15,8 +16,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chandra on 3/28/18.
@@ -25,12 +28,12 @@ import java.util.List;
 public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> listDataHeader; // header titles
+    private List<Date> listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<JsonQueuePersonList>> listDataChild;
+    private Map<Date, List<JsonQueuePersonList>> listDataChild;
 
-    public ViewAllExpandableListAdapter(Context context, List<String> listDataHeader,
-                                        HashMap<String, List<JsonQueuePersonList>> listChildData) {
+    public ViewAllExpandableListAdapter(Context context, List<Date> listDataHeader,
+                                        Map<Date, List<JsonQueuePersonList>> listChildData) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
@@ -98,14 +101,16 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+        Date headerTitle = (Date) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_header, null);
         }
         TextView tv_date = convertView.findViewById(R.id.tv_date);
-        tv_date.setText(headerTitle);
+        TextView tv_count = convertView.findViewById(R.id.tv_count);
+        tv_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(headerTitle));
+        tv_count.setText(String.valueOf(listDataChild.get(listDataHeader.get(groupPosition)).get(0).getQueuedPeople().size()));
         ImageView ivGroupIndicator = convertView.findViewById(R.id.ivGroupIndicator);
         ivGroupIndicator.setSelected(isExpanded);
         return convertView;
