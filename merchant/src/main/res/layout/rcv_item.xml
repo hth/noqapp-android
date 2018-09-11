@@ -21,24 +21,30 @@
                 android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/tv_name"
+                    android:id="@+id/tv_customer_name"
                     android:layout_width="match_parent"
-                    android:textStyle="bold"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text=""
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_fourteen"/>
 
             <TextView
-                    android:id="@+id/tv_customer_id"
-                    android:layout_width="match_parent"
-                    android:padding="5dp"
+                    android:id="@+id/tv_customer_mobile"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"
                     android:textSize="@dimen/text_size_twelve"/>
 
             <TextView
-                    android:id="@+id/tv_customer_phone"
+                    android:id="@+id/tv_business_customer_id"
                     android:layout_width="match_parent"
-                    android:padding="5dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:drawableRight="@drawable/edit"
+                    android:layout_marginTop="3dp"
                     android:textSize="@dimen/text_size_twelve"/>
         </LinearLayout>
 
