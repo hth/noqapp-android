@@ -248,7 +248,7 @@
     <string name="otp">Enter OTP</string>
     <string name="validate_via_otp">Validate email via OTP</string>
     <string name="error_otp_blank">OTP is required</string>
-    <string name="msg_vibrator_off">Your phone is on slient mode. We will not able to acknowledge you properly.</string>
+    <string name="msg_vibrator_off">Your phone is on silent mode. App might fail to acknowledge you when its your turn.</string>
 
 
 </resources>
