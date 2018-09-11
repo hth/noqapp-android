@@ -456,7 +456,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     return false;
                 case AudioManager.RINGER_MODE_NORMAL:
                     Log.e(TAG, "Normal mode");
-                    return true;
+                    return false;
                 default:
                     return true;
             }
