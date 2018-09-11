@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.adapters;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerModel;
@@ -100,6 +101,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         TextView tv_change_name;
         TextView tv_business_customer_id;
         TextView tv_first_time;
+        TextView tv_join_timing;
         ImageView iv_info;
         ImageView iv_new;
         RelativeLayout rl_status;
@@ -115,6 +117,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             this.tv_change_name = itemView.findViewById(R.id.tv_change_name);
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
             this.tv_first_time = itemView.findViewById(R.id.tv_first_time);
+            this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
             this.iv_info = itemView.findViewById(R.id.iv_info);
             this.iv_new = itemView.findViewById(R.id.iv_new);
             this.rl_status = itemView.findViewById(R.id.rl_status);
@@ -165,6 +168,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                 //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
                 PhoneFormatterUtil.formatNumber("IN", phoneNo));
+        recordHolder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));
         recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
