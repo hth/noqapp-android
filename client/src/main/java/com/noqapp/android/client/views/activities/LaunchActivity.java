@@ -28,6 +28,7 @@ import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
+import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
@@ -631,11 +632,13 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 Log.d(TAG, "payload=" + payload + " codeQR=" + codeQR);
                 Object object = intent.getSerializableExtra("object");
                 if (object instanceof JsonTopicQueueData) {
-                    Log.e("onReceiveJsonTopicQueue", ((JsonTopicQueueData) object).toString());
+                    Log.e("onReceiveJsonTopicQdata", ((JsonTopicQueueData) object).toString());
                 } else if (object instanceof JsonClientData) {
                     Log.e("onReceiveJsonClientData", ((JsonClientData) object).toString());
                 } else if (object instanceof JsonAlertData) {
-                    Log.e("onReceiveJsonClientData", ((JsonAlertData) object).toString());
+                    Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
+                }else if (object instanceof JsonTopicOrderData) {
+                    Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
                 }
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
@@ -701,6 +704,59 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             callSkipScreen(codeQR, token, quserID);
                         }
 
+                    }else if(object instanceof JsonTopicOrderData){
+//                        String token = String.valueOf(((JsonTopicOrderData) object).getToken());
+//                        String quserID = ((JsonTopicOrderData) object).getQueueUserId();
+//                        if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
+//                            /**
+//                             * Save codeQR of review & show the review screen on app
+//                             * resume if there is any record in Review DB for review key
+//                             */
+//                            ReviewData reviewData = ReviewDB.getValue(codeQR, token);
+//                            if (null != reviewData) {
+//                                ContentValues cv = new ContentValues();
+//                                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
+//                                ReviewDB.updateReviewRecord(codeQR, token, cv);
+//                                // update
+//                            } else {
+//                                //insert
+//                                ContentValues cv = new ContentValues();
+//                                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
+//                                cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+//                                cv.put(DatabaseTable.Review.TOKEN, token);
+//                                cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+//                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+//                                cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+//                                cv.put(DatabaseTable.Review.KEY_GOTO, "");
+//                                ReviewDB.insert(cv);
+//                            }
+//                            callReviewActivity(codeQR, token);
+//                            // this code is added to close the join & after join screen if the request is processed
+//                            if (activityCommunicator != null) {
+//                                activityCommunicator.requestProcessed(codeQR, token);
+//                            }
+//                        } else if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
+//                            ReviewData reviewData = ReviewDB.getValue(codeQR, token);
+//                            if (null != reviewData) {
+//                                ContentValues cv = new ContentValues();
+//                                cv.put(DatabaseTable.Review.KEY_SKIP, 1);
+//                                ReviewDB.updateReviewRecord(codeQR, token, cv);
+//                                // update
+//                            } else {
+//                                //insert
+//                                ContentValues cv = new ContentValues();
+//                                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
+//                                cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+//                                cv.put(DatabaseTable.Review.TOKEN, token);
+//                                cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+//                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+//                                cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+//                                cv.put(DatabaseTable.Review.KEY_GOTO, "");
+//                                ReviewDB.insert(cv);
+//                            }
+//                            callSkipScreen(codeQR, token, quserID);
+//                        }
+
                     }
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                     String go_to = "";
@@ -710,6 +766,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
                         go_to = ((JsonTopicQueueData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
                         messageOrigin = ((JsonTopicQueueData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
+                    }else if (object instanceof JsonTopicOrderData) {
+                        current_serving = String.valueOf(((JsonTopicOrderData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
+                        go_to = ((JsonTopicOrderData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
+                        messageOrigin = ((JsonTopicOrderData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
                     }
                     ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
                     for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
@@ -783,9 +843,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             }
                             try {
                                 // In case of order update the order status
-                                if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
-                                    jtk.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(intent.getStringExtra(Constants.ORDER_STATE)));
-                                    TokenAndQueueDB.updateCurrentListOrderObject(codeQR, intent.getStringExtra(Constants.ORDER_STATE), String.valueOf(jtk.getToken()));
+                                if (object instanceof JsonTopicOrderData) {
+                                    if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
+                                        jtk.setPurchaseOrderState(((JsonTopicOrderData) object).getPurchaseOrderState());
+                                        TokenAndQueueDB.updateCurrentListOrderObject(codeQR, jtk.getPurchaseOrderState().getName(), String.valueOf(jtk.getToken()));
+                                    }
                                 }
                                 scanFragment.updateListFromNotification(jtk, go_to);
                             } catch (Exception e) {

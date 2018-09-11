@@ -155,7 +155,11 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         TextView tv_cost = customDialogView.findViewById(R.id.tv_cost);
         tv_address.setText(Html.fromHtml("<font color=\"black\"><b>Delivery Address: </b></font>"+jsonPurchaseOrder.getDeliveryAddress()));
         tv_payment_mode.setText(Html.fromHtml("<font color=\"black\"><b>Payment Mode: </b></font>"+jsonPurchaseOrder.getPaymentType().getDescription()));
-        tv_cost.setText(Html.fromHtml("<font color=\"black\"><b>Total Cost: </b></font>"+(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()))/100));
+        try {
+            tv_cost.setText(Html.fromHtml("<font color=\"black\"><b>Total Cost: </b></font>" + (Integer.parseInt(jsonPurchaseOrder.getOrderPrice())) / 100));
+        }catch (Exception e){
+            tv_cost.setText(Html.fromHtml("<font color=\"black\"><b>Total Cost: </b></font>"+0/100));
+        }
         builder.setView(customDialogView);
         ArrayList<String> data = new ArrayList<>();
         if(null != jsonPurchaseOrderProductList & jsonPurchaseOrderProductList.size()>0){

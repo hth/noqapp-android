@@ -46,13 +46,15 @@ public class QueueSetting {
     @JsonProperty("de")
     private int delayedInMinutes;
 
+    @JsonProperty ("dc")
+    private boolean dayClosed = false;
+
+    @JsonProperty("tc")
+    private boolean tempDayClosed;
+
     @JsonProperty("pj")
     private boolean preventJoining;
 
-    @JsonProperty("dc")
-    private boolean dayClosed = false;
-
-    //TODO add this property in Queue Settings screen
     @JsonProperty("at")
     private int availableTokenCount;
 
@@ -113,21 +115,30 @@ public class QueueSetting {
         return this;
     }
 
-    public boolean isPreventJoining() {
-        return preventJoining;
-    }
-
-    public QueueSetting setPreventJoining(boolean preventJoining) {
-        this.preventJoining = preventJoining;
-        return this;
-    }
-
     public boolean isDayClosed() {
         return dayClosed;
     }
 
     public QueueSetting setDayClosed(boolean dayClosed) {
         this.dayClosed = dayClosed;
+        return this;
+    }
+
+    public boolean isTempDayClosed() {
+        return tempDayClosed;
+    }
+
+    public QueueSetting setTempDayClosed(boolean tempDayClosed) {
+        this.tempDayClosed = tempDayClosed;
+        return this;
+    }
+
+    public boolean isPreventJoining() {
+        return preventJoining;
+    }
+
+    public QueueSetting setPreventJoining(boolean preventJoining) {
+        this.preventJoining = preventJoining;
         return this;
     }
 

@@ -3,8 +3,6 @@ package com.noqapp.android.client.network;
 import static com.noqapp.android.client.utils.Constants.CodeQR;
 import static com.noqapp.android.client.utils.Constants.Firebase_Type;
 import static com.noqapp.android.client.utils.Constants.ISREVIEW;
-import static com.noqapp.android.client.utils.Constants.MESSAGE_ORIGIN;
-import static com.noqapp.android.client.utils.Constants.ORDER_STATE;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
 import static com.noqapp.android.client.utils.Constants.TOKEN;
 
@@ -19,6 +17,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
+import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
@@ -119,6 +118,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name())) {
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicOrderData.class);
+                    Log.e("FCM order ", object.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.A.name())) {
                 try {
                     ObjectMapper mapper = new ObjectMapper();
@@ -137,9 +144,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     pushNotification.putExtra("object", (Serializable) object);
                     pushNotification.putExtra(Firebase_Type, remoteMessage.getData().get(Firebase_Type));
                     pushNotification.putExtra(CodeQR, remoteMessage.getData().get(CodeQR));
-                    if (remoteMessage.getData().get(MESSAGE_ORIGIN).equalsIgnoreCase(MessageOriginEnum.O.name())) {
-                        pushNotification.putExtra(ORDER_STATE, remoteMessage.getData().get(ORDER_STATE));
-                    }
                     LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
                 } else {
                     // app is in background, show the notification in notification tray

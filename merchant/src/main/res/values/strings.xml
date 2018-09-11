@@ -56,7 +56,7 @@
     <string name="last_update">Updated:</string>
     <string name="pause">Pause</string>
     <string name="empty_counter">Please enter counter name</string>
-    <string name="dayclosed">Is closed for the day?</string>
+    <string name="dayclosed">Closed for every %1$s of the week</string>
     <string name="preventjoining">Stop issuing tokens</string>
     <string name="name_unavailable">NA</string>
     <string name="cancel">Cancel</string>
@@ -167,4 +167,5 @@
     <string name="setting_q_close_time">Queue close time</string>
     <string name="screen_queue_history">Queue History</string>
     <string name="history_alert">There is no history for Queue available</string>
+    <string name="todayclosed">Is closed only for today?</string>
 </resources>

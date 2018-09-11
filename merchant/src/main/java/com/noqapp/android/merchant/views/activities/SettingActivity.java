@@ -49,10 +49,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
-    private ToggleButton toggleDayClosed, togglePreventJoin;
+    private ToggleButton toggleDayClosed, togglePreventJoin,toggleTodayClosed;
     private String codeQR;
     protected boolean isDialog = false;
-    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
+    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute,tv_close_day_of_week;
     private CheckBox cb_limit;
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
@@ -84,6 +84,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         initProgress();
         TextView tv_title = findViewById(R.id.tv_title);
         toggleDayClosed =  findViewById(R.id.toggleDayClosed);
+        toggleTodayClosed =  findViewById(R.id.toggleTodayClosed);
         togglePreventJoin =  findViewById(R.id.togglePreventJoin);
         String title = getIntent().getStringExtra("title");
         codeQR = getIntent().getStringExtra("codeQR");
@@ -91,6 +92,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             tv_title.setText(title);
         }
         toggleDayClosed.setOnClickListener(this);
+        toggleTodayClosed.setOnClickListener(this);
         togglePreventJoin.setOnClickListener(this);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +151,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         tv_store_close.setOnClickListener(new TextViewClick(tv_store_close));
         tv_limited_label = findViewById(R.id.tv_limited_label);
         tv_delay_in_minute = findViewById(R.id.tv_delay_in_minute);
+        tv_close_day_of_week = findViewById(R.id.tv_close_day_of_week);
+        String dayLongName = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        tv_close_day_of_week.setText(getResources().getString(R.string.dayclosed,dayLongName));
         tv_delay_in_minute.setOnClickListener(new TextViewClickDelay(tv_delay_in_minute));
         if (LaunchActivity.getLaunchActivity().getUserLevel() != UserLevelEnum.S_MANAGER) {
             //disable the fields for unauthorized user
@@ -217,6 +222,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         if (null != queueSetting) {
             toggleDayClosed.setChecked(queueSetting.isDayClosed());
             togglePreventJoin.setChecked(queueSetting.isPreventJoining());
+            toggleTodayClosed.setChecked(queueSetting.isTempDayClosed());
             tv_token_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenAvailableFrom()));
             tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
             tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
@@ -274,8 +280,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
             if (v.getId() == R.id.toggleDayClosed) {
                 toggleDayClosed.setChecked(!toggleDayClosed.isChecked());
-            } else {
+            } else if(v.getId() == R.id.togglePreventJoin){
                 togglePreventJoin.setChecked(!togglePreventJoin.isChecked());
+            }else {
+                toggleTodayClosed.setChecked(!toggleTodayClosed.isChecked());
             }
         }
     }
@@ -285,6 +293,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         queueSetting.setCodeQR(codeQR);
         queueSetting.setDayClosed(toggleDayClosed.isChecked());
         queueSetting.setPreventJoining(togglePreventJoin.isChecked());
+        queueSetting.setTempDayClosed(toggleTodayClosed.isChecked());
 
         if (StringUtils.isNotBlank(tv_token_available.getText().toString())) {
             queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
