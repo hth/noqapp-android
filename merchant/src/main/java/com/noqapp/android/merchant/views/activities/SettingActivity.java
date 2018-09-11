@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.QueueSettingModel;
@@ -26,6 +27,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -148,12 +150,31 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         tv_limited_label = findViewById(R.id.tv_limited_label);
         tv_delay_in_minute = findViewById(R.id.tv_delay_in_minute);
         tv_delay_in_minute.setOnClickListener(new TextViewClickDelay(tv_delay_in_minute));
+        if (LaunchActivity.getLaunchActivity().getUserLevel() != UserLevelEnum.S_MANAGER) {
+            //disable the fields for unauthorized user
+            tv_store_start.setEnabled(false);
+            tv_store_close.setEnabled(false);
+            tv_token_available.setEnabled(false);
+            tv_token_not_available.setEnabled(false);
+            toggleDayClosed.setClickable(false);
+            toggleDayClosed.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this,"Permission denied","You haven't enough permission to change this settings");
+                    return false;
+                }
+            });
+        }
         Button btn_update_time = findViewById(R.id.btn_update_time);
         Button btn_update_delay = findViewById(R.id.btn_update_delay);
         btn_update_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callUpdate();
+                if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+                    callUpdate();
+                }else{
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this,"Permission denied","You haven't enough permission to change this settings");
+                }
             }
         });
 
