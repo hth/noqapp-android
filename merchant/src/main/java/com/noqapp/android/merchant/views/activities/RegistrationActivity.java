@@ -39,9 +39,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -49,53 +46,24 @@ import java.util.TimeZone;
 
 public class RegistrationActivity extends AppCompatActivity implements ProfilePresenter, View.OnClickListener {
 
-    public interface RegisterCallBack{
+    public interface RegisterCallBack {
         void passPhoneNo(String phoneNo, String countryShortName);
     }
 
-
     public static RegisterCallBack registerCallBack;
-
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-
     private final String TAG = RegistrationActivity.class.getSimpleName();
     public String gender = "";
-
-    @BindView(R.id.edt_phone)
-    protected EditText edt_phoneNo;
-
-    @BindView(R.id.edt_name)
-    protected EditText edt_Name;
-
-    @BindView(R.id.edt_email)
-    protected EditText edt_Mail;
-
-    @BindView(R.id.edt_birthday)
-    protected EditText edt_birthday;
-
-    @BindView(R.id.edt_pwd)
-    protected EditText edt_pwd;
-
-    @BindView(R.id.edt_confirm_pwd)
-    protected EditText edt_confirm_pwd;
-
-    @BindView(R.id.tv_male)
-    protected EditText tv_male;
-
-    @BindView(R.id.tv_female)
-    protected EditText tv_female;
-
-    @BindView(R.id.ll_gender)
-    protected LinearLayout ll_gender;
-
-    @BindView(R.id.ll_pwd)
-    protected LinearLayout ll_pwd;
-
-    @BindView(R.id.btnRegistration)
-    protected Button btnRegistration;
+    private EditText edt_phoneNo;
+    private EditText edt_Name;
+    private EditText edt_Mail;
+    private EditText edt_birthday;
+    private EditText edt_pwd;
+    private EditText edt_confirm_pwd;
+    private EditText tv_male;
+    private EditText tv_female;
+    private LinearLayout ll_gender;
+    private LinearLayout ll_pwd;
+    private Button btnRegistration;
 
     private DatePickerDialog fromDatePickerDialog;
 
@@ -105,15 +73,38 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        ButterKnife.bind(this);
+
         initProgress();
+
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Register");
+
+        edt_phoneNo = findViewById(R.id.edt_phone);
+        edt_Name = findViewById(R.id.edt_name);
+        edt_Mail = findViewById(R.id.edt_email);
+        edt_birthday = findViewById(R.id.edt_birthday);
+        edt_pwd = findViewById(R.id.edt_pwd);
+        edt_confirm_pwd = findViewById(R.id.edt_confirm_pwd);
+        tv_male = findViewById(R.id.tv_male);
+        tv_female = findViewById(R.id.tv_female);
+
+        ll_gender = findViewById(R.id.ll_gender);
+        ll_pwd = findViewById(R.id.ll_pwd);
+        btnRegistration = findViewById(R.id.btnRegistration);
+        btnRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                action_Registration();
+            }
+        });
+
         edt_birthday.setInputType(InputType.TYPE_NULL);
         edt_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
@@ -164,8 +155,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
                     ll_pwd.setVisibility(View.GONE);
                     edt_pwd.setText("");
                     edt_confirm_pwd.setText("");
-                }
-                else {
+                } else {
                     ll_pwd.setVisibility(View.VISIBLE);
                 }
             }
@@ -174,7 +164,6 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     }
 
 
-    @OnClick(R.id.btnRegistration)
     public void action_Registration() {
         if (validate()) {
             btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
@@ -194,7 +183,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            registerCallBack.passPhoneNo(profile.getPhoneRaw(),profile.getCountryShortName());
+            registerCallBack.passPhoneNo(profile.getPhoneRaw(), profile.getCountryShortName());
             finish();
 
         } else {
