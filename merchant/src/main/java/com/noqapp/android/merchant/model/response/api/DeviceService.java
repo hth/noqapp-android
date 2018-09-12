@@ -30,7 +30,7 @@ public interface DeviceService {
             DeviceToken deviceToken
     );
 
-    @POST("open/device/v1/version.json")
+    @POST("open/device/version.json")
     Call<JsonLatestAppVersion> isSupportedAppVersion(
             @Header("X-R-DID")
             String did,
