@@ -19,8 +19,6 @@ import java.util.ArrayList;
  */
 public class CategoryListActivity extends BaseActivity implements CategoryListAdapter.OnItemClickListener {
 
-    private ArrayList<BizStoreElastic> jsonQueues;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +29,7 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
         String categoryName = getIntent().getStringExtra("categoryName");
         RecyclerView rv_category_list = findViewById(R.id.rv_category_list);
         tv_toolbar_title.setText(categoryName);
+        ArrayList<BizStoreElastic> jsonQueues = null;
         try {
             jsonQueues = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
         } catch (Exception e) {

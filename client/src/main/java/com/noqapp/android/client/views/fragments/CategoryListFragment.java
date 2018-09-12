@@ -15,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 
@@ -43,7 +42,6 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_category_list, container, false);
-        ButterKnife.bind(this, view);
         CategoryListAdapter.OnItemClickListener listener = this;
         CategoryListAdapter categoryListAdapter = new CategoryListAdapter(jsonQueues, getActivity(), listener);
         RecyclerView rv_category_list = view.findViewById(R.id.rv_category_list);

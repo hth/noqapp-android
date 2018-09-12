@@ -28,7 +28,6 @@ import com.squareup.picasso.Picasso;
 
 import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,12 +35,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 import java.io.Serializable;
@@ -66,57 +62,50 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             .build();
     private final String QUEUE = "queue";
     private final String CATEGORY = "category";
-    @BindView(R.id.tv_store_name)
-    protected TextView tv_store_name;
-    @BindView(R.id.tv_amenities)
-    protected TextView tv_amenities;
-    @BindView(R.id.tv_address)
-    protected TextView tv_address;
-    @BindView(R.id.tv_mobile)
-    protected TextView tv_mobile;
-    @BindView(R.id.tv_complete_address)
-    protected TextView tv_complete_address;
-    @BindView(R.id.tv_address_title)
-    protected TextView tv_address_title;
-    @BindView(R.id.tv_rating_review)
-    protected TextView tv_rating_review;
-    @BindView(R.id.tv_rating)
-    protected TextView tv_rating;
-    @BindView(R.id.ratingBar)
-    protected RatingBar ratingBar;
-    @BindView(R.id.iv_business_icon)
-    protected ImageView iv_business_icon;
-    @BindView(R.id.rv_categories)
-    protected RecyclerView rv_categories;
-    @BindView(R.id.rv_thumb_images)
-    protected RecyclerView rv_thumb_images;
-    @BindView(R.id.iv_category_banner)
-    protected ImageView iv_category_banner;
-    @BindView(R.id.btn_join_queues)
-    protected Button btn_join_queues;
-    @BindView(R.id.sc_amenities)
-    protected SegmentedControl sc_amenities;
-    @BindView(R.id.sc_facility)
-    protected SegmentedControl sc_facility;
-    @BindView(R.id.ll_cat_info)
-    protected LinearLayout ll_cat_info;
+    private TextView tv_store_name;
+    private TextView tv_address;
+    private TextView tv_mobile;
+    private TextView tv_complete_address;
+    private TextView tv_address_title;
+    private TextView tv_rating_review;
+    private TextView tv_rating;
+    private RatingBar ratingBar;
+    private ImageView iv_business_icon;
+    private RecyclerView rv_categories;
+    private RecyclerView rv_thumb_images;
+    private ImageView iv_category_banner;
+    private Button btn_join_queues;
+    private SegmentedControl sc_amenities;
+    private SegmentedControl sc_facility;
     private String codeQR;
     private BizStoreElastic bizStoreElastic;
     private boolean isFuture = false;
     private float rating = 0;
     private int ratingCount = 0;
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     private Bundle bundle;
     private String title = "";
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_info);
-        ButterKnife.bind(this);
+        tv_store_name = findViewById(R.id.tv_store_name);
+        tv_address = findViewById(R.id.tv_address);
+        tv_mobile = findViewById(R.id.tv_mobile);
+        tv_complete_address = findViewById(R.id.tv_complete_address);
+        tv_address_title = findViewById(R.id.tv_address_title);
+        tv_rating_review = findViewById(R.id.tv_rating_review);
+        tv_rating = findViewById(R.id.tv_rating);
+        ratingBar = findViewById(R.id.ratingBar);
+        iv_business_icon = findViewById(R.id.iv_business_icon);
+        rv_categories = findViewById(R.id.rv_categories);
+        rv_thumb_images = findViewById(R.id.rv_thumb_images);
+        iv_category_banner = findViewById(R.id.iv_category_banner);
+        btn_join_queues = findViewById(R.id.btn_join_queues);
+        sc_amenities = findViewById(R.id.sc_amenities);
+        sc_facility = findViewById(R.id.sc_facility);
         initActionsViews(false);
         listener = this;
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
@@ -125,6 +114,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             @Override
             public void onClick(View v) {
                 AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
+            }
+        });
+        btn_join_queues.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                joinClick();
             }
         });
 
@@ -151,7 +146,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 ShowAlertInformation.showNetworkDialog(this);
             }
         }
-        recyclerViewLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);
         rv_categories.setLayoutManager(recyclerViewLayoutManager);
 
     }
@@ -358,8 +353,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     }
 
-    @OnClick(R.id.btn_join_queues)
-    public void joinClick() {
+    private void joinClick() {
         if (null != getCategoryThatArePopulated() && null != cacheQueue.getIfPresent("queue")) {
             Intent in = new Intent(this, CategoryPagerActivity.class);
             in.putExtra("list", (Serializable) getCategoryThatArePopulated());

@@ -1,10 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.fragments.InviteFragment;
 
@@ -16,26 +11,16 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class InviteActivity extends AppCompatActivity {
-
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.fl_notification)
-    protected FrameLayout fl_notification;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-    @BindView(R.id.frame_invite)
-    protected FrameLayout frame_invite;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite);
-        ButterKnife.bind(this);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        FrameLayout fl_notification = findViewById(R.id.fl_notification);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         fl_notification.setVisibility(View.INVISIBLE);
         actionbarBack.setVisibility(View.VISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {

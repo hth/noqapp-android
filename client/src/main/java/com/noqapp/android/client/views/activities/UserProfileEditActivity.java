@@ -1,9 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 10/4/18.
- */
-
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DependencyModel;
@@ -45,12 +41,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -64,27 +56,17 @@ import java.util.TimeZone;
 public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
 
     private ImageView iv_profile;
-    public String gender = "";
-    @BindView(R.id.tv_name)
-    protected TextView tv_name;
-    @BindView(R.id.edt_birthday)
-    protected EditText edt_birthday;
-    @BindView(R.id.edt_address)
-    protected EditText edt_address;
-    @BindView(R.id.btn_update)
-    protected Button btn_update;
-    @BindView(R.id.edt_phone)
-    protected EditText edt_phoneNo;
-    @BindView(R.id.edt_name)
-    protected EditText edt_Name;
-    @BindView(R.id.edt_email)
-    protected EditText edt_Mail;
-    @BindView(R.id.tv_male)
-    protected EditText tv_male;
-    @BindView(R.id.tv_female)
-    protected EditText tv_female;
-    @BindView(R.id.ll_gender)
-    protected LinearLayout ll_gender;
+    private String gender = "";
+    private TextView tv_name;
+    private EditText edt_birthday;
+    private EditText edt_address;
+    private Button btn_update;
+    private EditText edt_phoneNo;
+    private EditText edt_Name;
+    private EditText edt_Mail;
+    private EditText tv_male;
+    private EditText tv_female;
+
     private DatePickerDialog fromDatePickerDialog;
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
@@ -94,7 +76,16 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit_profile);
-        ButterKnife.bind(this);
+       
+        tv_name = findViewById(R.id.tv_name);
+        edt_birthday = findViewById(R.id.edt_birthday);
+        edt_address = findViewById(R.id.edt_address);
+        btn_update = findViewById(R.id.btn_update);
+        edt_phoneNo = findViewById(R.id.edt_phone);
+        edt_Name = findViewById(R.id.edt_name);
+        edt_Mail = findViewById(R.id.edt_email);
+        tv_male = findViewById(R.id.tv_male);
+        tv_female = findViewById(R.id.tv_female);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_edit_profile));
         iv_profile = findViewById(R.id.iv_profile);
@@ -110,6 +101,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         edt_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
+        btn_update.setOnClickListener(this);
         edt_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -165,6 +157,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         switch (id) {
             case R.id.iv_profile:
                 selectImage();
+                break;case R.id.btn_update:
+                updateProfile();
                 break;
 
             case R.id.edt_birthday:
@@ -232,7 +226,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
 
-    @OnClick(R.id.btn_update)
     public void updateProfile() {
 
         if (validate()) {

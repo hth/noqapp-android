@@ -66,9 +66,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -80,42 +78,25 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
+public class ScanQueueFragment extends Scanner implements View.OnClickListener,CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
-    @BindView(R.id.cv_scan)
     protected CardView cv_scan;
-    @BindView(R.id.rv_recent_activity)
     protected RecyclerView rv_recent_activity;
-    @BindView(R.id.rv_current_activity)
     protected RecyclerView rv_current_activity;
-    @BindView(R.id.tv_current_title)
     protected TextView tv_current_title;
-    @BindView(R.id.tv_auto)
     protected TextView tv_auto;
-    @BindView(R.id.tv_deviceId)
     protected TextView tv_deviceId;
-    @BindView(R.id.rv_merchant_around_you)
     protected RecyclerView rv_merchant_around_you;
-    @BindView(R.id.tv_recent_view_all)
     protected TextView tv_recent_view_all;
-    @BindView(R.id.tv_near_view_all)
     protected TextView tv_near_view_all;
-    @BindView(R.id.pb_current)
     protected ProgressBar pb_current;
-    @BindView(R.id.pb_recent)
     protected ProgressBar pb_recent;
-    @BindView(R.id.pb_near)
     protected ProgressBar pb_near;
-    @BindView(R.id.autoCompleteTextView)
     protected AutoCompleteTextView autoCompleteTextView;
-    @BindView(R.id.cv_update_location)
     protected CardView cv_update_location;
-    @BindView(R.id.rl_current_activity)
     protected LinearLayout rl_current_activity;
-    @BindView(R.id.tv_no_thanks)
     protected TextView tv_no_thanks;
-    @BindView(R.id.tv_update)
     protected TextView tv_update;
 
     private boolean fromList = false;
@@ -178,7 +159,27 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
-        ButterKnife.bind(this, view);
+
+        cv_scan = view.findViewById(R.id.cv_scan);
+        rv_recent_activity = view.findViewById(R.id.rv_recent_activity);
+        rv_current_activity = view.findViewById(R.id.rv_current_activity);
+        tv_current_title = view.findViewById(R.id.tv_current_title);
+        tv_auto = view.findViewById(R.id.tv_auto);
+        tv_deviceId = view.findViewById(R.id.tv_deviceId);
+        rv_merchant_around_you = view.findViewById(R.id.rv_merchant_around_you);
+        tv_recent_view_all = view.findViewById(R.id.tv_recent_view_all);
+        tv_near_view_all = view.findViewById(R.id.tv_near_view_all);
+        pb_current = view.findViewById(R.id.pb_current);
+        pb_recent = view.findViewById(R.id.pb_recent);
+        pb_near = view.findViewById(R.id.pb_near);
+        autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
+        cv_update_location = view.findViewById(R.id.cv_update_location);
+        rl_current_activity = view.findViewById(R.id.rl_current_activity);
+        tv_no_thanks = view.findViewById(R.id.tv_no_thanks);
+        tv_update = view.findViewById(R.id.tv_update);
+        cv_scan.setOnClickListener(this);
+        tv_recent_view_all.setOnClickListener(this);
+        tv_near_view_all.setOnClickListener(this);
         return view;
     }
 
@@ -202,7 +203,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
                     city = city_name;
                     getNearMeInfo(city_name, String.valueOf(lat), String.valueOf(log));
                     new AppUtilities().hideKeyBoard(getActivity());
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -278,7 +279,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-           callCurrentAndRecentQueue();
+            callCurrentAndRecentQueue();
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -319,36 +320,31 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
     }
 
     private void callCurrentAndRecentQueue() {
-            if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
-                //Call the current queue
-                QueueApiModel queueApiModel = new QueueApiModel();
-                queueApiModel.setTokenAndQueuePresenter(this);
-                //Log.e("DEVICE ID NULL", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
-                queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+        if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
+            //Call the current queue
+            QueueApiModel queueApiModel = new QueueApiModel();
+            queueApiModel.setTokenAndQueuePresenter(this);
+            //Log.e("DEVICE ID NULL", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
+            queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
 
-                //Call the history queue
-                DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-                queueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
-            } else {
-                //Call the current queue
-                QueueModel queueModel = new QueueModel();
-                queueModel.setTokenAndQueuePresenter(this);
-                queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
-                //Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
-                //Call the history queue
-                DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-                queueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
-            }
-        if(isProgressFirstTime) {
+            //Call the history queue
+            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
+            queueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+        } else {
+            //Call the current queue
+            QueueModel queueModel = new QueueModel();
+            queueModel.setTokenAndQueuePresenter(this);
+            queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
+            //Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
+            //Call the history queue
+            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
+            queueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
+        }
+        if (isProgressFirstTime) {
             pb_current.setVisibility(View.VISIBLE);
             pb_recent.setVisibility(View.VISIBLE);
         }
 
-    }
-
-    @OnClick(R.id.cv_scan)
-    public void scanQR() {
-        startScanningBarcode();
     }
 
     @Override
@@ -386,7 +382,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
             storeInfoParam.setLongitude(longitute);
             storeInfoParam.setFilters("xyz");
             storeInfoParam.setScrollId("");
-            if(isProgressFirstTime) {
+            if (isProgressFirstTime) {
                 pb_near.setVisibility(View.VISIBLE);
             }
             new NearMeModel(this).nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
@@ -412,7 +408,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         }
         tv_near_view_all.setVisibility(nearMeData.size() == 0 ? View.GONE : View.VISIBLE);
         isProgressFirstTime = false;
-        if(NoQueueBaseActivity.getShowHelper()) {
+        if (NoQueueBaseActivity.getShowHelper()) {
             presentShowcaseSequence();
             NoQueueBaseActivity.setShowHelper(false);
         }
@@ -468,22 +464,21 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
 
     @Override
     public void recentItemClick(JsonTokenAndQueue item, View view, int pos) {
-        if(null != item){
-            if(item.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q){
+        if (null != item) {
+            if (item.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
                 Intent in = new Intent(getActivity(), JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
                 in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, true);
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
-            }else{
-                Toast.makeText(getActivity(),"call the store detail screen",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "call the store detail screen", Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    @OnClick(R.id.tv_near_view_all)
-    public void nearClick() {
+    private void nearClick() {
         Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
         intent.putExtra("list", (Serializable) nearMeData);
         intent.putExtra("scrollId", scrollId);
@@ -493,8 +488,7 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         startActivity(intent);
     }
 
-    @OnClick(R.id.tv_recent_view_all)
-    public void recentClick() {
+    private void recentClick() {
         Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
         Bundle bundle = new Bundle();
         // bundle.putSerializable("data", data1);
@@ -614,23 +608,23 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         if (isUserTurn && isUpdated) {
             boolean showBuzzer = false;
             ReviewData reviewData = ReviewDB.getValue(jq.getCodeQR(), "" + jq.getToken());
-            if(null != reviewData){
-                if(!reviewData.getIsBuzzerShow().equals("1")) {
+            if (null != reviewData) {
+                if (!reviewData.getIsBuzzerShow().equals("1")) {
                     showBuzzer = true;
-                }else{
+                } else {
                     showBuzzer = false;
                 }
                 // update
-            }else{
+            } else {
                 //insert
                 ContentValues cv = new ContentValues();
-                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN,-1);
+                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                 cv.put(DatabaseTable.Review.CODE_QR, jq.getCodeQR());
                 cv.put(DatabaseTable.Review.TOKEN, "" + jq.getToken());
                 cv.put(DatabaseTable.Review.Q_USER_ID, jq.getQueueUserId());
-                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN,"-1");
-                cv.put(DatabaseTable.Review.KEY_SKIP,"-1");
-                cv.put(DatabaseTable.Review.KEY_GOTO,"");
+                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                cv.put(DatabaseTable.Review.KEY_GOTO, "");
                 ReviewDB.insert(cv);
                 showBuzzer = true;
             }
@@ -671,6 +665,23 @@ public class ScanQueueFragment extends Scanner implements CurrentActivityAdapter
         in_search.putExtra("long", "" + log);
         in_search.putExtra("city", city);
         startActivity(in_search);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.cv_scan:
+                startScanningBarcode();
+                break;
+            case R.id.tv_recent_view_all:
+                recentClick();
+                break;
+            case R.id.tv_near_view_all:
+                nearClick();
+                break;
+
+        }
     }
 
     private static class QueueHandler extends Handler {

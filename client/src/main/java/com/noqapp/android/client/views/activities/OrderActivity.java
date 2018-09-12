@@ -1,10 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.model.PurchaseApiModel;
@@ -47,32 +42,14 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.util.List;
 import java.util.TimeZone;
 
-public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter,ProfilePresenter, ProfileAddressPresenter {
-
-    @BindView(R.id.tv_user_name)
-    protected TextView tv_user_name;
-    @BindView(R.id.tv_total_order_amt)
-    protected TextView tv_total_order_amt;
-    @BindView(R.id.tv_tax_amt)
-    protected TextView tv_tax_amt;
-    @BindView(R.id.tv_due_amt)
-    protected TextView tv_due_amt;
-    @BindView(R.id.rg_address)
-    protected RadioGroup rg_address;
-    @BindView(R.id.edt_address)
-    protected EditText edt_address;
-    @BindView(R.id.edt_phone)
-    protected EditText edt_phone;
-    @BindView(R.id.tv_place_order)
-    protected TextView tv_place_order;
-    @BindView(R.id.ll_order_details)
-    protected LinearLayout ll_order_details;
+public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, ProfileAddressPresenter {
+    private RadioGroup rg_address;
+    private EditText edt_address;
+    private EditText edt_phone;
 
     private JsonPurchaseOrder jsonPurchaseOrder;
     private ProfileModel profileModel;
@@ -82,7 +59,15 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
-        ButterKnife.bind(this);
+        TextView tv_user_name = findViewById(R.id.tv_user_name);
+        TextView tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
+        TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
+        TextView tv_due_amt = findViewById(R.id.tv_due_amt);
+        rg_address = findViewById(R.id.rg_address);
+        edt_address = findViewById(R.id.edt_address);
+        edt_phone = findViewById(R.id.edt_phone);
+        TextView tv_place_order = findViewById(R.id.tv_place_order);
+        LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         initActionsViews(false);
         purchaseApiModel = new PurchaseApiModel(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
@@ -94,10 +79,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         profileModel = new ProfileModel();
         profileModel.setProfilePresenter(this);
         profileModel.setProfileAddressPresenter(this);
-        tv_tax_amt.setText(getString(R.string.rupee)+""+"0.0");
-        tv_due_amt.setText(getString(R.string.rupee)+""+Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/100);
-        tv_total_order_amt.setText(getString(R.string.rupee)+""+Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/100);
-        for (int i =0; i< jsonPurchaseOrder.getPurchaseOrderProducts().size();i++){
+        tv_tax_amt.setText(getString(R.string.rupee) + "" + "0.0");
+        tv_due_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        tv_total_order_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
@@ -131,7 +116,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 }
             }
         });
-        if (LaunchActivity.getLaunchActivity().isOnline() ){//&& !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {//&& !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
             profileModel.getProfileAllAddress(UserUtils.getEmail(), UserUtils.getAuth());
         }
     }
@@ -199,7 +184,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     profileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
                 if (LaunchActivity.getLaunchActivity().isOnline() && !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
-                    profileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(),new JsonUserAddress().setAddress(edt_address.getText().toString()).setId(""));
+                    profileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_address.getText().toString()).setId(""));
                 }
 
             } else {
@@ -219,7 +204,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this,errorCode);
+        AppUtilities.authenticationProcessing(this, errorCode);
     }
 
     @Override
@@ -241,7 +226,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
         final List<JsonUserAddress> notificationsList = jsonUserAddressList.getJsonUserAddresses();
-        Log.e("address list: ",notificationsList.toString());
+        Log.e("address list: ", notificationsList.toString());
         rg_address.removeAllViews();
         for (int i = 0; i < notificationsList.size(); i++) {
             final AppCompatRadioButton rdbtn = new AppCompatRadioButton(this);
@@ -258,8 +243,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     final int DRAWABLE_RIGHT = 2;
-                    if(event.getAction() == MotionEvent.ACTION_UP) {
-                        if(event.getRawX() >= (rdbtn.getRight() - rdbtn.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if (event.getRawX() >= (rdbtn.getRight() - rdbtn.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                             // your action here
                             AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
                             LayoutInflater inflater = LayoutInflater.from(OrderActivity.this);
@@ -283,8 +268,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                                         progressDialog.show();
                                         progressDialog.setMessage("Deleting address..");
-                                        profileModel.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(),new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
-                                    }else {
+                                        profileModel.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
+                                    } else {
                                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                                     }
                                     mAlertDialog.dismiss();
@@ -305,7 +290,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     return false;
                 }
             });
-            rdbtn.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.cancel_grey),null);
+            rdbtn.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.cancel_grey), null);
             rdbtn.setCompoundDrawablePadding(20);
             ColorStateList colorStateList = new ColorStateList(
                     new int[][]{
@@ -315,7 +300,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     new int[]{
 
                             Color.DKGRAY
-                            , Color.rgb (242,81,112),
+                            , Color.rgb(242, 81, 112),
                     }
             );
             CompoundButtonCompat.setButtonTintList(rdbtn, colorStateList);

@@ -42,9 +42,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import java.util.concurrent.TimeUnit;
 
@@ -68,48 +65,55 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     protected String countryShortName = "";
     protected String verifiedMobileNo;
     protected Activity activity;
-
-    @BindView(R.id.actionbarBack)
     protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
     protected TextView tv_toolbar_title;
-    @BindView(R.id.edt_phone)
     protected EditText edt_phoneNo;
-    @BindView(R.id.btn_login)
     protected Button btn_login;
-    @BindView(R.id.btn_verify_phone)
     protected Button btn_verify_phone;
-    @BindView(R.id.edt_phone_code)
     protected EditText edt_phone_code;
-
-
-    @BindView(R.id.edt_one)
     protected EditText edt_one;
-    @BindView(R.id.edt_two)
     protected EditText edt_two;
-    @BindView(R.id.edt_three)
     protected EditText edt_three;
-    @BindView(R.id.edt_four)
     protected EditText edt_four;
-    @BindView(R.id.edt_five)
     protected EditText edt_five;
-    @BindView(R.id.edt_six)
     protected EditText edt_six;
-    @BindView(R.id.ll_otp)
     protected LinearLayout ll_otp;
-
-
-    @BindView(R.id.tv_detail)
     protected TextView tv_detail;
 
     protected abstract void callApi(String phoneNumber);
+
     protected abstract boolean validate();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+        actionbarBack = findViewById(R.id.actionbarBack);
+        tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        edt_phoneNo = findViewById(R.id.edt_phone);
+        btn_login = findViewById(R.id.btn_login);
+        btn_verify_phone = findViewById(R.id.btn_verify_phone);
+        edt_phone_code = findViewById(R.id.edt_phone_code);
+        edt_one = findViewById(R.id.edt_one);
+        edt_two = findViewById(R.id.edt_two);
+        edt_three = findViewById(R.id.edt_three);
+        edt_four = findViewById(R.id.edt_four);
+        edt_five = findViewById(R.id.edt_five);
+        edt_six = findViewById(R.id.edt_six);
+        ll_otp = findViewById(R.id.ll_otp);
+        tv_detail = findViewById(R.id.tv_detail);
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionLogin();
+            }
+        });
+        btn_verify_phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnVerifyClick();
+            }
+        });
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -322,7 +326,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
                 break;
             case STATE_VERIFY_FAILED:
                 // Verification has failed, show all options
-               // enableViews(btn_login, edt_phoneNo, btn_verify_phone, edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
+                // enableViews(btn_login, edt_phoneNo, btn_verify_phone, edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
                 tv_detail.setText(R.string.status_verification_failed);
                 break;
             case STATE_VERIFY_SUCCESS:
@@ -333,7 +337,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
                 // Set the verification text based on the credential
                 if (cred != null) {
-                    if (!TextUtils.isEmpty(cred.getSmsCode()) && cred.getSmsCode().length() ==6) {
+                    if (!TextUtils.isEmpty(cred.getSmsCode()) && cred.getSmsCode().length() == 6) {
                         edt_one.setText(String.valueOf(cred.getSmsCode().charAt(0)));
                         edt_two.setText(String.valueOf(cred.getSmsCode().charAt(1)));
                         edt_three.setText(String.valueOf(cred.getSmsCode().charAt(2)));
@@ -412,17 +416,18 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         }
     }
 
-    private boolean validateOTP(EditText... views){
+    private boolean validateOTP(EditText... views) {
         boolean isValid = true;
         for (EditText v : views) {
-            if(v.getText().toString().equals("")) {
+            if (v.getText().toString().equals("")) {
                 v.setError("Cannot be empty.");
                 isValid = false;
             }
         }
         return isValid;
     }
-    private String codeOTP(EditText... views){
+
+    private String codeOTP(EditText... views) {
         StringBuilder builder = new StringBuilder();
         for (EditText v : views) {
             builder.append(v.getText().toString());
@@ -430,24 +435,22 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         return builder.toString();
     }
 
-    @OnClick(R.id.btn_verify_phone)
-    public void btnVerifyClick() {
-        setErrorNull(edt_one,edt_two,edt_three,edt_four,edt_five,edt_six);
-        if (!validateOTP(edt_one,edt_two,edt_three,edt_four,edt_five,edt_six)) {
+    private void btnVerifyClick() {
+        setErrorNull(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
+        if (!validateOTP(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six)) {
             return;
         }
         if (mVerificationId != null) {
             progressDialog.show();
             new AppUtilities().hideKeyBoard(this);
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, codeOTP(edt_one,edt_two,edt_three,edt_four,edt_five,edt_six));
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, codeOTP(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six));
             signInWithPhoneAuthCredential(credential);
         } else {
             //Toast.makeText(this,"mVerificationId is null: ", Toast.LENGTH_LONG).show();
         }
     }
 
-    @OnClick(R.id.btn_login)
-    public void action_Login() {
+    private void actionLogin() {
         if (validate()) {
             if (isReadAndReceiveSMSPermissionAllowed()) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -483,6 +486,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this,errorCode);
+        AppUtilities.authenticationProcessing(this, errorCode);
     }
 }

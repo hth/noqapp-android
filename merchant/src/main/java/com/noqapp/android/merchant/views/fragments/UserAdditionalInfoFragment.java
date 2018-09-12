@@ -30,9 +30,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
+
 
 import java.util.Calendar;
 import java.util.Date;
@@ -40,37 +39,21 @@ import java.util.List;
 
 
 public class UserAdditionalInfoFragment extends Fragment implements MerchantProfessionalPresenter {
-
-    @BindView(R.id.edt_about_me)
-    protected EditText edt_about_me;
-    @BindView(R.id.edt_practice_start)
-    protected TextView edt_practice_start;
-    @BindView(R.id.edt_edu_name)
-    protected EditText edt_edu_name;
-    @BindView(R.id.tv_edu_date)
-    protected TextView tv_edu_date;
-    @BindView(R.id.iv_edu_add)
-    protected ImageView iv_edu_add;
-    @BindView(R.id.edt_award_name)
-    protected EditText edt_award_name;
-    @BindView(R.id.tv_award_date)
-    protected TextView tv_award_date;
-    @BindView(R.id.iv_award_add)
-    protected ImageView iv_award_add;
-    @BindView(R.id.edt_license_name)
-    protected EditText edt_license_name;
-    @BindView(R.id.tv_license_date)
-    protected TextView tv_license_date;
-    @BindView(R.id.iv_license_add)
-    protected ImageView iv_license_add;
-    @BindView(R.id.ll_education)
-    protected LinearLayout ll_education;
-    @BindView(R.id.ll_experience)
-    protected LinearLayout ll_experience;
-    @BindView(R.id.ll_license)
-    protected LinearLayout ll_license;
-    @BindView(R.id.btn_update)
-    protected Button btn_update;
+    private EditText edt_about_me;
+    private TextView edt_practice_start;
+    private EditText edt_edu_name;
+    private TextView tv_edu_date;
+    private ImageView iv_edu_add;
+    private EditText edt_award_name;
+    private TextView tv_award_date;
+    private ImageView iv_award_add;
+    private EditText edt_license_name;
+    private TextView tv_license_date;
+    private ImageView iv_license_add;
+    private LinearLayout ll_education;
+    private LinearLayout ll_experience;
+    private LinearLayout ll_license;
+    private Button btn_update;
     private JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal;
 
     Calendar calendar = Calendar.getInstance();
@@ -81,7 +64,28 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_additional_info, container, false);
         initProgress();
-        ButterKnife.bind(this, view);
+
+        edt_about_me = view.findViewById(R.id.edt_about_me);
+        edt_practice_start = view.findViewById(R.id.edt_practice_start);
+        edt_edu_name = view.findViewById(R.id.edt_edu_name);
+        tv_edu_date = view.findViewById(R.id.tv_edu_date);
+        iv_edu_add = view.findViewById(R.id.iv_edu_add);
+        edt_award_name = view.findViewById(R.id.edt_award_name);
+        tv_award_date = view.findViewById(R.id.tv_award_date);
+        iv_award_add = view.findViewById(R.id.iv_award_add);
+        edt_license_name = view.findViewById(R.id.edt_license_name);
+        tv_license_date = view.findViewById(R.id.tv_license_date);
+        iv_license_add = view.findViewById(R.id.iv_license_add);
+        ll_education = view.findViewById(R.id.ll_education);
+        ll_experience = view.findViewById(R.id.ll_experience);
+        ll_license = view.findViewById(R.id.ll_license);
+        btn_update = view.findViewById(R.id.btn_update);
+        btn_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateProfessionalInfo();
+            }
+        });
         if (null != jsonProfessionalProfilePersonal)
             updateUI(jsonProfessionalProfilePersonal);
 
@@ -476,7 +480,6 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
 
     }
 
-    @OnClick(R.id.btn_update)
     public void updateProfessionalInfo() {
         MerchantProfileModel merchantProfileModel = new MerchantProfileModel();
         merchantProfileModel.setMerchantProfessionalPresenter(this);

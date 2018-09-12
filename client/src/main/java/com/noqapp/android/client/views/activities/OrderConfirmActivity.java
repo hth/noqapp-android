@@ -9,41 +9,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class OrderConfirmActivity extends BaseActivity {
 
-    @BindView(R.id.tv_total_order_amt)
-    protected TextView tv_total_order_amt;
-    @BindView(R.id.tv_tax_amt)
-    protected TextView tv_tax_amt;
-    @BindView(R.id.tv_due_amt)
-    protected TextView tv_due_amt;
-    @BindView(R.id.ll_order_details)
-    protected LinearLayout ll_order_details;
-    @BindView(R.id.tv_serving_no)
-    protected TextView tv_serving_no;
-    @BindView(R.id.tv_token)
-    protected TextView tv_token;
-    @BindView(R.id.tv_estimated_time)
-    protected TextView tv_estimated_time;
-    @BindView(R.id.tv_store_name)
-    protected TextView tv_store_name;
-    @BindView(R.id.tv_address)
-    protected TextView tv_address;
-
-    private JsonPurchaseOrder jsonPurchaseOrder, oldjsonPurchaseOrder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirm);
-        ButterKnife.bind(this);
+        TextView tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
+        TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
+        TextView tv_due_amt = findViewById(R.id.tv_due_amt);
+        LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
+        TextView tv_serving_no = findViewById(R.id.tv_serving_no);
+        TextView tv_token = findViewById(R.id.tv_token);
+        TextView tv_estimated_time = findViewById(R.id.tv_estimated_time);
+        TextView tv_store_name = findViewById(R.id.tv_store_name);
+        TextView tv_address = findViewById(R.id.tv_address);
         initActionsViews(true);
 
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
-        jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
-        oldjsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("oldData");
+        JsonPurchaseOrder jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
+        JsonPurchaseOrder oldjsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("oldData");
 
         tv_tax_amt.setText(getString(R.string.rupee) + "" + "0.0");
         tv_due_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);

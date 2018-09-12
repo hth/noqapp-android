@@ -1,10 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.views.adapters.NotificationListAdapter;
@@ -16,28 +11,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.util.List;
 
 public class NotificationActivity extends AppCompatActivity {
 
-    @BindView(R.id.listview)
-    protected ListView listview;
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-    @BindView(R.id.tv_empty)
-    protected TextView tv_empty;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
-        ButterKnife.bind(this);
+        ListView listview = findViewById(R.id.listview);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        TextView tv_empty = findViewById(R.id.tv_empty);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +41,6 @@ public class NotificationActivity extends AppCompatActivity {
             listview.setVisibility(View.VISIBLE);
             tv_empty.setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -63,6 +48,5 @@ public class NotificationActivity extends AppCompatActivity {
         super.onPause();
         // mark all the entry as read
         NotificationDB.updateNotification();
-
     }
 }

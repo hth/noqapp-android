@@ -21,20 +21,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class WebViewActivity extends AppCompatActivity {
-
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-    @BindView(R.id.tv_badge)
-    protected TextView tv_badge;
-    @BindView(R.id.webView)
-    protected WebView webView;
-
+    private TextView tv_badge;
+    private WebView webView;
     private String url = "";
     private ProgressDialog progressDialog;
     private Handler handler = new Handler() {
@@ -49,12 +39,14 @@ public class WebViewActivity extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
-        ButterKnife.bind(this);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        tv_badge = findViewById(R.id.tv_badge);
+        webView = findViewById(R.id.webView);
         if (null != getIntent().getStringExtra("url"))
             url = getIntent().getStringExtra("url");
         webView.setWebViewClient(new myWebClient());

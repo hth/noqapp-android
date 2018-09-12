@@ -20,8 +20,6 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,20 +27,18 @@ import java.util.List;
 
 public class MedicalRecordListFragment extends Fragment implements MedicalRecordListPresenter {
 
-    @BindView(R.id.listview)
-    protected ListView listview;
-    @BindView(R.id.tv_empty)
-    protected TextView tv_empty;
-    @BindView(R.id.frame_layout)
-    protected FrameLayout frame_layout;
 
+    private ListView listview;
+    private TextView tv_empty;
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
     private MedicalHistoryModel medicalHistoryModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_medical_record_list, container, false);
-        ButterKnife.bind(this, view);
+        listview = view.findViewById(R.id.listview);
+        tv_empty = view.findViewById(R.id.tv_empty);
+        FrameLayout frame_layout = view.findViewById(R.id.frame_layout);
         if (jsonMedicalRecords.size() <= 0) {
             listview.setVisibility(View.GONE);
             tv_empty.setVisibility(View.VISIBLE);

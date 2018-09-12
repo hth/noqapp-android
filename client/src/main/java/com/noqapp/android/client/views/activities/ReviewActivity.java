@@ -1,9 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
@@ -39,8 +35,6 @@ import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -48,50 +42,13 @@ import java.util.Date;
 import java.util.List;
 
 public class ReviewActivity extends AppCompatActivity implements ReviewPresenter {
-    private final String TAG = ReviewActivity.class.getSimpleName();
 
-    @BindView(R.id.tv_store_name)
-    protected TextView tv_store_name;
-    @BindView(R.id.tv_queue_name)
-    protected TextView tv_queue_name;
-    @BindView(R.id.tv_address)
-    protected TextView tv_address;
-    @BindView(R.id.tv_mobile)
-    protected TextView tv_mobile;
-    @BindView(R.id.tv_rating_value)
-    protected TextView tv_rating_value;
-
-    @BindView(R.id.btn_submit)
-    protected Button btn_submit;
-
-    @BindView(R.id.ratingBar)
-    protected RatingBar ratingBar;
-
-    @BindView(R.id.tv_hr_saved)
-    protected TextView tv_hr_saved;
-
-    @BindView(R.id.tv_details)
-    protected TextView tv_details;
-
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-
-    @BindView(R.id.tv_badge)
-    protected TextView tv_badge;
-
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-
-    @BindView(R.id.edt_review)
-    protected EditText edt_review;
-
-    @BindView(R.id.seekbarWithIntervals)
-    SeekbarWithIntervals seekbarWithIntervals;
-
-    @BindView(R.id.seekbarAppCompact)
-    AppCompatSeekBar seekbarAppCompact;
-
-
+    private TextView tv_rating_value;
+    private RatingBar ratingBar;
+    private TextView tv_hr_saved;
+    private TextView tv_badge;
+    private EditText edt_review;
+    private AppCompatSeekBar seekbarAppCompact;
     private JsonTokenAndQueue jtk;
     private ProgressDialog progressDialog;
 
@@ -99,12 +56,26 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
-        ButterKnife.bind(this);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        TextView tv_store_name = findViewById(R.id.tv_store_name);
+        TextView tv_queue_name = findViewById(R.id.tv_queue_name);
+        TextView tv_address = findViewById(R.id.tv_address);
+        TextView tv_mobile = findViewById(R.id.tv_mobile);
+        tv_rating_value = findViewById(R.id.tv_rating_value);
+        Button btn_submit = findViewById(R.id.btn_submit);
+        ratingBar = findViewById(R.id.ratingBar);
+        tv_hr_saved = findViewById(R.id.tv_hr_saved);
+        TextView tv_details = findViewById(R.id.tv_details);
+        tv_badge = findViewById(R.id.tv_badge);
+        edt_review = findViewById(R.id.edt_review);
+        SeekbarWithIntervals seekbarWithIntervals = findViewById(R.id.seekbarWithIntervals);
+        seekbarAppCompact = findViewById(R.id.seekbarAppCompact);
         final Bundle extras = getIntent().getExtras();
 
         if (null != extras) {
             jtk = (JsonTokenAndQueue) extras.getSerializable("object");
-            if(null != jtk) {
+            if (null != jtk) {
                 tv_store_name.setText(jtk.getBusinessName());
                 tv_queue_name.setText(jtk.getDisplayName());
                 tv_address.setText(jtk.getStoreAddress());
@@ -245,7 +216,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     @Override
     public void authenticationFailure(int errorCode) {
         progressDialog.dismiss();
-        AppUtilities.authenticationProcessing(this,errorCode);
+        AppUtilities.authenticationProcessing(this, errorCode);
     }
 
 
@@ -300,6 +271,5 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         } else {
             tv_badge.setVisibility(View.INVISIBLE);
         }
-
     }
 }

@@ -34,8 +34,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -43,35 +42,33 @@ import java.util.Locale;
 
 public class PatientProfileFragment extends Fragment implements PatientProfilePresenter {
 
-    public ImageView iv_profile;
-    public String gender = "";
-    @BindView(R.id.tv_name)
-    protected TextView tv_name;
-    @BindView(R.id.edt_birthday)
-    protected EditText edt_birthday;
-    @BindView(R.id.edt_address)
-    protected EditText edt_address;
-    @BindView(R.id.edt_phone)
-    protected EditText edt_phoneNo;
-    @BindView(R.id.edt_name)
-    protected EditText edt_Name;
-    @BindView(R.id.edt_email)
-    protected EditText edt_Mail;
-    @BindView(R.id.tv_male)
-    protected EditText tv_male;
-    @BindView(R.id.tv_female)
-    protected EditText tv_female;
-    @BindView(R.id.ll_gender)
-    protected LinearLayout ll_gender;
-    @BindView(R.id.ll_dependent)
-    protected LinearLayout ll_dependent;
+    private ImageView iv_profile;
+    private String gender = "";
+    private TextView tv_name;
+    private EditText edt_birthday;
+    private EditText edt_address;
+    private EditText edt_phoneNo;
+    private EditText edt_Name;
+    private EditText edt_Mail;
+    private EditText tv_male;
+    private EditText tv_female;
+
+    private LinearLayout ll_dependent;
     private SimpleDateFormat dateFormatter;
     private ProgressDialog progressDialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_patient_profile, container, false);
-
-        ButterKnife.bind(this,view);
+        tv_name = view.findViewById(R.id.tv_name);
+        edt_birthday = view.findViewById(R.id.edt_birthday);
+        edt_address = view.findViewById(R.id.edt_address);
+        edt_phoneNo = view.findViewById(R.id.edt_phone);
+        edt_Name = view.findViewById(R.id.edt_name);
+        edt_Mail = view.findViewById(R.id.edt_email);
+        tv_male = view.findViewById(R.id.tv_male);
+        tv_female = view.findViewById(R.id.tv_female);
+        ll_dependent = view.findViewById(R.id.ll_dependent);
 
         iv_profile = view.findViewById(R.id.iv_profile);
         dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
@@ -85,7 +82,7 @@ public class PatientProfileFragment extends Fragment implements PatientProfilePr
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             PatientProfileModel profileModel = new PatientProfileModel(this);
-            profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),new FindMedicalProfile().setCodeQR(getArguments().getString("qCodeQR")).setQueueUserId(getArguments().getString("qUserId")));
+            profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new FindMedicalProfile().setCodeQR(getArguments().getString("qCodeQR")).setQueueUserId(getArguments().getString("qUserId")));
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -111,7 +108,7 @@ public class PatientProfileFragment extends Fragment implements PatientProfilePr
     @Override
     public void patientProfileResponse(JsonProfile jsonProfile) {
         if (jsonProfile.getError() == null) {
-           updateUI(jsonProfile);
+            updateUI(jsonProfile);
         }
         dismissProgress();
     }
@@ -194,7 +191,6 @@ public class PatientProfileFragment extends Fragment implements PatientProfilePr
         }
         loadProfilePic(jsonProfile.getProfileImage());
     }
-
 
 
     private void initProgress() {

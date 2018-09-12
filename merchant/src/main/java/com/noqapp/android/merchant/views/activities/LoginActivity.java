@@ -34,6 +34,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -46,25 +47,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import java.util.concurrent.TimeUnit;
 
 
 public class LoginActivity extends AppCompatActivity implements ProfilePresenter {
 
-    public interface LoginCallBack{
+    public interface LoginCallBack {
         void passPhoneNo(String phoneNo, String countryShortName);
     }
-
-
     public static LoginCallBack loginCallBack;
-    protected ProgressDialog progressDialog;
-
-    protected ImageView actionbarBack;
-    protected TextView tv_toolbar_title;
+    private ProgressDialog progressDialog;
     private final String TAG = LoginActivity.class.getSimpleName();
     private final int READ_AND_RECEIVE_SMS_PERMISSION_CODE = 101;
     private final String[] READ_AND_RECEIVE_SMS_PERMISSION_PERMS = {
@@ -77,47 +70,61 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     private final int STATE_VERIFY_SUCCESS = 4;
     private final int STATE_SIGN_IN_FAILED = 5;
     private final int STATE_SIGN_IN_SUCCESS = 6;
-    @BindView(R.id.edt_phone)
-    protected EditText edt_phoneNo;
-    @BindView(R.id.btn_login)
-    protected Button btn_login;
-    @BindView(R.id.btn_verify_phone)
-    protected Button btn_verify_phone;
-    @BindView(R.id.edt_verification_code)
-    protected EditText edt_verification_code;
-    @BindView(R.id.edt_phone_code)
-    protected EditText edt_phone_code;
-    @BindView(R.id.tv_detail)
-    protected TextView tv_detail;
+
+    private EditText edt_phoneNo;
+    private Button btn_login;
+    private Button btn_verify_phone;
+    private EditText edt_verification_code;
+    private EditText edt_phone_code;
+    private TextView tv_detail;
+
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private String mVerificationId;
     private String verifiedMobileNo;
     private FirebaseAuth mAuth;
-    private String countryCode ="";
+    private String countryCode = "";
     private String countryShortName = "";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
-        actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
+
+       ImageView actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Login");
+        edt_phoneNo = findViewById(R.id.edt_phone);
+        btn_login = findViewById(R.id.btn_login);
+        btn_verify_phone = findViewById(R.id.btn_verify_phone);
+        edt_verification_code = findViewById(R.id.edt_verification_code);
+        edt_phone_code = findViewById(R.id.edt_phone_code);
+        tv_detail = findViewById(R.id.tv_detail);
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                action_Login();
+            }
+        });
+        btn_verify_phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnVerifyClick();
+            }
+        });
+
         mAuth = FirebaseAuth.getInstance();
         updateUI(STATE_INITIALIZED);
         initProgress();
-        String c_codeValue =LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
-        int c_code =  PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
-        Log.v("country code", ""+c_code);
-        countryCode = "+"+c_code;
+        String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
+        int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
+        Log.v("country code", "" + c_code);
+        countryCode = "+" + c_code;
         countryShortName = c_codeValue.toUpperCase();
         edt_phone_code.setText(countryCode);
         edt_phoneNo.setText(getIntent().getStringExtra("phone_no"));
@@ -179,8 +186,8 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         };
     }
 
-    @OnClick(R.id.btn_login)
-    public void action_Login() {
+
+    private void action_Login() {
         if (validate()) {
             if (isReadAndReceiveSMSPermissionAllowed()) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -303,7 +310,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            loginCallBack.passPhoneNo(profile.getPhoneRaw(),profile.getCountryShortName());
+            loginCallBack.passPhoneNo(profile.getPhoneRaw(), profile.getCountryShortName());
             finish();//close the current activity
             dismissProgress();
         } else {
@@ -313,7 +320,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                 Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
                 in.putExtra("mobile_no", verifiedMobileNo);
                 in.putExtra("country_code", countryCode);
-                in.putExtra("countryShortName",countryShortName);
+                in.putExtra("countryShortName", countryShortName);
                 startActivity(in);
                 dismissProgress();
                 finish();//close the current activity
@@ -348,7 +355,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         }
     }
 
-    @OnClick(R.id.btn_verify_phone)
+
     public void btnVerifyClick() {
         edt_verification_code.setError(null);
         String code = edt_verification_code.getText().toString();
