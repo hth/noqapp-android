@@ -44,46 +44,22 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import java.util.List;
 
 public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
-    @BindView(R.id.tv_store_name)
-    protected TextView tv_store_name;
-    @BindView(R.id.tv_queue_name)
-    protected TextView tv_queue_name;
-    @BindView(R.id.tv_address)
-    protected TextView tv_address;
-    @BindView(R.id.tv_mobile)
-    protected TextView tv_mobile;
-    @BindView(R.id.tv_serving_no)
-    protected TextView tv_serving_no;
-    @BindView(R.id.tv_token)
-    protected TextView tv_token;
-    @BindView(R.id.tv_how_long)
-    protected TextView tv_how_long;
-    @BindView(R.id.btn_cancel_queue)
-    protected Button btn_cancel_queue;
-    @BindView(R.id.tv_after)
-    protected TextView tv_after;
-    @BindView(R.id.tv_hour_saved)
-    protected TextView tv_hour_saved;
-    @BindView(R.id.tv_estimated_time)
-    protected TextView tv_estimated_time;
-    @BindView(R.id.tv_add)
-    protected TextView tv_add;
-    @BindView(R.id.tv_vibrator_off)
-    protected TextView tv_vibrator_off;
-    @BindView(R.id.ll_change_bg)
-    protected LinearLayout ll_change_bg;
-    @BindView(R.id.sp_name_list)
-    protected Spinner sp_name_list;
-    @BindView(R.id.ll_patient_name)
-    protected LinearLayout ll_patient_name;
+    private TextView tv_address;
+    private TextView tv_mobile;
+    private TextView tv_serving_no;
+    private TextView tv_token;
+    private TextView tv_how_long;
+    private Button btn_cancel_queue;
+    private TextView tv_after;
+    private TextView tv_estimated_time;
+    private TextView tv_vibrator_off;
+    private LinearLayout ll_change_bg;
+    private Spinner sp_name_list;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
     private String codeQR;
@@ -101,7 +77,28 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_join);
-        ButterKnife.bind(this);
+        TextView tv_store_name = findViewById(R.id.tv_store_name);
+        TextView tv_queue_name = findViewById(R.id.tv_queue_name);
+        tv_address = findViewById(R.id.tv_address);
+        tv_mobile = findViewById(R.id.tv_mobile);
+        tv_serving_no = findViewById(R.id.tv_serving_no);
+        tv_token = findViewById(R.id.tv_token);
+        tv_how_long = findViewById(R.id.tv_how_long);
+        btn_cancel_queue = findViewById(R.id.btn_cancel_queue);
+        tv_after = findViewById(R.id.tv_after);
+        TextView tv_hour_saved = findViewById(R.id.tv_hour_saved);
+        tv_estimated_time = findViewById(R.id.tv_estimated_time);
+        TextView tv_add = findViewById(R.id.tv_add);
+        tv_vibrator_off = findViewById(R.id.tv_vibrator_off);
+        ll_change_bg = findViewById(R.id.ll_change_bg);
+        sp_name_list = findViewById(R.id.sp_name_list);
+        LinearLayout ll_patient_name = findViewById(R.id.ll_patient_name);
+        btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancelQueue();
+            }
+        });
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_qdetails));
         queueModel = new QueueModel();
@@ -183,9 +180,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
                 setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
                 tv_add.setText(AppUtilities.getNameFromQueueUserID(jsonTokenAndQueue.getQueueUserId(), profileList));
-                tv_vibrator_off.setVisibility(isVibratorOff()?View.VISIBLE:View.GONE);
-                if(isVibratorOff())
-                    ShowAlertInformation.showThemeDialog(this,"Vibrator off",getString(R.string.msg_vibrator_off));
+                tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
+                if (isVibratorOff())
+                    ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     if (isResumeFirst) {
@@ -215,9 +212,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         updateEstimatedTime();
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
-        tv_vibrator_off.setVisibility(isVibratorOff()?View.VISIBLE:View.GONE);
-        if(isVibratorOff())
-            ShowAlertInformation.showThemeDialog(this,"Vibrator off",getString(R.string.msg_vibrator_off));
+        tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
+        if (isVibratorOff())
+            ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
         dismissProgress();
     }
 
@@ -255,8 +252,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         AppUtilities.authenticationProcessing(this, errorCode);
     }
 
-    @OnClick(R.id.btn_cancel_queue)
-    public void cancelQueue() {
+    private void cancelQueue() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             if (UserUtils.isLogin()) {
@@ -446,7 +442,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 
     private boolean isVibratorOff() {
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        if(null != am) {
+        if (null != am) {
             switch (am.getRingerMode()) {
                 case AudioManager.RINGER_MODE_SILENT:
                     Log.e(TAG, "Silent mode");
@@ -460,7 +456,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 default:
                     return true;
             }
-        }else{
+        } else {
             return true;
         }
     }

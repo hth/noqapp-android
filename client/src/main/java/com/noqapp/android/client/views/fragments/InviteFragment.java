@@ -24,33 +24,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by chandra on 4/9/17.
  */
-public class InviteFragment extends NoQueueBaseFragment {
-
-    @BindView(R.id.tv_how_it_works)
-    protected TextView tv_how_it_works;
-
-    @BindView(R.id.tv_copy)
-    protected TextView tv_copy;
-
-    @BindView(R.id.tv_title)
-    protected TextView tv_title;
-
-    @BindView(R.id.tv_details)
-    protected TextView tv_details;
-
-    @BindView(R.id.tv_invite_code)
-    protected TextView tv_invite_code;
-
-    @BindView(R.id.btn_send_invite)
-    protected Button btn_send_invite;
-
+public class InviteFragment extends NoQueueBaseFragment implements View.OnClickListener{
     private String selectedText;
 
     @Override
@@ -58,10 +36,18 @@ public class InviteFragment extends NoQueueBaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_invite, container, false);
-        ButterKnife.bind(this, view);
+
+        TextView tv_how_it_works = view.findViewById(R.id.tv_how_it_works);
+        TextView tv_copy = view.findViewById(R.id.tv_copy);
+        TextView tv_title = view.findViewById(R.id.tv_title);
+        TextView tv_details = view.findViewById(R.id.tv_details);
+        TextView tv_invite_code = view.findViewById(R.id.tv_invite_code);
+        TextView btn_send_invite = view.findViewById(R.id.btn_send_invite);
+        btn_send_invite.setOnClickListener(this);
         tv_how_it_works.setPaintFlags(tv_how_it_works.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tv_copy.setPaintFlags(tv_copy.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
+        tv_copy.setOnClickListener(this);
+        tv_how_it_works.setOnClickListener(this);
         Bundle bundle = getArguments();
         if (null != bundle) {
             String title = bundle.getString("title", "Invite Friends");
@@ -80,7 +66,7 @@ public class InviteFragment extends NoQueueBaseFragment {
         return view;
     }
 
-    @OnClick(R.id.btn_send_invite)
+
     public void sendInvitation() {
         if (StringUtils.isBlank(selectedText)) {
             ShowAlertInformation.showThemeDialog(getActivity(), getString(R.string.alert), getString(R.string.empty_invite_code));
@@ -101,7 +87,6 @@ public class InviteFragment extends NoQueueBaseFragment {
         }
     }
 
-    @OnClick(R.id.tv_copy)
     public void copyText() {
         ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", selectedText);
@@ -112,7 +97,6 @@ public class InviteFragment extends NoQueueBaseFragment {
             Toast.makeText(getActivity(), "copied", Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick(R.id.tv_how_it_works)
     public void howItWorks() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             Intent in = new Intent(getActivity(), WebViewActivity.class);
@@ -126,5 +110,22 @@ public class InviteFragment extends NoQueueBaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.tv_how_it_works:
+                howItWorks();
+                break;
+            case R.id.tv_copy:
+                copyText();
+                break;
+            case R.id.btn_send_invite:
+                sendInvitation();
+                break;
+
+        }
     }
 }

@@ -74,38 +74,19 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import io.fabric.sdk.android.Fabric;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.UUID;
 
-public class LaunchActivity extends LocationActivity implements OnClickListener, DeviceRegisterPresenter,AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class LaunchActivity extends LocationActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
-    @BindView(R.id.tv_badge)
-    protected TextView tv_badge;
 
-    @BindView(R.id.toolbar)
-    protected Toolbar toolbar;
-
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-
-    @BindView(R.id.iv_search)
-    protected ImageView iv_search;
-
-
-    @BindView(R.id.iv_notification)
-    protected ImageView iv_notification;
-
-    @BindView(R.id.fl_notification)
-    protected FrameLayout fl_notification;
+    private TextView tv_badge;
+    private TextView tv_toolbar_title;
 
     private long lastPress;
     private Toast backPressToast;
@@ -115,6 +96,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private ScanQueueFragment scanFragment;
     private DrawerLayout drawer;
     private Menu nav_Menu;
+    private ImageView actionbarBack;
     public static DatabaseHelper dbHandler;
     public static Locale locale;
     public static SharedPreferences languagepref;
@@ -136,7 +118,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         JodaTimeAndroid.init(this);
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
-        ButterKnife.bind(this);
+        tv_badge = findViewById(R.id.tv_badge);
+        actionbarBack = findViewById(R.id.actionbarBack);
+        tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        ImageView iv_search = findViewById(R.id.iv_search);
+        ImageView iv_notification = findViewById(R.id.iv_notification);
+        FrameLayout fl_notification = findViewById(R.id.fl_notification);
         launchActivity = this;
 //        NoQueueBaseActivity.saveMailAuth("","");
         if (null != getIntent().getExtras()) {
@@ -417,7 +404,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     }
 
 
-
     private void callReviewActivity(String codeQR, String token) {
         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, token);
         if (null == jtk)
@@ -637,7 +623,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     Log.e("onReceiveJsonClientData", ((JsonClientData) object).toString());
                 } else if (object instanceof JsonAlertData) {
                     Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
-                }else if (object instanceof JsonTopicOrderData) {
+                } else if (object instanceof JsonTopicOrderData) {
                     Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
                 }
 
@@ -651,7 +637,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                 ((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
                         updateNotificationBadgeCount();
-                    }else if (object instanceof JsonClientData) {
+                    } else if (object instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) object).getToken());
                         String quserID = ((JsonClientData) object).getQueueUserId();
                         if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
@@ -704,7 +690,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             callSkipScreen(codeQR, token, quserID);
                         }
 
-                    }else if(object instanceof JsonTopicOrderData){
+                    } else if (object instanceof JsonTopicOrderData) {
 //                        String token = String.valueOf(((JsonTopicOrderData) object).getToken());
 //                        String quserID = ((JsonTopicOrderData) object).getQueueUserId();
 //                        if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
@@ -766,7 +752,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
                         go_to = ((JsonTopicQueueData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
                         messageOrigin = ((JsonTopicQueueData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
-                    }else if (object instanceof JsonTopicOrderData) {
+                    } else if (object instanceof JsonTopicOrderData) {
                         current_serving = String.valueOf(((JsonTopicOrderData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
                         go_to = ((JsonTopicOrderData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
                         messageOrigin = ((JsonTopicOrderData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
@@ -874,6 +860,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         deviceModel.setDeviceRegisterPresenter(this);
         deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken()));
     }
+
     @Override
     public void deviceRegisterError() {
 
@@ -881,11 +868,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Override
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
-        if(deviceRegistered.getRegistered() == 1) {
+        if (deviceRegistered.getRegistered() == 1) {
             Log.e("Device register", "deviceRegister Success");
-        }else{
-            Log.e("Device register error: ",deviceRegistered.toString());
-            Toast.makeText(this,"Device register error: ",Toast.LENGTH_LONG).show();
+        } else {
+            Log.e("Device register error: ", deviceRegistered.toString());
+            Toast.makeText(this, "Device register error: ", Toast.LENGTH_LONG).show();
         }
     }
 

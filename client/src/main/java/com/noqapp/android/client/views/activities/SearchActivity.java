@@ -27,8 +27,6 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,14 +37,7 @@ import java.util.Collections;
 public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdapter.OnItemClickListener, NearMePresenter {
 
 
-    @BindView(R.id.rv_merchant_around_you)
-    protected RecyclerView rv_merchant_around_you;
-    @BindView(R.id.edt_search)
-    protected EditText edt_search;
-    @BindView(R.id.tv_auto)
-    protected TextView tv_auto;
-    @BindView(R.id.autoCompleteTextView)
-    protected AutoCompleteTextView autoCompleteTextView;
+  
 
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
@@ -55,12 +46,18 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
     private String lat = "";
     private String longitute = "";
     private NearMeModel nearMeModel;
+    private EditText edt_search;
+    private AutoCompleteTextView autoCompleteTextView;
+    private  RecyclerView rv_merchant_around_you;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        ButterKnife.bind(this);
+        rv_merchant_around_you = findViewById(R.id.rv_merchant_around_you);
+        edt_search= findViewById(R.id.edt_search);
+        TextView tv_auto= findViewById(R.id.tv_auto);
+        autoCompleteTextView= findViewById(R.id.autoCompleteTextView);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_search));
         nearMeModel = new NearMeModel(this);

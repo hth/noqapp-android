@@ -1,9 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterModel;
@@ -37,58 +33,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
 public class RegistrationActivity extends BaseActivity implements ProfilePresenter, View.OnClickListener {
-
-
     private final String TAG = RegistrationActivity.class.getSimpleName();
-
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-
-    @BindView(R.id.edt_phone)
-    protected EditText edt_phoneNo;
-
-    @BindView(R.id.edt_name)
-    protected EditText edt_Name;
-
-    @BindView(R.id.edt_email)
-    protected EditText edt_Mail;
-
-    @BindView(R.id.edt_birthday)
-    protected EditText edt_birthday;
-
-    @BindView(R.id.edt_pwd)
-    protected EditText edt_pwd;
-
-    @BindView(R.id.edt_confirm_pwd)
-    protected EditText edt_confirm_pwd;
-
-    @BindView(R.id.tv_male)
-    protected EditText tv_male;
-
-    @BindView(R.id.tv_female)
-    protected EditText tv_female;
-
-    @BindView(R.id.ll_gender)
-    protected LinearLayout ll_gender;
-
-    @BindView(R.id.ll_pwd)
-    protected LinearLayout ll_pwd;
-
-    @BindView(R.id.btnRegistration)
-    protected Button btnRegistration;
-
+    private EditText edt_phoneNo;
+    private EditText edt_Name;
+    private EditText edt_Mail;
+    private EditText edt_birthday;
+    private EditText edt_pwd;
+    private EditText edt_confirm_pwd;
+    private EditText tv_male;
+    private EditText tv_female;
+    private LinearLayout ll_pwd;
+    private Button btnRegistration;
     private DatePickerDialog fromDatePickerDialog;
 
     public String gender = "";
@@ -97,7 +58,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        ButterKnife.bind(this);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,11 +67,22 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             }
         });
         tv_toolbar_title.setText(getString(R.string.register));
+        edt_phoneNo = findViewById(R.id.edt_phone);
+        edt_Name = findViewById(R.id.edt_name);
+        edt_Mail = findViewById(R.id.edt_email);
+        edt_birthday = findViewById(R.id.edt_birthday);
+        edt_pwd = findViewById(R.id.edt_pwd);
+        edt_confirm_pwd = findViewById(R.id.edt_confirm_pwd);
+        tv_male = findViewById(R.id.tv_male);
+        tv_female = findViewById(R.id.tv_female);
+        ll_pwd = findViewById(R.id.ll_pwd);
+        btnRegistration = findViewById(R.id.btnRegistration);
         edt_birthday.setInputType(InputType.TYPE_NULL);
         edt_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
         edt_phoneNo.setEnabled(false);
+        btnRegistration.setEnabled(false);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
@@ -163,9 +136,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
     }
 
-
-    @OnClick(R.id.btnRegistration)
-    public void action_Registration() {
+    private void actionRegistration() {
         if (validate()) {
             btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
             btnRegistration.setTextColor(Color.WHITE);
@@ -218,6 +189,9 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         if (v == edt_birthday) {
             new AppUtilities().hideKeyBoard(this);
             fromDatePickerDialog.show();
+        }else if (v == btnRegistration) {
+            new AppUtilities().hideKeyBoard(this);
+            actionRegistration();
         } else if (v == tv_male) {
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);

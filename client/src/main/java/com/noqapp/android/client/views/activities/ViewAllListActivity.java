@@ -20,8 +20,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,13 +29,6 @@ import java.util.Collections;
  */
 public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener, NearMePresenter {
 
-
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-    @BindView(R.id.rv_merchant_around_you)
-    protected RecyclerView rv_merchant_around_you;
     private ArrayList<BizStoreElastic> listData;
     private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
 
@@ -50,7 +41,9 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
-        ButterKnife.bind(this);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        RecyclerView rv_merchant_around_you = findViewById(R.id.rv_merchant_around_you);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,8 +53,8 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         tv_toolbar_title.setText(getString(R.string.screen_view_all));
         NearMeModel nearMeModel = new NearMeModel(this);
         listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
-        if(null == listData)
-        listData = new ArrayList<>();
+        if (null == listData)
+            listData = new ArrayList<>();
         String city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         longitute = getIntent().getStringExtra("long");

@@ -1,9 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.beans.body.ChangeMailOTP;
@@ -25,34 +21,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class ChangeEmailActivity extends BaseActivity implements View.OnClickListener, MigrateEmailPresenter,ProfilePresenter {
+public class ChangeEmailActivity extends BaseActivity implements View.OnClickListener, MigrateEmailPresenter, ProfilePresenter {
 
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-    @BindView(R.id.tv_header)
-    protected TextView tv_header;
-    @BindView(R.id.edt_email)
-    protected EditText edt_email;
-    @BindView(R.id.edt_otp)
-    protected EditText edt_otp;
-    @BindView(R.id.btn_verify_email)
-    protected Button btn_verify_email;
-    @BindView(R.id.btn_validate_otp)
-    protected Button btn_validate_otp;
+    private TextView tv_header;
+    private EditText edt_email;
+    private EditText edt_otp;
+    private Button btn_verify_email;
+    private Button btn_validate_otp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_verify);
-        ButterKnife.bind(this);
+        tv_header = findViewById(R.id.tv_header);
+        edt_email = findViewById(R.id.edt_email);
+        edt_otp = findViewById(R.id.edt_otp);
+        btn_verify_email = findViewById(R.id.btn_verify_email);
+        btn_validate_otp = findViewById(R.id.btn_validate_otp);
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.change_email));
         btn_verify_email.setOnClickListener(this);
@@ -62,7 +50,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id){
+        switch (id) {
             case R.id.btn_validate_otp:
                 if (TextUtils.isEmpty(edt_otp.getText())) {
                     edt_otp.setError(getString(R.string.error_otp_blank));
@@ -77,7 +65,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                     profileModel.setProfilePresenter(this);
                     profileModel.migrateMail(UserUtils.getEmail(), UserUtils.getAuth(), changeMailOTP);
                 }
-            break;
+                break;
             case R.id.btn_verify_email:
                 if (TextUtils.isEmpty(edt_email.getText())) {
                     edt_email.setError(getString(R.string.error_email_blank));
@@ -107,8 +95,8 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
             edt_email.setVisibility(View.GONE);
             btn_verify_email.setVisibility(View.GONE);
             tv_header.setText("Verification code");
-            Toast.makeText(this,"Verification code is sent to above email address",Toast.LENGTH_LONG).show();
-        }else {
+            Toast.makeText(this, "Verification code is sent to above email address", Toast.LENGTH_LONG).show();
+        } else {
             //Rejected from  server
             ErrorEncounteredJson eej = jsonResponse.getError();
             if (null != eej) {

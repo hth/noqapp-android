@@ -1,9 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 10/4/18.
- */
-
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
@@ -40,8 +36,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -51,46 +46,38 @@ import java.util.List;
 
 
 public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
-
-    @BindView(R.id.tv_name)
-    protected TextView tv_name;
-    @BindView(R.id.iv_edit)
-    protected ImageView iv_edit;
-    @BindView(R.id.iv_add_dependent)
-    protected ImageView iv_add_dependent;
-    @BindView(R.id.edt_birthday)
-    protected EditText edt_birthday;
-    @BindView(R.id.edt_address)
-    protected EditText edt_address;
-    @BindView(R.id.edt_phone)
-    protected EditText edt_phoneNo;
-    @BindView(R.id.edt_name)
-    protected EditText edt_Name;
-    @BindView(R.id.edt_email)
-    protected EditText edt_Mail;
-    @BindView(R.id.tv_male)
-    protected EditText tv_male;
-    @BindView(R.id.tv_female)
-    protected EditText tv_female;
-    @BindView(R.id.tv_migrate)
-    protected TextView tv_migrate;
-    @BindView(R.id.tv_email_verification)
-    protected TextView tv_email_verification;
-    @BindView(R.id.tv_modify_email)
-    protected TextView tv_modify_email;
-    @BindView(R.id.ll_gender)
-    protected LinearLayout ll_gender;
-    @BindView(R.id.ll_dependent)
-    protected LinearLayout ll_dependent;
-
-    public ImageView iv_profile;
-    public String gender = "";
+    private TextView tv_name;
+    private EditText edt_birthday;
+    private EditText edt_address;
+    private EditText edt_phoneNo;
+    private EditText edt_Name;
+    private EditText edt_Mail;
+    private EditText tv_male;
+    private EditText tv_female;
+    private TextView tv_email_verification;
+    private TextView tv_modify_email;
+    private LinearLayout ll_dependent;
+    private ImageView iv_profile;
+    private String gender = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-        ButterKnife.bind(this);
+        tv_name = findViewById(R.id.tv_name);
+        ImageView iv_edit = findViewById(R.id.iv_edit);
+        ImageView iv_add_dependent = findViewById(R.id.iv_add_dependent);
+        edt_birthday = findViewById(R.id.edt_birthday);
+        edt_address = findViewById(R.id.edt_address);
+        edt_phoneNo = findViewById(R.id.edt_phone);
+        edt_Name = findViewById(R.id.edt_name);
+        edt_Mail = findViewById(R.id.edt_email);
+        tv_male = findViewById(R.id.tv_male);
+        tv_female = findViewById(R.id.tv_female);
+        TextView tv_migrate = findViewById(R.id.tv_migrate);
+        tv_email_verification = findViewById(R.id.tv_email_verification);
+        tv_modify_email = findViewById(R.id.tv_modify_email);
+        ll_dependent = findViewById(R.id.ll_dependent);
         initActionsViews(false);
         iv_profile = findViewById(R.id.iv_profile);
         iv_edit.setOnClickListener(this);

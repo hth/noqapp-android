@@ -25,8 +25,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,17 +32,8 @@ import java.util.List;
 // Scrollview issue  https://stackoverflow.com/questions/37605545/android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 public class StoreMenuActivity extends BaseActivity implements CustomExpandableListAdapter.CartUpdate, MenuHeaderAdapter.OnItemClickListener, MenuAdapter.CartOrderUpdate {
-    private static final String TAG = StoreMenuActivity.class.getSimpleName();
-
-    @BindView(R.id.actionbarBack)
-    protected ImageView actionbarBack;
-    @BindView(R.id.tv_toolbar_title)
-    protected TextView tv_toolbar_title;
-    @BindView(R.id.tv_place_order)
-    protected TextView tv_place_order;
-    @BindView(R.id.rcv_header)
-    protected RecyclerView rcv_header;
-
+    private TextView tv_place_order;
+    private RecyclerView rcv_header;
     private JsonQueue jsonQueue;
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
@@ -54,7 +43,8 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_menu);
-        ButterKnife.bind(this);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +53,8 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
         });
         tv_toolbar_title.setText("Menu");
         ExpandableListView expandableListView = findViewById(R.id.expandableListView);
+        rcv_header = findViewById(R.id.rcv_header);
+        tv_place_order = findViewById(R.id.tv_place_order);
         jsonQueue = (JsonQueue) getIntent().getSerializableExtra("jsonQueue");
         List<JsonStoreCategory> expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
         HashMap<String, List<ChildData>> expandableListDetail = (HashMap<String, List<ChildData>>) getIntent().getExtras().getSerializable("listDataChild");

@@ -1,9 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
@@ -35,61 +31,22 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import java.util.List;
 
 public class JoinActivity extends BaseActivity implements QueuePresenter {
     private final String TAG = JoinActivity.class.getSimpleName();
-    @BindView(R.id.tv_store_name)
     protected TextView tv_store_name;
-
-    @BindView(R.id.tv_queue_name)
-    protected TextView tv_queue_name;
-
-    @BindView(R.id.tv_address)
-    protected TextView tv_address;
-
-    @BindView(R.id.tv_mobile)
-    protected TextView tv_mobile;
-
-    @BindView(R.id.tv_serving_no)
-    protected TextView tv_serving_no;
-
-    @BindView(R.id.tv_people_in_q)
-    protected TextView tv_people_in_q;
-
-    @BindView(R.id.tv_hour_saved)
-    protected TextView tv_hour_saved;
-
-    @BindView(R.id.tv_skip_msg)
-    protected TextView tv_skip_msg;
-
-    @BindView(R.id.tv_rating_review)
-    protected TextView tv_rating_review;
-
-    @BindView(R.id.btn_joinQueue)
-    protected Button btn_joinQueue;
-
-    @BindView(R.id.ratingBar)
-    protected RatingBar ratingBar;
-
-    @BindView(R.id.tv_rating)
-    protected TextView tv_rating;
-
-    @BindView(R.id.tv_add)
-    protected TextView tv_add;
-
-    @BindView(R.id.btn_no)
-    protected Button btn_no;
-
-    @BindView(R.id.sp_name_list)
-    protected Spinner sp_name_list;
-
-    @BindView(R.id.ll_patient_name)
-    protected LinearLayout ll_patient_name;
+    private TextView tv_queue_name;
+    private TextView tv_address;
+    private TextView tv_mobile;
+    private TextView tv_serving_no;
+    private TextView tv_people_in_q;
+    private TextView tv_hour_saved;
+    private TextView tv_rating_review;
+    private RatingBar ratingBar;
+    private Spinner sp_name_list;
+    private LinearLayout ll_patient_name;
 
     private String codeQR;
     private JsonQueue jsonQueue;
@@ -102,7 +59,35 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
-        ButterKnife.bind(this);
+
+        tv_store_name = findViewById(R.id.tv_store_name);
+        tv_queue_name = findViewById(R.id.tv_queue_name);
+        tv_address = findViewById(R.id.tv_address);
+        tv_mobile = findViewById(R.id.tv_mobile);
+        tv_serving_no = findViewById(R.id.tv_serving_no);
+        tv_people_in_q = findViewById(R.id.tv_people_in_q);
+        tv_hour_saved = findViewById(R.id.tv_hour_saved);
+        TextView tv_skip_msg = findViewById(R.id.tv_skip_msg);
+        tv_rating_review = findViewById(R.id.tv_rating_review);
+        Button btn_joinQueue = findViewById(R.id.btn_joinQueue);
+        btn_joinQueue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                joinQueue();
+            }
+        });
+        ratingBar = findViewById(R.id.ratingBar);
+        TextView tv_add = findViewById(R.id.tv_add);
+        Button btn_no = findViewById(R.id.btn_no);
+        btn_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        sp_name_list = findViewById(R.id.sp_name_list);
+        ll_patient_name = findViewById(R.id.ll_patient_name);
+
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_join));
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
@@ -177,7 +162,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this,errorCode);
+        AppUtilities.authenticationProcessing(this, errorCode);
     }
 
     @Override
@@ -226,9 +211,8 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     }
 
 
-    @OnClick(R.id.btn_joinQueue)
-    public void joinQueue() {
-        sp_name_list.setBackground(ContextCompat.getDrawable(this,R.drawable.sp_background));
+    private void joinQueue() {
+        sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
         if (isJoinNotPossible) {
             Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
             if (joinErrorMsg.startsWith("Please login to join")) {
@@ -252,12 +236,11 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 }
 
 
-
                 if (isValid) {
                     if (sp_name_list.getSelectedItemPosition() == 0) {
-                        Toast.makeText(this, getString(R.string.error_patient_name_missing),Toast.LENGTH_LONG ).show();
-                        sp_name_list.setBackground(ContextCompat.getDrawable(this,R.drawable.sp_background_red));
-                    }else {
+                        Toast.makeText(this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
+                        sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
+                    } else {
                         Intent in = new Intent(this, AfterJoinActivity.class);
                         in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
                         in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);
@@ -274,9 +257,9 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
                     if (UserUtils.isLogin()) {
                         if (sp_name_list.getSelectedItemPosition() == 0) {
-                            Toast.makeText(this, getString(R.string.error_patient_name_missing),Toast.LENGTH_LONG ).show();
-                            sp_name_list.setBackground(ContextCompat.getDrawable(this,R.drawable.sp_background_red));
-                        }else {
+                            Toast.makeText(this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
+                            sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
+                        } else {
                             callAfterJoin();
                         }
                     } else {
@@ -310,10 +293,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }
 
-    @OnClick(R.id.btn_no)
-    public void click() {
-        finish();
-    }
 
     /*
      *If user navigate to AfterJoinActivity screen from here &
