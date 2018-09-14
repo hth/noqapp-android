@@ -4,10 +4,10 @@ import static com.noqapp.android.merchant.views.activities.BaseLaunchActivity.db
 
 import com.noqapp.android.merchant.model.database.DatabaseTable;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.SQLException;
-import android.content.ContentValues;
 import android.util.Log;
 
 import java.util.ArrayList;

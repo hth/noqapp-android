@@ -21,8 +21,10 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -114,31 +116,23 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
                         return true;
                     }
                     if (event.getRawX() <= (20 + edt_search.getLeft() + edt_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-                        if (edt_search.getText().toString().equals("")) {
-
-                        } else {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                progressDialog.show();
-                                StoreInfoParam storeInfoParam = new StoreInfoParam();
-                                storeInfoParam.setCityName(city);
-                                storeInfoParam.setLatitude(lat);
-                                storeInfoParam.setLongitude(longitute);
-                                storeInfoParam.setQuery(edt_search.getText().toString());
-                                storeInfoParam.setFilters("");
-                                storeInfoParam.setScrollId(""); //Scroll id - fresh search pass blank
-                                nearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
-                            } else {
-                                ShowAlertInformation.showNetworkDialog(SearchActivity.this);
-                            }
-                        }
-                        new AppUtilities().hideKeyBoard(SearchActivity.this);
+                        performSearch();
                         return true;
                     }
                 }
                 return false;
             }
         });
-
+        edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch();
+                    return true;
+                }
+                return false;
+            }
+        });
         tv_auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,6 +173,27 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
                 return false;
             }
         });
+    }
+
+    private void performSearch() {
+        if (edt_search.getText().toString().equals("")) {
+
+        } else {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.show();
+                StoreInfoParam storeInfoParam = new StoreInfoParam();
+                storeInfoParam.setCityName(city);
+                storeInfoParam.setLatitude(lat);
+                storeInfoParam.setLongitude(longitute);
+                storeInfoParam.setQuery(edt_search.getText().toString());
+                storeInfoParam.setFilters("");
+                storeInfoParam.setScrollId(""); //Scroll id - fresh search pass blank
+                nearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
+            } else {
+                ShowAlertInformation.showNetworkDialog(SearchActivity.this);
+            }
+        }
+        new AppUtilities().hideKeyBoard(SearchActivity.this);
     }
 
     @Override

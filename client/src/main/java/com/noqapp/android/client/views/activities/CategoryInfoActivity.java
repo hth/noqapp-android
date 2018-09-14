@@ -37,7 +37,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 import java.io.Serializable;

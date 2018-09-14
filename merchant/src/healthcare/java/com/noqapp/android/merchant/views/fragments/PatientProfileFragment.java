@@ -35,7 +35,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;

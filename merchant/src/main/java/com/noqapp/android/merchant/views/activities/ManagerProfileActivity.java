@@ -5,7 +5,6 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.ImagePathReader;
