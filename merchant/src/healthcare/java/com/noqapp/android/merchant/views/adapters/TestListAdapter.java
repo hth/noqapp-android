@@ -51,7 +51,7 @@ public class TestListAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         if (convertView == null) {
             recordHolder = new RecordHolder();
-            convertView = layoutInflater.inflate(R.layout.list_item_tests, null);
+            convertView = layoutInflater.inflate(R.layout.list_item_tests, parent, false);
             recordHolder.iv_delete = convertView.findViewById(R.id.iv_delete);
             recordHolder.tv_sequence = convertView.findViewById(R.id.tv_sequence);
             recordHolder.tv_test_name = convertView.findViewById(R.id.tv_test_name);

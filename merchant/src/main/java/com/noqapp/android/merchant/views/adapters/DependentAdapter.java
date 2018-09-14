@@ -42,7 +42,7 @@ public class DependentAdapter extends ArrayAdapter<JsonQueuedDependent> {
         View v = convertView;
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.spinner_item, null);
+            v = inflater.inflate(R.layout.spinner_item, parent, false);
         }
         TextView lbl = (TextView) v.findViewById(R.id.tv_title);
         lbl.setTextColor(Color.BLACK);

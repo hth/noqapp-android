@@ -71,7 +71,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_menu_child, null);
+            convertView = infalInflater.inflate(R.layout.list_item_menu_child, parent, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_child_title = convertView.findViewById(R.id.tv_child_title);
             childViewHolder.tv_value = convertView.findViewById(R.id.tv_value);

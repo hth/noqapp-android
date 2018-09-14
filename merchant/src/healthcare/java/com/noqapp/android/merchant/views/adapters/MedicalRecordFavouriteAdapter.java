@@ -53,7 +53,7 @@ public class MedicalRecordFavouriteAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         if (view == null) {
             recordHolder = new RecordHolder();
-            view = layoutInflater.inflate(R.layout.medical_item, null);
+            view = layoutInflater.inflate(R.layout.medical_item, viewGroup, false);
             recordHolder.tv_medicine_name = view.findViewById(R.id.tv_medicine_name);
             recordHolder.tv_medication = view.findViewById(R.id.tv_medication);
             recordHolder.tv_dose = view.findViewById(R.id.tv_dose);
