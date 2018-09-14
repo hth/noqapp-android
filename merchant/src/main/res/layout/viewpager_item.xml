@@ -113,7 +113,8 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_margin="5dp"
-                                android:background="@mipmap/setting"
+                                android:backgroundTint="@color/colorAccent"
+                                android:background="@drawable/settings"
                                 android:gravity="center_vertical"
                                 android:scaleType="centerInside"/>
                     </RelativeLayout>
@@ -133,7 +134,7 @@
                             <TextView
                                     android:id="@+id/tv_counter_name"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="40dp"
+                                    android:layout_height="35dp"
                                     android:layout_centerVertical="true"
                                     android:layout_marginRight="5dp"
                                     android:layout_toLeftOf="@+id/iv_edit"

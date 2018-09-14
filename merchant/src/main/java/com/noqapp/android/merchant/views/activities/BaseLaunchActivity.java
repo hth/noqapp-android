@@ -131,10 +131,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else {
+        if (new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
         languagepref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -241,11 +241,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         if (isLoggedIn()) {
             if (isAccessGrant()) {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                if (!new AppUtils().isTablet(getApplicationContext())) {
-                    merchantListFragment = new MerchantListFragment();
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
-                    // setUserName();
-                } else {
+                if (new AppUtils().isTablet(getApplicationContext())) {
                     LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
                     LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.7f);
                     list_fragment.setLayoutParams(lp1);
@@ -255,6 +251,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                     fragmentTransaction.replace(R.id.frame_layout, merchantListFragment);
                     //  fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
+                } else {
+                    merchantListFragment = new MerchantListFragment();
+                    replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
+                    // setUserName();
                 }
             } else {
                 if (new AppUtils().isTablet(getApplicationContext())) {

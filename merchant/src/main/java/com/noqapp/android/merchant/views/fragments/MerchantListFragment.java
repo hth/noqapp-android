@@ -273,15 +273,15 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (!new AppUtils().isTablet(getActivity())) {
+                if (new AppUtils().isTablet(getActivity())) {
+                    merchantDetailFragment.setPage(position);
+                } else {
                     merchantDetailFragment = new MerchantDetailFragment();
                     Bundle b = new Bundle();
                     b.putSerializable("jsonMerchant", topics);
                     b.putInt("position", position);
                     merchantDetailFragment.setArguments(b);
                     LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, merchantDetailFragment, "MerchantViewPagerFragment");
-                } else {
-                    merchantDetailFragment.setPage(position);
                 }
                 selected_pos = position;
                 // to set the selected cell color

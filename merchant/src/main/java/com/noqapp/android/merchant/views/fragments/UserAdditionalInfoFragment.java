@@ -1,10 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-/**
- * Created by chandra on 10/4/18.
- */
-
-
 import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -41,20 +36,16 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
     private TextView edt_practice_start;
     private EditText edt_edu_name;
     private TextView tv_edu_date;
-    private ImageView iv_edu_add;
     private EditText edt_award_name;
     private TextView tv_award_date;
-    private ImageView iv_award_add;
     private EditText edt_license_name;
     private TextView tv_license_date;
-    private ImageView iv_license_add;
     private LinearLayout ll_education;
     private LinearLayout ll_experience;
     private LinearLayout ll_license;
-    private Button btn_update;
     private JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal;
 
-    Calendar calendar = Calendar.getInstance();
+
     private ProgressDialog progressDialog;
 
     @Override
@@ -67,17 +58,17 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
         edt_practice_start = view.findViewById(R.id.edt_practice_start);
         edt_edu_name = view.findViewById(R.id.edt_edu_name);
         tv_edu_date = view.findViewById(R.id.tv_edu_date);
-        iv_edu_add = view.findViewById(R.id.iv_edu_add);
+        ImageView iv_edu_add = view.findViewById(R.id.iv_edu_add);
         edt_award_name = view.findViewById(R.id.edt_award_name);
         tv_award_date = view.findViewById(R.id.tv_award_date);
-        iv_award_add = view.findViewById(R.id.iv_award_add);
+        ImageView iv_award_add = view.findViewById(R.id.iv_award_add);
         edt_license_name = view.findViewById(R.id.edt_license_name);
         tv_license_date = view.findViewById(R.id.tv_license_date);
-        iv_license_add = view.findViewById(R.id.iv_license_add);
+        ImageView iv_license_add = view.findViewById(R.id.iv_license_add);
         ll_education = view.findViewById(R.id.ll_education);
         ll_experience = view.findViewById(R.id.ll_experience);
         ll_license = view.findViewById(R.id.ll_license);
-        btn_update = view.findViewById(R.id.btn_update);
+        Button btn_update = view.findViewById(R.id.btn_update);
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,52 +78,17 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
         if (null != jsonProfessionalProfilePersonal)
             updateUI(jsonProfessionalProfilePersonal);
 
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                Date current = newDate.getTime();
-                int date_diff = new Date().compareTo(current);
-
-                if (date_diff < 0) {
-                    Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
-                    edt_practice_start.setText("");
-                } else {
-                    edt_practice_start.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
-                }
-
-            }
-
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         edt_practice_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                datePickerDialog.show();
+                openDatePickerDialog(edt_practice_start);
             }
         });
-        final DatePickerDialog fromDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
 
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                Date current = newDate.getTime();
-                int date_diff = new Date().compareTo(current);
-
-                if (date_diff < 0) {
-                    Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
-                    tv_edu_date.setText("");
-                } else {
-                    tv_edu_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
-                }
-
-            }
-
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         tv_edu_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fromDatePickerDialog.show();
+                openDatePickerDialog(tv_edu_date);
             }
         });
         iv_edu_add.setOnClickListener(new View.OnClickListener() {
@@ -148,34 +104,13 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                     updateUI(jsonProfessionalProfilePersonal);
                     edt_edu_name.setText("");
                     tv_edu_date.setText("");
-
                 }
-
-
             }
         });
-        final DatePickerDialog fromDatePickerDialog1 = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                Date current = newDate.getTime();
-                int date_diff = new Date().compareTo(current);
-
-                if (date_diff < 0) {
-                    Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
-                    tv_award_date.setText("");
-                } else {
-                    tv_award_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
-                }
-
-            }
-
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         tv_award_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fromDatePickerDialog1.show();
+                openDatePickerDialog(tv_award_date);
             }
         });
         iv_award_add.setOnClickListener(new View.OnClickListener() {
@@ -193,34 +128,13 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                     tv_award_date.setText("");
 
                 }
-
-
             }
         });
 
-
-        final DatePickerDialog fromDatePickerDialog2 = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                Date current = newDate.getTime();
-                int date_diff = new Date().compareTo(current);
-
-                if (date_diff < 0) {
-                    Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
-                    tv_license_date.setText("");
-                } else {
-                    tv_license_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
-                }
-
-            }
-
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         tv_license_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fromDatePickerDialog2.show();
+                openDatePickerDialog(tv_license_date);
             }
         });
         iv_license_add.setOnClickListener(new View.OnClickListener() {
@@ -236,10 +150,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                     updateUI(jsonProfessionalProfilePersonal);
                     edt_license_name.setText("");
                     tv_license_date.setText("");
-
                 }
-
-
             }
         });
         return view;
@@ -266,30 +177,6 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
             ImageView iv_delete = inflatedLayout.findViewById(R.id.iv_delete);
             tv_name.setText(jsonNameDatePair.getName());
             tv_date.setText(TextUtils.isEmpty(jsonNameDatePair.getMonthYear()) ? "" : jsonNameDatePair.getMonthYear());
-            final DatePickerDialog fromDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    Calendar newDate = Calendar.getInstance();
-                    newDate.set(year, monthOfYear, dayOfMonth);
-                    Date current = newDate.getTime();
-                    int date_diff = new Date().compareTo(current);
-
-                    if (date_diff < 0) {
-                        Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
-                        tv_date.setText("");
-                    } else {
-                        tv_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
-                    }
-
-                }
-
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-            tv_date.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fromDatePickerDialog.show();
-                }
-            });
             iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -340,30 +227,6 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
             ImageView iv_delete = inflatedLayout.findViewById(R.id.iv_delete);
             tv_name.setText(jsonNameDatePair.getName());
             tv_date.setText(TextUtils.isEmpty(jsonNameDatePair.getMonthYear()) ? "" : jsonNameDatePair.getMonthYear());
-            final DatePickerDialog fromDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    Calendar newDate = Calendar.getInstance();
-                    newDate.set(year, monthOfYear, dayOfMonth);
-                    Date current = newDate.getTime();
-                    int date_diff = new Date().compareTo(current);
-
-                    if (date_diff < 0) {
-                        Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
-                        tv_date.setText("");
-                    } else {
-                        tv_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
-                    }
-
-                }
-
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-            tv_date.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fromDatePickerDialog.show();
-                }
-            });
             iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -413,30 +276,6 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
             ImageView iv_delete = inflatedLayout.findViewById(R.id.iv_delete);
             tv_name.setText(jsonNameDatePair.getName());
             tv_date.setText(TextUtils.isEmpty(jsonNameDatePair.getMonthYear()) ? "" : jsonNameDatePair.getMonthYear());
-            final DatePickerDialog fromDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    Calendar newDate = Calendar.getInstance();
-                    newDate.set(year, monthOfYear, dayOfMonth);
-                    Date current = newDate.getTime();
-                    int date_diff = new Date().compareTo(current);
-
-                    if (date_diff < 0) {
-                        Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
-                        tv_date.setText("");
-                    } else {
-                        tv_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
-                    }
-
-                }
-
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-            tv_date.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fromDatePickerDialog.show();
-                }
-            });
             iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -520,5 +359,28 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
     private void dismissProgress() {
         if (null != progressDialog && progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+    private void openDatePickerDialog(final TextView edt) {
+        Calendar calendar = Calendar.getInstance();
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                Date current = newDate.getTime();
+                int date_diff = new Date().compareTo(current);
+
+                if (date_diff < 0) {
+                    Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
+                    edt.setText("");
+                } else {
+                    edt.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
+                }
+
+            }
+
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
     }
 }

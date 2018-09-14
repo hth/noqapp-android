@@ -117,6 +117,7 @@
                             android:textOn=""/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
             <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -173,62 +174,6 @@
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/text_size_fourteen"/>
 
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"
-                    card_view:cardCornerRadius="4dp">
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/white"
-                        android:minHeight="@dimen/cell_size"
-                        android:orientation="horizontal"
-                        android:paddingLeft="@dimen/screen_padding"
-                        android:paddingRight="@dimen/screen_padding">
-
-                    <TextView
-                            android:id="@+id/tv_limited_label"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="0.6"
-                            android:gravity="center_vertical"
-                            android:text="@string/unlimited_token"
-                            android:textColor="@color/color_total_val"
-                            android:textSize="@dimen/text_size_fourteen"/>
-
-                    <EditText
-                            android:id="@+id/edt_token_no"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="0.20"
-                            android:background="@drawable/square_white_bg_drawable"
-                            android:gravity="center"
-                            android:imeOptions="actionDone"
-                            android:inputType="number"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp"
-                            android:textColor="@android:color/black"
-                            android:visibility="invisible"
-                            android:textSize="@dimen/text_size_fourteen"/>
-
-
-                    <CheckBox
-                            android:id="@+id/cb_limit"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="0.20"
-                            android:button="@drawable/checkbox_selector"
-                            android:layoutDirection="rtl"/>
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
@@ -381,11 +326,181 @@
                             android:layout_marginBottom="5dp"
                             android:layout_marginTop="20dp"
                             android:background="@drawable/button_drawable_red"
-                           android:padding="5dp"
+                            android:padding="5dp"
                             android:text="  Update Hours  "
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/text_size_fourteen"/>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="4dp">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="@string/scheduleing"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold"/>
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="5dp"
+                                android:weightSum="1">
+
+                            <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".7"
+                                    android:padding="5dp"
+                                    android:text="@string/scheduleing_from"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
+                            <TextView
+                                    android:id="@+id/tv_scheduleing_from"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".3"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                            <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".7"
+                                    android:padding="5dp"
+                                    android:text="@string/scheduleing_ending"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
+                            <TextView
+                                    android:id="@+id/tv_scheduleing_ending"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".3"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                    <Button
+                            android:id="@+id/btn_update_scheduling"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/btn_height"
+                            android:layout_gravity="right"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/button_drawable_red"
+                            android:padding="5dp"
+                            android:text="  Scheduled Store Close  "
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <TextView
+                            android:id="@+id/tv_scheduling_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_twelve"/>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="4dp">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:minHeight="@dimen/cell_size"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/screen_padding"
+                        android:paddingRight="@dimen/screen_padding">
+
+                    <TextView
+                            android:id="@+id/tv_limited_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0.6"
+                            android:gravity="center_vertical"
+                            android:text="@string/unlimited_token"
+                            android:textColor="@color/color_total_val"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <EditText
+                            android:id="@+id/edt_token_no"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0.20"
+                            android:background="@drawable/square_white_bg_drawable"
+                            android:gravity="center"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp"
+                            android:textColor="@android:color/black"
+                            android:visibility="invisible"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+
+                    <CheckBox
+                            android:id="@+id/cb_limit"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0.20"
+                            android:button="@drawable/checkbox_selector"
+                            android:layoutDirection="rtl"/>
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>

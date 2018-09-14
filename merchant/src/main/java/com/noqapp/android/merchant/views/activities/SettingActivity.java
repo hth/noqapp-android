@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.QueueSettingModel;
@@ -18,6 +19,7 @@ import org.joda.time.Duration;
 import org.joda.time.LocalTime;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -25,6 +27,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -34,6 +37,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -43,16 +47,18 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
 
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
-    private ToggleButton toggleDayClosed, togglePreventJoin,toggleTodayClosed;
+    private ToggleButton toggleDayClosed, togglePreventJoin, toggleTodayClosed;
     private String codeQR;
     protected boolean isDialog = false;
-    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute,tv_close_day_of_week;
+    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute, tv_close_day_of_week;
+    private TextView tv_scheduling_from, tv_scheduling_ending,tv_scheduling_status;
     private CheckBox cb_limit;
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
@@ -60,11 +66,11 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(!isDialog) {
-            if (!new AppUtils().isTablet(getApplicationContext())) {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            } else {
+        if (!isDialog) {
+            if (new AppUtils().isTablet(getApplicationContext())) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            } else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
         }
         super.onCreate(savedInstanceState);
@@ -77,15 +83,15 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             getWindow().setLayout(screenWidth, height);
         }
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        actionbarBack =  findViewById(R.id.actionbarBack);
-        ScrollView scroll_view =  findViewById(R.id.scroll_view);
+        actionbarBack = findViewById(R.id.actionbarBack);
+        ScrollView scroll_view = findViewById(R.id.scroll_view);
         scroll_view.setScrollBarFadeDuration(0);
         scroll_view.setScrollbarFadingEnabled(false);
         initProgress();
         TextView tv_title = findViewById(R.id.tv_title);
-        toggleDayClosed =  findViewById(R.id.toggleDayClosed);
-        toggleTodayClosed =  findViewById(R.id.toggleTodayClosed);
-        togglePreventJoin =  findViewById(R.id.togglePreventJoin);
+        toggleDayClosed = findViewById(R.id.toggleDayClosed);
+        toggleTodayClosed = findViewById(R.id.toggleTodayClosed);
+        togglePreventJoin = findViewById(R.id.togglePreventJoin);
         String title = getIntent().getStringExtra("title");
         codeQR = getIntent().getStringExtra("codeQR");
         if (null != title) {
@@ -126,7 +132,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                  /* Write your logic here that will be executed when user taps next button */
+                    /* Write your logic here that will be executed when user taps next button */
                     if (!edt_token_no.getText().toString().equals("")) {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             progressDialog.show();
@@ -152,9 +158,25 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         tv_limited_label = findViewById(R.id.tv_limited_label);
         tv_delay_in_minute = findViewById(R.id.tv_delay_in_minute);
         tv_close_day_of_week = findViewById(R.id.tv_close_day_of_week);
+        tv_scheduling_from = findViewById(R.id.tv_scheduleing_from);
+        tv_scheduling_ending = findViewById(R.id.tv_scheduleing_ending);
+        tv_scheduling_status = findViewById(R.id.tv_scheduling_status);
+        tv_scheduling_from.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDatePicker(tv_scheduling_from);
+            }
+        });
+        tv_scheduling_ending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDatePicker(tv_scheduling_ending);
+            }
+        });
         String dayLongName = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-        tv_close_day_of_week.setText(getResources().getString(R.string.dayclosed,dayLongName));
+        tv_close_day_of_week.setText(getResources().getString(R.string.dayclosed, dayLongName));
         tv_delay_in_minute.setOnClickListener(new TextViewClickDelay(tv_delay_in_minute));
+
         if (LaunchActivity.getLaunchActivity().getUserLevel() != UserLevelEnum.S_MANAGER) {
             //disable the fields for unauthorized user
             tv_store_start.setEnabled(false);
@@ -165,20 +187,37 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             toggleDayClosed.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this,"Permission denied","You don't have permission to change this settings");
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
                     return false;
                 }
             });
         }
         Button btn_update_time = findViewById(R.id.btn_update_time);
         Button btn_update_delay = findViewById(R.id.btn_update_delay);
+        Button btn_update_scheduling = findViewById(R.id.btn_update_scheduling);
         btn_update_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
                     callUpdate();
-                }else{
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this,"Permission denied","You don't have permission to change this settings");
+                } else {
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
+                }
+            }
+        });
+        btn_update_scheduling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (TextUtils.isEmpty(tv_scheduling_from.getText().toString()) || TextUtils.isEmpty(tv_scheduling_ending.getText().toString())) {
+                    Toast.makeText(SettingActivity.this, "Both scheduling dates are required", Toast.LENGTH_LONG).show();
+                } else if (isEndDateNotAfterStartDate()) {
+                    Toast.makeText(SettingActivity.this, "Ending scheduling date should be after Starting scheduling date", Toast.LENGTH_LONG).show();
+                } else {
+                    if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+                        callUpdate();
+                    } else {
+                        ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
+                    }
                 }
             }
         });
@@ -195,6 +234,17 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             queueSettingModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+        }
+    }
+
+    private boolean isEndDateNotAfterStartDate() {
+        try {
+            Date date1 = CommonHelper.SDF_YYYY_MM_DD.parse(tv_scheduling_from.getText().toString());
+            Date date2 = CommonHelper.SDF_YYYY_MM_DD.parse(tv_scheduling_ending.getText().toString());
+            return date1.after(date2);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -227,10 +277,16 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
             tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
             tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getEndHour()));
-
             LocalTime localTime = Formatter.parseLocalTime(String.format(Locale.US, "%04d", queueSetting.getStartHour()));
             localTime = localTime.plusMinutes(queueSetting.getDelayedInMinutes());
             tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(localTime));
+           // tv_scheduling_from.setText(queueSetting.getScheduledFromDay());
+            // tv_scheduling_ending.setText(queueSetting.getScheduledUntilDay());
+            if(TextUtils.isEmpty(queueSetting.getScheduledFromDay())){
+                tv_scheduling_status.setText("");
+            }else{
+                tv_scheduling_status.setText("Store schedule to close from "+queueSetting.getScheduledFromDay()+" to "+queueSetting.getScheduledUntilDay());
+            }
 
             if (queueSetting.getAvailableTokenCount() <= 0) {
                 cb_limit.setChecked(true);
@@ -280,9 +336,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
             if (v.getId() == R.id.toggleDayClosed) {
                 toggleDayClosed.setChecked(!toggleDayClosed.isChecked());
-            } else if(v.getId() == R.id.togglePreventJoin){
+            } else if (v.getId() == R.id.togglePreventJoin) {
                 togglePreventJoin.setChecked(!togglePreventJoin.isChecked());
-            }else {
+            } else {
                 toggleTodayClosed.setChecked(!toggleTodayClosed.isChecked());
             }
         }
@@ -309,6 +365,14 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
         if (StringUtils.isNotBlank(tv_store_close.getText().toString())) {
             queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
+        }
+
+        if (StringUtils.isNotBlank(tv_scheduling_from.getText().toString())) {
+            queueSetting.setFromDay(tv_scheduling_from.getText().toString());
+        }
+
+        if (StringUtils.isNotBlank(tv_scheduling_ending.getText().toString())) {
+            queueSetting.setUntilDay(tv_scheduling_ending.getText().toString());
         }
 
         if (StringUtils.isBlank(edt_token_no.getText().toString())) {
@@ -347,7 +411,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker;
-            mTimePicker = new TimePickerDialog(SettingActivity.this,R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
+            mTimePicker = new TimePickerDialog(SettingActivity.this, R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     if (selectedHour == 0 && selectedMinute == 0) {
@@ -375,7 +439,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker;
-            mTimePicker = new TimePickerDialog(SettingActivity.this,R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
+            mTimePicker = new TimePickerDialog(SettingActivity.this, R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     if (selectedHour == 0 && selectedMinute == 0) {
@@ -404,6 +468,29 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
+    }
+
+    private void openDatePicker(final TextView tv) {
+        Calendar newCalendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                Date current = newDate.getTime();
+                int date_diff = new Date().compareTo(current);
+
+                if (date_diff < 0) {
+                    tv.setText(CommonHelper.SDF_YYYY_MM_DD.format(newDate.getTime()));
+                } else {
+                    Toast.makeText(SettingActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
+                    tv.setText("");
+                }
+
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
     }
 
 }

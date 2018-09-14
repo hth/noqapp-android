@@ -58,6 +58,18 @@ public class QueueSetting {
     @JsonProperty("at")
     private int availableTokenCount;
 
+    @JsonProperty ("fr")
+    private String fromDay;
+
+    @JsonProperty ("un")
+    private String untilDay;
+
+    @JsonProperty ("scFr")
+    private String scheduledFromDay;
+
+    @JsonProperty ("scUn")
+    private String scheduledUntilDay;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -151,6 +163,42 @@ public class QueueSetting {
         return this;
     }
 
+    public String getFromDay() {
+        return fromDay;
+    }
+
+    public QueueSetting setFromDay(String fromDay) {
+        this.fromDay = fromDay;
+        return this;
+    }
+
+    public String getUntilDay() {
+        return untilDay;
+    }
+
+    public QueueSetting setUntilDay(String untilDay) {
+        this.untilDay = untilDay;
+        return this;
+    }
+
+    public String getScheduledFromDay() {
+        return scheduledFromDay;
+    }
+
+    public QueueSetting setScheduledFromDay(String scheduledFromDay) {
+        this.scheduledFromDay = scheduledFromDay;
+        return this;
+    }
+
+    public String getScheduledUntilDay() {
+        return scheduledUntilDay;
+    }
+
+    public QueueSetting setScheduledUntilDay(String scheduledUntilDay) {
+        this.scheduledUntilDay = scheduledUntilDay;
+        return this;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -169,9 +217,14 @@ public class QueueSetting {
                 ", tokenNotAvailableFrom=" + tokenNotAvailableFrom +
                 ", endHour=" + endHour +
                 ", delayedInMinutes=" + delayedInMinutes +
-                ", preventJoining=" + preventJoining +
                 ", dayClosed=" + dayClosed +
+                ", tempDayClosed=" + tempDayClosed +
+                ", preventJoining=" + preventJoining +
                 ", availableTokenCount=" + availableTokenCount +
+                ", fromDay='" + fromDay + '\'' +
+                ", untilDay='" + untilDay + '\'' +
+                ", scheduledFromDay='" + scheduledFromDay + '\'' +
+                ", scheduledUntilDay='" + scheduledUntilDay + '\'' +
                 ", error=" + error +
                 '}';
     }

@@ -37,7 +37,6 @@ public class ChartListFragment extends Fragment implements  ChartPresenter{
     private ListView listview;
     private ArrayList<HealthCareStat> healthCareStatList = new ArrayList<>();
     private ProgressDialog progressDialog;
-    private MerchantStatsModel merchantStatsModel;
     private boolean isFirstTime = true;
 
     public ChartListFragment() {
@@ -49,7 +48,7 @@ public class ChartListFragment extends Fragment implements  ChartPresenter{
         View view = inflater.inflate(R.layout.fragment_merchant_chart_list, container, false);
         listview = view.findViewById(R.id.listview);
         initProgress();
-        merchantStatsModel = new MerchantStatsModel(this);
+        MerchantStatsModel merchantStatsModel = new MerchantStatsModel(this);
         Bundle bundle = getArguments();
         run = new Runnable() {
             public void run() {
@@ -99,15 +98,15 @@ public class ChartListFragment extends Fragment implements  ChartPresenter{
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (!new AppUtils().isTablet(getActivity())) {
+                if (new AppUtils().isTablet(getActivity())) {
+                    chartFragment.updateChart(healthCareStatList.get(position));
+                    //set page for view pager
+                } else {
                     chartFragment = new ChartFragment();
                     Bundle b = new Bundle();
                     b.putSerializable("healthCareStat", healthCareStatList.get(position));
                     chartFragment.setArguments(b);
                     ChartListActivity.getChartListActivity().replaceFragmentWithBackStack(R.id.frame_layout, chartFragment,ChartListFragment.class.getSimpleName());
-                } else {
-                    chartFragment.updateChart(healthCareStatList.get(position));
-                    //set page for view pager
                 }
                 selected_pos = position;
                 // to set the selected cell color
