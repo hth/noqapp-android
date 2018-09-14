@@ -58,7 +58,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private String codeQR;
     protected boolean isDialog = false;
     private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute, tv_close_day_of_week;
-    private TextView tv_scheduling_from, tv_scheduling_ending;
+    private TextView tv_scheduling_from, tv_scheduling_ending,tv_scheduling_status;
     private CheckBox cb_limit;
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
@@ -67,10 +67,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!isDialog) {
-            if (!new AppUtils().isTablet(getApplicationContext())) {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            } else {
+            if (new AppUtils().isTablet(getApplicationContext())) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            } else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
         }
         super.onCreate(savedInstanceState);
@@ -160,6 +160,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         tv_close_day_of_week = findViewById(R.id.tv_close_day_of_week);
         tv_scheduling_from = findViewById(R.id.tv_scheduleing_from);
         tv_scheduling_ending = findViewById(R.id.tv_scheduleing_ending);
+        tv_scheduling_status = findViewById(R.id.tv_scheduling_status);
         tv_scheduling_from.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,8 +280,13 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             LocalTime localTime = Formatter.parseLocalTime(String.format(Locale.US, "%04d", queueSetting.getStartHour()));
             localTime = localTime.plusMinutes(queueSetting.getDelayedInMinutes());
             tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(localTime));
-            tv_scheduling_from.setText(queueSetting.getScheduledFromDay());
-            tv_scheduling_ending.setText(queueSetting.getScheduleUntilDay());
+           // tv_scheduling_from.setText(queueSetting.getScheduledFromDay());
+           // tv_scheduling_ending.setText(queueSetting.getScheduleUntilDay());
+            if(TextUtils.isEmpty(queueSetting.getScheduledFromDay())){
+                tv_scheduling_status.setText("");
+            }else{
+                tv_scheduling_status.setText("Store schedule to close from "+queueSetting.getScheduledFromDay()+" to "+queueSetting.getScheduleUntilDay());
+            }
 
             if (queueSetting.getAvailableTokenCount() <= 0) {
                 cb_limit.setChecked(true);

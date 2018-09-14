@@ -3,8 +3,10 @@ package com.noqapp.android.merchant.views.adapters;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.utils.AppUtils;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -67,7 +69,13 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
         }
         childViewHolder.rv.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManager2 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, 7));
+        int coloumnCount;
+        if (new AppUtils().isTablet(context.getApplicationContext())) {
+            coloumnCount = 7;
+        } else {
+            coloumnCount = 2;
+        }
+        childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, coloumnCount));
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
         ViewAllPeopleInQAdapter currentActivityAdapter = new ViewAllPeopleInQAdapter(childData.getQueuedPeople(), context, null);
         childViewHolder.rv.setAdapter(currentActivityAdapter);

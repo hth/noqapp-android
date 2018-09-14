@@ -117,6 +117,7 @@
                             android:textOn=""/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
             <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -325,7 +326,7 @@
                             android:layout_marginBottom="5dp"
                             android:layout_marginTop="20dp"
                             android:background="@drawable/button_drawable_red"
-                           android:padding="5dp"
+                            android:padding="5dp"
                             android:text="  Update Hours  "
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
@@ -352,6 +353,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
+
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -418,8 +420,6 @@
                         </LinearLayout>
 
 
-
-
                     </LinearLayout>
 
 
@@ -436,6 +436,15 @@
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/text_size_fourteen"/>
+
+                    <TextView
+                            android:id="@+id/tv_scheduling_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_twelve"/>
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>

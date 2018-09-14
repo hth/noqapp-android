@@ -10,6 +10,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -17,6 +18,7 @@ import com.noqapp.android.merchant.views.adapters.ViewAllExpandableListAdapter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -43,6 +45,11 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (new AppUtils().isTablet(getApplicationContext())) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
         listview = findViewById(R.id.exp_list_view);
