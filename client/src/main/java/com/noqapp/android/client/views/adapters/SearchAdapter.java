@@ -26,14 +26,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
+public class SearchAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
     private final OnItemClickListener listener;
     private ArrayList<BizStoreElastic> dataSet;
 
-    public StoreInfoViewAllAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener) {
+
+
+    public SearchAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -118,10 +120,10 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        /* When location permission on install is being asked, and after approval click on view all. */
-        //TODO add check for dataSet is not null
         return dataSet.size();
     }
+
+
 
     public interface OnItemClickListener {
         void onStoreItemClick(BizStoreElastic item, View view, int pos);
