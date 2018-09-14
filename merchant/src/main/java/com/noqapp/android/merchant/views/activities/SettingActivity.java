@@ -281,11 +281,11 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             localTime = localTime.plusMinutes(queueSetting.getDelayedInMinutes());
             tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(localTime));
            // tv_scheduling_from.setText(queueSetting.getScheduledFromDay());
-           // tv_scheduling_ending.setText(queueSetting.getScheduleUntilDay());
+            // tv_scheduling_ending.setText(queueSetting.getScheduledUntilDay());
             if(TextUtils.isEmpty(queueSetting.getScheduledFromDay())){
                 tv_scheduling_status.setText("");
             }else{
-                tv_scheduling_status.setText("Store schedule to close from "+queueSetting.getScheduledFromDay()+" to "+queueSetting.getScheduleUntilDay());
+                tv_scheduling_status.setText("Store schedule to close from "+queueSetting.getScheduledFromDay()+" to "+queueSetting.getScheduledUntilDay());
             }
 
             if (queueSetting.getAvailableTokenCount() <= 0) {

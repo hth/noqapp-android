@@ -465,7 +465,7 @@
                             android:layout_marginTop="20dp"
                             android:background="@drawable/button_drawable_red"
                             android:padding="5dp"
-                            android:text="  Update Scheduling  "
+                            android:text="  Scheduled Store Close  "
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/text_size_fourteen"/>

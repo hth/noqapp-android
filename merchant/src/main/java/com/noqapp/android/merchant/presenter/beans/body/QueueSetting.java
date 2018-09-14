@@ -68,7 +68,7 @@ public class QueueSetting {
     private String scheduledFromDay;
 
     @JsonProperty ("scUn")
-    private String scheduleUntilDay;
+    private String scheduledUntilDay;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -190,12 +190,12 @@ public class QueueSetting {
         return this;
     }
 
-    public String getScheduleUntilDay() {
-        return scheduleUntilDay;
+    public String getScheduledUntilDay() {
+        return scheduledUntilDay;
     }
 
-    public QueueSetting setScheduleUntilDay(String scheduleUntilDay) {
-        this.scheduleUntilDay = scheduleUntilDay;
+    public QueueSetting setScheduledUntilDay(String scheduledUntilDay) {
+        this.scheduledUntilDay = scheduledUntilDay;
         return this;
     }
 
@@ -224,7 +224,7 @@ public class QueueSetting {
                 ", fromDay='" + fromDay + '\'' +
                 ", untilDay='" + untilDay + '\'' +
                 ", scheduledFromDay='" + scheduledFromDay + '\'' +
-                ", scheduleUntilDay='" + scheduleUntilDay + '\'' +
+                ", scheduledUntilDay='" + scheduledUntilDay + '\'' +
                 ", error=" + error +
                 '}';
     }
