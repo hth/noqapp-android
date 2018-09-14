@@ -7,6 +7,7 @@ import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
+import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.DeviceModel;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -686,6 +687,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, "Share the app"));
         drawerItem.add(new NavigationBean(R.drawable.ic_star, "Rate the app"));
         drawerItem.add(new NavigationBean(R.drawable.language, "Change language"));
+        drawerItem.add(new NavigationBean(R.drawable.androidos, BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
+                ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+                : getString(R.string.version_no, "Not for release")));
+
+
         if (showChart)
             drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Charts"));
         drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
