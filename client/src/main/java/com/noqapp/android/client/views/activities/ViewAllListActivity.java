@@ -65,8 +65,34 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
         // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
-        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, this);
+        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, this, rv_merchant_around_you);
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
+//        storeInfoViewAllAdapter.setOnLoadMoreListener(new StoreInfoViewAllAdapter.OnLoadMoreListener() {
+//            @Override
+//            public void onLoadMore() {
+//                //add null , so the adapter will check view_type and show progress bar at bottom
+//                listData.add(null);
+//                rv_merchant_around_you.post(new Runnable() {
+//                    public void run() {
+//                        storeInfoViewAllAdapter.notifyItemInserted(listData.size() - 1);
+//                        storeInfoViewAllAdapter.notifyDataSetChanged();
+//                    }
+//                });
+//
+//                if (LaunchActivity.getLaunchActivity().isOnline()) {
+//                    StoreInfoParam storeInfoParam = new StoreInfoParam();
+//                    storeInfoParam.setCityName(city);
+//                    storeInfoParam.setLatitude(lat);
+//                    storeInfoParam.setLongitude(longitute);
+//                    storeInfoParam.setFilters("xyz");
+//                    storeInfoParam.setScrollId(scrollId);
+//                    nearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
+//                } else {
+//                    ShowAlertInformation.showNetworkDialog(ViewAllListActivity.this);
+//                }
+//            }
+//        });
+
 
     }
 
@@ -111,6 +137,8 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         //add all items
         listData.addAll(nearMeData);
         storeInfoViewAllAdapter.notifyDataSetChanged();
+        storeInfoViewAllAdapter.setLoaded();
+        //or you can add all at once but do not forget to call storeInfoViewAllAdapter.notifyDataSetChanged();
 
     }
 

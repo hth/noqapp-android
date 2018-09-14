@@ -32,11 +32,47 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     private final int VIEW_PROG = 0;
     private final OnItemClickListener listener;
     private ArrayList<BizStoreElastic> dataSet;
+    private RecyclerView recyclerView;
+    // The minimum amount of items to have below your current scroll position
+// before loading more.
+    private int visibleThreshold = 3;
+    private int lastVisibleItem, totalItemCount;
+    private boolean loading;
+    private OnLoadMoreListener onLoadMoreListener;
 
-    public StoreInfoViewAllAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener) {
+    public StoreInfoViewAllAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener, RecyclerView recyclerView) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
+        this.recyclerView = recyclerView;
+        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+
+            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView
+                    .getLayoutManager();
+
+
+//            this.recyclerView
+//                    .addOnScrollListener(new RecyclerView.OnScrollListener() {
+//                        @Override
+//                        public void onScrolled(RecyclerView recyclerView,
+//                                               int dx, int dy) {
+//                            super.onScrolled(recyclerView, dx, dy);
+//
+//                            totalItemCount = linearLayoutManager.getItemCount();
+//                            lastVisibleItem = linearLayoutManager
+//                                    .findLastVisibleItemPosition();
+//                            if (!loading
+//                                    && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+//                                // End has been reached
+//                                // Do something
+//                                if (onLoadMoreListener != null) {
+//                                    onLoadMoreListener.onLoadMore();
+//                                }
+//                                loading = true;
+//                            }
+//                        }
+//                    });
+       }
     }
 
     @Override
@@ -123,8 +159,21 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
         return dataSet.size();
     }
 
+    public void setLoaded() {
+        loading = false;
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
+    }
+
+
     public interface OnItemClickListener {
         void onStoreItemClick(BizStoreElastic item, View view, int pos);
+    }
+
+    public interface OnLoadMoreListener {
+        void onLoadMore();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
