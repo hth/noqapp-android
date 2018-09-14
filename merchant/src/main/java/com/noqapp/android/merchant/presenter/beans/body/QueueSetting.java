@@ -58,6 +58,12 @@ public class QueueSetting {
     @JsonProperty("at")
     private int availableTokenCount;
 
+    @JsonProperty ("fr")
+    private String fromDay;
+
+    @JsonProperty ("un")
+    private String untilDay;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -148,6 +154,24 @@ public class QueueSetting {
 
     public QueueSetting setAvailableTokenCount(int availableTokenCount) {
         this.availableTokenCount = availableTokenCount;
+        return this;
+    }
+
+    public String getFromDay() {
+        return fromDay;
+    }
+
+    public QueueSetting setFromDay(String fromDay) {
+        this.fromDay = fromDay;
+        return this;
+    }
+
+    public String getUntilDay() {
+        return untilDay;
+    }
+
+    public QueueSetting setUntilDay(String untilDay) {
+        this.untilDay = untilDay;
         return this;
     }
 
