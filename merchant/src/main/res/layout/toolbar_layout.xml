@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:background="@mipmap/back"
+        android:background="@drawable/back"
         android:padding="10dp" />
 
     <TextView
