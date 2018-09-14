@@ -1,6 +1,5 @@
 package com.noqapp.android.client.utils;
 
-import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 
 import org.apache.commons.lang3.StringUtils;

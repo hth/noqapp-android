@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.DatabaseTable;
 
 import android.os.Bundle;

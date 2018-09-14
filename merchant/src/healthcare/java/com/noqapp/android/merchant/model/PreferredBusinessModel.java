@@ -7,8 +7,6 @@ import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.utils.Constants;
 
-import org.xml.sax.InputSource;
-
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -19,11 +17,8 @@ import retrofit2.Response;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.zip.GZIPInputStream;
 
 public class PreferredBusinessModel {
     private static final String TAG = PreferredBusinessModel.class.getSimpleName();
