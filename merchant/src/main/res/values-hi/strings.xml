@@ -109,4 +109,7 @@
     <string name="screen_queue_history">Queue History</string>
     <string name="history_alert">There is no history for Queue available</string>
     <string name="todayclosed">Is closed only for today?</string>
+    <string name="scheduleing">Scheduling</string>
+    <string name="scheduleing_from">Scheduling start from</string>
+    <string name="scheduleing_ending">Scheduling ending</string>
 </resources>

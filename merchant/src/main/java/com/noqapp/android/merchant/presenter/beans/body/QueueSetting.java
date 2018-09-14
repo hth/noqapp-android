@@ -217,9 +217,14 @@ public class QueueSetting {
                 ", tokenNotAvailableFrom=" + tokenNotAvailableFrom +
                 ", endHour=" + endHour +
                 ", delayedInMinutes=" + delayedInMinutes +
-                ", preventJoining=" + preventJoining +
                 ", dayClosed=" + dayClosed +
+                ", tempDayClosed=" + tempDayClosed +
+                ", preventJoining=" + preventJoining +
                 ", availableTokenCount=" + availableTokenCount +
+                ", fromDay='" + fromDay + '\'' +
+                ", untilDay='" + untilDay + '\'' +
+                ", scheduledFromDay='" + scheduledFromDay + '\'' +
+                ", scheduleUntilDay='" + scheduleUntilDay + '\'' +
                 ", error=" + error +
                 '}';
     }
