@@ -392,7 +392,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="5dp"
-                                android:text="@string/scheduleing"
+                                android:text="@string/scheduling"
                                 android:textColor="@android:color/black"
                                 android:textSize="@dimen/text_size_sixteen"
                                 android:textStyle="bold"/>
@@ -409,7 +409,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight=".8"
                                     android:padding="5dp"
-                                    android:text="@string/scheduleing_from"
+                                    android:text="@string/scheduling_from"
                                     android:textColor="@color/color_total_val"
                                     android:textSize="@dimen/text_size_fourteen"/>
 
@@ -437,7 +437,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight=".8"
                                     android:padding="5dp"
-                                    android:text="@string/scheduleing_ending"
+                                    android:text="@string/scheduling_ending"
                                     android:textColor="@color/color_total_val"
                                     android:textSize="@dimen/text_size_fourteen"/>
 
