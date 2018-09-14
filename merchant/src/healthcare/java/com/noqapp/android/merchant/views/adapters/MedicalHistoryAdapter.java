@@ -41,7 +41,7 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         if (view == null) {
             recordHolder = new RecordHolder();
-            view = layoutInflater.inflate(R.layout.listitem_medical_history, null);
+            view = layoutInflater.inflate(R.layout.listitem_medical_history, viewGroup, false);
 
             recordHolder.tv_diagnosed_by = view.findViewById(R.id.tv_diagnosed_by);
             recordHolder.tv_business_name = view.findViewById(R.id.tv_business_name);

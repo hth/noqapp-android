@@ -59,7 +59,7 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_item_child, null);
+            convertView = inflater.inflate(R.layout.list_item_child, parent, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.rv = convertView.findViewById(R.id.rv);
             convertView.setTag(R.layout.list_item_child, childViewHolder);
@@ -112,7 +112,7 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_header, null);
+            convertView = infalInflater.inflate(R.layout.list_item_header, parent, false);
         }
         TextView tv_date = convertView.findViewById(R.id.tv_date);
         TextView tv_count = convertView.findViewById(R.id.tv_count);

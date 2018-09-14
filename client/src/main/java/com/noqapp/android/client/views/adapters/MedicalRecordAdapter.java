@@ -41,13 +41,13 @@ public class MedicalRecordAdapter extends BaseAdapter {
         return position;
     }
 
-    public View getView(int pos, View view, ViewGroup viewGroup) {
+    public View getView(int pos, View view, ViewGroup parent) {
         final int position = pos;
         final RecordHolder recordHolder;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         if (view == null) {
             recordHolder = new RecordHolder();
-            view = layoutInflater.inflate(R.layout.medical_item, null);
+            view = layoutInflater.inflate(R.layout.medical_item, parent, false);
             recordHolder.tv_medicine_name = view.findViewById(R.id.tv_medicine_name);
             recordHolder.tv_medication = view.findViewById(R.id.tv_medication);
             recordHolder.tv_dose = view.findViewById(R.id.tv_dose);

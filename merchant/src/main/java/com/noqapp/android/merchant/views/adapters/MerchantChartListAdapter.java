@@ -42,7 +42,7 @@ public class MerchantChartListAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         if (view == null) {
             recordHolder = new RecordHolder();
-            view = layoutInflater.inflate(R.layout.listitem_merchant_chart, null);
+            view = layoutInflater.inflate(R.layout.listitem_merchant_chart, viewGroup, false);
             recordHolder.tv_number = view.findViewById(R.id.tv_number);
             recordHolder.tv_queue_name = view.findViewById(R.id.tv_queue_name);
             recordHolder.cardview = view.findViewById(R.id.cardview);

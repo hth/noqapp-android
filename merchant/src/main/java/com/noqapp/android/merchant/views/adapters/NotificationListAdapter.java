@@ -49,7 +49,7 @@ public class NotificationListAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         if (view == null) {
             recordHolder = new RecordHolder();
-            view = layoutInflater.inflate(R.layout.listitem_notification, null);
+            view = layoutInflater.inflate(R.layout.listitem_notification, viewGroup, false);
             recordHolder.tv_msg = view.findViewById(R.id.tv_msg);
             recordHolder.tv_title = view.findViewById(R.id.tv_title);
             recordHolder.tv_create = view.findViewById(R.id.tv_create);
