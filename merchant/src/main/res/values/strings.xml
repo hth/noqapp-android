@@ -119,7 +119,6 @@
     <string name="error_name_length">Name length should be at least 4 or higher</string>
     <string name="error_invalid_email">Please enter valid email</string>
     <string name="error_invalid_date">Please select a valid date</string>
-    <string name="error_past_date">Please select a date in future</string>
     <string name="error_dob_blank">Please enter date of birth</string>
     <string name="create_case">Case History</string>
 
