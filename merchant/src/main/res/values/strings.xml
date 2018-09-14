@@ -169,7 +169,7 @@
     <string name="history_alert">There is no history for Queue available</string>
     <string name="todayclosed">Is closed only for today?</string>
     <string name="version_no">App version: %1$s</string>
-    <string name="scheduleing">Scheduling</string>
+    <string name="scheduleing">Store close scheduling </string>
     <string name="scheduleing_from">Scheduling start from</string>
     <string name="scheduleing_ending">Scheduling ending</string>
 </resources>
