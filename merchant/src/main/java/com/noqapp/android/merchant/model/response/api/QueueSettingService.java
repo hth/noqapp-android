@@ -33,6 +33,24 @@ public interface QueueSettingService {
             QueueSetting queueSetting
     );
 
+    @POST()
+    Call<QueueSetting> removeSchedule(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR
+    );
+
     @GET("api/m/mq/state/{codeQR}.json")
     Call<QueueSetting> getQueueState(
             @Header("X-R-DID")

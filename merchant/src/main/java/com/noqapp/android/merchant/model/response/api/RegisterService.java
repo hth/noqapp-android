@@ -19,24 +19,24 @@ public interface RegisterService {
     @POST("open/client/registration.json")
     Call<JsonProfile> register(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Body
-                    Registration registration
+            Registration registration
     );
 
     @POST("open/client/login.json")
     Call<JsonProfile> login(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Body
-                    Login login
+            Login login
     );
 }
