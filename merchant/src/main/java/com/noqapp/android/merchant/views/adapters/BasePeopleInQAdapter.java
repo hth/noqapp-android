@@ -183,11 +183,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             }
         });
         // check parameter to show client is new or has previously visited
-        if (jsonQueuedPerson.isClientVisitedThisStore()) {
-            recordHolder.iv_new.setVisibility(View.VISIBLE);
-        } else {
-            recordHolder.iv_new.setVisibility(View.GONE);
-        }
+        recordHolder.iv_new.setVisibility(jsonQueuedPerson.isClientVisitedThisStore() ? View.VISIBLE : View.INVISIBLE);
+
         switch (jsonQueuedPerson.getQueueUserState()) {
             case Q:
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId())) {
@@ -225,7 +222,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
 
-        recordHolder.tv_first_time.setVisibility(jsonQueuedPerson.isClientVisitedThisBusiness()?View.GONE:View.VISIBLE);
+        recordHolder.tv_first_time.setVisibility(jsonQueuedPerson.isClientVisitedThisBusiness() ? View.GONE : View.VISIBLE);
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

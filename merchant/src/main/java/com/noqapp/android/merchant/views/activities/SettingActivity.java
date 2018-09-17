@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
@@ -22,18 +23,18 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -53,7 +54,7 @@ import java.util.Locale;
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
 
     private ProgressDialog progressDialog;
-    protected ImageView actionbarBack;
+    protected ImageView actionbarBack,iv_delete_scheduling;
     private ToggleButton toggleDayClosed, togglePreventJoin, toggleTodayClosed;
     private String codeQR;
     protected boolean isDialog = false;
@@ -84,6 +85,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         }
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = findViewById(R.id.actionbarBack);
+        iv_delete_scheduling = findViewById(R.id.iv_delete_scheduling);
         ScrollView scroll_view = findViewById(R.id.scroll_view);
         scroll_view.setScrollBarFadeDuration(0);
         scroll_view.setScrollbarFadingEnabled(false);
@@ -106,6 +108,45 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 onBackPressed();
             }
         });
+        iv_delete_scheduling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
+                    LayoutInflater inflater = LayoutInflater.from(SettingActivity.this);
+                    builder.setTitle(null);
+                    View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
+                    builder.setView(customDialogView);
+                    final AlertDialog mAlertDialog = builder.create();
+                    mAlertDialog.setCanceledOnTouchOutside(false);
+                    TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+                    TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+                    tvtitle.setText("Delete Schedule");
+                    tv_msg.setText("Do you want to delete scheduling.");
+                    Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+                    Button btn_no = customDialogView.findViewById(R.id.btn_no);
+                    btn_no.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mAlertDialog.dismiss();
+                        }
+                    });
+                    btn_yes.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            progressDialog.show();
+                            queueSettingModel.removeSchedule(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                            mAlertDialog.dismiss();
+                        }
+                    });
+                    mAlertDialog.show();
+                } else {
+                    ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+                }
+            }
+        });
         tv_toolbar_title.setText(getString(R.string.screen_settings));
 
         cb_limit = findViewById(R.id.cb_limit);
@@ -115,11 +156,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 if (b) {
                     edt_token_no.setVisibility(View.INVISIBLE);
                     tv_limited_label.setText(getString(R.string.unlimited_token));
-                    View view = SettingActivity.this.getCurrentFocus();
-                    if (view != null) {
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    }
+                    new AppUtils().hideKeyBoard(SettingActivity.this);
                 } else {
                     edt_token_no.setVisibility(View.VISIBLE);
                     // edt_token_no.setText("1");
@@ -282,8 +319,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(localTime));
             if (TextUtils.isEmpty(queueSetting.getScheduledFromDay())) {
                 tv_scheduling_status.setText("");
+                tv_scheduling_status.setVisibility(View.GONE);
+                iv_delete_scheduling.setVisibility(View.GONE);
             } else {
                 tv_scheduling_status.setText("Store schedule to close from " + queueSetting.getScheduledFromDay() + " to " + queueSetting.getScheduledUntilDay());
+                tv_scheduling_status.setVisibility(View.VISIBLE);
+                iv_delete_scheduling.setVisibility(View.VISIBLE);
             }
 
             if (queueSetting.getAvailableTokenCount() <= 0) {
@@ -297,8 +338,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 tv_limited_label.setText(getString(R.string.limited_token));
                 if (edt_token_no != null) {
                     edt_token_no.clearFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(edt_token_no.getWindowToken(), 0);
+                    new AppUtils().hideKeyBoard(this);
                 }
             }
         }
@@ -307,6 +347,14 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
     @Override
     public void queueSettingError() {
+        dismissProgress();
+    }
+
+    @Override
+    public void queueSettingError(ErrorEncounteredJson eej) {
+        if (null != eej) {
+            ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
+        }
         dismissProgress();
     }
 

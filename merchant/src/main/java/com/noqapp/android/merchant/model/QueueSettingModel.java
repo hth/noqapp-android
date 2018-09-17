@@ -25,7 +25,7 @@ public class QueueSettingModel {
     private static final QueueSettingService queueSettingService;
     private QueueSettingPresenter queueSettingPresenter;
 
-    public QueueSettingModel(QueueSettingPresenter queueSettingPresenter){
+    public QueueSettingModel(QueueSettingPresenter queueSettingPresenter) {
         this.queueSettingPresenter = queueSettingPresenter;
     }
 
@@ -55,7 +55,34 @@ public class QueueSettingModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
-                    queueSettingPresenter.queueSettingError();
+                    queueSettingPresenter.queueSettingError(response.body().getError());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<QueueSetting> call, @NonNull Throwable t) {
+                Log.e("Response", t.getLocalizedMessage(), t);
+                queueSettingPresenter.queueSettingError();
+            }
+        });
+    }
+
+    public void removeSchedule(String did, String mail, String auth, String codeQR) {
+        queueSettingService.removeSchedule(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
+            @Override
+            public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    queueSettingPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
+                    Log.d("Get queue setting", String.valueOf(response.body()));
+                    queueSettingPresenter.queueSettingResponse(response.body());
+                } else {
+                    //TODO something logical
+                    Log.e(TAG, "Found error while get queue setting");
+                    queueSettingPresenter.queueSettingError(response.body().getError());
                 }
             }
 
@@ -92,7 +119,7 @@ public class QueueSettingModel {
                 } else if (response.body() != null && response.body().getError() != null) {
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
                     Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
-                    queueSettingPresenter.queueSettingError();
+                    queueSettingPresenter.queueSettingError(response.body().getError());
                 }
             }
 

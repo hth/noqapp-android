@@ -96,7 +96,8 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected ManageQueueModel manageQueueModel;
     protected ArrayList<JsonTopic> topicsList;
     protected ImageView iv_generate_token,iv_queue_history;
-
+    // variable to track event time
+    private long mLastClickTime = 0;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -162,6 +163,10 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         iv_generate_token.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Preventing multiple clicks, using threshold of 3 second
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                    return;
+                }
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     createToken(context, jsonTopic.getCodeQR());
                 } else {
