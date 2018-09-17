@@ -58,7 +58,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private String codeQR;
     protected boolean isDialog = false;
     private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute, tv_close_day_of_week;
-    private TextView tv_scheduling_from, tv_scheduling_ending, tv_scheduling_status;
+    private TextView tv_scheduling_from, tv_scheduling_ending,tv_scheduling_status;
     private CheckBox cb_limit;
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
@@ -251,7 +251,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading Queue Settings...");
+        progressDialog.setMessage("fetching...");
     }
 
     private void dismissProgress() {
@@ -280,10 +280,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             LocalTime localTime = Formatter.parseLocalTime(String.format(Locale.US, "%04d", queueSetting.getStartHour()));
             localTime = localTime.plusMinutes(queueSetting.getDelayedInMinutes());
             tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(localTime));
-            if (TextUtils.isEmpty(queueSetting.getScheduledFromDay())) {
+            if(TextUtils.isEmpty(queueSetting.getScheduledFromDay())){
                 tv_scheduling_status.setText("");
-            } else {
-                tv_scheduling_status.setText("Store schedule to close from " + queueSetting.getScheduledFromDay() + " to " + queueSetting.getScheduledUntilDay());
+            }else{
+                tv_scheduling_status.setText("Store schedule to close from "+queueSetting.getScheduledFromDay()+" to "+queueSetting.getScheduledUntilDay());
             }
 
             if (queueSetting.getAvailableTokenCount() <= 0) {
@@ -481,7 +481,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 if (date_diff < 0) {
                     tv.setText(CommonHelper.SDF_YYYY_MM_DD.format(newDate.getTime()));
                 } else {
-                    Toast.makeText(SettingActivity.this, getString(R.string.error_past_date), Toast.LENGTH_LONG).show();
+                    Toast.makeText(SettingActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                     tv.setText("");
                 }
 
