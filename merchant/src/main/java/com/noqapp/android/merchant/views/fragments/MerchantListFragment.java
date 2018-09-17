@@ -48,6 +48,8 @@ import android.widget.Toast;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -265,6 +267,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private void initListView() {
         rl_empty_screen.setVisibility(View.GONE);
         listview.setVisibility(View.VISIBLE);
+        Collections.sort(topics, Collections.reverseOrder(new CustomComparator()));
         adapter = new MerchantListAdapter(getActivity(), topics);
         listview.setAdapter(adapter);
         temp_adapter = new AutocompleteAdapter(getActivity(),
@@ -458,5 +461,12 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     public void clearData(){
         topics.clear();
         adapter.notifyDataSetChanged();
+    }
+
+    public class CustomComparator implements Comparator<JsonTopic> {
+        @Override
+        public int compare(JsonTopic o1, JsonTopic o2) {
+            return o1.getRemaining()-o2.getRemaining();
+        }
     }
 }

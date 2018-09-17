@@ -11,7 +11,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
-import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
+import com.noqapp.android.client.views.adapters.SearchAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -36,13 +36,10 @@ import java.util.Collections;
 /**
  * Created by chandra on 5/7/17.
  */
-public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdapter.OnItemClickListener, NearMePresenter {
-
-
-  
+public class SearchActivity extends BaseActivity implements SearchAdapter.OnItemClickListener, NearMePresenter {
 
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
-    private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
+    private SearchAdapter searchAdapter;
     private String scrollId = "";
     private String city = "";
     private String lat = "";
@@ -50,60 +47,31 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
     private NearMeModel nearMeModel;
     private EditText edt_search;
     private AutoCompleteTextView autoCompleteTextView;
-    private  RecyclerView rv_merchant_around_you;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        rv_merchant_around_you = findViewById(R.id.rv_merchant_around_you);
+        RecyclerView rv_search = findViewById(R.id.rv_search);
         edt_search= findViewById(R.id.edt_search);
         TextView tv_auto= findViewById(R.id.tv_auto);
         autoCompleteTextView= findViewById(R.id.autoCompleteTextView);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_search));
         nearMeModel = new NearMeModel(this);
-        //getString(R.string.medical_history));
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         longitute = getIntent().getStringExtra("long");
         scrollId = "";
         AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
-        rv_merchant_around_you.setHasFixedSize(true);
+        rv_search.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
-        rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
-        // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
-        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, this, rv_merchant_around_you);
-        rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
-        storeInfoViewAllAdapter.setOnLoadMoreListener(new StoreInfoViewAllAdapter.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                //add null , so the adapter will check view_type and show progress bar at bottom
-                listData.add(null);
-                rv_merchant_around_you.post(new Runnable() {
-                    public void run() {
-                        storeInfoViewAllAdapter.notifyItemInserted(listData.size() - 1);
-                        storeInfoViewAllAdapter.notifyDataSetChanged();
-                    }
-                });
+        rv_search.setLayoutManager(horizontalLayoutManagaer);
+        rv_search.setItemAnimator(new DefaultItemAnimator());
+        searchAdapter = new SearchAdapter(listData, this, this);
+        rv_search.setAdapter(searchAdapter);
 
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.show();
-                    StoreInfoParam storeInfoParam = new StoreInfoParam();
-                    storeInfoParam.setCityName(city);
-                    storeInfoParam.setLatitude(lat);
-                    storeInfoParam.setLongitude(longitute);
-                    storeInfoParam.setFilters("xyz");
-                    storeInfoParam.setScrollId(scrollId);
-                    storeInfoParam.setQuery(edt_search.getText().toString());
-                    nearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
-                } else {
-                    ShowAlertInformation.showNetworkDialog(SearchActivity.this);
-                }
-            }
-        });
         edt_search.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -225,7 +193,6 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
 
     @Override
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
-
         ArrayList<BizStoreElastic> nearMeData = new ArrayList<>();
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         scrollId = bizStoreElasticList.getScrollId();
@@ -233,14 +200,8 @@ public class SearchActivity extends BaseActivity implements StoreInfoViewAllAdap
             scrollId = "";
         //sort the list, give the Comparator the current location
         Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));
-        //   remove progress item
-//        listData.remove(listData.size() - 1);
-//        storeInfoViewAllAdapter.notifyItemRemoved(listData.size());
-//        //add all items
         listData.addAll(nearMeData);
-        storeInfoViewAllAdapter.notifyDataSetChanged();
-//        storeInfoViewAllAdapter.setLoaded();
-        //or you can add all at once but do not forget to call storeInfoViewAllAdapter.notifyDataSetChanged();
+        searchAdapter.notifyDataSetChanged();
         dismissProgress();
 
     }
