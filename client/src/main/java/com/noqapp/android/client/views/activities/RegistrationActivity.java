@@ -81,8 +81,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         edt_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
+        btnRegistration.setOnClickListener(this);
         edt_phoneNo.setEnabled(false);
-        btnRegistration.setEnabled(false);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 

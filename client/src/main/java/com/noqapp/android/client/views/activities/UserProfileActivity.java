@@ -65,6 +65,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         setContentView(R.layout.activity_user_profile);
         tv_name = findViewById(R.id.tv_name);
         ImageView iv_edit = findViewById(R.id.iv_edit);
+        ImageView iv_edit_mail = findViewById(R.id.iv_edit_mail);
         ImageView iv_add_dependent = findViewById(R.id.iv_add_dependent);
         edt_birthday = findViewById(R.id.edt_birthday);
         edt_address = findViewById(R.id.edt_address);
@@ -80,6 +81,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         initActionsViews(false);
         iv_profile = findViewById(R.id.iv_profile);
         iv_edit.setOnClickListener(this);
+        iv_edit_mail.setOnClickListener(this);
         loadProfilePic();
         tv_toolbar_title.setText(getString(R.string.screen_profile));
         iv_profile.setOnClickListener(this);
@@ -159,6 +161,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 startActivity(migrate);
                 break;
             case R.id.edt_email:
+            case R.id.iv_edit_mail:
             case R.id.tv_modify_email:
                 Intent changeEmail = new Intent(this, ChangeEmailActivity.class);
                 startActivity(changeEmail);

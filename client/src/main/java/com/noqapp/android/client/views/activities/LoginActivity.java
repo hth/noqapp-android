@@ -43,8 +43,12 @@ public class LoginActivity extends OTPActivity {
         new AppUtilities().hideKeyBoard(this);
         boolean isValid = true;
         edt_phoneNo.setError(null);
+        countryCode = edt_phone_code.getText().toString();
         if (TextUtils.isEmpty(edt_phoneNo.getText())) {
             edt_phoneNo.setError(getString(R.string.error_mobile_blank));
+            isValid = false;
+        } else if (countryCode.equals("+91") && edt_phoneNo.getText().toString().length() != 10) {
+            edt_phoneNo.setError(getString(R.string.error_mobile_no_length));
             isValid = false;
         }
         return isValid;
