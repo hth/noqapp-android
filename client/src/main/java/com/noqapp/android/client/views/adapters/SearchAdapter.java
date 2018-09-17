@@ -52,7 +52,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_ITEM) {
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recycler_item_view_all, parent, false);
+                    .inflate(R.layout.rcv_item_search, parent, false);
 
             vh = new MyViewHolder(v);
         } else {
@@ -95,21 +95,23 @@ public class SearchAdapter extends RecyclerView.Adapter {
             }
             // holder.tv_store_special.setText();
             StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
+            holder.tv_bussiness_name.setText(bizStoreElastic.getBusinessName());
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
                 case BK:
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.GONE);
                     holder.tv_category_name.setText("");
-                    holder.tv_name.setText(bizStoreElastic.getBusinessName());
+                    holder.tv_name.setText(bizStoreElastic.getDisplayName());
                     holder.tv_status.setText("");
                     break;
                 default:
                     holder.tv_store_special.setVisibility(View.GONE);
-                    holder.tv_status.setVisibility(View.VISIBLE);
+                    holder.tv_status.setVisibility(View.GONE); // hide temporary
                     holder.tv_status.setText(AppUtilities.getStoreOpenStatus(bizStoreElastic));
                     String time = Formatter.duration(storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
-                    holder.tv_category_name.setText(time);
+                    //holder.tv_category_name.setText(time);
+                    holder.tv_category_name.setText("");
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());
                     break;
             }
@@ -132,6 +134,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_name;
+        private TextView tv_bussiness_name;
         private TextView tv_address;
         private TextView tv_phoneno;
         private TextView tv_store_rating;
@@ -145,6 +148,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
+            this.tv_bussiness_name = itemView.findViewById(R.id.tv_bussiness_name);
             this.tv_address = itemView.findViewById(R.id.tv_address);
             this.tv_phoneno = itemView.findViewById(R.id.tv_phoneno);
             this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
