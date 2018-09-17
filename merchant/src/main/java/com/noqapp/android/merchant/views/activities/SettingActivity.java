@@ -211,7 +211,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 if (TextUtils.isEmpty(tv_scheduling_from.getText().toString()) || TextUtils.isEmpty(tv_scheduling_ending.getText().toString())) {
                     Toast.makeText(SettingActivity.this, "Both scheduling dates are required", Toast.LENGTH_LONG).show();
                 } else if (isEndDateNotAfterStartDate()) {
-                    Toast.makeText(SettingActivity.this, "Ending scheduling date should be after Starting scheduling date", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SettingActivity.this, "Until Date should be after From Date", Toast.LENGTH_LONG).show();
                 } else {
                     if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
                         callUpdate();
