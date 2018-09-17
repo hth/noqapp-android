@@ -33,7 +33,7 @@ public interface QueueSettingService {
             QueueSetting queueSetting
     );
 
-    @POST()
+    @POST("api/m/mq/removeSchedule/{codeQR}.json")
     Call<QueueSetting> removeSchedule(
             @Header("X-R-DID")
             String did,
