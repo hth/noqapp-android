@@ -248,8 +248,8 @@
                         android:gravity="center"
                         android:layout_gravity="center_horizontal"
                         android:text=""
-                        android:textColor="@color/colorAddress"
-                        android:textSize="@dimen/text_size_fourteen" />
+                        android:textColor="#80000000"
+                        android:textSize="@dimen/text_size_twelve" />
 
 
                     <LinearLayout
@@ -326,7 +326,7 @@
                             android:maxLines="2"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:textColor="@color/colorAddress"
+                            android:textColor="#606060"
                             android:textSize="@dimen/text_size_fourteen" />
 
                     </LinearLayout>
@@ -342,7 +342,7 @@
                         android:text="@string/cancel"
                         android:textAllCaps="true"
                         android:textColor="@color/rating_unselect_temp"
-                        android:textSize="@dimen/text_size_twelve"
+                        android:textSize="@dimen/text_size_sixteen"
                         android:textStyle="normal" />
 
                 </LinearLayout>
