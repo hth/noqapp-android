@@ -21,12 +21,18 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.squareup.picasso.Picasso;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,7 +49,7 @@ import java.util.List;
 
 public class JoinActivity extends BaseActivity implements QueuePresenter {
     private final String TAG = JoinActivity.class.getSimpleName();
-    protected TextView tv_store_name;
+    private TextView tv_store_name;
     private TextView tv_queue_name;
     private TextView tv_address;
     private TextView tv_mobile;
@@ -51,10 +57,10 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     private TextView tv_people_in_q;
     private TextView tv_hour_saved;
     private TextView tv_rating_review;
+    private TextView tv_add ,add_person;
     private ImageView iv_profile;
     private RatingBar ratingBar;
     private Spinner sp_name_list;
-    private LinearLayout ll_patient_name;
 
     private String codeQR;
     private JsonQueue jsonQueue;
@@ -86,7 +92,8 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             }
         });
         ratingBar = findViewById(R.id.ratingBar);
-        TextView tv_add = findViewById(R.id.tv_add);
+        tv_add = findViewById(R.id.tv_add);
+        add_person = findViewById(R.id.add_person);
         tv_add.setPaintFlags(tv_add.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         Button btn_no = findViewById(R.id.btn_no);
         btn_no.setOnClickListener(new View.OnClickListener() {
@@ -96,12 +103,11 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             }
         });
         sp_name_list = findViewById(R.id.sp_name_list);
-        ll_patient_name = findViewById(R.id.ll_patient_name);
 
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_join));
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        AppUtilities.setRatingBarColor(stars, this);
+        AppUtilities.setRatingBarColorBlue(stars, this);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,10 +221,14 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         switch (jsonQueue.getBusinessType()) {
             case DO:
             case PH:
-              //  ll_patient_name.setVisibility(View.VISIBLE);
+                tv_add.setVisibility(View.VISIBLE);
+                add_person.setVisibility(View.VISIBLE);
+                sp_name_list.setVisibility(View.VISIBLE);
                 break;
             default:
-               // ll_patient_name.setVisibility(View.GONE);
+                tv_add.setVisibility(View.GONE);
+                add_person.setVisibility(View.GONE);
+                sp_name_list.setVisibility(View.GONE);
         }
         dismissProgress();
     }
@@ -308,6 +318,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.FROM_JOIN_SCREEN, true);
         in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
+        in.putExtra("imageUrl",getIntent().getStringExtra("imageUrl"));
         startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }
 

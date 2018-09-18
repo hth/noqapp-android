@@ -13,6 +13,7 @@ import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
+import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -27,11 +28,13 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.LayerDrawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -40,7 +43,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +64,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private TextView tv_estimated_time;
     private TextView tv_vibrator_off;
     private LinearLayout ll_change_bg;
-    private Spinner sp_name_list;
+    private TextView sp_name_list;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
     private String codeQR;
@@ -72,6 +77,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private String queueUserId = "";
     private QueueModel queueModel;
     private QueueApiModel queueApiModel;
+    private ImageView iv_profile;
+    private RatingBar ratingBar;
+    private TextView tv_rating_review;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +96,13 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         tv_after = findViewById(R.id.tv_after);
         TextView tv_hour_saved = findViewById(R.id.tv_hour_saved);
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
-        TextView tv_add = findViewById(R.id.tv_add);
+        TextView tv_add = findViewById(R.id.add_person);
         tv_vibrator_off = findViewById(R.id.tv_vibrator_off);
         ll_change_bg = findViewById(R.id.ll_change_bg);
         sp_name_list = findViewById(R.id.sp_name_list);
-        LinearLayout ll_patient_name = findViewById(R.id.ll_patient_name);
+        iv_profile = findViewById(R.id.iv_profile);
+        tv_rating_review = findViewById(R.id.tv_rating_review);
+        ratingBar = findViewById(R.id.ratingBar);
         btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +124,21 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             tv_store_name.setText(jsonTokenAndQueue.getBusinessName());
             tv_queue_name.setText(jsonTokenAndQueue.getDisplayName());
             tv_address.setText(jsonTokenAndQueue.getStoreAddress());
+            ratingBar.setRating(4.0f);
+            String reviewText = String.valueOf(jsonTokenAndQueue.getRatingCount() == 0 ? "No" : jsonTokenAndQueue.getRatingCount()) + " Reviews";
+            tv_rating_review.setText(reviewText);
+            LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+            AppUtilities.setRatingBarColorBlue(stars, this);
             profile_pos = bundle.getIntExtra("profile_pos", 1);
+            String imageUrl = bundle.getStringExtra("imageUrl");
+            if (!TextUtils.isEmpty(imageUrl)) {
+
+                Picasso.with(this).load(imageUrl).
+                        placeholder(getResources().getDrawable(R.drawable.profile_red)).
+                        error(getResources().getDrawable(R.drawable.profile_red)).into(iv_profile);
+            } else {
+                Picasso.with(this).load(R.drawable.profile_red).into(iv_profile);
+            }
             actionbarBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -138,20 +162,18 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 profileList.add(0, NoQueueBaseActivity.getUserProfile());
                 profileList.add(0, new JsonProfile().setName("Select Patient"));
                 DependentAdapter adapter = new DependentAdapter(this, profileList);
-                sp_name_list.setAdapter(adapter);
-                sp_name_list.setSelection(profile_pos);
-                sp_name_list.setEnabled(false);
-                sp_name_list.setClickable(false);
-                queueUserId = ((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId();
-                tv_add.setText(((JsonProfile) sp_name_list.getSelectedItem()).getName());
+                sp_name_list.setText(((JsonProfile)profileList.get(profile_pos)).getName());
+                queueUserId = ((JsonProfile)profileList.get(profile_pos)).getQueueUserId();
             }
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case DO:
                 case PH:
-                    ll_patient_name.setVisibility(View.VISIBLE);
+                    tv_add.setVisibility(View.VISIBLE);
+                    sp_name_list.setVisibility(View.VISIBLE);
                     break;
                 default:
-                    ll_patient_name.setVisibility(View.GONE);
+                    tv_add.setVisibility(View.GONE);
+                    sp_name_list.setVisibility(View.GONE);
             }
             String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) +
                     " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour());
@@ -276,7 +298,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 String guardianId = null;
                 Log.v("dependent size: ", "" + jsonProfile.getDependents().size());
                 if (profile_pos > 1) {
-                    queueUserId = ((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId();
+                    queueUserId = ((JsonProfile)profileList.get(profile_pos)).getQueueUserId();
                     guardianId = jsonProfile.getQueueUserId();
                 } else {
                     queueUserId = jsonProfile.getQueueUserId();
@@ -386,8 +408,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             Log.e("", "Error setting data reason=" + e.getLocalizedMessage(), e);
             tv_estimated_time.setVisibility(View.INVISIBLE);
         }
-
-        tv_estimated_time.setText("30 Min *");
+        tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
         tv_estimated_time.setVisibility(View.VISIBLE);
     }
 

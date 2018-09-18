@@ -138,7 +138,14 @@ public class AppUtilities extends CommonHelper {
         // Empty stars
         setRatingStarColor(stars.getDrawable(0), ContextCompat.getColor(context, R.color.rating_unselect));
     }
-
+    public static void setRatingBarColorBlue(LayerDrawable stars, Context context) {
+        // Filled stars
+        setRatingStarColor(stars.getDrawable(2), ContextCompat.getColor(context, R.color.rating_select_temp));
+        // Half filled stars
+        setRatingStarColor(stars.getDrawable(1), ContextCompat.getColor(context, R.color.rating_unselect_temp));
+        // Empty stars
+        setRatingStarColor(stars.getDrawable(0), ContextCompat.getColor(context, R.color.rating_unselect_temp));
+    }
 
     public static int getTimeIn24HourFormat() {
         // To make sure minute in time 11:06 AM is not represented as 116 but as 1106.
