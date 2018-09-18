@@ -196,7 +196,7 @@
     <string name="patient_name">रोगी का नाम</string>
     <string name="add_dependent">आश्रित जोड़ें</string>
     <string name="queue_details">कतार विवरण</string>
-    <string name="will_be_served">will be served in</string>
+    <string name="will_be_served">you will be served in %1$s</string>
     <string name="ack">Acknowledge</string>
     <string name="your_turn">It\'s your turn !!!</string>
     <string name="photo">तस्वीरें</string>

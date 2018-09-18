@@ -169,16 +169,11 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         switch (item.getBusinessType()) {
             case DO:
             case BK:
-                // open hospital/Bank profile
-                Bundle b = new Bundle();
-                b.putString(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
-                b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
-                b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
-                b.putBoolean("CallCategory", true);
-                b.putBoolean("isCategoryData", false);
-                b.putSerializable("BizStoreElastic", item);
-                Intent in = new Intent(this, CategoryInfoActivity.class);
-                in.putExtra("bundle", b);
+                Intent in = new Intent(this, JoinActivity.class);
+                in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
+                in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
+                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
+                in.putExtra("isCategoryData", false);
                 startActivity(in);
                 break;
             default:
@@ -200,6 +195,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             scrollId = "";
         //sort the list, give the Comparator the current location
         Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));
+        listData.clear();
         listData.addAll(nearMeData);
         searchAdapter.notifyDataSetChanged();
         dismissProgress();

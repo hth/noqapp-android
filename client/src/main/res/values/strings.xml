@@ -226,7 +226,7 @@
     <string name="patient_name">Patient Name</string>
     <string name="add_dependent">Add Dependent</string>
     <string name="queue_details">Queue Details</string>
-    <string name="will_be_served">will be served in</string>
+    <string name="will_be_served">you will be served in %1$s</string>
     <string name="ack">Acknowledge</string>
     <string name="your_turn">It\'s your turn !!!</string>
     <string name="photo">Photos</string>
