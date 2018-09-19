@@ -34,13 +34,13 @@ public final class DependencyModel {
         dependentApiService.add(did, Constants.DEVICE_TYPE, mail, auth, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     dependencyPresenter.dependencyResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history" + response.body().getError());
-                    dependencyPresenter.dependencyError();
+                    dependencyPresenter.dependencyError(response.body().getError());
                 }
             }
 

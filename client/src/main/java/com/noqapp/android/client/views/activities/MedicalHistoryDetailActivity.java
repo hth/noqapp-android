@@ -12,6 +12,7 @@ import com.noqapp.android.common.model.types.medical.PhysicalGeneralExamEnum;
 
 import android.graphics.Color;
 import android.os.Bundle;
+
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,17 +21,24 @@ import android.widget.TextView;
 
 import java.util.List;
 
+
 public class MedicalHistoryDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history_details);
-        TextView tv_complaints = findViewById(R.id.tv_complaints);
+
+
+        TextView tv_diagnosed_by = findViewById(R.id.tv_diagnosed_by);
+        TextView tv_business_name = findViewById(R.id.tv_business_name);
+        TextView tv_business_category_name = findViewById(R.id.tv_business_category_name);
+        TextView tv_complaints = findViewById(R.id.tv_complaints_temp);
+        TextView tv_create = findViewById(R.id.tv_create);
+        TextView tv_no_of_time_access = findViewById(R.id.tv_no_of_time_access);
         TextView tv_past_history = findViewById(R.id.tv_past_history);
         TextView tv_family_history = findViewById(R.id.tv_family_history);
         TextView tv_patient_name = findViewById(R.id.tv_patient_name);
-        TextView tv_diagnosed_by = findViewById(R.id.tv_diagnosed_by);
-        TextView tv_business_name = findViewById(R.id.tv_business_name);
+
         TextView tv_known_allergy = findViewById(R.id.tv_known_allergy);
         TextView tv_clinical_finding = findViewById(R.id.tv_clinical_finding);
         TextView tv_provisional = findViewById(R.id.tv_provisional);
@@ -62,8 +70,13 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         tv_instruction.setText(jsonMedicalRecord.getPlanToPatient());
         tv_followup.setText(jsonMedicalRecord.getFollowUpInDays());
 
-        tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedById() + " (" + jsonMedicalRecord.getBizCategoryName() + ")");
+        tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedById() + ", ");
         tv_business_name.setText(jsonMedicalRecord.getBusinessName());
+        tv_business_category_name.setText(jsonMedicalRecord.getBizCategoryName());
+        tv_complaints.setText(jsonMedicalRecord.getChiefComplain());
+        tv_create.setText(jsonMedicalRecord.getCreateDate());
+        tv_no_of_time_access.setText("No of times record view: " + jsonMedicalRecord.getRecordAccess().size());
+
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
         profileList.add(0, NoQueueBaseActivity.getUserProfile());
         tv_patient_name.setText(AppUtilities.getNameFromQueueUserID(jsonMedicalRecord.getQueueUserId(), profileList));
@@ -100,79 +113,61 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         if (medicalRecordList.size() == 0)
             ll_medication.setVisibility(View.GONE);
         for (PhysicalGeneralExamEnum physicalExam : PhysicalGeneralExamEnum.values()) {
-            LinearLayout childLayout = new LinearLayout(this);
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            childLayout.setLayoutParams(linearParams);
-            TextView mType = new TextView(this);
-            mType.setTextSize(12);
-            mType.setPadding(5, 3, 0, 3);
-            mType.setTextColor(Color.BLACK);
-            mType.setGravity(Gravity.LEFT | Gravity.CENTER);
+            String label = "";
             switch (physicalExam) {
                 case TE:
-                    mType.setText(physicalExam.getDescription() + ": "
-                            + jsonMedicalPhysicalExaminations.getTemperature());
+                    label = physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getTemperature();
                     break;
                 case BP:
-                    mType.setText(physicalExam.getDescription() + ": "
-                            + jsonMedicalPhysicalExaminations.getBloodPressure()[0]);
+                    label = physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getBloodPressure()[0];
                     break;
                 case PL:
-                    mType.setText(physicalExam.getDescription() + ": "
-                            + jsonMedicalPhysicalExaminations.getPluse());
+                    label = physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getPluse();
                     break;
                 case OX:
-                    mType.setText(physicalExam.getDescription() + ": "
-                            + jsonMedicalPhysicalExaminations.getOxygen());
+                    label = physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getOxygen();
                     break;
                 case WT:
-                    mType.setText(physicalExam.getDescription() + ": "
-                            + jsonMedicalPhysicalExaminations.getWeight());
+                    label = physicalExam.getDescription() + ": "
+                            + jsonMedicalPhysicalExaminations.getWeight();
                     break;
             }
-            childLayout.addView(mType, 0);
-            ll_physical.addView(childLayout);
+
+            ll_physical.addView(getView(label));
         }
         if (jsonMedicalRecord.getMedicalPathologies().size() == 0)
             ll_pathology.setVisibility(View.GONE);
         else {
             for (int i = 0; i < jsonMedicalRecord.getMedicalPathologies().size(); i++) {
-                LinearLayout childLayout = new LinearLayout(this);
-                LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                childLayout.setLayoutParams(linearParams);
-                TextView mType = new TextView(this);
-                mType.setTextSize(12);
-                mType.setTextColor(Color.BLACK);
-                mType.setPadding(5, 3, 0, 3);
-                mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-                mType.setText(jsonMedicalRecord.getMedicalPathologies().get(i).getName());
-                childLayout.addView(mType, 0);
-                ll_investigation_pathology.addView(childLayout);
+                ll_investigation_pathology.addView(getView(jsonMedicalRecord.getMedicalPathologies().get(i).getName()));
             }
         }
         if (jsonMedicalRecord.getMedicalRadiologies().size() == 0)
             ll_radiology.setVisibility(View.GONE);
         else {
             for (int i = 0; i < jsonMedicalRecord.getMedicalRadiologies().size(); i++) {
-                LinearLayout childLayout = new LinearLayout(this);
-                LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                childLayout.setLayoutParams(linearParams);
-                TextView mType = new TextView(this);
-                mType.setTextSize(12);
-                mType.setTextColor(Color.BLACK);
-                mType.setPadding(5, 3, 0, 3);
-                mType.setGravity(Gravity.LEFT | Gravity.CENTER);
-                mType.setText(jsonMedicalRecord.getMedicalRadiologies().get(i).getName());
-                childLayout.addView(mType, 0);
-                ll_investigation_radiology.addView(childLayout);
+                ll_investigation_radiology.addView(getView(jsonMedicalRecord.getMedicalRadiologies().get(i).getName()));
             }
         }
     }
 
+    private LinearLayout getView(String label) {
+        LinearLayout childLayout = new LinearLayout(this);
+        LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        childLayout.setLayoutParams(linearParams);
+        TextView mType = new TextView(this);
+        mType.setTextSize(16);
+        mType.setTextColor(Color.BLACK);
+        mType.setPadding(20, 3, 0, 3);
+        mType.setGravity(Gravity.LEFT | Gravity.CENTER);
+        mType.setText(label);
+        childLayout.addView(mType, 0);
+        return childLayout;
+    }
 }

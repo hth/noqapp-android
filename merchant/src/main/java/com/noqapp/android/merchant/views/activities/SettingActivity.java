@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -64,6 +65,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
     private QueueSettingModel queueSettingModel;
+    private QueueSetting queueSettingTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -307,6 +309,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     @Override
     public void queueSettingResponse(QueueSetting queueSetting) {
         if (null != queueSetting) {
+            queueSettingTemp = queueSetting;
             toggleDayClosed.setChecked(queueSetting.isDayClosed());
             togglePreventJoin.setChecked(queueSetting.isPreventJoining());
             toggleTodayClosed.setChecked(queueSetting.isTempDayClosed());
@@ -348,14 +351,19 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     @Override
     public void queueSettingError() {
         dismissProgress();
+        // to make sure the data is not changed in case of error
+        if(null != queueSettingTemp)
+            queueSettingResponse(queueSettingTemp);
     }
 
     @Override
     public void queueSettingError(ErrorEncounteredJson eej) {
-        if (null != eej) {
-            ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
-        }
         dismissProgress();
+        if(null != queueSettingTemp)
+            queueSettingResponse(queueSettingTemp);
+        if (null != eej) {
+            showAlert( eej.getSystemError(), eej.getReason());
+        }
     }
 
     @Override
@@ -447,7 +455,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private class TextViewClick implements View.OnClickListener {
         private TextView textView;
 
-        public TextViewClick(TextView textView) {
+        private TextViewClick(TextView textView) {
             this.textView = textView;
         }
 
@@ -475,7 +483,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private class TextViewClickDelay implements View.OnClickListener {
         private TextView textView;
 
-        public TextViewClickDelay(TextView textView) {
+        private TextViewClickDelay(TextView textView) {
             this.textView = textView;
         }
 
@@ -539,4 +547,18 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         datePickerDialog.show();
     }
 
+
+    private void showAlert(String title, String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this , R.style.MyAlertDialogTheme);
+        builder.setTitle(title);
+        builder.setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

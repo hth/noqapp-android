@@ -81,8 +81,8 @@
         <item name="android:padding">5dp</item>
         <item name="android:textSize">@dimen/mhd_sub_header_size</item>
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:minLines">2</item>
-        <item name="android:background">@drawable/square_bg_drawable</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
         <item name="android:textStyle">normal</item>
     </style>
 
@@ -91,8 +91,10 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">5dp</item>
         <item name="android:textSize">@dimen/mhd_header_size</item>
-        <item name="android:textColor">@android:color/darker_gray</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_header_color</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="RatingBar" parent="Theme.AppCompat">

@@ -1,7 +1,8 @@
-package com.noqapp.android.merchant.views.adapters;
+package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.R;
 import com.noqapp.android.common.beans.NavigationBean;
-import com.noqapp.android.merchant.R;
+
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class NavigationDrawerAdapter extends BaseAdapter {
+
 
     private Context mContext;
     private ArrayList<NavigationBean> data;

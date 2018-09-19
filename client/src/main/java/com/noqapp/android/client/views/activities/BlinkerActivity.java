@@ -51,7 +51,7 @@ public class BlinkerActivity extends Activity {
         rl_blinker.startAnimation(animation);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        if (vibrator.hasVibrator()) {
+        if (null != vibrator && vibrator.hasVibrator()) {
             final long[] pattern = {0, 1000, 1000, 1000, 1000};
             Runnable runnable = new Runnable() {
                 @Override

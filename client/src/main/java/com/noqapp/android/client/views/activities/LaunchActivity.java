@@ -21,10 +21,12 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.NavigationDrawerAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.NavigationBean;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
@@ -54,7 +56,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -63,13 +64,13 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,7 +80,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.UUID;
 
-public class LaunchActivity extends LocationActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class LaunchActivity extends LocationActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
 
@@ -90,10 +91,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private Toast backPressToast;
     private FcmNotificationReceiver fcmNotificationReceiver;
     private ImageView iv_profile;
-    private TextView tv_login, tv_name, tv_email;
+    private TextView  tv_name, tv_email;
     private ScanQueueFragment scanFragment;
     private DrawerLayout drawer;
-    private Menu nav_Menu;
+    protected ListView mDrawerList;
     private ImageView actionbarBack;
     public static DatabaseHelper dbHandler;
     public static Locale locale;
@@ -103,7 +104,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public NetworkUtil networkUtil;
     public ProgressDialog progressDialog;
     public ActivityCommunicator activityCommunicator;
-
+    protected ArrayList<NavigationBean> drawerItem = new ArrayList<>();
+    private NavigationDrawerAdapter drawerAdapter;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -173,22 +175,89 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        nav_Menu = navigationView.getMenu();
-        nav_Menu.findItem(R.id.nav_transaction).setVisible(false);
-        nav_Menu.findItem(R.id.nav_app_setting).setVisible(false);
-        nav_Menu.findItem(R.id.nav_logout).setVisible(UserUtils.isLogin());
-        nav_Menu.findItem(R.id.nav_version).setTitle(BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
+        mDrawerList = findViewById(R.id.drawer_list);
+        View headerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.nav_header_main, mDrawerList, false);
+        mDrawerList.addHeaderView(headerView);
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0)//when user click on header section
+                    return;
+                int selectedPosition = drawerAdapter.getData().get(position - 1).getIcon();
+                switch (selectedPosition) {
+                    case R.drawable.invite: {
+                        Intent in = new Intent(LaunchActivity.this, InviteActivity.class);
+                        startActivity(in);
+                        break;
+                    }
+                    case R.drawable.ic_menu_share:
+                        AppUtilities.shareTheApp(launchActivity);
+                        break;
+                    case R.drawable.legal:
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            Intent in = new Intent(LaunchActivity.this, WebViewActivity.class);
+                            in.putExtra("url", Constants.URL_ABOUT_US);
+                            startActivity(in);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(LaunchActivity.this);
+                        }
+                        break;
+                    case R.drawable.medical_history: {
+                        Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
+                        startActivity(in);
+                        if (BuildConfig.BUILD_TYPE.equals("debug"))
+                            AppUtilities.exportDatabase(LaunchActivity.this);
+                        break;
+                    }
+                    case R.id.nav_app_setting: {
+                        Intent in = new Intent(launchActivity, SettingsActivity.class);
+                        startActivity(in);
+                        break;
+                    }
+                    case R.id.nav_transaction:
+                        Toast.makeText(launchActivity, "Coming soon... ", Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.drawable.language:
+                        showChangeLangDialog();
+                        break;
+                    case R.drawable.ic_star:
+                        AppUtilities.openPlayStore(launchActivity);
+                        break;
+                    case R.drawable.ic_logout:
+                        new AlertDialog.Builder(launchActivity)
+                                .setTitle(getString(R.string.logout))
+                                .setMessage(getString(R.string.logout_msg))
+                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        NoQueueBaseActivity.clearPreferences();
+                                        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                                        startActivity(loginIntent);
+                                    }
+                                })
+                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // user doesn't want to logout
+                                    }
+                                })
+                                .show();
+                        break;
+                }
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
+        iv_profile = headerView.findViewById(R.id.iv_profile);
+        tv_name = headerView.findViewById(R.id.tv_name);
+        tv_email = headerView.findViewById(R.id.tv_email);
+        tv_email.setOnClickListener(this);
+        iv_profile.setOnClickListener(this);
+
+        ((TextView) findViewById(R.id.tv_version)).setText(BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
                 ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                 : getString(R.string.version_no, "Not for release"));
-        navigationView.setNavigationItemSelectedListener(this);
-        LinearLayout mParent = (LinearLayout) navigationView.getHeaderView(0);
-        iv_profile = mParent.findViewById(R.id.iv_profile);
-        tv_login = mParent.findViewById(R.id.tv_login);
-        tv_login.setOnClickListener(this);
-        iv_profile.setOnClickListener(this);
-        tv_name = mParent.findViewById(R.id.tv_name);
-        tv_email = mParent.findViewById(R.id.tv_email);
+        updateMenuList(UserUtils.isLogin());
+
+
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             DeviceModel deviceModel = new DeviceModel();
@@ -251,6 +320,17 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 break;
+            case R.id.tv_email:
+                if (UserUtils.isLogin()) {
+                    Intent intent = new Intent(launchActivity, UserProfileActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                    loginIntent.putExtra("fromLogin", true);
+                    startActivity(loginIntent);
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                break;
             default:
                 break;
         }
@@ -305,17 +385,14 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         super.onResume();
         languagepref.registerOnSharedPreferenceChangeListener(this);
         updateNotificationBadgeCount();
-        nav_Menu.findItem(R.id.nav_logout).setVisible(UserUtils.isLogin());
+        updateMenuList(UserUtils.isLogin());
         if (UserUtils.isLogin()) {
-            tv_login.setText("Logout");
             tv_email.setText(NoQueueBaseActivity.getActualMail());
             tv_name.setText(NoQueueBaseActivity.getUserName());
         } else {
-            tv_login.setText("Login");
             tv_email.setText("Please login");
             tv_name.setText("Guest User");
         }
-        tv_login.setVisibility(View.GONE);
         Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
@@ -463,76 +540,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             //TODO(hth) This can be replaced with version received when looking for blacklist
             new VersionCheckAsync(this).execute();
         }
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        switch (id) {
-
-            case R.id.nav_invite: {
-                Intent in = new Intent(this, InviteActivity.class);
-                startActivity(in);
-                break;
-            }
-            case R.id.nav_share:
-                AppUtilities.shareTheApp(launchActivity);
-                break;
-            case R.id.nav_legal:
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    Intent in = new Intent(this, WebViewActivity.class);
-                    in.putExtra("url", Constants.URL_ABOUT_US);
-                    startActivity(in);
-                } else {
-                    ShowAlertInformation.showNetworkDialog(this);
-                }
-                break;
-            case R.id.nav_medical: {
-                Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
-                startActivity(in);
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    AppUtilities.exportDatabase(this);
-                break;
-            }
-            case R.id.nav_app_setting: {
-                Intent in = new Intent(launchActivity, SettingsActivity.class);
-                startActivity(in);
-                break;
-            }
-            case R.id.nav_transaction:
-                Toast.makeText(launchActivity, "Coming soon... ", Toast.LENGTH_LONG).show();
-                break;
-
-            case R.id.nav_change_language:
-                showChangeLangDialog();
-                break;
-            case R.id.nav_rate_app:
-                AppUtilities.openPlayStore(launchActivity);
-                break;
-            case R.id.nav_logout:
-                new AlertDialog.Builder(launchActivity)
-                        .setTitle(getString(R.string.logout))
-                        .setMessage(getString(R.string.logout_msg))
-                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                NoQueueBaseActivity.clearPreferences();
-                                Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
-                                startActivity(loginIntent);
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // user doesn't want to logout
-                            }
-                        })
-                        .show();
-                break;
-        }
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     @Override
@@ -871,6 +878,24 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
             Toast.makeText(this, "Device register error: ", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void updateMenuList(boolean isLogin) {
+        drawerItem.clear();
+        drawerItem.add(new NavigationBean(R.drawable.medical_history, getString(R.string.medical_history)));
+        drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, getString(R.string.share)));
+        drawerItem.add(new NavigationBean(R.drawable.invite, getString(R.string.invite)));
+        drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
+        drawerItem.add(new NavigationBean(R.drawable.ic_star, getString(R.string.ratetheapp)));
+        drawerItem.add(new NavigationBean(R.drawable.language, getString(R.string.language_setting)));
+        if (isLogin) {
+            drawerItem.add(new NavigationBean(R.drawable.ic_logout, getString(R.string.logout)));
+        }
+        drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
+        mDrawerList.setAdapter(drawerAdapter);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         }
     }
 
