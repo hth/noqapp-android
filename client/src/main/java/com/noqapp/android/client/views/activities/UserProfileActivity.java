@@ -11,6 +11,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.ImagePathReader;
@@ -53,6 +54,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     private EditText edt_Mail;
     private TextView tv_male;
     private TextView tv_female;
+    private TextView tv_info;
     private TextView tv_email_verification;
     private TextView tv_modify_email;
     private LinearLayout ll_dependent;
@@ -74,6 +76,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         edt_Mail = findViewById(R.id.edt_email);
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
+        tv_info = findViewById(R.id.tv_info);
         TextView tv_migrate = findViewById(R.id.tv_migrate);
         tv_email_verification = findViewById(R.id.tv_email_verification);
         tv_modify_email = findViewById(R.id.tv_modify_email);
@@ -223,6 +226,12 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void updateUI() {
+
+        if(NoQueueBaseActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
+            tv_info.setText("Max 10 allowed");
+        }else{
+            tv_info.setText("Max 5 allowed");
+        }
         edt_Name.setText(NoQueueBaseActivity.getUserName());
         tv_name.setText(NoQueueBaseActivity.getUserName());
         edt_phoneNo.setText(NoQueueBaseActivity.getPhoneNo());
