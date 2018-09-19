@@ -11,6 +11,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
@@ -316,6 +317,14 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     @Override
     public void dependencyError() {
         dismissProgress();
+    }
+
+    @Override
+    public void dependencyError(ErrorEncounteredJson eej) {
+        dismissProgress();
+        if (null != eej) {
+            ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
+        }
     }
 
     @Override
