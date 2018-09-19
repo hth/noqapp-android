@@ -274,7 +274,7 @@
     <string name="mds_radiology_invs_advice">Investigation Advised >> Radiology:</string>
     <string name="maps_direction">Maps &amp; Directions</string>
     <string name="change_number">Change Number</string>
-    <string name="email_validate">Your email verification is pending.Please validate it.</string>
+    <string name="email_validate">Your email verification is pending. Please validate it.</string>
     <string name="change_email">Change Email</string>
     <string name="email_hint">Please enter email ID</string>
     <string name="otp">Enter OTP</string>
