@@ -43,11 +43,11 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     private EditText edt_phoneNo;
     private EditText edt_Name;
     private EditText edt_Mail;
-    private EditText edt_birthday;
+    private TextView tv_birthday;
     private EditText edt_pwd;
     private EditText edt_confirm_pwd;
-    private EditText tv_male;
-    private EditText tv_female;
+    private TextView tv_male;
+    private TextView tv_female;
     private LinearLayout ll_pwd;
     private Button btnRegistration;
     private DatePickerDialog fromDatePickerDialog;
@@ -70,15 +70,14 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         edt_phoneNo = findViewById(R.id.edt_phone);
         edt_Name = findViewById(R.id.edt_name);
         edt_Mail = findViewById(R.id.edt_email);
-        edt_birthday = findViewById(R.id.edt_birthday);
+        tv_birthday = findViewById(R.id.tv_birthday);
         edt_pwd = findViewById(R.id.edt_pwd);
         edt_confirm_pwd = findViewById(R.id.edt_confirm_pwd);
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
         ll_pwd = findViewById(R.id.ll_pwd);
         btnRegistration = findViewById(R.id.btnRegistration);
-        edt_birthday.setInputType(InputType.TYPE_NULL);
-        edt_birthday.setOnClickListener(this);
+        tv_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
         btnRegistration.setOnClickListener(this);
@@ -94,9 +93,9 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
                 if (date_diff < 0) {
                     Toast.makeText(RegistrationActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
-                    edt_birthday.setText("");
+                    tv_birthday.setText("");
                 } else {
-                    edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
+                    tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                 }
 
             }
@@ -186,7 +185,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
     @Override
     public void onClick(View v) {
-        if (v == edt_birthday) {
+        if (v == tv_birthday) {
             new AppUtilities().hideKeyBoard(this);
             fromDatePickerDialog.show();
         }else if (v == btnRegistration) {
@@ -237,7 +236,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);
-        edt_birthday.setError(null);
+        tv_birthday.setError(null);
         edt_pwd.setError(null);
         new AppUtilities().hideKeyBoard(this);
 
@@ -268,8 +267,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
                 }
             }
         }
-        if (TextUtils.isEmpty(edt_birthday.getText())) {
-            edt_birthday.setError(getString(R.string.error_dob_blank));
+        if (TextUtils.isEmpty(tv_birthday.getText())) {
+            tv_birthday.setError(getString(R.string.error_dob_blank));
             isValid = false;
         }
         return isValid;
@@ -279,7 +278,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         String phoneNo = edt_phoneNo.getText().toString();
         String name = edt_Name.getText().toString();
         String mail = edt_Mail.getText().toString();
-        String birthday = edt_birthday.getText().toString();
+        String birthday = tv_birthday.getText().toString();
         TimeZone tz = TimeZone.getDefault();
         Log.d(TAG, "TimeZone=" + tz.getDisplayName(false, TimeZone.SHORT) + " TimezoneId=" + tz.getID());
 

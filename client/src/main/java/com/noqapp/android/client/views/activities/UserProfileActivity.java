@@ -46,13 +46,13 @@ import java.util.List;
 
 public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
     private TextView tv_name;
-    private EditText edt_birthday;
+    private TextView tv_birthday;
     private EditText edt_address;
     private EditText edt_phoneNo;
     private EditText edt_Name;
     private EditText edt_Mail;
-    private EditText tv_male;
-    private EditText tv_female;
+    private TextView tv_male;
+    private TextView tv_female;
     private TextView tv_email_verification;
     private TextView tv_modify_email;
     private LinearLayout ll_dependent;
@@ -67,7 +67,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         ImageView iv_edit = findViewById(R.id.iv_edit);
         ImageView iv_edit_mail = findViewById(R.id.iv_edit_mail);
         ImageView iv_add_dependent = findViewById(R.id.iv_add_dependent);
-        edt_birthday = findViewById(R.id.edt_birthday);
+        tv_birthday = findViewById(R.id.tv_birthday);
         edt_address = findViewById(R.id.edt_address);
         edt_phoneNo = findViewById(R.id.edt_phone);
         edt_Name = findViewById(R.id.edt_name);
@@ -88,8 +88,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
 
         //updateUI();
-        edt_birthday.setInputType(InputType.TYPE_NULL);
-        edt_birthday.setOnClickListener(this);
+        tv_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
         tv_migrate.setOnClickListener(this);
@@ -238,7 +237,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         edt_Mail.setFocusable(false);
         edt_Mail.setClickable(true);
         edt_Name.setEnabled(false);
-        edt_birthday.setEnabled(false);
+        tv_birthday.setEnabled(false);
         edt_address.setEnabled(false);
         edt_address.setText(NoQueueBaseActivity.getAddress());
         int id = 0;
@@ -281,7 +280,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
         }
         try {
-            edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB())));
+            tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB())));
         } catch (Exception e) {
             e.printStackTrace();
         }

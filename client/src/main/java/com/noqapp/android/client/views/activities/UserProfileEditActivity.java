@@ -59,14 +59,14 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     private ImageView iv_profile;
     private String gender = "";
     private TextView tv_name;
-    private EditText edt_birthday;
+    private TextView tv_birthday;
     private EditText edt_address;
     private Button btn_update;
     private EditText edt_phoneNo;
     private EditText edt_Name;
     private EditText edt_Mail;
-    private EditText tv_male;
-    private EditText tv_female;
+    private TextView tv_male;
+    private TextView tv_female;
 
     private DatePickerDialog fromDatePickerDialog;
     private boolean isDependent = false;
@@ -79,7 +79,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         setContentView(R.layout.activity_user_edit_profile);
        
         tv_name = findViewById(R.id.tv_name);
-        edt_birthday = findViewById(R.id.edt_birthday);
+        tv_birthday = findViewById(R.id.tv_birthday);
         edt_address = findViewById(R.id.edt_address);
         btn_update = findViewById(R.id.btn_update);
         edt_phoneNo = findViewById(R.id.edt_phone);
@@ -98,8 +98,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         dependentProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.DEPENDENT_PROFILE);
         // gaurdianProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.KEY_USER_PROFILE);
         updateUI();
-        edt_birthday.setInputType(InputType.TYPE_NULL);
-        edt_birthday.setOnClickListener(this);
+        tv_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
         btn_update.setOnClickListener(this);
@@ -115,9 +114,9 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
 
                 if (date_diff < 0) {
                     Toast.makeText(UserProfileEditActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
-                    edt_birthday.setText("");
+                    tv_birthday.setText("");
                 } else {
-                    edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
+                    tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                 }
 
             }
@@ -162,7 +161,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 updateProfile();
                 break;
 
-            case R.id.edt_birthday:
+            case R.id.tv_birthday:
                 fromDatePickerDialog.show();
                 break;
             case R.id.tv_male:
@@ -240,7 +239,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 //   String phoneNo = edt_phoneNo.getText().toString();
                 String name = edt_Name.getText().toString();
                 //   String mail = edt_Mail.getText().toString();
-                String birthday = edt_birthday.getText().toString();
+                String birthday = tv_birthday.getText().toString();
                 String address = edt_address.getText().toString();
                 if (isDependent) {
                     if (null != dependentProfile) {
@@ -346,7 +345,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     onClick(tv_female);
                 }
                 try {
-                    edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(dependentProfile.getBirthday())));
+                    tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(dependentProfile.getBirthday())));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -364,7 +363,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 onClick(tv_female);
             }
             try {
-                edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB())));
+                tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB())));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -384,7 +383,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);
-        edt_birthday.setError(null);
+        tv_birthday.setError(null);
         new AppUtilities().hideKeyBoard(this);
 
         if (TextUtils.isEmpty(edt_Name.getText())) {
@@ -399,8 +398,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             edt_Mail.setError(getString(R.string.error_invalid_email));
             isValid = false;
         }
-        if (TextUtils.isEmpty(edt_birthday.getText())) {
-            edt_birthday.setError(getString(R.string.error_dob_blank));
+        if (TextUtils.isEmpty(tv_birthday.getText())) {
+            tv_birthday.setError(getString(R.string.error_dob_blank));
             isValid = false;
         }
         return isValid;

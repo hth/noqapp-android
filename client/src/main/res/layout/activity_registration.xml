@@ -117,8 +117,8 @@
                             style="@style/style_register_tv"
                             android:text="@string/birthday"/>
 
-                    <EditText
-                            android:id="@+id/edt_birthday"
+                    <TextView
+                            android:id="@+id/tv_birthday"
                             style="@style/style_register_edt"/>
                 </LinearLayout>
 
@@ -138,29 +138,27 @@
                             android:layout_height="wrap_content"
                             android:weightSum="1">
 
-                        <EditText
+                        <TextView
                                 android:id="@+id/tv_male"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_horizontal|center_vertical"
                                 android:layout_weight=".5"
-                                android:focusable="false"
                                 android:gravity="center_horizontal|center_vertical"
-                                android:paddingBottom="10dp"
-                                android:paddingTop="10dp"
+                                android:paddingBottom="5dp"
+                                android:paddingTop="5dp"
                                 android:text="@string/male"
                                 android:textSize="@dimen/text_size_fourteen"/>
 
-                        <EditText
+                        <TextView
                                 android:id="@+id/tv_female"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_horizontal|center_vertical"
                                 android:layout_weight=".5"
-                                android:focusable="false"
                                 android:gravity="center_horizontal|center_vertical"
-                                android:paddingBottom="10dp"
-                                android:paddingTop="10dp"
+                                android:paddingBottom="5dp"
+                                android:paddingTop="5dp"
                                 android:text="@string/female"
                                 android:textSize="@dimen/text_size_fourteen"/>
 
