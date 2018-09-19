@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.presenter.beans;
+package com.noqapp.android.common.beans;
 
 public class NavigationBean {
 
