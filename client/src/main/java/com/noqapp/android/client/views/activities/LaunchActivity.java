@@ -873,14 +873,13 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     public void updateMenuList(boolean isLogin) {
         drawerItem.clear();
+        drawerItem.add(new NavigationBean(R.drawable.medical_history, getString(R.string.medical_history)));
         drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, getString(R.string.share)));
         drawerItem.add(new NavigationBean(R.drawable.invite, getString(R.string.invite)));
         drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
         drawerItem.add(new NavigationBean(R.drawable.ic_star, getString(R.string.ratetheapp)));
         drawerItem.add(new NavigationBean(R.drawable.language, getString(R.string.language_setting)));
-
         if (isLogin) {
-            drawerItem.add(0, new NavigationBean(R.drawable.medical_history, getString(R.string.medical_history)));
             drawerItem.add(new NavigationBean(R.drawable.ic_logout, getString(R.string.logout)));
         }
         drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
