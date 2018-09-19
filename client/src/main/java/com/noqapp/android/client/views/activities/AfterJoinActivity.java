@@ -342,32 +342,32 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         btn_cancel_queue.setEnabled(true);
         switch (pos) {
             case 0:
-                ll_change_bg.setBackgroundResource(R.drawable.turn_1);
+                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
                 tv_after.setText("It's your turn!!!");
                 tv_how_long.setText(gotoPerson);
                 btn_cancel_queue.setVisibility(View.GONE);
                 break;
             case 1:
-                ll_change_bg.setBackgroundResource(R.drawable.turn_1);
+                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
                 tv_after.setText("Next is your turn! You are:");
                 break;
             case 2:
-                ll_change_bg.setBackgroundResource(R.drawable.turn_2);
+                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
                 break;
             case 3:
-                ll_change_bg.setBackgroundResource(R.drawable.turn_3);
+                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
                 break;
             case 4:
-                ll_change_bg.setBackgroundResource(R.drawable.turn_4);
+                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
                 break;
             case 5:
-                ll_change_bg.setBackgroundResource(R.drawable.turn_5);
+                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
                 break;
             default:
                 tv_after.setText("You are:");
                 tv_after.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
-                ll_change_bg.setBackgroundResource(R.drawable.square_bg_drawable);
+                ll_change_bg.setBackgroundResource(R.drawable.grey_gradient);
                 // tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 break;
 
