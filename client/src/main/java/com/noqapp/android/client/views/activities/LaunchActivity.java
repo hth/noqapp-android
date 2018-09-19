@@ -91,7 +91,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private Toast backPressToast;
     private FcmNotificationReceiver fcmNotificationReceiver;
     private ImageView iv_profile;
-    private TextView tv_login, tv_name, tv_email;
+    private TextView  tv_name, tv_email;
     private ScanQueueFragment scanFragment;
     private DrawerLayout drawer;
     protected ListView mDrawerList;
@@ -181,7 +181,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int selectedPosition = drawerAdapter.getData().get(position-1).getIcon();
+                if (position == 0)//when user click on header section
+                    return;
+                int selectedPosition = drawerAdapter.getData().get(position - 1).getIcon();
                 switch (selectedPosition) {
                     case R.drawable.invite: {
                         Intent in = new Intent(LaunchActivity.this, InviteActivity.class);
@@ -245,11 +247,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             }
         });
         iv_profile = headerView.findViewById(R.id.iv_profile);
-        tv_login = headerView.findViewById(R.id.tv_login);
-        tv_login.setOnClickListener(this);
-        iv_profile.setOnClickListener(this);
         tv_name = headerView.findViewById(R.id.tv_name);
         tv_email = headerView.findViewById(R.id.tv_email);
+        tv_email.setOnClickListener(this);
+        iv_profile.setOnClickListener(this);
+
         ((TextView) findViewById(R.id.tv_version)).setText(BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
                 ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                 : getString(R.string.version_no, "Not for release"));
@@ -318,6 +320,17 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 break;
+            case R.id.tv_email:
+                if (UserUtils.isLogin()) {
+                    Intent intent = new Intent(launchActivity, UserProfileActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                    loginIntent.putExtra("fromLogin", true);
+                    startActivity(loginIntent);
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                break;
             default:
                 break;
         }
@@ -374,15 +387,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         updateNotificationBadgeCount();
         updateMenuList(UserUtils.isLogin());
         if (UserUtils.isLogin()) {
-            tv_login.setText("Logout");
             tv_email.setText(NoQueueBaseActivity.getActualMail());
             tv_name.setText(NoQueueBaseActivity.getUserName());
         } else {
-            tv_login.setText("Login");
             tv_email.setText("Please login");
             tv_name.setText("Guest User");
         }
-        tv_login.setVisibility(View.GONE);
         Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
@@ -884,6 +894,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
         drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
         mDrawerList.setAdapter(drawerAdapter);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
     }
 
 }
