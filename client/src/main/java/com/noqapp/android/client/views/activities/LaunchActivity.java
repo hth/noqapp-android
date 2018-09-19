@@ -83,7 +83,6 @@ import java.util.UUID;
 public class LaunchActivity extends LocationActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
-
     private TextView tv_badge;
     private TextView tv_toolbar_title;
 
@@ -91,7 +90,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private Toast backPressToast;
     private FcmNotificationReceiver fcmNotificationReceiver;
     private ImageView iv_profile;
-    private TextView  tv_name, tv_email;
+    private TextView tv_name, tv_email;
     private ScanQueueFragment scanFragment;
     private DrawerLayout drawer;
     protected ListView mDrawerList;
@@ -138,9 +137,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         //Language setup
         languagepref = PreferenceManager.getDefaultSharedPreferences(this);
         languagepref.registerOnSharedPreferenceChangeListener(this);
-        language = languagepref.getString(
-                "pref_language", "");
-
+        language = languagepref.getString("pref_language", "");
 
         if (!language.equals("")) {
             if (language.equals("hi")) {
@@ -150,7 +147,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 locale = Locale.ENGLISH;
                 language = "en_US";
             }
-
         } else {
             locale = Locale.ENGLISH;
             language = "en_US";
@@ -171,8 +167,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawer = findViewById(R.id.drawer_layout);
-        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         mDrawerList = findViewById(R.id.drawer_list);
@@ -217,7 +212,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     case R.id.nav_transaction:
                         Toast.makeText(launchActivity, "Coming soon... ", Toast.LENGTH_LONG).show();
                         break;
-
                     case R.drawable.language:
                         showChangeLangDialog();
                         break;
@@ -264,7 +258,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             deviceModel.setAppBlacklistPresenter(this);
             deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
-
     }
 
     @Override
@@ -302,7 +295,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 break;
             case R.id.iv_search:
                 scanFragment.callSearch();
-
                 break;
             case R.id.iv_notification:
                 Intent in = new Intent(launchActivity, NotificationActivity.class);
@@ -339,7 +331,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public void setActionBarTitle(String title) {
         tv_toolbar_title.setText(title);
     }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -604,7 +595,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 e.printStackTrace();
             }
         }
-
 
         private void unregister(Context context) {
             if (isRegistered) {
@@ -898,5 +888,4 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             drawer.closeDrawer(GravityCompat.START);
         }
     }
-
 }

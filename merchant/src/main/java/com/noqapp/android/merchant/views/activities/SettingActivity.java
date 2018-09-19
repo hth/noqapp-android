@@ -125,7 +125,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                     TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
                     TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
                     tvtitle.setText("Delete Schedule");
-                    tv_msg.setText("Do you want to delete scheduling.");
+                    tv_msg.setText("Do you want to delete scheduling?");
                     Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
                     Button btn_no = customDialogView.findViewById(R.id.btn_no);
                     btn_no.setOnClickListener(new View.OnClickListener() {
