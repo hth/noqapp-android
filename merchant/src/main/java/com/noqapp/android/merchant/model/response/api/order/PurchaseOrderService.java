@@ -12,6 +12,11 @@ import retrofit2.http.Path;
 
 public interface PurchaseOrderService {
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/m/o/purchaseOrder/showOrders/{codeQR}.json")
     Call<JsonPurchaseOrderList> fetch(
             @Header("X-R-DID")
@@ -30,6 +35,12 @@ public interface PurchaseOrderService {
             String codeQR
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/m/o/purchaseOrder/served.json")
     Call<JsonToken> served(
             @Header("X-R-DID")
@@ -48,6 +59,13 @@ public interface PurchaseOrderService {
             OrderServed OrderServed
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MERCHANT_COULD_NOT_ACQUIRE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/m/o/purchaseOrder/acquire.json")
     Call<JsonToken> acquire(
             @Header("X-R-DID")
@@ -66,6 +84,12 @@ public interface PurchaseOrderService {
             OrderServed OrderServed
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/m/o/purchaseOrder/actionOnOrder.json")
     Call<JsonPurchaseOrderList> actionOnOrder(
             @Header("X-R-DID")

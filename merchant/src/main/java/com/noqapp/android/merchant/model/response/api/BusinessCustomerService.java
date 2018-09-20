@@ -14,6 +14,14 @@ import retrofit2.http.POST;
  */
 public interface BusinessCustomerService {
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_CUSTOMER_ID_EXISTS}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_NOT_FOUND}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/m/bc/addId.json")
     Call<JsonQueuePersonList> addId(
             @Header("X-R-DID")
@@ -32,6 +40,13 @@ public interface BusinessCustomerService {
             JsonBusinessCustomer jsonBusinessCustomer
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_CUSTOMER_ID_DOES_NOT_EXISTS}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/m/bc/editId.json")
     Call<JsonQueuePersonList> editId(
             @Header("X-R-DID")

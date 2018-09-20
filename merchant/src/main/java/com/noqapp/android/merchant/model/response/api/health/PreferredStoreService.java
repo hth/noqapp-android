@@ -36,6 +36,11 @@ public interface PreferredStoreService {
             String codeQR
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @GET("api/m/h/preferredStore/{codeQR}.json")
     Call<JsonPreferredBusinessList> getAllPreferredStores(
             @Header("X-R-DID")
@@ -54,7 +59,10 @@ public interface PreferredStoreService {
             String codeQR
     );
 
-
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     */
     @GET("api/m/h/preferredStore/file/{codeQR}/{bizStoreId}.json")
     Call<ResponseBody> file(
 

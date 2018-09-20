@@ -22,6 +22,12 @@ import retrofit2.http.Part;
  */
 
 public interface MerchantProfileService {
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @GET("api/m/profile/fetch.json")
     Call<JsonMerchant> fetch(
             @Header("X-R-MAIL")
@@ -31,6 +37,13 @@ public interface MerchantProfileService {
             String auth
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/m/profile/update.json")
     Call<JsonProfile> update(
             @Header("X-R-MAIL")
@@ -43,7 +56,11 @@ public interface MerchantProfileService {
             UpdateProfile updateProfile
     );
 
-
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
+     */
     @POST("api/m/profile/updateProfessionalProfile.json")
     Call<JsonProfessionalProfilePersonal> update(
             @Header("X-R-MAIL")
@@ -56,6 +73,14 @@ public interface MerchantProfileService {
             JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPLOAD_NO_SIZE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPLOAD_UNSUPPORTED_FORMAT}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPLOAD_EXCEED_SIZE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPLOAD}
+     */
     @Multipart
     @POST("api/m/profile/upload.json")
     Call<JsonResponse> upload(
@@ -78,6 +103,11 @@ public interface MerchantProfileService {
             RequestBody profileImageOfQid
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/m/profile/intellisense.json")
     Call<JsonResponse> intellisense(
             @Header("X-R-DID")
