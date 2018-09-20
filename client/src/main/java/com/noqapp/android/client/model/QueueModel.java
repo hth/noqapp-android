@@ -69,19 +69,19 @@ public final class QueueModel {
                     queuePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (response.body() != null) {
+                if (response.body() != null && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     queuePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
+                    queuePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonQueue> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-
                 queuePresenter.queueError();
             }
         });
@@ -101,13 +101,13 @@ public final class QueueModel {
                     queuePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (response.body() != null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     queuePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
-                    queuePresenter.queueError();
+                    queuePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -127,13 +127,13 @@ public final class QueueModel {
                     queuePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (response.body() != null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     queuePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
-                    queuePresenter.queueError();
+                    queuePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -170,7 +170,7 @@ public final class QueueModel {
 //                    }
                 } else if (response.body() != null && response.body().getError() != null) {
                     Log.e(TAG, "Got error");
-                    tokenAndQueuePresenter.currentQueueError();
+                    tokenAndQueuePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -204,7 +204,7 @@ public final class QueueModel {
 //                    }
                 } else if (response.body() != null && response.body().getError() != null) {
                     Log.e(TAG, "Got error");
-                    tokenAndQueuePresenter.historyQueueError();
+                    tokenAndQueuePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -236,7 +236,7 @@ public final class QueueModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed to join queue" + response.body().getError());
-                    tokenPresenter.tokenPresenterError();
+                    tokenPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -258,12 +258,13 @@ public final class QueueModel {
         queueService.abortQueue(did, Constants.DEVICE_TYPE, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.body() != null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     responsePresenter.responsePresenterResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed abort queue");
+                    responsePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

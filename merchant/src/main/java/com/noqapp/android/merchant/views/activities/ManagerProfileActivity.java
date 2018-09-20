@@ -4,6 +4,7 @@ package com.noqapp.android.merchant.views.activities;
  * Created by chandra on 10/4/18.
  */
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
@@ -141,6 +142,11 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         if (errorCode == Constants.INVALID_CREDENTIAL) {
             LaunchActivity.getLaunchActivity().clearLoginData(true);
         }
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+
     }
 
 

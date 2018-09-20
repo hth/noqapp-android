@@ -18,6 +18,7 @@ import com.noqapp.android.common.beans.body.JoinQueue;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,13 +64,13 @@ public class QueueApiModel {
                     queuePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     queuePresenter.queueResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
-                    queuePresenter.queueError();
+                    queuePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -108,7 +109,7 @@ public class QueueApiModel {
 //                    }
                 } else if (response.body() != null && response.body().getError() != null) {
                     Log.e(TAG, "Got error");
-                    tokenAndQueuePresenter.currentQueueError();
+                    tokenAndQueuePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -141,7 +142,7 @@ public class QueueApiModel {
 //                    }
                 } else if (null != response.body() && null != response.body().getError()) {
                     Log.e(TAG, "Got error");
-                    tokenAndQueuePresenter.historyQueueError();
+                    tokenAndQueuePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -167,7 +168,7 @@ public class QueueApiModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed to join queue" + response.body().getError());
-                    tokenPresenter.tokenPresenterError();
+                    tokenPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -187,12 +188,13 @@ public class QueueApiModel {
                     responsePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     responsePresenter.responsePresenterResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed abort queue");
+                    responsePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -203,6 +205,4 @@ public class QueueApiModel {
             }
         });
     }
-
-
 }

@@ -10,11 +10,13 @@ import com.noqapp.android.client.model.ProfessionalProfileModel;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
@@ -119,6 +121,12 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         dismissProgress();
     }
 
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        ErrorResponseHandler.processError(this,eej);
+    }
 
     private void setupViewPager(ViewPager viewPager) {
         userProfileFragment = new UserProfileFragment();

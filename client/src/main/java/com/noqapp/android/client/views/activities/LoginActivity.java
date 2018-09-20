@@ -8,6 +8,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -56,7 +57,6 @@ public class LoginActivity extends OTPActivity {
 
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
-        if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
             if (getIntent().getBooleanExtra("fromLogin", false)) {
@@ -67,19 +67,21 @@ public class LoginActivity extends OTPActivity {
             }
             finish();//close the current activity
             dismissProgress();
-        } else {
-            // Rejected from  server
-            ErrorEncounteredJson eej = profile.getError();
-            if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
-                Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
-                in.putExtra("mobile_no", verifiedMobileNo);
-                in.putExtra("country_code", countryCode);
-                in.putExtra("countryShortName", countryShortName);
-                startActivity(in);
-                dismissProgress();
-                finish();//close the current activity
-            }
-        }
     }
 
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
+            Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
+            in.putExtra("mobile_no", verifiedMobileNo);
+            in.putExtra("country_code", countryCode);
+            in.putExtra("countryShortName", countryShortName);
+            startActivity(in);
+            dismissProgress();
+            finish();//close the current activity
+        } else {
+            ErrorResponseHandler.processError(this, eej);
+        }
+    }
 }

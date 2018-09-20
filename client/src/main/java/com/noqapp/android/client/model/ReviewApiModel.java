@@ -39,13 +39,13 @@ public class ReviewApiModel {
                     reviewPresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (response.body() != null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response Review", String.valueOf(response.body()));
                     reviewPresenter.reviewResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history");
-                    reviewPresenter.reviewError();
+                    reviewPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

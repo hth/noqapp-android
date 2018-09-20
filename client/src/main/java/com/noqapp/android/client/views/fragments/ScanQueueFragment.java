@@ -18,6 +18,7 @@ import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
@@ -36,6 +37,7 @@ import com.noqapp.android.client.views.adapters.RecentActivityAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -537,6 +539,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
         pb_current.setVisibility(View.GONE);
         pb_recent.setVisibility(View.GONE);
         pb_near.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        ErrorResponseHandler.processError(getActivity(),eej);
     }
 
     @Override

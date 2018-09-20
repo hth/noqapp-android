@@ -13,9 +13,11 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.customviews.SeekbarWithIntervals;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 
@@ -211,6 +213,12 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     @Override
     public void reviewError() {
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        progressDialog.dismiss();
+        ErrorResponseHandler.processError(this,eej);
     }
 
     @Override

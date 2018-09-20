@@ -1,14 +1,13 @@
 package com.noqapp.android.client.presenter;
 
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 
-public interface MigrateEmailPresenter {
+public interface MigrateEmailPresenter extends ResponseErrorPresenter {
 
     void migrateEmailResponse(JsonResponse jsonResponse);
 
     void migrateEmailError();
-
-    void migrateEmailError(String error);
 
     void authenticationFailure(int errorCode);
 }

@@ -8,6 +8,7 @@ import com.noqapp.android.client.presenter.beans.body.ChangeMailOTP;
 import com.noqapp.android.client.presenter.beans.body.MigrateMail;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -112,9 +113,9 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void migrateEmailError(String error) {
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+        ErrorResponseHandler.processError(this,eej);
     }
 
     @Override
@@ -135,11 +136,6 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void profileError() {
-        dismissProgress();
-    }
-
-    @Override
-    public void profileError(String error) {
         dismissProgress();
     }
 

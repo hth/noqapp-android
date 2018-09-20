@@ -6,6 +6,7 @@ import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -174,8 +175,9 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     }
 
     @Override
-    public void profileError(String error) {
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
+        ErrorResponseHandler.processError(this,eej);
     }
 
     @Override

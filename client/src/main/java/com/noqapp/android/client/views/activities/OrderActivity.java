@@ -10,8 +10,10 @@ import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
@@ -208,6 +210,12 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        ErrorResponseHandler.processError(this,eej);
+    }
+
+    @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
@@ -218,10 +226,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         dismissProgress();
     }
 
-    @Override
-    public void profileError(String error) {
-        dismissProgress();
-    }
 
     @Override
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {

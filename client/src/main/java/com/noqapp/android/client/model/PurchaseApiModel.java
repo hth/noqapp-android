@@ -33,12 +33,12 @@ public class PurchaseApiModel {
                     purchaseOrderPresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     purchaseOrderPresenter.purchaseOrderResponse(response.body());
                 } else {
                     //TODO something logical
-                    Log.e(TAG, "Failed abort queue");
+                    purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

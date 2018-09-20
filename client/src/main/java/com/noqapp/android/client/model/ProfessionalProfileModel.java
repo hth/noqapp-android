@@ -35,12 +35,12 @@ public class ProfessionalProfileModel {
         professionalProfileService.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfile> call, @NonNull Response<JsonProfessionalProfile> response) {
-                if (response.body() != null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("QueueManagerProfile", String.valueOf(response.body()));
                     queueManagerPresenter.queueManagerResponse(response.body());
                 } else {
                     Log.e(TAG, "Empty QueueManagerProfile");
-                    queueManagerPresenter.queueManagerError();
+                    queueManagerPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

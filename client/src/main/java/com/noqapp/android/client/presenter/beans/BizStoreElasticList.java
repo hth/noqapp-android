@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,9 @@ public class BizStoreElasticList {
 
     @JsonProperty("result")
     private List<BizStoreElastic> bizStoreElastics = new ArrayList<>();
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public String getScrollId() {
         return scrollId;
@@ -77,13 +81,23 @@ public class BizStoreElasticList {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
-        return "BizStoreElasticList{" +
-                "scrollId='" + scrollId + '\'' +
-                ", cityName='" + cityName + '\'' +
-                ", jsonCategories=" + jsonCategories +
-                ", bizStoreElastics=" + bizStoreElastics +
-                '}';
+        final StringBuffer sb = new StringBuffer("BizStoreElasticList{");
+        sb.append("scrollId='").append(scrollId).append('\'');
+        sb.append(", cityName='").append(cityName).append('\'');
+        sb.append(", jsonCategories=").append(jsonCategories);
+        sb.append(", bizStoreElastics=").append(bizStoreElastics);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

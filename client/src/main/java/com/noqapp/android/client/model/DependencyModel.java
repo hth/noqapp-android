@@ -40,7 +40,7 @@ public final class DependencyModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history" + response.body().getError());
-                    dependencyPresenter.dependencyError(response.body().getError());
+                    dependencyPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

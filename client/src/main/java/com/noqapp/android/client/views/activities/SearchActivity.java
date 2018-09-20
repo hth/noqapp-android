@@ -7,6 +7,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
@@ -15,6 +16,7 @@ import com.noqapp.android.client.views.adapters.SearchAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -207,4 +209,9 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         dismissProgress();
     }
 
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        ErrorResponseHandler.processError(this,eej);
+    }
 }

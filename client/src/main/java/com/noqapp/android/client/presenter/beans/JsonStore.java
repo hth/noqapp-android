@@ -1,5 +1,6 @@
 package com.noqapp.android.client.presenter.beans;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.order.JsonStoreProduct;
 
@@ -43,6 +44,9 @@ public class JsonStore implements Serializable {
     @JsonProperty("products")
     private List<JsonStoreProduct> jsonStoreProducts = new LinkedList<>();
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public JsonQueue getJsonQueue() {
         return jsonQueue;
     }
@@ -79,13 +83,23 @@ public class JsonStore implements Serializable {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
-        return "JsonStore{" +
-                "jsonQueue=" + jsonQueue +
-                ", jsonHours=" + jsonHours +
-                ", jsonStoreCategories=" + jsonStoreCategories +
-                ", jsonStoreProducts=" + jsonStoreProducts +
-                '}';
+        final StringBuffer sb = new StringBuffer("JsonStore{");
+        sb.append("jsonQueue=").append(jsonQueue);
+        sb.append(", jsonHours=").append(jsonHours);
+        sb.append(", jsonStoreCategories=").append(jsonStoreCategories);
+        sb.append(", jsonStoreProducts=").append(jsonStoreProducts);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

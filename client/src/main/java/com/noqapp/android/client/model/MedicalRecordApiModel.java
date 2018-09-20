@@ -8,13 +8,13 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class MedicalRecordApiModel {
-    private final String TAG = MedicalRecordApiModel.class.getSimpleName();
     private final static MedicalRecordService medicalRecordService;
     private MedicalRecordPresenter medicalRecordPresenter;
 
@@ -34,13 +34,11 @@ public class MedicalRecordApiModel {
                     medicalRecordPresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     medicalRecordPresenter.medicalRecordResponse(response.body());
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Get state of queue upon scan");
-                    medicalRecordPresenter.medicalRecordError();
+                    medicalRecordPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

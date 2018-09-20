@@ -45,13 +45,13 @@ public final class StoreModel {
                     storePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (response.body() != null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("jsonStore response", String.valueOf(response.body()));
                     storePresenter.storeResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "jsonStore error");
-                    storePresenter.storeError();
+                    storePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

@@ -13,6 +13,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -20,6 +21,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.google.common.cache.Cache;
@@ -170,6 +172,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
         dismissProgress();
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        ErrorResponseHandler.processError(this,eej);
     }
 
     @Override
