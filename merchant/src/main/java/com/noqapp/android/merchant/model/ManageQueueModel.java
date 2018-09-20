@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,7 +78,7 @@ public class ManageQueueModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while getting all queues assigned");
-                    topicPresenter.topicPresenterError();
+                    topicPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -108,21 +109,20 @@ public class ManageQueueModel {
                         Log.d(TAG, "After clicking Next, response jsonToken" + response.body().toString());
                         manageQueuePresenter.manageQueueResponse(response.body());
                     } else {
-                        //TODO something logical
                         Log.e(TAG, "Failed to get response");
-                        manageQueuePresenter.manageQueueError(null);
+                        manageQueuePresenter.responseErrorPresenter(null);
                     }
                 } else if (response.body() != null && response.body().getError() != null) {
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
                     Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
-                    manageQueuePresenter.manageQueueError(null);
+                    manageQueuePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                manageQueuePresenter.manageQueueError(null);
+                manageQueuePresenter.manageQueueError();
             }
         });
     }
@@ -148,11 +148,13 @@ public class ManageQueueModel {
                     } else {
                         //TODO something logical
                         Log.e(TAG, "Failed to get response");
-                        manageQueuePresenter.manageQueueError(null);
+                        manageQueuePresenter.responseErrorPresenter(null);
+                        ;
                     }
                 } else if (response.body() != null && response.body().getError() != null) {
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
-                    manageQueuePresenter.manageQueueError(errorEncounteredJson);
+                    manageQueuePresenter.responseErrorPresenter(response.body().getError());
+                    ;
                     Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
                 }
             }
@@ -160,7 +162,7 @@ public class ManageQueueModel {
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                manageQueuePresenter.manageQueueError(null);
+                manageQueuePresenter.manageQueueError();
             }
         });
     }
@@ -178,9 +180,9 @@ public class ManageQueueModel {
                     Log.d("Get queue setting", String.valueOf(response.body()));
                     queuePersonListPresenter.queuePersonListResponse(response.body());
                 } else {
-                    //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
-                    queuePersonListPresenter.queuePersonListError();
+                    queuePersonListPresenter.responseErrorPresenter(response.body().getError());
+                    ;
                 }
             }
 
@@ -206,12 +208,11 @@ public class ManageQueueModel {
                     Log.d("Get queue setting", String.valueOf(response.body()));
                     queuePersonListPresenter.queuePersonListResponse(response.body());
                 } else {
-                    //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
-                    queuePersonListPresenter.queuePersonListError();
+                    queuePersonListPresenter.responseErrorPresenter(response.body().getError());
+                    ;
                 }
             }
-
 
             @Override
             public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
@@ -238,7 +239,8 @@ public class ManageQueueModel {
                     //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
-                    dispenseTokenPresenter.dispenseTokenError(errorEncounteredJson);
+                    dispenseTokenPresenter.responseErrorPresenter(response.body().getError());
+                    ;
                 }
             }
 
@@ -246,7 +248,7 @@ public class ManageQueueModel {
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                dispenseTokenPresenter.dispenseTokenError(null);
+                dispenseTokenPresenter.responseErrorPresenter(null);
             }
         });
     }
@@ -268,7 +270,8 @@ public class ManageQueueModel {
                     //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
-                    dispenseTokenPresenter.dispenseTokenError(errorEncounteredJson);
+                    dispenseTokenPresenter.responseErrorPresenter(response.body().getError());
+                    ;
                 }
             }
 
@@ -276,7 +279,7 @@ public class ManageQueueModel {
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
-                dispenseTokenPresenter.dispenseTokenError(null);
+                dispenseTokenPresenter.responseErrorPresenter(null);
             }
         });
     }
@@ -297,10 +300,10 @@ public class ManageQueueModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
-                    queuePersonListPresenter.queuePersonListError();
+                    queuePersonListPresenter.responseErrorPresenter(response.body().getError());
+                    ;
                 }
             }
-
 
             @Override
             public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {

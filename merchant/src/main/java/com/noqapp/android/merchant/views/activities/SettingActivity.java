@@ -9,6 +9,7 @@ import com.noqapp.android.merchant.model.QueueSettingModel;
 import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
@@ -357,13 +358,11 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     }
 
     @Override
-    public void queueSettingError(ErrorEncounteredJson eej) {
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
         if(null != queueSettingTemp)
             queueSettingResponse(queueSettingTemp);
-        if (null != eej) {
-            showAlert( eej.getSystemError(), eej.getReason());
-        }
+        ErrorResponseHandler.processError(this,eej);
     }
 
     @Override

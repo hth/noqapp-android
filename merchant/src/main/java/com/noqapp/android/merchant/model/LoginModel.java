@@ -49,6 +49,7 @@ public class LoginModel {
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
+                loginPresenter.loginError();
             }
         });
     }

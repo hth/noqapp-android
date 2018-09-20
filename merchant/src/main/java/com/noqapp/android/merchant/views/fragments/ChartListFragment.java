@@ -1,11 +1,14 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantStatsModel;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.ChartListActivity;
@@ -27,12 +30,12 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChartListFragment extends Fragment implements  ChartPresenter{
+public class ChartListFragment extends Fragment implements ChartPresenter {
 
     public static int selected_pos = 0;
     public ChartFragment chartFragment;
     private MerchantChartListAdapter adapter;
-    private Runnable  run;
+    private Runnable run;
     private ArrayList<JsonTopic> topics = new ArrayList<>();
     private ListView listview;
     private ArrayList<HealthCareStat> healthCareStatList = new ArrayList<>();
@@ -63,7 +66,7 @@ public class ChartListFragment extends Fragment implements  ChartPresenter{
             initListView();
         }
 
-        if(isFirstTime) {
+        if (isFirstTime) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 merchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
@@ -74,7 +77,6 @@ public class ChartListFragment extends Fragment implements  ChartPresenter{
         }
         return view;
     }
-
 
 
     @Override
@@ -106,7 +108,7 @@ public class ChartListFragment extends Fragment implements  ChartPresenter{
                     Bundle b = new Bundle();
                     b.putSerializable("healthCareStat", healthCareStatList.get(position));
                     chartFragment.setArguments(b);
-                    ChartListActivity.getChartListActivity().replaceFragmentWithBackStack(R.id.frame_layout, chartFragment,ChartListFragment.class.getSimpleName());
+                    ChartListActivity.getChartListActivity().replaceFragmentWithBackStack(R.id.frame_layout, chartFragment, ChartListFragment.class.getSimpleName());
                 }
                 selected_pos = position;
                 // to set the selected cell color
@@ -138,15 +140,28 @@ public class ChartListFragment extends Fragment implements  ChartPresenter{
     }
 
     @Override
+    public void authenticationFailure(int errorCode) {
+        dismissProgress();
+        if (errorCode == Constants.INVALID_CREDENTIAL) {
+            LaunchActivity.getLaunchActivity().clearLoginData(true);
+        }
+    }
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        ErrorResponseHandler.processError(getActivity(),eej);
+    }
+
+    @Override
     public void chartResponse(HealthCareStatList healthCareStatListTemp) {
         if (null != healthCareStatListTemp) {
-            healthCareStatList= new ArrayList<>(healthCareStatListTemp.getHealthCareStat());
+            healthCareStatList = new ArrayList<>(healthCareStatListTemp.getHealthCareStat());
             if (new AppUtils().isTablet(getActivity())) {
                 chartFragment.updateChart(healthCareStatList.get(selected_pos));
             }
         }
         dismissProgress();
-        Log.v("Chart data",healthCareStatList.toString());
+        Log.v("Chart data", healthCareStatList.toString());
     }
 
     private void initProgress() {

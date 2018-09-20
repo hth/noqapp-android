@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -11,6 +12,7 @@ import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
@@ -84,7 +86,11 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     public void authenticationFailure(int errorCode) {
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
-
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        ErrorResponseHandler.processError(context,eej);
+    }
     public interface PeopleInQAdapterClick {
 
         void PeopleInQClick(int position);

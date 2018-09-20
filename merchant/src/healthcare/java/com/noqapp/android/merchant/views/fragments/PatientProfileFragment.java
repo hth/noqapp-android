@@ -5,12 +5,15 @@ package com.noqapp.android.merchant.views.fragments;
  */
 
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.PatientProfilePresenter;
 import com.noqapp.android.merchant.model.PatientProfileModel;
 import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -106,9 +109,7 @@ public class PatientProfileFragment extends Fragment implements PatientProfilePr
 
     @Override
     public void patientProfileResponse(JsonProfile jsonProfile) {
-        if (jsonProfile.getError() == null) {
-            updateUI(jsonProfile);
-        }
+        updateUI(jsonProfile);
         dismissProgress();
     }
 
@@ -119,8 +120,13 @@ public class PatientProfileFragment extends Fragment implements PatientProfilePr
 
     @Override
     public void authenticationFailure(int errorCode) {
-        //TODO(chandra)
         dismissProgress();
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        ErrorResponseHandler.processError(getActivity(),eej);
     }
 
     private void updateUI(JsonProfile jsonProfile) {

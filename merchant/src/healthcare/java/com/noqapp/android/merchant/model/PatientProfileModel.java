@@ -40,13 +40,13 @@ public class PatientProfileModel {
                     patientProfilePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     patientProfilePresenter.patientProfileResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed to fetch patient profile");
-                    patientProfilePresenter.patientProfileError();
+                    patientProfilePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

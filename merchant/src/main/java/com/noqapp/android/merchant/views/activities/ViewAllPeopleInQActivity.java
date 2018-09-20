@@ -5,6 +5,7 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueModel;
@@ -12,6 +13,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ViewAllExpandableListAdapter;
@@ -115,6 +117,12 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
     }
 
     @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        ErrorResponseHandler.processError(this, eej);
+    }
+
+    @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
         if (errorCode == Constants.INVALID_CREDENTIAL) {
@@ -128,7 +136,7 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
             for (int i = 0; i < temp.size(); i++) {
                 try {
                     Date key = new Date(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreated()).getTime());
-                            //CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreated()));
+                    //CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreated()));
                     if (null == tempList.get(key)) {
                         tempList.put(key, new ArrayList<JsonQueuePersonList>());
 

@@ -4,12 +4,14 @@ package com.noqapp.android.merchant.views.fragments;
  * Created by chandra on 10/4/18.
  */
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -202,8 +204,9 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public void profileError(String error) {
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
+        ErrorResponseHandler.processError(getActivity(),eej);
     }
 
 

@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.NavigationBean;
 import com.noqapp.android.common.beans.body.DeviceToken;
@@ -16,6 +17,7 @@ import com.noqapp.android.merchant.network.VersionCheckAsync;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.NavigationDrawerAdapter;
 import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
@@ -494,6 +496,12 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     @Override
     public void appBlacklistError() {
         ShowAlertInformation.showThemePlayStoreDialog(launchActivity, getString(R.string.playstore_title), getString(R.string.playstore_msg), false);
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        ErrorResponseHandler.processError(this,eej);
     }
 
     @Override

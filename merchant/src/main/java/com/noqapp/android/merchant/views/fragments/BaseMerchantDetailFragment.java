@@ -18,6 +18,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.Served;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -211,7 +212,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue_detail));
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
-
     }
 
     public void updateListData(final ArrayList<JsonTopic> jsonTopics) {
@@ -233,6 +233,12 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         resetList();
         updateUI();
 
+    }
+
+    @Override
+    public void manageQueueError() {
+        dismissProgress();
+        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
@@ -259,9 +265,17 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     }
 
     @Override
-    public void manageQueueError(ErrorEncounteredJson errorEncounteredJson) {
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        if (null != errorEncounteredJson && errorEncounteredJson.getSystemErrorCode().equals("350")) {
+        dismissProgress();
+        if(null != eej && eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())){
+            Toast.makeText(context,eej.getReason(),Toast.LENGTH_LONG).show();
+            Intent in = new Intent(getActivity(), LoginActivity.class);
+            in.putExtra("phone_no",edt_mobile.getText().toString());
+            context.startActivity(in);
+            RegistrationActivity.registerCallBack = this;
+            LoginActivity.loginCallBack = this;
+        }else  if (null != eej && eej.getSystemErrorCode().equals("350")) {
             Toast.makeText(context, getString(R.string.error_client_just_acquired), Toast.LENGTH_LONG).show();
             if (lastSelectedPos >= 0) {
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
@@ -269,23 +283,10 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                 peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR());
                 rv_queue_people.setAdapter(peopleInQAdapter);
             }
+        }else {
+            ErrorResponseHandler.processError(getActivity(), eej);
         }
     }
-
-    @Override
-    public void dispenseTokenError(ErrorEncounteredJson errorEncounteredJson) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
-        dismissProgress();
-        if(errorEncounteredJson.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())){
-            Toast.makeText(context,errorEncounteredJson.getReason(),Toast.LENGTH_LONG).show();
-            Intent in = new Intent(getActivity(), LoginActivity.class);
-            in.putExtra("phone_no",edt_mobile.getText().toString());
-            context.startActivity(in);
-            RegistrationActivity.registerCallBack = this;
-            LoginActivity.loginCallBack = this;
-        }
-    }
-
 
 
     @Override
@@ -421,16 +422,15 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
     @Override
     public void queuePersonListError() {
+        LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
     }
-
 
     protected void dismissProgress() {
         if (null != progressDialog) {
             progressDialog.setVisibility(View.GONE);
         }
     }
-
 
     protected void updateUI() {
 

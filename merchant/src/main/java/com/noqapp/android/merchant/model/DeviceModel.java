@@ -74,7 +74,7 @@ public class DeviceModel {
                     Log.d(TAG, "Oldest supported version " + String.valueOf(response.body()));
                     appBlacklistPresenter.appBlacklistError();
                 } else {
-                    appBlacklistPresenter.appBlacklistResponse();
+                    appBlacklistPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

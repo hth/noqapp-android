@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,9 @@ public class HealthCareStatList {
     @JsonProperty("hcs")
     private List<HealthCareStat> healthCareStat = new ArrayList<>();
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public List<HealthCareStat> getHealthCareStat() {
         return healthCareStat;
     }
@@ -47,10 +51,20 @@ public class HealthCareStatList {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
-        return "HealthCareStatList{" +
-                "healthCareStat=" + healthCareStat +
-                '}';
+        final StringBuffer sb = new StringBuffer("HealthCareStatList{");
+        sb.append("healthCareStat=").append(healthCareStat);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

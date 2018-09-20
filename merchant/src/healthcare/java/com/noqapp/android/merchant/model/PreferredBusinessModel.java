@@ -47,13 +47,13 @@ public class PreferredBusinessModel {
                     preferredBusinessPresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     preferredBusinessPresenter.preferredBusinessResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed image upload");
-                    preferredBusinessPresenter.preferredBusinessError();
+                    preferredBusinessPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -73,7 +73,7 @@ public class PreferredBusinessModel {
                     filePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() ) {
                     Log.d("Response", String.valueOf(response.body()));
                     try {
                         int count;
