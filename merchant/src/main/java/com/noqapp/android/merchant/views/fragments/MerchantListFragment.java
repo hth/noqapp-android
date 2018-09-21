@@ -258,7 +258,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        ErrorResponseHandler.processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
     @Override
     public void authenticationFailure(int errorCode) {

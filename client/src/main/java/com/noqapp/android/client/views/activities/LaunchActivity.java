@@ -865,7 +865,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        ErrorResponseHandler.processError(this,eej);
+        new ErrorResponseHandler().processError(this,eej);
     }
     @Override
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {

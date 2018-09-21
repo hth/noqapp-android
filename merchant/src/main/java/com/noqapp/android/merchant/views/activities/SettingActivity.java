@@ -362,7 +362,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         dismissProgress();
         if(null != queueSettingTemp)
             queueSettingResponse(queueSettingTemp);
-        ErrorResponseHandler.processError(this,eej);
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     @Override

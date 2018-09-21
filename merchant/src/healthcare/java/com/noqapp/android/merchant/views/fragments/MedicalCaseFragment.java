@@ -586,7 +586,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        ErrorResponseHandler.processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
 
     @Override

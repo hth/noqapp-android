@@ -482,7 +482,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        ErrorResponseHandler.processError(this,eej);
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     @Override

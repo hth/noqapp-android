@@ -177,7 +177,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        ErrorResponseHandler.processError(this,eej);
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     @Override

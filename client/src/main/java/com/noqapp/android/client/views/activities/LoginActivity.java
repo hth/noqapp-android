@@ -90,7 +90,7 @@ public class LoginActivity extends OTPActivity {
             dismissProgress();
             finish();//close the current activity
         } else {
-            ErrorResponseHandler.processError(this, eej);
+            new ErrorResponseHandler().processError(this, eej);
         }
     }
 }

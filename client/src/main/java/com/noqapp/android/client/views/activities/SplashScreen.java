@@ -110,7 +110,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        ErrorResponseHandler.processError(this,eej);
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     @Override

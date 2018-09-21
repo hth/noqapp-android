@@ -149,7 +149,7 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        ErrorResponseHandler.processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
 
     @Override

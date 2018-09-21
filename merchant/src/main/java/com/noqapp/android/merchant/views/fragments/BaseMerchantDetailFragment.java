@@ -284,7 +284,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                 rv_queue_people.setAdapter(peopleInQAdapter);
             }
         }else {
-            ErrorResponseHandler.processError(getActivity(), eej);
+            new ErrorResponseHandler().processError(getActivity(), eej);
         }
     }
 

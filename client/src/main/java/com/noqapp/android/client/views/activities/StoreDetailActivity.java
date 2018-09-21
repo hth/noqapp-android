@@ -351,7 +351,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        ErrorResponseHandler.processError(this,eej);
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     private boolean isStoreOpenToday(JsonStore jsonStore) {

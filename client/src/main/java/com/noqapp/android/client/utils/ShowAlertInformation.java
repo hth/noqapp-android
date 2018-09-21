@@ -5,10 +5,12 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ShowAlertInformation {
@@ -125,7 +127,7 @@ public class ShowAlertInformation {
         mAlertDialog.show();
     }
 
-    public static void showThemeDialogWithIcon(Context context, String title, String message, boolean isGravityLeft, int icon) {
+    private static void showThemeDialogWithIcon(Context context, String title, String message, boolean isGravityLeft, int icon) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
@@ -133,6 +135,8 @@ public class ShowAlertInformation {
         View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
         TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
         TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+        ImageView iv_icon = customDialogView.findViewById(R.id.iv_icon);
+        iv_icon.setBackground(ContextCompat.getDrawable(context,icon));
         tvtitle.setText(title);
         tv_msg.setText(message);
         if (isGravityLeft)

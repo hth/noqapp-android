@@ -206,7 +206,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        ErrorResponseHandler.processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
 
 

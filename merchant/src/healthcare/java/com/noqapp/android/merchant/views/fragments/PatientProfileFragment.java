@@ -126,7 +126,7 @@ public class PatientProfileFragment extends Fragment implements PatientProfilePr
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        ErrorResponseHandler.processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
 
     private void updateUI(JsonProfile jsonProfile) {

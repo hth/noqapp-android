@@ -538,7 +538,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        ErrorResponseHandler.processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
 
     @Override

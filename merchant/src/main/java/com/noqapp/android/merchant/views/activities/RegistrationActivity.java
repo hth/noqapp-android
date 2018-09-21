@@ -205,7 +205,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        ErrorResponseHandler.processError(this,eej);
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     @Override

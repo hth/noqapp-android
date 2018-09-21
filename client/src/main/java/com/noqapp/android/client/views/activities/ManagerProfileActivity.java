@@ -125,7 +125,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        ErrorResponseHandler.processError(this,eej);
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     private void setupViewPager(ViewPager viewPager) {

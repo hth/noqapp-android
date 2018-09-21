@@ -211,6 +211,6 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        ErrorResponseHandler.processError(this,eej);
+        new ErrorResponseHandler().processError(this,eej);
     }
 }

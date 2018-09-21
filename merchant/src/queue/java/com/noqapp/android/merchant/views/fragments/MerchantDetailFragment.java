@@ -236,7 +236,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
         LaunchActivity.getLaunchActivity().dismissProgress();
-        ErrorResponseHandler.processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
     @Override
     protected void updateUI() {

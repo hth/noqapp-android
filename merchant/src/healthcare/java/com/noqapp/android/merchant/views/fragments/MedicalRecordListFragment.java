@@ -104,6 +104,6 @@ public class MedicalRecordListFragment extends Fragment implements MedicalRecord
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
        // dismissProgress();
-        ErrorResponseHandler.processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
 }

@@ -119,7 +119,7 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        ErrorResponseHandler.processError(this, eej);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
@@ -136,7 +136,6 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
             for (int i = 0; i < temp.size(); i++) {
                 try {
                     Date key = new Date(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreated()).getTime());
-                    //CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(temp.get(i).getCreated()));
                     if (null == tempList.get(key)) {
                         tempList.put(key, new ArrayList<JsonQueuePersonList>());
 

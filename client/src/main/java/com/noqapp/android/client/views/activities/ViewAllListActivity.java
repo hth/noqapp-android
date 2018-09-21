@@ -122,6 +122,6 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
     }
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        ErrorResponseHandler.processError(this,eej);
+        new ErrorResponseHandler().processError(this,eej);
     }
 }

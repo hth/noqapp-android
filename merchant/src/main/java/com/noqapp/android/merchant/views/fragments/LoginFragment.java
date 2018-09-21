@@ -142,7 +142,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        ErrorResponseHandler.processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
 
     @Override
