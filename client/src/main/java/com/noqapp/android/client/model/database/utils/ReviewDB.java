@@ -130,4 +130,11 @@ public class ReviewDB {
         }
     }
 
+    public static void clearReviewTable(){
+        try {
+            dbHandler.getWritableDb().delete(DatabaseTable.Review.TABLE_NAME, null, null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

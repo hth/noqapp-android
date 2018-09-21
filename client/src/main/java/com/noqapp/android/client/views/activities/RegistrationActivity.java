@@ -3,6 +3,8 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterModel;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -156,8 +158,12 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
+            if(!TextUtils.isEmpty(NoQueueBaseActivity.getOldQueueUserID()) && !NoQueueBaseActivity.getOldQueueUserID().equalsIgnoreCase(profile.getQueueUserId())) {
+                NotificationDB.clearNotificationTable();
+                ReviewDB.clearReviewTable();
+            }
+            NoQueueBaseActivity.setOldQueueUserID(profile.getQueueUserId());
             finish();
-
         } else {
             //Rejected from  server
             ErrorEncounteredJson eej = profile.getError();

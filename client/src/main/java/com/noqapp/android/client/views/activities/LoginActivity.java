@@ -6,6 +6,8 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterModel;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.presenter.beans.body.Login;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -59,6 +61,11 @@ public class LoginActivity extends OTPActivity {
     public void profileResponse(JsonProfile profile, String email, String auth) {
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
+            if(!TextUtils.isEmpty(NoQueueBaseActivity.getOldQueueUserID()) && !NoQueueBaseActivity.getOldQueueUserID().equalsIgnoreCase(profile.getQueueUserId())) {
+                NotificationDB.clearNotificationTable();
+                ReviewDB.clearReviewTable();
+            }
+            NoQueueBaseActivity.setOldQueueUserID(profile.getQueueUserId());
             if (getIntent().getBooleanExtra("fromLogin", false)) {
                 // To refresh the launch activity
                 Intent intent = new Intent(this, LaunchActivity.class);
