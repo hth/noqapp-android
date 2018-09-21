@@ -64,8 +64,10 @@ public class LoginActivity extends OTPActivity {
             if(!TextUtils.isEmpty(NoQueueBaseActivity.getOldQueueUserID()) && !NoQueueBaseActivity.getOldQueueUserID().equalsIgnoreCase(profile.getQueueUserId())) {
                 NotificationDB.clearNotificationTable();
                 ReviewDB.clearReviewTable();
+                LaunchActivity.getLaunchActivity().reCreateDeviceID();
             }
             NoQueueBaseActivity.setOldQueueUserID(profile.getQueueUserId());
+
             if (getIntent().getBooleanExtra("fromLogin", false)) {
                 // To refresh the launch activity
                 Intent intent = new Intent(this, LaunchActivity.class);
