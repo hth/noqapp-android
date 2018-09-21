@@ -1,6 +1,9 @@
 package com.noqapp.android.common.utils;
 
 
+import static com.noqapp.android.common.model.types.ErrorTypeEnum.ALERT;
+import static com.noqapp.android.common.model.types.ErrorTypeEnum.ERROR;
+
 import com.noqapp.android.common.R;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.ErrorTypeEnum;
@@ -18,6 +21,7 @@ public abstract class BaseErrorResponseHandler {
             try {
                 ErrorTypeEnum ete = MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()).getErrorType();
                 title = ete.name();
+                msg = eej.getReason();
                 switch (ete) {
                     case INFO:
                         icon = R.drawable.ic_info;
@@ -31,10 +35,60 @@ public abstract class BaseErrorResponseHandler {
                     default:
                         icon = getDefaultDrawable();
                 }
+                MobileSystemErrorCodeEnum mobileSystemErrorCodeEnum = MobileSystemErrorCodeEnum.valueOf(eej.getSystemError());
+                switch (mobileSystemErrorCodeEnum) {
+                    case USER_INPUT:
+                        break;
+                    case MOBILE:
+                        break;
+                    case MOBILE_JSON:
+                        break;
+                    case MOBILE_UPGRADE:
+                        break;
+                    case MOBILE_UPLOAD:
+                        break;
+                    case MOBILE_UPLOAD_NO_SIZE:
+                        break;
+                    case MOBILE_UPLOAD_EXCEED_SIZE:
+                        break;
+                    case MOBILE_UPLOAD_UNSUPPORTED_FORMAT:
+                        break;
+                    case MOBILE_ACTION_NOT_PERMITTED:
+                        break;
+                    case MERCHANT_COULD_NOT_ACQUIRE:
+                        break;
+                    case USER_EXISTING:
+                        break;
+                    case USER_NOT_FOUND:
+                        break;
+                    case USER_SOCIAL:
+                        break;
+                    case MAIL_OTP_FAILED:
+                        break;
+                    case USER_MAX_DEPENDENT:
+                        break;
+                    case MEDICAL_RECORD_ENTRY_DENIED:
+                        break;
+                    case MEDICAL_RECORD_ACCESS_DENIED:
+                        break;
+                    case BUSINESS_NOT_AUTHORIZED:
+                        break;
+                    case BUSINESS_CUSTOMER_ID_DOES_NOT_EXISTS:
+                        break;
+                    case BUSINESS_CUSTOMER_ID_EXISTS:
+                        break;
+                    case SEVERE:
+                        break;
+                    case WEB_APPLICATION:
+                        break;
+                    default:
+                        msg = eej.getReason();
+                }
             }catch (Exception e){
                 e.printStackTrace();
                 icon = getDefaultDrawable();
                 title = eej.getSystemError();
+                msg = eej.getReason();
             }
         }
     }
