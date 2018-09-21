@@ -48,13 +48,12 @@ public class DeviceModel {
         deviceService.register(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
-                if (response.body() != null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d(TAG, "Registered device " + String.valueOf(response.body()));
                     deviceRegisterPresenter.deviceRegisterResponse(response.body());
                 } else {
-                    //TODO something logical
                     Log.e(TAG, "Empty body");
-                    deviceRegisterPresenter.deviceRegisterError();
+                    deviceRegisterPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -80,7 +79,7 @@ public class DeviceModel {
                     Log.d(TAG, "Oldest supported version " + String.valueOf(response.body()));
                     appBlacklistPresenter.appBlacklistError();
                 } else {
-                    appBlacklistPresenter.appBlacklistResponse();
+                    appBlacklistPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

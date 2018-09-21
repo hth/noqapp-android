@@ -35,7 +35,6 @@ public interface DeviceService {
             DeviceToken deviceToken
     );
 
-
     /**
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPGRADE}

@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 public class NoQueueBaseFragment extends Fragment {
     public static final String KEY_CODE_QR = DatabaseTable.TokenQueue.CODE_QR;
     public static final String KEY_FROM_LIST = "fromList";
-    public static final String KEY_IS_HISTORY = "isHistory";
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
 
     public static void replaceFragmentWithBackStack(FragmentActivity activity, int container, Fragment fragment, String tag) {

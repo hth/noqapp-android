@@ -64,16 +64,10 @@ public class MigrateActivity extends OTPActivity {
 
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
-        if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
             finish();//close the current activity
             dismissProgress();
-        } else {
-            // Rejected from  server
-            ErrorEncounteredJson eej = profile.getError();
-        }
-        dismissProgress();
     }
 
 }

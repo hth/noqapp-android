@@ -12,6 +12,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.RegisterModel;
 import com.noqapp.android.merchant.presenter.beans.body.Login;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
@@ -333,8 +334,9 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     }
 
     @Override
-    public void profileError(String error) {
-
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
@@ -36,6 +37,7 @@ import com.noqapp.android.client.views.adapters.RecentActivityAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -348,12 +350,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
 
     @Override
     protected void barcodeResult(String codeQR, boolean isCategoryData) {
-        Bundle b = new Bundle();
-        b.putString(KEY_CODE_QR, codeQR);
-        b.putBoolean(KEY_FROM_LIST, fromList);
-        b.putBoolean(KEY_IS_HISTORY, false);
         if (isCategoryData) {
             Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
+            Bundle b = new Bundle();
+            b.putString(KEY_CODE_QR, codeQR);
+            b.putBoolean(KEY_FROM_LIST, fromList);
             in.putExtra("bundle", b);
             getActivity().startActivity(in);
 
@@ -361,7 +362,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
             Intent in = new Intent(getActivity(), JoinActivity.class);
             in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
             in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-            in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
             in.putExtra("isCategoryData", false);
             startActivity(in);
 
@@ -407,7 +407,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
         }
         tv_near_view_all.setVisibility(nearMeData.size() == 0 ? View.GONE : View.VISIBLE);
         isProgressFirstTime = false;
-        if (NoQueueBaseActivity.getShowHelper()) {
+        if (NoQueueBaseActivity.getShowHelper() && isAdded()) {
             presentShowcaseSequence();
             NoQueueBaseActivity.setShowHelper(false);
         }
@@ -427,7 +427,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                 Bundle b = new Bundle();
                 b.putString(KEY_CODE_QR, item.getCodeQR());
                 b.putBoolean(KEY_FROM_LIST, fromList);
-                b.putBoolean(KEY_IS_HISTORY, false);
                 b.putBoolean("CallCategory", true);
                 b.putBoolean("isCategoryData", false);
                 b.putSerializable("BizStoreElastic", item);
@@ -453,7 +452,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                 in.putExtra(KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(KEY_FROM_LIST, true);
                 in.putExtra(KEY_JSON_TOKEN_QUEUE, item);
-                in.putExtra(KEY_IS_HISTORY, false);
                 startActivity(in);
             } else {
                 Toast.makeText(getActivity(), "call the order detail screen", Toast.LENGTH_LONG).show();
@@ -468,7 +466,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                 Intent in = new Intent(getActivity(), JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
-                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, true);
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
             } else {
@@ -537,6 +534,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
         pb_current.setVisibility(View.GONE);
         pb_recent.setVisibility(View.GONE);
         pb_near.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
 
     @Override
@@ -704,49 +706,52 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
     }
 
     private void presentShowcaseSequence() {
-        MaterialShowcaseView.resetSingleUse(getActivity(), SHOWCASE_ID);
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500); // half second between each showcase view
+        try {
+            MaterialShowcaseView.resetSingleUse(getActivity(), SHOWCASE_ID);
+            ShowcaseConfig config = new ShowcaseConfig();
+            config.setDelay(500); // half second between each showcase view
 
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
-        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
-            @Override
-            public void onShow(MaterialShowcaseView itemView, int position) {
-                // Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        sequence.setConfig(config);
-        sequence.addSequenceItem(
-                //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
-
-
-                new MaterialShowcaseView.Builder(getActivity())
-                        .setTarget(autoCompleteTextView)
-                        .setDismissText("GOT IT")
-                        .setContentText("Search your preferred location.")
-                        .withRectangleShape(true)
-                        .build()
+            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
+            sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+                @Override
+                public void onShow(MaterialShowcaseView itemView, int position) {
+                    // Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+                }
+            });
+            sequence.setConfig(config);
+            sequence.addSequenceItem(
+                    //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
 
 
-        );
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(getActivity())
-                        .setTarget(cv_scan)
-                        .setDismissText("GOT IT")
-                        .setContentText("Click here to scan the store QRCode to join their queue")
-                        .withRectangleShape(true)
-                        .build()
-        );
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(getActivity())
-                        .setTarget(rl_current_activity)
-                        .setDismissText("DONE")
-                        .setContentText("Your current join queue will be visible here")
-                        .withRectangleShape(true)
-                        .build()
-        );
-        sequence.start();
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(autoCompleteTextView)
+                            .setDismissText("GOT IT")
+                            .setContentText("Search your preferred location.")
+                            .withRectangleShape(true)
+                            .build()
 
+
+            );
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(cv_scan)
+                            .setDismissText("GOT IT")
+                            .setContentText("Click here to scan the store QRCode to join their queue")
+                            .withRectangleShape(true)
+                            .build()
+            );
+            sequence.addSequenceItem(
+                    new MaterialShowcaseView.Builder(getActivity())
+                            .setTarget(rl_current_activity)
+                            .setDismissText("DONE")
+                            .setContentText("Your current join queue will be visible here")
+                            .withRectangleShape(true)
+                            .build()
+            );
+            sequence.start();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

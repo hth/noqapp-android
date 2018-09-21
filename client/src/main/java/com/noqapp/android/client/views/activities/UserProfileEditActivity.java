@@ -8,6 +8,8 @@ import com.noqapp.android.client.presenter.DependencyPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -141,14 +143,20 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
 
+
     @Override
     public void imageUploadResponse(JsonResponse jsonResponse) {
+        dismissProgress();
         Log.v("Image upload", "" + jsonResponse.getResponse());
+        if(Constants.SUCCESS == jsonResponse.getResponse())
+            Toast.makeText(this,"Profile image change successfully!",Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this,"Failed to update profile image",Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void imageUploadError() {
-
+        dismissProgress();
     }
 
     @Override
@@ -211,6 +219,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     NoQueueBaseActivity.setUserProfileUri(convertedPath);
 
                     if (!TextUtils.isEmpty(convertedPath)) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Updating profile image");
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
@@ -297,10 +307,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         dismissProgress();
     }
 
-    @Override
-    public void profileError(String error) {
-        dismissProgress();
-    }
 
     @Override
     public void dependencyResponse(JsonProfile profile) {
@@ -319,11 +325,9 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
     @Override
-    public void dependencyError(ErrorEncounteredJson eej) {
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        if (null != eej) {
-            ShowAlertInformation.showThemeDialog(this, eej.getSystemError(), eej.getReason());
-        }
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     @Override

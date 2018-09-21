@@ -18,6 +18,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -26,6 +27,7 @@ import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.NavigationBean;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
@@ -83,7 +85,6 @@ import java.util.UUID;
 public class LaunchActivity extends LocationActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
-
     private TextView tv_badge;
     private TextView tv_toolbar_title;
 
@@ -91,7 +92,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private Toast backPressToast;
     private FcmNotificationReceiver fcmNotificationReceiver;
     private ImageView iv_profile;
-    private TextView  tv_name, tv_email;
+    private TextView tv_name, tv_email;
     private ScanQueueFragment scanFragment;
     private DrawerLayout drawer;
     protected ListView mDrawerList;
@@ -138,9 +139,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         //Language setup
         languagepref = PreferenceManager.getDefaultSharedPreferences(this);
         languagepref.registerOnSharedPreferenceChangeListener(this);
-        language = languagepref.getString(
-                "pref_language", "");
-
+        language = languagepref.getString("pref_language", "");
 
         if (!language.equals("")) {
             if (language.equals("hi")) {
@@ -150,7 +149,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 locale = Locale.ENGLISH;
                 language = "en_US";
             }
-
         } else {
             locale = Locale.ENGLISH;
             language = "en_US";
@@ -171,8 +169,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawer = findViewById(R.id.drawer_layout);
-        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         mDrawerList = findViewById(R.id.drawer_list);
@@ -217,7 +214,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     case R.id.nav_transaction:
                         Toast.makeText(launchActivity, "Coming soon... ", Toast.LENGTH_LONG).show();
                         break;
-
                     case R.drawable.language:
                         showChangeLangDialog();
                         break;
@@ -264,7 +260,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             deviceModel.setAppBlacklistPresenter(this);
             deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
-
     }
 
     @Override
@@ -302,7 +297,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 break;
             case R.id.iv_search:
                 scanFragment.callSearch();
-
                 break;
             case R.id.iv_notification:
                 Intent in = new Intent(launchActivity, NotificationActivity.class);
@@ -339,7 +333,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public void setActionBarTitle(String title) {
         tv_toolbar_title.setText(title);
     }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -416,7 +409,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         ReviewData reviewData = ReviewDB.getPendingReview();
         // shown only one time if the review is canceled
-        if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !isReviewShown()) {
+        if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !isReviewShown() && !NoQueueBaseActivity.getShowHelper()) {
             callReviewActivity(reviewData.getCodeQR(), reviewData.getToken());
         }
 
@@ -523,7 +516,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         Bundle b = new Bundle();
         b.putString(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
         b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
-        b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
         b.putBoolean("isCategoryData", false);
         //   JoinFragment jf = new JoinFragment();
         //   jf.setArguments(b);
@@ -604,7 +596,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 e.printStackTrace();
             }
         }
-
 
         private void unregister(Context context) {
             if (isRegistered) {
@@ -872,6 +863,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     }
 
     @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        new ErrorResponseHandler().processError(this,eej);
+    }
+    @Override
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if (deviceRegistered.getRegistered() == 1) {
             Log.e("Device register", "deviceRegister Success");
@@ -898,5 +894,4 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             drawer.closeDrawer(GravityCompat.START);
         }
     }
-
 }

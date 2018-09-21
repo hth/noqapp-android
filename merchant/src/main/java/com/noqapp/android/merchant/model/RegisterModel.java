@@ -40,14 +40,13 @@ public final class RegisterModel {
         registerService.register(did, Constants.DEVICE_TYPE, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
                             response.headers().get(APIConstant.Key.XR_AUTH));
                 } else {
-                    //TODO something logical
                     Log.e(TAG, "Empty history" + response.body().getError());
-                    profilePresenter.profileError();
+                    profilePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -66,14 +65,13 @@ public final class RegisterModel {
         registerService.login(did, Constants.DEVICE_TYPE, login).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
                             response.headers().get(APIConstant.Key.XR_AUTH));
                 } else {
-                    //TODO something logical
                     Log.e(TAG, "Empty history" + response.body().getError());
-                    profilePresenter.profileError(response.body().getError().getReason());
+                    profilePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

@@ -41,12 +41,11 @@ public class ReviewModel {
         reviewService.review(did, DEVICE_TYPE, reviewRating).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.body() != null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response Review", String.valueOf(response.body()));
                     reviewPresenter.reviewResponse(response.body());
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history");
+                   reviewPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

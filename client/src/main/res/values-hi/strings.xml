@@ -137,7 +137,7 @@
     <string name="copy_right">NoQApp &#174; is a trademark of NoQueue Inc.\n 2018 \u00a9 NoQueue &#174; Inc</string>
     <string name="alert">सावधान</string>
     <string name="estimated_time">You will be serviced: %1$s</string>
-    <string name="error_remote_join_not_available">This facility has not allowed joining queue remotely</string>
+    <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
     <string name="error_join">QJoin</string>
     <string name="login_hint">देश के कोड के बिना फोन नंबर दर्ज करें। </string>
 

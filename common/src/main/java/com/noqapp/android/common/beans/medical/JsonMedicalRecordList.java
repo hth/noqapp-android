@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +31,9 @@ public class JsonMedicalRecordList extends AbstractDomain {
     @JsonProperty("mrs")
     private List<JsonMedicalRecord> jsonMedicalRecords = new LinkedList<>();
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public List<JsonMedicalRecord> getJsonMedicalRecords() {
         return jsonMedicalRecords;
     }
@@ -44,10 +48,20 @@ public class JsonMedicalRecordList extends AbstractDomain {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
-        return "JsonMedicalRecordList{" +
-                "jsonMedicalRecords=" + jsonMedicalRecords +
-                '}';
+        final StringBuffer sb = new StringBuffer("JsonMedicalRecordList{");
+        sb.append("jsonMedicalRecords=").append(jsonMedicalRecords);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -3,7 +3,9 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceModel;
 import com.noqapp.android.client.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.utils.NetworkUtil;
 
@@ -104,6 +106,11 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     @Override
     public void deviceRegisterError() {
 
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     @Override

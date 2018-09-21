@@ -1,11 +1,13 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordListPresenter;
 import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
@@ -97,5 +99,11 @@ public class MedicalRecordListFragment extends Fragment implements MedicalRecord
     @Override
     public void authenticationFailure(int errorCode) {
 
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+       // dismissProgress();
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
 }

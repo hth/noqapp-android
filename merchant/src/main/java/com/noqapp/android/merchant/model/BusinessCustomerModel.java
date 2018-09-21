@@ -46,7 +46,7 @@ public class BusinessCustomerModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
-                    queuePersonListPresenter.queuePersonListError();
+                    queuePersonListPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
             
@@ -74,7 +74,7 @@ public class BusinessCustomerModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
-                    queuePersonListPresenter.queuePersonListError();
+                    queuePersonListPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

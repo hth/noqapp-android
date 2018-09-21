@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,9 @@ public class JsonUserAddressList extends AbstractDomain {
     @JsonProperty("ads")
     private List<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public List<JsonUserAddress> getJsonUserAddresses() {
         return jsonUserAddresses;
     }
@@ -44,10 +48,20 @@ public class JsonUserAddressList extends AbstractDomain {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
-        return "JsonUserAddressList{" +
-                "jsonUserAddresses=" + jsonUserAddresses +
-                '}';
+        final StringBuffer sb = new StringBuffer("JsonUserAddressList{");
+        sb.append("jsonUserAddresses=").append(jsonUserAddresses);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

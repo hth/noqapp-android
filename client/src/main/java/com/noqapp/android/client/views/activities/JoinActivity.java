@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
@@ -11,35 +10,29 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.squareup.picasso.Picasso;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.media.Image;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -58,7 +51,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     private TextView tv_hour_saved;
     private TextView tv_rating_review;
     private TextView tv_add ,add_person;
-    private ImageView iv_profile;
     private RatingBar ratingBar;
     private Spinner sp_name_list;
 
@@ -66,8 +58,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     private JsonQueue jsonQueue;
     private boolean isJoinNotPossible = false;
     private String joinErrorMsg = "";
-    private boolean isCategoryData = true;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +71,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_people_in_q = findViewById(R.id.tv_people_in_q);
         tv_hour_saved = findViewById(R.id.tv_hour_saved);
-        iv_profile = findViewById(R.id.iv_profile);
+        ImageView iv_profile = findViewById(R.id.iv_profile);
         TextView tv_skip_msg = findViewById(R.id.tv_skip_msg);
         tv_rating_review = findViewById(R.id.tv_rating_review);
         Button btn_joinQueue = findViewById(R.id.btn_joinQueue);
@@ -135,6 +125,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
         Intent bundle = getIntent();
         if (null != bundle) {
+            boolean isCategoryData = true;
             codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
             isCategoryData = bundle.getBooleanExtra("isCategoryData", true);
             String imageUrl = bundle.getStringExtra("imageUrl");
@@ -190,6 +181,12 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     }
 
     @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        new ErrorResponseHandler().processError(this,eej);
+    }
+
+    @Override
     public void queueResponse(JsonQueue jsonQueue) {
 
         Log.d(TAG, "Queue=" + jsonQueue.toString());
@@ -203,7 +200,10 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) +
                 " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour());
         if (jsonQueue.getDelayedInMinutes() > 0) {
-            String red = "<font color='#e92270'><b>Late " + jsonQueue.getDelayedInMinutes() + " minutes.</b></font>";
+            int hours = jsonQueue.getDelayedInMinutes() / 60;
+            int minutes = jsonQueue.getDelayedInMinutes() % 60;
+            System.out.printf("%d:%02d", hours, minutes);
+            String red = "<font color='#e92270'><b>Delayed by " + hours+" Hrs " + minutes+" minutes.</b></font>";
             time = time + " " + red;
         }
         tv_hour_saved.setText(Html.fromHtml(time));
@@ -249,39 +249,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 startActivity(loginIntent);
             }
         } else {
-            if (getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false)) {
-                String errorMsg = "";
-                boolean isValid = true;
-                if (!UserUtils.isLogin()) {
-                    errorMsg += getString(R.string.bullet) + getString(R.string.error_login) + "\n";
-                    isValid = false;
-                    Intent loginIntent = new Intent(JoinActivity.this, LoginActivity.class);
-                    startActivity(loginIntent);
-                }
-                if (!jsonQueue.isRemoteJoinAvailable()) {
-                    errorMsg += getString(R.string.bullet) + getString(R.string.error_remote_join_not_available) + "\n";
-                    isValid = false;
-                }
-
-
-                if (isValid) {
-                    if (sp_name_list.getSelectedItemPosition() == 0) {
-                        Toast.makeText(this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
-                        sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
-                    } else {
-                        Intent in = new Intent(this, AfterJoinActivity.class);
-                        in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
-                        in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);
-                        in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-                        in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
-                        in.putExtra(Constants.FROM_JOIN_SCREEN, true);
-                        in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
-                        startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
-                    }
-                } else {
-                    ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), errorMsg, true);
-                }
-            } else {
+            if (jsonQueue.isRemoteJoinAvailable()) {
                 if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
                     if (UserUtils.isLogin()) {
                         if (sp_name_list.getSelectedItemPosition() == 0) {
@@ -301,20 +269,17 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     // any user can join
                     callAfterJoin();
                 }
-
-
+            } else {
+                ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join),  getString(R.string.error_remote_join_not_available), true);
             }
         }
     }
 
     private void callAfterJoin() {
-
-        //TODO(chandra) make sure jsonQueue is not null. Prevent action on join button.
         Intent in = new Intent(this, AfterJoinActivity.class);
         in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
         //TODO // previously KEY_FROM_LIST  was false need to verify
         in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
-        in.putExtra(NoQueueBaseActivity.KEY_IS_HISTORY, getIntent().getBooleanExtra(NoQueueBaseActivity.KEY_IS_HISTORY, false));
         in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.FROM_JOIN_SCREEN, true);
         in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());

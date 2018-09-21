@@ -64,13 +64,13 @@ public class MerchantProfileModel {
                     return;
                 }
 
-                if (response.body() != null) {
+                if (null != response.body() && null == response.body().getError()) {
                     merchantPresenter.merchantResponse(response.body());
                     Log.d("Response", String.valueOf(response.body()));
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Empty history");
-                    merchantPresenter.merchantError();
+                    merchantPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -97,7 +97,7 @@ public class MerchantProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed updating profile " + response.body().getError());
-                    profilePresenter.profileError();
+                    profilePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -122,9 +122,8 @@ public class MerchantProfileModel {
                     Log.d("Update profile", String.valueOf(response.body()));
                     merchantProfessionalPresenter.merchantProfessionalResponse(response.body());
                 } else {
-                    //TODO something logical
                     Log.e(TAG, "Failed updating profile " + response.body().getError());
-                    merchantProfessionalPresenter.merchantProfessionalError();
+                    merchantProfessionalPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -144,13 +143,13 @@ public class MerchantProfileModel {
                     imageUploadPresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     imageUploadPresenter.imageUploadResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed image upload");
-                    imageUploadPresenter.imageUploadError();
+                    imageUploadPresenter.responseErrorPresenter(response.body().getError());;
                 }
             }
 

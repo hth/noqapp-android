@@ -63,7 +63,6 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
                 Intent in = new Intent(getActivity(), JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
                 break;

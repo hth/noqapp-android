@@ -13,6 +13,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
 import com.noqapp.android.merchant.presenter.beans.order.JsonPurchaseOrderList;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -232,10 +233,11 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     }
 
     @Override
-    public void acquireOrderError(ErrorEncounteredJson errorEncounteredJson) {
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
         LaunchActivity.getLaunchActivity().dismissProgress();
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
-
     @Override
     protected void updateUI() {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {

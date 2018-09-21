@@ -7,6 +7,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
 
 import android.util.Log;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,9 +21,11 @@ public class MerchantStatsModel {
 
     private static final MerchantStatsService merchantStatsService;
     private ChartPresenter chartPresenter;
-    public MerchantStatsModel(ChartPresenter chartPresenter){
+
+    public MerchantStatsModel(ChartPresenter chartPresenter) {
         this.chartPresenter = chartPresenter;
     }
+
     static {
         merchantStatsService = RetrofitClient.getClient().create(MerchantStatsService.class);
     }
@@ -31,16 +34,27 @@ public class MerchantStatsModel {
         merchantStatsService.doctor(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<HealthCareStatList>() {
             @Override
             public void onResponse(Call<HealthCareStatList> call, Response<HealthCareStatList> response) {
-                chartPresenter.chartResponse(response.body());
-                Log.v("Chart Response ",response.body().toString());
+
+                if (response.code() == Constants.INVALID_CREDENTIAL) {
+                    chartPresenter.authenticationFailure(response.code());
+                    return;
+                }
+
+                if (null != response.body() && null == response.body().getError()) {
+                    chartPresenter.chartResponse(response.body());
+                    Log.v("Chart Response ", response.body().toString());
+                } else {
+                    Log.e(TAG, "Empty Chart Response ");
+                    chartPresenter.responseErrorPresenter(response.body().getError());
+                }
             }
 
             @Override
             public void onFailure(Call<HealthCareStatList> call, Throwable t) {
                 Log.e("Response", t.getLocalizedMessage(), t);
                 chartPresenter.chartError();
-                //TODO(Chandra) handle the errors
             }
+
         });
     }
 }

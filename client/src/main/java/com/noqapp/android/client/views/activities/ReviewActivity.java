@@ -13,9 +13,11 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.ReviewRating;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.customviews.SeekbarWithIntervals;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 
@@ -81,12 +83,19 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                 tv_address.setText(jtk.getStoreAddress());
                 String datetime = DateFormat.getDateTimeInstance().format(new Date());
                 tv_mobile.setText(datetime);
-                List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
-                profileList.add(0, NoQueueBaseActivity.getUserProfile());
-                if (BuildConfig.BUILD_TYPE.equals("debug")) {
-                    tv_details.setText("Token: " + jtk.getToken() + " : " + jtk.getQueueUserId());
+                if (UserUtils.isLogin()) {
+                    List<JsonProfile> profileList = new ArrayList<>();
+                    if (null != NoQueueBaseActivity.getUserProfile().getDependents()) {
+                        profileList = NoQueueBaseActivity.getUserProfile().getDependents();
+                    }
+                    profileList.add(0, NoQueueBaseActivity.getUserProfile());
+                    if (BuildConfig.BUILD_TYPE.equals("debug")) {
+                        tv_details.setText("Token: " + jtk.getToken() + " : " + jtk.getQueueUserId());
+                    } else {
+                        tv_details.setText("Token: " + jtk.getToken() + " : " + AppUtilities.getNameFromQueueUserID(jtk.getQueueUserId(), profileList));
+                    }
                 } else {
-                    tv_details.setText("Token: " + jtk.getToken() + " : " + AppUtilities.getNameFromQueueUserID(jtk.getQueueUserId(), profileList));
+                    tv_details.setText("Token: " + jtk.getToken() + " : Guest user");
                 }
             }
         } else {
@@ -211,6 +220,12 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     @Override
     public void reviewError() {
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        progressDialog.dismiss();
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override

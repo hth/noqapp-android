@@ -109,4 +109,12 @@ public class NotificationDB {
             return 0;
         }
     }
+
+    public static void clearNotificationTable(){
+        try {
+            dbHandler.getWritableDb().delete(DatabaseTable.Notification.TABLE_NAME, null, null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

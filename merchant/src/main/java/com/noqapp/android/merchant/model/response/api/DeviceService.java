@@ -15,6 +15,11 @@ import retrofit2.http.POST;
  */
 public interface DeviceService {
 
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
     @POST("open/device/register.json")
     Call<DeviceRegistered> register(
             @Header("X-R-DID")
@@ -30,6 +35,11 @@ public interface DeviceService {
             DeviceToken deviceToken
     );
 
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPGRADE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
+     */
     @POST("open/device/version.json")
     Call<JsonLatestAppVersion> isSupportedAppVersion(
             @Header("X-R-DID")

@@ -1,88 +1,103 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@android:color/white"
-    android:gravity="center"
-    android:paddingTop="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:paddingTop="10dp">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+        <RelativeLayout
+                android:id="@+id/ll_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center">
+
+            <ImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/tvtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/iv_icon"
+                    android:layout_margin="5dp"
+                    android:text=""
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorActionbar"
+                    android:textSize="@dimen/text_size_sixteen"/>
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/tvtitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-            android:text=""
-            android:textColor="@color/colorActionbar"
-            android:textSize="@dimen/text_size_sixteen" />
-
-        <TextView
-            android:id="@+id/tv_msg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="40dp"
-            android:layout_below="@+id/tvtitle"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text=""
-            android:textSize="@dimen/text_size_fourteen" />
+                android:id="@+id/tv_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:layout_below="@+id/ll_title"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text=""
+                android:textSize="@dimen/text_size_fourteen"/>
 
         <View
-            android:id="@+id/seperator"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/tv_msg"
-            android:background="@color/color_grey_bg" />
+                android:id="@+id/seperator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tv_msg"
+                android:background="@color/color_grey_bg"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_msg"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:weightSum="1">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_msg"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
             <Button
-                android:id="@+id/btn_no"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.5"
-                android:background="@android:color/transparent"
-                android:text="@string/no"
-                android:textAllCaps="false"
-                android:textColor="@color/colorMobile"
-                android:textSize="@dimen/text_size_fourteen"
-                android:visibility="gone" />
+                    android:id="@+id/btn_no"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@android:color/transparent"
+                    android:text="@string/no"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorMobile"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:visibility="gone"/>
 
             <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/color_grey_bg"
-                android:visibility="gone" />
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_grey_bg"
+                    android:visibility="gone"/>
 
             <Button
-                android:id="@+id/btn_yes"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="0.5"
-                android:background="@android:color/transparent"
-                android:text="@string/ok"
-                android:textAllCaps="false"
-                android:textColor="@color/colorMobile"
-                android:textSize="@dimen/text_size_fourteen" />
+                    android:id="@+id/btn_yes"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@android:color/transparent"
+                    android:text="@string/ok"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorMobile"
+                    android:textSize="@dimen/text_size_fourteen"/>
 
         </LinearLayout>
 

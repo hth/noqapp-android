@@ -12,6 +12,13 @@ import retrofit2.http.POST;
 
 public interface LoginService {
 
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_NOT_FOUND}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @FormUrlEncoded
     @POST("login")
     Call<Void> login(

@@ -31,8 +31,6 @@ public class MedicalHistoryModel {
         this.medicalRecordPresenter = medicalRecordPresenter;
     }
 
-
-
     static {
         medicalRecordService = RetrofitClient.getClient().create(MedicalRecordService.class);
     }
@@ -50,13 +48,12 @@ public class MedicalHistoryModel {
                     medicalRecordPresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     medicalRecordPresenter.medicalRecordResponse(response.body());
                 } else {
-                    //TODO something logical
                     Log.e(TAG, "Failed to add");
-                    medicalRecordPresenter.medicalRecordError();
+                    medicalRecordPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -77,13 +74,12 @@ public class MedicalHistoryModel {
                     medicalRecordListPresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     medicalRecordListPresenter.medicalRecordListResponse(response.body());
                 } else {
-                    //TODO something logical
                     Log.e(TAG, "Failed to add");
-                    medicalRecordListPresenter.medicalRecordListError();
+                    medicalRecordListPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

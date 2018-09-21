@@ -12,11 +12,16 @@ import retrofit2.http.Path;
 /**
  * Created by chandra on 7/15/17.
  */
-
 public interface QueueSettingService {
 
-    @POST("api/m/mq/modify.json")
-    Call<QueueSetting> modify(
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @GET("api/m/mq/state/{codeQR}.json")
+    Call<QueueSetting> getQueueState(
             @Header("X-R-DID")
             String did,
 
@@ -29,10 +34,16 @@ public interface QueueSettingService {
             @Header("X-R-AUTH")
             String auth,
 
-            @Body
-            QueueSetting queueSetting
+            @Path("codeQR")
+            String codeQR
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @POST("api/m/mq/removeSchedule/{codeQR}.json")
     Call<QueueSetting> removeSchedule(
             @Header("X-R-DID")
@@ -51,8 +62,15 @@ public interface QueueSettingService {
             String codeQR
     );
 
-    @GET("api/m/mq/state/{codeQR}.json")
-    Call<QueueSetting> getQueueState(
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_ACTION_NOT_PERMITTED}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/m/mq/modify.json")
+    Call<QueueSetting> modify(
             @Header("X-R-DID")
             String did,
 
@@ -65,7 +83,7 @@ public interface QueueSettingService {
             @Header("X-R-AUTH")
             String auth,
 
-            @Path("codeQR")
-            String codeQR
+            @Body
+            QueueSetting queueSetting
     );
 }

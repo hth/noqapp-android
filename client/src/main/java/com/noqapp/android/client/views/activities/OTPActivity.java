@@ -3,7 +3,9 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -478,9 +480,9 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     }
 
     @Override
-    public void profileError(String error) {
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     @Override

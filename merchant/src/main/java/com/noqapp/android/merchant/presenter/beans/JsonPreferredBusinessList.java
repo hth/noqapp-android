@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class JsonPreferredBusinessList implements Serializable {
     @JsonProperty("pbs")
     private List<JsonPreferredBusiness> preferredBusinesses = new ArrayList<>();
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public List<JsonPreferredBusiness> getPreferredBusinesses() {
         return preferredBusinesses;
     }
@@ -45,10 +49,20 @@ public class JsonPreferredBusinessList implements Serializable {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
-        return "JsonPreferredBusinessList{" +
-                "preferredBusinesses=" + preferredBusinesses +
-                '}';
+        final StringBuffer sb = new StringBuffer("JsonPreferredBusinessList{");
+        sb.append("preferredBusinesses=").append(preferredBusinesses);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
@@ -23,6 +24,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.Utils.AnimationUtils;
 import com.noqapp.android.merchant.views.Utils.TestCaseString;
@@ -580,6 +582,11 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         } else {
             Toast.makeText(getActivity(), "Failed to update", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        new ErrorResponseHandler().processError(getActivity(),eej);
     }
 
     @Override

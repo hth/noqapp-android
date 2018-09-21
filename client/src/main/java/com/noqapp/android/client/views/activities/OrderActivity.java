@@ -10,8 +10,10 @@ import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
@@ -208,6 +210,12 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        new ErrorResponseHandler().processError(this,eej);
+    }
+
+    @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
@@ -218,10 +226,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         dismissProgress();
     }
 
-    @Override
-    public void profileError(String error) {
-        dismissProgress();
-    }
 
     @Override
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
@@ -256,7 +260,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                             TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
                             TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
                             tvtitle.setText("Delete Address");
-                            tv_msg.setText("Do you want to delete address from address list.");
+                            tv_msg.setText("Do you want to delete address from address list?");
                             Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
                             Button btn_no = customDialogView.findViewById(R.id.btn_no);
                             View separator = customDialogView.findViewById(R.id.seperator);

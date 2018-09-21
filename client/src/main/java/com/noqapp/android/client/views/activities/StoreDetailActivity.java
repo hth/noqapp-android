@@ -11,11 +11,13 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.order.JsonStoreProduct;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -344,6 +346,12 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     public void authenticationFailure(int errorCode) {
         dismissProgress();
         AppUtilities.authenticationProcessing(this, errorCode);
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     private boolean isStoreOpenToday(JsonStore jsonStore) {

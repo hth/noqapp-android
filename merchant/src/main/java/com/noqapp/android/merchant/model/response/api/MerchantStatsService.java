@@ -12,6 +12,11 @@ import retrofit2.http.Header;
  */
 public interface MerchantStatsService {
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
     @GET("api/m/stats/healthCare.json")
     Call<HealthCareStatList> doctor(
             @Header("X-R-DID")

@@ -57,7 +57,7 @@ public class PurchaseOrderModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while Get order list");
-                    purchaseOrderPresenter.purchaseOrderError();
+                    purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -84,7 +84,7 @@ public class PurchaseOrderModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while Get order list");
-                    orderProcessedPresenter.orderProcessedError();
+                    orderProcessedPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -111,14 +111,14 @@ public class PurchaseOrderModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while Get order list");
-                    acquireOrderPresenter.acquireOrderError(null);
+                    acquireOrderPresenter.responseErrorPresenter(response.body().getError());;
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Order list error", t.getLocalizedMessage(), t);
-                acquireOrderPresenter.acquireOrderError(null);
+                acquireOrderPresenter.responseErrorPresenter(null);;
             }
         });
     }
@@ -138,14 +138,14 @@ public class PurchaseOrderModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while Get order list");
-                    acquireOrderPresenter.acquireOrderError(null);
+                    acquireOrderPresenter.responseErrorPresenter(response.body().getError());;
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Order list error", t.getLocalizedMessage(), t);
-                acquireOrderPresenter.acquireOrderError(null);
+                acquireOrderPresenter.responseErrorPresenter(null);;
             }
         });
     }

@@ -63,13 +63,13 @@ public class ProfileModel {
                     return;
                 }
 
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.profileResponse(response.body(), mail, auth);
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
-                    profilePresenter.profileError();
+                    profilePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -96,7 +96,7 @@ public class ProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed updating profile " + response.body().getError());
-                    profilePresenter.profileError(response.body().getError().getReason());
+                    profilePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -124,7 +124,7 @@ public class ProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed migrating profile");
-                    profilePresenter.profileError(response.body().getError().getReason());
+                    profilePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -145,14 +145,13 @@ public class ProfileModel {
                     return;
                 }
 
-                if (null != response.body() //&& null == response.body().getError()
-                        ) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     profileAddressPresenter.profileAddressResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed migrating profile");
-                    profileAddressPresenter.profileAddressError();
+                    profileAddressPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -173,14 +172,13 @@ public class ProfileModel {
                     return;
                 }
 
-                if (null != response.body() //&& null == response.body().getError()
-                        ) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     profileAddressPresenter.profileAddressResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed migrating profile");
-                    profileAddressPresenter.profileAddressError();
+                    profileAddressPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -201,14 +199,13 @@ public class ProfileModel {
                     return;
                 }
 
-                if (null != response.body() //&& null == response.body().getError()
-                        ) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     profileAddressPresenter.profileAddressResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed migrating profile");
-                    profileAddressPresenter.profileAddressError();
+                    profileAddressPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -228,13 +225,13 @@ public class ProfileModel {
                     imageUploadPresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     imageUploadPresenter.imageUploadResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed image upload");
-                    imageUploadPresenter.imageUploadError();
+                    imageUploadPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -261,7 +258,7 @@ public class ProfileModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed updating changeMail " + response.body().getError());
-                    migrateEmailPresenter.migrateEmailError(response.body().getError().getReason());
+                    migrateEmailPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -282,14 +279,14 @@ public class ProfileModel {
                     return;
                 }
 
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
                             response.headers().get(APIConstant.Key.XR_AUTH));
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Get state of queue upon scan");
-                    profilePresenter.profileError();
+                    profilePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

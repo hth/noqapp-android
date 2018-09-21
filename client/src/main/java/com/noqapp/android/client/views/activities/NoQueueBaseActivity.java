@@ -37,13 +37,13 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static final String KEY_CODE_QR = DatabaseTable.TokenQueue.CODE_QR;
     public static final String KEY_FROM_LIST = "fromList";
-    public static final String KEY_IS_HISTORY = "isHistory";
     public static final String KEY_IS_REJOIN = "isRejoin";
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
     public static final String KEY_USER_PROFILE = "userProfile";
     public static final String IS_DEPENDENT = "isDependent";
     public static final String DEPENDENT_PROFILE = "dependentProfile";
     private static final String KEY_SHOW_HELPER = "showHelper";
+    private static final String KEY_QUSER_ID_OLD = "oldQueueUserID";
     /* Secured Shared Preference. */
     private static final String FCM_TOKEN = "fcmToken";
     public static final String XR_DID = "X-R-DID";
@@ -136,6 +136,16 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedPreferences.getString(XR_DID, "");
     }
 
+    public static String getOldQueueUserID() {
+        return sharedPreferences.getString(KEY_QUSER_ID_OLD, "");
+    }
+
+    public static void setOldQueueUserID(String queueUserID) {
+        SharedPreferences.Editor editor = getSharedPreferencesEditor();
+        editor.putString(KEY_QUSER_ID_OLD, queueUserID);
+        editor.apply();
+    }
+
     public static void setDeviceID(String did) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(XR_DID, did);
@@ -170,10 +180,12 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         // Clear all data except DID & FCM Token
         String did = sharedPreferences.getString(NoQueueBaseActivity.XR_DID, "");
         String fcmToken = getFCMToken();
+        String oldQUserID = getOldQueueUserID();
         getSharedPreferencesEditor().clear().commit();
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(XR_DID, did);
         editor.putString(FCM_TOKEN, fcmToken);
+        editor.putString(KEY_QUSER_ID_OLD, oldQUserID);
         editor.commit();
     }
 

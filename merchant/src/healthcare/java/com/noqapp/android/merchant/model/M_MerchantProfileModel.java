@@ -31,13 +31,13 @@ public class M_MerchantProfileModel extends MerchantProfileModel {
                     intellisensePresenter.authenticationFailure(response.code());
                     return;
                 }
-                if (null != response.body()) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
                     intellisensePresenter.intellisenseResponse(response.body());
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Failed image upload");
-                    intellisensePresenter.intellisenseError();
+                    intellisensePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

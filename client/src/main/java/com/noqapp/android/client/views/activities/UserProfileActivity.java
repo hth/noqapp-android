@@ -6,9 +6,11 @@ import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -37,6 +39,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -88,9 +92,6 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         loadProfilePic();
         tv_toolbar_title.setText(getString(R.string.screen_profile));
         iv_profile.setOnClickListener(this);
-
-
-        //updateUI();
         tv_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
@@ -136,12 +137,17 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
     @Override
     public void imageUploadResponse(JsonResponse jsonResponse) {
+        dismissProgress();
         Log.v("Image upload", "" + jsonResponse.getResponse());
+        if(Constants.SUCCESS == jsonResponse.getResponse())
+         Toast.makeText(this,"Profile image change successfully!",Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this,"Failed to update profile image",Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void imageUploadError() {
-
+        dismissProgress();
     }
 
     @Override
@@ -186,6 +192,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                     NoQueueBaseActivity.setUserProfileUri(convertedPath);
 
                     if (!TextUtils.isEmpty(convertedPath)) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Updating profile image");
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
@@ -216,13 +224,15 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     @Override
-    public void profileError(String error) {
-
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        new ErrorResponseHandler().processError(this,eej);
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
-        //TODO(chandra)
+        dismissProgress();
+        AppUtilities.authenticationProcessing(this,errorCode);
     }
 
     private void updateUI() {

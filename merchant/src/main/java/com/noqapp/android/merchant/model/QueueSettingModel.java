@@ -55,7 +55,7 @@ public class QueueSettingModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
-                    queueSettingPresenter.queueSettingError(response.body().getError());
+                    queueSettingPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -82,7 +82,7 @@ public class QueueSettingModel {
                 } else {
                     //TODO something logical
                     Log.e(TAG, "Found error while get queue setting");
-                    queueSettingPresenter.queueSettingError(response.body().getError());
+                    queueSettingPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -119,7 +119,7 @@ public class QueueSettingModel {
                 } else if (response.body() != null && response.body().getError() != null) {
                     ErrorEncounteredJson errorEncounteredJson = response.body().getError();
                     Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
-                    queueSettingPresenter.queueSettingError(response.body().getError());
+                    queueSettingPresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

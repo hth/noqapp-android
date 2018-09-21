@@ -40,12 +40,11 @@ public class NearMeModel {
         nearmeService.nearMe(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.body() != null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response NearMe", String.valueOf(response.body()));
                     nearMePresenter.nearMeResponse(response.body());
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history");
+                    nearMePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 
@@ -61,13 +60,11 @@ public class NearMeModel {
         nearmeService.search(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (response.body() != null) {
+                if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response NearMe", String.valueOf(response.body()));
                     nearMePresenter.nearMeResponse(response.body());
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history");
-                    nearMePresenter.nearMeError();
+                    nearMePresenter.responseErrorPresenter(response.body().getError());
                 }
             }
 

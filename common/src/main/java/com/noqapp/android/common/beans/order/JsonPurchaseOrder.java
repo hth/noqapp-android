@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -82,6 +83,9 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     @JsonProperty ("c")
     private String created;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public JsonPurchaseOrder() {
     }
@@ -235,24 +239,35 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
-        return "JsonPurchaseOrder{" +
-                "bizStoreId='" + bizStoreId + '\'' +
-                ", customerPhone='" + customerPhone + '\'' +
-                ", deliveryAddress='" + deliveryAddress + '\'' +
-                ", storeDiscount=" + storeDiscount +
-                ", orderPrice='" + orderPrice + '\'' +
-                ", deliveryType=" + deliveryType +
-                ", paymentType=" + paymentType +
-                ", businessType=" + businessType +
-                ", purchaseOrderProducts=" + purchaseOrderProducts +
-                ", servingNumber=" + servingNumber +
-                ", token=" + token +
-                ", customerName='" + customerName + '\'' +
-                ", expectedServiceBegin='" + expectedServiceBegin + '\'' +
-                ", transactionId='" + transactionId + '\'' +
-                ", purchaseOrderState=" + purchaseOrderState +
-                '}';
+        final StringBuffer sb = new StringBuffer("JsonPurchaseOrder{");
+        sb.append("bizStoreId='").append(bizStoreId).append('\'');
+        sb.append(", customerPhone='").append(customerPhone).append('\'');
+        sb.append(", deliveryAddress='").append(deliveryAddress).append('\'');
+        sb.append(", storeDiscount=").append(storeDiscount);
+        sb.append(", orderPrice='").append(orderPrice).append('\'');
+        sb.append(", deliveryType=").append(deliveryType);
+        sb.append(", paymentType=").append(paymentType);
+        sb.append(", businessType=").append(businessType);
+        sb.append(", purchaseOrderProducts=").append(purchaseOrderProducts);
+        sb.append(", servingNumber=").append(servingNumber);
+        sb.append(", token=").append(token);
+        sb.append(", customerName='").append(customerName).append('\'');
+        sb.append(", expectedServiceBegin='").append(expectedServiceBegin).append('\'');
+        sb.append(", transactionId='").append(transactionId).append('\'');
+        sb.append(", purchaseOrderState=").append(purchaseOrderState);
+        sb.append(", created='").append(created).append('\'');
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

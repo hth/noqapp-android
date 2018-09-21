@@ -13,6 +13,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -20,6 +21,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.google.common.cache.Cache;
@@ -173,6 +175,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     }
 
     @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        new ErrorResponseHandler().processError(this,eej);
+    }
+
+    @Override
     public void queueResponse(BizStoreElasticList bizStoreElasticList) {
         if (!bizStoreElasticList.getBizStoreElastics().isEmpty()) {
             populateAndSortedCache(bizStoreElasticList);
@@ -205,19 +213,24 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             codeQR = bizStoreElastic.getCodeQR();
             AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);
 
+            try {
+                // clear all the segments before load new
+                sc_amenities.removeAllSegments();
+                sc_facility.removeAllSegments();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
             List<String> amenities = new ArrayList<>();
             for (int j = 0; j < amenityEnums.size(); j++) {
                 amenities.add(amenityEnums.get(j).getDescription());
             }
-            sc_amenities.removeAllSegments();
             sc_amenities.addSegments(amenities);
             List<FacilityEnum> facilityEnums = bizStoreElastic.getFacilities();
             List<String> facilities = new ArrayList<>();
             for (int j = 0; j < facilityEnums.size(); j++) {
                 facilities.add(facilityEnums.get(j).getDescription());
             }
-            sc_facility.removeAllSegments();
             sc_facility.addSegments(facilities);
             Picasso.with(this)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
@@ -339,7 +352,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 Intent in = new Intent(this, JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
                 break;

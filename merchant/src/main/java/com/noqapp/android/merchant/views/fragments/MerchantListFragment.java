@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.R;
@@ -10,6 +11,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -253,7 +255,11 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().dismissProgress();
         swipeRefreshLayout.setRefreshing(false);
     }
-
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        new ErrorResponseHandler().processError(getActivity(),eej);
+    }
     @Override
     public void authenticationFailure(int errorCode) {
         LaunchActivity.getLaunchActivity().dismissProgress();
