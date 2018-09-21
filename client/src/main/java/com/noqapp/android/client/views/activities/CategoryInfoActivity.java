@@ -213,19 +213,24 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             codeQR = bizStoreElastic.getCodeQR();
             AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);
 
+            try {
+                // clear all the segments before load new
+                sc_amenities.removeAllSegments();
+                sc_facility.removeAllSegments();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
             List<String> amenities = new ArrayList<>();
             for (int j = 0; j < amenityEnums.size(); j++) {
                 amenities.add(amenityEnums.get(j).getDescription());
             }
-            sc_amenities.removeAllSegments();
             sc_amenities.addSegments(amenities);
             List<FacilityEnum> facilityEnums = bizStoreElastic.getFacilities();
             List<String> facilities = new ArrayList<>();
             for (int j = 0; j < facilityEnums.size(); j++) {
                 facilities.add(facilityEnums.get(j).getDescription());
             }
-            sc_facility.removeAllSegments();
             sc_facility.addSegments(facilities);
             Picasso.with(this)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
