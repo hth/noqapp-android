@@ -350,12 +350,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
 
     @Override
     protected void barcodeResult(String codeQR, boolean isCategoryData) {
-        Bundle b = new Bundle();
-        b.putString(KEY_CODE_QR, codeQR);
-        b.putBoolean(KEY_FROM_LIST, fromList);
-        b.putBoolean(KEY_IS_HISTORY, false);
         if (isCategoryData) {
             Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
+            Bundle b = new Bundle();
+            b.putString(KEY_CODE_QR, codeQR);
+            b.putBoolean(KEY_FROM_LIST, fromList);
             in.putExtra("bundle", b);
             getActivity().startActivity(in);
 
@@ -363,7 +362,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
             Intent in = new Intent(getActivity(), JoinActivity.class);
             in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
             in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-            in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
             in.putExtra("isCategoryData", false);
             startActivity(in);
 
@@ -429,7 +427,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                 Bundle b = new Bundle();
                 b.putString(KEY_CODE_QR, item.getCodeQR());
                 b.putBoolean(KEY_FROM_LIST, fromList);
-                b.putBoolean(KEY_IS_HISTORY, false);
                 b.putBoolean("CallCategory", true);
                 b.putBoolean("isCategoryData", false);
                 b.putSerializable("BizStoreElastic", item);
@@ -455,7 +452,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                 in.putExtra(KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(KEY_FROM_LIST, true);
                 in.putExtra(KEY_JSON_TOKEN_QUEUE, item);
-                in.putExtra(KEY_IS_HISTORY, false);
                 startActivity(in);
             } else {
                 Toast.makeText(getActivity(), "call the order detail screen", Toast.LENGTH_LONG).show();
@@ -470,7 +466,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                 Intent in = new Intent(getActivity(), JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
-                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, true);
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
             } else {

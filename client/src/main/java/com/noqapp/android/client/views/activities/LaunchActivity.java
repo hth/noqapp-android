@@ -516,7 +516,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         Bundle b = new Bundle();
         b.putString(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
         b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
-        b.putBoolean(NoQueueBaseFragment.KEY_IS_HISTORY, false);
         b.putBoolean("isCategoryData", false);
         //   JoinFragment jf = new JoinFragment();
         //   jf.setArguments(b);

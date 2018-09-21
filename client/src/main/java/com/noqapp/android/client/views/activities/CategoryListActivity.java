@@ -56,7 +56,6 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
                 Intent in = new Intent(this, JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
                 in.putExtra("imageUrl",AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
                 in.putExtra("isCategoryData", false);
                 startActivity(in);

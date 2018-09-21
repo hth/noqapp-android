@@ -37,7 +37,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static final String KEY_CODE_QR = DatabaseTable.TokenQueue.CODE_QR;
     public static final String KEY_FROM_LIST = "fromList";
-    public static final String KEY_IS_HISTORY = "isHistory";
     public static final String KEY_IS_REJOIN = "isRejoin";
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
     public static final String KEY_USER_PROFILE = "userProfile";

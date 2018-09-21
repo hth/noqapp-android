@@ -83,12 +83,16 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                 tv_address.setText(jtk.getStoreAddress());
                 String datetime = DateFormat.getDateTimeInstance().format(new Date());
                 tv_mobile.setText(datetime);
-                List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
-                profileList.add(0, NoQueueBaseActivity.getUserProfile());
-                if (BuildConfig.BUILD_TYPE.equals("debug")) {
-                    tv_details.setText("Token: " + jtk.getToken() + " : " + jtk.getQueueUserId());
-                } else {
-                    tv_details.setText("Token: " + jtk.getToken() + " : " + AppUtilities.getNameFromQueueUserID(jtk.getQueueUserId(), profileList));
+                if(UserUtils.isLogin()) {
+                    List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
+                    profileList.add(0, NoQueueBaseActivity.getUserProfile());
+                    if (BuildConfig.BUILD_TYPE.equals("debug")) {
+                        tv_details.setText("Token: " + jtk.getToken() + " : " + jtk.getQueueUserId());
+                    } else {
+                        tv_details.setText("Token: " + jtk.getToken() + " : " + AppUtilities.getNameFromQueueUserID(jtk.getQueueUserId(), profileList));
+                    }
+                }else{
+                    tv_details.setText("Token: " + jtk.getToken() + " : Guest user" );
                 }
             }
         } else {

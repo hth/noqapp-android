@@ -347,7 +347,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 Intent in = new Intent(this, JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
                 break;

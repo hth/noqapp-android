@@ -174,7 +174,6 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                 Intent in = new Intent(this, JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-                in.putExtra(NoQueueBaseFragment.KEY_IS_HISTORY, false);
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
                 break;
