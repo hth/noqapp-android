@@ -409,7 +409,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         ReviewData reviewData = ReviewDB.getPendingReview();
         // shown only one time if the review is canceled
-        if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !isReviewShown()) {
+        if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !isReviewShown() && !NoQueueBaseActivity.getShowHelper()) {
             callReviewActivity(reviewData.getCodeQR(), reviewData.getToken());
         }
 

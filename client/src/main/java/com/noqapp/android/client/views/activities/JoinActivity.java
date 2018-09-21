@@ -200,7 +200,10 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) +
                 " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour());
         if (jsonQueue.getDelayedInMinutes() > 0) {
-            String red = "<font color='#e92270'><b>Late " + jsonQueue.getDelayedInMinutes() + " minutes.</b></font>";
+            int hours = jsonQueue.getDelayedInMinutes() / 60;
+            int minutes = jsonQueue.getDelayedInMinutes() % 60;
+            System.out.printf("%d:%02d", hours, minutes);
+            String red = "<font color='#e92270'><b>Delayed by " + hours+" Hrs " + minutes+" minutes.</b></font>";
             time = time + " " + red;
         }
         tv_hour_saved.setText(Html.fromHtml(time));
