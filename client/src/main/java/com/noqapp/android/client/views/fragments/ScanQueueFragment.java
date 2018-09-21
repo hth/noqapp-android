@@ -409,7 +409,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
         }
         tv_near_view_all.setVisibility(nearMeData.size() == 0 ? View.GONE : View.VISIBLE);
         isProgressFirstTime = false;
-        if (NoQueueBaseActivity.getShowHelper()) {
+        if (NoQueueBaseActivity.getShowHelper() && isAdded()) {
             presentShowcaseSequence();
             NoQueueBaseActivity.setShowHelper(false);
         }
