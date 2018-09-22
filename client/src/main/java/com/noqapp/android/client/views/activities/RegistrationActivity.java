@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterModel;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
@@ -21,7 +20,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -135,15 +133,13 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
                 }
             }
         });
-
     }
 
     private void actionRegistration() {
         if (validate()) {
             btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
             btnRegistration.setTextColor(Color.WHITE);
-            btnRegistration.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0, R.drawable.arrow_white, 0);
+            btnRegistration.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_white, 0);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 callRegistrationAPI();
@@ -158,12 +154,12 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             NoQueueBaseActivity.commitProfile(profile, email, auth);
-            if(!TextUtils.isEmpty(NoQueueBaseActivity.getOldQueueUserID()) && !NoQueueBaseActivity.getOldQueueUserID().equalsIgnoreCase(profile.getQueueUserId())) {
+            if (!TextUtils.isEmpty(NoQueueBaseActivity.getPreviousUserQID()) && !NoQueueBaseActivity.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
                 NotificationDB.clearNotificationTable();
                 ReviewDB.clearReviewTable();
                 LaunchActivity.getLaunchActivity().reCreateDeviceID();
             }
-            NoQueueBaseActivity.setOldQueueUserID(profile.getQueueUserId());
+            NoQueueBaseActivity.setPreviousUserQID(profile.getQueueUserId());
             finish();
         } else {
             //Rejected from  server
@@ -184,7 +180,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
@@ -197,7 +193,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         if (v == tv_birthday) {
             new AppUtilities().hideKeyBoard(this);
             fromDatePickerDialog.show();
-        }else if (v == btnRegistration) {
+        } else if (v == btnRegistration) {
             new AppUtilities().hideKeyBoard(this);
             actionRegistration();
         } else if (v == tv_male) {
