@@ -68,7 +68,8 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                 sendRegistrationToServer(fcmToken);
             }
         });
-        if (fcmToken.equals("") && !new NetworkUtil(this).isOnline()) {
+
+        if (StringUtils.isBlank(fcmToken) && new NetworkUtil(this).isNotOnline()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
             builder.setTitle(null);
@@ -127,7 +128,6 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             Toast.makeText(this, "Device register error: ", Toast.LENGTH_LONG).show();
         }
     }
-
 
     private void sendRegistrationToServer(String refreshToken) {
         DeviceToken deviceToken = new DeviceToken(refreshToken);

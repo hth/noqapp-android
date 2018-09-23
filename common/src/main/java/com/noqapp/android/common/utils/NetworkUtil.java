@@ -17,6 +17,11 @@ public class NetworkUtil {
         return null != info && info.isConnected();
     }
 
+    public boolean isNotOnline() {
+        NetworkInfo info = getNetworkInfo();
+        return null != info && !info.isConnected();
+    }
+
     private NetworkInfo getNetworkInfo() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo();

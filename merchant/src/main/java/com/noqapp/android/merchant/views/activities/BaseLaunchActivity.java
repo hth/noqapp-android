@@ -283,7 +283,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
-
     }
 
     public boolean isOnline() {
