@@ -36,7 +36,7 @@ import io.fabric.sdk.android.Fabric;
 import java.util.UUID;
 
 ///https://blog.xamarin.com/bring-stunning-animations-to-your-apps-with-lottie/
-public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter{
+public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter {
 
     protected static boolean display = true;
     static SplashScreen splashScreen;
@@ -68,7 +68,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
                 sendRegistrationToServer(fcmToken);
             }
         });
-        if(fcmToken.equals("") && !new NetworkUtil(this).isOnline()){
+        if (fcmToken.equals("") && !new NetworkUtil(this).isOnline()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
             builder.setTitle(null);
@@ -81,7 +81,6 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             final AlertDialog mAlertDialog = builder.create();
             mAlertDialog.setCanceledOnTouchOutside(false);
             Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-
             btn_yes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -110,12 +109,12 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
-        if(deviceRegistered.getRegistered() == 1) {
+        if (deviceRegistered.getRegistered() == 1) {
             Log.e("Launch", "launching from deviceRegisterResponse");
             Intent i = new Intent(splashScreen, LaunchActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -123,24 +122,23 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             i.putExtra("deviceId", deviceId);
             splashScreen.startActivity(i);
             splashScreen.finish();
-        }else{
-            Log.e("Device register error: ",deviceRegistered.toString());
-            Toast.makeText(this,"Device register error: ",Toast.LENGTH_LONG).show();
+        } else {
+            Log.e("Device register error: ", deviceRegistered.toString());
+            Toast.makeText(this, "Device register error: ", Toast.LENGTH_LONG).show();
         }
     }
 
 
     private void sendRegistrationToServer(String refreshToken) {
         DeviceToken deviceToken = new DeviceToken(refreshToken);
-      //  NoQueueBaseActivity.setFCMToken(refreshToken);
-        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
-                APP_PREF, Context.MODE_PRIVATE);
+        //  NoQueueBaseActivity.setFCMToken(refreshToken);
+        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         deviceId = sharedpreferences.getString(NoQueueBaseActivity.XR_DID, "");
         if (StringUtils.isBlank(deviceId)) {
             deviceId = UUID.randomUUID().toString().toUpperCase();
             //setSharedPreferenceDeviceID(sharedpreferences, deviceId);
             Log.d(TAG, "Created deviceId=" + deviceId);
-            sharedpreferences.edit().putString(NoQueueBaseActivity.XR_DID,deviceId).apply();
+            sharedpreferences.edit().putString(NoQueueBaseActivity.XR_DID, deviceId).apply();
             //Call this api only once in life time
             DeviceModel deviceModel = new DeviceModel();
             deviceModel.setDeviceRegisterPresenter(this);
@@ -150,8 +148,8 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             Log.d(TAG, "Exist deviceId=" + deviceId);
             Intent i = new Intent(splashScreen, LaunchActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            i.putExtra("fcmToken",fcmToken);
-            i.putExtra("deviceId",deviceId);
+            i.putExtra("fcmToken", fcmToken);
+            i.putExtra("deviceId", deviceId);
             splashScreen.startActivity(i);
             splashScreen.finish();
         }
