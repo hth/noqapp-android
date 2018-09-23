@@ -119,7 +119,9 @@ public class ProfileModel {
 
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                    profilePresenter.profileResponse(
+                            response.body(),
+                            response.headers().get(APIConstant.Key.XR_MAIL),
                             response.headers().get(APIConstant.Key.XR_AUTH));
                 } else {
                     //TODO something logical
