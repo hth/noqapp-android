@@ -190,7 +190,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             } else if (object instanceof JsonClientData) {
                                 Log.e("IN JsonClientData", ((JsonClientData) object).toString());
                                 String token = String.valueOf(((JsonClientData) object).getToken());
-                                String quserID = ((JsonClientData) object).getQueueUserId();
+                                String qid = ((JsonClientData) object).getQueueUserId();
                                 if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                                     /*
                                      * Save codeQR of review & show the review screen on app
@@ -208,7 +208,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
                                         cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                                         cv.put(DatabaseTable.Review.TOKEN, token);
-                                        cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                                        cv.put(DatabaseTable.Review.QID, qid);
                                         cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
                                         cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
                                         cv.put(DatabaseTable.Review.KEY_GOTO, "");
@@ -228,7 +228,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                                         cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                                         cv.put(DatabaseTable.Review.TOKEN, token);
-                                        cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                                        cv.put(DatabaseTable.Review.QID, qid);
                                         cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
                                         cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
                                         cv.put(DatabaseTable.Review.KEY_GOTO, "");
@@ -279,7 +279,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                                         cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                                         cv.put(DatabaseTable.Review.TOKEN, current_serving);
-                                        cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
+                                        cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
                                         cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
                                         cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
                                         cv.put(DatabaseTable.Review.KEY_GOTO, go_to);

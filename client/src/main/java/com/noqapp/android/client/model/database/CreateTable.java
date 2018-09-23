@@ -102,7 +102,7 @@ public class CreateTable {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Review.TABLE_NAME + "("
                 + Review.CODE_QR + " TEXT, "
                 + Review.TOKEN + " TEXT, "
-                + Review.Q_USER_ID + " TEXT, "
+                + Review.QID + " TEXT, "
                 + Review.KEY_REVIEW_SHOWN + " TEXT, "
                 + Review.KEY_SKIP + " TEXT, "
                 + Review.KEY_GOTO + " TEXT, "
