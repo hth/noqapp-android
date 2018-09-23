@@ -53,7 +53,6 @@ public class ProfileModel {
         profileService = RetrofitClient.getClient().create(ProfileService.class);
     }
 
-
     public void fetchProfile(final String mail, final String auth) {
         profileService.fetch(mail, auth).enqueue(new Callback<JsonProfile>() {
             @Override

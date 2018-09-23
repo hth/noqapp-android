@@ -132,15 +132,15 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         }
     }
 
-
     @Override
     public void imageUploadResponse(JsonResponse jsonResponse) {
         dismissProgress();
         Log.v("Image upload", "" + jsonResponse.getResponse());
-        if (Constants.SUCCESS == jsonResponse.getResponse())
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
             Toast.makeText(this, "Profile image change successful!", Toast.LENGTH_LONG).show();
-        else
+        } else {
             Toast.makeText(this, "Failed to update profile image", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -292,8 +292,6 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 ss1.setSpan(span1, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 tv_female.setText(ss1);
                 break;
-
-
         }
         try {
             tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB())));
@@ -324,7 +322,6 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         }
         loadProfilePic();
     }
-
 
     @Override
     protected void onResume() {
