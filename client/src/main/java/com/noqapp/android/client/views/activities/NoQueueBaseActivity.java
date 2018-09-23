@@ -46,7 +46,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     private static final String KEY_PREVIOUS_USER_QID = "previousUserQID";
     /* Secured Shared Preference. */
     private static final String FCM_TOKEN = "fcmToken";
-    public static final String XR_DID = "X-R-DID";
     public static NoQueueBaseActivity noQueueBaseActivity;
 
     public static SharedPreferences getSharedPreferences() {
@@ -133,7 +132,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static String getDeviceID() {
         //TODO(hth) why empty. Set device id when empty
-        return sharedPreferences.getString(XR_DID, "");
+        return sharedPreferences.getString(APIConstant.Key.XR_DID, "");
     }
 
     /* Previous QID helps keeps track if new user has logged in. */
@@ -149,7 +148,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static void setDeviceID(String did) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
-        editor.putString(XR_DID, did);
+        editor.putString(APIConstant.Key.XR_DID, did);
         editor.apply();
     }
 
@@ -179,12 +178,12 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static void clearPreferences() {
         // Clear all data except DID & FCM Token
-        String did = sharedPreferences.getString(NoQueueBaseActivity.XR_DID, "");
+        String did = sharedPreferences.getString(APIConstant.Key.XR_DID, "");
         String fcmToken = getFCMToken();
         String previousUserQID = getPreviousUserQID();
         getSharedPreferencesEditor().clear().commit();
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
-        editor.putString(XR_DID, did);
+        editor.putString(APIConstant.Key.XR_DID, did);
         editor.putString(FCM_TOKEN, fcmToken);
         editor.putString(KEY_PREVIOUS_USER_QID, previousUserQID);
         editor.commit();

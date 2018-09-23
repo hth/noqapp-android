@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceModel;
 import com.noqapp.android.client.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -74,9 +75,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             LayoutInflater inflater = LayoutInflater.from(this);
             builder.setTitle(null);
             View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-            TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+            TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
             TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-            tvtitle.setText(getString(R.string.networkerror));
+            tvTitle.setText(getString(R.string.networkerror));
             tv_msg.setText(getString(R.string.offline));
             builder.setView(customDialogView);
             final AlertDialog mAlertDialog = builder.create();
@@ -133,12 +134,12 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
         DeviceToken deviceToken = new DeviceToken(refreshToken);
         //  NoQueueBaseActivity.setFCMToken(refreshToken);
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
-        deviceId = sharedpreferences.getString(NoQueueBaseActivity.XR_DID, "");
+        deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
         if (StringUtils.isBlank(deviceId)) {
             deviceId = UUID.randomUUID().toString().toUpperCase();
             //setSharedPreferenceDeviceID(sharedpreferences, deviceId);
             Log.d(TAG, "Created deviceId=" + deviceId);
-            sharedpreferences.edit().putString(NoQueueBaseActivity.XR_DID, deviceId).apply();
+            sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
             //Call this api only once in life time
             DeviceModel deviceModel = new DeviceModel();
             deviceModel.setDeviceRegisterPresenter(this);
