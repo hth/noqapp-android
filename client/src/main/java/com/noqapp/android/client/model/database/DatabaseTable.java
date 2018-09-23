@@ -27,11 +27,11 @@ public class DatabaseTable {
         public static final String HOURS_SAVED = "hoursSaved";
         public static final String CREATE_DATE = "createDate";
         public static final String BUSINESS_TYPE = "businessType";
-        public static final String GEOHASH = "geohash";
+        public static final String GEO_HASH = "geohash";
         public static final String TOWN = "town";
         public static final String AREA = "area";
         public static final String DISPLAY_IMAGE = "displayImage";
-        public static final String QUEUE_USER_ID = "queueUserID";
+        public static final String QID = "queueUserID";
         public static final String PURCHASE_ORDER_STATE = "purchaseOrderState";
 
         private TokenQueue() {

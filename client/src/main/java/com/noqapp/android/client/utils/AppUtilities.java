@@ -377,7 +377,7 @@ public class AppUtilities extends CommonHelper {
         StringBuilder jsonResults = new StringBuilder();
         try {
             String sb = Constants.PLACES_API_BASE + Constants.TYPE_AUTOCOMPLETE + Constants.OUT_JSON +
-                    "?key=" + Constants.API_KEY +
+                    "?key=" + Constants.GOOGLE_PLACE_API_KEY +
                     "&components=country:" + Constants.COUNTRY_CODE +
                     "&types=(regions)" +
                     "&input=" + URLEncoder.encode(input, "utf8");

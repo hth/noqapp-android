@@ -10,7 +10,6 @@ import android.util.Log;
  * User: hitender
  * Date: 3/27/17 2:24 PM
  */
-
 public class Constants {
     public static final String DEVICE_TYPE = "A";
     public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
@@ -26,7 +25,7 @@ public class Constants {
     public static final String CurrentlyServing = "cs";
     public static final String CodeQR = "qr";
     public static final String TOKEN = "t";
-    public static final String QuserID = "qid";
+    public static final String QID = "qid";
     public static final String MESSAGE_ID = "mi";
     public static final String MESSAGE_ORIGIN = "mo";
     public static final String ACTIVITY_TO_CLOSE = "activity_status";
@@ -41,11 +40,11 @@ public class Constants {
     public static final String URL_PRIVACY_POLICY = "https://noqapp.com/mobile/m.privacy.html";
     public static final String URL_HOW_IT_WORKS = "https://noqapp.com/mobile/m.how-invite-works.html";
     //Google place search api
-    public static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
-    public static final String TYPE_AUTOCOMPLETE = "/autocomplete";
-    public static final String OUT_JSON = "/json";
-    public static final String COUNTRY_CODE = "IN";
-    public static final String API_KEY = "AIzaSyA9eHl3SHvjXmHFq9q5yPjRy0uqBd5awSc";
+    static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
+    static final String TYPE_AUTOCOMPLETE = "/autocomplete";
+    static final String OUT_JSON = "/json";
+    static final String COUNTRY_CODE = "IN";
+    static final String GOOGLE_PLACE_API_KEY = "AIzaSyA9eHl3SHvjXmHFq9q5yPjRy0uqBd5awSc";
     private static final String TAG = Constants.class.getName();
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
     private static String VERSION_RELEASE;

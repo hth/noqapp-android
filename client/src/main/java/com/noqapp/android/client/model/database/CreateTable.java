@@ -44,11 +44,11 @@ public class CreateTable {
                     + TokenQueue.HOURS_SAVED + " TEXT , "
                     + TokenQueue.CREATE_DATE + " TEXT , "
                     + TokenQueue.BUSINESS_TYPE + " TEXT , "
-                    + TokenQueue.GEOHASH + " TEXT , "
+                    + TokenQueue.GEO_HASH + " TEXT , "
                     + TokenQueue.TOWN + " TEXT , "
                     + TokenQueue.AREA + " TEXT , "
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
-                    + TokenQueue.QUEUE_USER_ID + " TEXT , "
+                    + TokenQueue.QID + " TEXT , "
                     + TokenQueue.PURCHASE_ORDER_STATE + " TEXT , "
                     + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
@@ -83,11 +83,11 @@ public class CreateTable {
                     + TokenQueue.HOURS_SAVED + " TEXT , "
                     + TokenQueue.CREATE_DATE + " TEXT , "
                     + TokenQueue.BUSINESS_TYPE + " TEXT , "
-                    + TokenQueue.GEOHASH + " TEXT , "
+                    + TokenQueue.GEO_HASH + " TEXT , "
                     + TokenQueue.TOWN + " TEXT , "
                     + TokenQueue.AREA + " TEXT , "
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
-                    + TokenQueue.QUEUE_USER_ID + " TEXT , "
+                    + TokenQueue.QID + " TEXT , "
                     + TokenQueue.PURCHASE_ORDER_STATE + " TEXT , "
                     + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 

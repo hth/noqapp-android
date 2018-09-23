@@ -248,7 +248,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         tv_email.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
 
-        ((TextView) findViewById(R.id.tv_version)).setText(BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
+        ((TextView) findViewById(R.id.tv_version)).setText(
+                BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
                 ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                 : getString(R.string.version_no, "Not for release"));
         updateMenuList(UserUtils.isLogin());
@@ -277,12 +278,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     && extras.containsKey(Constants.TOKEN)) {
                 String codeQR = extras.getString(Constants.QRCODE);
                 String token = extras.getString(Constants.TOKEN);
-                String quserID = extras.getString(Constants.QuserID);
+                String qid = extras.getString(Constants.QID);
                 boolean isReview = extras.getBoolean(Constants.ISREVIEW, false);
                 if (isReview) {
                     callReviewActivity(codeQR, token);
                 } else {
-                    callSkipScreen(codeQR, token, quserID);
+                    callSkipScreen(codeQR, token, qid);
                 }
             }
         }
@@ -493,7 +494,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
     }
 
-    private void callSkipScreen(String codeQR, String token, String quserID) {
+    private void callSkipScreen(String codeQR, String token, String qid) {
         ReviewData reviewData = ReviewDB.getValue(codeQR, token);
         if (null != reviewData) {
             ContentValues cv = new ContentValues();
@@ -506,7 +507,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
             cv.put(DatabaseTable.Review.CODE_QR, codeQR);
             cv.put(DatabaseTable.Review.TOKEN, token);
-            cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+            cv.put(DatabaseTable.Review.Q_USER_ID, qid);
             cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
             cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
             cv.put(DatabaseTable.Review.KEY_GOTO, "");

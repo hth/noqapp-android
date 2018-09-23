@@ -324,9 +324,9 @@ public class TokenAndQueueDB {
             cv.put(TokenQueue.AREA, tokenAndQueue.getArea());
             cv.put(TokenQueue.TOWN, tokenAndQueue.getTown());
             cv.put(TokenQueue.BUSINESS_TYPE, tokenAndQueue.getBusinessType().name());
-            cv.put(TokenQueue.GEOHASH, tokenAndQueue.getGeoHash());
+            cv.put(TokenQueue.GEO_HASH, tokenAndQueue.getGeoHash());
             cv.put(TokenQueue.DISPLAY_IMAGE, tokenAndQueue.getDisplayImage());
-            cv.put(TokenQueue.QUEUE_USER_ID, tokenAndQueue.getQueueUserId());
+            cv.put(TokenQueue.QID, tokenAndQueue.getQueueUserId());
             cv.put(TokenQueue.PURCHASE_ORDER_STATE, tokenAndQueue.getPurchaseOrderState().name());
         } catch (Exception e) {
             Log.e(TAG, "Error createQueueContentValue reason=" + e.getLocalizedMessage(), e);
