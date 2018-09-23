@@ -250,6 +250,6 @@
     <string name="error_otp_blank">OTP is required</string>
     <string name="msg_vibrator_off">Your phone is on silent mode. App might fail to acknowledge you when its your turn.</string>
     <string name="error_mobile_no_length">Phone number has to be 10 digits</string>
-
+    <string name="profile"> <u>PROFILE</u></string>
 
 </resources>
