@@ -536,8 +536,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-                                          String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("pref_language")) {
             ((MyApplication) getApplication()).setLocale();
             this.recreate();
@@ -601,7 +600,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         private void unregister(Context context) {
             if (isRegistered) {
                 LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
-                Log.e("FCM Reciver: ", "unregister");
+                Log.e("FCM Receiver: ", "unregister");
                 isRegistered = false;
             }
         }
