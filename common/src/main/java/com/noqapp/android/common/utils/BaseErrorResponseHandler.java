@@ -79,6 +79,8 @@ public abstract class BaseErrorResponseHandler {
                         break;
                     case SEVERE:
                         break;
+                    case DEVICE_DETAIL_MISSING:
+                        break;
                     case WEB_APPLICATION:
                         break;
                     default:

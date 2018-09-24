@@ -9,6 +9,4 @@ public interface TopicPresenter extends ResponseErrorPresenter{
     void topicPresenterResponse(JsonTopicList token);
 
     void topicPresenterError();
-
-    void authenticationFailure(int errorCode);
 }

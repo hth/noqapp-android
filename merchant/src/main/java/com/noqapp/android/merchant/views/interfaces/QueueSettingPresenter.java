@@ -10,6 +10,4 @@ public interface QueueSettingPresenter extends ResponseErrorPresenter{
     void queueSettingResponse(QueueSetting queueSetting);
 
     void queueSettingError();
-
-    void authenticationFailure(int errorCode);
 }

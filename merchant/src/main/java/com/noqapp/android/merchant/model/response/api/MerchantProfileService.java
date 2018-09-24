@@ -27,9 +27,16 @@ public interface MerchantProfileService {
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#DEVICE_DETAIL_MISSING}
      */
     @GET("api/m/profile/fetch.json")
     Call<JsonMerchant> fetch(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
             @Header("X-R-MAIL")
             String mail,
 

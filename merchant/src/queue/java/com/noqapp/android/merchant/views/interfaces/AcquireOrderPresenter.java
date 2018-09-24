@@ -7,6 +7,4 @@ import com.noqapp.android.merchant.presenter.beans.JsonToken;
 public interface AcquireOrderPresenter extends ResponseErrorPresenter{
 
     void acquireOrderResponse(JsonToken token);
-
-    void authenticationFailure(int errorCode);
 }

@@ -582,6 +582,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         b.show();
     }
 
+    @Override
+    public void authenticationFailure() {
+
+    }
+
     public class FcmNotificationReceiver extends BroadcastReceiver {
         public boolean isRegistered;
 

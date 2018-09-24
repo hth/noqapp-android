@@ -309,40 +309,36 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
 
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
-        if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             loginCallBack.passPhoneNo(profile.getPhoneRaw(), profile.getCountryShortName());
             finish();//close the current activity
             dismissProgress();
-        } else {
-            // Rejected from  server
-            ErrorEncounteredJson eej = profile.getError();
-            if (null != eej && eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
-                Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
-                in.putExtra("mobile_no", verifiedMobileNo);
-                in.putExtra("country_code", countryCode);
-                in.putExtra("countryShortName", countryShortName);
-                startActivity(in);
-                dismissProgress();
-                finish();//close the current activity
-            }
-        }
     }
 
     @Override
     public void profileError() {
-
+        dismissProgress();
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
+        if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
+            Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
+            in.putExtra("mobile_no", verifiedMobileNo);
+            in.putExtra("country_code", countryCode);
+            in.putExtra("countryShortName", countryShortName);
+            startActivity(in);
+            dismissProgress();
+            finish();//close the current activity
+        } else {
+            new ErrorResponseHandler().processError(this, eej);
+        }
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
-        //TODO(chandra)
+    public void authenticationFailure() {
+        AppUtils.authenticationProcessing();
     }
 
     private void enableViews(View... views) {

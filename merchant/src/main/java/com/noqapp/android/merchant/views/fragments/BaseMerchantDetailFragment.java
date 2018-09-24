@@ -5,6 +5,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.presenter.AuthenticationFailure;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.BuildConfig;
@@ -290,11 +291,9 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            LaunchActivity.getLaunchActivity().clearLoginData(true);
-        }
+        AppUtils.authenticationProcessing();
     }
 
     @Override

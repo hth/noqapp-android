@@ -8,5 +8,4 @@ public interface ImageUploadPresenter extends ResponseErrorPresenter{
 
     void imageUploadError();
 
-    void authenticationFailure(int errorCode);
 }

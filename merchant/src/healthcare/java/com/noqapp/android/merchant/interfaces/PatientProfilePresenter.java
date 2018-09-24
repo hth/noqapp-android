@@ -10,5 +10,4 @@ public interface PatientProfilePresenter extends ResponseErrorPresenter {
 
     void patientProfileError();
 
-    void authenticationFailure(int errorCode);
 }

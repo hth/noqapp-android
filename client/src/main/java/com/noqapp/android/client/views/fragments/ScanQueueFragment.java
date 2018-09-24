@@ -685,6 +685,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
         }
     }
 
+    @Override
+    public void authenticationFailure() {
+
+    }
+
     private static class QueueHandler extends Handler {
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter();
 

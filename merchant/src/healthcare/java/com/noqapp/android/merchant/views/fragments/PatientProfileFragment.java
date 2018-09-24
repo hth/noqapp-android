@@ -119,8 +119,9 @@ public class PatientProfileFragment extends Fragment implements PatientProfilePr
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         dismissProgress();
+        AppUtils.authenticationProcessing();
     }
 
     @Override

@@ -363,4 +363,8 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         return jsonHour.getStartHour() <= timeData && timeData <= jsonHour.getEndHour();
     }
 
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

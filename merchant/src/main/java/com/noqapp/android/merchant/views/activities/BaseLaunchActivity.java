@@ -300,19 +300,17 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void setUserList(ArrayList<String> userList) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(userList);
+        String json = new Gson().toJson(userList);
         editor.putString(KEY_USER_LIST, json);
-        editor.commit();
+        editor.apply();
     }
 
     public ArrayList<String> getUserList() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Gson gson = new Gson();
         String json = sharedPrefs.getString(KEY_USER_LIST, null);
         Type type = new TypeToken<ArrayList<String>>() {
         }.getType();
-        ArrayList<String> arrayList = gson.fromJson(json, type);
+        ArrayList<String> arrayList = new Gson().fromJson(json, type);
         return arrayList == null ? new ArrayList<String>() : arrayList;
     }
 
@@ -321,8 +319,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     public void setCounterName(HashMap<String, String> mHashmap) {
-        Gson gson = new Gson();
-        String strInput = gson.toJson(mHashmap);
+        String strInput = new Gson().toJson(mHashmap);
         sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, strInput).apply();
     }
 
@@ -331,8 +328,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     public void setSuggestions(Map<String, List<String>> map) {
-        Gson gson = new Gson();
-        String strInput = gson.toJson(map);
+        String strInput = new Gson().toJson(map);
         sharedpreferences.edit().putString(KEY_SUGGESTION, strInput).apply();
     }
 
@@ -343,24 +339,21 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     public List<JsonMedicalMedicine> getFavouriteMedicines(){
-        Gson gson = new Gson();
         Type type = new TypeToken<List<JsonMedicalMedicine>>(){}.getType();
         String listData = sharedpreferences.getString(KEY_MEDICINES, null);
-        List<JsonMedicalMedicine> jsonMedicalMedicines = gson.fromJson(listData, type);
+        List<JsonMedicalMedicine> jsonMedicalMedicines = new Gson().fromJson(listData, type);
         return  jsonMedicalMedicines;
     }
 
     public ArrayList<String> getCounterNames() {
         //Retrieve the values
-        Gson gson = new Gson();
         String jsonText = sharedpreferences.getString(KEY_COUNTER_NAME_LIST, null);
-        ArrayList<String> nameList = gson.fromJson(jsonText, ArrayList.class);
+        ArrayList<String> nameList = new Gson().fromJson(jsonText, ArrayList.class);
         return null != nameList ? nameList : new ArrayList<String>();
     }
 
     public void setCounterNames(ArrayList<String> mHashmap) {
-        Gson gson = new Gson();
-        String strInput = gson.toJson(mHashmap);
+        String strInput = new Gson().toJson(mHashmap);
         sharedpreferences.edit().putString(KEY_COUNTER_NAME_LIST, strInput).apply();
     }
 
@@ -417,17 +410,15 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     public void setUserProfile(JsonProfile jsonProfile) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(jsonProfile);
+        String json = new Gson().toJson(jsonProfile);
         editor.putString(KEY_USER_PROFILE, json);
         editor.apply();
     }
 
     public JsonProfile getUserProfile() {
-        Gson gson = new Gson();
         String json = sharedpreferences.getString(KEY_USER_PROFILE, "");
-        JsonProfile obj = gson.fromJson(json, JsonProfile.class);
-        return obj;
+        return new Gson().fromJson(json, JsonProfile.class);
+
     }
 
     public String getDeviceID() {
@@ -511,6 +502,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 new VersionCheckAsync(launchActivity).execute();
             }
         }
+    }
+
+    @Override
+    public void authenticationFailure() {
+        AppUtils.authenticationProcessing();
     }
 
     public static LaunchActivity getLaunchActivity() {

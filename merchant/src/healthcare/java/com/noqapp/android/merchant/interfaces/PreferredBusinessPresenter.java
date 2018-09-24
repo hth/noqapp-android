@@ -9,5 +9,4 @@ public interface PreferredBusinessPresenter extends ResponseErrorPresenter{
 
     void preferredBusinessError();
 
-    void authenticationFailure(int errorCode);
 }

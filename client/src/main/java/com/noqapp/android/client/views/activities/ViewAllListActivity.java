@@ -11,6 +11,7 @@ import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
 import com.google.android.gms.maps.model.LatLng;
+
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import android.content.Intent;
@@ -120,8 +121,15 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         //LaunchActivity.getLaunchActivity().dismissProgress();
 
     }
+
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
+    }
+
+    @Override
+    public void authenticationFailure() {
+        //dismissProgress();
+        // AppUtilities.authenticationProcessing(this, errorCode);
     }
 }

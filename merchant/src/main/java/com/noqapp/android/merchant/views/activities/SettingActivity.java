@@ -367,18 +367,18 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     }
 
     @Override
-    public void authenticationFailure(int errorcode) {
+    public void authenticationFailure() {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        if (errorcode == Constants.INVALID_CREDENTIAL) {
-            Intent intent = new Intent();
-            intent.putExtra(Constants.CLEAR_DATA, true);
-            if (getParent() == null) {
-                setResult(Activity.RESULT_OK, intent);
-            } else {
-                getParent().setResult(Activity.RESULT_OK, intent);
-            }
-            finish();
+        AppUtils.authenticationProcessing();
+        Intent intent = new Intent();
+        intent.putExtra(Constants.CLEAR_DATA, true);
+        if (getParent() == null) {
+            setResult(Activity.RESULT_OK, intent);
+        } else {
+            getParent().setResult(Activity.RESULT_OK, intent);
         }
+        finish();
+
     }
 
     @Override

@@ -233,6 +233,12 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         AppUtilities.authenticationProcessing(this, errorCode);
     }
 
+    @Override
+    public void authenticationFailure() {
+        dismissProgress();
+        // AppUtilities.authenticationProcessing(this, errorCode);
+    }
+
     private void updateUI() {
         if (NoQueueBaseActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
             tv_info.setText("Max 10 allowed");

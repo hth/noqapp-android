@@ -701,8 +701,8 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
-
+    public void authenticationFailure() {
+        AppUtils.authenticationProcessing();
     }
 
     @Override

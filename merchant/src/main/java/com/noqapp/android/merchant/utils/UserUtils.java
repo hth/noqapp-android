@@ -17,7 +17,6 @@ public class UserUtils {
 
     public static String getEmail() {
         return LaunchActivity.getLaunchActivity().getEmail();
-
     }
 
     public static String getAuth() {

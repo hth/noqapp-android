@@ -123,4 +123,8 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
         AppUtilities.authenticationProcessing(this,errorCode);
     }
 
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

@@ -287,4 +287,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
             tv_badge.setVisibility(View.INVISIBLE);
         }
     }
+
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

@@ -28,7 +28,7 @@ public class M_MerchantProfileModel extends MerchantProfileModel {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    intellisensePresenter.authenticationFailure(response.code());
+                    intellisensePresenter.authenticationFailure();
                     return;
                 }
                 if (null != response.body() && null == response.body().getError()) {

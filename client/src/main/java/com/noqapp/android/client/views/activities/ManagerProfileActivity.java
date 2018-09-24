@@ -151,6 +151,11 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         //tv_name.setText(managerName);
     }
 
+    @Override
+    public void authenticationFailure() {
+
+    }
+
     private class LoadTabs extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... params) {

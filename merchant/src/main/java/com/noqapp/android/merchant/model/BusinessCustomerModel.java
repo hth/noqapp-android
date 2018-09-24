@@ -36,7 +36,7 @@ public class BusinessCustomerModel {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePersonListPresenter.authenticationFailure(response.code());
+                    queuePersonListPresenter.authenticationFailure();
                     return;
                 }
 
@@ -64,7 +64,7 @@ public class BusinessCustomerModel {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePersonListPresenter.authenticationFailure(response.code());
+                    queuePersonListPresenter.authenticationFailure();
                     return;
                 }
 

@@ -490,4 +490,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         }
     }
 
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

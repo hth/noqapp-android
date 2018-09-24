@@ -11,7 +11,4 @@ public interface ManageQueuePresenter extends ResponseErrorPresenter{
     void manageQueueResponse(JsonToken token);
 
     void manageQueueError();
-
-    void authenticationFailure(int errorCode);
-
 }

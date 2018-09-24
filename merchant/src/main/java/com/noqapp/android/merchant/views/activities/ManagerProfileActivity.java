@@ -101,7 +101,9 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             merchantProfileModel.setMerchantPresenter(this);
-            merchantProfileModel.fetch(LaunchActivity.getLaunchActivity().getEmail(),
+            merchantProfileModel.fetch(
+                    UserUtils.getDeviceId(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
         }
     }
@@ -137,11 +139,9 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         dismissProgress();
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            LaunchActivity.getLaunchActivity().clearLoginData(true);
-        }
+        AppUtils.authenticationProcessing();
     }
 
     @Override

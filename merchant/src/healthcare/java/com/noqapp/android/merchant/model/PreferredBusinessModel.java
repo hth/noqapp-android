@@ -44,7 +44,7 @@ public class PreferredBusinessModel {
             @Override
             public void onResponse(@NonNull Call<JsonPreferredBusinessList> call, @NonNull Response<JsonPreferredBusinessList> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    preferredBusinessPresenter.authenticationFailure(response.code());
+                    preferredBusinessPresenter.authenticationFailure();
                     return;
                 }
                 if (null != response.body() && null == response.body().getError()) {
@@ -70,7 +70,7 @@ public class PreferredBusinessModel {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    filePresenter.authenticationFailure(response.code());
+                    filePresenter.authenticationFailure();
                     return;
                 }
                 if (null != response.body() ) {

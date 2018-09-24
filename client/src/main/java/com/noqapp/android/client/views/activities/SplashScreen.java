@@ -155,4 +155,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             splashScreen.finish();
         }
     }
+
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

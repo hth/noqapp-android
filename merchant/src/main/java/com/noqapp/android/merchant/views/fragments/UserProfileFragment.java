@@ -211,9 +211,10 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         //TODO(chandra)
         dismissProgress();
+        AppUtils.authenticationProcessing();
     }
 
     public void updateUI(JsonProfile jsonProfile) {

@@ -47,7 +47,7 @@ public class PurchaseOrderModel {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    purchaseOrderPresenter.authenticationFailure(response.code());
+                    purchaseOrderPresenter.authenticationFailure();
                     return;
                 }
 
@@ -74,7 +74,7 @@ public class PurchaseOrderModel {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    orderProcessedPresenter.authenticationFailure(response.code());
+                    orderProcessedPresenter.authenticationFailure();
                     return;
                 }
 
@@ -101,7 +101,7 @@ public class PurchaseOrderModel {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    acquireOrderPresenter.authenticationFailure(response.code());
+                    acquireOrderPresenter.authenticationFailure();
                     return;
                 }
 
@@ -128,7 +128,7 @@ public class PurchaseOrderModel {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    acquireOrderPresenter.authenticationFailure(response.code());
+                    acquireOrderPresenter.authenticationFailure();
                     return;
                 }
 

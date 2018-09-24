@@ -140,11 +140,9 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         dismissProgress();
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            LaunchActivity.getLaunchActivity().clearLoginData(true);
-        }
+        AppUtils.authenticationProcessing();
     }
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {

@@ -8,6 +8,4 @@ public interface ChartPresenter extends ResponseErrorPresenter{
     void chartError();
 
     void chartResponse(HealthCareStatList healthCareStatList);
-
-    void authenticationFailure(int errorCode);
 }

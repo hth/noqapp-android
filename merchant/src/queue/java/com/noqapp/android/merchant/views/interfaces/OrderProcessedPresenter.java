@@ -8,6 +8,4 @@ public interface OrderProcessedPresenter extends ResponseErrorPresenter{
     void orderProcessedResponse(JsonPurchaseOrderList jsonPurchaseOrderList);
 
     void orderProcessedError();
-
-    void authenticationFailure(int errorCode);
 }
