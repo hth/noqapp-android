@@ -30,6 +30,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
@@ -144,15 +145,12 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             actionbarBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    returnResultBack();
-                    LaunchActivity.getLaunchActivity().activityCommunicator = null;
-                    finish();
+                    iv_home.performClick();
                 }
             });
             iv_home.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    returnResultBack();
                     LaunchActivity.getLaunchActivity().activityCommunicator = null;
                     Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
                     goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -164,8 +162,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 profileList.add(0, NoQueueBaseActivity.getUserProfile());
                 profileList.add(0, new JsonProfile().setName("Select Patient"));
                 DependentAdapter adapter = new DependentAdapter(this, profileList);
-                sp_name_list.setText(((JsonProfile)profileList.get(profile_pos)).getName());
-                queueUserId = ((JsonProfile)profileList.get(profile_pos)).getQueueUserId();
+                sp_name_list.setText(((JsonProfile) profileList.get(profile_pos)).getName());
+                queueUserId = ((JsonProfile) profileList.get(profile_pos)).getQueueUserId();
             }
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case DO:
@@ -273,7 +271,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
@@ -306,7 +304,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 String guardianId = null;
                 Log.v("dependent size: ", "" + jsonProfile.getDependents().size());
                 if (profile_pos > 1) {
-                    queueUserId = ((JsonProfile)profileList.get(profile_pos)).getQueueUserId();
+                    queueUserId = ((JsonProfile) profileList.get(profile_pos)).getQueueUserId();
                     guardianId = jsonProfile.getQueueUserId();
                 } else {
                     queueUserId = jsonProfile.getQueueUserId();
@@ -451,9 +449,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 
     @Override
     public void onBackPressed() {
-        returnResultBack();
-        LaunchActivity.getLaunchActivity().activityCommunicator = null;
-        super.onBackPressed();
+        iv_home.performClick();
 
     }
 
