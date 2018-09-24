@@ -30,6 +30,12 @@ public interface MerchantProfileService {
      */
     @GET("api/m/profile/fetch.json")
     Call<JsonMerchant> fetch(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
             @Header("X-R-MAIL")
             String mail,
 

@@ -55,8 +55,8 @@ public class MerchantProfileModel {
      * @param mail
      * @param auth
      */
-    public void fetch(String mail, String auth) {
-        merchantProfileService.fetch(mail, auth).enqueue(new Callback<JsonMerchant>() {
+    public void fetch(String did, String mail, String auth) {
+        merchantProfileService.fetch(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonMerchant>() {
             @Override
             public void onResponse(@NonNull Call<JsonMerchant> call, @NonNull Response<JsonMerchant> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
