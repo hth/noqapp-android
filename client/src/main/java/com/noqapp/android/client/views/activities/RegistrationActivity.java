@@ -309,4 +309,9 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         registration.setInviteCode("");
         new RegisterModel(this).register(UserUtils.getDeviceId(), registration);
     }
+
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

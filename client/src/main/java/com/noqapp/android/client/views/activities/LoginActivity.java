@@ -93,4 +93,9 @@ public class LoginActivity extends OTPActivity {
             new ErrorResponseHandler().processError(this, eej);
         }
     }
+
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

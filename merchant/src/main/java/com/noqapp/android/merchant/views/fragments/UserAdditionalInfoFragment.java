@@ -6,6 +6,7 @@ import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.MerchantProfessionalPresenter;
@@ -348,8 +349,9 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         dismissProgress();
+        AppUtils.authenticationProcessing();
     }
 
     @Override

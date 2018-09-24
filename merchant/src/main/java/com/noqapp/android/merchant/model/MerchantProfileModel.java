@@ -60,7 +60,7 @@ public class MerchantProfileModel {
             @Override
             public void onResponse(@NonNull Call<JsonMerchant> call, @NonNull Response<JsonMerchant> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    merchantPresenter.authenticationFailure(response.code());
+                    merchantPresenter.authenticationFailure();
                     return;
                 }
 
@@ -87,7 +87,7 @@ public class MerchantProfileModel {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    profilePresenter.authenticationFailure(response.code());
+                    profilePresenter.authenticationFailure();
                     return;
                 }
 
@@ -114,7 +114,7 @@ public class MerchantProfileModel {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfilePersonal> call, @NonNull Response<JsonProfessionalProfilePersonal> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    merchantProfessionalPresenter.authenticationFailure(response.code());
+                    merchantProfessionalPresenter.authenticationFailure();
                     return;
                 }
 
@@ -140,7 +140,7 @@ public class MerchantProfileModel {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    imageUploadPresenter.authenticationFailure(response.code());
+                    imageUploadPresenter.authenticationFailure();
                     return;
                 }
                 if (null != response.body() && null == response.body().getError()) {

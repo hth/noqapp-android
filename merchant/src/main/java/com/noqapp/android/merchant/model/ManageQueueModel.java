@@ -68,7 +68,7 @@ public class ManageQueueModel {
             @Override
             public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    topicPresenter.authenticationFailure(response.code());
+                    topicPresenter.authenticationFailure();
                     return;
                 }
 
@@ -100,7 +100,7 @@ public class ManageQueueModel {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    manageQueuePresenter.authenticationFailure(response.code());
+                    manageQueuePresenter.authenticationFailure();
                     return;
                 }
 
@@ -137,7 +137,7 @@ public class ManageQueueModel {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    manageQueuePresenter.authenticationFailure(response.code());
+                    manageQueuePresenter.authenticationFailure();
                     return;
                 }
 
@@ -172,7 +172,7 @@ public class ManageQueueModel {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePersonListPresenter.authenticationFailure(response.code());
+                    queuePersonListPresenter.authenticationFailure();
                     return;
                 }
 
@@ -200,7 +200,7 @@ public class ManageQueueModel {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePersonListPresenter.authenticationFailure(response.code());
+                    queuePersonListPresenter.authenticationFailure();
                     return;
                 }
 
@@ -228,7 +228,7 @@ public class ManageQueueModel {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    dispenseTokenPresenter.authenticationFailure(response.code());
+                    dispenseTokenPresenter.authenticationFailure();
                     return;
                 }
 
@@ -259,7 +259,7 @@ public class ManageQueueModel {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    dispenseTokenPresenter.authenticationFailure(response.code());
+                    dispenseTokenPresenter.authenticationFailure();
                     return;
                 }
 
@@ -290,7 +290,7 @@ public class ManageQueueModel {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePersonListPresenter.authenticationFailure(response.code());
+                    queuePersonListPresenter.authenticationFailure();
                     return;
                 }
 

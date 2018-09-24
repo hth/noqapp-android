@@ -83,8 +83,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         LaunchActivity.getLaunchActivity().dismissProgress();
+        AppUtils.authenticationProcessing();
     }
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {

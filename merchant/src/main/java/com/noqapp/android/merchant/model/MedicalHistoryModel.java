@@ -45,7 +45,7 @@ public class MedicalHistoryModel {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    medicalRecordPresenter.authenticationFailure(response.code());
+                    medicalRecordPresenter.authenticationFailure();
                     return;
                 }
                 if (null != response.body() && null == response.body().getError()) {
@@ -71,7 +71,7 @@ public class MedicalHistoryModel {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    medicalRecordListPresenter.authenticationFailure(response.code());
+                    medicalRecordListPresenter.authenticationFailure();
                     return;
                 }
                 if (null != response.body() && null == response.body().getError()) {

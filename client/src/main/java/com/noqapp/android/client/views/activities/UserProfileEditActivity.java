@@ -79,7 +79,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit_profile);
-       
+
         tv_name = findViewById(R.id.tv_name);
         tv_birthday = findViewById(R.id.tv_birthday);
         edt_address = findViewById(R.id.edt_address);
@@ -143,15 +143,14 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
 
-
     @Override
     public void imageUploadResponse(JsonResponse jsonResponse) {
         dismissProgress();
         Log.v("Image upload", "" + jsonResponse.getResponse());
-        if(Constants.SUCCESS == jsonResponse.getResponse())
-            Toast.makeText(this,"Profile image change successfully!",Toast.LENGTH_LONG).show();
+        if (Constants.SUCCESS == jsonResponse.getResponse())
+            Toast.makeText(this, "Profile image change successfully!", Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(this,"Failed to update profile image",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Failed to update profile image", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -165,7 +164,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         switch (id) {
             case R.id.iv_profile:
                 selectImage();
-                break;case R.id.btn_update:
+                break;
+            case R.id.btn_update:
                 updateProfile();
                 break;
 
@@ -327,13 +327,19 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
         AppUtilities.authenticationProcessing(this, errorCode);
+    }
+
+    @Override
+    public void authenticationFailure() {
+        dismissProgress();
+        // AppUtilities.authenticationProcessing(this, errorCode);
     }
 
     private void updateUI() {

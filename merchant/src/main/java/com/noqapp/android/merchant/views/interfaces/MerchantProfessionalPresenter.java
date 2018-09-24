@@ -9,6 +9,4 @@ public interface MerchantProfessionalPresenter extends ResponseErrorPresenter{
     void merchantProfessionalResponse(JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal);
 
     void merchantProfessionalError();
-
-    void authenticationFailure(int errorCode);
 }

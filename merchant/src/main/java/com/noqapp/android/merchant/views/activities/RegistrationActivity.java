@@ -207,8 +207,9 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         dismissProgress();
+        AppUtils.authenticationProcessing();
     }
 
     @Override

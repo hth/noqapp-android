@@ -9,5 +9,4 @@ public interface IntellisensePresenter extends ResponseErrorPresenter{
 
     void intellisenseError();
 
-    void authenticationFailure(int errorCode);
 }

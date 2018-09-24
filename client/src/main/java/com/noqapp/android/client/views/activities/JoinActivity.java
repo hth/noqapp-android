@@ -332,4 +332,9 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             }
         }
     }
+
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

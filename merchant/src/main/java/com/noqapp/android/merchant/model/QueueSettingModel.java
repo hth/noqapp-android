@@ -35,7 +35,6 @@ public class QueueSettingModel {
 
     /**
      * Get setting for a specific queue.
-     *
      * @param did
      * @param mail
      * @param auth
@@ -45,7 +44,7 @@ public class QueueSettingModel {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queueSettingPresenter.authenticationFailure(response.code());
+                    queueSettingPresenter.authenticationFailure();
                     return;
                 }
 
@@ -72,7 +71,7 @@ public class QueueSettingModel {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queueSettingPresenter.authenticationFailure(response.code());
+                    queueSettingPresenter.authenticationFailure();
                     return;
                 }
 
@@ -104,7 +103,7 @@ public class QueueSettingModel {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queueSettingPresenter.authenticationFailure(response.code());
+                    queueSettingPresenter.authenticationFailure();
                     return;
                 }
 

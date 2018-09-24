@@ -70,4 +70,8 @@ public class MigrateActivity extends OTPActivity {
             dismissProgress();
     }
 
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

@@ -144,4 +144,8 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
         dismissProgress();
     }
 
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

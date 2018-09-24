@@ -223,7 +223,7 @@ public class ProfileModel {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    imageUploadPresenter.authenticationFailure(response.code());
+                    imageUploadPresenter.authenticationFailure();
                     return;
                 }
                 if (null != response.body() && null == response.body().getError()) {

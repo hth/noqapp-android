@@ -92,4 +92,8 @@ public class AppUtils extends CommonHelper {
         }
 
     }
+
+    public static void authenticationProcessing(){
+        LaunchActivity.getLaunchActivity().clearLoginData(true);
+    }
 }

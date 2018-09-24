@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="retrewtyer"
+                android:text=""
                 android:layout_alignParentBottom="true"
                 android:textColor="@color/colorAddress"
                 android:background="@android:color/white"

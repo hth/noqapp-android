@@ -373,4 +373,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             startActivity(in);
         }
     }
+
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

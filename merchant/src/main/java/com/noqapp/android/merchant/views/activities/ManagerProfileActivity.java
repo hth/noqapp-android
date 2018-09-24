@@ -139,11 +139,9 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         dismissProgress();
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            LaunchActivity.getLaunchActivity().clearLoginData(true);
-        }
+        AppUtils.authenticationProcessing();
     }
 
     @Override

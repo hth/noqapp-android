@@ -36,7 +36,7 @@ public class MerchantStatsModel {
             public void onResponse(Call<HealthCareStatList> call, Response<HealthCareStatList> response) {
 
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    chartPresenter.authenticationFailure(response.code());
+                    chartPresenter.authenticationFailure();
                     return;
                 }
 

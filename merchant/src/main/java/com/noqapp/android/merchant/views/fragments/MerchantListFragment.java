@@ -261,12 +261,10 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         new ErrorResponseHandler().processError(getActivity(),eej);
     }
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         LaunchActivity.getLaunchActivity().dismissProgress();
         swipeRefreshLayout.setRefreshing(false);
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            LaunchActivity.getLaunchActivity().clearLoginData(true);
-        }
+        AppUtils.authenticationProcessing();
     }
 
 

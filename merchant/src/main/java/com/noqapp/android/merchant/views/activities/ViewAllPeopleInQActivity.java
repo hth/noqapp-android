@@ -12,7 +12,6 @@ import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -123,11 +122,9 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         dismissProgress();
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            LaunchActivity.getLaunchActivity().clearLoginData(true);
-        }
+        AppUtils.authenticationProcessing();
     }
 
     private void createData(List<JsonQueuedPerson> temp) {

@@ -337,8 +337,8 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
-        //TODO(chandra)
+    public void authenticationFailure() {
+        AppUtils.authenticationProcessing();
     }
 
     private void enableViews(View... views) {

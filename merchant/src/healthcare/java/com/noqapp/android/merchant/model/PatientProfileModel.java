@@ -37,7 +37,7 @@ public class PatientProfileModel {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    patientProfilePresenter.authenticationFailure(response.code());
+                    patientProfilePresenter.authenticationFailure();
                     return;
                 }
                 if (null != response.body() && null == response.body().getError()) {

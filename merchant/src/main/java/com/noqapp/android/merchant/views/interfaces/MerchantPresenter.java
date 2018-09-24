@@ -9,6 +9,4 @@ public interface MerchantPresenter extends ResponseErrorPresenter{
     void merchantResponse(JsonMerchant jsonMerchant);
 
     void merchantError();
-
-    void authenticationFailure(int errorCode);
 }

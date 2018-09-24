@@ -213,4 +213,9 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         dismissProgress();
         new ErrorResponseHandler().processError(this,eej);
     }
+
+    @Override
+    public void authenticationFailure() {
+
+    }
 }

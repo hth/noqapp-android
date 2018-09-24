@@ -116,7 +116,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(auth)) {
             LaunchActivity.getLaunchActivity().setUserInformation("", "", email, auth, true);
             merchantProfileModel.setMerchantPresenter(this);
-            merchantProfileModel.fetch(email, auth);
+            merchantProfileModel.fetch( LaunchActivity.getLaunchActivity().getDeviceID(),email, auth);
             if (!userList.contains(email)) {
                 userList.add(email);
                 LaunchActivity.getLaunchActivity().setUserList(userList);
@@ -210,11 +210,9 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            LaunchActivity.getLaunchActivity().clearLoginData(true);
-        }
+        AppUtils.authenticationProcessing();
     }
 
     private boolean isValidInput() {
