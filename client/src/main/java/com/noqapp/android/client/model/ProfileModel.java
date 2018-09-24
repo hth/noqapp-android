@@ -53,7 +53,6 @@ public class ProfileModel {
         profileService = RetrofitClient.getClient().create(ProfileService.class);
     }
 
-
     public void fetchProfile(final String mail, final String auth) {
         profileService.fetch(mail, auth).enqueue(new Callback<JsonProfile>() {
             @Override
@@ -119,7 +118,9 @@ public class ProfileModel {
 
                 if (null != response.body() && null == response.body().getError()) {
                     Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                    profilePresenter.profileResponse(
+                            response.body(),
+                            response.headers().get(APIConstant.Key.XR_MAIL),
                             response.headers().get(APIConstant.Key.XR_AUTH));
                 } else {
                     //TODO something logical

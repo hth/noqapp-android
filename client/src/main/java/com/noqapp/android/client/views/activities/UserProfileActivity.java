@@ -27,7 +27,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -40,7 +39,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -134,15 +132,15 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         }
     }
 
-
     @Override
     public void imageUploadResponse(JsonResponse jsonResponse) {
         dismissProgress();
         Log.v("Image upload", "" + jsonResponse.getResponse());
-        if(Constants.SUCCESS == jsonResponse.getResponse())
-         Toast.makeText(this,"Profile image change successfully!",Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(this,"Failed to update profile image",Toast.LENGTH_LONG).show();
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            Toast.makeText(this, "Profile image change successful!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Failed to update profile image", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -226,20 +224,19 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void authenticationFailure(int errorCode) {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this,errorCode);
+        AppUtilities.authenticationProcessing(this, errorCode);
     }
 
     private void updateUI() {
-
-        if(NoQueueBaseActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
+        if (NoQueueBaseActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
             tv_info.setText("Max 10 allowed");
-        }else{
+        } else {
             tv_info.setText("Max 5 allowed");
         }
         edt_Name.setText(NoQueueBaseActivity.getUserName());
@@ -295,8 +292,6 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 ss1.setSpan(span1, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 tv_female.setText(ss1);
                 break;
-
-
         }
         try {
             tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB())));
@@ -327,7 +322,6 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         }
         loadProfilePic();
     }
-
 
     @Override
     protected void onResume() {

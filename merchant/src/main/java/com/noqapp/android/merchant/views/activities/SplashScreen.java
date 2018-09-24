@@ -20,7 +20,7 @@ public class SplashScreen extends AppCompatActivity {
 
     protected static boolean display = true;
     static SplashScreen splashScreen;
-    protected boolean isAactive = true;
+    protected boolean isActive = true;
     protected int splashTime = BuildConfig.BUILD_TYPE.equals("debug") ? 1000 : 4000;
 
     @Override
@@ -48,7 +48,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            isAactive = false;
+            isActive = false;
             display = false;
             return true;
         }

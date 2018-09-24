@@ -54,9 +54,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
-
     private ProgressDialog progressDialog;
-    protected ImageView actionbarBack,iv_delete_scheduling;
+    protected ImageView actionbarBack, iv_delete_scheduling;
     private ToggleButton toggleDayClosed, togglePreventJoin, toggleTodayClosed;
     private String codeQR;
     protected boolean isDialog = false;
@@ -125,8 +124,8 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                     mAlertDialog.setCanceledOnTouchOutside(false);
                     TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
                     TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                    tvtitle.setText("Delete Schedule");
-                    tv_msg.setText("Do you want to delete scheduling?");
+                    tvtitle.setText("Remove Schedule");
+                    tv_msg.setText("Do you want to remove schedule?");
                     Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
                     Button btn_no = customDialogView.findViewById(R.id.btn_no);
                     btn_no.setOnClickListener(new View.OnClickListener() {
@@ -326,7 +325,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 tv_scheduling_status.setVisibility(View.GONE);
                 iv_delete_scheduling.setVisibility(View.GONE);
             } else {
-                tv_scheduling_status.setText("Store schedule to close from " + queueSetting.getScheduledFromDay() + " to " + queueSetting.getScheduledUntilDay());
+                tv_scheduling_status.setText("Scheduled to close from " + queueSetting.getScheduledFromDay() + " to " + queueSetting.getScheduledUntilDay());
                 tv_scheduling_status.setVisibility(View.VISIBLE);
                 iv_delete_scheduling.setVisibility(View.VISIBLE);
             }
@@ -353,16 +352,18 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     public void queueSettingError() {
         dismissProgress();
         // to make sure the data is not changed in case of error
-        if(null != queueSettingTemp)
+        if (null != queueSettingTemp) {
             queueSettingResponse(queueSettingTemp);
+        }
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        if(null != queueSettingTemp)
+        if (null != queueSettingTemp) {
             queueSettingResponse(queueSettingTemp);
-        new ErrorResponseHandler().processError(this,eej);
+        }
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
@@ -546,9 +547,8 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         datePickerDialog.show();
     }
 
-
-    private void showAlert(String title, String message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this , R.style.MyAlertDialogTheme);
+    private void showAlert(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyAlertDialogTheme);
         builder.setTitle(title);
         builder.setMessage(message)
                 .setCancelable(false)

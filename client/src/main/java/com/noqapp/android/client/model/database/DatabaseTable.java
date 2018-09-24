@@ -27,11 +27,11 @@ public class DatabaseTable {
         public static final String HOURS_SAVED = "hoursSaved";
         public static final String CREATE_DATE = "createDate";
         public static final String BUSINESS_TYPE = "businessType";
-        public static final String GEOHASH = "geohash";
+        public static final String GEO_HASH = "geohash";
         public static final String TOWN = "town";
         public static final String AREA = "area";
         public static final String DISPLAY_IMAGE = "displayImage";
-        public static final String QUEUE_USER_ID = "queueUserID";
+        public static final String QID = "queueUserID";
         public static final String PURCHASE_ORDER_STATE = "purchaseOrderState";
 
         private TokenQueue() {
@@ -49,7 +49,7 @@ public class DatabaseTable {
         public static final String TABLE_NAME = "REVIEW";
         public static final String CODE_QR = "codeQR";
         public static final String TOKEN = "token";
-        public static final String Q_USER_ID = "qUserId";
+        public static final String QID = "qUserId";
         public static final String KEY_REVIEW_SHOWN = "isReviewShown";  // default value is -1, toShow value is 1 to not show value is 0
         public static final String KEY_SKIP = "isSkipped";  // default value -1 , for skip value is 1
         public static final String KEY_GOTO = "gotoCounter"; // default value ""

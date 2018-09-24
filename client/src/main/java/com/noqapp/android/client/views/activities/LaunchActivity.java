@@ -248,7 +248,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         tv_email.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
 
-        ((TextView) findViewById(R.id.tv_version)).setText(BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
+        ((TextView) findViewById(R.id.tv_version)).setText(
+                BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
                 ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                 : getString(R.string.version_no, "Not for release"));
         updateMenuList(UserUtils.isLogin());
@@ -277,12 +278,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     && extras.containsKey(Constants.TOKEN)) {
                 String codeQR = extras.getString(Constants.QRCODE);
                 String token = extras.getString(Constants.TOKEN);
-                String quserID = extras.getString(Constants.QuserID);
+                String qid = extras.getString(Constants.QID);
                 boolean isReview = extras.getBoolean(Constants.ISREVIEW, false);
                 if (isReview) {
                     callReviewActivity(codeQR, token);
                 } else {
-                    callSkipScreen(codeQR, token, quserID);
+                    callSkipScreen(codeQR, token, qid);
                 }
             }
         }
@@ -493,7 +494,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
     }
 
-    private void callSkipScreen(String codeQR, String token, String quserID) {
+    private void callSkipScreen(String codeQR, String token, String qid) {
         ReviewData reviewData = ReviewDB.getValue(codeQR, token);
         if (null != reviewData) {
             ContentValues cv = new ContentValues();
@@ -506,7 +507,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
             cv.put(DatabaseTable.Review.CODE_QR, codeQR);
             cv.put(DatabaseTable.Review.TOKEN, token);
-            cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+            cv.put(DatabaseTable.Review.QID, qid);
             cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
             cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
             cv.put(DatabaseTable.Review.KEY_GOTO, "");
@@ -535,8 +536,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-                                          String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("pref_language")) {
             ((MyApplication) getApplication()).setLocale();
             this.recreate();
@@ -600,7 +600,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         private void unregister(Context context) {
             if (isRegistered) {
                 LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
-                Log.e("FCM Reciver: ", "unregister");
+                Log.e("FCM Receiver: ", "unregister");
                 isRegistered = false;
             }
         }
@@ -635,9 +635,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         updateNotificationBadgeCount();
                     } else if (object instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) object).getToken());
-                        String quserID = ((JsonClientData) object).getQueueUserId();
+                        String qid = ((JsonClientData) object).getQueueUserId();
                         if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
-                            /**
+                            /*
                              * Save codeQR of review & show the review screen on app
                              * resume if there is any record in Review DB for review key
                              */
@@ -653,7 +653,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                 cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
                                 cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                                 cv.put(DatabaseTable.Review.TOKEN, token);
-                                cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                                cv.put(DatabaseTable.Review.QID, qid);
                                 cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
                                 cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
                                 cv.put(DatabaseTable.Review.KEY_GOTO, "");
@@ -677,18 +677,18 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                 cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                                 cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                                 cv.put(DatabaseTable.Review.TOKEN, token);
-                                cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+                                cv.put(DatabaseTable.Review.QID, qid);
                                 cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
                                 cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
                                 cv.put(DatabaseTable.Review.KEY_GOTO, "");
                                 ReviewDB.insert(cv);
                             }
-                            callSkipScreen(codeQR, token, quserID);
+                            callSkipScreen(codeQR, token, qid);
                         }
 
                     } else if (object instanceof JsonTopicOrderData) {
 //                        String token = String.valueOf(((JsonTopicOrderData) object).getToken());
-//                        String quserID = ((JsonTopicOrderData) object).getQueueUserId();
+//                        String qid = ((JsonTopicOrderData) object).getQueueUserId();
 //                        if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
 //                            /**
 //                             * Save codeQR of review & show the review screen on app
@@ -706,7 +706,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 //                                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
 //                                cv.put(DatabaseTable.Review.CODE_QR, codeQR);
 //                                cv.put(DatabaseTable.Review.TOKEN, token);
-//                                cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+//                                cv.put(DatabaseTable.Review.QID, qid);
 //                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
 //                                cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
 //                                cv.put(DatabaseTable.Review.KEY_GOTO, "");
@@ -730,7 +730,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 //                                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
 //                                cv.put(DatabaseTable.Review.CODE_QR, codeQR);
 //                                cv.put(DatabaseTable.Review.TOKEN, token);
-//                                cv.put(DatabaseTable.Review.Q_USER_ID, quserID);
+//                                cv.put(DatabaseTable.Review.QID, qid);
 //                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
 //                                cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
 //                                cv.put(DatabaseTable.Review.KEY_GOTO, "");
@@ -777,7 +777,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                     cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                                     cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                                     cv.put(DatabaseTable.Review.TOKEN, current_serving);
-                                    cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
+                                    cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
                                     cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
                                     cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
                                     cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
@@ -813,7 +813,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                         cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                                         cv.put(DatabaseTable.Review.CODE_QR, codeQR);
                                         cv.put(DatabaseTable.Review.TOKEN, current_serving);
-                                        cv.put(DatabaseTable.Review.Q_USER_ID, jtk.getQueueUserId());
+                                        cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
                                         cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
                                         cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
                                         cv.put(DatabaseTable.Review.KEY_GOTO, "");

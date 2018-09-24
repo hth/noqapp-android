@@ -43,10 +43,9 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static final String IS_DEPENDENT = "isDependent";
     public static final String DEPENDENT_PROFILE = "dependentProfile";
     private static final String KEY_SHOW_HELPER = "showHelper";
-    private static final String KEY_QUSER_ID_OLD = "oldQueueUserID";
+    private static final String KEY_PREVIOUS_USER_QID = "previousUserQID";
     /* Secured Shared Preference. */
     private static final String FCM_TOKEN = "fcmToken";
-    public static final String XR_DID = "X-R-DID";
     public static NoQueueBaseActivity noQueueBaseActivity;
 
     public static SharedPreferences getSharedPreferences() {
@@ -116,14 +115,13 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static String getActualMail() {
-        return getMail().endsWith(Constants.MAIL_NOQAPP_COM) ? "" :
-                getMail();
+        return getMail().endsWith(Constants.MAIL_NOQAPP_COM) ? "" : getMail();
     }
 
     public static boolean showEmailVerificationField(boolean isAccountValidated) {
-        if (isAccountValidated)
+        if (isAccountValidated) {
             return false;
-        else {
+        } else {
             return !getMail().endsWith(Constants.MAIL_NOQAPP_COM);
         }
     }
@@ -133,22 +131,24 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static String getDeviceID() {
-        return sharedPreferences.getString(XR_DID, "");
+        //TODO(hth) why empty. Set device id when empty
+        return sharedPreferences.getString(APIConstant.Key.XR_DID, "");
     }
 
-    public static String getOldQueueUserID() {
-        return sharedPreferences.getString(KEY_QUSER_ID_OLD, "");
+    /* Previous QID helps keeps track if new user has logged in. */
+    public static String getPreviousUserQID() {
+        return sharedPreferences.getString(KEY_PREVIOUS_USER_QID, "");
     }
 
-    public static void setOldQueueUserID(String queueUserID) {
+    public static void setPreviousUserQID(String queueUserID) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
-        editor.putString(KEY_QUSER_ID_OLD, queueUserID);
+        editor.putString(KEY_PREVIOUS_USER_QID, queueUserID);
         editor.apply();
     }
 
     public static void setDeviceID(String did) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
-        editor.putString(XR_DID, did);
+        editor.putString(APIConstant.Key.XR_DID, did);
         editor.apply();
     }
 
@@ -178,27 +178,25 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
     public static void clearPreferences() {
         // Clear all data except DID & FCM Token
-        String did = sharedPreferences.getString(NoQueueBaseActivity.XR_DID, "");
+        String did = sharedPreferences.getString(APIConstant.Key.XR_DID, "");
         String fcmToken = getFCMToken();
-        String oldQUserID = getOldQueueUserID();
+        String previousUserQID = getPreviousUserQID();
         getSharedPreferencesEditor().clear().commit();
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
-        editor.putString(XR_DID, did);
+        editor.putString(APIConstant.Key.XR_DID, did);
         editor.putString(FCM_TOKEN, fcmToken);
-        editor.putString(KEY_QUSER_ID_OLD, oldQUserID);
+        editor.putString(KEY_PREVIOUS_USER_QID, previousUserQID);
         editor.commit();
     }
 
     public static JsonProfile getUserProfile() {
-        Gson gson = new Gson();
         String json = sharedPreferences.getString(KEY_USER_PROFILE, "");
-        return gson.fromJson(json, JsonProfile.class);
+        return new Gson().fromJson(json, JsonProfile.class);
     }
 
     public static void setUserProfile(JsonProfile jsonProfile) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
-        Gson gson = new Gson();
-        String json = gson.toJson(jsonProfile);
+        String json = new Gson().toJson(jsonProfile);
         editor.putString(KEY_USER_PROFILE, json);
         editor.apply();
     }

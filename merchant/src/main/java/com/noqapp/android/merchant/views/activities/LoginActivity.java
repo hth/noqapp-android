@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     public interface LoginCallBack {
         void passPhoneNo(String phoneNo, String countryShortName);
     }
+
     public static LoginCallBack loginCallBack;
     private ProgressDialog progressDialog;
     private final String TAG = LoginActivity.class.getSimpleName();
@@ -90,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-       ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -336,7 +337,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
@@ -441,12 +442,12 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("fetching data...");
+        progressDialog.setMessage("Login in progress");
     }
 
     protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
+        if (null != progressDialog && progressDialog.isShowing()) {
             progressDialog.dismiss();
+        }
     }
-
 }

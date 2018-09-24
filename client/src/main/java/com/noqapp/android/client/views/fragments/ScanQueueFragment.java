@@ -622,7 +622,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                 cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
                 cv.put(DatabaseTable.Review.CODE_QR, jq.getCodeQR());
                 cv.put(DatabaseTable.Review.TOKEN, "" + jq.getToken());
-                cv.put(DatabaseTable.Review.Q_USER_ID, jq.getQueueUserId());
+                cv.put(DatabaseTable.Review.QID, jq.getQueueUserId());
                 cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
                 cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
                 cv.put(DatabaseTable.Review.KEY_GOTO, "");

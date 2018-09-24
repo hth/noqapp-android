@@ -59,23 +59,23 @@ public class LoginActivity extends OTPActivity {
 
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
-            Log.d(TAG, "profile :" + profile.toString());
-            NoQueueBaseActivity.commitProfile(profile, email, auth);
-            if(!TextUtils.isEmpty(NoQueueBaseActivity.getOldQueueUserID()) && !NoQueueBaseActivity.getOldQueueUserID().equalsIgnoreCase(profile.getQueueUserId())) {
-                NotificationDB.clearNotificationTable();
-                ReviewDB.clearReviewTable();
-                LaunchActivity.getLaunchActivity().reCreateDeviceID();
-            }
-            NoQueueBaseActivity.setOldQueueUserID(profile.getQueueUserId());
+        Log.d(TAG, "profile :" + profile.toString());
+        NoQueueBaseActivity.commitProfile(profile, email, auth);
+        if (!TextUtils.isEmpty(NoQueueBaseActivity.getPreviousUserQID()) && !NoQueueBaseActivity.getPreviousUserQID().equalsIgnoreCase(profile.getQueueUserId())) {
+            NotificationDB.clearNotificationTable();
+            ReviewDB.clearReviewTable();
+            LaunchActivity.getLaunchActivity().reCreateDeviceID();
+        }
+        NoQueueBaseActivity.setPreviousUserQID(profile.getQueueUserId());
 
-            if (getIntent().getBooleanExtra("fromLogin", false)) {
-                // To refresh the launch activity
-                Intent intent = new Intent(this, LaunchActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-            finish();//close the current activity
-            dismissProgress();
+        if (getIntent().getBooleanExtra("fromLogin", false)) {
+            // To refresh the launch activity
+            Intent intent = new Intent(this, LaunchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        finish();//close the current activity
+        dismissProgress();
     }
 
     @Override
