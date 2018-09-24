@@ -57,7 +57,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     private EditText edt_phoneNo;
     private EditText edt_Name;
     private EditText edt_Mail;
-    private EditText edt_birthday;
+    private TextView tv_birthday;
     private EditText edt_pwd;
     private EditText edt_confirm_pwd;
     private EditText tv_male;
@@ -90,7 +90,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
         edt_phoneNo = findViewById(R.id.edt_phone);
         edt_Name = findViewById(R.id.edt_name);
         edt_Mail = findViewById(R.id.edt_email);
-        edt_birthday = findViewById(R.id.edt_birthday);
+        tv_birthday = findViewById(R.id.tv_birthday);
         edt_pwd = findViewById(R.id.edt_pwd);
         edt_confirm_pwd = findViewById(R.id.edt_confirm_pwd);
         tv_male = findViewById(R.id.tv_male);
@@ -105,9 +105,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
                 action_Registration();
             }
         });
-
-        edt_birthday.setInputType(InputType.TYPE_NULL);
-        edt_birthday.setOnClickListener(this);
+        tv_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
         edt_phoneNo.setEnabled(false);
@@ -122,9 +120,9 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
 
                 if (date_diff < 0) {
                     Toast.makeText(RegistrationActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
-                    edt_birthday.setText("");
+                    tv_birthday.setText("");
                 } else {
-                    edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
+                    tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
                 }
 
             }
@@ -215,7 +213,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
 
     @Override
     public void onClick(View v) {
-        if (v == edt_birthday) {
+        if (v == tv_birthday) {
             new AppUtils().hideKeyBoard(this);
             fromDatePickerDialog.show();
         } else if (v == tv_male) {
@@ -255,41 +253,57 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);
-        edt_birthday.setError(null);
+        tv_birthday.setError(null);
         edt_pwd.setError(null);
         new AppUtils().hideKeyBoard(this);
-
-        if (TextUtils.isEmpty(edt_Name.getText())) {
+        String errorMsg = "";
+        if (TextUtils.isEmpty(edt_Name.getText().toString())) {
             edt_Name.setError(getString(R.string.error_name_blank));
+            errorMsg = getString(R.string.error_name_blank);
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Name.getText()) && edt_Name.getText().length() < 4) {
+        if (!TextUtils.isEmpty(edt_Name.getText().toString()) && edt_Name.getText().toString().length() < 4) {
             edt_Name.setError(getString(R.string.error_name_length));
+            if (TextUtils.isEmpty(errorMsg))
+                errorMsg = getString(R.string.error_name_length);
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Mail.getText())) {
+        if (!TextUtils.isEmpty(edt_Mail.getText().toString())) {
 
-            if (!new CommonHelper().isValidEmail(edt_Mail.getText())) {
+            if (!new CommonHelper().isValidEmail(edt_Mail.getText().toString())) {
                 edt_Mail.setError(getString(R.string.error_invalid_email));
+                if (TextUtils.isEmpty(errorMsg))
+                    errorMsg = getString(R.string.error_invalid_email);
                 isValid = false;
             }
-            if (TextUtils.isEmpty(edt_pwd.getText())) {
+            if (TextUtils.isEmpty(edt_pwd.getText().toString())) {
                 edt_pwd.setError(getString(R.string.error_pwd_blank));
+                if (TextUtils.isEmpty(errorMsg))
+                    errorMsg = getString(R.string.error_pwd_blank);
                 isValid = false;
             } else {
-                if (edt_pwd.getText().length() < 6) {
+                if (edt_pwd.getText().toString().length() < 6) {
                     edt_pwd.setError(getString(R.string.error_pwd_length));
+                    if (TextUtils.isEmpty(errorMsg))
+                        errorMsg = getString(R.string.error_pwd_length);
                     isValid = false;
                 } else if (!edt_pwd.getText().toString().equals(edt_confirm_pwd.getText().toString())) {
                     edt_pwd.setError(getString(R.string.error_pwd_not_match));
+                    if (TextUtils.isEmpty(errorMsg))
+                        errorMsg = getString(R.string.error_pwd_not_match);
                     isValid = false;
                 }
             }
         }
-        if (TextUtils.isEmpty(edt_birthday.getText())) {
-            edt_birthday.setError(getString(R.string.error_dob_blank));
+        if (TextUtils.isEmpty(tv_birthday.getText().toString())) {
+            tv_birthday.setError(getString(R.string.error_dob_blank));
+            if (TextUtils.isEmpty(errorMsg))
+                errorMsg = getString(R.string.error_dob_blank);
             isValid = false;
         }
+
+        if(!TextUtils.isEmpty(errorMsg))
+            Toast.makeText(this,errorMsg,Toast.LENGTH_LONG).show();
         return isValid;
     }
 
@@ -297,7 +311,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
         String phoneNo = edt_phoneNo.getText().toString();
         String name = edt_Name.getText().toString();
         String mail = edt_Mail.getText().toString();
-        String birthday = edt_birthday.getText().toString();
+        String birthday = tv_birthday.getText().toString();
         TimeZone tz = TimeZone.getDefault();
         Log.d(TAG, "TimeZone=" + tz.getDisplayName(false, TimeZone.SHORT) + " TimezoneId=" + tz.getID());
 

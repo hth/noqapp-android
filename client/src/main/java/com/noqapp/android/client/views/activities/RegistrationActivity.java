@@ -226,13 +226,6 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         }
     }
 
-    private boolean isValidEmail(CharSequence target) {
-        if (TextUtils.isEmpty(target)) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-        }
-    }
 
     private boolean validate() {
         btnRegistration.setBackgroundResource(R.drawable.button_drawable);
@@ -244,38 +237,55 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         tv_birthday.setError(null);
         edt_pwd.setError(null);
         new AppUtilities().hideKeyBoard(this);
+        String errorMsg = "";
 
-        if (TextUtils.isEmpty(edt_Name.getText())) {
+        if (TextUtils.isEmpty(edt_Name.getText().toString())) {
             edt_Name.setError(getString(R.string.error_name_blank));
+            errorMsg = getString(R.string.error_name_blank);
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Name.getText()) && edt_Name.getText().length() < 4) {
+        if (!TextUtils.isEmpty(edt_Name.getText().toString()) && edt_Name.getText().toString().length() < 4) {
             edt_Name.setError(getString(R.string.error_name_length));
+            if (TextUtils.isEmpty(errorMsg))
+                errorMsg = getString(R.string.error_name_length);
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Mail.getText())) {
+        if (!TextUtils.isEmpty(edt_Mail.getText().toString())) {
 
-            if (!isValidEmail(edt_Mail.getText())) {
+            if (!new CommonHelper().isValidEmail(edt_Mail.getText().toString())) {
                 edt_Mail.setError(getString(R.string.error_invalid_email));
+                if (TextUtils.isEmpty(errorMsg))
+                    errorMsg = getString(R.string.error_invalid_email);
                 isValid = false;
             }
-            if (TextUtils.isEmpty(edt_pwd.getText())) {
+            if (TextUtils.isEmpty(edt_pwd.getText().toString())) {
                 edt_pwd.setError(getString(R.string.error_pwd_blank));
+                if (TextUtils.isEmpty(errorMsg))
+                    errorMsg = getString(R.string.error_pwd_blank);
                 isValid = false;
             } else {
-                if (edt_pwd.getText().length() < 6) {
+                if (edt_pwd.getText().toString().length() < 6) {
                     edt_pwd.setError(getString(R.string.error_pwd_length));
+                    if (TextUtils.isEmpty(errorMsg))
+                        errorMsg = getString(R.string.error_pwd_length);
                     isValid = false;
                 } else if (!edt_pwd.getText().toString().equals(edt_confirm_pwd.getText().toString())) {
                     edt_pwd.setError(getString(R.string.error_pwd_not_match));
+                    if (TextUtils.isEmpty(errorMsg))
+                        errorMsg = getString(R.string.error_pwd_not_match);
                     isValid = false;
                 }
             }
         }
-        if (TextUtils.isEmpty(tv_birthday.getText())) {
+        if (TextUtils.isEmpty(tv_birthday.getText().toString())) {
             tv_birthday.setError(getString(R.string.error_dob_blank));
+            if (TextUtils.isEmpty(errorMsg))
+                errorMsg = getString(R.string.error_dob_blank);
             isValid = false;
         }
+
+        if(!TextUtils.isEmpty(errorMsg))
+            Toast.makeText(this,errorMsg,Toast.LENGTH_LONG).show();
         return isValid;
     }
 

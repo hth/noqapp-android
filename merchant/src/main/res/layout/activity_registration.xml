@@ -108,8 +108,8 @@
                         style="@style/style_register_tv"
                         android:text="@string/birthday" />
 
-                    <EditText
-                        android:id="@+id/edt_birthday"
+                    <TextView
+                        android:id="@+id/tv_birthday"
                         style="@style/style_register_edt" />
                 </LinearLayout>
 
