@@ -43,7 +43,12 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_category_list, container, false);
         CategoryListAdapter.OnItemClickListener listener = this;
-        CategoryListAdapter categoryListAdapter = new CategoryListAdapter(jsonQueues, getActivity(), listener);
+        ArrayList<BizStoreElastic> tempList;
+        if(null == jsonQueues)
+            tempList = new ArrayList<>();
+        else
+            tempList = jsonQueues;
+        CategoryListAdapter categoryListAdapter = new CategoryListAdapter(tempList, getActivity(), listener);
         RecyclerView rv_category_list = view.findViewById(R.id.rv_category_list);
         rv_category_list.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer

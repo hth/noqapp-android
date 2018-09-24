@@ -78,7 +78,8 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         btn_joinQueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                joinQueue();
+                if (null != jsonQueue)
+                    joinQueue();
             }
         });
         ratingBar = findViewById(R.id.ratingBar);

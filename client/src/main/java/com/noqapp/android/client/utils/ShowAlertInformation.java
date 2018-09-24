@@ -3,6 +3,7 @@ package com.noqapp.android.client.utils;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -58,7 +59,7 @@ public class ShowAlertInformation {
         showThemeDialog(context, title, message, false);
     }
 
-    public static void showBarcodeErrorDialog(Context context) {
+    public static void showBarcodeErrorDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
@@ -83,7 +84,7 @@ public class ShowAlertInformation {
             @Override
             public void onClick(View v) {
                 mAlertDialog.dismiss();
-                LaunchActivity.getLaunchActivity().onBackPressed();
+                ((Activity)context).finish();
             }
         });
         mAlertDialog.show();
