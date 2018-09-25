@@ -241,11 +241,18 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
 
         tv_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
-        if (tv_rating.getText().toString().equals("0.0"))
+        if (tv_rating.getText().toString().equals("0.0")) {
             tv_rating.setVisibility(View.INVISIBLE);
-        else
+        } else {
             tv_rating.setVisibility(View.VISIBLE);
-        tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount()) + " Reviews");
+        }
+        if (jsonQueue.getRatingCount() == 0) {
+            tv_rating_review.setText("No Review");
+        } else if (jsonQueue.getRatingCount() == 1) {
+            tv_rating_review.setText("1 Review");
+        } else {
+            tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount()) + " Reviews");
+        }
         AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);
         //
         List<AmenityEnum> amenities = jsonQueue.getAmenities();
