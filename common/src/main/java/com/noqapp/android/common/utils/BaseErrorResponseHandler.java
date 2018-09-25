@@ -1,9 +1,6 @@
 package com.noqapp.android.common.utils;
 
 
-import static com.noqapp.android.common.model.types.ErrorTypeEnum.ALERT;
-import static com.noqapp.android.common.model.types.ErrorTypeEnum.ERROR;
-
 import com.noqapp.android.common.R;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.ErrorTypeEnum;
@@ -17,7 +14,7 @@ public abstract class BaseErrorResponseHandler {
     protected String title = "";
     protected String msg = "";
 
-    protected void processError(ErrorEncounteredJson eej){
+    protected void processError(ErrorEncounteredJson eej) {
         if (null != eej) {
             //Add switch case for errors
             try {
@@ -88,7 +85,7 @@ public abstract class BaseErrorResponseHandler {
                     default:
                         msg = eej.getReason();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 icon = getDefaultDrawable();
                 title = eej.getSystemError();
@@ -99,24 +96,39 @@ public abstract class BaseErrorResponseHandler {
 
 
     protected void processFailureResponseCode(int errorCode) {
-        Log.e("Error code recieved: ",""+errorCode);
+        Log.e("Error code received: ", String.valueOf(errorCode));
         switch (errorCode) {
             case 500:
-                msg = "Temporary service unavailable";
+                msg = "Something went wrong. Engineers are looking into this.";
+                break;
+            case 400:
+                msg = "Bad request received";
+                break;
+            case 403:
+                msg = "Un-authorized request access";
                 break;
             case 404:
+                msg = "Could not find. Looks like we mis-placed it :(";
+                break;
+            case 405:
+                msg = "This request is not supported";
+                break;
+            case 410:
+                msg = "Expired link. Try again.";
+                break;
+            case 414:
+                msg = "Failed to understand URL";
                 break;
             default:
-                msg = "Something weird happen";
+                msg = "Something went wrong. Engineers are looking into this.";
         }
-
-
     }
-    protected int getDefaultDrawable(){
+
+    protected int getDefaultDrawable() {
         return R.drawable.ic_info;
     }
 
-    protected int getDefaultAlertIcon(){
+    protected int getDefaultAlertIcon() {
         return R.drawable.ic_alert;
     }
 }
