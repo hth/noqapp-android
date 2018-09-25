@@ -70,7 +70,11 @@ public class JoinQueueUtil {
 
                 joinQueueState.setJoinErrorMsg(msg);
             } else if (now.isAfter(todayTokenNotAvailableFrom)) {
-                String msg = String.format(context.getString(R.string.error_token_not_available_from), jsonQueue.getBusinessName(), jsonQueue.getDisplayName());
+                String msg = String.format(
+                        context.getString(R.string.error_token_not_available_from),
+                        jsonQueue.getBusinessName(),
+                        jsonQueue.getDisplayName());
+
                 joinQueueState.setJoinErrorMsg(msg);
             }
         }
@@ -89,14 +93,14 @@ public class JoinQueueUtil {
         /* This should prevent unregistered client from joining. This condition should enforce client has to be logged in. */
         if (!joinQueueState.isJoinNotPossible() && jsonQueue.isAllowLoggedInUser()) {
             if (!UserUtils.isLogin()) {
-                Log.d(TAG, "Queue can be joined by logged in user");
+                Log.d(TAG, "Please login to join this queue");
                 String msg = String.format(context.getString(R.string.error_user_needs_to_be_logged_in), jsonQueue.getBusinessName(), jsonQueue.getDisplayName());
                 joinQueueState.setJoinNotPossible(true)
                         .setJoinErrorMsg(msg);
             }
         }
 
-        // Check againts for limited tokens
+        // Check against for limited tokens
         if (!joinQueueState.isJoinNotPossible() && (jsonQueue.getAvailableTokenCount() > 0 && jsonQueue.getLastNumber() >= jsonQueue.getAvailableTokenCount())) {
             Log.d(TAG, "Queue token for the day is exhausted");
             String msg = context.getString(R.string.error_reached_daily_limit);

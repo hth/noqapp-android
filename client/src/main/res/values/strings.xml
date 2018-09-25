@@ -134,7 +134,7 @@
     <string name="error_token_not_available_from">%1$s %2$s is closing for the day soon. Hence no new tokens would be available.</string>
     <string name="error_business_closed_permanent">%1$s %2$s is closed permanently</string>
     <string name="error_user_needs_to_be_logged_in">Please login to join %1$s %2$s</string>
-    <string name="error_reached_daily_limit">All the token for this queue has been acquired for the day.</string>
+    <string name="error_reached_daily_limit">All tokens for this queue has been acquired for the day.</string>
     <string name="text_time_saved">How much time did you save?</string>
     <string name="authentication_fail_title">Authentication failure</string>
     <string name="authentication_fail_msg">Please login again.</string>

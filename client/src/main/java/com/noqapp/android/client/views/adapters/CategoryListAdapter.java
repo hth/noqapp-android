@@ -54,7 +54,13 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getPhone()));
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
         holder.tv_address.setText(jsonQueue.getAddress());
-        holder.tv_store_review.setText(String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount()) + " Reviews");
+        if (jsonQueue.getRatingCount() == 0) {
+            holder.tv_store_review.setText("No Review");
+        } else if (jsonQueue.getRatingCount() == 1) {
+            holder.tv_store_review.setText("1 Review");
+        } else {
+            holder.tv_store_review.setText(String.valueOf(jsonQueue.getRatingCount()) + " Reviews");
+        }
         holder.tv_phoneno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,14 +96,17 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 if (jsonQueue.getBusinessType() != null) {
                     switch (jsonQueue.getBusinessType()) {
                         case DO:
-                            holder.tv_status.setText("Closed Now. Appointment booking starts at " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
+                            holder.tv_status.setText("Closed Now. Appointment booking starts at "
+                                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                             break;
                         default:
-                            holder.tv_status.setText("Closed Now. You can join queue at " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
+                            holder.tv_status.setText("Closed Now. You can join queue at "
+                                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                             break;
                     }
                 } else {
-                    holder.tv_status.setText("Closed Now. You can join queue at " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
+                    holder.tv_status.setText("Closed Now. You can join queue at "
+                            + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
                 }
             }
 
@@ -109,11 +118,13 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                             holder.tv_status.setText("Now accepting appointments for today");
                             break;
                         default:
-                            holder.tv_status.setText("Now you can join queue. Queue service will begin at " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
+                            holder.tv_status.setText("Now you can join queue. Queue service will begin at "
+                                    + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
                             break;
                     }
                 } else {
-                    holder.tv_status.setText("Now you can join queue. Queue service will begin at " + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
+                    holder.tv_status.setText("Now you can join queue. Queue service will begin at "
+                            + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getStartHour()));
                 }
                 holder.tv_status.setTextColor(context.getResources().getColor(R.color.before_opening_queue));
             }
@@ -146,22 +157,19 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 holder.tv_status.setText("Closed now");
                 holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
-
-
         } else {
             //TODO(hth) Show when will this be open next. For now hide it.
             holder.tv_status.setText("Closed Today");
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         }
         if (!TextUtils.isEmpty(jsonQueue.getDisplayImage())) {
-
-            Picasso.with(context).load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonQueue.getDisplayImage())).
-                    placeholder(context.getResources().getDrawable(R.drawable.profile_red)).
-                    error(context.getResources().getDrawable(R.drawable.profile_red)).into(holder.iv_main);
+            Picasso.with(context).load(
+                    AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonQueue.getDisplayImage()))
+                    .placeholder(context.getResources().getDrawable(R.drawable.profile_red))
+                    .error(context.getResources().getDrawable(R.drawable.profile_red)).into(holder.iv_main);
         } else {
             Picasso.with(context).load(R.drawable.profile_red).into(holder.iv_main);
         }
-
 
         holder.tv_store_special.setText(jsonQueue.getFamousFor());
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +178,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 listener.onCategoryItemClick(jsonQueue, v, listPosition);
             }
         });
-
         holder.iv_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,8 +187,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 intent.putExtra("managerImage", jsonQueue.getDisplayImage());
                 intent.putExtra("bizCategoryId", jsonQueue.getBizCategoryId());
                 context.startActivity(intent);
-
-
             }
         });
     }

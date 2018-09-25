@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
@@ -219,7 +218,14 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         }
         tv_hour_saved.setText(Html.fromHtml(time));
         ratingBar.setRating(jsonQueue.getRating());
-        String reviewText = String.valueOf(jsonQueue.getRatingCount() == 0 ? "No" : jsonQueue.getRatingCount()) + " Reviews";
+        String reviewText;
+        if (jsonQueue.getRatingCount() == 0) {
+            reviewText = "No Review";
+        } else if (jsonQueue.getRatingCount() == 1) {
+            reviewText = "1 Review";
+        } else {
+            reviewText = String.valueOf(jsonQueue.getRatingCount()) + " Reviews";
+        }
         tv_rating_review.setText(reviewText);
         codeQR = jsonQueue.getCodeQR();
         /* Check weather join is possible or not today due to some reason */
