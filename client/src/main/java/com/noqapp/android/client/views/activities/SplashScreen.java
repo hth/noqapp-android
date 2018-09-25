@@ -160,4 +160,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     public void authenticationFailure() {
 
     }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
 }

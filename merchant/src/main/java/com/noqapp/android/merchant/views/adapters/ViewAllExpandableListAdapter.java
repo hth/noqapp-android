@@ -6,7 +6,6 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.utils.AppUtils;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

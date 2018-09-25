@@ -10,6 +10,4 @@ public interface MedicalRecordPresenter extends ResponseErrorPresenter {
 
     void medicalRecordError();
 
-    void authenticationFailure(int errorCode);
-
 }

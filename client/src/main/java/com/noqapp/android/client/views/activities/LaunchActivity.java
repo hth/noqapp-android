@@ -882,6 +882,13 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         dismissProgress();
         new ErrorResponseHandler().processError(this,eej);
     }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
     @Override
     public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
         if (deviceRegistered.getRegistered() == 1) {

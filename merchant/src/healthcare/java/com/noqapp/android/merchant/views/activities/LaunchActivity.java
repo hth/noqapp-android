@@ -92,5 +92,4 @@ public class LaunchActivity extends BaseLaunchActivity {
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
     }
-
 }

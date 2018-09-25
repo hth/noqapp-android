@@ -176,15 +176,25 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this, errorCode);
+        AppUtilities.authenticationProcessing(this);
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
         new ErrorResponseHandler().processError(this,eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        if (errorCode == Constants.INVALID_BAR_CODE){
+            ShowAlertInformation.showBarcodeErrorDialog(this);
+        }else {
+            new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+        }
     }
 
     @Override
@@ -331,10 +341,5 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 sp_name_list.setSelection(1);
             }
         }
-    }
-
-    @Override
-    public void authenticationFailure() {
-
     }
 }

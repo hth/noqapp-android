@@ -275,9 +275,19 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void responseErrorPresenter(int errorCode) {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this, errorCode);
+        if (errorCode == Constants.INVALID_BAR_CODE){
+            ShowAlertInformation.showBarcodeErrorDialog(this);
+        }else {
+            new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+        }
+    }
+
+    @Override
+    public void authenticationFailure() {
+        dismissProgress();
+        AppUtilities.authenticationProcessing(this);
     }
 
     private void cancelQueue() {
@@ -484,10 +494,5 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         } else {
             return true;
         }
-    }
-
-    @Override
-    public void authenticationFailure() {
-
     }
 }

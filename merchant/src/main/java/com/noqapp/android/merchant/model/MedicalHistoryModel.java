@@ -44,22 +44,26 @@ public class MedicalHistoryModel {
         medicalRecordService.add(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    medicalRecordPresenter.authenticationFailure();
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    medicalRecordPresenter.medicalRecordResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("add", String.valueOf(response.body()));
+                        medicalRecordPresenter.medicalRecordResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to add");
+                        medicalRecordPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    Log.e(TAG, "Failed to add");
-                    medicalRecordPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        medicalRecordPresenter.authenticationFailure();
+                    } else {
+                        medicalRecordPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("add", t.getLocalizedMessage(), t);
                 medicalRecordPresenter.medicalRecordError();
             }
         });
@@ -70,22 +74,26 @@ public class MedicalHistoryModel {
         medicalRecordService.fetch(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    medicalRecordListPresenter.authenticationFailure();
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    medicalRecordListPresenter.medicalRecordListResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("fetch", String.valueOf(response.body()));
+                        medicalRecordListPresenter.medicalRecordListResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to fetch");
+                        medicalRecordListPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    Log.e(TAG, "Failed to add");
-                    medicalRecordListPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        medicalRecordListPresenter.authenticationFailure();
+                    } else {
+                        medicalRecordListPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("fetch", t.getLocalizedMessage(), t);
                 medicalRecordListPresenter.medicalRecordListError();
             }
         });

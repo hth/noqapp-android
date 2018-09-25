@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -203,7 +202,13 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override
@@ -303,8 +308,8 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
             isValid = false;
         }
 
-        if(!TextUtils.isEmpty(errorMsg))
-            Toast.makeText(this,errorMsg,Toast.LENGTH_LONG).show();
+        if (!TextUtils.isEmpty(errorMsg))
+            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
         return isValid;
     }
 

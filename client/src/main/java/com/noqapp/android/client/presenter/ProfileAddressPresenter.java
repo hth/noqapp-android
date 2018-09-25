@@ -13,6 +13,4 @@ public interface ProfileAddressPresenter extends ResponseErrorPresenter {
     void profileAddressResponse(JsonUserAddressList jsonUserAddressList);
 
     void profileAddressError();
-
-    void authenticationFailure(int errorCode);
 }

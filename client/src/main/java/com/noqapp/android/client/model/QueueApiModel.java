@@ -60,23 +60,26 @@ public class QueueApiModel {
         queueService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePresenter.authenticationFailure(response.code());
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    queuePresenter.queueResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response getQueueState", String.valueOf(response.body()));
+                        queuePresenter.queueResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Error getQueueState");
+                        queuePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Get state of queue upon scan");
-                    queuePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queuePresenter.authenticationFailure();
+                    } else {
+                        queuePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonQueue> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("getQueueState failure", t.getLocalizedMessage(), t);
                 queuePresenter.queueError();
             }
         });
@@ -86,36 +89,28 @@ public class QueueApiModel {
         queueService.getAllJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    tokenAndQueuePresenter.authenticationFailure(response.code());
-                    return;
-                } else if (response.code() == 500) {
-                    tokenAndQueuePresenter.currentQueueError();
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    /// if (response.body().getTokenAndQueues().size() > 0) {
-                    Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
-                    Log.d("Response joinqueuevalue", response.body().getTokenAndQueues().toString());
-                    //// TODO: 4/16/17 just for testing : remove below line after testing done
-                    //tokenAndQueuePresenter.noCurrentQueue();
-                    //Todo : uncomment the queuresponse
-                    List<JsonTokenAndQueue> jsonTokenAndQueues = response.body().getTokenAndQueues();
-                    tokenAndQueuePresenter.currentQueueResponse(jsonTokenAndQueues);
-//                    } else {
-//                        TokenAndQueueDB.deleteCurrentQueue();
-//                        Log.d(TAG, "Empty currently joined history");
-//                        tokenAndQueuePresenter.noCurrentQueue();
-//                    }
-                } else if (response.body() != null && response.body().getError() != null) {
-                    Log.e(TAG, "Got error");
-                    tokenAndQueuePresenter.responseErrorPresenter(response.body().getError());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
+                        Log.d("Response joinqueuevalue", response.body().getTokenAndQueues().toString());
+                        List<JsonTokenAndQueue> jsonTokenAndQueues = response.body().getTokenAndQueues();
+                        tokenAndQueuePresenter.currentQueueResponse(jsonTokenAndQueues);
+                    } else if (response.body() != null && response.body().getError() != null) {
+                        Log.e(TAG, "Got error getAllJoinedQueue");
+                        tokenAndQueuePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        tokenAndQueuePresenter.authenticationFailure();
+                    } else {
+                        tokenAndQueuePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("getAllJoinedQue failure", t.getLocalizedMessage(), t);
                 tokenAndQueuePresenter.currentQueueError();
             }
         });
@@ -125,24 +120,20 @@ public class QueueApiModel {
         queueService.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    tokenAndQueuePresenter.authenticationFailure(response.code());
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    // if (response.body().getTokenAndQueues().size() > 0) {
-                    Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
-                    //Todo: Remove below line after testing done and uncomment queue response
-                    // tokenAndQueuePresenter.noHistoryQueue();
-                    tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues(), response.body().isSinceBeginning());
-//                    } else {
-//                        //TODO something logical
-//                        Log.d(TAG, "Empty historical history");
-//                        tokenAndQueuePresenter.noHistoryQueue();
-//                    }
-                } else if (null != response.body() && null != response.body().getError()) {
-                    Log.e(TAG, "Got error");
-                    tokenAndQueuePresenter.responseErrorPresenter(response.body().getError());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("History size :: ", String.valueOf(response.body().getTokenAndQueues().size()));
+                        tokenAndQueuePresenter.historyQueueResponse(response.body().getTokenAndQueues(), response.body().isSinceBeginning());
+                    } else if (null != response.body() && null != response.body().getError()) {
+                        Log.e(TAG, "Got error allHistoricalJoinedQueue");
+                        tokenAndQueuePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        tokenAndQueuePresenter.authenticationFailure();
+                    } else {
+                        tokenAndQueuePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
@@ -158,23 +149,26 @@ public class QueueApiModel {
         queueService.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    tokenPresenter.authenticationFailure(response.code());
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", response.body().toString());
-                    tokenPresenter.tokenPresenterResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response joinQueue", response.body().toString());
+                        tokenPresenter.tokenPresenterResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to join queue" + response.body().getError());
+                        tokenPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed to join queue" + response.body().getError());
-                    tokenPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        tokenPresenter.authenticationFailure();
+                    } else {
+                        tokenPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("Failure joinQueue", t.getLocalizedMessage(), t);
                 tokenPresenter.tokenPresenterError();
             }
         });
@@ -184,23 +178,26 @@ public class QueueApiModel {
         queueService.abortQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    responsePresenter.authenticationFailure(response.code());
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    responsePresenter.responsePresenterResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response abortQueue", String.valueOf(response.body()));
+                        responsePresenter.responsePresenterResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed abort queue");
+                        responsePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed abort queue");
-                    responsePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        responsePresenter.authenticationFailure();
+                    } else {
+                        responsePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("abortQueue failure", t.getLocalizedMessage(), t);
                 responsePresenter.responsePresenterError();
             }
         });

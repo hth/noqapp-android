@@ -533,14 +533,9 @@ public class AppUtilities extends CommonHelper {
         return dayName;
     }
 
-    public static void authenticationProcessing(Context context , int errorCode){
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            NoQueueBaseActivity.clearPreferences();
-            ShowAlertInformation.showAuthenticErrorDialog(context);
-        }
-        if (errorCode == Constants.INVALID_BAR_CODE) {
-            ShowAlertInformation.showBarcodeErrorDialog(context);
-        }
+    public static void authenticationProcessing(Context context) {
+        NoQueueBaseActivity.clearPreferences();
+        ShowAlertInformation.showAuthenticErrorDialog(context);
     }
 
     public static String getStoreAddress(String town, String area){

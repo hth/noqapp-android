@@ -35,24 +35,26 @@ public class BusinessCustomerModel {
         businessCustomerService.addId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePersonListPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get queue setting", String.valueOf(response.body()));
-                    queuePersonListPresenter.queuePersonListResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("addId", String.valueOf(response.body()));
+                        queuePersonListPresenter.queuePersonListResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while addId");
+                        queuePersonListPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while get queue setting");
-                    queuePersonListPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queuePersonListPresenter.authenticationFailure();
+                    } else {
+                        queuePersonListPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
-            
+
             @Override
             public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("addId", t.getLocalizedMessage(), t);
                 queuePersonListPresenter.queuePersonListError();
             }
         });
@@ -63,24 +65,26 @@ public class BusinessCustomerModel {
         businessCustomerService.editId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePersonListPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get queue setting", String.valueOf(response.body()));
-                    queuePersonListPresenter.queuePersonListResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("editId", String.valueOf(response.body()));
+                        queuePersonListPresenter.queuePersonListResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while editId");
+                        queuePersonListPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while get queue setting");
-                    queuePersonListPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queuePersonListPresenter.authenticationFailure();
+                    } else {
+                        queuePersonListPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("editId", t.getLocalizedMessage(), t);
                 queuePersonListPresenter.queuePersonListError();
             }
         });

@@ -22,6 +22,7 @@ public class PurchaseOrderModel {
     private static final PurchaseOrderService purchaseOrderService;
     private PurchaseOrderPresenter purchaseOrderPresenter;
     private OrderProcessedPresenter orderProcessedPresenter;
+    private AcquireOrderPresenter acquireOrderPresenter;
 
     public void setOrderProcessedPresenter(OrderProcessedPresenter orderProcessedPresenter) {
         this.orderProcessedPresenter = orderProcessedPresenter;
@@ -35,9 +36,6 @@ public class PurchaseOrderModel {
         this.acquireOrderPresenter = acquireOrderPresenter;
     }
 
-    private AcquireOrderPresenter acquireOrderPresenter;
-
-
     static {
         purchaseOrderService = RetrofitClient.getClient().create(PurchaseOrderService.class);
     }
@@ -46,18 +44,20 @@ public class PurchaseOrderModel {
         purchaseOrderService.fetch(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonPurchaseOrderList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    purchaseOrderPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get order list", String.valueOf(response.body()));
-                    purchaseOrderPresenter.purchaseOrderResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Get order list", String.valueOf(response.body()));
+                        purchaseOrderPresenter.purchaseOrderResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while Get order list");
+                        purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while Get order list");
-                    purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        purchaseOrderPresenter.authenticationFailure();
+                    } else {
+                        purchaseOrderPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
@@ -69,28 +69,30 @@ public class PurchaseOrderModel {
         });
     }
 
-    public void actionOnOrder(String did, String mail, String auth,  OrderServed orderServed) {
+    public void actionOnOrder(String did, String mail, String auth, OrderServed orderServed) {
         purchaseOrderService.actionOnOrder(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonPurchaseOrderList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    orderProcessedPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get order list", String.valueOf(response.body()));
-                    orderProcessedPresenter.orderProcessedResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("actionOnOrder", String.valueOf(response.body()));
+                        orderProcessedPresenter.orderProcessedResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while actionOnOrder");
+                        orderProcessedPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while Get order list");
-                    orderProcessedPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        orderProcessedPresenter.authenticationFailure();
+                    } else {
+                        orderProcessedPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Throwable t) {
-                Log.e("Order list error", t.getLocalizedMessage(), t);
+                Log.e("actionOnOrder fail", t.getLocalizedMessage(), t);
                 orderProcessedPresenter.orderProcessedError();
             }
         });
@@ -100,25 +102,27 @@ public class PurchaseOrderModel {
         purchaseOrderService.acquire(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    acquireOrderPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get order list", String.valueOf(response.body()));
-                    acquireOrderPresenter.acquireOrderResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("order acquire", String.valueOf(response.body()));
+                        acquireOrderPresenter.acquireOrderResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while order acquire");
+                        acquireOrderPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while Get order list");
-                    acquireOrderPresenter.responseErrorPresenter(response.body().getError());;
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        acquireOrderPresenter.authenticationFailure();
+                    } else {
+                        acquireOrderPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
-                Log.e("Order list error", t.getLocalizedMessage(), t);
-                acquireOrderPresenter.responseErrorPresenter(null);;
+                Log.e("Order acquire fail", t.getLocalizedMessage(), t);
+                acquireOrderPresenter.responseErrorPresenter(null);
             }
         });
     }
@@ -127,25 +131,27 @@ public class PurchaseOrderModel {
         purchaseOrderService.served(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    acquireOrderPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get order list", String.valueOf(response.body()));
-                    acquireOrderPresenter.acquireOrderResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("order served", String.valueOf(response.body()));
+                        acquireOrderPresenter.acquireOrderResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while order served");
+                        acquireOrderPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while Get order list");
-                    acquireOrderPresenter.responseErrorPresenter(response.body().getError());;
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        acquireOrderPresenter.authenticationFailure();
+                    } else {
+                        acquireOrderPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
-                Log.e("Order list error", t.getLocalizedMessage(), t);
-                acquireOrderPresenter.responseErrorPresenter(null);;
+                Log.e("Order served fail", t.getLocalizedMessage(), t);
+                acquireOrderPresenter.responseErrorPresenter(null);
             }
         });
     }

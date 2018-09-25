@@ -37,12 +37,15 @@ public class MerchantProfileModel {
     public void setMerchantProfessionalPresenter(MerchantProfessionalPresenter merchantProfessionalPresenter) {
         this.merchantProfessionalPresenter = merchantProfessionalPresenter;
     }
+
     public void setMerchantPresenter(MerchantPresenter merchantPresenter) {
         this.merchantPresenter = merchantPresenter;
     }
+
     public void setProfilePresenter(ProfilePresenter profilePresenter) {
         this.profilePresenter = profilePresenter;
     }
+
     public void setImageUploadPresenter(ImageUploadPresenter imageUploadPresenter) {
         this.imageUploadPresenter = imageUploadPresenter;
     }
@@ -59,24 +62,26 @@ public class MerchantProfileModel {
         merchantProfileService.fetch(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonMerchant>() {
             @Override
             public void onResponse(@NonNull Call<JsonMerchant> call, @NonNull Response<JsonMerchant> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    merchantPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    merchantPresenter.merchantResponse(response.body());
-                    Log.d("Response", String.valueOf(response.body()));
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        merchantPresenter.merchantResponse(response.body());
+                        Log.d("fetch", String.valueOf(response.body()));
+                    } else {
+                        Log.e(TAG, "Empty fetch");
+                        merchantPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history");
-                    merchantPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        merchantPresenter.authenticationFailure();
+                    } else {
+                        merchantPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonMerchant> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("onFailure fetch", t.getLocalizedMessage(), t);
                 merchantPresenter.merchantError();
             }
         });
@@ -86,24 +91,26 @@ public class MerchantProfileModel {
         merchantProfileService.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    profilePresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Update profile", String.valueOf(response.body()));
-                    profilePresenter.profileResponse(response.body(), mail, auth);
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Update profile", String.valueOf(response.body()));
+                        profilePresenter.profileResponse(response.body(), mail, auth);
+                    } else {
+                        Log.e(TAG, "Failed updating profile " + response.body().getError());
+                        profilePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed updating profile " + response.body().getError());
-                    profilePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        profilePresenter.authenticationFailure();
+                    } else {
+                        profilePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("Update profile", t.getLocalizedMessage(), t);
                 profilePresenter.profileError();
             }
         });
@@ -113,23 +120,26 @@ public class MerchantProfileModel {
         merchantProfileService.update(mail, auth, jsonProfessionalProfilePersonal).enqueue(new Callback<JsonProfessionalProfilePersonal>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfilePersonal> call, @NonNull Response<JsonProfessionalProfilePersonal> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    merchantProfessionalPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Update profile", String.valueOf(response.body()));
-                    merchantProfessionalPresenter.merchantProfessionalResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Update profess profile", String.valueOf(response.body()));
+                        merchantProfessionalPresenter.merchantProfessionalResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed updating professional profile " + response.body().getError());
+                        merchantProfessionalPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    Log.e(TAG, "Failed updating profile " + response.body().getError());
-                    merchantProfessionalPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        merchantProfessionalPresenter.authenticationFailure();
+                    } else {
+                        merchantProfessionalPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfessionalProfilePersonal> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("update profess", t.getLocalizedMessage(), t);
                 merchantProfessionalPresenter.merchantProfessionalError();
             }
         });
@@ -139,23 +149,26 @@ public class MerchantProfileModel {
         merchantProfileService.upload(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    imageUploadPresenter.authenticationFailure();
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    imageUploadPresenter.imageUploadResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("upload", String.valueOf(response.body()));
+                        imageUploadPresenter.imageUploadResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed image upload");
+                        imageUploadPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed image upload");
-                    imageUploadPresenter.responseErrorPresenter(response.body().getError());;
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        imageUploadPresenter.authenticationFailure();
+                    } else {
+                        imageUploadPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("upload", t.getLocalizedMessage(), t);
                 imageUploadPresenter.imageUploadError();
             }
         });

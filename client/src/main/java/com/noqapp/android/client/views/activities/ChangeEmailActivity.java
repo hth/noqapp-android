@@ -119,6 +119,12 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(ChangeEmailActivity.class.getSimpleName(), "profile :" + profile.toString());
@@ -139,13 +145,10 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
         dismissProgress();
     }
 
-    @Override
-    public void authenticationFailure(int errorCode) {
-        dismissProgress();
-    }
 
     @Override
     public void authenticationFailure() {
-
+        dismissProgress();
+        AppUtilities.authenticationProcessing(this);
     }
 }

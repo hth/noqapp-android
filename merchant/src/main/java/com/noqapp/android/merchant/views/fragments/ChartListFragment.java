@@ -7,7 +7,6 @@ import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -144,10 +143,17 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
         dismissProgress();
         AppUtils.authenticationProcessing();
     }
+
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(), eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
     @Override

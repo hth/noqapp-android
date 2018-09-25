@@ -307,7 +307,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                     if (!medicalRecordList.contains(jsonMedicalMedicine)) {
                         medicalRecordList.add(0, jsonMedicalMedicine);
                         adapter.notifyDataSetChanged();
-                        if(!PreferredStoreDB.isMedicineExist(actv_medicine_name.getText().toString())) {
+                        if (!PreferredStoreDB.isMedicineExist(actv_medicine_name.getText().toString())) {
                             updateSuggestions(actv_medicine_name, MEDICINES_NAME);
                             setSuggestions(actv_medicine_name, MEDICINES_NAME, false);
                         }
@@ -586,7 +586,12 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(), eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
     @Override
@@ -645,7 +650,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                             BufferedReader buffer = new BufferedReader(new FileReader(file.getAbsolutePath()));
                             String line;
                             while ((line = buffer.readLine()) != null) {
-                                lineCount ++;
+                                lineCount++;
                                 PreferredStoreDB.insertPreferredStore(line);
                             }
                         } catch (Exception e) {
@@ -666,7 +671,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
-                        List<String> tempdata = PreferredStoreDB.getPreferredStoreDataList(bizStoreID,PharmacyCategoryEnum.getValue(actv_medicine_type.getAdapter().getItem(position).toString()));
+                        List<String> tempdata = PreferredStoreDB.getPreferredStoreDataList(bizStoreID, PharmacyCategoryEnum.getValue(actv_medicine_type.getAdapter().getItem(position).toString()));
                         removeDefineSuggestions(MEDICINES_NAME, data);
                         updateDefineSuggestions(MEDICINES_NAME, tempdata);
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, tempdata);
@@ -687,6 +692,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
             }
         }
     }
+
     private void removeDefineSuggestions(String key, List<String> data) {
         for (int k = 0; k < data.size(); k++) {
             if (map.get(key).contains(data.get(k))) {

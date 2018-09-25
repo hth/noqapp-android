@@ -228,16 +228,18 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void responseErrorPresenter(int errorCode) {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this, errorCode);
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override
     public void authenticationFailure() {
         dismissProgress();
-        // AppUtilities.authenticationProcessing(this, errorCode);
+        AppUtilities.authenticationProcessing(this);
     }
+
+
 
     private void updateUI() {
         if (NoQueueBaseActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {

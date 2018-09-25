@@ -30,21 +30,25 @@ public class MedicalRecordApiModel {
         medicalRecordService.getMedicalRecord(mail, auth).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    medicalRecordPresenter.authenticationFailure(response.code());
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    medicalRecordPresenter.medicalRecordResponse(response.body());
-                } else {
-                    medicalRecordPresenter.responseErrorPresenter(response.body().getError());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Resp getMedicalRecord", String.valueOf(response.body()));
+                        medicalRecordPresenter.medicalRecordResponse(response.body());
+                    } else {
+                        medicalRecordPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                }else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        medicalRecordPresenter.authenticationFailure();
+                    } else{
+                        medicalRecordPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("getMedicalRecord fail", t.getLocalizedMessage(), t);
                 medicalRecordPresenter.medicalRecordError();
             }
         });

@@ -7,7 +7,6 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
 
 import android.util.Log;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,24 +33,26 @@ public class MerchantStatsModel {
         merchantStatsService.doctor(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<HealthCareStatList>() {
             @Override
             public void onResponse(Call<HealthCareStatList> call, Response<HealthCareStatList> response) {
-
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    chartPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    chartPresenter.chartResponse(response.body());
-                    Log.v("Chart Response ", response.body().toString());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        chartPresenter.chartResponse(response.body());
+                        Log.v("Chart Response ", response.body().toString());
+                    } else {
+                        Log.e(TAG, "Empty Chart Response ");
+                        chartPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    Log.e(TAG, "Empty Chart Response ");
-                    chartPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        chartPresenter.authenticationFailure();
+                    } else {
+                        chartPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<HealthCareStatList> call, Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("Chart Response", t.getLocalizedMessage(), t);
                 chartPresenter.chartError();
             }
 

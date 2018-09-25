@@ -206,13 +206,17 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(), eej);
     }
 
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
+    }
 
     @Override
     public void authenticationFailure() {
-        //TODO(chandra)
         dismissProgress();
         AppUtils.authenticationProcessing();
     }

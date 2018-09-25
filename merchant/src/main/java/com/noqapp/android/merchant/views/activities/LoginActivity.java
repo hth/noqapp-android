@@ -309,10 +309,10 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
 
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
-            Log.d(TAG, "profile :" + profile.toString());
-            loginCallBack.passPhoneNo(profile.getPhoneRaw(), profile.getCountryShortName());
-            finish();//close the current activity
-            dismissProgress();
+        Log.d(TAG, "profile :" + profile.toString());
+        loginCallBack.passPhoneNo(profile.getPhoneRaw(), profile.getCountryShortName());
+        finish();//close the current activity
+        dismissProgress();
     }
 
     @Override
@@ -337,7 +337,14 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     }
 
     @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
     public void authenticationFailure() {
+        dismissProgress();
         AppUtils.authenticationProcessing();
     }
 

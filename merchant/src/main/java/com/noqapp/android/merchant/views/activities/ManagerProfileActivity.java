@@ -14,7 +14,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
@@ -117,7 +117,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             LaunchActivity.getLaunchActivity().setUserName();
             tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
             userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
-            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER ) {
+            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 // Additional profile will be only visible to store manager
                 switch (jsonMerchant.getJsonProfile().getBusinessType()) {
                     case DO:
@@ -145,8 +145,14 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     }
 
     @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
 
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
     }
 
 

@@ -8,6 +8,4 @@ public interface MigrateEmailPresenter extends ResponseErrorPresenter {
     void migrateEmailResponse(JsonResponse jsonResponse);
 
     void migrateEmailError();
-
-    void authenticationFailure(int errorCode);
 }

@@ -34,19 +34,26 @@ public final class DependencyModel {
         dependentApiService.add(did, Constants.DEVICE_TYPE, mail, auth, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    dependencyPresenter.dependencyResponse(response.body());
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history" + response.body().getError());
-                    dependencyPresenter.responseErrorPresenter(response.body().getError());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("addDependency", String.valueOf(response.body()));
+                        dependencyPresenter.dependencyResponse(response.body());
+                    } else {
+                        Log.e(TAG, "addDependency error" + response.body().getError());
+                        dependencyPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                }else{
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        dependencyPresenter.authenticationFailure();
+                    } else {
+                        dependencyPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("addDependency failed", t.getLocalizedMessage(), t);
                 dependencyPresenter.dependencyError();
             }
         });

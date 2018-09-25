@@ -367,6 +367,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     }
 
     @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
     public void authenticationFailure() {
         LaunchActivity.getLaunchActivity().dismissProgress();
         AppUtils.authenticationProcessing();

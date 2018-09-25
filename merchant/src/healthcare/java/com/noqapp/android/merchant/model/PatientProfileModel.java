@@ -36,23 +36,26 @@ public class PatientProfileModel {
         medicalUserProfileService.fetch(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    patientProfilePresenter.authenticationFailure();
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    patientProfilePresenter.patientProfileResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("medical profile fetch", String.valueOf(response.body()));
+                        patientProfilePresenter.patientProfileResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to fetch fetch profile");
+                        patientProfilePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed to fetch patient profile");
-                    patientProfilePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        patientProfilePresenter.authenticationFailure();
+                    } else {
+                        patientProfilePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("failureMedicalProfileFe", t.getLocalizedMessage(), t);
                 patientProfilePresenter.patientProfileError();
             }
         });

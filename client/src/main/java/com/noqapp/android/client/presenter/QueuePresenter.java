@@ -12,7 +12,4 @@ public interface QueuePresenter extends ResponseErrorPresenter{
     void queueResponse(BizStoreElasticList bizStoreElasticList);
 
     void queueError();
-
-    void authenticationFailure(int errorCode);
-
 }

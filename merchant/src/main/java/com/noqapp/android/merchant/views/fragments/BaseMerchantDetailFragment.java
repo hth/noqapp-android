@@ -5,7 +5,6 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.presenter.AuthenticationFailure;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.BuildConfig;
@@ -68,7 +67,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class BaseMerchantDetailFragment extends Fragment implements ManageQueuePresenter,DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,RegistrationActivity.RegisterCallBack,LoginActivity.LoginCallBack {
+public abstract class BaseMerchantDetailFragment extends Fragment implements ManageQueuePresenter, DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
 
     protected Context context;
     protected TextView tv_create_token;
@@ -76,7 +75,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected ImageView iv_banner;
     protected TextView tvcount;
     private PeopleInQAdapter peopleInQAdapter;
-    private List<JsonQueuedPerson> jsonQueuedPersonArrayList= new ArrayList<>();
+    private List<JsonQueuedPerson> jsonQueuedPersonArrayList = new ArrayList<>();
     protected EditText edt_mobile;
     protected RecyclerView rv_queue_people;
     protected ProgressBar progressDialog;
@@ -84,7 +83,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected JsonTopic jsonTopic = null;
     protected TextView tv_counter_name;
 
-    protected TextView tv_title, tv_total_value, tv_current_value,  tv_timing, tv_start, tv_next;
+    protected TextView tv_title, tv_total_value, tv_current_value, tv_timing, tv_start, tv_next;
     private Chronometer chronometer;
     protected int currrentpos = 0;
     protected static AdapterCallback mAdapterCallback;
@@ -97,7 +96,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     private LinearLayoutManager horizontalLayoutManagaer;
     protected ManageQueueModel manageQueueModel;
     protected ArrayList<JsonTopic> topicsList;
-    protected ImageView iv_generate_token,iv_queue_history;
+    protected ImageView iv_generate_token, iv_queue_history;
     // variable to track event time
     private long mLastClickTime = 0;
 
@@ -137,7 +136,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         btn_skip = itemView.findViewById(R.id.btn_skip);
         btn_next = itemView.findViewById(R.id.btn_next);
         btn_start = itemView.findViewById(R.id.btn_start);
-        TextView tv_deviceId =itemView.findViewById(R.id.tv_deviceId);
+        TextView tv_deviceId = itemView.findViewById(R.id.tv_deviceId);
         tv_deviceId.setText(UserUtils.getDeviceId());
         tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
 
@@ -269,14 +268,14 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
-        if(null != eej && eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())){
-            Toast.makeText(context,eej.getReason(),Toast.LENGTH_LONG).show();
+        if (null != eej && eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
+            Toast.makeText(context, eej.getReason(), Toast.LENGTH_LONG).show();
             Intent in = new Intent(getActivity(), LoginActivity.class);
-            in.putExtra("phone_no",edt_mobile.getText().toString());
+            in.putExtra("phone_no", edt_mobile.getText().toString());
             context.startActivity(in);
             RegistrationActivity.registerCallBack = this;
             LoginActivity.loginCallBack = this;
-        }else  if (null != eej && eej.getSystemErrorCode().equals("350")) {
+        } else if (null != eej && eej.getSystemErrorCode().equals("350")) {
             Toast.makeText(context, getString(R.string.error_client_just_acquired), Toast.LENGTH_LONG).show();
             if (lastSelectedPos >= 0) {
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
@@ -284,11 +283,17 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                 peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR());
                 rv_queue_people.setAdapter(peopleInQAdapter);
             }
-        }else {
+        } else {
             new ErrorResponseHandler().processError(getActivity(), eej);
         }
     }
 
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
+    }
 
     @Override
     public void authenticationFailure() {
@@ -301,7 +306,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
         if (null != token && null != tv_create_token) {
-            if(null != edt_mobile)
+            if (null != edt_mobile)
                 edt_mobile.setText("");
             switch (token.getQueueStatus()) {
                 case C:
@@ -322,8 +327,8 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                     btn_create_token.setClickable(true);
                     for (int i = 0; i < jsonQueuedPersonArrayList.size(); i++) {
                         JsonQueuedPerson jt = jsonQueuedPersonArrayList.get(i);
-                        if (jt.getToken()==token.getToken()) {
-                            Toast.makeText(context,"User already in Queue",Toast.LENGTH_LONG).show();
+                        if (jt.getToken() == token.getToken()) {
+                            Toast.makeText(context, "User already in Queue", Toast.LENGTH_LONG).show();
                             break;
                         }
                     }
@@ -346,13 +351,13 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_edit_counter, null, false);
-        final AutoCompleteTextView actv_counter =  customDialogView.findViewById(R.id.actv_counter);
+        final AutoCompleteTextView actv_counter = customDialogView.findViewById(R.id.actv_counter);
         final ArrayList<String> names = LaunchActivity.getLaunchActivity().getCounterNames();
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
                 (mContext, android.R.layout.simple_list_item_1, names);
         actv_counter.setAdapter(adapter1);
         actv_counter.setThreshold(1);
-        AppUtils.setAutoCompleteText(actv_counter,textView.getText().toString().trim());
+        AppUtils.setAutoCompleteText(actv_counter, textView.getText().toString().trim());
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -376,10 +381,10 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                     new AppUtils().hideKeyBoard(getActivity());
                     textView.setText(actv_counter.getText().toString());
                     mAdapterCallback.saveCounterNames(codeQR, actv_counter.getText().toString().trim());
-                        if (!names.contains(actv_counter.getText().toString())) {
-                             names.add(actv_counter.getText().toString());
-                             LaunchActivity.getLaunchActivity().setCounterNames(names);
-                        }
+                    if (!names.contains(actv_counter.getText().toString())) {
+                        names.add(actv_counter.getText().toString());
+                        LaunchActivity.getLaunchActivity().setCounterNames(names);
+                    }
                     mAlertDialog.dismiss();
                 }
             }
@@ -388,10 +393,8 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     }
 
 
-
-
     private void setPresenter() {
-       manageQueueModel.setManageQueuePresenter(this);
+        manageQueueModel.setManageQueuePresenter(this);
     }
 
     protected void setDispensePresenter() {
@@ -406,14 +409,14 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                     jsonQueuedPersonArrayList,
                     new Comparator<JsonQueuedPerson>() {
                         public int compare(JsonQueuedPerson lhs, JsonQueuedPerson rhs) {
-                           return Integer.compare(lhs.getToken(), rhs.getToken());
+                            return Integer.compare(lhs.getToken(), rhs.getToken());
                         }
                     }
             );
-            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(),jsonTopic.getServingNumber(),jsonTopic.getQueueStatus());
+            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getServingNumber(), jsonTopic.getQueueStatus());
             rv_queue_people.setAdapter(peopleInQAdapter);
-            if(jsonTopic.getServingNumber() > 0)
-             rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber()-1);
+            if (jsonTopic.getServingNumber() > 0)
+                rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
 
         }
         dismissProgress();
@@ -716,7 +719,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     @Override
     public void passPhoneNo(String phoneNo, String countryShortName) {
         LaunchActivity.getLaunchActivity().progressDialog.show();
-        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(phoneNo,  countryShortName);
+        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(phoneNo, countryShortName);
         setDispensePresenter();
         manageQueueModel.dispenseTokenWithClientInfo(
                 LaunchActivity.getLaunchActivity().getDeviceID(),

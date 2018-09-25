@@ -525,15 +525,18 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        if (errorCode == Constants.INVALID_CREDENTIAL) {
-            NoQueueBaseActivity.clearPreferences();
-            ShowAlertInformation.showAuthenticErrorDialog(getActivity());
-        }
+        AppUtilities.authenticationProcessing(getActivity());
         pb_current.setVisibility(View.GONE);
         pb_recent.setVisibility(View.GONE);
         pb_near.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
     @Override
@@ -683,11 +686,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                 break;
 
         }
-    }
-
-    @Override
-    public void authenticationFailure() {
-
     }
 
     private static class QueueHandler extends Handler {

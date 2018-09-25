@@ -23,15 +23,14 @@ import android.widget.RadioGroup;
 public class MerchantDetailFragment extends BaseMerchantDetailFragment {
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater,container,savedInstanceState);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     protected void createToken(Context context, String codeQR) {
-        showCreateTokenDialogWithMobile(context,codeQR);
+        showCreateTokenDialogWithMobile(context, codeQR);
     }
 
     @Override
@@ -81,12 +80,12 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
                 new AppUtils().hideKeyBoard(getActivity());
                 // get selected radio button from radioGroup
                 int selectedId = rg_user_id.getCheckedRadioButtonId();
-                if(selectedId == R.id.rb_mobile){
+                if (selectedId == R.id.rb_mobile) {
                     if (TextUtils.isEmpty(edt_mobile.getText())) {
                         edt_mobile.setError(getString(R.string.error_mobile_blank));
                         isValid = false;
                     }
-                }else{
+                } else {
                     if (TextUtils.isEmpty(edt_id.getText())) {
                         edt_id.setError(getString(R.string.error_customer_id));
                         isValid = false;
@@ -94,16 +93,16 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
                 }
 
 
-                if(isValid) {
+                if (isValid) {
                     if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         setDispensePresenter();
                         String phone = "";
                         String cid = "";
-                        if(rb_mobile.isChecked()){
+                        if (rb_mobile.isChecked()) {
                             edt_id.setText("");
-                            phone = "91"+edt_mobile.getText().toString();
-                        }else{
+                            phone = "91" + edt_mobile.getText().toString();
+                        } else {
                             cid = edt_id.getText().toString();
                             edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
                         }

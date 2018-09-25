@@ -48,18 +48,26 @@ public class DeviceModel {
         deviceService.register(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d(TAG, "Registered device " + String.valueOf(response.body()));
-                    deviceRegisterPresenter.deviceRegisterResponse(response.body());
-                } else {
-                    Log.e(TAG, "Empty body");
-                    deviceRegisterPresenter.responseErrorPresenter(response.body().getError());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d(TAG, "Registered device " + String.valueOf(response.body()));
+                        deviceRegisterPresenter.deviceRegisterResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Empty body");
+                        deviceRegisterPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                }else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        deviceRegisterPresenter.authenticationFailure();
+                    } else {
+                        deviceRegisterPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<DeviceRegistered> call, @NonNull Throwable t) {
-                Log.e(TAG, "Failure Response " + t.getLocalizedMessage(), t);
+                Log.e(TAG, "Failure device register" + t.getLocalizedMessage(), t);
                 deviceRegisterPresenter.deviceRegisterError();
             }
         });
@@ -74,12 +82,19 @@ public class DeviceModel {
         deviceService.isSupportedAppVersion(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
-
-                if (null != response.body() && null != response.body().getError()) {
-                    Log.d(TAG, "Oldest supported version " + String.valueOf(response.body()));
-                    appBlacklistPresenter.appBlacklistError();
-                } else {
-                    appBlacklistPresenter.responseErrorPresenter(response.body().getError());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null != response.body().getError()) {
+                        Log.d(TAG, "Oldest supported version " + String.valueOf(response.body()));
+                        appBlacklistPresenter.appBlacklistError();
+                    } else {
+                        appBlacklistPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                }else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        appBlacklistPresenter.authenticationFailure();
+                    } else {
+                        appBlacklistPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 

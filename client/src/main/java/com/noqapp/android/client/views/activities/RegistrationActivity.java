@@ -184,7 +184,13 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
+    public void authenticationFailure() {
         dismissProgress();
     }
 
@@ -310,8 +316,4 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         new RegisterModel(this).register(UserUtils.getDeviceId(), registration);
     }
 
-    @Override
-    public void authenticationFailure() {
-
-    }
 }

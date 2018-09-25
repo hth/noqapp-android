@@ -35,6 +35,7 @@ public class PreferredBusinessModel {
     public PreferredBusinessModel(PreferredBusinessPresenter preferredBusinessPresenter) {
         this.preferredBusinessPresenter = preferredBusinessPresenter;
     }
+
     static {
         preferredStoreService = RetrofitClient.getClient().create(PreferredStoreService.class);
     }
@@ -43,75 +44,80 @@ public class PreferredBusinessModel {
         preferredStoreService.getAllPreferredStores(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonPreferredBusinessList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPreferredBusinessList> call, @NonNull Response<JsonPreferredBusinessList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    preferredBusinessPresenter.authenticationFailure();
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    preferredBusinessPresenter.preferredBusinessResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("getAllPreferredStores", String.valueOf(response.body()));
+                        preferredBusinessPresenter.preferredBusinessResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed getAllPreferredStores");
+                        preferredBusinessPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed image upload");
-                    preferredBusinessPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        preferredBusinessPresenter.authenticationFailure();
+                    } else {
+                        preferredBusinessPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonPreferredBusinessList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("getAllPreferredStores", t.getLocalizedMessage(), t);
                 preferredBusinessPresenter.preferredBusinessError();
             }
         });
     }
 
-    public void fetchFile(String did, String mail, String auth,String codeQR, String bizStoreId) {
-        preferredStoreService.file(did, Constants.DEVICE_TYPE, mail, auth, codeQR,bizStoreId).enqueue(new Callback<ResponseBody>() {
+    public void fetchFile(String did, String mail, String auth, String codeQR, String bizStoreId) {
+        preferredStoreService.file(did, Constants.DEVICE_TYPE, mail, auth, codeQR, bizStoreId).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    filePresenter.authenticationFailure();
-                    return;
-                }
-                if (null != response.body() ) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    try {
-                        int count;
-                        InputStream input = new BufferedInputStream(response.body().byteStream());
-                        File directory = new File(Environment.getExternalStorageDirectory() + "/UnZipped");
-                        if (!directory.exists()) {
-                            directory.mkdir();
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body()) {
+                        Log.d("fetchFile", String.valueOf(response.body()));
+                        try {
+                            int count;
+                            InputStream input = new BufferedInputStream(response.body().byteStream());
+                            File directory = new File(Environment.getExternalStorageDirectory() + "/UnZipped");
+                            if (!directory.exists()) {
+                                directory.mkdir();
+                            }
+                            File file = new File(Environment.getExternalStorageDirectory() + "/UnZipped/temp.tar.gz");
+                            FileOutputStream output = new FileOutputStream(file);
+                            Log.d(TAG, "file saved at " + file.getAbsolutePath());
+                            byte data[] = new byte[1024];
+                            while ((count = input.read(data)) != -1) {
+                                output.write(data, 0, count);
+                            }
+                            output.flush();
+                            output.close();
+                            input.close();
+                            filePresenter.fileResponse(file);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            filePresenter.fileResponse(null);
                         }
-                        File file = new File(Environment.getExternalStorageDirectory() + "/UnZipped/temp.tar.gz");
-                        FileOutputStream output = new FileOutputStream(file);
-                        Log.d(TAG, "file saved at " + file.getAbsolutePath());
-                        byte data[] = new byte[1024];
-                        while ((count = input.read(data)) != -1) {
-                            output.write(data, 0, count);
-                        }
-                        output.flush();
-                        output.close();
-                        input.close();
-                        filePresenter.fileResponse(file);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        filePresenter.fileResponse(null);
+                    } else {
+                        Log.e(TAG, "Failed fetchFile");
+                        filePresenter.fileError();
                     }
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed image upload");
-                    filePresenter.fileError();
+                }else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        filePresenter.authenticationFailure();
+                    }else{
+                        filePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("fail fetchFile", t.getLocalizedMessage(), t);
                 filePresenter.fileError();
             }
         });
     }
-
 
 
 }

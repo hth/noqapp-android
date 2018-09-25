@@ -57,24 +57,26 @@ public class ProfileModel {
         profileService.fetch(mail, auth).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    profilePresenter.authenticationFailure(response.code());
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.profileResponse(response.body(), mail, auth);
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response fetchProfile", String.valueOf(response.body()));
+                        profilePresenter.profileResponse(response.body(), mail, auth);
+                    } else {
+                        Log.e(TAG, "fetchProfile error");
+                        profilePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Get state of queue upon scan");
-                    profilePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        profilePresenter.authenticationFailure();
+                    } else {
+                        profilePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("fetchProfile failure", t.getLocalizedMessage(), t);
                 profilePresenter.profileError();
             }
         });
@@ -84,24 +86,26 @@ public class ProfileModel {
         profileService.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    profilePresenter.authenticationFailure(response.code());
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Update profile", String.valueOf(response.body()));
-                    profilePresenter.profileResponse(response.body(), mail, auth);
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Update profile", String.valueOf(response.body()));
+                        profilePresenter.profileResponse(response.body(), mail, auth);
+                    } else {
+                        Log.e(TAG, "Failed updating profile " + response.body().getError());
+                        profilePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed updating profile " + response.body().getError());
-                    profilePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        profilePresenter.authenticationFailure();
+                    } else {
+                        profilePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("onFail updating profile", t.getLocalizedMessage(), t);
                 profilePresenter.profileError();
             }
         });
@@ -111,27 +115,29 @@ public class ProfileModel {
         profileService.migrate(mail, auth, migratePhone).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    profilePresenter.authenticationFailure(response.code());
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.profileResponse(
-                            response.body(),
-                            response.headers().get(APIConstant.Key.XR_MAIL),
-                            response.headers().get(APIConstant.Key.XR_AUTH));
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response migrate", String.valueOf(response.body()));
+                        profilePresenter.profileResponse(
+                                response.body(),
+                                response.headers().get(APIConstant.Key.XR_MAIL),
+                                response.headers().get(APIConstant.Key.XR_AUTH));
+                    } else {
+                        Log.e(TAG, "Failed migrating profile");
+                        profilePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed migrating profile");
-                    profilePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        profilePresenter.authenticationFailure();
+                    } else {
+                        profilePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("onFailure migrate", t.getLocalizedMessage(), t);
                 profilePresenter.profileError();
             }
         });
@@ -141,24 +147,27 @@ public class ProfileModel {
         profileService.address(mail, auth).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    profileAddressPresenter.authenticationFailure(response.code());
-                    return;
-                }
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("getProfileAllAddress", String.valueOf(response.body()));
+                        profileAddressPresenter.profileAddressResponse(response.body());
+                    } else {
 
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    profileAddressPresenter.profileAddressResponse(response.body());
+                        Log.e(TAG, "Failed getProfileAllAddress");
+                        profileAddressPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed migrating profile");
-                    profileAddressPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        profileAddressPresenter.authenticationFailure();
+                    } else {
+                        profileAddressPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("getProfileAllAddress", t.getLocalizedMessage(), t);
                 profileAddressPresenter.profileAddressError();
             }
         });
@@ -168,24 +177,26 @@ public class ProfileModel {
         profileService.addressAdd(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    profileAddressPresenter.authenticationFailure(response.code());
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    profileAddressPresenter.profileAddressResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Resp: addProfileAddress", String.valueOf(response.body()));
+                        profileAddressPresenter.profileAddressResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed addProfileAddress");
+                        profileAddressPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed migrating profile");
-                    profileAddressPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        profileAddressPresenter.authenticationFailure();
+                    } else {
+                        profileAddressPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("Fail addProfileAddress", t.getLocalizedMessage(), t);
                 profileAddressPresenter.profileAddressError();
             }
         });
@@ -195,24 +206,26 @@ public class ProfileModel {
         profileService.addressDelete(mail, auth, jsonUserAddress).enqueue(new Callback<JsonUserAddressList>() {
             @Override
             public void onResponse(@NonNull Call<JsonUserAddressList> call, @NonNull Response<JsonUserAddressList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    profileAddressPresenter.authenticationFailure(response.code());
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    profileAddressPresenter.profileAddressResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Resp:addressDelete", String.valueOf(response.body()));
+                        profileAddressPresenter.profileAddressResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed addressDelete");
+                        profileAddressPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed migrating profile");
-                    profileAddressPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        profileAddressPresenter.authenticationFailure();
+                    } else {
+                        profileAddressPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("addressDelete onFailure", t.getLocalizedMessage(), t);
                 profileAddressPresenter.profileAddressError();
             }
         });
@@ -222,23 +235,26 @@ public class ProfileModel {
         profileService.upload(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    imageUploadPresenter.authenticationFailure();
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    imageUploadPresenter.imageUploadResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response uploadImage", String.valueOf(response.body()));
+                        imageUploadPresenter.imageUploadResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed image upload");
+                        imageUploadPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed image upload");
-                    imageUploadPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        imageUploadPresenter.authenticationFailure();
+                    } else {
+                        imageUploadPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("uploadImage failure", t.getLocalizedMessage(), t);
                 imageUploadPresenter.imageUploadError();
             }
         });
@@ -248,24 +264,26 @@ public class ProfileModel {
         profileService.changeMail(mail, auth, migrateMail).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    migrateEmailPresenter.authenticationFailure(response.code());
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("changeMail response", String.valueOf(response.body()));
-                    migrateEmailPresenter.migrateEmailResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("changeMail response", String.valueOf(response.body()));
+                        migrateEmailPresenter.migrateEmailResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed updating changeMail " + response.body().getError());
+                        migrateEmailPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed updating changeMail " + response.body().getError());
-                    migrateEmailPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        migrateEmailPresenter.authenticationFailure();
+                    } else {
+                        migrateEmailPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("onFailure changeMail", t.getLocalizedMessage(), t);
                 migrateEmailPresenter.migrateEmailError();
             }
         });
@@ -275,25 +293,27 @@ public class ProfileModel {
         profileService.migrateMail(mail, auth, changeMailOTP).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    profilePresenter.authenticationFailure(response.code());
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
-                            response.headers().get(APIConstant.Key.XR_AUTH));
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response migrateMail", String.valueOf(response.body()));
+                        profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                                response.headers().get(APIConstant.Key.XR_AUTH));
+                    } else {
+                        Log.e(TAG, "error migrateMail");
+                        profilePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Get state of queue upon scan");
-                    profilePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        profilePresenter.authenticationFailure();
+                    } else {
+                        profilePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("onFailure migrateMail", t.getLocalizedMessage(), t);
                 profilePresenter.profileError();
             }
         });

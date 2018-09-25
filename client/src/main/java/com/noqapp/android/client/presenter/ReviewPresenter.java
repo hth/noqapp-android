@@ -13,6 +13,4 @@ public interface ReviewPresenter extends ResponseErrorPresenter{
     void reviewResponse(JsonResponse jsonResponse);
 
     void reviewError();
-
-    void authenticationFailure(int errorCode);
 }
