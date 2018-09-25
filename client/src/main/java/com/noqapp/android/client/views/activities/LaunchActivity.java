@@ -199,15 +199,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     case R.drawable.ic_menu_share:
                         AppUtilities.shareTheApp(launchActivity);
                         break;
-                    case R.drawable.legal:
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            Intent in = new Intent(LaunchActivity.this, WebViewActivity.class);
-                            in.putExtra("url", Constants.URL_ABOUT_US);
-                            startActivity(in);
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(LaunchActivity.this);
-                        }
+                    case R.drawable.legal: {
+                        Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
+                        startActivity(in);
                         break;
+                    }
                     case R.drawable.medical_history: {
                         Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
                         startActivity(in);
@@ -259,8 +255,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         ((TextView) findViewById(R.id.tv_version)).setText(
                 BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
-                ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
-                : getString(R.string.version_no, "Not for release"));
+                        ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+                        : getString(R.string.version_no, "Not for release"));
         updateMenuList(UserUtils.isLogin());
 
 
@@ -646,7 +642,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                 ((JsonAlertData) object).getTitle(),
                                 ((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this,((JsonAlertData) object).getTitle()+" is "+((JsonAlertData) object).getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() + " is " + ((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();
                     } else if (object instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) object).getToken());
@@ -880,7 +876,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override

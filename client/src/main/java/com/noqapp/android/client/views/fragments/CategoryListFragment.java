@@ -1,7 +1,9 @@
 package com.noqapp.android.client.views.fragments;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.adapters.CategoryListAdapter;
@@ -69,6 +71,7 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
                 in.putExtra("isCategoryData", false);
+                in.putExtra("imageUrl", AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
                 startActivity(in);
                 break;
             default:

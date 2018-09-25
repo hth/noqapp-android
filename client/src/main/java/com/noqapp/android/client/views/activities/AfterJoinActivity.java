@@ -67,7 +67,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private TextView tv_estimated_time;
     private TextView tv_vibrator_off;
     private LinearLayout ll_change_bg;
-    private TextView sp_name_list;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
     private String codeQR;
@@ -80,9 +79,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private String queueUserId = "";
     private QueueModel queueModel;
     private QueueApiModel queueApiModel;
-    private ImageView iv_profile;
-    private RatingBar ratingBar;
-    private TextView tv_rating_review;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +98,10 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         TextView tv_add = findViewById(R.id.add_person);
         tv_vibrator_off = findViewById(R.id.tv_vibrator_off);
         ll_change_bg = findViewById(R.id.ll_change_bg);
-        sp_name_list = findViewById(R.id.sp_name_list);
-        iv_profile = findViewById(R.id.iv_profile);
-        tv_rating_review = findViewById(R.id.tv_rating_review);
-        ratingBar = findViewById(R.id.ratingBar);
+        TextView tv_name = findViewById(R.id.tv_name);
+        ImageView iv_profile = findViewById(R.id.iv_profile);
+        TextView tv_rating_review = findViewById(R.id.tv_rating_review);
+        RatingBar ratingBar = findViewById(R.id.ratingBar);
         btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,18 +158,18 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 profileList.add(0, NoQueueBaseActivity.getUserProfile());
                 profileList.add(0, new JsonProfile().setName("Select Patient"));
                 DependentAdapter adapter = new DependentAdapter(this, profileList);
-                sp_name_list.setText(((JsonProfile) profileList.get(profile_pos)).getName());
+                tv_name.setText(((JsonProfile) profileList.get(profile_pos)).getName());
                 queueUserId = ((JsonProfile) profileList.get(profile_pos)).getQueueUserId();
             }
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case DO:
                 case PH:
                     tv_add.setVisibility(View.VISIBLE);
-                    sp_name_list.setVisibility(View.VISIBLE);
+                    tv_name.setVisibility(View.VISIBLE);
                     break;
                 default:
                     tv_add.setVisibility(View.GONE);
-                    sp_name_list.setVisibility(View.GONE);
+                    tv_name.setVisibility(View.GONE);
             }
             String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) +
                     " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour());
@@ -201,7 +197,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
                 tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
                 setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
-                tv_add.setText(AppUtilities.getNameFromQueueUserID(jsonTokenAndQueue.getQueueUserId(), profileList));
+                tv_name.setText(AppUtilities.getNameFromQueueUserID(jsonTokenAndQueue.getQueueUserId(), profileList));
                 tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
                 if (isVibratorOff())
                     ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));

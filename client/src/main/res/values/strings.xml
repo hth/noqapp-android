@@ -284,6 +284,8 @@
     <string name="error_mobile_no_length">Phone number has to be 10 digits</string>
     <string name="profile"> <u>PROFILE</u></string>
     <string name="merchant_account">Become a merchant</string>
+    <string name="address">Address</string>
+    <string name="privacy_in_short">Privacy in short</string>
     <!-- Category Info Screen -->
 
 </resources>
