@@ -13,6 +13,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
@@ -164,9 +165,19 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this, errorCode);
+        AppUtilities.authenticationProcessing(this);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        if (errorCode == Constants.INVALID_BAR_CODE){
+            ShowAlertInformation.showBarcodeErrorDialog(this);
+        }else {
+            new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+        }
     }
 
     @Override
@@ -374,8 +385,4 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         }
     }
 
-    @Override
-    public void authenticationFailure() {
-
-    }
 }

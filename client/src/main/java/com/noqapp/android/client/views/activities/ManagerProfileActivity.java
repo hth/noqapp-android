@@ -128,6 +128,18 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         new ErrorResponseHandler().processError(this,eej);
     }
 
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
+    public void authenticationFailure() {
+        dismissProgress();
+        AppUtilities.authenticationProcessing(this);
+    }
+
     private void setupViewPager(ViewPager viewPager) {
         userProfileFragment = new UserProfileFragment();
         userAdditionalInfoFragment = new UserAdditionalInfoFragment();
@@ -149,11 +161,6 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     protected void onResume() {
         super.onResume();
         //tv_name.setText(managerName);
-    }
-
-    @Override
-    public void authenticationFailure() {
-
     }
 
     private class LoadTabs extends AsyncTask<String, String, String> {

@@ -31,6 +31,7 @@ public class Constants {
     public static final String ACTIVITY_TO_CLOSE = "activity_status";
     public static final String FROM_JOIN_SCREEN = "from_join_screen";
     //error codes
+    public static final int SERVER_RESPONSE_CODE_SUCESS = 200;
     public static final int INVALID_CREDENTIAL = 401;
     public static final int INVALID_BAR_CODE = 404;
     public static final int DEFAULT_REVIEW_TIME_SAVED = 3;

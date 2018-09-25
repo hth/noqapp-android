@@ -20,6 +20,4 @@ public interface TokenAndQueuePresenter extends ResponseErrorPresenter{
 
     void currentQueueError();
 
-    void authenticationFailure(int errorCode);
-
 }

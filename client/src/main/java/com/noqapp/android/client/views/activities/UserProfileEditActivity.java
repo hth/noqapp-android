@@ -331,16 +331,17 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void responseErrorPresenter(int errorCode) {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this, errorCode);
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override
     public void authenticationFailure() {
         dismissProgress();
-        // AppUtilities.authenticationProcessing(this, errorCode);
+        AppUtilities.authenticationProcessing(this);
     }
+
 
     private void updateUI() {
         if (isDependent) {

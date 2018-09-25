@@ -11,6 +11,7 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonStoreCategory;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
@@ -343,15 +344,25 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this, errorCode);
+        AppUtilities.authenticationProcessing(this);
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
         new ErrorResponseHandler().processError(this,eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        if (errorCode == Constants.INVALID_BAR_CODE){
+            ShowAlertInformation.showBarcodeErrorDialog(this);
+        }else {
+            new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+        }
     }
 
     private boolean isStoreOpenToday(JsonStore jsonStore) {
@@ -361,10 +372,5 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         String time = df.format(Calendar.getInstance().getTime());
         int timeData = Integer.parseInt(time.replace(":", ""));
         return jsonHour.getStartHour() <= timeData && timeData <= jsonHour.getEndHour();
-    }
-
-    @Override
-    public void authenticationFailure() {
-
     }
 }

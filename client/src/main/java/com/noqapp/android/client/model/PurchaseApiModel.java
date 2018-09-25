@@ -29,22 +29,25 @@ public class PurchaseApiModel {
         purchaseOrderService.placeOrder(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    purchaseOrderPresenter.authenticationFailure(response.code());
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    purchaseOrderPresenter.purchaseOrderResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response placeOrder", String.valueOf(response.body()));
+                        purchaseOrderPresenter.purchaseOrderResponse(response.body());
+                    } else {
+                        purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        purchaseOrderPresenter.authenticationFailure();
+                    } else {
+                        purchaseOrderPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("onFailure placeOrder", t.getLocalizedMessage(), t);
                 purchaseOrderPresenter.purchaseOrderError();
             }
         });

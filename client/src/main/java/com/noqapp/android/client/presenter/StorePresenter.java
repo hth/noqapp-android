@@ -9,6 +9,4 @@ public interface StorePresenter extends ResponseErrorPresenter{
 
     void storeError();
 
-    void authenticationFailure(int errorCode);
-
 }

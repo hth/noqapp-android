@@ -14,5 +14,4 @@ public interface ResponsePresenter extends ResponseErrorPresenter {
 
     void responsePresenterError();
 
-    void authenticationFailure(int errorCode);
 }

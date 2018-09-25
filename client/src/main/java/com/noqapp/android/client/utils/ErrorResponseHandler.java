@@ -14,6 +14,11 @@ public class ErrorResponseHandler extends BaseErrorResponseHandler {
             ShowAlertInformation.showThemeDialog(context, title, msg, icon);
     }
 
+    public void processFailureResponseCode(Context context, int errorCode) {
+        processFailureResponseCode(errorCode);
+        ShowAlertInformation.showThemeDialog(context, "Error", msg, getDefaultAlertIcon());
+    }
+
     @Override
     protected int getDefaultDrawable() {
         return R.mipmap.launcher;

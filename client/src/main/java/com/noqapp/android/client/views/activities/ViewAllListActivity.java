@@ -128,6 +128,11 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
     }
 
     @Override
+    public void responseErrorPresenter(int errorCode) {
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
     public void authenticationFailure() {
         //dismissProgress();
         // AppUtilities.authenticationProcessing(this, errorCode);

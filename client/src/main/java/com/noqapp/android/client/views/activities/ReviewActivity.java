@@ -229,9 +229,15 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void responseErrorPresenter(int errorCode) {
         progressDialog.dismiss();
-        AppUtilities.authenticationProcessing(this, errorCode);
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
+    public void authenticationFailure() {
+        progressDialog.dismiss();
+        AppUtilities.authenticationProcessing(this);
     }
 
 
@@ -286,10 +292,5 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         } else {
             tv_badge.setVisibility(View.INVISIBLE);
         }
-    }
-
-    @Override
-    public void authenticationFailure() {
-
     }
 }

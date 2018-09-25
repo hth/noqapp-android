@@ -6,6 +6,7 @@ import com.noqapp.android.client.model.response.open.ProfessionalProfileService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
+import com.noqapp.android.client.utils.Constants;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -35,18 +36,26 @@ public class ProfessionalProfileModel {
         professionalProfileService.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfile> call, @NonNull Response<JsonProfessionalProfile> response) {
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("QueueManagerProfile", String.valueOf(response.body()));
-                    queueManagerPresenter.queueManagerResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("QueueManagerProfile", String.valueOf(response.body()));
+                        queueManagerPresenter.queueManagerResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Empty QueueManagerProfile");
+                        queueManagerPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    Log.e(TAG, "Empty QueueManagerProfile");
-                    queueManagerPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queueManagerPresenter.authenticationFailure();
+                    } else {
+                        queueManagerPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfessionalProfile> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("professionalProfilefail", t.getLocalizedMessage(), t);
                 queueManagerPresenter.queueManagerError();
             }
         });

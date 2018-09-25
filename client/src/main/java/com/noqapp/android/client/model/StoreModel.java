@@ -23,7 +23,7 @@ public final class StoreModel {
     private static final StoreService storeService;
     private StorePresenter storePresenter;
 
-    public StoreModel (StorePresenter storePresenter) {
+    public StoreModel(StorePresenter storePresenter) {
         this.storePresenter = storePresenter;
     }
 
@@ -41,17 +41,20 @@ public final class StoreModel {
         storeService.getStoreService(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonStore>() {
             @Override
             public void onResponse(@NonNull Call<JsonStore> call, @NonNull Response<JsonStore> response) {
-                if (response.code() == Constants.INVALID_BAR_CODE) {
-                    storePresenter.authenticationFailure(response.code());
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("jsonStore response", String.valueOf(response.body()));
-                    storePresenter.storeResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("jsonStore response", String.valueOf(response.body()));
+                        storePresenter.storeResponse(response.body());
+                    } else {
+                        Log.e(TAG, "jsonStore error");
+                        storePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "jsonStore error");
-                    storePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        storePresenter.authenticationFailure();
+                    } else {
+                        storePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 

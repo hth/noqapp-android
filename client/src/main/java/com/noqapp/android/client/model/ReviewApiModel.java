@@ -35,23 +35,26 @@ public class ReviewApiModel {
         reviewApiService.review(did, Constants.DEVICE_TYPE, mail, auth, reviewRating).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    reviewPresenter.authenticationFailure(response.code());
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response Review", String.valueOf(response.body()));
-                    reviewPresenter.reviewResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response Review", String.valueOf(response.body()));
+                        reviewPresenter.reviewResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Error review" + response.body().getError());
+                        reviewPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history");
-                    reviewPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        reviewPresenter.authenticationFailure();
+                    } else {
+                        reviewPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("Failure review", t.getLocalizedMessage(), t);
                 reviewPresenter.reviewError();
             }
         });

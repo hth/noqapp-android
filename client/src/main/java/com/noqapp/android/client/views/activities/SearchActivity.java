@@ -215,7 +215,14 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
     @Override
-    public void authenticationFailure() {
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
 
+    @Override
+    public void authenticationFailure() {
+        dismissProgress();
+        AppUtilities.authenticationProcessing(this);
     }
 }

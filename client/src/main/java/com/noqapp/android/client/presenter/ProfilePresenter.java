@@ -13,6 +13,4 @@ public interface ProfilePresenter extends ResponseErrorPresenter {
     void profileResponse(JsonProfile profile, String email, String auth);
 
     void profileError();
-
-    void authenticationFailure(int errorCode);
 }

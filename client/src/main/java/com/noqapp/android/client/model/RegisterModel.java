@@ -39,20 +39,27 @@ public final class RegisterModel {
         registerService.register(did, Constants.DEVICE_TYPE, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
-                            response.headers().get(APIConstant.Key.XR_AUTH));
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response register", String.valueOf(response.body()));
+                        profilePresenter.profileResponse(response.body(), response.headers().get(APIConstant.Key.XR_MAIL),
+                                response.headers().get(APIConstant.Key.XR_AUTH));
+                    } else {
+                        Log.e(TAG, "Error register:" + response.body().getError());
+                        profilePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history" + response.body().getError());
-                    profilePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        profilePresenter.authenticationFailure();
+                    } else {
+                        profilePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("Failure register", t.getLocalizedMessage(), t);
                 profilePresenter.profileError();
             }
         });
@@ -65,22 +72,29 @@ public final class RegisterModel {
         registerService.login(did, Constants.DEVICE_TYPE, login).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    profilePresenter.profileResponse(
-                            response.body(),
-                            response.headers().get(APIConstant.Key.XR_MAIL),
-                            response.headers().get(APIConstant.Key.XR_AUTH));
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response login", String.valueOf(response.body()));
+                        profilePresenter.profileResponse(
+                                response.body(),
+                                response.headers().get(APIConstant.Key.XR_MAIL),
+                                response.headers().get(APIConstant.Key.XR_AUTH));
+                    } else {
+                        Log.e(TAG, "Error login" + response.body().getError());
+                        profilePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty history" + response.body().getError());
-                    profilePresenter.responseErrorPresenter(response.body().getError());;
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        profilePresenter.authenticationFailure();
+                    } else {
+                        profilePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("Failure login", t.getLocalizedMessage(), t);
                 profilePresenter.profileError();
             }
         });

@@ -118,13 +118,14 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
     }
 
     @Override
-    public void authenticationFailure(int errorCode) {
+    public void authenticationFailure() {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this,errorCode);
+        AppUtilities.authenticationProcessing(this);
     }
 
     @Override
-    public void authenticationFailure() {
-
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 }

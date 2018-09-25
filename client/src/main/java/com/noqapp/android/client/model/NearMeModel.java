@@ -7,6 +7,7 @@ import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.utils.Constants;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -40,17 +41,25 @@ public class NearMeModel {
         nearmeService.nearMe(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response NearMe", String.valueOf(response.body()));
-                    nearMePresenter.nearMeResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response NearMe", String.valueOf(response.body()));
+                        nearMePresenter.nearMeResponse(response.body());
+                    } else {
+                        nearMePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    nearMePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        nearMePresenter.authenticationFailure();
+                    } else {
+                        nearMePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("NearMe failed", t.getLocalizedMessage(), t);
                 nearMePresenter.nearMeError();
             }
         });
@@ -60,17 +69,25 @@ public class NearMeModel {
         nearmeService.search(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response NearMe", String.valueOf(response.body()));
-                    nearMePresenter.nearMeResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response search", String.valueOf(response.body()));
+                        nearMePresenter.nearMeResponse(response.body());
+                    } else {
+                        nearMePresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    nearMePresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        nearMePresenter.authenticationFailure();
+                    } else {
+                        nearMePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("onFailure search", t.getLocalizedMessage(), t);
                 nearMePresenter.nearMeError();
             }
         });
