@@ -1,17 +1,22 @@
 package com.noqapp.android.client.utils;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.activities.LaunchActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ShowAlertInformation {
@@ -165,4 +170,26 @@ public class ShowAlertInformation {
     public static void showThemeDialog(Context context, String title, String message, int icon) {
         showThemeDialogWithIcon(context, title, message, false,  icon);
     }
+
+    public static void showInfoDisplayDialog(Context context, String message) {
+        final Dialog dialog = new Dialog(context, android.R.style.Theme_Dialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_info);
+        dialog.setCanceledOnTouchOutside(true);
+        TextView tv_msg = dialog.findViewById(R.id.tv_msg);
+        tv_msg.setText(message);
+        Button btn_yes = dialog.findViewById(R.id.btn_yes);
+        btn_yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog.getWindow().setLayout(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
 }
