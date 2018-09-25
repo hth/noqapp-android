@@ -35,6 +35,8 @@ public class Constants {
     public static final int INVALID_BAR_CODE = 404;
     public static final int DEFAULT_REVIEW_TIME_SAVED = 3;
     //Urls
+    public static final String URL_MERCHANT_LOGIN = "https://q.noqapp.com/";
+    public static final String URL_MERCHANT_REGISTER = "https://q.noqapp.com/open/register.htm";
     public static final String URL_ABOUT_US = "https://noqapp.com/mobile/m.about-us.html";
     public static final String URL_TERM_CONDITION = "https://noqapp.com/mobile/m.terms.html";
     public static final String URL_PRIVACY_POLICY = "https://noqapp.com/mobile/m.privacy.html";

@@ -74,10 +74,17 @@ public class WebViewActivity extends AppCompatActivity {
             }
 
         });
-        if (url.equals(Constants.URL_HOW_IT_WORKS)) {
-            tv_toolbar_title.setText(getString(R.string.screen_invite_details));
-        } else {
-            tv_toolbar_title.setText(getString(R.string.screen_legal));
+        switch (url) {
+            case Constants.URL_HOW_IT_WORKS:
+                tv_toolbar_title.setText(getString(R.string.screen_invite_details));
+                break;
+            case Constants.URL_MERCHANT_LOGIN:
+            case Constants.URL_MERCHANT_REGISTER:
+                tv_toolbar_title.setText(getString(R.string.merchant_account));
+                break;
+            default:
+                tv_toolbar_title.setText(getString(R.string.screen_legal));
+                break;
         }
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override

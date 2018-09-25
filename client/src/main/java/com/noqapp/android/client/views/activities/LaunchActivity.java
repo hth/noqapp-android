@@ -187,6 +187,15 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         startActivity(in);
                         break;
                     }
+                    case R.drawable.merchant_account:
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            Intent in = new Intent(LaunchActivity.this, WebViewActivity.class);
+                            in.putExtra("url", UserUtils.isLogin() ? Constants.URL_MERCHANT_LOGIN : Constants.URL_MERCHANT_REGISTER);
+                            startActivity(in);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(LaunchActivity.this);
+                        }
+                        break;
                     case R.drawable.ic_menu_share:
                         AppUtilities.shareTheApp(launchActivity);
                         break;
@@ -637,6 +646,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                 ((JsonAlertData) object).getTitle(),
                                 ((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this,((JsonAlertData) object).getTitle()+" is "+((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();
                     } else if (object instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) object).getToken());
@@ -890,6 +900,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
         drawerItem.add(new NavigationBean(R.drawable.ic_star, getString(R.string.ratetheapp)));
         drawerItem.add(new NavigationBean(R.drawable.language, getString(R.string.language_setting)));
+        drawerItem.add(new NavigationBean(R.drawable.merchant_account, getString(R.string.merchant_account)));
         if (isLogin) {
             drawerItem.add(new NavigationBean(R.drawable.ic_logout, getString(R.string.logout)));
         }

@@ -399,6 +399,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     }
 
     private void updateQueueSettings() {
+        progressDialog.setMessage("Updating Queue Settings...");
         QueueSetting queueSetting = new QueueSetting();
         queueSetting.setCodeQR(codeQR);
         queueSetting.setDayClosed(toggleDayClosed.isChecked());
