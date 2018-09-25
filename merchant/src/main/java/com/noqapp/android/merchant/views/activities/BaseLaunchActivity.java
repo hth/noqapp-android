@@ -332,17 +332,18 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         sharedpreferences.edit().putString(KEY_SUGGESTION, strInput).apply();
     }
 
-    public void setFavouriteMedicines(List<JsonMedicalMedicine> jsonMedicalMedicines){
+    public void setFavouriteMedicines(List<JsonMedicalMedicine> jsonMedicalMedicines) {
         Gson gson = new Gson();
         String json = gson.toJson(jsonMedicalMedicines);
         sharedpreferences.edit().putString(KEY_MEDICINES, json).apply();
     }
 
-    public List<JsonMedicalMedicine> getFavouriteMedicines(){
-        Type type = new TypeToken<List<JsonMedicalMedicine>>(){}.getType();
+    public List<JsonMedicalMedicine> getFavouriteMedicines() {
+        Type type = new TypeToken<List<JsonMedicalMedicine>>() {
+        }.getType();
         String listData = sharedpreferences.getString(KEY_MEDICINES, null);
         List<JsonMedicalMedicine> jsonMedicalMedicines = new Gson().fromJson(listData, type);
-        return  jsonMedicalMedicines;
+        return jsonMedicalMedicines;
     }
 
     public ArrayList<String> getCounterNames() {
@@ -491,7 +492,13 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override
@@ -525,7 +532,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
             list_fragment.setLayoutParams(lp1);
             list_detail_fragment.setLayoutParams(lp0);
-            if(null != merchantListFragment) {
+            if (null != merchantListFragment) {
                 merchantListFragment.clearData();
                 merchantListFragment = null;
             }

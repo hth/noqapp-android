@@ -19,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,24 +66,26 @@ public class ManageQueueModel {
         manageQueueService.getQueues(did, Constants.DEVICE_TYPE, Constants.appVersion(), mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    topicPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get all assigned queues", String.valueOf(response.body()));
-                    topicPresenter.topicPresenterResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Get all assigned queues", String.valueOf(response.body()));
+                        topicPresenter.topicPresenterResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while getting all queues assigned");
+                        topicPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while getting all queues assigned");
-                    topicPresenter.responseErrorPresenter(response.body().getError());
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        topicPresenter.authenticationFailure();
+                    } else {
+                        topicPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonTopicList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("getQueues", t.getLocalizedMessage(), t);
                 topicPresenter.topicPresenterError();
             }
         });
@@ -99,29 +100,32 @@ public class ManageQueueModel {
         manageQueueService.served(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    manageQueuePresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    if (StringUtils.isNotBlank(response.body().getCodeQR())) {
-                        Log.d(TAG, "After clicking Next, response jsonToken" + response.body().toString());
-                        manageQueuePresenter.manageQueueResponse(response.body());
-                    } else {
-                        Log.e(TAG, "Failed to get response");
-                        manageQueuePresenter.responseErrorPresenter(null);
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        if (StringUtils.isNotBlank(response.body().getCodeQR())) {
+                            Log.d(TAG, "served" + response.body().toString());
+                            manageQueuePresenter.manageQueueResponse(response.body());
+                        } else {
+                            Log.e(TAG, "Failed to served");
+                            manageQueuePresenter.responseErrorPresenter(null);
+                        }
+                    } else if (response.body() != null && response.body().getError() != null) {
+                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                        Log.e(TAG, "Got error served" + errorEncounteredJson.getReason());
+                        manageQueuePresenter.responseErrorPresenter(response.body().getError());
                     }
-                } else if (response.body() != null && response.body().getError() != null) {
-                    ErrorEncounteredJson errorEncounteredJson = response.body().getError();
-                    Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
-                    manageQueuePresenter.responseErrorPresenter(response.body().getError());
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        manageQueuePresenter.authenticationFailure();
+                    } else {
+                        manageQueuePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("served", t.getLocalizedMessage(), t);
                 manageQueuePresenter.manageQueueError();
             }
         });
@@ -136,32 +140,32 @@ public class ManageQueueModel {
         manageQueueService.acquire(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    manageQueuePresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    if (StringUtils.isNotBlank(response.body().getCodeQR())) {
-                        Log.d(TAG, "After clicking Next, response jsonToken" + response.body().toString());
-                        manageQueuePresenter.manageQueueResponse(response.body());
-                    } else {
-                        //TODO something logical
-                        Log.e(TAG, "Failed to get response");
-                        manageQueuePresenter.responseErrorPresenter(null);
-                        ;
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        if (StringUtils.isNotBlank(response.body().getCodeQR())) {
+                            Log.d(TAG, "acquire" + response.body().toString());
+                            manageQueuePresenter.manageQueueResponse(response.body());
+                        } else {
+                            Log.e(TAG, "Failed to acquire");
+                            manageQueuePresenter.responseErrorPresenter(null);
+                        }
+                    } else if (response.body() != null && response.body().getError() != null) {
+                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                        manageQueuePresenter.responseErrorPresenter(response.body().getError());
+                        Log.e(TAG, "Got error acquire" + errorEncounteredJson.getReason());
                     }
-                } else if (response.body() != null && response.body().getError() != null) {
-                    ErrorEncounteredJson errorEncounteredJson = response.body().getError();
-                    manageQueuePresenter.responseErrorPresenter(response.body().getError());
-                    ;
-                    Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        manageQueuePresenter.authenticationFailure();
+                    } else {
+                        manageQueuePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("acquire", t.getLocalizedMessage(), t);
                 manageQueuePresenter.manageQueueError();
             }
         });
@@ -171,25 +175,27 @@ public class ManageQueueModel {
         manageQueueService.showClients(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePersonListPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get queue setting", String.valueOf(response.body()));
-                    queuePersonListPresenter.queuePersonListResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("showClients", String.valueOf(response.body()));
+                        queuePersonListPresenter.queuePersonListResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while showClients");
+                        queuePersonListPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    Log.e(TAG, "Found error while get queue setting");
-                    queuePersonListPresenter.responseErrorPresenter(response.body().getError());
-                    ;
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queuePersonListPresenter.authenticationFailure();
+                    } else {
+                        queuePersonListPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
 
             @Override
             public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("showClients", t.getLocalizedMessage(), t);
                 queuePersonListPresenter.queuePersonListError();
             }
         });
@@ -199,24 +205,26 @@ public class ManageQueueModel {
         manageQueueService.showClientsHistorical(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePersonListPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get queue setting", String.valueOf(response.body()));
-                    queuePersonListPresenter.queuePersonListResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("showClientsHistorical", String.valueOf(response.body()));
+                        queuePersonListPresenter.queuePersonListResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while showClientsHistorical");
+                        queuePersonListPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    Log.e(TAG, "Found error while get queue setting");
-                    queuePersonListPresenter.responseErrorPresenter(response.body().getError());
-                    ;
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queuePersonListPresenter.authenticationFailure();
+                    } else {
+                        queuePersonListPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("showClientsHistorical", t.getLocalizedMessage(), t);
                 queuePersonListPresenter.queuePersonListError();
             }
         });
@@ -227,27 +235,28 @@ public class ManageQueueModel {
         manageQueueService.dispenseTokenWithoutClientInfo(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    dispenseTokenPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get queue setting", String.valueOf(response.body()));
-                    dispenseTokenPresenter.dispenseTokenResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("dispTokenWithoutCInfo", String.valueOf(response.body()));
+                        dispenseTokenPresenter.dispenseTokenResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while dispenseTokenWithoutClientInfo");
+                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                        dispenseTokenPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while get queue setting");
-                    ErrorEncounteredJson errorEncounteredJson = response.body().getError();
-                    dispenseTokenPresenter.responseErrorPresenter(response.body().getError());
-                    ;
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        dispenseTokenPresenter.authenticationFailure();
+                    } else {
+                        dispenseTokenPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
 
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("dispTokenWithoutCInfo", t.getLocalizedMessage(), t);
                 dispenseTokenPresenter.responseErrorPresenter(null);
             }
         });
@@ -258,27 +267,28 @@ public class ManageQueueModel {
         manageQueueService.dispenseTokenWithClientInfo(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomerLookup).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    dispenseTokenPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get queue setting", String.valueOf(response.body()));
-                    dispenseTokenPresenter.dispenseTokenResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("dispTokenWithClientInfo", String.valueOf(response.body()));
+                        dispenseTokenPresenter.dispenseTokenResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error dispenseTokenWithClientInfo");
+                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                        dispenseTokenPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while get queue setting");
-                    ErrorEncounteredJson errorEncounteredJson = response.body().getError();
-                    dispenseTokenPresenter.responseErrorPresenter(response.body().getError());
-                    ;
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        dispenseTokenPresenter.authenticationFailure();
+                    } else {
+                        dispenseTokenPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
 
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("dispTokenWithClientInfo", t.getLocalizedMessage(), t);
                 dispenseTokenPresenter.responseErrorPresenter(null);
             }
         });
@@ -289,25 +299,26 @@ public class ManageQueueModel {
         manageQueueService.changeUserInQueue(did, Constants.DEVICE_TYPE, mail, auth, changeUserInQueue).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queuePersonListPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get queue setting", String.valueOf(response.body()));
-                    queuePersonListPresenter.queuePersonListResponse(response.body());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("changeUserInQueue", String.valueOf(response.body()));
+                        queuePersonListPresenter.queuePersonListResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while changeUserInQueue");
+                        queuePersonListPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while get queue setting");
-                    queuePersonListPresenter.responseErrorPresenter(response.body().getError());
-                    ;
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queuePersonListPresenter.authenticationFailure();
+                    } else {
+                        queuePersonListPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("changeUserInQueue", t.getLocalizedMessage(), t);
                 queuePersonListPresenter.queuePersonListError();
             }
         });

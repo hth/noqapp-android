@@ -10,7 +10,6 @@ import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
@@ -260,6 +259,13 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().dismissProgress();
         new ErrorResponseHandler().processError(getActivity(),eej);
     }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(getActivity(),errorCode);
+    }
+
     @Override
     public void authenticationFailure() {
         LaunchActivity.getLaunchActivity().dismissProgress();

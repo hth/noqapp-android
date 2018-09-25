@@ -87,11 +87,19 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         LaunchActivity.getLaunchActivity().dismissProgress();
         AppUtils.authenticationProcessing();
     }
+
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        new ErrorResponseHandler().processError(context,eej);
+        new ErrorResponseHandler().processError(context, eej);
     }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(context, errorCode);
+    }
+
     public interface PeopleInQAdapterClick {
 
         void PeopleInQClick(int position);

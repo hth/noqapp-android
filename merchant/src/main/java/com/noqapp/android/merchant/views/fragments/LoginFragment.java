@@ -9,7 +9,6 @@ import com.noqapp.android.merchant.model.LoginModel;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -116,7 +115,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(auth)) {
             LaunchActivity.getLaunchActivity().setUserInformation("", "", email, auth, true);
             merchantProfileModel.setMerchantPresenter(this);
-            merchantProfileModel.fetch( LaunchActivity.getLaunchActivity().getDeviceID(),email, auth);
+            merchantProfileModel.fetch(LaunchActivity.getLaunchActivity().getDeviceID(), email, auth);
             if (!userList.contains(email)) {
                 userList.add(email);
                 LaunchActivity.getLaunchActivity().setUserList(userList);
@@ -142,8 +141,15 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(), eej);
     }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        LaunchActivity.getLaunchActivity().dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
+    }
+
 
     @Override
     public void merchantResponse(JsonMerchant jsonMerchant) {
@@ -212,7 +218,9 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     @Override
     public void authenticationFailure() {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        AppUtils.authenticationProcessing();
+       // AppUtils.authenticationProcessing();
+        //On Login screen need not to clear the data
+        ShowAlertInformation.showThemeDialog(getActivity(),"Invalid Credentail","There was an error with your E-Mail/Password combination. Please try again.");
     }
 
     private boolean isValidInput() {

@@ -43,24 +43,26 @@ public class QueueSettingModel {
         queueSettingService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queueSettingPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get queue setting", String.valueOf(response.body()));
-                    queueSettingPresenter.queueSettingResponse(response.body());
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while get queue setting");
-                    queueSettingPresenter.responseErrorPresenter(response.body().getError());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("getQueueState", String.valueOf(response.body()));
+                        queueSettingPresenter.queueSettingResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while getQueueState");
+                        queueSettingPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                }else{
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queueSettingPresenter.authenticationFailure();
+                    }else{
+                        queueSettingPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<QueueSetting> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("fail getQueueState", t.getLocalizedMessage(), t);
                 queueSettingPresenter.queueSettingError();
             }
         });
@@ -70,24 +72,26 @@ public class QueueSettingModel {
         queueSettingService.removeSchedule(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queueSettingPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Get queue setting", String.valueOf(response.body()));
-                    queueSettingPresenter.queueSettingResponse(response.body());
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Found error while get queue setting");
-                    queueSettingPresenter.responseErrorPresenter(response.body().getError());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("removeSchedule", String.valueOf(response.body()));
+                        queueSettingPresenter.queueSettingResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while removeSchedule");
+                        queueSettingPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                }else{
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queueSettingPresenter.authenticationFailure();
+                    }else{
+                        queueSettingPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<QueueSetting> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("fail removeSchedule", t.getLocalizedMessage(), t);
                 queueSettingPresenter.queueSettingError();
             }
         });
@@ -102,29 +106,32 @@ public class QueueSettingModel {
         queueSettingService.modify(did, Constants.DEVICE_TYPE, mail, auth, queueSetting).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    queueSettingPresenter.authenticationFailure();
-                    return;
-                }
-
-                if (null != response.body() && null == response.body().getError()) {
-                    if (StringUtils.isNotBlank(response.body().getCodeQR())) {
-                        Log.d(TAG, "Modify setting, response jsonToken" + response.body().toString());
-                        queueSettingPresenter.queueSettingResponse(response.body());
-                    } else {
-                        //TODO something logical
-                        Log.e(TAG, "Failed to modify setting");
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        if (StringUtils.isNotBlank(response.body().getCodeQR())) {
+                            Log.d(TAG, "Modify setting, response jsonToken" + response.body().toString());
+                            queueSettingPresenter.queueSettingResponse(response.body());
+                        } else {
+                            Log.e(TAG, "Failed to modify setting");
+                            queueSettingPresenter.queueSettingError();
+                        }
+                    } else if (response.body() != null && response.body().getError() != null) {
+                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                        Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
+                        queueSettingPresenter.responseErrorPresenter(response.body().getError());
                     }
-                } else if (response.body() != null && response.body().getError() != null) {
-                    ErrorEncounteredJson errorEncounteredJson = response.body().getError();
-                    Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
-                    queueSettingPresenter.responseErrorPresenter(response.body().getError());
+                }else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queueSettingPresenter.authenticationFailure();
+                    }else {
+                        queueSettingPresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<QueueSetting> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("fail modify", t.getLocalizedMessage(), t);
                 queueSettingPresenter.queueSettingError();
             }
         });

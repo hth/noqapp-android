@@ -45,17 +45,19 @@ public class DeviceModel {
         deviceService.register(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
-                if (response.body() != null) {
-                    Log.d(TAG, "Registered device " + String.valueOf(response.body()));
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Empty body");
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (response.body() != null) {
+                        Log.d(TAG, "Registered device " + String.valueOf(response.body()));
+                    } else {
+                        //TODO something logical
+                        Log.e(TAG, "Empty body");
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<DeviceRegistered> call, @NonNull Throwable t) {
-                Log.e(TAG, "Failure Response " + t.getLocalizedMessage(), t);
+                Log.e(TAG, "register " + t.getLocalizedMessage(), t);
             }
         });
     }
@@ -69,18 +71,21 @@ public class DeviceModel {
         deviceService.isSupportedAppVersion(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
-
-                if (null != response.body() && null != response.body().getError()) {
-                    Log.d(TAG, "Oldest supported version " + String.valueOf(response.body()));
-                    appBlacklistPresenter.appBlacklistError();
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null != response.body().getError()) {
+                        Log.d(TAG, "Oldest supported version " + String.valueOf(response.body()));
+                        appBlacklistPresenter.appBlacklistError();
+                    } else {
+                        appBlacklistPresenter.responseErrorPresenter(response.body().getError());
+                    }
                 } else {
-                    appBlacklistPresenter.responseErrorPresenter(response.body().getError());
+                    appBlacklistPresenter.responseErrorPresenter(response.code());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonLatestAppVersion> call, @NonNull Throwable t) {
-                Log.e(TAG, "Failure Response " + t.getLocalizedMessage(), t);
+                Log.e(TAG, "isSupportedAppVersion " + t.getLocalizedMessage(), t);
                 appBlacklistPresenter.appBlacklistResponse();
             }
         });

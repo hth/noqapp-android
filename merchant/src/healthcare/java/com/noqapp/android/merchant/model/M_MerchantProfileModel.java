@@ -27,23 +27,26 @@ public class M_MerchantProfileModel extends MerchantProfileModel {
         merchantProfileService.intellisense(did, Constants.DEVICE_TYPE, mail, auth, jsonProfessionalProfilePersonal).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.INVALID_CREDENTIAL) {
-                    intellisensePresenter.authenticationFailure();
-                    return;
-                }
-                if (null != response.body() && null == response.body().getError()) {
-                    Log.d("Response", String.valueOf(response.body()));
-                    intellisensePresenter.intellisenseResponse(response.body());
-                } else {
-                    //TODO something logical
-                    Log.e(TAG, "Failed image upload");
-                    intellisensePresenter.responseErrorPresenter(response.body().getError());
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response intellisense", String.valueOf(response.body()));
+                        intellisensePresenter.intellisenseResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed intellisense");
+                        intellisensePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                }else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        intellisensePresenter.authenticationFailure();
+                    }else{
+                        intellisensePresenter.responseErrorPresenter(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("Response", t.getLocalizedMessage(), t);
+                Log.e("`onFailure intellisense", t.getLocalizedMessage(), t);
                 intellisensePresenter.intellisenseError();
             }
         });

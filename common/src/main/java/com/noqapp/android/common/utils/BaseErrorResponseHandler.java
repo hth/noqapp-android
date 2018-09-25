@@ -9,6 +9,8 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.ErrorTypeEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 
+import android.util.Log;
+
 
 public abstract class BaseErrorResponseHandler {
     protected int icon;
@@ -95,7 +97,26 @@ public abstract class BaseErrorResponseHandler {
         }
     }
 
+
+    protected void processFailureResponseCode(int errorCode) {
+        Log.e("Error code recieved: ",""+errorCode);
+        switch (errorCode) {
+            case 500:
+                msg = "Temporary service unavailable";
+                break;
+            case 404:
+                break;
+            default:
+                msg = "Something weird happen";
+        }
+
+
+    }
     protected int getDefaultDrawable(){
         return R.drawable.ic_info;
+    }
+
+    protected int getDefaultAlertIcon(){
+        return R.drawable.ic_alert;
     }
 }

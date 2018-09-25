@@ -122,6 +122,12 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
     }
 
     @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
     public void authenticationFailure() {
         dismissProgress();
         AppUtils.authenticationProcessing();
