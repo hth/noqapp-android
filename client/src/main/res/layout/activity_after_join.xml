@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:card_view="http://schemas.android.com/apk/res-auto"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="#99ffffff"
@@ -60,13 +61,16 @@
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp">
 
-                                <ImageView
+                                <de.hdodenhof.circleimageview.CircleImageView
                                         android:id="@+id/iv_profile"
                                         android:layout_width="60dp"
                                         android:layout_height="60dp"
+                                        android:layout_alignParentStart="true"
                                         android:layout_alignParentLeft="true"
-                                        android:layout_marginRight="5dp"
-                                        android:tint="#1e88e5"/>
+                                        android:elevation="5dp"
+                                        android:scaleType="centerCrop"
+                                        app:border_color="#FFFFFFFF"
+                                        app:border_width="0dp"/>
 
 
                                 <LinearLayout
@@ -308,13 +312,16 @@
                                 android:id="@+id/add_person"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:padding="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginTop="10dp"
                                 android:text="@string/patient_name"
                                 android:textColor="#606060"
                                 android:textSize="@dimen/text_size_twelve"/>
 
                         <TextView
-                                android:id="@+id/sp_name_list"
+                                android:id="@+id/tv_name"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginBottom="5dp"
                                 android:paddingLeft="10dp"
@@ -323,10 +330,20 @@
                                 android:textSize="@dimen/text_size_sixteen"/>
 
                         <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/address"
+                                android:textColor="#606060"
+                                android:textSize="@dimen/text_size_twelve"/>
+
+                        <TextView
                                 android:id="@+id/tv_store_name"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginBottom="5dp"
-                                android:layout_marginTop="10dp"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:textColor="@color/colorAddress"

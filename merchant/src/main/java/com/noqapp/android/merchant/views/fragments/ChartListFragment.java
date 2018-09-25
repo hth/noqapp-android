@@ -171,7 +171,7 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
     private void initProgress() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("fetching data...");
+        progressDialog.setMessage("Loading data...");
     }
 
     private void dismissProgress() {
