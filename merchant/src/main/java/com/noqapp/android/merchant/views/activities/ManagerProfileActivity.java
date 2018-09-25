@@ -322,7 +322,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("fetching data...");
+        progressDialog.setMessage("Loading data...");
     }
 
     protected void dismissProgress() {

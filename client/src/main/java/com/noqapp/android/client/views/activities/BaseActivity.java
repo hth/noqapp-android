@@ -28,7 +28,7 @@ public class BaseActivity extends AppCompatActivity {
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("fetching data...");
+        progressDialog.setMessage("Loading data...");
     }
 
     protected void dismissProgress() {

@@ -148,7 +148,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 queueResponse(jsonQueue);
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.setMessage("fetching queue details...");
+                    progressDialog.setMessage("Loading queue details...");
                     progressDialog.show();
                     if (UserUtils.isLogin()) {
                         QueueApiModel queueApiModel = new QueueApiModel();

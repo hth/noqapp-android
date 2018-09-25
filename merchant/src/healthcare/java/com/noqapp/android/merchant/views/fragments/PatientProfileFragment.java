@@ -208,7 +208,7 @@ public class PatientProfileFragment extends Fragment implements PatientProfilePr
     private void initProgress() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("fetching data...");
+        progressDialog.setMessage("Loading data...");
     }
 
     protected void dismissProgress() {

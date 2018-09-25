@@ -78,7 +78,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         loadTabs.execute();
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Fetching doctor's profile...");
+            progressDialog.setMessage("Loading doctor's profile...");
             progressDialog.show();
             new ProfessionalProfileModel(this).profile(UserUtils.getDeviceId(), webProfileId);
         }

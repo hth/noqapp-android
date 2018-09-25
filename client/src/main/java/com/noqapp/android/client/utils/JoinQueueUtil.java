@@ -25,7 +25,7 @@ public class JoinQueueUtil {
         joinQueueState.setJoinNotPossible(false);
 
         if (isPreventJoining(jsonQueue)) {
-            Log.d(TAG, "Prevent Joining found");
+            Log.d(TAG, "Prevent joining found");
             String msg = String.format(
                     context.getString(R.string.error_prevent_joining),
                     jsonQueue.getBusinessName(),
@@ -36,7 +36,7 @@ public class JoinQueueUtil {
         }
 
         if (!joinQueueState.isJoinNotPossible() && isDayClosed(jsonQueue)) {
-            Log.d(TAG, "Closed for Day found");
+            Log.d(TAG, "Closed for the day found");
             String msg = String.format(
                     context.getString(R.string.error_day_closed),
                     jsonQueue.getBusinessName(),
@@ -49,11 +49,13 @@ public class JoinQueueUtil {
         if (!joinQueueState.isJoinNotPossible() && isTokenNotAvailable(jsonQueue)) {
             LocalTime tokenAvailableFrom = Formatter.parseLocalTime(Formatter.formatMilitaryTime(jsonQueue.getTokenAvailableFrom()));
             LocalTime tokenNotAvailableFrom = Formatter.parseLocalTime(Formatter.formatMilitaryTime(jsonQueue.getTokenNotAvailableFrom()));
+            LocalTime endHour = Formatter.parseLocalTime(Formatter.formatMilitaryTime(jsonQueue.getEndHour()));
 
             DateTime now = DateTime.now();
             LocalDate today = LocalDate.now();
             DateTime todayTokenAvailableFrom = today.toDateTime(tokenAvailableFrom);
             DateTime todayTokenNotAvailableFrom = today.toDateTime(tokenNotAvailableFrom);
+            DateTime endOfDay = today.toDateTime(endHour);
 
             Log.d(TAG, "Token not available found as now " + now
                     + " is before " + todayTokenAvailableFrom
@@ -69,7 +71,14 @@ public class JoinQueueUtil {
                         startTime);
 
                 joinQueueState.setJoinErrorMsg(msg);
-            } else if (now.isAfter(todayTokenNotAvailableFrom)) {
+            } else if (now.isAfter(endOfDay)) {
+                String msg = String.format(
+                        context.getString(R.string.error_business_has_closed_for_the_day),
+                        jsonQueue.getBusinessName(),
+                        jsonQueue.getDisplayName());
+
+                joinQueueState.setJoinErrorMsg(msg);
+            } else if (now.isAfter(todayTokenNotAvailableFrom) && now.isBefore(endOfDay)) {
                 String msg = String.format(
                         context.getString(R.string.error_token_not_available_from),
                         jsonQueue.getBusinessName(),
