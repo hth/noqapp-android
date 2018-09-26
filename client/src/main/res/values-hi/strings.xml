@@ -255,6 +255,6 @@
     <string name="profile"> <u>PROFILE</u></string>
     <string name="merchant_account">व्यापारी बने</string>
     <string name="address">Address</string>
-    <string name="privacy_in_short">Privacy in short</string>
+    <string name="privacy_in_short">Privacy Quick Overview</string>
 
 </resources>
