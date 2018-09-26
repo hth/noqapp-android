@@ -7,7 +7,7 @@
               android:background="#99ffffff"
               android:orientation="vertical">
 
-    <include layout="@layout/toolbar_white"/>
+    <include layout="@layout/toolbar_layout"/>
 
     <ScrollView
             android:layout_width="match_parent"
@@ -280,7 +280,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/add_dependent"
                         android:textAllCaps="true"
-                        android:textColor="#385dbf"
+                        android:textColor="#d75b71"
                         android:textSize="@dimen/text_size_twelve"/>
 
 
