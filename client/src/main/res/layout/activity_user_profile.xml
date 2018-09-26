@@ -268,7 +268,6 @@
                             style="@style/style_register_tv"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
-
                             android:text="@string/dependent_list"
                             android:layout_toLeftOf="@+id/tv_info"
                             android:textStyle="bold"
