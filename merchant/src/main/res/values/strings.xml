@@ -173,4 +173,5 @@
     <string name="scheduling">Store close scheduling </string>
     <string name="scheduling_from">From Day</string>
     <string name="scheduling_ending">Until Day</string>
+    <string name="error_invalid_captcha">Entered captcha is not matching with given captcha</string>
 </resources>
