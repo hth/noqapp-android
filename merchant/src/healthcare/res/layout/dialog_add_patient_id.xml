@@ -93,7 +93,7 @@
                 android:layout_marginRight="40dp"
                 android:layout_marginBottom="5dp"
                 android:layout_gravity="center_horizontal"
-                android:text="You have reached the maximum no of edit. Please fill the given captcha."
+                android:text="You have reached the maximum no. of edits. To continue, please fill the given captcha."
                 android:textColor="@android:color/holo_red_dark"
                 android:textStyle="bold"
                 android:visibility="gone"

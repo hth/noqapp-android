@@ -111,12 +111,12 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         View customDialogView = inflater.inflate(R.layout.dialog_add_patient_id, null, false);
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
         final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
-        ((TextView)customDialogView.findViewById(R.id.tv_patient_name)).setText(jsonQueuedPerson.getCustomerName());
+        ((TextView) customDialogView.findViewById(R.id.tv_patient_name)).setText(jsonQueuedPerson.getCustomerName());
         final TextView tv_random = customDialogView.findViewById(R.id.tv_random);
         final EditText edt_random = customDialogView.findViewById(R.id.edt_random);
         TextView tv_reach_limit = customDialogView.findViewById(R.id.tv_reach_limit);
         tv_random.setText(String.format("%04d", new Random().nextInt(10000)));
-        if(jsonQueuedPerson.getBusinessCustomerIdChangeCount()>1){
+        if (jsonQueuedPerson.getBusinessCustomerIdChangeCount() > 1) {
             tv_random.setVisibility(View.VISIBLE);
             edt_random.setVisibility(View.VISIBLE);
             tv_reach_limit.setVisibility(View.VISIBLE);
@@ -140,9 +140,9 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                     } else if (!TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) && jsonQueuedPerson.getBusinessCustomerId().equalsIgnoreCase(edt_id.getText().toString())) {
                         edt_id.setError(mContext.getString(R.string.error_customer_id_exist));
                     } else {
-                        if(jsonQueuedPerson.getBusinessCustomerIdChangeCount()>1 && !edt_random.getText().toString().equalsIgnoreCase(tv_random.getText().toString())) {
+                        if (jsonQueuedPerson.getBusinessCustomerIdChangeCount() > 1 && !edt_random.getText().toString().equalsIgnoreCase(tv_random.getText().toString())) {
                             edt_random.setError(mContext.getString(R.string.error_invalid_captcha));
-                        }else{
+                        } else {
                             LaunchActivity.getLaunchActivity().progressDialog.show();
                             String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
                             JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonQueuedPerson.getQueueUserId());
