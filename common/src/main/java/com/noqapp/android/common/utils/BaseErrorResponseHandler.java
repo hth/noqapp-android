@@ -54,6 +54,8 @@ public abstract class BaseErrorResponseHandler {
                         break;
                     case MOBILE_ACTION_NOT_PERMITTED:
                         break;
+                    case USER_ALREADY_IN_QUEUE:
+                        break;
                     case MERCHANT_COULD_NOT_ACQUIRE:
                         break;
                     case USER_EXISTING:
