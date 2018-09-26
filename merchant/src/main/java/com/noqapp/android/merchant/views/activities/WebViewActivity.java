@@ -52,11 +52,14 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_webview);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        tv_toolbar_title.setText(getString(R.string.legal));
         tv_badge = findViewById(R.id.tv_badge);
         webView = findViewById(R.id.webView);
-        if (null != getIntent().getStringExtra("url"))
+        if (null != getIntent().getStringExtra("url")) {
             url = getIntent().getStringExtra("url");
+        }
+        if (null != getIntent().getStringExtra("title")) {
+            tv_toolbar_title.setText(getIntent().getStringExtra("title"));
+        }
         webView.setWebViewClient(new myWebClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
@@ -88,9 +91,7 @@ public class WebViewActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
-
 
     @Override
     protected void onResume() {
@@ -102,16 +103,15 @@ public class WebViewActivity extends AppCompatActivity {
 //        } else {
 //            tv_badge.setVisibility(View.INVISIBLE);
 //        }
-
     }
 
     private void webViewGoBack() {
-        if (webView.canGoBack())
+        if (webView.canGoBack()) {
             webView.goBack();
+        }
     }
 
     private class myWebClient extends WebViewClient {
-
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);

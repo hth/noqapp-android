@@ -7,13 +7,11 @@
 
     <include layout="@layout/toolbar_layout"/>
 
-
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="10dp">
-
 
         <TextView
                 android:id="@+id/tv_header"
@@ -22,7 +20,6 @@
                 android:paddingLeft="10dp"
                 android:textStyle="bold"
                 android:textSize="16sp"/>
-
 
         <TextView
                 android:id="@+id/tv_info"
@@ -36,9 +33,7 @@
                 android:text="Bank Level Security"
                 android:paddingLeft="10dp"
                 android:textStyle="bold"
-                android:textSize="16sp"
-                />
-
+                android:textSize="16sp"/>
 
         <TextView
                 android:id="@+id/tv_security_info"
@@ -47,19 +42,17 @@
                 android:layout_width="match_parent"
                 android:textSize="@dimen/text_size_sixteen"/>
 
-
         <Button
                 android:id="@+id/btn_privacy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:gravity="center"
-                android:text="Privacy Quick Overview"
+                android:text="Privacy In Detail"
                 android:textAllCaps="false"
                 android:background="@color/colorAccent"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_sixteen"/>
-
 
         <Button
                 android:id="@+id/btn_term_condition"
@@ -68,12 +61,10 @@
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
-                android:text="Terms &amp; Condition"
+                android:text="Terms &amp; Conditions"
                 android:background="@color/colorAccent"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_sixteen"/>
-
-
     </LinearLayout>
 </LinearLayout>
