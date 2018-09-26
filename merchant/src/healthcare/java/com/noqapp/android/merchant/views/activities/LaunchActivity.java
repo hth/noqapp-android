@@ -26,7 +26,6 @@ import io.fabric.sdk.android.Fabric;
 
 public class LaunchActivity extends BaseLaunchActivity {
 
-    private FrameLayout fl_notification;
     private TextView tv_badge;
 
     @Override
@@ -47,7 +46,7 @@ public class LaunchActivity extends BaseLaunchActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false); // to hide the default action bar title
         tv_name = findViewById(R.id.tv_name);
         tv_badge = findViewById(R.id.tv_badge);
-        fl_notification = findViewById(R.id.fl_notification);
+        FrameLayout fl_notification = findViewById(R.id.fl_notification);
         fl_notification.setVisibility(View.VISIBLE);
         fl_notification.setOnClickListener(new View.OnClickListener() {
             @Override

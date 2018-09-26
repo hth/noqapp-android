@@ -225,7 +225,7 @@
     <string name="no_thanks">No Thanks</string>
     <string name="update">Update</string>
     <string name="patient_name">Patient Name</string>
-    <string name="add_dependent">Add Dependent</string>
+    <string name="add_dependent">Add Family Members</string>
     <string name="queue_details">Queue Details</string>
     <string name="will_be_served">you will be served in %1$s</string>
     <string name="ack">Acknowledge</string>

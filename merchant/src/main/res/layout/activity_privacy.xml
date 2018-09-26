@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#99ffffff"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout"/>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+
+        <TextView
+                android:id="@+id/tv_header"
+                style="@style/style_register_tv"
+                android:text="@string/privacy_in_short"
+                android:paddingLeft="10dp"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+
+        <TextView
+                android:id="@+id/tv_info"
+                style="@style/style_register_tv"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:textSize="@dimen/text_size_sixteen"/>
+
+        <TextView
+                style="@style/style_register_tv"
+                android:text="Bank Level Security"
+                android:paddingLeft="10dp"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                />
+
+
+        <TextView
+                android:id="@+id/tv_security_info"
+                style="@style/style_register_tv"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:textSize="@dimen/text_size_sixteen"/>
+
+
+        <Button
+                android:id="@+id/btn_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="Privacy Quick Overview"
+                android:textAllCaps="false"
+                android:background="@color/colorAccent"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_sixteen"/>
+
+
+        <Button
+                android:id="@+id/btn_term_condition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:text="Terms &amp; Condition"
+                android:background="@color/colorAccent"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_sixteen"/>
+
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,81 @@
+package com.noqapp.android.merchant.views.activities;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+
+public class PrivacyActivity extends AppCompatActivity implements View.OnClickListener {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        if (new AppUtils().isTablet(getApplicationContext())) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_privacy);
+        TextView tv_security_info = findViewById(R.id.tv_security_info);
+        TextView tv_info = findViewById(R.id.tv_info);
+        Button btn_privacy = findViewById(R.id.btn_privacy);
+        Button btn_term_condition = findViewById(R.id.btn_term_condition);
+        FrameLayout fl_notification = findViewById(R.id.fl_notification);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        fl_notification.setVisibility(View.INVISIBLE);
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        tv_toolbar_title.setText(getString(R.string.legal));
+        btn_privacy.setOnClickListener(this);
+        btn_term_condition.setOnClickListener(this);
+        tv_info.setText(getString(R.string.bullet) + " We do not track your activities \n" +
+                getString(R.string.bullet) + " We do not share your personal information with anyone\n" +
+                getString(R.string.bullet) + " We are not affiliated to any social media\n" +
+                getString(R.string.bullet) + " When you join a queue, a secure communication is between you, doctor and hospital.");
+
+        tv_security_info.setText("256-bit encryption and physical security that bank uses.");
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.btn_privacy:
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    Intent in = new Intent(PrivacyActivity.this, WebViewActivity.class);
+                    in.putExtra("url", Constants.URL_PRIVACY_POLICY);
+                    startActivity(in);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(PrivacyActivity.this);
+                }
+                break;
+            case R.id.btn_term_condition:
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    Intent in = new Intent(PrivacyActivity.this, WebViewActivity.class);
+                    in.putExtra("url", Constants.URL_TERM_CONDITION);
+                    startActivity(in);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(PrivacyActivity.this);
+                }
+                break;
+
+        }
+    }
+
+}
