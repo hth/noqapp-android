@@ -88,7 +88,7 @@
     <string name="error_time">Time has to be greater than 12:00 AM</string>
     <string name="error_access_denied">Not authorized to access. Please contact your admin for permission.</string>
     <string name="text_delay">Change today\'s arrival time</string>
-    <string name="error_delay_time">Time has to be greater than start time.</string>
+    <string name="error_delay_time">Arrival time should be between Queue start time and Queue close time.</string>
     <string name="queue_closed">Queue Closed</string>
 
     <string name="notification_alert">You don\'t have any notifications.</string>
@@ -148,7 +148,7 @@
     <string name="change_name">Change Patient</string>
     <string name="update_details">Update Details</string>
     <string name="patient_details">Business Patient ID</string>
-    <string name="customer_id">Patient ID</string>
+    <string name="customer_id">Reg. Id</string>
 
     <string name="education">Education</string>
     <string name="experience">Experience</string>

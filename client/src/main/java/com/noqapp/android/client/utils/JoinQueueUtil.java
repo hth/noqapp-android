@@ -136,14 +136,20 @@ public class JoinQueueUtil {
      * @return
      */
     private static boolean isTokenNotAvailable(JsonQueue jsonQueue) {
+        LocalTime endHour = Formatter.parseLocalTime(Formatter.formatMilitaryTime(jsonQueue.getEndHour()));
         LocalTime tokenAvailableFrom = Formatter.parseLocalTime(Formatter.formatMilitaryTime(jsonQueue.getTokenAvailableFrom()));
         LocalTime tokenNotAvailableFrom = Formatter.parseLocalTime(Formatter.formatMilitaryTime(jsonQueue.getTokenNotAvailableFrom()));
 
         DateTime now = DateTime.now();
         LocalDate today = LocalDate.now();
+        DateTime endHourFrom = today.toDateTime(endHour);
         DateTime todayTokenAvailableFrom = today.toDateTime(tokenAvailableFrom);
         DateTime todayTokenNotAvailableFrom = today.toDateTime(tokenNotAvailableFrom);
 
+        /* Do not check any further if now is after store close time.*/
+        if (now.isAfter(endHourFrom)) {
+            return false;
+        }
         return now.isBefore(todayTokenAvailableFrom) || now.isAfter(todayTokenNotAvailableFrom.plusMinutes(jsonQueue.getDelayedInMinutes()));
     }
 
