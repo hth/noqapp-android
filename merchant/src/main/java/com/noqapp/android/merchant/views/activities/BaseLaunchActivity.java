@@ -697,16 +697,15 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, "Share the app"));
         drawerItem.add(new NavigationBean(R.drawable.ic_star, "Rate the app"));
         drawerItem.add(new NavigationBean(R.drawable.language, "Change language"));
-        drawerItem.add(new NavigationBean(R.drawable.androidos, BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
-                ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
-                : getString(R.string.version_no, "Not for release")));
-
-
         if (showChart)
             drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Charts"));
         drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
         mDrawerList.setAdapter(drawerAdapter);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        ((TextView) findViewById(R.id.tv_version)).setText(
+                BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
+                        ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+                        : getString(R.string.version_no, "Not for release"));
     }
 
     private void sendRegistrationToServer(String refreshToken) {
