@@ -14,22 +14,17 @@ import android.widget.TextView;
 import java.util.List;
 
 public class DependentAdapter extends ArrayAdapter<JsonQueuedDependent> {
-
-
     private final Context mContext;
     private final List<JsonQueuedDependent> items;
 
-
-    public DependentAdapter(Context context,
-                            List<JsonQueuedDependent> items) {
+    public DependentAdapter(Context context, List<JsonQueuedDependent> items) {
         super(context, R.layout.spinner_item, items);
         mContext = context;
         this.items = items;
     }
 
     @Override
-    public View getDropDownView(int position, View convertView,
-                                ViewGroup parent) {
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
         return createItemView(position, convertView, parent);
     }
 
@@ -40,7 +35,7 @@ public class DependentAdapter extends ArrayAdapter<JsonQueuedDependent> {
 
     private View createItemView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
-        if (v == null) {
+        if (null == v) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.spinner_item, parent, false);
         }
@@ -48,8 +43,6 @@ public class DependentAdapter extends ArrayAdapter<JsonQueuedDependent> {
         lbl.setTextColor(Color.BLACK);
         lbl.setText(items.get(position).getCustomerName());
         return v;
-
-
     }
 }
 

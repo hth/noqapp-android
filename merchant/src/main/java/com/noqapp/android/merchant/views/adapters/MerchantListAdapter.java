@@ -72,7 +72,7 @@ public class MerchantListAdapter extends BaseAdapter {
             int hours = jsonTopic.getHour().getDelayedInMinutes() / 60;
             int minutes = jsonTopic.getHour().getDelayedInMinutes() % 60;
             System.out.printf("%d:%02d", hours, minutes);
-            recordHolder.tv_status.setText("Delayed by " + hours+" Hrs " + minutes+" minutes");
+            recordHolder.tv_status.setText("Delayed by " + hours + " Hrs " + minutes + " minutes");
         } else {
             recordHolder.tv_status.setText("");
         }

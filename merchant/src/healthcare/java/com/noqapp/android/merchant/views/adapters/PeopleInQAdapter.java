@@ -81,7 +81,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                                 ShowAlertInformation.showNetworkDialog(context);
                             }
                         } else {
-                            Toast.makeText(context, "please select the patient name other than the current name", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Please select a patient name other than the current name", Toast.LENGTH_LONG).show();
                         }
                     }
 
