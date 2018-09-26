@@ -25,6 +25,8 @@
                 android:id="@+id/tv_info"
                 style="@style/style_register_tv"
                 android:layout_margin="10dp"
+                android:paddingBottom="15dp"
+                android:lineSpacingExtra="8dp"
                 android:layout_width="match_parent"
                 android:textSize="@dimen/text_size_sixteen"/>
 
@@ -39,6 +41,8 @@
                 android:id="@+id/tv_security_info"
                 style="@style/style_register_tv"
                 android:layout_margin="10dp"
+                android:paddingBottom="15dp"
+                android:lineSpacingExtra="8dp"
                 android:layout_width="match_parent"
                 android:textSize="@dimen/text_size_sixteen"/>
 
