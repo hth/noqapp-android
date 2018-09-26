@@ -35,7 +35,7 @@ public class JoinQueueUtil {
                     .setJoinErrorMsg(msg);
         }
 
-        if (!joinQueueState.isJoinNotPossible() && isDayClosed(jsonQueue) && isAfterEndHour(jsonQueue)) {
+        if (!joinQueueState.isJoinNotPossible() && (isDayClosed(jsonQueue) || isAfterEndHour(jsonQueue))) {
             Log.d(TAG, "Closed for the day found");
             String msg = String.format(
                     context.getString(R.string.error_day_closed),
