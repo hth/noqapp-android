@@ -361,8 +361,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     e.printStackTrace();
                 }
             } else {
-                btn_update.setText("Add Dependent");
-                progressDialog.setMessage("Adding dependent....");
+                btn_update.setText("Add Family Members");
+                progressDialog.setMessage("Adding family member....");
             }
         } else {
             edt_Name.setText(NoQueueBaseActivity.getUserName());
