@@ -238,7 +238,15 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             @Override
             public void onClick(View view) {
                 if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                    callUpdate();
+                    if (isEndTimeBeforeStartTime(tv_store_start, tv_store_close)) {
+                        ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Queue start time' should be before 'Queue close time'.");
+                    } else if (isEndTimeBeforeStartTime(tv_token_available, tv_token_not_available)) {
+                        ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Issue token from' should be before 'Stop issuing token after'.");
+                    } else if (isEndTimeBeforeStartTime(tv_token_not_available, tv_store_close)) {
+                        ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Stop issuing token after' should be before 'Queue close time'.");
+                    } else {
+                        callUpdate();
+                    }
                 } else {
                     ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
                 }
@@ -499,18 +507,20 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             Calendar mcurrentTime = Calendar.getInstance();
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
-            TimePickerDialog mTimePicker;
-            mTimePicker = new TimePickerDialog(SettingActivity.this, R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
+            TimePickerDialog mTimePicker = new TimePickerDialog(SettingActivity.this, R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     if (selectedHour == 0 && selectedMinute == 0) {
                         Toast.makeText(SettingActivity.this, getString(R.string.error_time), Toast.LENGTH_LONG).show();
                     } else {
                         LocalTime startTime = Formatter.parseLocalTime(tv_store_start.getText().toString().replace(":", ""));
+                        LocalTime closeTime = Formatter.parseLocalTime(tv_store_close.getText().toString().replace(":", ""));
                         LocalTime arrivalTime = Formatter.parseLocalTime(String.format("%02d%02d", selectedHour, selectedMinute));
                         if (arrivalTime.isBefore(startTime)) {
                             Toast.makeText(SettingActivity.this, getString(R.string.error_delay_time), Toast.LENGTH_LONG).show();
-                        } else {
+                        } else if (closeTime.isBefore(arrivalTime)) {
+                            Toast.makeText(SettingActivity.this, getString(R.string.error_delay_time), Toast.LENGTH_LONG).show();
+                        }else {
                             textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                             arrivalTextChange = true;
                         }
@@ -554,17 +564,14 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         datePickerDialog.show();
     }
 
-    private void showAlert(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyAlertDialogTheme);
-        builder.setTitle(title);
-        builder.setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+    private boolean isEndTimeBeforeStartTime(TextView tv_start_time, TextView tv_end_time) {
+        LocalTime startTime = Formatter.parseLocalTime(tv_start_time.getText().toString().replace(":", ""));
+        LocalTime endTime = Formatter.parseLocalTime(tv_end_time.getText().toString().replace(":", ""));
+        if (endTime.isBefore(startTime)) {
+            return true;
+        } else {
+            return false;
+
+        }
     }
 }
