@@ -26,10 +26,10 @@ public class PrivacyActivity extends BaseActivity implements View.OnClickListene
         tv_toolbar_title.setText(getString(R.string.legal));
         btn_privacy.setOnClickListener(this);
         btn_term_condition.setOnClickListener(this);
-        tv_info.setText(getString(R.string.bullet) + "We do not track your activities \n" +
-                getString(R.string.bullet) + "We do not share your personal information with anyone\n" +
-                getString(R.string.bullet) + "We are not affiliated to any social media\n" +
-                getString(R.string.bullet) + "When you join a queue, a secure communication is between you, doctor and hospital.");
+        tv_info.setText(getString(R.string.bullet) + " We do not track your activities \n" +
+                getString(R.string.bullet) + " We do not share your personal information with anyone\n" +
+                getString(R.string.bullet) + " We are not affiliated to any social media\n" +
+                getString(R.string.bullet) + " When you join a queue, a secure communication is between you, doctor and hospital.");
 
         tv_security_info.setText("256-bit encryption and physical security that bank uses.");
     }
