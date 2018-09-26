@@ -127,7 +127,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             String reviewText = String.valueOf(jsonTokenAndQueue.getRatingCount() == 0 ? "No" : jsonTokenAndQueue.getRatingCount()) + " Reviews";
             tv_rating_review.setText(reviewText);
             LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-            AppUtilities.setRatingBarColorBlue(stars, this);
+            AppUtilities.setRatingBarColor(stars, this);
             profile_pos = bundle.getIntExtra("profile_pos", 1);
             String imageUrl = bundle.getStringExtra("imageUrl");
             if (!TextUtils.isEmpty(imageUrl)) {

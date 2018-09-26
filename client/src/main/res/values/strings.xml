@@ -2,7 +2,7 @@
     <string name="app_name">NoQApp</string>LaunchActivity
     <string name="title_activity_launch">NoQApp</string>
     <!--Screen Name-->
-    <string name="tab_scan">NoQueue</string>
+    <string name="tab_scan">NoQApp</string>
     <string name="screen_qdetails">QDetails</string>
     <string name="screen_invite">Invite</string>
     <string name="screen_review">Review</string>

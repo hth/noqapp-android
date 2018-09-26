@@ -97,7 +97,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_join));
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        AppUtilities.setRatingBarColorBlue(stars, this);
+        AppUtilities.setRatingBarColor(stars, this);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

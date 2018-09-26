@@ -56,6 +56,10 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty("bc")
     private String businessCustomerId;
 
+    /* This checks how many times the Business Customer Id has been changed. */
+    @JsonProperty("cc")
+    private int businessCustomerIdChangeCount;
+
     @JsonProperty ("vs")
     private boolean clientVisitedThisStore;
 
@@ -138,6 +142,15 @@ public class JsonQueuedPerson implements Serializable {
 
     public JsonQueuedPerson setBusinessCustomerId(String businessCustomerId) {
         this.businessCustomerId = businessCustomerId;
+        return this;
+    }
+
+    public int getBusinessCustomerIdChangeCount() {
+        return businessCustomerIdChangeCount;
+    }
+
+    public JsonQueuedPerson setBusinessCustomerIdChangeCount(int businessCustomerIdChangeCount) {
+        this.businessCustomerIdChangeCount = businessCustomerIdChangeCount;
         return this;
     }
 
