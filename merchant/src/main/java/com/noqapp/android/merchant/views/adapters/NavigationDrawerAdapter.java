@@ -23,8 +23,6 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         return data;
     }
 
-
-
     public NavigationDrawerAdapter(Context mContext, ArrayList<NavigationBean> data) {
         this.mContext = mContext;
         this.data = data;
@@ -57,5 +55,4 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         tv_title.setText(navigationBean.getTitle());
         return listItem;
     }
-
 }

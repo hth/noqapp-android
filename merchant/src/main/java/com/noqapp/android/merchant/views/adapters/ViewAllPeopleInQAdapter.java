@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-
 public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleInQAdapter.MyViewHolder> {
     private final Context context;
     private final OnItemClickListener listener;
@@ -39,16 +38,20 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
         final JsonQueuedPerson jsonQueuedPerson = dataSet.get(listPosition);
         holder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
-        holder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user)) :
-                Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
+        holder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())
+                ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
+                : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
         String phoneNo = jsonQueuedPerson.getCustomerPhone();
-        holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                PhoneFormatterUtil.formatNumber("IN", phoneNo));
+        holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo)
+                ? context.getString(R.string.unregister_user)
+                //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
+                : PhoneFormatterUtil.formatNumber("IN", phoneNo));
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(null != listener)
-                 listener.currentItemClick(listPosition);
+                if (null != listener) {
+                    listener.currentItemClick(listPosition);
+                }
             }
         });
     }
@@ -77,5 +80,4 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
-
 }

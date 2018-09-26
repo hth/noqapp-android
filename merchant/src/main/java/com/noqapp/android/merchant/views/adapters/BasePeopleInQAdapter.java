@@ -37,14 +37,14 @@ import android.widget.TextView;
 import java.util.List;
 
 public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeopleInQAdapter.MyViewHolder> implements QueuePersonListPresenter {
-
     private static final String TAG = BasePeopleInQAdapter.class.getSimpleName();
+
     private final Context context;
     private List<JsonQueuedPerson> dataSet;
-    private int glowPostion = -1;
-    protected String qCodeQR = "";
-    protected ManageQueueModel manageQueueModel;
-    protected BusinessCustomerModel businessCustomerModel;
+    private int glowPosition = -1;
+    String qCodeQR;
+    ManageQueueModel manageQueueModel;
+    BusinessCustomerModel businessCustomerModel;
     private QueueStatusEnum queueStatusEnum;
 
     // for medical Only
@@ -74,7 +74,6 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         }
         notifyDataSetChanged();
         LaunchActivity.getLaunchActivity().dismissProgress();
-
     }
 
     @Override
@@ -150,12 +149,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         businessCustomerModel = new BusinessCustomerModel(this);
     }
 
-    public BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion, QueueStatusEnum queueStatusEnum) {
+    public BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
         this.qCodeQR = qCodeQR;
-        this.glowPostion = glowPostion;
+        this.glowPosition = glowPosition;
         manageQueueModel = new ManageQueueModel();
         manageQueueModel.setQueuePersonListPresenter(this);
         businessCustomerModel = new BusinessCustomerModel(this);
@@ -163,10 +162,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                           int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rcv_people_queue_item, parent, false);
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_people_queue_item, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -222,14 +219,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 break;
             case N:
                 recordHolder.iv_info.setBackgroundResource(R.drawable.acquire_cancel_by_user);
-                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
-                        context, R.color.disable_list));
+                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
                 recordHolder.tv_status_msg.setText(context.getString(R.string.msg_merchant_skip));
                 break;
             case S:
                 recordHolder.iv_info.setBackgroundResource(R.drawable.acquire_cancel_by_user);
-                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
-                        context, R.color.disable_list));
+                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
                 recordHolder.tv_status_msg.setText(context.getString(R.string.msg_merchant_served));
                 break;
             default:
@@ -244,7 +239,6 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 createCaseHistory(context, jsonQueuedPerson);
             }
         });
-
         recordHolder.tv_change_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,7 +253,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         });
         try {
             if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                if (glowPostion > 0 && glowPostion - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
+                if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
                     //recordHolder.tv_create_case.setVisibility(View.VISIBLE);
                     recordHolder.tv_create_case.setClickable(true);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.tv_roun_rect);
@@ -287,10 +281,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             recordHolder.tv_change_name.setClickable(false);
         }
 
-        if (glowPostion > 0 && glowPostion - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
+        if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
             Animation startAnimation = AnimationUtils.loadAnimation(context, R.anim.show_anim);
             recordHolder.cardview.startAnimation(startAnimation);
-            Log.v("animation true: ", "" + position);
+            Log.v("Animation true: ", String.valueOf(position));
         } else {
             Animation removeAnimation = AnimationUtils.loadAnimation(context, R.anim.remove_anim);
             recordHolder.cardview.startAnimation(removeAnimation);
@@ -301,5 +295,4 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     public int getItemCount() {
         return dataSet.size();
     }
-
 }

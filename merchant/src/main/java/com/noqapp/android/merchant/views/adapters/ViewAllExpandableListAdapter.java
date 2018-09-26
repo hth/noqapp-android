@@ -24,7 +24,6 @@ import java.util.Map;
 /**
  * Created by chandra on 3/28/18.
  */
-
 public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
@@ -56,31 +55,28 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
         final ChildViewHolder childViewHolder;
         final JsonQueuePersonList childData = (JsonQueuePersonList) getChild(groupPosition, childPosition);
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item_child, parent, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.rv = convertView.findViewById(R.id.rv);
             convertView.setTag(R.layout.list_item_child, childViewHolder);
         } else {
-            childViewHolder = (ChildViewHolder) convertView
-                    .getTag(R.layout.list_item_child);
+            childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_child);
         }
         childViewHolder.rv.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManager2 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        int coloumnCount;
+        int columnCount;
         if (new AppUtils().isTablet(context.getApplicationContext())) {
-            coloumnCount = 7;
+            columnCount = 7;
         } else {
-            coloumnCount = 2;
+            columnCount = 2;
         }
-        childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, coloumnCount));
+        childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, columnCount));
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
         ViewAllPeopleInQAdapter currentActivityAdapter = new ViewAllPeopleInQAdapter(childData.getQueuedPeople(), context, null);
         childViewHolder.rv.setAdapter(currentActivityAdapter);
         currentActivityAdapter.notifyDataSetChanged();
         return convertView;
-
     }
 
     @Override
@@ -105,13 +101,11 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         Date headerTitle = (Date) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_header, parent, false);
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_item_header, parent, false);
         }
         TextView tv_date = convertView.findViewById(R.id.tv_date);
         TextView tv_count = convertView.findViewById(R.id.tv_count);
@@ -131,7 +125,6 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
 
     public final class ChildViewHolder {
         RecyclerView rv;
