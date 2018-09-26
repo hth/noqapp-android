@@ -62,20 +62,20 @@ public class JoinQueueUtil {
                     + " or after " + todayTokenNotAvailableFrom);
             joinQueueState.setJoinNotPossible(true);
 
-            if (now.isAfter(endOfDay)) {
-                String msg = String.format(
-                        context.getString(R.string.error_business_has_closed_for_the_day),
-                        jsonQueue.getBusinessName(),
-                        jsonQueue.getDisplayName());
-
-                joinQueueState.setJoinErrorMsg(msg);
-            } else if (now.isBefore(todayTokenAvailableFrom)) {
+            if (now.isBefore(todayTokenAvailableFrom)) {
                 String startTime = Formatter.convertMilitaryTo12HourFormat(jsonQueue.getTokenAvailableFrom());
                 String msg = String.format(
                         context.getString(R.string.error_token_available_from),
                         jsonQueue.getBusinessName(),
                         jsonQueue.getDisplayName(),
                         startTime);
+
+                joinQueueState.setJoinErrorMsg(msg);
+            } else if (now.isAfter(endOfDay)) {
+                String msg = String.format(
+                        context.getString(R.string.error_business_has_closed_for_the_day),
+                        jsonQueue.getBusinessName(),
+                        jsonQueue.getDisplayName());
 
                 joinQueueState.setJoinErrorMsg(msg);
             } else if (now.isAfter(todayTokenNotAvailableFrom) && now.isBefore(endOfDay)) {
