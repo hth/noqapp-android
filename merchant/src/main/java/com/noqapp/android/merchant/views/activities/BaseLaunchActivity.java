@@ -50,6 +50,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -218,9 +219,15 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                     case R.drawable.language:
                         showChangeLangDialog();
                         break;
+
+                    case R.drawable.legal: {
+                        Intent in = new Intent(launchActivity, PrivacyActivity.class);
+                        startActivity(in);
+                        break;
+                    }
                     default:
                 }
-                mDrawerLayout.closeDrawer(mDrawerList);
+                mDrawerLayout.closeDrawer(GravityCompat.START);
             }
         });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -230,7 +237,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             public void onDrawerOpened(View drawerView) {
             }
         };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -693,10 +700,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void updateMenuList(boolean showChart) {
         drawerItem.clear();
         drawerItem.add(new NavigationBean(R.drawable.profile_red, "Profile"));
-        drawerItem.add(new NavigationBean(R.mipmap.logout, "Logout"));
+        drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
         drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, "Share the app"));
         drawerItem.add(new NavigationBean(R.drawable.ic_star, "Rate the app"));
         drawerItem.add(new NavigationBean(R.drawable.language, "Change language"));
+        drawerItem.add(new NavigationBean(R.mipmap.logout, "Logout"));
         if (showChart)
             drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Charts"));
         drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);

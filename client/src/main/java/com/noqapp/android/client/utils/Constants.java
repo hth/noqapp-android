@@ -1,6 +1,7 @@
 package com.noqapp.android.client.utils;
 
 import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.common.utils.BaseConstants;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -10,7 +11,7 @@ import android.util.Log;
  * User: hitender
  * Date: 3/27/17 2:24 PM
  */
-public class Constants {
+public class Constants extends BaseConstants{
     public static final String DEVICE_TYPE = "A";
     public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final int requestCodeJoinQActivity = 11;
@@ -31,17 +32,9 @@ public class Constants {
     public static final String ACTIVITY_TO_CLOSE = "activity_status";
     public static final String FROM_JOIN_SCREEN = "from_join_screen";
     //error codes
-    public static final int SERVER_RESPONSE_CODE_SUCESS = 200;
-    public static final int INVALID_CREDENTIAL = 401;
     public static final int INVALID_BAR_CODE = 404;
     public static final int DEFAULT_REVIEW_TIME_SAVED = 3;
-    //Urls
-    public static final String URL_MERCHANT_LOGIN = "https://q.noqapp.com/";
-    public static final String URL_MERCHANT_REGISTER = "https://q.noqapp.com/open/register.htm";
-    public static final String URL_ABOUT_US = "https://noqapp.com/mobile/m.about-us.html";
-    public static final String URL_TERM_CONDITION = "https://noqapp.com/mobile/m.terms.html";
-    public static final String URL_PRIVACY_POLICY = "https://noqapp.com/mobile/m.privacy.html";
-    public static final String URL_HOW_IT_WORKS = "https://noqapp.com/mobile/m.how-invite-works.html";
+
     //Google place search api
     static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     static final String TYPE_AUTOCOMPLETE = "/autocomplete";

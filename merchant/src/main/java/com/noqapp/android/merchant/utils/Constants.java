@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.utils;
 
 import com.noqapp.android.common.model.types.DeviceTypeEnum;
+import com.noqapp.android.common.utils.BaseConstants;
 import com.noqapp.android.merchant.BuildConfig;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +13,7 @@ import android.util.Log;
  * Date: 4/16/17 6:06 PM
  */
 
-public class Constants {
+public class Constants extends BaseConstants {
     public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final String DEVICE_TYPE = DeviceTypeEnum.A.getName();
     public static final int requestCodeNotification = 2;
