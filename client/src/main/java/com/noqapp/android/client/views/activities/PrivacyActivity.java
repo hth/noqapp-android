@@ -42,6 +42,7 @@ public class PrivacyActivity extends BaseActivity implements View.OnClickListene
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(PrivacyActivity.this, WebViewActivity.class);
                     in.putExtra("url", Constants.URL_PRIVACY_POLICY);
+                    in.putExtra("title","Privacy In Detail");
                     startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(PrivacyActivity.this);
@@ -51,6 +52,7 @@ public class PrivacyActivity extends BaseActivity implements View.OnClickListene
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(PrivacyActivity.this, WebViewActivity.class);
                     in.putExtra("url", Constants.URL_TERM_CONDITION);
+                    in.putExtra("title","Terms & Conditions");
                     startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(PrivacyActivity.this);
