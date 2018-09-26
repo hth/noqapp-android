@@ -24,7 +24,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -114,7 +113,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             @Override
             public void onClick(View v) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
                     LayoutInflater inflater = LayoutInflater.from(SettingActivity.this);
                     builder.setTitle(null);
@@ -520,7 +518,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                             Toast.makeText(SettingActivity.this, getString(R.string.error_delay_time), Toast.LENGTH_LONG).show();
                         } else if (closeTime.isBefore(arrivalTime)) {
                             Toast.makeText(SettingActivity.this, getString(R.string.error_delay_time), Toast.LENGTH_LONG).show();
-                        }else {
+                        } else {
                             textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                             arrivalTextChange = true;
                         }
@@ -567,11 +565,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private boolean isEndTimeBeforeStartTime(TextView tv_start_time, TextView tv_end_time) {
         LocalTime startTime = Formatter.parseLocalTime(tv_start_time.getText().toString().replace(":", ""));
         LocalTime endTime = Formatter.parseLocalTime(tv_end_time.getText().toString().replace(":", ""));
-        if (endTime.isBefore(startTime)) {
-            return true;
-        } else {
-            return false;
-
-        }
+        return endTime.isBefore(startTime);
     }
 }
