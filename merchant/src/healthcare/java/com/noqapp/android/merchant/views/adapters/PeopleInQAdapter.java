@@ -25,9 +25,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Random;
 
 public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
@@ -109,6 +111,16 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         View customDialogView = inflater.inflate(R.layout.dialog_add_patient_id, null, false);
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
         final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
+        ((TextView) customDialogView.findViewById(R.id.tv_patient_name)).setText(jsonQueuedPerson.getCustomerName());
+        final TextView tv_random = customDialogView.findViewById(R.id.tv_random);
+        final EditText edt_random = customDialogView.findViewById(R.id.edt_random);
+        TextView tv_reach_limit = customDialogView.findViewById(R.id.tv_reach_limit);
+        tv_random.setText(String.format("%04d", new Random().nextInt(10000)));
+        if (jsonQueuedPerson.getBusinessCustomerIdChangeCount() > 1) {
+            tv_random.setVisibility(View.VISIBLE);
+            edt_random.setVisibility(View.VISIBLE);
+            tv_reach_limit.setVisibility(View.VISIBLE);
+        }
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -117,6 +129,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
             @Override
             public void onClick(View v) {
                 edt_id.setError(null);
+                edt_random.setError(null);
                 new AppUtils().hideKeyBoard((Activity) mContext);
 
                 if (TextUtils.isEmpty(edt_id.getText().toString())) {
@@ -127,25 +140,29 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                     } else if (!TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) && jsonQueuedPerson.getBusinessCustomerId().equalsIgnoreCase(edt_id.getText().toString())) {
                         edt_id.setError(mContext.getString(R.string.error_customer_id_exist));
                     } else {
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
-                        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
-                        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonQueuedPerson.getQueueUserId());
-                        jsonBusinessCustomer.setCodeQR(qCodeQR);
-                        jsonBusinessCustomer.setCustomerPhone(phoneNoWithCode);
-                        jsonBusinessCustomer.setBusinessCustomerId(edt_id.getText().toString());
-                        if (TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())) {
-                            businessCustomerModel.addId(
-                                    LaunchActivity.getLaunchActivity().getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
+                        if (jsonQueuedPerson.getBusinessCustomerIdChangeCount() > 1 && !edt_random.getText().toString().equalsIgnoreCase(tv_random.getText().toString())) {
+                            edt_random.setError(mContext.getString(R.string.error_invalid_captcha));
                         } else {
-                            businessCustomerModel.editId(
-                                    LaunchActivity.getLaunchActivity().getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
+                            LaunchActivity.getLaunchActivity().progressDialog.show();
+                            String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
+                            JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonQueuedPerson.getQueueUserId());
+                            jsonBusinessCustomer.setCodeQR(qCodeQR);
+                            jsonBusinessCustomer.setCustomerPhone(phoneNoWithCode);
+                            jsonBusinessCustomer.setBusinessCustomerId(edt_id.getText().toString());
+                            if (TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())) {
+                                businessCustomerModel.addId(
+                                        LaunchActivity.getLaunchActivity().getDeviceID(),
+                                        LaunchActivity.getLaunchActivity().getEmail(),
+                                        LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
+                            } else {
+                                businessCustomerModel.editId(
+                                        LaunchActivity.getLaunchActivity().getDeviceID(),
+                                        LaunchActivity.getLaunchActivity().getEmail(),
+                                        LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
+                            }
+                            btn_update.setClickable(false);
+                            mAlertDialog.dismiss();
                         }
-                        btn_update.setClickable(false);
-                        mAlertDialog.dismiss();
                     }
 
                 }
