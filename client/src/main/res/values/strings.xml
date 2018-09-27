@@ -59,7 +59,6 @@
     <string name="error_dob_blank">Please enter date of birth</string>
 
 
-
     <!--Error and message-->
     <string name="networkerror">Network Error</string>
     <string name="offline">Network unavailable. Please connect your device to network.</string>
@@ -94,8 +93,6 @@
     <string name="time_saved">Time saved:&#160;</string>
 
 
-
-
     <!-- Others -->
     <string name="ok">OK</string>
     <string name="exit_app">Press back again to exit</string>
@@ -111,7 +108,7 @@
     <string name="logout_msg">Data created when not logged in could be lost forever</string>
     <string name="error_mobile_blank">Please enter phone number</string>
     <string name="error_login">Please login to remote join</string>
-     <string name="error_rateservice">Please rate the service</string>
+    <string name="error_rateservice">Please rate the service</string>
     <string name="review_thanks">Thanks for feedback.</string>
     <string name="error_timesaved">Please provide how many no. of hour(s) you saved.</string>
     <string name="error_qrcode_scan">Not a valid NoQueue QR Code</string>
@@ -179,7 +176,6 @@
     <string name="prompt_gender">Gender</string>
     <string name="prompt_marital_status">marital status</string>
     <string name="action_update">update profile</string>
-
 
 
     <string name="language_setting">Change Language</string>
@@ -256,7 +252,6 @@
     <!-- Language select dialog -->
 
 
-
     <string name="mds_chief_complaints">Chief Complaint:</string>
     <string name="mds_past_history">Past History:</string>
     <string name="mds_family_history">Family History:</string>
@@ -287,6 +282,7 @@
     <string name="merchant_account">Become a merchant</string>
     <string name="address">Address</string>
     <string name="privacy_in_short">Privacy Quick Overview</string>
+    <string name="order_history">Order History</string>
     <!-- Category Info Screen -->
 
 </resources>
