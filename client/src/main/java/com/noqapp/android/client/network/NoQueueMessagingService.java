@@ -17,6 +17,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
+import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
@@ -110,11 +111,19 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.QR.name())||messageOrigin.equalsIgnoreCase(MessageOriginEnum.OR.name())) {
+            } else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.QR.name())) {
                 try {
                     ObjectMapper mapper = new ObjectMapper();
                     object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientData.class);
-                    Log.e("FCM Review", object.toString());
+                    Log.e("FCM Queue Review", object.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.OR.name())) {
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientOrderData.class);
+                    Log.e("FCM Order Review", object.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
