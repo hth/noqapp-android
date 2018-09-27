@@ -81,7 +81,12 @@ public class ShowAlertInformation {
                 AppUtils.openPlayStore(context);
             }
         });
-        mAlertDialog.show();
+        try {
+            mAlertDialog.show();
+        } catch(Exception e){
+            // WindowManager$BadTokenException will be caught and the app would not display
+            // the 'Force Close' message
+        }
     }
 
     private static void showThemeDialogWithIcon(Context context, String title, String message, boolean isGravityLeft, int icon) {
