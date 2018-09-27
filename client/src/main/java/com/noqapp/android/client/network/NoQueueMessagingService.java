@@ -110,7 +110,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.QR.name())) {
+            } else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.QR.name())||messageOrigin.equalsIgnoreCase(MessageOriginEnum.OR.name())) {
                 try {
                     ObjectMapper mapper = new ObjectMapper();
                     object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientData.class);
