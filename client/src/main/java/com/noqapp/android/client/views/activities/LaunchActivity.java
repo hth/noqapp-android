@@ -875,13 +875,13 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
+        //dismissProgress(); no progress bar silent call here
         new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
+        //dismissProgress(); no progress bar silent call here
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
