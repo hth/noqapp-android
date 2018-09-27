@@ -128,7 +128,6 @@
                         android:id="@+id/tv_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="21"
                         android:paddingBottom="2dp"
                         android:paddingLeft="5dp"
                         android:paddingTop="2dp"
