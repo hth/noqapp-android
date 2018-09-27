@@ -32,6 +32,7 @@ import com.noqapp.android.common.beans.NavigationBean;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
+import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
@@ -637,6 +638,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
                 } else if (object instanceof JsonTopicOrderData) {
                     Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
+                }else if (object instanceof JsonClientOrderData) {
+                    Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
                 }
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
@@ -702,7 +705,39 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             }
                             callSkipScreen(codeQR, token, qid);
                         }
-
+                    } else if (object instanceof JsonClientOrderData) {
+                        String token = String.valueOf(((JsonClientOrderData) object).getOrderNumber());
+                        String qid = ((JsonClientOrderData) object).getQueueUserId();
+                        if (((JsonClientOrderData) object).getPurchaseOrderState().getName().equalsIgnoreCase(PurchaseOrderStateEnum.OD.getName())) {
+                            /*
+                             * Save codeQR of review & show the review screen on app
+                             * resume if there is any record in Review DB for review key
+                             */
+                            ReviewData reviewData = ReviewDB.getValue(codeQR, token);
+                            if (null != reviewData) {
+                                ContentValues cv = new ContentValues();
+                                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
+                                ReviewDB.updateReviewRecord(codeQR, token, cv);
+                                // update
+                            } else {
+                                //insert
+                                ContentValues cv = new ContentValues();
+                                cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, 1);
+                                cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                                cv.put(DatabaseTable.Review.TOKEN, token);
+                                cv.put(DatabaseTable.Review.QID, qid);
+                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                                cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                                cv.put(DatabaseTable.Review.KEY_GOTO, "");
+                                ReviewDB.insert(cv);
+                            }
+                            callReviewActivity(codeQR, token);
+                            // this code is added to close the join & after join screen if the request is processed
+                            //TODO @Chandra update the order screen if open
+//                            if (activityCommunicator != null) {
+//                                activityCommunicator.requestProcessed(codeQR, token);
+//                            }
+                        }
                     } else if (object instanceof JsonTopicOrderData) {
                         updateNotification(object, codeQR);
                     }
