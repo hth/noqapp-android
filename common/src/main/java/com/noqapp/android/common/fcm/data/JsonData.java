@@ -30,7 +30,7 @@ import java.io.Serializable;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public abstract class JsonData extends AbstractDomain implements Serializable{
+public abstract class JsonData extends AbstractDomain implements Serializable {
 
     @JsonProperty("f")
     private FirebaseMessageTypeEnum firebaseMessageType;
