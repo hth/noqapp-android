@@ -453,8 +453,12 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     public void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
+        try {
+            if (null != progressDialog && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -483,8 +487,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                             + "\n" + "lastno : " + lastno
                             + "\n" + "payload : " + payload
             );
-
-
             if (fragmentCommunicator != null) {
                 fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
             }
@@ -498,13 +500,13 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
+        //dismissProgress(); no progress bar silent call here
         new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
+        //dismissProgress(); no progress bar silent call here
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
