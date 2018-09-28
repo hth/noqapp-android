@@ -223,8 +223,9 @@
     <string name="male">पुरुष</string>
     <string name="female">स्त्री</string>
     <string name="great">बहुत बढ़िया!!</string>
-    <string name="checkup_done_success">आपका चेक अप सफलतापूर्वक हो गया है</string>
-
+    <string name="review_msg_checkup_done">आपका चेक अप सफलतापूर्वक हो गया है</string>
+    <string name="review_msg_order_done">Your order has been delivered Successfully</string>
+    <string name="review_msg_queue_done">Your were served Successfully</string>
 
     <string name="mds_chief_complaints">Chief Complaint:</string>
     <string name="mds_past_history">Past History:</string>
