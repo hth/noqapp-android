@@ -13,7 +13,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
-import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
+import com.noqapp.android.client.views.adapters.OrderHistoryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -32,16 +32,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class OrderFragment extends Fragment implements StoreInfoViewAllAdapter.OnItemClickListener, NearMePresenter {
-    private RecyclerView rv_merchant_around_you;
+public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapter.OnItemClickListener, NearMePresenter {
+    private RecyclerView rcv_order_history;
     private ArrayList<BizStoreElastic> listData;
-    private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_order, container, false);
-        rv_merchant_around_you = view.findViewById(R.id.rv_recent_activity);
+        rcv_order_history = view.findViewById(R.id.rcv_order_history);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             StoreInfoParam storeInfoParam = new StoreInfoParam();
             storeInfoParam.setCityName(LaunchActivity.getLaunchActivity().getDefaultCity());
@@ -54,12 +53,12 @@ public class OrderFragment extends Fragment implements StoreInfoViewAllAdapter.O
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
         listData = new ArrayList<>();
-        rv_merchant_around_you.setHasFixedSize(true);
+        rcv_order_history.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
-        rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
-        // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
+        rcv_order_history.setLayoutManager(horizontalLayoutManagaer);
+        rcv_order_history.setItemAnimator(new DefaultItemAnimator());
+        // rcv_order_history.addItemDecoration(new VerticalSpaceItemDecoration(2));
 
         return view;
     }
@@ -98,8 +97,8 @@ public class OrderFragment extends Fragment implements StoreInfoViewAllAdapter.O
         Collections.sort(nearMeData, new SortPlaces(new LatLng(LaunchActivity.getLaunchActivity().getDefaultLatitude(), LaunchActivity.getLaunchActivity().getDefaultLongitude())));
         listData = nearMeData;
         //add all items
-        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, getActivity(), this);
-        rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
+        OrderHistoryAdapter orderHistoryAdapter = new OrderHistoryAdapter(listData, getActivity(), this);
+        rcv_order_history.setAdapter(orderHistoryAdapter);
 
     }
 
