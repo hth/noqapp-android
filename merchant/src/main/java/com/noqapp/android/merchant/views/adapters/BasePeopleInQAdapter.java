@@ -121,7 +121,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         RelativeLayout rl_status;
         CardView cardview;
 
-        public MyViewHolder(View itemView) {
+        private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_customer_name = itemView.findViewById(R.id.tv_customer_name);
             this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
@@ -139,7 +139,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         }
     }
 
-    public BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR) {
+    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -149,7 +149,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         businessCustomerModel = new BusinessCustomerModel(this);
     }
 
-    public BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum) {
+    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;

@@ -99,7 +99,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String title, String messageBody, RemoteMessage remoteMessage) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.notification_icon);
         if (null != remoteMessage) {
             notificationIntent.putExtra(Constants.MESSAGE, messageBody);
             notificationIntent.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.CodeQR));
@@ -174,6 +174,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     }
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
-        return useWhiteIcon ? R.drawable.notification_icon : R.mipmap.launcher;
+        return useWhiteIcon ? R.mipmap.notification_icon : R.mipmap.launcher;
     }
 }
