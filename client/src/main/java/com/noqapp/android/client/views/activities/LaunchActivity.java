@@ -526,12 +526,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             ReviewDB.insert(cv);
         }
         Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
-        Bundle b = new Bundle();
-        b.putString(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
-        b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
-        b.putBoolean("isCategoryData", false);
-        //   JoinFragment jf = new JoinFragment();
-        //   jf.setArguments(b);
+        Intent in = new Intent(this, JoinActivity.class);
+        in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
+        in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
+        in.putExtra(NoQueueBaseActivity.KEY_IS_REJOIN, true);
+        in.putExtra("isCategoryData", false);
+        startActivity(in);
     }
 
     @Override
