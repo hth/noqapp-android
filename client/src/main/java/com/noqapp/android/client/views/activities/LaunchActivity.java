@@ -638,7 +638,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
                 } else if (object instanceof JsonTopicOrderData) {
                     Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
-                }else if (object instanceof JsonClientOrderData) {
+                } else if (object instanceof JsonClientOrderData) {
                     Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
                 }
 
@@ -903,12 +903,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         drawerItem.clear();
         drawerItem.add(new NavigationBean(R.drawable.medical_history, getString(R.string.medical_history)));
         drawerItem.add(new NavigationBean(R.drawable.purchase_order, getString(R.string.order_history)));
+        drawerItem.add(new NavigationBean(R.drawable.merchant_account, getString(R.string.merchant_account)));
         drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, getString(R.string.share)));
         drawerItem.add(new NavigationBean(R.drawable.invite, getString(R.string.invite)));
         drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
         drawerItem.add(new NavigationBean(R.drawable.ic_star, getString(R.string.ratetheapp)));
         drawerItem.add(new NavigationBean(R.drawable.language, getString(R.string.language_setting)));
-        drawerItem.add(new NavigationBean(R.drawable.merchant_account, getString(R.string.merchant_account)));
         if (isLogin) {
             drawerItem.add(new NavigationBean(R.drawable.ic_logout, getString(R.string.logout)));
         }
