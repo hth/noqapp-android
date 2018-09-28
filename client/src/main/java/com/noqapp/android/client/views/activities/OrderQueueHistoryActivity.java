@@ -2,7 +2,8 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
-import com.noqapp.android.client.views.fragments.OrderFragment;
+import com.noqapp.android.client.views.fragments.OrderHistoryFragment;
+import com.noqapp.android.client.views.fragments.QueueHistoryFragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,8 +34,8 @@ public class OrderQueueHistoryActivity extends BaseActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OrderFragment(), "Order History");
-        adapter.addFragment(new OrderFragment(), "Queue History");
+        adapter.addFragment(new OrderHistoryFragment(), "Order History");
+        adapter.addFragment(new QueueHistoryFragment(), "Queue History");
         viewPager.setAdapter(adapter);
     }
 
