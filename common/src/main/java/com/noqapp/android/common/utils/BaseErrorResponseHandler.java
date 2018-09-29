@@ -110,7 +110,7 @@ public abstract class BaseErrorResponseHandler {
                 msg = "Un-authorized request access";
                 break;
             case 404:
-                msg = "Could not find. Looks like we mis-placed it :(";
+                msg = "Oops! Could not find what you are looking for. Looks like we misplaced it :(";
                 break;
             case 405:
                 msg = "This request is not supported";
