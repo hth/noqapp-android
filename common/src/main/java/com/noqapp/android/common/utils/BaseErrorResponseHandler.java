@@ -96,7 +96,6 @@ public abstract class BaseErrorResponseHandler {
         }
     }
 
-
     protected void processFailureResponseCode(int errorCode) {
         Log.e("Error code received: ", String.valueOf(errorCode));
         switch (errorCode) {
