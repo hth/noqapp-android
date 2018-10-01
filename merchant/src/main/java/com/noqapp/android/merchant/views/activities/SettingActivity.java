@@ -214,7 +214,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         tv_close_day_of_week.setText(getResources().getString(R.string.dayclosed, dayLongName));
         tv_delay_in_minute.setOnClickListener(new TextViewClickDelay(tv_delay_in_minute));
 
-        if (LaunchActivity.getLaunchActivity().getUserLevel() != UserLevelEnum.S_MANAGER) {
+        if (!isSpecificSettingEditAllowed()) {
             //disable the fields for unauthorized user
             tv_store_start.setEnabled(false);
             tv_store_close.setEnabled(false);
@@ -235,7 +235,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         btn_update_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+                if (isSpecificSettingEditAllowed()) {
                     if (isEndTimeBeforeStartTime(tv_store_start, tv_store_close)) {
                         ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Queue start time' should be before 'Queue close time'.");
                     } else if (isEndTimeBeforeStartTime(tv_token_available, tv_token_not_available)) {
@@ -258,7 +258,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 } else if (isEndDateNotAfterStartDate()) {
                     Toast.makeText(SettingActivity.this, "Until Date should be after From Date", Toast.LENGTH_LONG).show();
                 } else {
-                    if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
+                    if (isSpecificSettingEditAllowed()) {
                         callUpdate();
                     } else {
                         ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
@@ -566,5 +566,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         LocalTime startTime = Formatter.parseLocalTime(tv_start_time.getText().toString().replace(":", ""));
         LocalTime endTime = Formatter.parseLocalTime(tv_end_time.getText().toString().replace(":", ""));
         return endTime.isBefore(startTime);
+    }
+
+    private boolean isSpecificSettingEditAllowed(){
+        return (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER)||(LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR);
     }
 }
