@@ -44,7 +44,6 @@ public class LaunchActivity extends BaseLaunchActivity {
         launchActivity = this;
         Log.v("device id check", getDeviceID());
         networkUtil = new NetworkUtil(this);
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
         actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
         toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -38,7 +38,6 @@ public class LaunchActivity extends BaseLaunchActivity {
         launchActivity = this;
         Log.v("device id check", getDeviceID());
         networkUtil = new NetworkUtil(this);
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = findViewById(R.id.actionbarBack);
         toolbar = findViewById(R.id.toolbar);
@@ -61,8 +60,6 @@ public class LaunchActivity extends BaseLaunchActivity {
         }
         initProgress();
         initDrawer();
-
-
 
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {

@@ -11,6 +11,7 @@ import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.APIConstant;
 import com.noqapp.android.merchant.model.DeviceModel;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.network.VersionCheckAsync;
@@ -26,9 +27,6 @@ import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -80,10 +78,7 @@ import java.util.UUID;
 
 public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
-    public static final String mypref = "shared_pref";
-    public static final String XR_DID = "X-R-DID";
-    public static final String MyPREFERENCES = "AppPref";
-    protected static SharedPreferences sharedpreferences;
+    private static SharedPreferences sharedpreferences;
 
     public static void setMerchantListFragment(MerchantListFragment merchantListFragment) {
         BaseLaunchActivity.merchantListFragment = merchantListFragment;
@@ -105,7 +100,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_MEDICINES = "medicines";
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
-
+    private static final String FCM_TOKEN = "fcmToken";
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
     public ProgressDialog progressDialog;
@@ -140,11 +135,20 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
+        sharedpreferences = this.getPreferences(Context.MODE_PRIVATE);
         languagepref = PreferenceManager.getDefaultSharedPreferences(this);
         languagepref.registerOnSharedPreferenceChangeListener(this);
         language = languagepref.getString(
                 "pref_language", "");
-        deviceModel = new DeviceModel(this);
+
+
+        if (null != getIntent().getExtras()) {
+            setFCMToken(getIntent().getStringExtra("fcmToken"));
+            setDeviceID(getIntent().getStringExtra("deviceId"));
+        }
+
+        deviceModel = new DeviceModel();
+        deviceModel.setAppBlacklistPresenter(this);
 
         if (!language.equals("")) {
             if (language.equals("hi")) {
@@ -159,6 +163,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             locale = Locale.ENGLISH;
             language = "en_US";
         }
+
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -169,16 +174,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             }
         };
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                String newToken = instanceIdResult.getToken();
-                Log.e("newToken", newToken);
-                String fcmToken = newToken;
-                Log.d(BaseLaunchActivity.class.getSimpleName(), "FCM Token=" + fcmToken);
-                sendRegistrationToServer(fcmToken);
-            }
-        });
+
     }
 
     protected void initDrawer() {
@@ -406,6 +402,14 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         sharedpreferences.edit().putBoolean(KEY_IS_ACCESS_GRANT, isAccessGrant).apply();
     }
 
+    public static String getFCMToken() {
+        return sharedpreferences.getString(FCM_TOKEN, "");
+    }
+
+    public static void setFCMToken(String fcmtoken) {
+        sharedpreferences.edit().putString(FCM_TOKEN, fcmtoken).apply();
+    }
+
     public void setUserInformation(String userName, String userId, String email, String auth, boolean isLogin) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(KEY_USER_NAME, userName);
@@ -429,9 +433,12 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     }
 
-    public String getDeviceID() {
-        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(mypref, Context.MODE_PRIVATE);
-        return sharedpreferences.getString(XR_DID, "");
+    public static String getDeviceID() {
+        return sharedpreferences.getString(APIConstant.Key.XR_DID, "");
+    }
+
+    private static void setDeviceID(String deviceId) {
+        sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
     }
 
     public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
@@ -534,7 +541,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         if (null != merchantListFragment) {
             merchantListFragment.unSubscribeTopics();
         }
-
         MerchantListFragment.selected_pos = 0;
         if (new AppUtils().isTablet(getApplicationContext())) {
             LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
@@ -547,7 +553,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             }
         }
         // logout
-        sharedpreferences.edit().clear().apply();
+        clearPreferences();
         //navigate to signup/login
         replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
         if (showAlert) {
@@ -718,24 +724,13 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                         : getString(R.string.version_no, "Not for release"));
     }
 
-    private void sendRegistrationToServer(String refreshToken) {
-        DeviceToken deviceToken = new DeviceToken(refreshToken);
-        SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(
-                LaunchActivity.mypref, Context.MODE_PRIVATE);
-        String deviceId = sharedpreferences.getString(LaunchActivity.XR_DID, "");
-        if (StringUtils.isBlank(deviceId)) {
-            deviceId = UUID.randomUUID().toString().toUpperCase();
-            setSharedPreferenceDeviceID(sharedpreferences, deviceId);
-            Log.d(BaseLaunchActivity.class.getSimpleName(), "Device Id created" + deviceId);
-        } else {
-            Log.d(BaseLaunchActivity.class.getSimpleName(), "Device Id exist" + deviceId);
-        }
-        deviceModel.register(deviceId, deviceToken);
+    public static void clearPreferences() {
+        // Clear all data except DID & FCM Token
+        String did = getDeviceID();
+        String fcmToken = getFCMToken();
+        sharedpreferences.edit().clear().apply();
+        setDeviceID(did);
+        setFCMToken(fcmToken);
     }
 
-    private void setSharedPreferenceDeviceID(SharedPreferences sharedpreferences, String deviceId) {
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString(LaunchActivity.XR_DID, deviceId);
-        editor.apply();
-    }
 }

@@ -3,7 +3,7 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceModel;
-import com.noqapp.android.client.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -39,10 +39,7 @@ import java.util.UUID;
 ///https://blog.xamarin.com/bring-stunning-animations-to-your-apps-with-lottie/
 public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter {
 
-    protected static boolean display = true;
     static SplashScreen splashScreen;
-    protected boolean isActive = true;
-
     private String TAG = SplashScreen.class.getSimpleName();
     private static String fcmToken = "";
     private String APP_PREF = "splashPref";
@@ -92,16 +89,6 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             });
             mAlertDialog.show();
         }
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            isActive = false;
-            display = false;
-            return true;
-        }
-        return super.onKeyUp(keyCode, event);
     }
 
     @Override

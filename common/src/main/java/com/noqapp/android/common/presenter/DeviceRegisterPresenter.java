@@ -1,7 +1,6 @@
-package com.noqapp.android.client.presenter;
+package com.noqapp.android.common.presenter;
 
 import com.noqapp.android.common.beans.DeviceRegistered;
-import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 
 public interface DeviceRegisterPresenter extends ResponseErrorPresenter {
 

@@ -83,6 +83,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                     btn_login.setTextColor(Color.WHITE);
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
+                        LaunchActivity.getLaunchActivity().progressDialog.setMessage("Login in progress..");
                         loginModel.login(email.toLowerCase(), pwd);
 
                         Answers.getInstance().logLogin(new LoginEvent()
@@ -114,6 +115,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     public void loginResponse(String email, String auth) {
         if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(auth)) {
             LaunchActivity.getLaunchActivity().setUserInformation("", "", email, auth, true);
+            LaunchActivity.getLaunchActivity().progressDialog.setMessage("Fetching your profile...");
             merchantProfileModel.setMerchantPresenter(this);
             merchantProfileModel.fetch(LaunchActivity.getLaunchActivity().getDeviceID(), email, auth);
             if (!userList.contains(email)) {
@@ -169,7 +171,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                 if ((getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare") &&
                         jsonMerchant.getJsonProfile().getBusinessType() == BusinessTypeEnum.DO) ||
                         (getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant") &&
-                                jsonMerchant.getJsonProfile().getBusinessType() != BusinessTypeEnum.DO)) {
+                                jsonMerchant.getJsonProfile().getBusinessType() != BusinessTypeEnum.DO)||getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.tv")) {
                     if (new AppUtils().isTablet(getActivity())) {
                         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
                         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
