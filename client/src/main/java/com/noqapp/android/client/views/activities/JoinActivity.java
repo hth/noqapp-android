@@ -49,7 +49,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     private TextView tv_people_in_q;
     private TextView tv_hour_saved;
     private TextView tv_rating_review;
-    private TextView tv_add ,add_person;
+    private TextView tv_add, add_person;
     private RatingBar ratingBar;
     private Spinner sp_name_list;
 
@@ -183,69 +183,70 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         dismissProgress();
-        if (errorCode == Constants.INVALID_BAR_CODE){
+        if (errorCode == Constants.INVALID_BAR_CODE) {
             ShowAlertInformation.showBarcodeErrorDialog(this);
-        }else {
+        } else {
             new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
         }
     }
 
     @Override
-    public void queueResponse(JsonQueue jsonQueue) {
+    public void queueResponse(JsonQueue jsonQueueTemp) {
+        if (null != jsonQueueTemp) {
+            Log.d(TAG, "Queue=" + jsonQueueTemp.toString());
+            this.jsonQueue = jsonQueueTemp;
+            tv_store_name.setText(jsonQueue.getBusinessName());
+            tv_queue_name.setText(jsonQueue.getDisplayName());
+            tv_address.setText(jsonQueue.getStoreAddress());
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
+            tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
+            tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
+            String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) +
+                    " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour());
+            if (jsonQueue.getDelayedInMinutes() > 0) {
+                int hours = jsonQueue.getDelayedInMinutes() / 60;
+                int minutes = jsonQueue.getDelayedInMinutes() % 60;
+                System.out.printf("%d:%02d", hours, minutes);
+                String red = "<font color='#e92270'><b>Delayed by " + hours + " Hrs " + minutes + " minutes.</b></font>";
+                time = time + " " + red;
+            }
+            tv_hour_saved.setText(Html.fromHtml(time));
+            ratingBar.setRating(jsonQueue.getRating());
+            String reviewText;
+            if (jsonQueue.getRatingCount() == 0) {
+                reviewText = "No Review";
+            } else if (jsonQueue.getRatingCount() == 1) {
+                reviewText = "1 Review";
+            } else {
+                reviewText = String.valueOf(jsonQueue.getRatingCount()) + " Reviews";
+            }
+            tv_rating_review.setText(reviewText);
+            codeQR = jsonQueue.getCodeQR();
+            /* Check weather join is possible or not today due to some reason */
+            JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, JoinActivity.this);
+            if (joinQueueState.isJoinNotPossible()) {
+                isJoinNotPossible = joinQueueState.isJoinNotPossible();
+                joinErrorMsg = joinQueueState.getJoinErrorMsg();
+            }
 
-        Log.d(TAG, "Queue=" + jsonQueue.toString());
-        this.jsonQueue = jsonQueue;
-        tv_store_name.setText(jsonQueue.getBusinessName());
-        tv_queue_name.setText(jsonQueue.getDisplayName());
-        tv_address.setText(jsonQueue.getStoreAddress());
-        tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
-        tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
-        tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
-        String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) +
-                " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour());
-        if (jsonQueue.getDelayedInMinutes() > 0) {
-            int hours = jsonQueue.getDelayedInMinutes() / 60;
-            int minutes = jsonQueue.getDelayedInMinutes() % 60;
-            System.out.printf("%d:%02d", hours, minutes);
-            String red = "<font color='#e92270'><b>Delayed by " + hours+" Hrs " + minutes+" minutes.</b></font>";
-            time = time + " " + red;
-        }
-        tv_hour_saved.setText(Html.fromHtml(time));
-        ratingBar.setRating(jsonQueue.getRating());
-        String reviewText;
-        if (jsonQueue.getRatingCount() == 0) {
-            reviewText = "No Review";
-        } else if (jsonQueue.getRatingCount() == 1) {
-            reviewText = "1 Review";
-        } else {
-            reviewText = String.valueOf(jsonQueue.getRatingCount()) + " Reviews";
-        }
-        tv_rating_review.setText(reviewText);
-        codeQR = jsonQueue.getCodeQR();
-        /* Check weather join is possible or not today due to some reason */
-        JoinQueueState joinQueueState = JoinQueueUtil.canJoinQueue(jsonQueue, JoinActivity.this);
-        if (joinQueueState.isJoinNotPossible()) {
-            isJoinNotPossible = joinQueueState.isJoinNotPossible();
-            joinErrorMsg = joinQueueState.getJoinErrorMsg();
-        }
-
-        switch (jsonQueue.getBusinessType()) {
-            case DO:
-            case PH:
-                tv_add.setVisibility(View.VISIBLE);
-                add_person.setVisibility(View.VISIBLE);
-                sp_name_list.setVisibility(View.VISIBLE);
-                break;
-            default:
-                tv_add.setVisibility(View.GONE);
-                add_person.setVisibility(View.GONE);
-                sp_name_list.setVisibility(View.GONE);
+            switch (jsonQueue.getBusinessType()) {
+                case DO:
+                case PH:
+                    tv_add.setVisibility(View.VISIBLE);
+                    add_person.setVisibility(View.VISIBLE);
+                    sp_name_list.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    tv_add.setVisibility(View.GONE);
+                    add_person.setVisibility(View.GONE);
+                    sp_name_list.setVisibility(View.GONE);
+            }
         }
         dismissProgress();
     }
@@ -287,7 +288,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     callAfterJoin();
                 }
             } else {
-                ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join),  getString(R.string.error_remote_join_not_available), true);
+                ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), getString(R.string.error_remote_join_not_available), true);
             }
         }
     }
@@ -300,7 +301,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.FROM_JOIN_SCREEN, true);
         in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
-        in.putExtra("imageUrl",getIntent().getStringExtra("imageUrl"));
+        in.putExtra("imageUrl", getIntent().getStringExtra("imageUrl"));
         startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }
 

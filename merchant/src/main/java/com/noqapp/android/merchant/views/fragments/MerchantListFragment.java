@@ -62,6 +62,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private MerchantListAdapter adapter;
     private AutocompleteAdapter temp_adapter;
     private HashMap<String, String> mHashmap = new HashMap<>();
+
     public ArrayList<JsonTopic> getTopics() {
         return topics;
     }
@@ -94,7 +95,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         manageQueueModel = new ManageQueueModel();
         manageQueueModel.setTopicPresenter(this);
         String strOutput = LaunchActivity.getLaunchActivity().getCounterName();
-        Type type = new TypeToken<HashMap<String, String>>() {}.getType();
+        Type type = new TypeToken<HashMap<String, String>>() {
+        }.getType();
         Gson gson = new Gson();
         if (StringUtils.isBlank(strOutput)) {
             mHashmap.clear();
@@ -134,17 +136,18 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         auto_complete_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-
-                String selectedQRcode = temp_adapter.getQRCode(pos);
-                for (int j = 0; j < topics.size(); j++) {
-                    JsonTopic jt = topics.get(j);
-                    if (selectedQRcode.equalsIgnoreCase(jt.getCodeQR())) {
-                        hideAndReset();
-                        listview.performItemClick(
-                                listview.getAdapter().getView(j, null, null),
-                                j,
-                                listview.getAdapter().getItemId(j));
-                        break;
+                if (null != temp_adapter) {
+                    String selectedQRcode = temp_adapter.getQRCode(pos);
+                    for (int j = 0; j < topics.size(); j++) {
+                        JsonTopic jt = topics.get(j);
+                        if (selectedQRcode.equalsIgnoreCase(jt.getCodeQR())) {
+                            hideAndReset();
+                            listview.performItemClick(
+                                    listview.getAdapter().getView(j, null, null),
+                                    j,
+                                    listview.getAdapter().getItemId(j));
+                            break;
+                        }
                     }
                 }
             }
@@ -156,7 +159,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         snackbar = Snackbar.make(listview, "", Snackbar.LENGTH_INDEFINITE);
         snackbar.getView().setBackgroundResource(R.drawable.red_gredient);
         final View v = snackbar.getView();
-        final TextView tv =  v.findViewById(android.support.design.R.id.snackbar_text);
+        final TextView tv = v.findViewById(android.support.design.R.id.snackbar_text);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12.0f);
         tv.setTextColor(Color.BLACK);
 
@@ -254,16 +257,17 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().dismissProgress();
         swipeRefreshLayout.setRefreshing(false);
     }
+
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(), eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(),errorCode);
+        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
     @Override
@@ -280,9 +284,11 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         Collections.sort(topics, Collections.reverseOrder(new CustomComparator()));
         adapter = new MerchantListAdapter(getActivity(), topics);
         listview.setAdapter(adapter);
-        temp_adapter = new AutocompleteAdapter(getActivity(),
-                R.layout.auto_text_item, topics);
-        auto_complete_search.setAdapter(temp_adapter);
+        if (null != getActivity()) {
+            temp_adapter = new AutocompleteAdapter(getActivity(),
+                    R.layout.auto_text_item, topics);
+            auto_complete_search.setAdapter(temp_adapter);
+        }
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -306,7 +312,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
         updateSnackbarTxt();
         snackbar.show();
-        if (new AppUtils().isTablet(getActivity()) && topics.size()>0) {
+        if (new AppUtils().isTablet(getActivity()) && topics.size() > 0) {
             merchantDetailFragment = new MerchantDetailFragment();
             Bundle b = new Bundle();
             b.putSerializable("jsonMerchant", topics);
@@ -372,8 +378,10 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                             topics.set(i, jt);
                             adapter.notifyDataSetChanged();
                             temp_adapter = null;
-                            temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
-                            auto_complete_search.setAdapter(temp_adapter);
+                            if(null != getActivity()) {
+                                temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
+                                auto_complete_search.setAdapter(temp_adapter);
+                            }
                             if (null != merchantDetailFragment) {
                                 merchantDetailFragment.updateListData(topics);
                             }
@@ -402,8 +410,10 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                         merchantDetailFragment.updateListData(topics);
                     }
                     temp_adapter = null;
-                    temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
-                    auto_complete_search.setAdapter(temp_adapter);
+                    if(null != getActivity()) {
+                        temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
+                        auto_complete_search.setAdapter(temp_adapter);
+                    }
                     Toast.makeText(context, "Customer is acquired ", Toast.LENGTH_LONG).show();
                 }
             }
@@ -424,8 +434,10 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                     topics.set(i, jt);
                     adapter.notifyDataSetChanged();
                     temp_adapter = null;
-                    temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
-                    auto_complete_search.setAdapter(temp_adapter);
+                    if(null != getActivity()) {
+                        temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
+                        auto_complete_search.setAdapter(temp_adapter);
+                    }
                     break;
                 }
             }
@@ -434,8 +446,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
 
     public void updateListData(List<JsonTopic> jsonTopics) {
         topics = new ArrayList<>();
-        if(null != jsonTopics && jsonTopics.size()>0)
-         topics.addAll(jsonTopics);
+        if (null != jsonTopics && jsonTopics.size() > 0)
+            topics.addAll(jsonTopics);
     }
 
     @Override
@@ -459,8 +471,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     }
 
     public void saveCounterNames(String codeQR, String name) {
-          mHashmap.put(codeQR, name);
-          LaunchActivity.getLaunchActivity().setCounterName(mHashmap);
+        mHashmap.put(codeQR, name);
+        LaunchActivity.getLaunchActivity().setCounterName(mHashmap);
     }
 
     @Override
@@ -468,7 +480,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         return mHashmap;
     }
 
-    public void clearData(){
+    public void clearData() {
         topics.clear();
         adapter.notifyDataSetChanged();
     }
@@ -476,7 +488,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     public class CustomComparator implements Comparator<JsonTopic> {
         @Override
         public int compare(JsonTopic o1, JsonTopic o2) {
-            return o1.getRemaining()-o2.getRemaining();
+            return o1.getRemaining() - o2.getRemaining();
         }
     }
 }
