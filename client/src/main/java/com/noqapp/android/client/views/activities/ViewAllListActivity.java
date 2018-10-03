@@ -107,8 +107,6 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         scrollId = bizStoreElasticList.getScrollId();
         //sort the list, give the Comparator the current location
         Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));
-        //   remove progress item
-        listData.remove(listData.size() - 1);
         storeInfoViewAllAdapter.notifyItemRemoved(listData.size());
         //add all items
         listData.addAll(nearMeData);

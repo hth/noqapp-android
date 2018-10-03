@@ -17,6 +17,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
+import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
@@ -114,7 +115,15 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 try {
                     ObjectMapper mapper = new ObjectMapper();
                     object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientData.class);
-                    Log.e("FCM Review", object.toString());
+                    Log.e("FCM Queue Review", object.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.OR.name())) {
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientOrderData.class);
+                    Log.e("FCM Order Review", object.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -306,7 +315,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String title, String messageBody, String codeQR, boolean isReview, String token) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.notification_icon);
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
         if (null != codeQR) {
             notificationIntent.putExtra(QRCODE, codeQR);
@@ -359,7 +368,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     channelId, channelName, importance);
             notificationManager.createNotificationChannel(mChannel);
         }
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.notification_icon);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                 .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
@@ -416,6 +425,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
-        return useWhiteIcon ? R.drawable.notification_icon : R.mipmap.launcher;
+        return useWhiteIcon ? R.mipmap.notification_icon : R.mipmap.launcher;
     }
 }

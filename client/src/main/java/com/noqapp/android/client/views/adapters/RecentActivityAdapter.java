@@ -4,8 +4,10 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import com.squareup.picasso.Picasso;
 
@@ -19,7 +21,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 
 public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAdapter.MyViewHolder> {
@@ -57,7 +61,12 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
                 (float) GeoHashUtils.decodeLongitude(jsonTokenAndQueue.getGeoHash())));
         //   holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
         holder.tv_address.setText(AppUtilities.getStoreAddress(jsonTokenAndQueue.getTown(),jsonTokenAndQueue.getArea()));
-        holder.tv_detail.setText("Last visit: " + jsonTokenAndQueue.getServiceEndTime());
+        try {
+            holder.tv_detail.setText("Last visit: " + CommonHelper.SDF_YYYY_MM_DD.format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonTokenAndQueue.getServiceEndTime())));
+        } catch (Exception e) {
+            e.printStackTrace();
+            holder.tv_detail.setText("");
+        }
         holder.tv_status.setText(AppUtilities.getStoreOpenStatus(jsonTokenAndQueue));
         AppUtilities.setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType(), holder.tv_store_rating);
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonTokenAndQueue.getRatingCount())));

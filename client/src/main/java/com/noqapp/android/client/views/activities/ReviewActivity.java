@@ -64,6 +64,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         TextView tv_address = findViewById(R.id.tv_address);
         TextView tv_mobile = findViewById(R.id.tv_mobile);
+        TextView tv_review_msg = findViewById(R.id.tv_review_msg);
         tv_rating_value = findViewById(R.id.tv_rating_value);
         Button btn_submit = findViewById(R.id.btn_submit);
         ratingBar = findViewById(R.id.ratingBar);
@@ -96,6 +97,18 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                     }
                 } else {
                     tv_details.setText("Token: " + jtk.getToken() + " : Guest user");
+                }
+
+                switch (jtk.getBusinessType()) {
+                    case DO:
+                        tv_review_msg.setText(getString(R.string.review_msg_checkup_done));
+                        break;
+                    case RS:
+                        tv_review_msg.setText(getString(R.string.review_msg_order_done));
+                        break;
+                    default:
+                        tv_review_msg.setText(getString(R.string.review_msg_queue_done));
+
                 }
             }
         } else {
@@ -265,7 +278,6 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
     private String getSeekbarLabel(int pos) {
         switch (pos) {
-
             case 1:
                 return getString(R.string.time_saved) + getString(R.string.radio_save_30min_f);
             case 2:

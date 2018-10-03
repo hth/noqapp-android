@@ -59,7 +59,6 @@
     <string name="error_dob_blank">Please enter date of birth</string>
 
 
-
     <!--Error and message-->
     <string name="networkerror">Network Error</string>
     <string name="offline">Network unavailable. Please connect your device to network.</string>
@@ -94,8 +93,6 @@
     <string name="time_saved">Time saved:&#160;</string>
 
 
-
-
     <!-- Others -->
     <string name="ok">OK</string>
     <string name="exit_app">Press back again to exit</string>
@@ -111,7 +108,7 @@
     <string name="logout_msg">Data created when not logged in could be lost forever</string>
     <string name="error_mobile_blank">Please enter phone number</string>
     <string name="error_login">Please login to remote join</string>
-     <string name="error_rateservice">Please rate the service</string>
+    <string name="error_rateservice">Please rate the service</string>
     <string name="review_thanks">Thanks for feedback.</string>
     <string name="error_timesaved">Please provide how many no. of hour(s) you saved.</string>
     <string name="error_qrcode_scan">Not a valid NoQueue QR Code</string>
@@ -181,7 +178,6 @@
     <string name="action_update">update profile</string>
 
 
-
     <string name="language_setting">Change Language</string>
     <string name="lang_dialog_title">Change Language</string>
     <string name="hindi">Hindi</string>
@@ -233,7 +229,7 @@
     <string name="photo">Photos</string>
     <string name="amenities">Amenities</string>
     <string name="facility">Facility</string>
-    <string name="skip_msg">You were skiped. \\nPress yes to join the queue again.</string>
+    <string name="skip_msg">You were not served. \nPress yes to join the queue again.</string>
     <string name="order_now">Order Now</string>
     <string name="payment_due">Payment Due:</string>
     <string name="total_tax">Total Tax:</string>
@@ -252,9 +248,10 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="great">Great !!</string>
-    <string name="checkup_done_success">Your check up has been done Successfully</string>
+    <string name="review_msg_checkup_done">Your check up has been done Successfully</string>
+    <string name="review_msg_order_done">Your order has been delivered Successfully</string>
+    <string name="review_msg_queue_done">Your were served Successfully</string>
     <!-- Language select dialog -->
-
 
 
     <string name="mds_chief_complaints">Chief Complaint:</string>
@@ -287,6 +284,7 @@
     <string name="merchant_account">Become a merchant</string>
     <string name="address">Address</string>
     <string name="privacy_in_short">Privacy Quick Overview</string>
+    <string name="order_history">Order History</string>
     <!-- Category Info Screen -->
 
 </resources>

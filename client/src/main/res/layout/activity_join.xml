@@ -319,7 +319,7 @@
                         android:layout_marginTop="10dp"
                         android:gravity="center_horizontal"
                         android:text="@string/skip_msg"
-                        android:textColor="@color/colorAddress"
+                        android:textColor="#d75b71"
                         android:textSize="@dimen/text_size_sixteen"
                         android:visibility="gone"/>
 
@@ -329,19 +329,22 @@
                         android:layout_below="@+id/tv_skip_msg"
                         android:layout_centerInParent="true"
                         android:gravity="center_horizontal"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                     <Button
                             android:id="@+id/btn_no"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
                             android:background="@drawable/grey_gradient"
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
                             android:text="@string/no"
                             android:textAllCaps="true"
-                            android:textColor="@color/rating_unselect_temp"
+                            android:textColor="#d75b71"
                             android:textSize="@dimen/text_size_sixteen"
                             android:textStyle="normal"
                             android:visibility="gone"
