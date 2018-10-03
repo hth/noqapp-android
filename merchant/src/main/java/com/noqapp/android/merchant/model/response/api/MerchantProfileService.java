@@ -37,6 +37,9 @@ public interface MerchantProfileService {
             @Header("X-R-DT")
             String dt,
 
+            @Header ("X-R-AF")
+            String appFlavor,
+
             @Header("X-R-MAIL")
             String mail,
 

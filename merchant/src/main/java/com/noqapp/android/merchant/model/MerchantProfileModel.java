@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
+import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.model.response.api.MerchantProfileService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
@@ -59,7 +60,7 @@ public class MerchantProfileModel {
      * @param auth
      */
     public void fetch(String did, String mail, String auth) {
-        merchantProfileService.fetch(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonMerchant>() {
+        merchantProfileService.fetch(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR,  mail, auth).enqueue(new Callback<JsonMerchant>() {
             @Override
             public void onResponse(@NonNull Call<JsonMerchant> call, @NonNull Response<JsonMerchant> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
