@@ -13,7 +13,7 @@ import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.network.VersionCheckAsync;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
-import com.noqapp.android.client.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtilities;

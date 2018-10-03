@@ -5,6 +5,7 @@ import static com.noqapp.android.merchant.utils.Constants.DEVICE_TYPE;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.model.response.api.DeviceService;
 import com.noqapp.android.merchant.network.RetrofitClient;
@@ -26,8 +27,12 @@ public class DeviceModel {
 
     private static final DeviceService deviceService;
     private AppBlacklistPresenter appBlacklistPresenter;
+    private DeviceRegisterPresenter deviceRegisterPresenter;
 
-    public DeviceModel(AppBlacklistPresenter appBlacklistPresenter) {
+    public void setDeviceRegisterPresenter(DeviceRegisterPresenter deviceRegisterPresenter) {
+        this.deviceRegisterPresenter = deviceRegisterPresenter;
+    }
+    public void setAppBlacklistPresenter(AppBlacklistPresenter appBlacklistPresenter) {
         this.appBlacklistPresenter = appBlacklistPresenter;
     }
 
@@ -46,11 +51,18 @@ public class DeviceModel {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
-                    if (response.body() != null) {
+                    if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, "Registered device " + String.valueOf(response.body()));
+                        deviceRegisterPresenter.deviceRegisterResponse(response.body());
                     } else {
-                        //TODO something logical
                         Log.e(TAG, "Empty body");
+                        deviceRegisterPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                }else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        deviceRegisterPresenter.authenticationFailure();
+                    } else {
+                        deviceRegisterPresenter.responseErrorPresenter(response.code());
                     }
                 }
             }
