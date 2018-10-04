@@ -9,7 +9,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface FeedbackApiService {
-    @POST("api/c/review/service.json")
+    @POST("api/c/feedback.json")
     Call<JsonResponse> review(
             @Header("X-R-DID")
             String did,

@@ -258,5 +258,9 @@
     <string name="address">Address</string>
     <string name="privacy_in_short">Privacy Quick Overview</string>
     <string name="order_history">Order History</string>
+    <string name="subject">Subject</string>
+    <string name="message">Feedback/Suggestions/Issues</string>
+    <string name="error_subject_blank">Please enter subject</string>
+    <string name="error_feedback_blank">Please enter message</string>
 
 </resources>

@@ -2,10 +2,13 @@ package com.noqapp.android.client.views.fragments;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
+import com.noqapp.android.client.model.OrderQueueHistoryModel;
 import com.noqapp.android.client.presenter.NearMePresenter;
+import com.noqapp.android.client.presenter.OrderHistoryPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
@@ -15,6 +18,8 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.adapters.OrderHistoryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.order.JsonPurchaseOrderList;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -29,12 +34,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 
-public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapter.OnItemClickListener, NearMePresenter {
+public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapter.OnItemClickListener, OrderHistoryPresenter {
     private RecyclerView rcv_order_history;
-    private ArrayList<BizStoreElastic> listData;
+    private ArrayList<JsonPurchaseOrder> listData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,13 +48,9 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         rcv_order_history = view.findViewById(R.id.rcv_order_history);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            StoreInfoParam storeInfoParam = new StoreInfoParam();
-            storeInfoParam.setCityName(LaunchActivity.getLaunchActivity().getDefaultCity());
-            storeInfoParam.setLatitude(String.valueOf(LaunchActivity.getLaunchActivity().getDefaultLatitude()));
-            storeInfoParam.setLongitude(String.valueOf(LaunchActivity.getLaunchActivity().getDefaultLongitude()));
-            storeInfoParam.setFilters("xyz");
-            storeInfoParam.setScrollId("");
-            new NearMeModel(this).nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
+            OrderQueueHistoryModel orderQueueHistoryModel = new OrderQueueHistoryModel();
+            orderQueueHistoryModel.setOrderHistoryPresenter(this);
+            orderQueueHistoryModel.orders(UserUtils.getEmail(),UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -89,24 +91,8 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         }
     }
 
-    @Override
-    public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
-        ArrayList<BizStoreElastic> nearMeData = new ArrayList<>();
-        nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
-        //sort the list, give the Comparator the current location
-        Collections.sort(nearMeData, new SortPlaces(new LatLng(LaunchActivity.getLaunchActivity().getDefaultLatitude(), LaunchActivity.getLaunchActivity().getDefaultLongitude())));
-        listData = nearMeData;
-        //add all items
-        OrderHistoryAdapter orderHistoryAdapter = new OrderHistoryAdapter(listData, getActivity(), this);
-        rcv_order_history.setAdapter(orderHistoryAdapter);
 
-    }
 
-    @Override
-    public void nearMeError() {
-        //LaunchActivity.getLaunchActivity().dismissProgress();
-
-    }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
@@ -121,7 +107,18 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
     @Override
     public void authenticationFailure() {
         //dismissProgress();
-        // AppUtilities.authenticationProcessing(this, errorCode);
+         AppUtilities.authenticationProcessing(getActivity());
     }
 
+    @Override
+    public void orderHistoryResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
+        listData = new ArrayList<>(jsonPurchaseOrderList.getPurchaseOrders());
+        OrderHistoryAdapter orderHistoryAdapter = new OrderHistoryAdapter(listData, getActivity(), this);
+        rcv_order_history.setAdapter(orderHistoryAdapter);
+    }
+
+    @Override
+    public void orderHistoryError() {
+
+    }
 }
