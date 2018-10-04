@@ -50,7 +50,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         });
 
 
-        setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType());
+        new AppUtilities().setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType());
         holder.tv_total_value.setText(String.valueOf(dataSet.get(listPosition).getServingNumber()));
         if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
             if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() == 0) {
@@ -93,21 +93,6 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         return dataSet.size();
     }
 
-    private void setStoreDrawable(Context context, ImageView iv, BusinessTypeEnum bussinessType) {
-        switch (bussinessType) {
-            case DO:
-                iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.hospital));
-                iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
-                break;
-            case BK:
-                iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bank));
-                iv.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
-                break;
-            default:
-                iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.store));
-                iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
-        }
-    }
 
     public interface OnItemClickListener {
         void currentItemClick(JsonTokenAndQueue item, View view, int pos);

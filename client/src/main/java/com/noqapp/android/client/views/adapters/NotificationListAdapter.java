@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.common.beans.NotificationBeans;
@@ -63,19 +64,7 @@ public class NotificationListAdapter extends BaseAdapter {
         recordHolder.tv_title.setText(notificationsList.get(position).getTitle());
         recordHolder.tv_msg.setText(notificationsList.get(position).getMsg());
         BusinessTypeEnum businessType = notificationsList.get(position).getBusinessType();
-        switch (businessType) {
-            case DO:
-                recordHolder.iv_business.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.hospital));
-                recordHolder.iv_business.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
-                break;
-            case BK:
-                recordHolder.iv_business.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bank));
-                recordHolder.iv_business.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
-                break;
-            default:
-                recordHolder.iv_business.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.store));
-                recordHolder.iv_business.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
-        }
+        new AppUtilities().setStoreDrawable(context, recordHolder.iv_business, businessType);
         try {
             String dateString = notificationsList.get(position).getNotificationCreate();
             SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault());
