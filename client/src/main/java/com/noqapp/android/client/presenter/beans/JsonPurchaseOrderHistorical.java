@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * hitender
@@ -91,6 +93,9 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
 
     @JsonProperty("u")
     private String created;
+
+    @JsonProperty("pops")
+    private List<JsonPurchaseOrderProductHistorical> jsonPurchaseOrderProductHistoricalList = new ArrayList<>();
 
     public String getQueueUserId() {
         return queueUserId;
@@ -252,6 +257,14 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
     public JsonPurchaseOrderHistorical setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
+    }
+
+    public List<JsonPurchaseOrderProductHistorical> getJsonPurchaseOrderProductHistoricalList() {
+        return jsonPurchaseOrderProductHistoricalList;
+    }
+
+    public void setJsonPurchaseOrderProductHistoricalList(List<JsonPurchaseOrderProductHistorical> jsonPurchaseOrderProductHistoricalList) {
+        this.jsonPurchaseOrderProductHistoricalList = jsonPurchaseOrderProductHistoricalList;
     }
 
     @Override
