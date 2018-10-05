@@ -194,19 +194,35 @@ public class AppUtilities extends CommonHelper {
     public static void setStoreDrawable(Context context, ImageView iv, BusinessTypeEnum bussinessType, TextView tv_store_rating) {
         switch (bussinessType) {
             case DO:
-                iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.hospital));
-                iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
+                iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.hospital));
+               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
                 tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_hospital));
                 break;
             case BK:
-                iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bank));
-                iv.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
+                iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.bank));
+               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
                 tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_bank));
                 break;
             default:
-                iv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.store));
-                iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
+                iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.store));
+               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
                 tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_store));
+        }
+    }
+
+    public void setStoreDrawable(Context context, ImageView iv, BusinessTypeEnum bussinessType) {
+        switch (bussinessType) {
+            case DO:
+                iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.hospital));
+               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
+                break;
+            case BK:
+                iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.bank));
+               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
+                break;
+            default:
+                iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.store));
+               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
         }
     }
 

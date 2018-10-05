@@ -1,0 +1,293 @@
+package com.noqapp.android.client.presenter.beans;
+
+import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
+import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * hitender
+ * 10/5/18 9:40 AM
+ */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable",
+        "unused"
+})
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE
+)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class JsonPurchaseOrderHistorical extends AbstractDomain implements Serializable  {
+
+    @JsonProperty("qid")
+    private String queueUserId;
+
+    @JsonProperty("qr")
+    private String codeQR;
+
+    @JsonProperty("da")
+    private String deliveryAddress;
+
+    @JsonProperty("sd")
+    private int storeDiscount;
+
+    @JsonProperty("op")
+    private String orderPrice;
+
+    @JsonProperty("dm")
+    private DeliveryTypeEnum deliveryType;
+
+    @JsonProperty("pt")
+    private PaymentTypeEnum paymentType;
+
+    @JsonProperty("ps")
+    private PurchaseOrderStateEnum presentOrderState;
+
+    @JsonProperty ("bt")
+    private BusinessTypeEnum businessType;
+
+    @JsonProperty ("ra")
+    private int ratingCount;
+
+    @JsonProperty ("rv")
+    private String review;
+
+    /* Order Number. */
+    @JsonProperty ("tn")
+    private int tokenNumber;
+
+    /* Locked when being served. */
+    @JsonProperty ("sn")
+    private String serverName;
+
+    @JsonProperty ("sb")
+    private String serviceBeginTime;
+
+    @JsonProperty ("se")
+    private String serviceEndTime;
+
+    @JsonProperty ("ti")
+    private String transactionId;
+
+    @JsonProperty ("dn")
+    private String displayName;
+
+    @JsonProperty("u")
+    private String created;
+
+    @JsonProperty("pops")
+    private List<JsonPurchaseOrderProductHistorical> jsonPurchaseOrderProductHistoricalList = new ArrayList<>();
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public JsonPurchaseOrderHistorical setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonPurchaseOrderHistorical setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
+
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public JsonPurchaseOrderHistorical setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+        return this;
+    }
+
+    public int getStoreDiscount() {
+        return storeDiscount;
+    }
+
+    public JsonPurchaseOrderHistorical setStoreDiscount(int storeDiscount) {
+        this.storeDiscount = storeDiscount;
+        return this;
+    }
+
+    public String getOrderPrice() {
+        return orderPrice;
+    }
+
+    public JsonPurchaseOrderHistorical setOrderPrice(String orderPrice) {
+        this.orderPrice = orderPrice;
+        return this;
+    }
+
+    public DeliveryTypeEnum getDeliveryType() {
+        return deliveryType;
+    }
+
+    public JsonPurchaseOrderHistorical setDeliveryType(DeliveryTypeEnum deliveryType) {
+        this.deliveryType = deliveryType;
+        return this;
+    }
+
+    public PaymentTypeEnum getPaymentType() {
+        return paymentType;
+    }
+
+    public JsonPurchaseOrderHistorical setPaymentType(PaymentTypeEnum paymentType) {
+        this.paymentType = paymentType;
+        return this;
+    }
+
+    public PurchaseOrderStateEnum getPresentOrderState() {
+        return presentOrderState;
+    }
+
+    public JsonPurchaseOrderHistorical setPresentOrderState(PurchaseOrderStateEnum presentOrderState) {
+        this.presentOrderState = presentOrderState;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public JsonPurchaseOrderHistorical setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public JsonPurchaseOrderHistorical setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+        return this;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public JsonPurchaseOrderHistorical setReview(String review) {
+        this.review = review;
+        return this;
+    }
+
+    public int getTokenNumber() {
+        return tokenNumber;
+    }
+
+    public JsonPurchaseOrderHistorical setTokenNumber(int tokenNumber) {
+        this.tokenNumber = tokenNumber;
+        return this;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public JsonPurchaseOrderHistorical setServerName(String serverName) {
+        this.serverName = serverName;
+        return this;
+    }
+
+    public String getServiceBeginTime() {
+        return serviceBeginTime;
+    }
+
+    public JsonPurchaseOrderHistorical setServiceBeginTime(String serviceBeginTime) {
+        this.serviceBeginTime = serviceBeginTime;
+        return this;
+    }
+
+    public String getServiceEndTime() {
+        return serviceEndTime;
+    }
+
+    public JsonPurchaseOrderHistorical setServiceEndTime(String serviceEndTime) {
+        this.serviceEndTime = serviceEndTime;
+        return this;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public JsonPurchaseOrderHistorical setCreated(String created) {
+        this.created = created;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public JsonPurchaseOrderHistorical setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+        return this;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public JsonPurchaseOrderHistorical setDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    public List<JsonPurchaseOrderProductHistorical> getJsonPurchaseOrderProductHistoricalList() {
+        return jsonPurchaseOrderProductHistoricalList;
+    }
+
+    public void setJsonPurchaseOrderProductHistoricalList(List<JsonPurchaseOrderProductHistorical> jsonPurchaseOrderProductHistoricalList) {
+        this.jsonPurchaseOrderProductHistoricalList = jsonPurchaseOrderProductHistoricalList;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonPurchaseOrderHistorical{" +
+                "queueUserId='" + queueUserId + '\'' +
+                ", codeQR='" + codeQR + '\'' +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", storeDiscount=" + storeDiscount +
+                ", orderPrice='" + orderPrice + '\'' +
+                ", deliveryType=" + deliveryType +
+                ", paymentType=" + paymentType +
+                ", presentOrderState=" + presentOrderState +
+                ", businessType=" + businessType +
+                ", ratingCount=" + ratingCount +
+                ", review='" + review + '\'' +
+                ", tokenNumber=" + tokenNumber +
+                ", serverName='" + serverName + '\'' +
+                ", serviceBeginTime='" + serviceBeginTime + '\'' +
+                ", serviceEndTime='" + serviceEndTime + '\'' +
+                ", transactionId='" + transactionId + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", created='" + created + '\'' +
+                '}';
+    }
+}

@@ -166,7 +166,21 @@
                 android:screenOrientation="portrait"
                 android:theme="@style/BaseTheme"/>
         <activity
+                android:name=".views.activities.OrderQueueHistoryActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/BaseTheme"/>
+        <activity
                 android:name=".views.activities.ManagerProfileActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/BaseTheme"
+                android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+                android:name=".views.activities.ContactUsActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/BaseTheme"
+                android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+                android:name=".views.activities.OrderHistoryDetailActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden"/>
@@ -210,8 +224,6 @@
                 android:name="io.fabric.ApiKey"
                 android:value="fc745aa326a54082165c333f7a03cee25b12f3ff"/>
 
-        <activity android:name=".views.activities.OrderQueueHistoryActivity">
-        </activity>
     </application>
 
 </manifest>

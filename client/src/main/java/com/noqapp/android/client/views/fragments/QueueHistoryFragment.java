@@ -2,10 +2,16 @@ package com.noqapp.android.client.views.fragments;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
+import com.noqapp.android.client.model.OrderQueueHistoryModel;
 import com.noqapp.android.client.presenter.NearMePresenter;
+import com.noqapp.android.client.presenter.QueueHistoryPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistoricalList;
+import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
+import com.noqapp.android.client.presenter.beans.JsonQueueHistoricalList;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
@@ -31,9 +37,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapter.OnItemClickListener, NearMePresenter {
+public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapter.OnItemClickListener, QueueHistoryPresenter {
     private RecyclerView rcv_order_history;
-    private ArrayList<BizStoreElastic> listData;
+    private ArrayList<JsonQueueHistorical> listData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,13 +47,9 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         rcv_order_history = view.findViewById(R.id.rcv_order_history);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            StoreInfoParam storeInfoParam = new StoreInfoParam();
-            storeInfoParam.setCityName(LaunchActivity.getLaunchActivity().getDefaultCity());
-            storeInfoParam.setLatitude(String.valueOf(LaunchActivity.getLaunchActivity().getDefaultLatitude()));
-            storeInfoParam.setLongitude(String.valueOf(LaunchActivity.getLaunchActivity().getDefaultLongitude()));
-            storeInfoParam.setFilters("xyz");
-            storeInfoParam.setScrollId("");
-            new NearMeModel(this).nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
+            OrderQueueHistoryModel orderQueueHistoryModel = new OrderQueueHistoryModel();
+            orderQueueHistoryModel.setQueueHistoryPresenter(this);
+            orderQueueHistoryModel.queues(UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -63,7 +65,7 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
     }
 
     @Override
-    public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
+    public void onStoreItemClick(JsonQueueHistorical item, View view, int pos) {
         switch (item.getBusinessType()) {
             case DO:
             case BK:
@@ -88,28 +90,11 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
         }
     }
 
-    @Override
-    public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
-        ArrayList<BizStoreElastic> nearMeData = new ArrayList<>();
-        nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
-        //sort the list, give the Comparator the current location
-        Collections.sort(nearMeData, new SortPlaces(new LatLng(LaunchActivity.getLaunchActivity().getDefaultLatitude(), LaunchActivity.getLaunchActivity().getDefaultLongitude())));
-        listData = nearMeData;
-        //add all items
-        QueueHistoryAdapter queueHistoryAdapter = new QueueHistoryAdapter(listData, getActivity(), this);
-        rcv_order_history.setAdapter(queueHistoryAdapter);
-
-    }
-
-    @Override
-    public void nearMeError() {
-        //LaunchActivity.getLaunchActivity().dismissProgress();
-
-    }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(getActivity(), eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(getActivity(), eej);
     }
 
     @Override
@@ -120,7 +105,17 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
     @Override
     public void authenticationFailure() {
         //dismissProgress();
-        // AppUtilities.authenticationProcessing(this, errorCode);
+        AppUtilities.authenticationProcessing(getActivity());
     }
+
+
+    @Override
+    public void queueHistoryResponse(JsonQueueHistoricalList jsonQueueHistoricalList) {
+        listData = new ArrayList<>(jsonQueueHistoricalList.getQueueHistoricals());
+        //add all items
+        QueueHistoryAdapter queueHistoryAdapter = new QueueHistoryAdapter(listData, getActivity(), this);
+        rcv_order_history.setAdapter(queueHistoryAdapter);
+    }
+
 
 }

@@ -1,8 +1,7 @@
-package com.noqapp.android.merchant.presenter.beans.order;
+package com.noqapp.android.common.beans.order;
 
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

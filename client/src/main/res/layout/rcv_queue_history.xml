@@ -90,7 +90,7 @@
                     android:background="@android:color/darker_gray"/>
 
             <TextView
-                    android:id="@+id/tv_store_special"
+                    android:id="@+id/tv_queue_join_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/view_seprator"
@@ -100,10 +100,10 @@
                     android:textSize="@dimen/text_size_twelve"/>
 
             <TextView
-                    android:id="@+id/tv_store_special1"
+                    android:id="@+id/tv_token"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_store_special"
+                    android:layout_below="@+id/tv_queue_join_date"
                     android:text="Token number - 157842369"
                     android:textSize="@dimen/text_size_twelve"/>
 
@@ -113,19 +113,18 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp"
-                    android:layout_below="@+id/tv_store_special1"
+                    android:layout_below="@+id/tv_token"
                     android:background="@android:color/darker_gray"/>
 
             <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height=
-                            "wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_below="@+id/view_seprator1"
                     android:weightSum="1">
 
                 <TextView
-                        android:id="@+id/tv_store_special12"
+                        android:id="@+id/tv_queue_status"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".5"

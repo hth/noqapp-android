@@ -2,12 +2,10 @@ package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 
 import com.squareup.picasso.Picasso;
 
@@ -26,9 +24,9 @@ import java.util.ArrayList;
 public class OrderHistoryAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OrderHistoryAdapter.OnItemClickListener listener;
-    private ArrayList<BizStoreElastic> dataSet;
+    private ArrayList<JsonPurchaseOrderHistorical> dataSet;
 
-    public OrderHistoryAdapter(ArrayList<BizStoreElastic> data, Context context, OrderHistoryAdapter.OnItemClickListener listener) {
+    public OrderHistoryAdapter(ArrayList<JsonPurchaseOrderHistorical> data, Context context, OrderHistoryAdapter.OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -47,16 +45,22 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
         OrderHistoryAdapter.MyViewHolder holder = (OrderHistoryAdapter.MyViewHolder) viewHolder;
-        BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
-        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
+        final JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical = dataSet.get(listPosition);
+        if (!TextUtils.isEmpty(""))
             Picasso.with(context)
-                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, ""))
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
                     .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(holder.iv_main);
         else {
             Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
+        holder.card_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onStoreItemClick(jsonPurchaseOrderHistorical, v, listPosition);
+            }
+        });
     }
 
     @Override
@@ -65,7 +69,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onStoreItemClick(BizStoreElastic item, View view, int pos);
+        void onStoreItemClick(JsonPurchaseOrderHistorical item, View view, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

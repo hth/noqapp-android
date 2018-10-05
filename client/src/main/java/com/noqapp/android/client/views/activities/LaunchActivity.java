@@ -229,6 +229,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     case R.drawable.language:
                         showChangeLangDialog();
                         break;
+                    case R.drawable.show_in_map:
+                        Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);
+                        startActivity(in);
+                        break;
                     case R.drawable.ic_star:
                         AppUtilities.openPlayStore(launchActivity);
                         break;
@@ -909,6 +913,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
         drawerItem.add(new NavigationBean(R.drawable.ic_star, getString(R.string.ratetheapp)));
         drawerItem.add(new NavigationBean(R.drawable.language, getString(R.string.language_setting)));
+        drawerItem.add(new NavigationBean(R.drawable.show_in_map, getString(R.string.title_activity_contact_us)));
         if (isLogin) {
             drawerItem.add(new NavigationBean(R.drawable.ic_logout, getString(R.string.logout)));
         }

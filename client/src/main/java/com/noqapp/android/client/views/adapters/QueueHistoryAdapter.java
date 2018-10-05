@@ -3,9 +3,12 @@ package com.noqapp.android.client.views.adapters;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
@@ -21,14 +24,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class QueueHistoryAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final QueueHistoryAdapter.OnItemClickListener listener;
-    private ArrayList<BizStoreElastic> dataSet;
+    private ArrayList<JsonQueueHistorical> dataSet;
 
-    public QueueHistoryAdapter(ArrayList<BizStoreElastic> data, Context context, QueueHistoryAdapter.OnItemClickListener listener) {
+    public QueueHistoryAdapter(ArrayList<JsonQueueHistorical> data, Context context, QueueHistoryAdapter.OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -47,16 +52,26 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
         QueueHistoryAdapter.MyViewHolder holder = (QueueHistoryAdapter.MyViewHolder) viewHolder;
-        BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
-        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
-            Picasso.with(context)
-                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
-                    .placeholder(ImageUtils.getThumbPlaceholder(context))
-                    .error(ImageUtils.getThumbErrorPlaceholder(context))
-                    .into(holder.iv_main);
-        else {
-            Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
+        JsonQueueHistorical jsonQueueHistorical = dataSet.get(listPosition);
+        holder.tv_name.setText(jsonQueueHistorical.getDisplayName());
+        // holder.tv_address.setText(jsonQueueHistorical.get);
+        try {
+            holder.tv_queue_join_date.setText("Queue join date- " + CommonHelper.SDF_YYYY_MM_DD.
+                    format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonQueueHistorical.getCreated())));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        holder.tv_token.setText("Token number- " + jsonQueueHistorical.getTokenNumber());
+        holder.tv_queue_status.setText("Status -" + jsonQueueHistorical.getQueueUserState().getDescription());
+//        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
+//            Picasso.with(context)
+//                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+//                    .placeholder(ImageUtils.getThumbPlaceholder(context))
+//                    .error(ImageUtils.getThumbErrorPlaceholder(context))
+//                    .into(holder.iv_main);
+//        else {
+        Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
+        // }
     }
 
     @Override
@@ -65,16 +80,16 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onStoreItemClick(BizStoreElastic item, View view, int pos);
+        void onStoreItemClick(JsonQueueHistorical item, View view, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_name;
         private TextView tv_address;
-        private TextView tv_phoneno;
-        private TextView tv_store_rating;
-        private TextView tv_store_review;
+        private TextView tv_queue_join_date;
+        private TextView tv_token;
+        private TextView tv_queue_status;
         private TextView tv_category_name;
         private TextView tv_store_special;
         private TextView tv_status;
@@ -83,11 +98,11 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
 
         private MyViewHolder(View itemView) {
             super(itemView);
-//            this.tv_name = itemView.findViewById(R.id.tv_name);
-//            this.tv_address = itemView.findViewById(R.id.tv_address);
-//            this.tv_phoneno = itemView.findViewById(R.id.tv_phoneno);
-//            this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
-//            this.tv_store_review = itemView.findViewById(R.id.tv_store_review);
+            this.tv_name = itemView.findViewById(R.id.tv_name);
+            this.tv_address = itemView.findViewById(R.id.tv_address);
+            this.tv_queue_join_date = itemView.findViewById(R.id.tv_queue_join_date);
+            this.tv_token = itemView.findViewById(R.id.tv_token);
+            this.tv_queue_status = itemView.findViewById(R.id.tv_queue_status);
 //            this.tv_category_name = itemView.findViewById(R.id.tv_category_name);
 //            this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
 //            this.tv_status = itemView.findViewById(R.id.tv_status);

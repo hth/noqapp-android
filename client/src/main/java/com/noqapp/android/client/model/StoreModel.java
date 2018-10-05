@@ -61,7 +61,7 @@ public final class StoreModel {
             @Override
             public void onFailure(@NonNull Call<JsonStore> call, @NonNull Throwable t) {
                 Log.e("jsonStore response", t.getLocalizedMessage(), t);
-                storePresenter.storeError();
+                storePresenter.responseErrorPresenter(null);
             }
         });
     }

@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.order.JsonPurchaseOrderList;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -12,7 +13,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
-import com.noqapp.android.merchant.presenter.beans.order.JsonPurchaseOrderList;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -236,8 +236,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
         LaunchActivity.getLaunchActivity().dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(), eej);
     }
+
     @Override
     protected void updateUI() {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
@@ -450,6 +451,5 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     public void orderProcessedError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
-
 
 }

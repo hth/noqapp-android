@@ -7,6 +7,7 @@ import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class OrderConfirmActivity extends BaseActivity {
         TextView tv_estimated_time = findViewById(R.id.tv_estimated_time);
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_address = findViewById(R.id.tv_address);
+        Button btn_cancel_order = findViewById(R.id.btn_cancel_order);
         initActionsViews(true);
 
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
@@ -38,10 +40,10 @@ public class OrderConfirmActivity extends BaseActivity {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = oldjsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
-            TextView tv_title = (TextView) inflatedLayout.findViewById(R.id.tv_title);
-            TextView tv_qty = (TextView) inflatedLayout.findViewById(R.id.tv_qty);
-            TextView tv_price = (TextView) inflatedLayout.findViewById(R.id.tv_price);
-            TextView tv_total_price = (TextView) inflatedLayout.findViewById(R.id.tv_total_price);
+            TextView tv_title =  inflatedLayout.findViewById(R.id.tv_title);
+            TextView tv_qty =  inflatedLayout.findViewById(R.id.tv_qty);
+            TextView tv_price =  inflatedLayout.findViewById(R.id.tv_price);
+            TextView tv_total_price =  inflatedLayout.findViewById(R.id.tv_total_price);
             tv_title.setText(jsonPurchaseOrderProduct.getProductName());
             tv_qty.setText("Quantity: " + jsonPurchaseOrderProduct.getProductQuantity());
             tv_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() / 100);
@@ -58,6 +60,12 @@ public class OrderConfirmActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 iv_home.performClick();
+            }
+        });
+        btn_cancel_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
