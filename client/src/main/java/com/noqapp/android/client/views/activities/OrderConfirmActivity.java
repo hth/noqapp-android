@@ -40,10 +40,10 @@ public class OrderConfirmActivity extends BaseActivity {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = oldjsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
-            TextView tv_title = (TextView) inflatedLayout.findViewById(R.id.tv_title);
-            TextView tv_qty = (TextView) inflatedLayout.findViewById(R.id.tv_qty);
-            TextView tv_price = (TextView) inflatedLayout.findViewById(R.id.tv_price);
-            TextView tv_total_price = (TextView) inflatedLayout.findViewById(R.id.tv_total_price);
+            TextView tv_title =  inflatedLayout.findViewById(R.id.tv_title);
+            TextView tv_qty =  inflatedLayout.findViewById(R.id.tv_qty);
+            TextView tv_price =  inflatedLayout.findViewById(R.id.tv_price);
+            TextView tv_total_price =  inflatedLayout.findViewById(R.id.tv_total_price);
             tv_title.setText(jsonPurchaseOrderProduct.getProductName());
             tv_qty.setText("Quantity: " + jsonPurchaseOrderProduct.getProductQuantity());
             tv_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() / 100);

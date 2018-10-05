@@ -3,6 +3,9 @@ package com.noqapp.android.client.model;
 import com.noqapp.android.client.model.response.api.HistoricalApiService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.OrderHistoryPresenter;
+import com.noqapp.android.client.presenter.QueueHistoryPresenter;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistoricalList;
+import com.noqapp.android.client.presenter.beans.JsonQueueHistoricalList;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrderList;
 
@@ -16,9 +19,14 @@ public class OrderQueueHistoryModel {
     private final String TAG = OrderQueueHistoryModel.class.getSimpleName();
     private static final HistoricalApiService historicalApiService;
     private OrderHistoryPresenter orderHistoryPresenter;
+    private QueueHistoryPresenter queueHistoryPresenter;
 
     public void setOrderHistoryPresenter(OrderHistoryPresenter orderHistoryPresenter) {
         this.orderHistoryPresenter = orderHistoryPresenter;
+    }
+
+    public void setQueueHistoryPresenter(QueueHistoryPresenter queueHistoryPresenter) {
+        this.queueHistoryPresenter = queueHistoryPresenter;
     }
 
     static {
@@ -27,9 +35,9 @@ public class OrderQueueHistoryModel {
 
 
     public void orders(String mail, String auth) {
-        historicalApiService.orders(mail, auth).enqueue(new Callback<JsonPurchaseOrderList>() {
+        historicalApiService.orders(mail, auth).enqueue(new Callback<JsonPurchaseOrderHistoricalList>() {
             @Override
-            public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
+            public void onResponse(@NonNull Call<JsonPurchaseOrderHistoricalList> call, @NonNull Response<JsonPurchaseOrderHistoricalList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response orders history", String.valueOf(response.body()));
@@ -48,9 +56,38 @@ public class OrderQueueHistoryModel {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonPurchaseOrderHistoricalList> call, @NonNull Throwable t) {
                 Log.e("orders history failure", t.getLocalizedMessage(), t);
-                orderHistoryPresenter.orderHistoryError();
+                orderHistoryPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void queues(String mail, String auth) {
+        historicalApiService.queues(mail, auth).enqueue(new Callback<JsonQueueHistoricalList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonQueueHistoricalList> call, @NonNull Response<JsonQueueHistoricalList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response queues history", String.valueOf(response.body()));
+                        queueHistoryPresenter.queueHistoryResponse(response.body());
+                    } else {
+                        Log.e(TAG, "orders queues error");
+                        queueHistoryPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queueHistoryPresenter.authenticationFailure();
+                    } else {
+                        queueHistoryPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonQueueHistoricalList> call, @NonNull Throwable t) {
+                Log.e("orders queues failure", t.getLocalizedMessage(), t);
+                queueHistoryPresenter.responseErrorPresenter(null);
             }
         });
     }

@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
@@ -23,9 +24,9 @@ import java.util.ArrayList;
 public class OrderHistoryAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OrderHistoryAdapter.OnItemClickListener listener;
-    private ArrayList<JsonPurchaseOrder> dataSet;
+    private ArrayList<JsonPurchaseOrderHistorical> dataSet;
 
-    public OrderHistoryAdapter(ArrayList<JsonPurchaseOrder> data, Context context, OrderHistoryAdapter.OnItemClickListener listener) {
+    public OrderHistoryAdapter(ArrayList<JsonPurchaseOrderHistorical> data, Context context, OrderHistoryAdapter.OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -44,7 +45,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
         OrderHistoryAdapter.MyViewHolder holder = (OrderHistoryAdapter.MyViewHolder) viewHolder;
-        final JsonPurchaseOrder jsonPurchaseOrder = dataSet.get(listPosition);
+        final JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical = dataSet.get(listPosition);
         if (!TextUtils.isEmpty(""))
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, ""))
@@ -57,7 +58,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onStoreItemClick(jsonPurchaseOrder, v, listPosition);
+                listener.onStoreItemClick(jsonPurchaseOrderHistorical, v, listPosition);
             }
         });
     }
@@ -68,7 +69,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onStoreItemClick(JsonPurchaseOrder item, View view, int pos);
+        void onStoreItemClick(JsonPurchaseOrderHistorical item, View view, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

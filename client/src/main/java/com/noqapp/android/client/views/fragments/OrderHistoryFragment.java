@@ -7,6 +7,8 @@ import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.OrderHistoryPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistoricalList;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -41,7 +43,7 @@ import java.util.Collections;
 
 public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapter.OnItemClickListener, OrderHistoryPresenter {
     private RecyclerView rcv_order_history;
-    private ArrayList<JsonPurchaseOrder> listData;
+    private ArrayList<JsonPurchaseOrderHistorical> listData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
     }
 
     @Override
-    public void onStoreItemClick(JsonPurchaseOrder item, View view, int pos) {
+    public void onStoreItemClick(JsonPurchaseOrderHistorical item, View view, int pos) {
         // open order screen
         Intent intent = new Intent(getActivity(), OrderHistoryDetailActivity.class);
         Bundle bundle = new Bundle();
@@ -79,7 +81,8 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(getActivity(), eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(getActivity(), eej);
     }
 
     @Override
@@ -94,14 +97,9 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
     }
 
     @Override
-    public void orderHistoryResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
-        listData = new ArrayList<>(jsonPurchaseOrderList.getPurchaseOrders());
+    public void orderHistoryResponse(JsonPurchaseOrderHistoricalList jsonPurchaseOrderHistoricalList) {
+        listData = new ArrayList<>(jsonPurchaseOrderHistoricalList.getJsonPurchaseOrderHistoricals());
         OrderHistoryAdapter orderHistoryAdapter = new OrderHistoryAdapter(listData, getActivity(), this);
         rcv_order_history.setAdapter(orderHistoryAdapter);
-    }
-
-    @Override
-    public void orderHistoryError() {
-
     }
 }

@@ -345,10 +345,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_store_timings.setText(Html.fromHtml(new AppUtilities().orderTheTimings(this, jsonStore.getJsonHours())));
     }
 
-    @Override
-    public void storeError() {
-        dismissProgress();
-    }
 
     @Override
     public void authenticationFailure() {
@@ -359,7 +355,8 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override

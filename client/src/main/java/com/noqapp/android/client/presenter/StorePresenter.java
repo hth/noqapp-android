@@ -7,6 +7,4 @@ public interface StorePresenter extends ResponseErrorPresenter{
 
     void storeResponse(JsonStore jsonStore);
 
-    void storeError();
-
 }
