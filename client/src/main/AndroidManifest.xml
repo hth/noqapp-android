@@ -180,6 +180,11 @@
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
+                android:name=".views.activities.OrderHistoryDetailActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/BaseTheme"
+                android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
                 android:name=".views.activities.UserProfileEditActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/BaseTheme"

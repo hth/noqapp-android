@@ -236,8 +236,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
         LaunchActivity.getLaunchActivity().dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(), eej);
     }
+
     @Override
     protected void updateUI() {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
@@ -450,6 +451,5 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     public void orderProcessedError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
-
 
 }

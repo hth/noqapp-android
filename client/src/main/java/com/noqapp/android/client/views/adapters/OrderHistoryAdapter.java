@@ -2,13 +2,9 @@ package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
-import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +44,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
         OrderHistoryAdapter.MyViewHolder holder = (OrderHistoryAdapter.MyViewHolder) viewHolder;
-        JsonPurchaseOrder bizStoreElastic = dataSet.get(listPosition);
+        final JsonPurchaseOrder jsonPurchaseOrder = dataSet.get(listPosition);
         if (!TextUtils.isEmpty(""))
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, ""))
@@ -58,6 +54,12 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         else {
             Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
+        holder.card_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onStoreItemClick(jsonPurchaseOrder, v, listPosition);
+            }
+        });
     }
 
     @Override
@@ -66,7 +68,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onStoreItemClick(BizStoreElastic item, View view, int pos);
+        void onStoreItemClick(JsonPurchaseOrder item, View view, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

@@ -15,6 +15,7 @@ import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.OrderHistoryDetailActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.adapters.OrderHistoryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -50,7 +51,7 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             OrderQueueHistoryModel orderQueueHistoryModel = new OrderQueueHistoryModel();
             orderQueueHistoryModel.setOrderHistoryPresenter(this);
-            orderQueueHistoryModel.orders(UserUtils.getEmail(),UserUtils.getAuth());
+            orderQueueHistoryModel.orders(UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -66,32 +67,14 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
     }
 
     @Override
-    public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
-        switch (item.getBusinessType()) {
-            case DO:
-            case BK:
-                // open hospital/Bank profile
-                Bundle b = new Bundle();
-                b.putString(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
-                b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
-                b.putBoolean("CallCategory", true);
-                b.putBoolean("isCategoryData", false);
-                b.putSerializable("BizStoreElastic", item);
-                Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
-                in.putExtra("bundle", b);
-                startActivity(in);
-                break;
-            default:
-                // open order screen
-                Intent intent = new Intent(getActivity(), StoreDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("BizStoreElastic", item);
-                intent.putExtras(bundle);
-                startActivity(intent);
-        }
+    public void onStoreItemClick(JsonPurchaseOrder item, View view, int pos) {
+        // open order screen
+        Intent intent = new Intent(getActivity(), OrderHistoryDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("data", item);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
-
-
 
 
     @Override
@@ -107,7 +90,7 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
     @Override
     public void authenticationFailure() {
         //dismissProgress();
-         AppUtilities.authenticationProcessing(getActivity());
+        AppUtilities.authenticationProcessing(getActivity());
     }
 
     @Override
