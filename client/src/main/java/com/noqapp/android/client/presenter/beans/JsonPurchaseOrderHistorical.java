@@ -77,10 +77,10 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     private String serverName;
 
     @JsonProperty ("sb")
-    private Date serviceBeginTime;
+    private String serviceBeginTime;
 
     @JsonProperty ("se")
-    private Date serviceEndTime;
+    private String serviceEndTime;
 
     @JsonProperty ("ti")
     private String transactionId;
@@ -88,5 +88,6 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     @JsonProperty ("dn")
     private String displayName;
 
-
+    @JsonProperty("u")
+    private String created;
 }

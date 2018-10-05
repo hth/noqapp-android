@@ -64,11 +64,14 @@ public class JsonQueueHistorical extends AbstractDomain {
     private String serverName;
 
     @JsonProperty ("sb")
-    private Date serviceBeginTime;
+    private String serviceBeginTime;
 
     @JsonProperty ("se")
-    private Date serviceEndTime;
+    private String serviceEndTime;
 
     @JsonProperty ("gq")
     private String guardianQid;
+
+    @JsonProperty("u")
+    private String created;
 }
