@@ -10,6 +10,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.common.base.Objects;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -75,6 +79,12 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
 
     @JsonProperty("u")
     private String created;
+
+    @JsonProperty ("n")
+    private String businessName;
+
+    @JsonProperty("di")
+    private String displayImage;
 
     public String getCodeQR() {
         return codeQR;
@@ -199,6 +209,24 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
 
     public JsonQueueHistorical setCreated(String created) {
         this.created = created;
+        return this;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public JsonQueueHistorical setBusinessName(String businessName) {
+        this.businessName = businessName;
+        return this;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
+    }
+
+    public JsonQueueHistorical setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
         return this;
     }
 
