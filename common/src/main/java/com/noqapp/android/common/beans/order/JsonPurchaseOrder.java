@@ -78,7 +78,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty ("ti")
     private String transactionId;
 
-    @JsonProperty ("os")
+    @JsonProperty ("ps")
     private PurchaseOrderStateEnum purchaseOrderState;
 
     @JsonProperty ("c")
