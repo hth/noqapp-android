@@ -172,7 +172,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
                 orderServed.setGoTo(tv_counter_name.getText().toString());
                 orderServed.setQueueStatus(QueueStatusEnum.N);
-                orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPurchaseOrderState());
+                orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
 
 
                 PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
@@ -196,7 +196,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
                 orderServed.setGoTo(tv_counter_name.getText().toString());
                 orderServed.setQueueStatus(QueueStatusEnum.N);
-                orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPurchaseOrderState());
+                orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
 
 
                 PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
