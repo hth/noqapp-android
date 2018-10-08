@@ -25,13 +25,13 @@ public class PurchaseApiModel {
         purchaseOrderService = RetrofitClient.getClient().create(PurchaseOrderService.class);
     }
 
-    public void placeOrder(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
-        purchaseOrderService.placeOrder(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+    public void purchase(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        purchaseOrderService.purchase(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Response placeOrder", String.valueOf(response.body()));
+                        Log.d("Response purchase", String.valueOf(response.body()));
                         purchaseOrderPresenter.purchaseOrderResponse(response.body());
                     } else {
                         purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
@@ -47,7 +47,7 @@ public class PurchaseApiModel {
 
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
-                Log.e("onFailure placeOrder", t.getLocalizedMessage(), t);
+                Log.e("onFailure purchase", t.getLocalizedMessage(), t);
                 purchaseOrderPresenter.purchaseOrderError();
             }
         });

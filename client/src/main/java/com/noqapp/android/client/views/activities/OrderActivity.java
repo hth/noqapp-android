@@ -111,7 +111,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         jsonPurchaseOrder.setPaymentType(PaymentTypeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
 
-                        purchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        purchaseApiModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                     }
