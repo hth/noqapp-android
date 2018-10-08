@@ -37,7 +37,9 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
 
         void orderDoneClick(int position);
     }
+
     private PeopleInQOrderAdapterClick peopleInQOrderAdapterClick;
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_customer_name;
         TextView tv_customer_mobile;
@@ -95,13 +97,13 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         recordHolder.tv_order_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOrderDetailDialog(context,jsonPurchaseOrder,jsonPurchaseOrder.getPurchaseOrderProducts());
+                showOrderDetailDialog(context, jsonPurchaseOrder, jsonPurchaseOrder.getPurchaseOrderProducts());
             }
         });
-        if(jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
-                jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.RD){
+        if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RP ||
+                jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RD) {
             recordHolder.tv_order_done.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             recordHolder.tv_order_done.setVisibility(View.GONE);
         }
         recordHolder.tv_order_done.setOnClickListener(new View.OnClickListener() {
@@ -110,10 +112,10 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                 peopleInQOrderAdapterClick.orderDoneClick(position);
             }
         });
-        recordHolder.tv_order_status.setText(jsonPurchaseOrder.getPurchaseOrderState().getDescription());
-        if(jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.OP){
+        recordHolder.tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+        if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
             recordHolder.tv_order_prepared.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             recordHolder.tv_order_prepared.setVisibility(View.GONE);
         }
         recordHolder.tv_order_prepared.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +145,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
     }
 
 
-    private void showOrderDetailDialog(final Context mContext, JsonPurchaseOrder jsonPurchaseOrder,List<JsonPurchaseOrderProduct> jsonPurchaseOrderProductList) {
+    private void showOrderDetailDialog(final Context mContext, JsonPurchaseOrder jsonPurchaseOrder, List<JsonPurchaseOrderProduct> jsonPurchaseOrderProductList) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
@@ -153,18 +155,18 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         TextView tv_payment_mode = customDialogView.findViewById(R.id.tv_payment_mode);
         TextView tv_address = customDialogView.findViewById(R.id.tv_address);
         TextView tv_cost = customDialogView.findViewById(R.id.tv_cost);
-        tv_address.setText(Html.fromHtml("<font color=\"black\"><b>Delivery Address: </b></font>"+jsonPurchaseOrder.getDeliveryAddress()));
-        tv_payment_mode.setText(Html.fromHtml("<font color=\"black\"><b>Payment Mode: </b></font>"+jsonPurchaseOrder.getPaymentType().getDescription()));
+        tv_address.setText(Html.fromHtml("<font color=\"black\"><b>Delivery Address: </b></font>" + jsonPurchaseOrder.getDeliveryAddress()));
+        tv_payment_mode.setText(Html.fromHtml("<font color=\"black\"><b>Payment Mode: </b></font>" + jsonPurchaseOrder.getPaymentType().getDescription()));
         try {
             tv_cost.setText(Html.fromHtml("<font color=\"black\"><b>Total Cost: </b></font>" + (Integer.parseInt(jsonPurchaseOrder.getOrderPrice())) / 100));
-        }catch (Exception e){
-            tv_cost.setText(Html.fromHtml("<font color=\"black\"><b>Total Cost: </b></font>"+0/100));
+        } catch (Exception e) {
+            tv_cost.setText(Html.fromHtml("<font color=\"black\"><b>Total Cost: </b></font>" + 0 / 100));
         }
         builder.setView(customDialogView);
         ArrayList<String> data = new ArrayList<>();
-        if(null != jsonPurchaseOrderProductList & jsonPurchaseOrderProductList.size()>0){
+        if (null != jsonPurchaseOrderProductList & jsonPurchaseOrderProductList.size() > 0) {
             for (int i = 0; i < jsonPurchaseOrderProductList.size(); i++) {
-                data.add(jsonPurchaseOrderProductList.get(i).getProductName() +"                               "+jsonPurchaseOrderProductList.get(i).getProductQuantity());
+                data.add(jsonPurchaseOrderProductList.get(i).getProductName() + "                               " + jsonPurchaseOrderProductList.get(i).getProductQuantity());
             }
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, data);

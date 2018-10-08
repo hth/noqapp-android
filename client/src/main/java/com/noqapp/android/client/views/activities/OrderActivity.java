@@ -111,7 +111,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         jsonPurchaseOrder.setPaymentType(PaymentTypeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
 
-                        purchaseApiModel.placeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        purchaseApiModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                     }
@@ -162,7 +162,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         if (null != jsonPurchaseOrder) {
-            if (jsonPurchaseOrder.getPurchaseOrderState() == PurchaseOrderStateEnum.PO) {
+            if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 Toast.makeText(this, "Order placed successfully.", Toast.LENGTH_LONG).show();
                 Intent in = new Intent(OrderActivity.this, OrderConfirmActivity.class);
                 Bundle bundle = new Bundle();

@@ -78,8 +78,8 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty ("ti")
     private String transactionId;
 
-    @JsonProperty ("os")
-    private PurchaseOrderStateEnum purchaseOrderState;
+    @JsonProperty ("ps")
+    private PurchaseOrderStateEnum presentOrderState;
 
     @JsonProperty ("c")
     private String created;
@@ -221,12 +221,12 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public PurchaseOrderStateEnum getPurchaseOrderState() {
-        return purchaseOrderState;
+    public PurchaseOrderStateEnum getPresentOrderState() {
+        return presentOrderState;
     }
 
-    public JsonPurchaseOrder setPurchaseOrderState(PurchaseOrderStateEnum purchaseOrderState) {
-        this.purchaseOrderState = purchaseOrderState;
+    public JsonPurchaseOrder setPresentOrderState(PurchaseOrderStateEnum presentOrderState) {
+        this.presentOrderState = presentOrderState;
         return this;
     }
 
@@ -264,7 +264,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         sb.append(", customerName='").append(customerName).append('\'');
         sb.append(", expectedServiceBegin='").append(expectedServiceBegin).append('\'');
         sb.append(", transactionId='").append(transactionId).append('\'');
-        sb.append(", purchaseOrderState=").append(purchaseOrderState);
+        sb.append(", presentOrderState=").append(presentOrderState);
         sb.append(", created='").append(created).append('\'');
         sb.append(", error=").append(error);
         sb.append('}');

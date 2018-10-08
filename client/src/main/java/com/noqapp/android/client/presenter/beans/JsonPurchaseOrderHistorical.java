@@ -88,6 +88,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
     @JsonProperty ("ti")
     private String transactionId;
 
+    /* This is business name. */
     @JsonProperty ("dn")
     private String displayName;
 
@@ -96,6 +97,18 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
 
     @JsonProperty("pops")
     private List<JsonPurchaseOrderProductHistorical> jsonPurchaseOrderProductHistoricalList = new ArrayList<>();
+
+    @JsonProperty("sa")
+    private String storeAddress;
+
+    @JsonProperty("ar")
+    private String area;
+
+    @JsonProperty("to")
+    private String town;
+
+    @JsonProperty("cs")
+    private String countryShortName;
 
     public String getQueueUserId() {
         return queueUserId;
@@ -265,6 +278,42 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
 
     public void setJsonPurchaseOrderProductHistoricalList(List<JsonPurchaseOrderProductHistorical> jsonPurchaseOrderProductHistoricalList) {
         this.jsonPurchaseOrderProductHistoricalList = jsonPurchaseOrderProductHistoricalList;
+    }
+
+    public String getStoreAddress() {
+        return storeAddress;
+    }
+
+    public JsonPurchaseOrderHistorical setStoreAddress(String storeAddress) {
+        this.storeAddress = storeAddress;
+        return this;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public JsonPurchaseOrderHistorical setArea(String area) {
+        this.area = area;
+        return this;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public JsonPurchaseOrderHistorical setTown(String town) {
+        this.town = town;
+        return this;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public JsonPurchaseOrderHistorical setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
+        return this;
     }
 
     @Override

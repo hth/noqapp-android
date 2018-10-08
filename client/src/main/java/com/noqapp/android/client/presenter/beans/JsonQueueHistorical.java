@@ -83,6 +83,18 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
     @JsonProperty ("n")
     private String businessName;
 
+    @JsonProperty("sa")
+    private String storeAddress;
+
+    @JsonProperty("ar")
+    private String area;
+
+    @JsonProperty("to")
+    private String town;
+
+    @JsonProperty("cs")
+    private String countryShortName;
+
     @JsonProperty("di")
     private String displayImage;
 
@@ -218,6 +230,42 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
 
     public JsonQueueHistorical setBusinessName(String businessName) {
         this.businessName = businessName;
+        return this;
+    }
+
+    public String getStoreAddress() {
+        return storeAddress;
+    }
+
+    public JsonQueueHistorical setStoreAddress(String storeAddress) {
+        this.storeAddress = storeAddress;
+        return this;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public JsonQueueHistorical setArea(String area) {
+        this.area = area;
+        return this;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public JsonQueueHistorical setTown(String town) {
+        this.town = town;
+        return this;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public JsonQueueHistorical setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
         return this;
     }
 
