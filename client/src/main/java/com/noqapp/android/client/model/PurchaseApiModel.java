@@ -52,4 +52,32 @@ public class PurchaseApiModel {
             }
         });
     }
+
+    public void cancelOrder(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        purchaseOrderService.cancel(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response purchase", String.valueOf(response.body()));
+                        purchaseOrderPresenter.purchaseOrderResponse(response.body());
+                    } else {
+                        purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        purchaseOrderPresenter.authenticationFailure();
+                    } else {
+                        purchaseOrderPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
+                Log.e("onFailure purchase", t.getLocalizedMessage(), t);
+                purchaseOrderPresenter.purchaseOrderError();
+            }
+        });
+    }
 }

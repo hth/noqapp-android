@@ -30,10 +30,10 @@ import java.util.Locale;
 
 public class QueueHistoryAdapter extends RecyclerView.Adapter {
     private final Context context;
-    private final QueueHistoryAdapter.OnItemClickListener listener;
+    private final OnItemClickListener listener;
     private ArrayList<JsonQueueHistorical> dataSet;
 
-    public QueueHistoryAdapter(ArrayList<JsonQueueHistorical> data, Context context, QueueHistoryAdapter.OnItemClickListener listener) {
+    public QueueHistoryAdapter(ArrayList<JsonQueueHistorical> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -45,16 +45,17 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                                                       int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_queue_history, parent, false);
-        RecyclerView.ViewHolder vh = new QueueHistoryAdapter.MyViewHolder(v);
+        RecyclerView.ViewHolder vh = new MyViewHolder(v);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
-        QueueHistoryAdapter.MyViewHolder holder = (QueueHistoryAdapter.MyViewHolder) viewHolder;
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         JsonQueueHistorical jsonQueueHistorical = dataSet.get(listPosition);
         holder.tv_name.setText(jsonQueueHistorical.getDisplayName());
-        // holder.tv_address.setText(jsonQueueHistorical.get);
+        holder.tv_address.setText(jsonQueueHistorical.getStoreAddress());
+        holder.tv_store_rating.setText("Rating - "+String.valueOf(jsonQueueHistorical.getRatingCount()));
         try {
             holder.tv_queue_join_date.setText("Queue join date- " + CommonHelper.SDF_YYYY_MM_DD.
                     format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonQueueHistorical.getCreated())));
@@ -63,15 +64,15 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         }
         holder.tv_token.setText("Token number- " + jsonQueueHistorical.getTokenNumber());
         holder.tv_queue_status.setText("Status -" + jsonQueueHistorical.getQueueUserState().getDescription());
-//        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
-//            Picasso.with(context)
-//                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
-//                    .placeholder(ImageUtils.getThumbPlaceholder(context))
-//                    .error(ImageUtils.getThumbErrorPlaceholder(context))
-//                    .into(holder.iv_main);
-//        else {
+        if (!TextUtils.isEmpty(jsonQueueHistorical.getDisplayImage()))
+            Picasso.with(context)
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonQueueHistorical.getDisplayImage()))
+                    .placeholder(ImageUtils.getThumbPlaceholder(context))
+                    .error(ImageUtils.getThumbErrorPlaceholder(context))
+                    .into(holder.iv_main);
+        else {
         Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
-        // }
+         }
     }
 
     @Override
@@ -90,7 +91,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         private TextView tv_queue_join_date;
         private TextView tv_token;
         private TextView tv_queue_status;
-        private TextView tv_category_name;
+        private TextView tv_store_rating;
         private TextView tv_store_special;
         private TextView tv_status;
         private ImageView iv_main;
@@ -103,7 +104,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
             this.tv_queue_join_date = itemView.findViewById(R.id.tv_queue_join_date);
             this.tv_token = itemView.findViewById(R.id.tv_token);
             this.tv_queue_status = itemView.findViewById(R.id.tv_queue_status);
-//            this.tv_category_name = itemView.findViewById(R.id.tv_category_name);
+            this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
 //            this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
 //            this.tv_status = itemView.findViewById(R.id.tv_status);
             this.iv_main = itemView.findViewById(R.id.iv_main);
