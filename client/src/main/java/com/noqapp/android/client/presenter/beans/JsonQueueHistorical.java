@@ -98,6 +98,12 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
     @JsonProperty("di")
     private String displayImage;
 
+    @JsonProperty("bci")
+    private String bizCategoryId;
+
+    @JsonProperty("bc")
+    private String bizCategoryName;
+
     public String getCodeQR() {
         return codeQR;
     }
@@ -275,6 +281,24 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
 
     public JsonQueueHistorical setDisplayImage(String displayImage) {
         this.displayImage = displayImage;
+        return this;
+    }
+
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public JsonQueueHistorical setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
+        return this;
+    }
+
+    public String getBizCategoryName() {
+        return bizCategoryName;
+    }
+
+    public JsonQueueHistorical setBizCategoryName(String bizCategoryName) {
+        this.bizCategoryName = bizCategoryName;
         return this;
     }
 

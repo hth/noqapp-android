@@ -663,7 +663,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                             /*
                              * Save codeQR of review & show the review screen on app
-                             * resume if there is any record in Review DB for review key
+                             * resume if there is any record in Review DB for queue review key
                              */
                             ReviewData reviewData = ReviewDB.getValue(codeQR, token);
                             if (null != reviewData) {
@@ -715,7 +715,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         if (((JsonClientOrderData) object).getPurchaseOrderState().getName().equalsIgnoreCase(PurchaseOrderStateEnum.OD.getName())) {
                             /*
                              * Save codeQR of review & show the review screen on app
-                             * resume if there is any record in Review DB for review key
+                             * resume if there is any record in Review DB for queue review key
                              */
                             ReviewData reviewData = ReviewDB.getValue(codeQR, token);
                             if (null != reviewData) {

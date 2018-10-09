@@ -10,7 +10,7 @@ import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.beans.body.ReviewRating;
+import com.noqapp.android.client.presenter.beans.body.QueueReview;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -183,7 +183,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 //                }
                 else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        ReviewRating rr = new ReviewRating();
+                        QueueReview rr = new QueueReview();
                         rr.setCodeQR(jtk.getCodeQR());
                         rr.setToken(jtk.getToken());
                         rr.setHoursSaved(seekbarAppCompact.getProgress() + 1);
@@ -195,9 +195,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         progressDialog.setMessage("Updating...");
                         progressDialog.show();
                         if (UserUtils.isLogin()) {
-                            new ReviewApiModel(ReviewActivity.this).review(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
+                            new ReviewApiModel(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
                         } else {
-                            new ReviewModel(ReviewActivity.this).review(UserUtils.getDeviceId(), rr);
+                            new ReviewModel(ReviewActivity.this).queue(UserUtils.getDeviceId(), rr);
                         }
                     } else {
                         ShowAlertInformation.showNetworkDialog(ReviewActivity.this);

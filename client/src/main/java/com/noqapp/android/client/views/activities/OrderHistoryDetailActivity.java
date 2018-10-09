@@ -33,6 +33,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         TextView tv_order_mode = findViewById(R.id.tv_order_mode);
         TextView tv_delivery_address = findViewById(R.id.tv_delivery_address);
         TextView tv_order_date = findViewById(R.id.tv_order_date);
+        TextView tv_order_number = findViewById(R.id.tv_order_number);
         TextView tv_order_status = findViewById(R.id.tv_order_status);
         JsonPurchaseOrderHistorical jsonPurchaseOrder = (JsonPurchaseOrderHistorical) getIntent().getExtras().getSerializable("data");
         tv_tax_amt.setText(getString(R.string.rupee) + "" + "0.0");
@@ -58,8 +59,9 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         tv_order_mode.setText("Mode of payment: " + jsonPurchaseOrder.getPaymentType().getDescription());
         tv_delivery_address.setText("Deliver Adddress: " + jsonPurchaseOrder.getDeliveryAddress());
         tv_order_status.setText("Status: " + jsonPurchaseOrder.getPresentOrderState().getDescription());
+        tv_order_number.setText("Order number: "+jsonPurchaseOrder.getTokenNumber());
         try {
-             tv_order_date.setText("Order timing: " + CommonHelper.SDF_YYYY_MM_DD.format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonPurchaseOrder.getCreated())));
+             tv_order_date.setText("Order timing: " + CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonPurchaseOrder.getCreated())));
         } catch (Exception e) {
             e.printStackTrace();
             tv_order_date.setText("Order timing: Exception");

@@ -5,7 +5,7 @@ import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 import com.noqapp.android.client.model.response.open.ReviewService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ReviewPresenter;
-import com.noqapp.android.client.presenter.beans.body.ReviewRating;
+import com.noqapp.android.client.presenter.beans.body.QueueReview;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonResponse;
 
@@ -36,10 +36,10 @@ public class ReviewModel {
 
     /**
      * @param did
-     * @param reviewRating
+     * @param queueReview
      */
-    public void review(String did, ReviewRating reviewRating) {
-        reviewService.review(did, DEVICE_TYPE, reviewRating).enqueue(new Callback<JsonResponse>() {
+    public void queue(String did, QueueReview queueReview) {
+        reviewService.queue(did, DEVICE_TYPE, queueReview).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -47,7 +47,7 @@ public class ReviewModel {
                         Log.d("Response Review", String.valueOf(response.body()));
                         reviewPresenter.reviewResponse(response.body());
                     } else {
-                        Log.e(TAG, "Error review" + response.body().getError());
+                        Log.e(TAG, "Error queue review " + response.body().getError());
                         reviewPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -61,7 +61,7 @@ public class ReviewModel {
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("Failure review", t.getLocalizedMessage(), t);
+                Log.e("Failure queue review ", t.getLocalizedMessage(), t);
                 reviewPresenter.reviewError();
             }
         });

@@ -24,9 +24,9 @@ public class ReviewDB {
                     DatabaseTable.Review.TABLE_NAME,
                     null,
                     value);
-            Log.d(TAG, "Data insert review " + String.valueOf(successCount));
+            Log.d(TAG, "Data insert queue review" + String.valueOf(successCount));
         } catch (SQLException e) {
-            Log.e(TAG, "Error insert review reason=" + e.getLocalizedMessage(), e);
+            Log.e(TAG, "Error insert queue review reason=" + e.getLocalizedMessage(), e);
         }
     }
 
@@ -111,7 +111,7 @@ public class ReviewDB {
                     DatabaseTable.Review.CODE_QR + "=? AND " +
                             DatabaseTable.Review.TOKEN + "=?",
                     new String[]{codeQR, token});
-            Log.v("review deleted:", "" + out);
+            Log.v("queue review deleted:", "" + out);
         } catch (Exception e) {
             e.printStackTrace();
         }
