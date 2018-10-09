@@ -284,7 +284,7 @@
     <string name="merchant_account">Become a merchant</string>
     <string name="address">Address</string>
     <string name="privacy_in_short">Privacy Quick Overview</string>
-    <string name="order_history">Order History</string>
+    <string name="order_history">Order &amp; Queue History</string>
     <string name="title_activity_contact_us">Contact Us</string>
     <string name="subject">Subject</string>
     <string name="message">Feedback/Suggestions/Issues</string>

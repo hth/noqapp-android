@@ -290,8 +290,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public void onNewIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            if (extras.containsKey(Constants.QRCODE) && extras.containsKey(Constants.ISREVIEW)
-                    && extras.containsKey(Constants.TOKEN)) {
+            if (extras.containsKey(Constants.QRCODE)
+                    && extras.containsKey(Constants.ISREVIEW)
+                    && extras.containsKey(Constants.TOKEN)
+            ) {
                 String codeQR = extras.getString(Constants.QRCODE);
                 String token = extras.getString(Constants.TOKEN);
                 String qid = extras.getString(Constants.QID);
@@ -324,7 +326,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     Intent intent = new Intent(launchActivity, UserProfileActivity.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(launchActivity, "Please login to view the profile", Toast.LENGTH_LONG).show();
+                    Toast.makeText(launchActivity, "Please login to view profile", Toast.LENGTH_LONG).show();
                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                     loginIntent.putExtra("fromLogin", true);
                     startActivity(loginIntent);
