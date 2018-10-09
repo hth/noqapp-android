@@ -70,6 +70,8 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
+            holder.tv_business_category.setText(bizStoreElastic.getBizCategoryName());
+            holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName())?View.GONE:View.VISIBLE);
             holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getRatingCount() == 0 ? "No" : bizStoreElastic.getRatingCount()) + " Reviews");
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
                 Picasso.with(context)
@@ -137,6 +139,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
         private TextView tv_category_name;
         private TextView tv_store_special;
         private TextView tv_status;
+        private TextView tv_business_category;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -150,6 +153,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             this.tv_category_name = itemView.findViewById(R.id.tv_category_name);
             this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
             this.tv_status = itemView.findViewById(R.id.tv_status);
+            this.tv_business_category = itemView.findViewById(R.id.tv_business_category);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.card_view = itemView.findViewById(R.id.card_view);
         }

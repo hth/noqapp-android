@@ -27,10 +27,10 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
         TextView tv_due_amt = findViewById(R.id.tv_due_amt);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
-        TextView tv_token = findViewById(R.id.tv_token);
+
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_address = findViewById(R.id.tv_address);
-        TextView tv_order_mode = findViewById(R.id.tv_order_mode);
+        TextView tv_payment_mode = findViewById(R.id.tv_payment_mode);
         TextView tv_delivery_address = findViewById(R.id.tv_delivery_address);
         TextView tv_order_date = findViewById(R.id.tv_order_date);
         TextView tv_order_number = findViewById(R.id.tv_order_number);
@@ -48,20 +48,19 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             TextView tv_price = inflatedLayout.findViewById(R.id.tv_price);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
             tv_title.setText(jsonPurchaseOrderProduct.getProductName());
-            tv_qty.setText("Quantity: " + jsonPurchaseOrderProduct.getProductQuantity());
-            tv_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() / 100);
+            //tv_qty.setText("Quantity: " + );
+            tv_price.setText(getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100)+" x "+String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
             ll_order_details.addView(inflatedLayout);
         }
-        tv_token.setText(String.valueOf("Your order no: " + jsonPurchaseOrder.getTokenNumber()));
-        tv_store_name.setText("Store Name: "+jsonPurchaseOrder.getDisplayName());
-        tv_address.setText("Store Address: "+jsonPurchaseOrder.getStoreAddress());
-        tv_order_mode.setText("Mode of payment: " + jsonPurchaseOrder.getPaymentType().getDescription());
-        tv_delivery_address.setText("Deliver Adddress: " + jsonPurchaseOrder.getDeliveryAddress());
-        tv_order_status.setText("Status: " + jsonPurchaseOrder.getPresentOrderState().getDescription());
-        tv_order_number.setText("Order number: "+jsonPurchaseOrder.getTokenNumber());
+        tv_store_name.setText(jsonPurchaseOrder.getDisplayName());
+        tv_address.setText(jsonPurchaseOrder.getStoreAddress());
+        tv_payment_mode.setText(jsonPurchaseOrder.getPaymentType().getDescription());
+        tv_delivery_address.setText(jsonPurchaseOrder.getDeliveryAddress());
+        tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+        tv_order_number.setText(String.valueOf(jsonPurchaseOrder.getTokenNumber()));
         try {
-             tv_order_date.setText("Order timing: " + CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonPurchaseOrder.getCreated())));
+            tv_order_date.setText(CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonPurchaseOrder.getCreated())));
         } catch (Exception e) {
             e.printStackTrace();
             tv_order_date.setText("Order timing: Exception");
