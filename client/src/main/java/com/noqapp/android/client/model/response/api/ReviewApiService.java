@@ -20,7 +20,7 @@ public interface ReviewApiService {
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
-    @POST("api/c/queueReview/queueReview.json")
+    @POST("api/c/review/queueReview.json")
     Call<JsonResponse> queueReview(
             @Header("X-R-DID")
             String did,
