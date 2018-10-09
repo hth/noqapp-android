@@ -257,7 +257,7 @@
     <string name="merchant_account">व्यापारी बने</string>
     <string name="address">Address</string>
     <string name="privacy_in_short">Privacy Quick Overview</string>
-    <string name="order_history">Order History</string>
+    <string name="order_history">Order &amp; Queue History</string>
     <string name="subject">Subject</string>
     <string name="message">Feedback/Suggestions/Issues</string>
     <string name="error_subject_blank">Please enter subject</string>
