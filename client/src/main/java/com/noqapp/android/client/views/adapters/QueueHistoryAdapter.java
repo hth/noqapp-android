@@ -65,6 +65,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         }
         holder.tv_token.setText(String.valueOf(jsonQueueHistorical.getTokenNumber()));
         holder.tv_queue_status.setText(jsonQueueHistorical.getQueueUserState().getDescription());
+        holder.tv_business_category.setText(jsonQueueHistorical.getBizCategoryName());
         if (!TextUtils.isEmpty(jsonQueueHistorical.getDisplayImage()))
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonQueueHistorical.getDisplayImage()))
@@ -106,7 +107,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         private TextView tv_queue_status;
         private TextView tv_store_rating;
         private TextView tv_business_name;
-        private TextView tv_status;
+        private TextView tv_business_category;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -119,7 +120,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
             this.tv_queue_status = itemView.findViewById(R.id.tv_queue_status);
             this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
             this.tv_business_name = itemView.findViewById(R.id.tv_business_name);
-//            this.tv_status = itemView.findViewById(R.id.tv_status);
+            this.tv_business_category = itemView.findViewById(R.id.tv_business_category);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.card_view = itemView.findViewById(R.id.card_view);
         }

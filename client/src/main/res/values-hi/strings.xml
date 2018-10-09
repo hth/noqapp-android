@@ -262,6 +262,8 @@
     <string name="message">Feedback/Suggestions/Issues</string>
     <string name="error_subject_blank">Please enter subject</string>
     <string name="error_feedback_blank">Please enter message</string>
-    <string name="screen_order_detail">Order Detail</string>
+    <string name="screen_order_detail">Order Summary</string>
+    <string name="order_items">Order Items</string>
+    <string name="history">History</string>
 
 </resources>

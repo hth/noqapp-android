@@ -23,7 +23,7 @@ public class OrderQueueHistoryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_queue_history);
         initActionsViews(false);
-        tv_toolbar_title.setText(getString(R.string.order_history));
+        tv_toolbar_title.setText(getString(R.string.history));
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
         loadTabs = new LoadTabs();
