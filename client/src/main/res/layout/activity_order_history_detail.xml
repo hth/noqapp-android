@@ -33,7 +33,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="@color/colorAddress"
-                    android:textSize="@dimen/text_size_fourteen"/>
+                    android:textSize="@dimen/text_size_twelve"/>
 
             <View
                     android:layout_width="match_parent"
