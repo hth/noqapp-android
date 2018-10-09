@@ -425,7 +425,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         NoQueueMessagingService.clearNotifications(getApplicationContext());
 
         ReviewData reviewData = ReviewDB.getPendingReview();
-        // shown only one time if the review is canceled
+        // shown only one time if the queueReview is canceled
         if (StringUtils.isNotBlank(reviewData.getCodeQR()) && !isReviewShown() && !NoQueueBaseActivity.getShowHelper()) {
             callReviewActivity(reviewData.getCodeQR(), reviewData.getToken());
         }
@@ -662,8 +662,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         String qid = ((JsonClientData) object).getQueueUserId();
                         if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                             /*
-                             * Save codeQR of review & show the review screen on app
-                             * resume if there is any record in Review DB for review key
+                             * Save codeQR of queueReview & show the queueReview screen on app
+                             * resume if there is any record in Review DB for queueReview key
                              */
                             ReviewData reviewData = ReviewDB.getValue(codeQR, token);
                             if (null != reviewData) {
@@ -714,8 +714,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         String qid = ((JsonClientOrderData) object).getQueueUserId();
                         if (((JsonClientOrderData) object).getPurchaseOrderState().getName().equalsIgnoreCase(PurchaseOrderStateEnum.OD.getName())) {
                             /*
-                             * Save codeQR of review & show the review screen on app
-                             * resume if there is any record in Review DB for review key
+                             * Save codeQR of queueReview & show the queueReview screen on app
+                             * resume if there is any record in Review DB for queueReview key
                              */
                             ReviewData reviewData = ReviewDB.getValue(codeQR, token);
                             if (null != reviewData) {
@@ -788,7 +788,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 jtk.setServingNumber(Integer.parseInt(current_serving));
                 /*
                  * Save codeQR of goto & show it in after join screen on app
-                 * Review DB for review key && current serving == token no.
+                 * Review DB for queueReview key && current serving == token no.
                  */
                 if (Integer.parseInt(current_serving) == jtk.getToken()) {
                     // if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {

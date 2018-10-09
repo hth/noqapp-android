@@ -329,7 +329,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
                 ", presentOrderState=" + presentOrderState +
                 ", businessType=" + businessType +
                 ", ratingCount=" + ratingCount +
-                ", review='" + review + '\'' +
+                ", queueReview='" + review + '\'' +
                 ", tokenNumber=" + tokenNumber +
                 ", serverName='" + serverName + '\'' +
                 ", serviceBeginTime='" + serviceBeginTime + '\'' +
