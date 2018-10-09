@@ -3,12 +3,14 @@ package com.noqapp.android.client.views.adapters;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistorical;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 
 import com.noqapp.android.common.utils.CommonHelper;
+
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class OrderHistoryAdapter extends RecyclerView.Adapter {
@@ -52,17 +55,17 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         final JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical = dataSet.get(listPosition);
         holder.tv_name.setText(jsonPurchaseOrderHistorical.getDisplayName());
-        holder.tv_address.setText(jsonPurchaseOrderHistorical.getStoreAddress());
+        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonPurchaseOrderHistorical.getTown(), jsonPurchaseOrderHistorical.getArea()));
         try {
-            holder.tv_order_date.setText(Html.fromHtml("<b>Order date- </b>" + CommonHelper.SDF_YYYY_MM_DD.
-                    format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonPurchaseOrderHistorical.getCreated()))));
+            holder.tv_order_date.setText(CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.
+                    format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonPurchaseOrderHistorical.getCreated())));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        holder.tv_order_number.setText(Html.fromHtml("<b>Order number- </b>" +String.valueOf(jsonPurchaseOrderHistorical.getTokenNumber())));
-        holder.tv_order_amount.setText(Html.fromHtml("<b>Order amount- </b>" +Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice())/100));
-        holder.tv_store_rating.setText(Html.fromHtml("<b>Rating- </b>" +String.valueOf(jsonPurchaseOrderHistorical.getRatingCount())));
-        holder.tv_queue_status.setText(Html.fromHtml("<b>Status- </b>"  + jsonPurchaseOrderHistorical.getPresentOrderState().getDescription()));
+        holder.tv_order_item.setText(getOrderItems(jsonPurchaseOrderHistorical.getJsonPurchaseOrderProductHistoricalList()));
+        holder.tv_order_amount.setText(String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
+        holder.tv_store_rating.setText(String.valueOf(jsonPurchaseOrderHistorical.getRatingCount()));
+        holder.tv_queue_status.setText(jsonPurchaseOrderHistorical.getPresentOrderState().getDescription());
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,9 +89,8 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         private TextView tv_address;
         private TextView tv_order_date;
         private TextView tv_store_rating;
-        private TextView tv_order_number;
         private TextView tv_order_amount;
-        private TextView tv_store_special;
+        private TextView tv_order_item;
         private TextView tv_queue_status;
         private CardView card_view;
 
@@ -98,11 +100,18 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
             this.tv_address = itemView.findViewById(R.id.tv_address);
             this.tv_order_date = itemView.findViewById(R.id.tv_order_date);
             this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
-            this.tv_order_number = itemView.findViewById(R.id.tv_order_number);
             this.tv_order_amount = itemView.findViewById(R.id.tv_order_amount);
-//            this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
+            this.tv_order_item = itemView.findViewById(R.id.tv_order_item);
             this.tv_queue_status = itemView.findViewById(R.id.tv_queue_status);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
+    }
+
+    private String getOrderItems(List<JsonPurchaseOrderProductHistorical> data) {
+        String result = "";
+        for (int i = 0; i < data.size(); i++) {
+            result += data.get(i).getProductName() + " x " + String.valueOf(data.get(i).getProductQuantity()) + ", ";
+        }
+        return result.endsWith(", ") ? result.substring(0, result.length() - 2) : result;
     }
 }

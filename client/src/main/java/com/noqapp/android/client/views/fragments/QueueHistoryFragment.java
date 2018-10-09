@@ -65,7 +65,7 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
     }
 
     @Override
-    public void onStoreItemClick(JsonQueueHistorical item, View view, int pos) {
+    public void onStoreItemClick(JsonQueueHistorical item) {
         switch (item.getBusinessType()) {
             case DO:
             case BK:
@@ -75,7 +75,7 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
                 b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
                 b.putBoolean("CallCategory", true);
                 b.putBoolean("isCategoryData", false);
-                b.putSerializable("BizStoreElastic", item);
+                b.putSerializable("BizStoreElastic", null);
                 Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
                 in.putExtra("bundle", b);
                 startActivity(in);
@@ -84,7 +84,7 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
                 // open order screen
                 Intent intent = new Intent(getActivity(), StoreDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("BizStoreElastic", item);
+                bundle.putSerializable("BizStoreElastic", null);
                 intent.putExtras(bundle);
                 startActivity(intent);
         }
