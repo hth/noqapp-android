@@ -38,8 +38,8 @@ public class ReviewModel {
      * @param did
      * @param queueReview
      */
-    public void queueReview(String did, QueueReview queueReview) {
-        reviewService.queueReview(did, DEVICE_TYPE, queueReview).enqueue(new Callback<JsonResponse>() {
+    public void queue(String did, QueueReview queueReview) {
+        reviewService.queue(did, DEVICE_TYPE, queueReview).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -47,7 +47,7 @@ public class ReviewModel {
                         Log.d("Response Review", String.valueOf(response.body()));
                         reviewPresenter.reviewResponse(response.body());
                     } else {
-                        Log.e(TAG, "Error queueReview" + response.body().getError());
+                        Log.e(TAG, "Error queue review " + response.body().getError());
                         reviewPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -61,7 +61,7 @@ public class ReviewModel {
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("Failure queueReview", t.getLocalizedMessage(), t);
+                Log.e("Failure queue review ", t.getLocalizedMessage(), t);
                 reviewPresenter.reviewError();
             }
         });

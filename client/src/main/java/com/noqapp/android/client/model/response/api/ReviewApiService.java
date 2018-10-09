@@ -21,7 +21,7 @@ public interface ReviewApiService {
      * {@link com.noqapp.android.common.beans.JsonResponse#response} is false(0) when not found
      */
     @POST("api/c/review/queue.json")
-    Call<JsonResponse> queueReview(
+    Call<JsonResponse> queue(
             @Header("X-R-DID")
             String did,
 

@@ -31,8 +31,8 @@ public class ReviewApiModel {
      * @param did
      * @param queueReview
      */
-    public void queueReview(String did, String mail, String auth, QueueReview queueReview) {
-        reviewApiService.queueReview(did, Constants.DEVICE_TYPE, mail, auth, queueReview).enqueue(new Callback<JsonResponse>() {
+    public void queue(String did, String mail, String auth, QueueReview queueReview) {
+        reviewApiService.queue(did, Constants.DEVICE_TYPE, mail, auth, queueReview).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -40,7 +40,7 @@ public class ReviewApiModel {
                         Log.d("Response Review", String.valueOf(response.body()));
                         reviewPresenter.reviewResponse(response.body());
                     } else {
-                        Log.e(TAG, "Error queueReview" + response.body().getError());
+                        Log.e(TAG, "Error queue review " + response.body().getError());
                         reviewPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -54,7 +54,7 @@ public class ReviewApiModel {
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("Failure queueReview", t.getLocalizedMessage(), t);
+                Log.e("Failure queue review ", t.getLocalizedMessage(), t);
                 reviewPresenter.reviewError();
             }
         });

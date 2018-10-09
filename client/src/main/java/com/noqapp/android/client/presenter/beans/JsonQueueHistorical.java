@@ -313,7 +313,7 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
                 ", queueUserState=" + queueUserState +
                 ", ratingCount=" + ratingCount +
                 ", hoursSaved=" + hoursSaved +
-                ", queueReview='" + review + '\'' +
+                ", review='" + review + '\'' +
                 ", serverName='" + serverName + '\'' +
                 ", serviceBeginTime='" + serviceBeginTime + '\'' +
                 ", serviceEndTime='" + serviceEndTime + '\'' +

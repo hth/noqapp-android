@@ -175,7 +175,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         jtk.setServingNumber(Integer.parseInt(current_serving));
                                         /*
                                          * Save codeQR of goto & show it in after join screen on app
-                                         * Review DB for queueReview key && current serving == token no.
+                                         * Review DB for review key && current serving == token no.
                                          */
                                         if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
                                             //un subscribe the topic
@@ -202,8 +202,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 String qid = ((JsonClientData) object).getQueueUserId();
                                 if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.S.getName())) {
                                     /*
-                                     * Save codeQR of queueReview & show the queueReview screen on app
-                                     * resume if there is any record in Review DB for queueReview key
+                                     * Save codeQR of review & show the review screen on app
+                                     * resume if there is any record in Review DB for queue key
                                      */
                                     ReviewData reviewData = ReviewDB.getValue(codeQR, token);
                                     if (null != reviewData) {
@@ -223,7 +223,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         cv.put(DatabaseTable.Review.KEY_GOTO, "");
                                         ReviewDB.insert(cv);
                                     }
-                                    sendNotification(title, body, codeQR, true, token);//pass codeQR to open queueReview screen
+                                    sendNotification(title, body, codeQR, true, token);//pass codeQR to open review screen
                                 } else if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                                     ReviewData reviewData = ReviewDB.getValue(codeQR, token);
                                     if (null != reviewData) {
@@ -273,7 +273,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             if (null != jtk) {
                                 /*
                                  * Save codeQR of goto & show it in after join screen on app
-                                 * Review DB for queueReview key && current serving == token no.
+                                 * Review DB for review key && current serving == token no.
                                  */
                                 if (Integer.parseInt(current_serving) == jtk.getToken()) {
                                     ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);

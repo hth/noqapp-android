@@ -195,9 +195,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         progressDialog.setMessage("Updating...");
                         progressDialog.show();
                         if (UserUtils.isLogin()) {
-                            new ReviewApiModel(ReviewActivity.this).queueReview(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
+                            new ReviewApiModel(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
                         } else {
-                            new ReviewModel(ReviewActivity.this).queueReview(UserUtils.getDeviceId(), rr);
+                            new ReviewModel(ReviewActivity.this).queue(UserUtils.getDeviceId(), rr);
                         }
                     } else {
                         ShowAlertInformation.showNetworkDialog(ReviewActivity.this);
