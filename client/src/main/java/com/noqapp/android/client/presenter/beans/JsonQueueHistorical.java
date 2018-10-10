@@ -304,21 +304,30 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
 
     @Override
     public String toString() {
-        return "JsonQueueHistorical{" +
-                "codeQR='" + codeQR + '\'' +
-                ", queueUserId='" + queueUserId + '\'' +
-                ", tokenNumber=" + tokenNumber +
-                ", displayName='" + displayName + '\'' +
-                ", businessType=" + businessType +
-                ", queueUserState=" + queueUserState +
-                ", ratingCount=" + ratingCount +
-                ", hoursSaved=" + hoursSaved +
-                ", review='" + review + '\'' +
-                ", serverName='" + serverName + '\'' +
-                ", serviceBeginTime='" + serviceBeginTime + '\'' +
-                ", serviceEndTime='" + serviceEndTime + '\'' +
-                ", guardianQid='" + guardianQid + '\'' +
-                ", created='" + created + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("JsonQueueHistorical{");
+        sb.append("codeQR='").append(codeQR).append('\'');
+        sb.append(", queueUserId='").append(queueUserId).append('\'');
+        sb.append(", tokenNumber=").append(tokenNumber);
+        sb.append(", displayName='").append(displayName).append('\'');
+        sb.append(", businessType=").append(businessType);
+        sb.append(", queueUserState=").append(queueUserState);
+        sb.append(", ratingCount=").append(ratingCount);
+        sb.append(", hoursSaved=").append(hoursSaved);
+        sb.append(", review='").append(review).append('\'');
+        sb.append(", serverName='").append(serverName).append('\'');
+        sb.append(", serviceBeginTime='").append(serviceBeginTime).append('\'');
+        sb.append(", serviceEndTime='").append(serviceEndTime).append('\'');
+        sb.append(", guardianQid='").append(guardianQid).append('\'');
+        sb.append(", created='").append(created).append('\'');
+        sb.append(", businessName='").append(businessName).append('\'');
+        sb.append(", storeAddress='").append(storeAddress).append('\'');
+        sb.append(", area='").append(area).append('\'');
+        sb.append(", town='").append(town).append('\'');
+        sb.append(", countryShortName='").append(countryShortName).append('\'');
+        sb.append(", displayImage='").append(displayImage).append('\'');
+        sb.append(", bizCategoryId='").append(bizCategoryId).append('\'');
+        sb.append(", bizCategoryName='").append(bizCategoryName).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }
