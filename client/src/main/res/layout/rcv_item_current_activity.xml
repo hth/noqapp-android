@@ -99,7 +99,7 @@
                         android:layout_alignBaseline="@+id/tv_total"
                         android:layout_toRightOf="@+id/tv_total"
                         android:gravity="center"
-                        android:textColor="@color/colorMobile"
+                        android:textColor="@color/theme_color_dark"
                         android:textSize="26sp" />
 
                     <TextView
@@ -109,7 +109,7 @@
                         android:gravity="center|bottom"
                         android:padding="5dp"
                         android:text="@string/serving_now"
-                        android:textColor="@color/colorMobile"
+                        android:textColor="@color/theme_color_dark"
                         android:textSize="@dimen/text_size_twelve" />
 
                     <TextView

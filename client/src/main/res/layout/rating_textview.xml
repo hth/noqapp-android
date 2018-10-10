@@ -6,7 +6,7 @@
     android:layout_gravity="right|top"
     android:layout_marginRight="@dimen/rating_padding"
     android:layout_marginTop="@dimen/rating_padding"
-    android:background="@drawable/round_corner_green_bg"
+    android:background="@drawable/round_corner_gradient"
     android:layout_alignParentRight="true"
     android:gravity="center"
     android:text="0.0"

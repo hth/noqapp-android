@@ -131,10 +131,10 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             if (!TextUtils.isEmpty(imageUrl)) {
 
                 Picasso.with(this).load(imageUrl).
-                        placeholder(getResources().getDrawable(R.drawable.profile_red)).
-                        error(getResources().getDrawable(R.drawable.profile_red)).into(iv_profile);
+                        placeholder(getResources().getDrawable(R.drawable.profile_theme)).
+                        error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
             } else {
-                Picasso.with(this).load(R.drawable.profile_red).into(iv_profile);
+                Picasso.with(this).load(R.drawable.profile_theme).into(iv_profile);
             }
             actionbarBack.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -156,8 +156,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 profileList.add(0, NoQueueBaseActivity.getUserProfile());
                 profileList.add(0, new JsonProfile().setName("Select Patient"));
                 DependentAdapter adapter = new DependentAdapter(this, profileList);
-                tv_name.setText(((JsonProfile) profileList.get(profile_pos)).getName());
-                queueUserId = ((JsonProfile) profileList.get(profile_pos)).getQueueUserId();
+                tv_name.setText(profileList.get(profile_pos).getName());
+                queueUserId =  profileList.get(profile_pos).getQueueUserId();
             }
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case DO:

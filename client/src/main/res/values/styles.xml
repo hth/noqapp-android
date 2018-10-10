@@ -20,7 +20,7 @@
     <style name="BaseTheme" parent="AppBaseTheme.NoActionBar">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="android:typeface">serif</item>
-
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         //the rest of your codes...
     </style>
 
@@ -141,6 +141,9 @@
         <item name="android:textSize">12sp</item><!-- text size in menu-->
         <!--<item name="android:listPreferredItemHeightSmall">40dp</item>&lt;!&ndash; item size in menu&ndash;&gt;-->
         <!--<item name="listPreferredItemHeightSmall">40dp</item>&lt;!&ndash; item size in menu&ndash;&gt;-->
+    </style>
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/black</item>
     </style>
 
 </resources>

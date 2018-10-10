@@ -147,7 +147,7 @@
                     android:id="@+id/rl_scan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#d75b71"
+                    android:background="#CF5C3F"
                     android:gravity="center_vertical"
                     android:minHeight="@dimen/cell_size"
                     android:paddingLeft="@dimen/screen_padding_home"

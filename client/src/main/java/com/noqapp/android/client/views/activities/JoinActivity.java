@@ -125,18 +125,17 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
         Intent bundle = getIntent();
         if (null != bundle) {
-            boolean isCategoryData = true;
             codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
-            isCategoryData = bundle.getBooleanExtra("isCategoryData", true);
+            boolean isCategoryData = bundle.getBooleanExtra("isCategoryData", true);
             String imageUrl = bundle.getStringExtra("imageUrl");
             JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable("object");
             if (!TextUtils.isEmpty(imageUrl)) {
 
                 Picasso.with(this).load(imageUrl).
-                        placeholder(getResources().getDrawable(R.drawable.profile_red)).
-                        error(getResources().getDrawable(R.drawable.profile_red)).into(iv_profile);
+                        placeholder(getResources().getDrawable(R.drawable.profile_theme)).
+                        error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
             } else {
-                Picasso.with(this).load(R.drawable.profile_red).into(iv_profile);
+                Picasso.with(this).load(R.drawable.profile_theme).into(iv_profile);
             }
             if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_IS_REJOIN, false)) {
                 btn_joinQueue.setText(getString(R.string.yes));
