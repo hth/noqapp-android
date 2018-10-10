@@ -105,7 +105,7 @@
     <string name="prompt_user_name">User Name</string>
     <string name="prompt_gender">Gender</string>
     <string name="prompt_marital_status">marital status</string>
-    <string name="action_update">update profile</string>
+    <string name="action_update">Update Profile</string>
     <string name="phone">Phone <font color='red'>\u2731</font></string>
     <string name="name">Name <font color='red'>\u2731</font></string>
     <string name="birthday">Birthday <font color='red'>\u2731</font></string>

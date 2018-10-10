@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model.response.api;
 
+import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 
 import retrofit2.Call;
@@ -53,5 +54,28 @@ public interface PurchaseOrderService {
 
             @Body
             JsonPurchaseOrder jsonPurchaseOrder
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
+    @POST("api/c/purchaseOrder/orderDetail.json")
+    Call<JsonPurchaseOrder> orderDetail(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            OrderDetail orderDetail
     );
 }

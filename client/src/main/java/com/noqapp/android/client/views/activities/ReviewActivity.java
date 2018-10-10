@@ -10,6 +10,7 @@ import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.body.OrderReview;
 import com.noqapp.android.client.presenter.beans.body.QueueReview;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
@@ -20,6 +21,7 @@ import com.noqapp.android.client.views.customviews.SeekbarWithIntervals;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -195,7 +197,16 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         progressDialog.setMessage("Updating...");
                         progressDialog.show();
                         if (UserUtils.isLogin()) {
-                            new ReviewApiModel(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
+                            if (jtk.getBusinessType() == BusinessTypeEnum.RS) {
+                                OrderReview orderReview = new OrderReview();
+                                orderReview.setCodeQR(jtk.getCodeQR());
+                                orderReview.setToken(jtk.getToken());
+                                orderReview.setRatingCount(Math.round(ratingBar.getRating()));
+                                orderReview.setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
+                                new ReviewApiModel(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
+                            } else {
+                                new ReviewApiModel(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
+                            }
                         } else {
                             new ReviewModel(ReviewActivity.this).queue(UserUtils.getDeviceId(), rr);
                         }
