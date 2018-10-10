@@ -84,7 +84,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             } else {
                 holder.tv_store_timing.setText(context.getString(R.string.store_today_hour) + " " + key);
             }
-            holder.tv_join.setBackgroundColor(ContextCompat.getColor(context, R.color.colorActionbar));
+            holder.tv_join.setBackgroundColor(ContextCompat.getColor(context, R.color.button_color));
             holder.tv_join.setText("Walk-in");
         }
 
@@ -149,26 +149,26 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             // When between Token Not Available From and End Hour
             if (timeIn24HourFormat >= storeHourElastic.getTokenNotAvailableFrom() && timeIn24HourFormat < storeHourElastic.getEndHour()) {
                 holder.tv_status.setText("Closing soon");
-                holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                holder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
             }
 
             // When after End Hour
             if (timeIn24HourFormat >= storeHourElastic.getEndHour()) {
                 holder.tv_status.setText("Closed now");
-                holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                holder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
             }
         } else {
             //TODO(hth) Show when will this be open next. For now hide it.
             holder.tv_status.setText("Closed Today");
-            holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            holder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
         }
         if (!TextUtils.isEmpty(jsonQueue.getDisplayImage())) {
             Picasso.with(context).load(
                     AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonQueue.getDisplayImage()))
-                    .placeholder(context.getResources().getDrawable(R.drawable.profile_red))
-                    .error(context.getResources().getDrawable(R.drawable.profile_red)).into(holder.iv_main);
+                    .placeholder(context.getResources().getDrawable(R.drawable.profile_theme))
+                    .error(context.getResources().getDrawable(R.drawable.profile_theme)).into(holder.iv_main);
         } else {
-            Picasso.with(context).load(R.drawable.profile_red).into(holder.iv_main);
+            Picasso.with(context).load(R.drawable.profile_theme).into(holder.iv_main);
         }
 
         holder.tv_store_special.setText(jsonQueue.getFamousFor());

@@ -48,8 +48,8 @@ public class CategoryHeaderAdapter extends RecyclerView.Adapter<CategoryHeaderAd
         });
         Vholder.tv_menu_header.setText(jsonCategory.getCategoryName());
         if (selected_pos == position) {
-            Vholder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.colorActionbar));
-            Vholder.tv_menu_header.setTextColor(ContextCompat.getColor(context, R.color.colorActionbar));
+            Vholder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.theme_color_dark));
+            Vholder.tv_menu_header.setTextColor(ContextCompat.getColor(context, R.color.theme_color_dark));
         } else {
             Vholder.ll_header.setBackgroundColor(Color.WHITE);
             Vholder.tv_menu_header.setTextColor(Color.BLACK);

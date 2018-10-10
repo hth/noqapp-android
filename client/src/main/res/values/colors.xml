@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#CD334E</color>
-    <color name="colorPrimaryDark">#b82d46</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorActionbar">#CD334E</color>a
+    <color name="colorPrimary">#999999</color>
+    <color name="colorPrimaryDark">#999999</color>
+    <color name="colorAccent">#f8a87a</color>
+    <color name="colorActionbar">#F79359</color>
     <color name="colorAddress">#403648</color>
-    <color name="colorMobile">#e92270</color>
+    <color name="colorMobile">#d36c52</color>
     <color name="color_separator">#EAEAEA</color>
     <color name="color_grey_bg">#f5f5f5</color>
     <color name="color_total_val">#227be9</color>
@@ -16,27 +16,28 @@
     <color name="color_me_bg">#E7E7E7</color>
     <color name="color_tab">#F8F9F9</color>
     <color name="white">#ffffff</color>
-    <color name="rating_select">#d24760</color>
-    <color name="rating_unselect">#dc7083</color>
     <color name="progress_unselect">#4de92270</color>
     <color name="open_queue">@android:color/black</color>
     <color name="before_opening_queue">@android:color/black</color>
     <!--65 % transparent -->
     <color name="black_transparent">#A6000000</color>
 
-    <color name="bussiness_hospital">#5a74a9</color>
-    <color name="bussiness_store">#c15165</color>
-    <color name="bussiness_bank">#328d69</color>
-    <color name="segment_bg_color">#fbeef0</color>
+
+    <color name="segment_bg_color">#fef4ee</color>
     <color name="segment_text_color">#928c9d</color>
 
-    <color name="button_color">#CD334E</color>
+    <color name="button_color">#CF5C3F</color>
     <color name="button_disable">#cccccc</color>
 
-    <color name="rating_select_temp">#3f51b5</color>
-    <color name="rating_unselect_temp">#1e88e5</color>
+    <color name="rating_select">#d36c52</color>
+    <color name="rating_unselect">#f8a87a</color>
+
     <color name="text_header_color">#606060</color>
     <color name="dialog_theme_color">#f5a339</color>
+
+    <color name="theme_color_light">#f8a87a</color>
+    <color name="theme_color_dark">#d36c52</color>
+
 
 
 </resources>

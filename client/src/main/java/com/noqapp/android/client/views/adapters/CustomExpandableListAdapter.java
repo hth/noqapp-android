@@ -106,7 +106,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.button_drawable_red);
                 break;
             default:
-                childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_bank);
+                childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
         }
         childViewHolder.btn_increase.setOnClickListener(new View.OnClickListener() {
             @Override

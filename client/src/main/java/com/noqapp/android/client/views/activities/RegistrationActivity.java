@@ -205,7 +205,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         } else if (v == tv_male) {
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-            tv_male.setBackgroundResource(R.drawable.gender_redbg);
+            tv_male.setBackgroundResource(R.drawable.blue_gradient);
             SpannableString ss = new SpannableString("Male  ");
             Drawable d = getResources().getDrawable(R.drawable.check_white);
             d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
@@ -217,7 +217,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             tv_female.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         } else if (v == tv_female) {
             gender = "F";
-            tv_female.setBackgroundResource(R.drawable.gender_redbg);
+            tv_female.setBackgroundResource(R.drawable.blue_gradient);
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
             tv_female.setCompoundDrawablePadding(0);
             tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);

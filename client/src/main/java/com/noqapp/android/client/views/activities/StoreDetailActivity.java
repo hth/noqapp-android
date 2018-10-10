@@ -118,6 +118,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collapsingToolbar.setTitle(" ");
         bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
+        ratingBar.setRating(bizStoreElastic.getRating());
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rv_thumb_images = findViewById(R.id.rv_thumb_images);
         rv_thumb_images.setHasFixedSize(true);
@@ -362,9 +363,9 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     @Override
     public void responseErrorPresenter(int errorCode) {
         dismissProgress();
-        if (errorCode == Constants.INVALID_BAR_CODE){
+        if (errorCode == Constants.INVALID_BAR_CODE) {
             ShowAlertInformation.showBarcodeErrorDialog(this);
-        }else {
+        } else {
             new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
         }
     }

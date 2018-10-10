@@ -138,14 +138,6 @@ public class AppUtilities extends CommonHelper {
         // Empty stars
         setRatingStarColor(stars.getDrawable(0), ContextCompat.getColor(context, R.color.rating_unselect));
     }
-    public static void setRatingBarColorBlue(LayerDrawable stars, Context context) {
-        // Filled stars
-        setRatingStarColor(stars.getDrawable(2), ContextCompat.getColor(context, R.color.rating_select_temp));
-        // Half filled stars
-        setRatingStarColor(stars.getDrawable(1), ContextCompat.getColor(context, R.color.rating_unselect_temp));
-        // Empty stars
-        setRatingStarColor(stars.getDrawable(0), ContextCompat.getColor(context, R.color.rating_unselect_temp));
-    }
 
     public static int getTimeIn24HourFormat() {
         // To make sure minute in time 11:06 AM is not represented as 116 but as 1106.
@@ -196,17 +188,17 @@ public class AppUtilities extends CommonHelper {
             case DO:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.hospital));
                // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
-                tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_hospital));
+                tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_gradient));
                 break;
             case BK:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.bank));
                // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
-                tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_bank));
+                tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_gradient));
                 break;
             default:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.store));
                // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
-                tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_store));
+                tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_gradient));
         }
     }
 

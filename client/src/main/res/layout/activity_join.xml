@@ -280,7 +280,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/add_dependent"
                         android:textAllCaps="true"
-                        android:textColor="#d75b71"
+                        android:textColor="#f79359"
                         android:textSize="@dimen/text_size_twelve"/>
 
 
@@ -344,7 +344,7 @@
                             android:gravity="center"
                             android:text="@string/no"
                             android:textAllCaps="true"
-                            android:textColor="#d75b71"
+                            android:textColor="@color/colorMobile"
                             android:textSize="@dimen/text_size_sixteen"
                             android:textStyle="normal"
                             android:visibility="gone"
@@ -355,7 +355,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="20dp"
-                            android:background="@drawable/blue_gradient"
+                            android:background="@drawable/blue_gradient_or"
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
                             android:text="@string/join"
