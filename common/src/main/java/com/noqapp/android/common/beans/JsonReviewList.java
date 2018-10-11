@@ -31,9 +31,6 @@ public class JsonReviewList extends AbstractDomain {
     @JsonProperty("rs")
     private List<JsonReview> jsonReviews = new ArrayList<>();
 
-    @JsonProperty("tr")
-    private int totalReviews;
-
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -51,15 +48,6 @@ public class JsonReviewList extends AbstractDomain {
         return this;
     }
 
-    public int getTotalReviews() {
-        return totalReviews;
-    }
-
-    public JsonReviewList setTotalReviews(int totalReviews) {
-        this.totalReviews = totalReviews;
-        return this;
-    }
-
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -71,10 +59,10 @@ public class JsonReviewList extends AbstractDomain {
 
     @Override
     public String toString() {
-        return "JsonReviewList{" +
-                "jsonReviews=" + jsonReviews +
-                ", totalReviews=" + totalReviews +
-                ", error=" + error +
-                '}';
+        final StringBuilder sb = new StringBuilder("JsonReviewList{");
+        sb.append("jsonReviews=").append(jsonReviews);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }
