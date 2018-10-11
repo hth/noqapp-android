@@ -56,6 +56,9 @@ public class JsonProfessionalProfilePersonal implements Serializable {
     @JsonProperty("dd")
     private String dataDictionary;
 
+    @JsonProperty("rl")
+    private JsonReviewList jsonReviewList = new JsonReviewList();
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -130,6 +133,16 @@ public class JsonProfessionalProfilePersonal implements Serializable {
         this.dataDictionary = dataDictionary;
         return this;
     }
+
+    public JsonReviewList getJsonReviewList() {
+        return jsonReviewList;
+    }
+
+    public JsonProfessionalProfilePersonal setJsonReviewList(JsonReviewList jsonReviewList) {
+        this.jsonReviewList = jsonReviewList;
+        return this;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
