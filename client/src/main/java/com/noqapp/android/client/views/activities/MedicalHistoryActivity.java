@@ -67,7 +67,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
                     new MedicalRecordApiModel(this).getMedicalRecord(UserUtils.getEmail(), UserUtils.getAuth());
                     progressDialog.show();
                 }
-            }else{
+            } else {
                 Toast.makeText(this, "Please login to see the details", Toast.LENGTH_LONG).show();
             }
         } else {
@@ -107,14 +107,10 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
     }
 
     @Override
-    public void medicalRecordError() {
-        dismissProgress();
-    }
-
-    @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override

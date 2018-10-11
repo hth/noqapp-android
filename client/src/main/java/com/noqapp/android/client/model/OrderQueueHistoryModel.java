@@ -7,7 +7,6 @@ import com.noqapp.android.client.presenter.QueueHistoryPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistoricalList;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistoricalList;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.common.beans.order.JsonPurchaseOrderList;
 
 import android.support.annotation.NonNull;
 import android.util.Log;

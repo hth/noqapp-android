@@ -18,7 +18,6 @@ import com.noqapp.android.common.beans.body.JoinQueue;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -169,7 +168,7 @@ public class QueueApiModel {
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Failure joinQueue", t.getLocalizedMessage(), t);
-                tokenPresenter.tokenPresenterError();
+                tokenPresenter.responseErrorPresenter(null);
             }
         });
     }

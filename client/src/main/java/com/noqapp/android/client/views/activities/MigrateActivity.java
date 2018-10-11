@@ -9,7 +9,6 @@ import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.beans.body.MigratePhone;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 

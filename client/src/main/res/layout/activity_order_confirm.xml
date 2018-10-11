@@ -234,7 +234,7 @@
                     android:id="@+id/btn_cancel_order"
                     android:layout_width="match_parent"
                     android:layout_alignParentBottom="true"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/btn_standard_height"
                     android:text="@string/cancel"
                     android:layout_margin="10dp"
                     android:fontFamily="sans-serif-medium"

@@ -48,7 +48,7 @@ public class PurchaseApiModel {
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
                 Log.e("onFailure purchase", t.getLocalizedMessage(), t);
-                purchaseOrderPresenter.purchaseOrderError();
+                purchaseOrderPresenter.responseErrorPresenter(null);
             }
         });
     }
@@ -76,7 +76,7 @@ public class PurchaseApiModel {
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
                 Log.e("onFailure purchase", t.getLocalizedMessage(), t);
-                purchaseOrderPresenter.purchaseOrderError();
+                purchaseOrderPresenter.responseErrorPresenter(null);
             }
         });
     }

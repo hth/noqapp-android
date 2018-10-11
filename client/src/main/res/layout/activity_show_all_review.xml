@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#99ffffff"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout"/>
+
+    <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/medical_history_alert"
+                android:textSize="@dimen/text_size_fourteen"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/tv_store_name"
+                    style="@style/style_join_queue_tv"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_eighteen"
+                    android:textStyle="bold"/>
+
+            <TextView
+                    android:id="@+id/tv_address"
+                    style="@style/style_join_queue_tv"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/colorAddress"
+                    android:textSize="@dimen/text_size_twelve"/>
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_all_review"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical"/>
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,7 +1,6 @@
 package com.noqapp.android.client.presenter;
 
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 
 import java.util.List;

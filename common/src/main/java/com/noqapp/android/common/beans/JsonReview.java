@@ -1,0 +1,85 @@
+package com.noqapp.android.common.beans;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+/**
+ * hitender
+ * 10/10/18 10:14 PM
+ */
+@SuppressWarnings ({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable",
+        "unused"
+})
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE
+)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class JsonReview extends AbstractDomain {
+
+    @JsonProperty("ra")
+    private int ratingCount;
+
+    @JsonProperty("rv")
+    private String review;
+
+    @JsonProperty ("pi")
+    private String profileImage;
+
+    @JsonProperty ("nm")
+    private String name;
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public JsonReview setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+        return this;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public JsonReview setReview(String review) {
+        this.review = review;
+        return this;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public JsonReview setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public JsonReview setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonReview{" +
+                "ratingCount=" + ratingCount +
+                ", review='" + review + '\'' +
+                ", profileImage='" + profileImage + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
+}

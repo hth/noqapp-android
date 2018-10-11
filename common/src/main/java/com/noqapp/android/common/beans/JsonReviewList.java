@@ -1,11 +1,7 @@
-package com.noqapp.android.client.presenter.beans;
-
-import com.noqapp.android.common.beans.AbstractDomain;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
+package com.noqapp.android.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -14,9 +10,9 @@ import java.util.List;
 
 /**
  * hitender
- * 5/16/18 10:12 AM
+ * 10/10/18 10:18 PM
  */
-@SuppressWarnings({
+@SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -30,21 +26,25 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonUserAddressList extends AbstractDomain {
+public class JsonReviewList extends AbstractDomain {
 
-    @JsonProperty("ads")
-    private List<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
+    @JsonProperty("rs")
+    private List<JsonReview> jsonReviews = new ArrayList<>();
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public List<JsonUserAddress> getJsonUserAddresses() {
-        return jsonUserAddresses;
+    public List<JsonReview> getJsonReviews() {
+        return jsonReviews;
     }
 
-    public JsonUserAddressList setJsonUserAddresses(List<JsonUserAddress> jsonUserAddresses) {
-        this.jsonUserAddresses = jsonUserAddresses;
+    public JsonReviewList setJsonReviews(List<JsonReview> jsonReviews) {
+        this.jsonReviews = jsonReviews;
+        return this;
+    }
+
+    public JsonReviewList addJsonReview(JsonReview jsonReview) {
+        this.jsonReviews.add(jsonReview);
         return this;
     }
 
@@ -52,14 +52,15 @@ public class JsonUserAddressList extends AbstractDomain {
         return error;
     }
 
-    public void setError(ErrorEncounteredJson error) {
+    public JsonReviewList setError(ErrorEncounteredJson error) {
         this.error = error;
+        return this;
     }
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("JsonUserAddressList{");
-        sb.append("jsonUserAddresses=").append(jsonUserAddresses);
+        final StringBuilder sb = new StringBuilder("JsonReviewList{");
+        sb.append("jsonReviews=").append(jsonReviews);
         sb.append(", error=").append(error);
         sb.append('}');
         return sb.toString();

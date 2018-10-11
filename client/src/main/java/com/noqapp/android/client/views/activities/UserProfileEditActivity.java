@@ -239,10 +239,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     public void updateProfile() {
 
         if (validate()) {
-            btn_update.setBackgroundResource(R.drawable.button_drawable_red);
+            btn_update.setBackgroundResource(R.drawable.blue_gradient_or);
             btn_update.setTextColor(Color.WHITE);
-            btn_update.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0, R.drawable.arrow_white, 0);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 profileModel.setProfilePresenter(this);
@@ -319,15 +317,13 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         finish();
     }
 
-    @Override
-    public void dependencyError() {
-        dismissProgress();
-    }
+
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
@@ -388,9 +384,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
     private boolean validate() {
-        btn_update.setBackgroundResource(R.drawable.button_drawable);
+        btn_update.setBackgroundResource(R.drawable.grey_gradient);
         btn_update.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
-        btn_update.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);

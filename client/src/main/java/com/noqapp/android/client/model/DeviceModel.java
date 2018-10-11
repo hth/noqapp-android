@@ -4,11 +4,11 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.open.DeviceService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 
 import android.support.annotation.NonNull;
 import android.util.Log;

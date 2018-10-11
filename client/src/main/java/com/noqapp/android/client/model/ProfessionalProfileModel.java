@@ -56,7 +56,7 @@ public class ProfessionalProfileModel {
             @Override
             public void onFailure(@NonNull Call<JsonProfessionalProfile> call, @NonNull Throwable t) {
                 Log.e("professionalProfilefail", t.getLocalizedMessage(), t);
-                queueManagerPresenter.queueManagerError();
+                queueManagerPresenter.responseErrorPresenter(null);
             }
         });
     }

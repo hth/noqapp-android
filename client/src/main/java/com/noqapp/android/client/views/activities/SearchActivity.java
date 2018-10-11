@@ -14,9 +14,9 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.SearchAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import android.content.Intent;
 import android.os.Bundle;

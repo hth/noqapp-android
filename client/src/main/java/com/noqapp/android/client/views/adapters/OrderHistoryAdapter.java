@@ -1,27 +1,22 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistorical;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
-
+import com.noqapp.android.client.views.activities.ReviewActivity;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import com.squareup.picasso.Picasso;
-
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -64,8 +59,32 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         }
         holder.tv_order_item.setText(getOrderItems(jsonPurchaseOrderHistorical.getJsonPurchaseOrderProductHistoricalList()));
         holder.tv_order_amount.setText(String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
-        holder.tv_store_rating.setText(String.valueOf(jsonPurchaseOrderHistorical.getRatingCount()));
+        holder.tv_store_rating.setText("Rating: "+String.valueOf(jsonPurchaseOrderHistorical.getRatingCount()));
         holder.tv_queue_status.setText(jsonPurchaseOrderHistorical.getPresentOrderState().getDescription());
+        if(0 == jsonPurchaseOrderHistorical.getRatingCount()){
+            holder.tv_add_review.setVisibility(View.VISIBLE);
+            holder.tv_store_rating.setVisibility(View.GONE);
+        }else{
+            holder.tv_add_review.setVisibility(View.GONE);
+            holder.tv_store_rating.setVisibility(View.VISIBLE);
+        }
+        holder.tv_add_review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
+                jsonTokenAndQueue.setQueueUserId(jsonPurchaseOrderHistorical.getQueueUserId());
+                jsonTokenAndQueue.setDisplayName(jsonPurchaseOrderHistorical.getDisplayName());
+                jsonTokenAndQueue.setStoreAddress(jsonPurchaseOrderHistorical.getStoreAddress());
+                jsonTokenAndQueue.setBusinessType(jsonPurchaseOrderHistorical.getBusinessType());
+                jsonTokenAndQueue.setCodeQR(jsonPurchaseOrderHistorical.getCodeQR());
+                jsonTokenAndQueue.setToken(jsonPurchaseOrderHistorical.getTokenNumber());
+                Intent in = new Intent(context, ReviewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("object", jsonTokenAndQueue);
+                in.putExtras(bundle);
+                context.startActivity(in);
+            }
+        });
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +108,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         private TextView tv_address;
         private TextView tv_order_date;
         private TextView tv_store_rating;
+        private TextView tv_add_review;
         private TextView tv_order_amount;
         private TextView tv_order_item;
         private TextView tv_queue_status;
@@ -100,6 +120,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
             this.tv_address = itemView.findViewById(R.id.tv_address);
             this.tv_order_date = itemView.findViewById(R.id.tv_order_date);
             this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
+            this.tv_add_review = itemView.findViewById(R.id.tv_add_review);
             this.tv_order_amount = itemView.findViewById(R.id.tv_order_amount);
             this.tv_order_item = itemView.findViewById(R.id.tv_order_item);
             this.tv_queue_status = itemView.findViewById(R.id.tv_queue_status);

@@ -8,7 +8,6 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,7 +48,7 @@ public class MedicalRecordApiModel {
             @Override
             public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
                 Log.e("getMedicalRecord fail", t.getLocalizedMessage(), t);
-                medicalRecordPresenter.medicalRecordError();
+                medicalRecordPresenter.responseErrorPresenter(null);
             }
         });
     }

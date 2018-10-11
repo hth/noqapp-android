@@ -334,7 +334,7 @@
                     <Button
                             android:id="@+id/btn_no"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/btn_standard_height"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
                             android:layout_marginTop="10dp"
@@ -353,7 +353,7 @@
                     <Button
                             android:id="@+id/btn_joinQueue"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/btn_standard_height"
                             android:layout_margin="20dp"
                             android:background="@drawable/blue_gradient_or"
                             android:fontFamily="sans-serif-medium"

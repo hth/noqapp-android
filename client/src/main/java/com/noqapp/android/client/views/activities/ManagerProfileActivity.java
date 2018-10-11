@@ -116,16 +116,12 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         dismissProgress();
     }
 
-    @Override
-    public void queueManagerError() {
-        dismissProgress();
-    }
-
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override

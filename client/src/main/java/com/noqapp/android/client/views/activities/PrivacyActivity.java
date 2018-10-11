@@ -4,7 +4,6 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;

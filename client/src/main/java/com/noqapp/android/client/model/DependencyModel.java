@@ -54,7 +54,7 @@ public final class DependencyModel {
             @Override
             public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
                 Log.e("addDependency failed", t.getLocalizedMessage(), t);
-                dependencyPresenter.dependencyError();
+                dependencyPresenter.responseErrorPresenter(null);
             }
         });
     }

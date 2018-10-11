@@ -2,30 +2,23 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.PurchaseApiModel;
-import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
-import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.TimeZone;
 
 public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter {
 
@@ -114,10 +107,6 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         dismissProgress();
     }
 
-    @Override
-    public void purchaseOrderError() {
-        dismissProgress();
-    }
 
     @Override
     public void authenticationFailure() {
@@ -134,6 +123,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 }

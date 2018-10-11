@@ -107,15 +107,12 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
         dismissProgress();
     }
 
-    @Override
-    public void migrateEmailError() {
-        dismissProgress();
-    }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override

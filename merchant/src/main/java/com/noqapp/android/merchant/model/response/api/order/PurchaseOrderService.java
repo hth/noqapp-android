@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model.response.api.order;
 
+import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrderList;
@@ -92,6 +93,30 @@ public interface PurchaseOrderService {
      */
     @POST("api/m/o/purchaseOrder/actionOnOrder.json")
     Call<JsonPurchaseOrderList> actionOnOrder(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            OrderServed OrderServed
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/m/o/purchaseOrder/cancel.json")
+    Call<JsonPurchaseOrder> cancel(
             @Header("X-R-DID")
             String did,
 

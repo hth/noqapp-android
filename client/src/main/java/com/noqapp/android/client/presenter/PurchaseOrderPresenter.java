@@ -8,5 +8,4 @@ public interface PurchaseOrderPresenter extends ResponseErrorPresenter{
 
     void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder);
 
-    void purchaseOrderError();
 }
