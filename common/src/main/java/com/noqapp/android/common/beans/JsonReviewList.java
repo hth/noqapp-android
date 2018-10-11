@@ -29,10 +29,13 @@ import java.util.List;
 public class JsonReviewList extends AbstractDomain {
 
     @JsonProperty("rs")
-    public List<JsonReview> jsonReviews = new ArrayList<>();
+    private List<JsonReview> jsonReviews = new ArrayList<>();
 
     @JsonProperty("tr")
     private int totalReviews;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public List<JsonReview> getJsonReviews() {
         return jsonReviews;
@@ -55,5 +58,23 @@ public class JsonReviewList extends AbstractDomain {
     public JsonReviewList setTotalReviews(int totalReviews) {
         this.totalReviews = totalReviews;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public JsonReviewList setError(ErrorEncounteredJson error) {
+        this.error = error;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonReviewList{" +
+                "jsonReviews=" + jsonReviews +
+                ", totalReviews=" + totalReviews +
+                ", error=" + error +
+                '}';
     }
 }
