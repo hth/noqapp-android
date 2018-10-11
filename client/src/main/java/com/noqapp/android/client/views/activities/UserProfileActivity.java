@@ -347,7 +347,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         try {
             DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB()));
             Period period = new Period(dateTime, new DateTime());
-            tv_age.setText(String.valueOf(period.getYears()) + " years (" + gender + ")");
+            String suffixYear = period.getYears() <= 1 ? " year" : " years";
+            tv_age.setText(String.valueOf(period.getYears()) + suffixYear + " (" + gender + ")");
         } catch (Exception e) {
             e.printStackTrace();
         }
