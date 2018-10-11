@@ -28,6 +28,7 @@ import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 import com.squareup.picasso.Picasso;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -40,6 +41,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -60,7 +62,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for, tv_menu, tv_store_name, tv_store_address, tv_store_timings, tv_header_menu, tv_header_famous;
+    private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for,  tv_store_name, tv_store_address, tv_store_timings, tv_header_menu, tv_header_famous;
     private BizStoreElastic bizStoreElastic;
     private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView rv_thumb_images, rv_photos;
@@ -70,13 +72,12 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private RelativeLayout rl_mid_content;
     private TextView tv_rating, tv_rating_review;
     private SegmentedControl sc_amenities, sc_delivery_types, sc_payment_mode;
-
+    private Button tv_menu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_detail);
-        FrameLayout fl_order = findViewById(R.id.fl_order);
         tv_address = findViewById(R.id.tv_address);
         tv_address_title = findViewById(R.id.tv_address_title);
         tv_store_name = findViewById(R.id.tv_store_name);
@@ -128,6 +129,20 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         rv_photos = findViewById(R.id.rv_photos);
         rv_photos.setHasFixedSize(true);
         rv_photos.setLayoutManager(horizontalLayoutManager1);
+
+        tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        tv_rating_review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(StoreDetailActivity.this, ShowAllReviewsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
+                bundle.putString("storeName", jsonQueue.getDisplayName());
+                bundle.putString("storeAddress", tv_store_address.getText().toString());
+                in.putExtras(bundle);
+                startActivity(in);
+            }
+        });
 
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
             Picasso.with(this)

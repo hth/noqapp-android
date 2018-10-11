@@ -20,6 +20,11 @@ import com.noqapp.android.common.utils.ImagePathReader;
 
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.joda.time.Years;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -55,6 +60,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     private EditText edt_Name;
     private EditText edt_Mail;
     private TextView tv_male;
+    private TextView tv_age;
     private TextView tv_female;
     private TextView tv_info;
     private TextView tv_email_verification;
@@ -76,6 +82,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         edt_phoneNo = findViewById(R.id.edt_phone);
         edt_Name = findViewById(R.id.edt_name);
         edt_Mail = findViewById(R.id.edt_email);
+        tv_age = findViewById(R.id.tv_age);
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
         tv_info = findViewById(R.id.tv_info);
@@ -240,13 +247,13 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
 
-
     private void updateUI() {
         if (NoQueueBaseActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
             tv_info.setText("Max 10 allowed");
         } else {
             tv_info.setText("Max 5 allowed");
         }
+
         edt_Name.setText(NoQueueBaseActivity.getUserName());
         tv_name.setText(NoQueueBaseActivity.getUserName());
         edt_phoneNo.setText(NoQueueBaseActivity.getPhoneNo());
@@ -329,12 +336,23 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             }
         }
         loadProfilePic();
+        calculateAge();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updateUI();
+    }
+
+    private void calculateAge() {
+        try {
+            DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB()));
+            Period period = new Period(dateTime, new DateTime());
+            tv_age.setText(String.valueOf(period.getYears()) + " years (" + gender + ")");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

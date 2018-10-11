@@ -71,8 +71,8 @@
                         android:layout_below="@+id/tv_experience"
                         app:tabGravity="fill"
                         app:tabMode="fixed"
-                        app:tabSelectedTextColor="@android:color/white"
-                        app:tabTextColor="@android:color/darker_gray"/>
+                        app:tabSelectedTextColor="@color/colorMobile"
+                        app:tabTextColor="@android:color/white"/>
 
             </RelativeLayout>
 

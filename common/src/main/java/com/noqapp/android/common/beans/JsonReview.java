@@ -72,4 +72,14 @@ public class JsonReview extends AbstractDomain {
         this.name = name;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonReview{" +
+                "ratingCount=" + ratingCount +
+                ", review='" + review + '\'' +
+                ", profileImage='" + profileImage + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

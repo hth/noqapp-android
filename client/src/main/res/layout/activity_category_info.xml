@@ -127,11 +127,10 @@
                         <Button
                                 android:id="@+id/btn_join_queues"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="@dimen/btn_standard_height"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginTop="10dp"
                                 android:background="@color/button_color"
-                                android:padding="10dp"
                                 android:textAllCaps="false"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/text_size_fourteen"/>

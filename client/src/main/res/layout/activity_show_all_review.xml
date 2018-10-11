@@ -25,7 +25,7 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:orientation="vertical">
 
             <TextView
@@ -33,20 +33,24 @@
                     style="@style/style_join_queue_tv"
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="5dp"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_sixteen"
+                    android:textSize="@dimen/text_size_eighteen"
                     android:textStyle="bold"/>
 
             <TextView
                     android:id="@+id/tv_address"
                     style="@style/style_join_queue_tv"
                     android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="5dp"
                     android:textColor="@color/colorAddress"
                     android:textSize="@dimen/text_size_twelve"/>
 
             <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_all_review"
                     android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_height="match_parent"
                     android:scrollbars="vertical"/>
         </LinearLayout>

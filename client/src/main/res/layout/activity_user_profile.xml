@@ -24,7 +24,7 @@
         <RelativeLayout
                 android:id="@+id/layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
 
             <RelativeLayout
@@ -62,6 +62,15 @@
                         android:textColor="#fff"
                         android:textSize="@dimen/text_size_sixteen"
                         android:textStyle="bold"/>
+                <TextView
+                        android:id="@+id/tv_age"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/tv_name"
+                        android:text=""
+                        android:textColor="#fff"
+                        android:textSize="@dimen/text_size_fourteen"/>
 
 
             </RelativeLayout>
@@ -136,12 +145,14 @@
 
                 <TextView
                         style="@style/style_register_tv"
+                        android:visibility="gone"
                         android:text="@string/name"/>
 
 
                 <EditText
                         android:id="@+id/edt_name"
                         style="@style/style_register_edt"
+                        android:visibility="gone"
                         android:inputType="text"/>
 
                 <RelativeLayout
@@ -178,6 +189,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:weightSum="1">
 
 
@@ -322,5 +334,5 @@
             android:background="@color/button_color"
             android:layout_alignParentBottom="true"
             android:visibility="gone"
-            android:text="Update &amp; Verify your E-mail"/>
+            android:text="Please verify your E-mail"/>
 </RelativeLayout>

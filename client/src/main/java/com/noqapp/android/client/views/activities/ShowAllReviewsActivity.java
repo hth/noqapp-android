@@ -100,6 +100,13 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         dismissProgress();
         if (null != jsonReviewList && jsonReviewList.getJsonReviews().size() > 0)
             jsonReviews = jsonReviewList.getJsonReviews();
+        if (jsonReviews.size() <= 0) {
+            rv_all_review.setVisibility(View.GONE);
+            tv_empty.setVisibility(View.VISIBLE);
+        } else {
+            rv_all_review.setVisibility(View.VISIBLE);
+            tv_empty.setVisibility(View.GONE);
+        }
         ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviews, this);
         rv_all_review.setAdapter(showAllReviewsAdapter);
     }

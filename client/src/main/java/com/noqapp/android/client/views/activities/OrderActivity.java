@@ -68,7 +68,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         rg_address = findViewById(R.id.rg_address);
         edt_address = findViewById(R.id.edt_address);
         edt_phone = findViewById(R.id.edt_phone);
-        TextView tv_place_order = findViewById(R.id.tv_place_order);
+        Button tv_place_order = findViewById(R.id.tv_place_order);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         initActionsViews(false);
         purchaseApiModel = new PurchaseApiModel(this);

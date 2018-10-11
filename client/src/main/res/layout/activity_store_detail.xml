@@ -104,14 +104,12 @@
                         android:textSize="@dimen/store_info"/>
 
 
-                <TextView
+                <Button
                         android:id="@+id/tv_menu"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_height="@dimen/btn_standard_height"
                         android:background="@color/button_color"
                         android:gravity="center"
-                        android:padding="10dp"
                         android:text="Order Now"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_fourteen"/>
@@ -323,6 +321,7 @@
                     android:layout_height="@dimen/rating_radius"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_toRightOf="@+id/ratingBar"
                     android:gravity="center"
                     android:text="0.0"
@@ -335,9 +334,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/ratingBar"
-                    android:layout_marginTop="10dp"
-                    android:padding="5dp"
-                    android:textColor="@color/colorAddress"
+                    android:paddingTop="10dp"
+                    android:textColor="#1B3C42"
+                    android:textStyle="bold"
                     android:textSize="@dimen/rating_text_size"/>
         </RelativeLayout>
     </RelativeLayout>

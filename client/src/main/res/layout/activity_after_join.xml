@@ -366,7 +366,7 @@
                     <Button
                             android:id="@+id/btn_cancel_queue"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/btn_standard_height"
                             android:layout_margin="20dp"
                             android:background="@drawable/grey_gradient"
                             android:fontFamily="sans-serif-medium"
