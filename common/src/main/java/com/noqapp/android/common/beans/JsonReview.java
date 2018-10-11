@@ -31,6 +31,12 @@ public class JsonReview extends AbstractDomain {
     @JsonProperty("rv")
     private String review;
 
+    @JsonProperty ("pi")
+    private String profileImage;
+
+    @JsonProperty ("nm")
+    private String name;
+
     public int getRatingCount() {
         return ratingCount;
     }
@@ -46,6 +52,24 @@ public class JsonReview extends AbstractDomain {
 
     public JsonReview setReview(String review) {
         this.review = review;
+        return this;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public JsonReview setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public JsonReview setName(String name) {
+        this.name = name;
         return this;
     }
 }
