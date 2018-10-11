@@ -7,8 +7,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * hitender
@@ -56,8 +58,8 @@ public class JsonProfessionalProfilePersonal implements Serializable {
     @JsonProperty("dd")
     private String dataDictionary;
 
-    @JsonProperty("rl")
-    private JsonReviewList jsonReviewList = new JsonReviewList();
+    @JsonProperty("re")
+    private Map<String, JsonReviewList> reviews = new HashMap<>();
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -134,12 +136,12 @@ public class JsonProfessionalProfilePersonal implements Serializable {
         return this;
     }
 
-    public JsonReviewList getJsonReviewList() {
-        return jsonReviewList;
+    public Map<String, JsonReviewList> getReviews() {
+        return reviews;
     }
 
-    public JsonProfessionalProfilePersonal setJsonReviewList(JsonReviewList jsonReviewList) {
-        this.jsonReviewList = jsonReviewList;
+    public JsonProfessionalProfilePersonal setReviews(Map<String, JsonReviewList> reviews) {
+        this.reviews = reviews;
         return this;
     }
 
