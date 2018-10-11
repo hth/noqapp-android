@@ -3,7 +3,6 @@ package com.noqapp.android.client.views.adapters;
 import com.noqapp.android.client.R;
 import com.noqapp.android.common.beans.NavigationBean;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

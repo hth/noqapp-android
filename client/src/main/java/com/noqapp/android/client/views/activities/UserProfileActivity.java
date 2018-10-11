@@ -21,9 +21,7 @@ import com.noqapp.android.common.utils.ImagePathReader;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.joda.time.Period;
-import org.joda.time.Years;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

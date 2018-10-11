@@ -9,10 +9,9 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import com.google.android.gms.maps.model.LatLng;
-
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import android.content.Intent;
 import android.os.Bundle;

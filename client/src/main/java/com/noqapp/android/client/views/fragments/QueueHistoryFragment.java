@@ -1,28 +1,19 @@
 package com.noqapp.android.client.views.fragments;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.model.OrderQueueHistoryModel;
-import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.QueueHistoryPresenter;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistoricalList;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistoricalList;
-import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.adapters.QueueHistoryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,7 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapter.OnItemClickListener, QueueHistoryPresenter {
     private RecyclerView rcv_order_history;
