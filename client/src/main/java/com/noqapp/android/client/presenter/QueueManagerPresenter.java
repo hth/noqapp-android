@@ -12,6 +12,4 @@ public interface QueueManagerPresenter extends ResponseErrorPresenter {
 
     void queueManagerResponse(JsonProfessionalProfile jsonProfessionalProfile);
 
-    void queueManagerError();
-
 }

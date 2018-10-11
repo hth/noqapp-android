@@ -168,7 +168,7 @@ public class ProfileModel {
             @Override
             public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
                 Log.e("getProfileAllAddress", t.getLocalizedMessage(), t);
-                profileAddressPresenter.profileAddressError();
+                profileAddressPresenter.responseErrorPresenter(null);
             }
         });
     }
@@ -197,7 +197,7 @@ public class ProfileModel {
             @Override
             public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
                 Log.e("Fail addProfileAddress", t.getLocalizedMessage(), t);
-                profileAddressPresenter.profileAddressError();
+                profileAddressPresenter.responseErrorPresenter(null);
             }
         });
     }
@@ -226,7 +226,7 @@ public class ProfileModel {
             @Override
             public void onFailure(@NonNull Call<JsonUserAddressList> call, @NonNull Throwable t) {
                 Log.e("addressDelete onFailure", t.getLocalizedMessage(), t);
-                profileAddressPresenter.profileAddressError();
+                profileAddressPresenter.responseErrorPresenter(null);
             }
         });
     }
@@ -284,7 +284,7 @@ public class ProfileModel {
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("onFailure changeMail", t.getLocalizedMessage(), t);
-                migrateEmailPresenter.migrateEmailError();
+                migrateEmailPresenter.responseErrorPresenter(null);
             }
         });
     }

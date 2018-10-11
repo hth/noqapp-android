@@ -243,15 +243,12 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         progressDialog.dismiss();
     }
 
-    @Override
-    public void reviewError() {
-        progressDialog.dismiss();
-    }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         progressDialog.dismiss();
-        new ErrorResponseHandler().processError(this, eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override

@@ -12,5 +12,4 @@ public interface ReviewPresenter extends ResponseErrorPresenter{
 
     void reviewResponse(JsonResponse jsonResponse);
 
-    void reviewError();
 }

@@ -114,10 +114,6 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         dismissProgress();
     }
 
-    @Override
-    public void purchaseOrderError() {
-        dismissProgress();
-    }
 
     @Override
     public void authenticationFailure() {
@@ -134,6 +130,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 }

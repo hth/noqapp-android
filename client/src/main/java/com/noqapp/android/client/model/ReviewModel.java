@@ -68,7 +68,7 @@ public class ReviewModel {
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("Failure queue review ", t.getLocalizedMessage(), t);
-                reviewPresenter.reviewError();
+                reviewPresenter.responseErrorPresenter(null);
             }
         });
     }

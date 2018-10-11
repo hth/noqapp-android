@@ -157,7 +157,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 profileList.add(0, new JsonProfile().setName("Select Patient"));
                 DependentAdapter adapter = new DependentAdapter(this, profileList);
                 tv_name.setText(profileList.get(profile_pos).getName());
-                queueUserId =  profileList.get(profile_pos).getQueueUserId();
+                queueUserId = profileList.get(profile_pos).getQueueUserId();
             }
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case DO:
@@ -257,23 +257,20 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         dismissProgress();
     }
 
-    @Override
-    public void tokenPresenterError() {
-        dismissProgress();
-    }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         dismissProgress();
-        if (errorCode == Constants.INVALID_BAR_CODE){
+        if (errorCode == Constants.INVALID_BAR_CODE) {
             ShowAlertInformation.showBarcodeErrorDialog(this);
-        }else {
+        } else {
             new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
         }
     }

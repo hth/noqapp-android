@@ -319,15 +319,13 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         finish();
     }
 
-    @Override
-    public void dependencyError() {
-        dismissProgress();
-    }
+
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override

@@ -49,7 +49,7 @@ public class MedicalRecordApiModel {
             @Override
             public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
                 Log.e("getMedicalRecord fail", t.getLocalizedMessage(), t);
-                medicalRecordPresenter.medicalRecordError();
+                medicalRecordPresenter.responseErrorPresenter(null);
             }
         });
     }

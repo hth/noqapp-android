@@ -8,6 +8,4 @@ public interface MedicalRecordPresenter extends ResponseErrorPresenter {
 
     void medicalRecordResponse(JsonMedicalRecordList jsonMedicalRecordList);
 
-    void medicalRecordError();
-
 }

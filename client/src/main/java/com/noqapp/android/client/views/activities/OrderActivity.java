@@ -199,11 +199,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     @Override
-    public void purchaseOrderError() {
-        dismissProgress();
-    }
-
-    @Override
     public void authenticationFailure() {
         dismissProgress();
         AppUtilities.authenticationProcessing(this);
@@ -218,7 +213,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
@@ -325,9 +321,5 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     }
 
-    @Override
-    public void profileAddressError() {
-        dismissProgress();
-    }
 
 }

@@ -9,5 +9,4 @@ public interface DependencyPresenter extends ResponseErrorPresenter {
 
     void dependencyResponse(JsonProfile profile);
 
-    void dependencyError();
 }

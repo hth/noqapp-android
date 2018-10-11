@@ -169,7 +169,7 @@ public class QueueApiModel {
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Failure joinQueue", t.getLocalizedMessage(), t);
-                tokenPresenter.tokenPresenterError();
+                tokenPresenter.responseErrorPresenter(null);
             }
         });
     }
