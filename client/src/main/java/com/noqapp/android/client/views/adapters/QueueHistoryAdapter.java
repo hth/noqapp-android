@@ -4,10 +4,13 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.client.views.activities.ContactUsActivity;
 import com.noqapp.android.client.views.activities.ReviewActivity;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import com.squareup.picasso.Picasso;
@@ -111,6 +114,20 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                 context.startActivity(in);
             }
         });
+        holder.tv_support.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Feedback feedback = new Feedback();
+                feedback.setMessageOrigin(MessageOriginEnum.Q);
+                feedback.setCodeQR(jsonQueueHistorical.getCodeQR());
+                feedback.setToken(jsonQueueHistorical.getTokenNumber());
+                Intent in = new Intent(context, ContactUsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("object", feedback);
+                in.putExtras(bundle);
+                context.startActivity(in);
+            }
+        });
     }
 
     @Override
@@ -125,6 +142,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_name;
+        private TextView tv_support;
         private TextView tv_address;
         private TextView tv_queue_join_date;
         private TextView tv_token;
@@ -139,6 +157,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
+            this.tv_support = itemView.findViewById(R.id.tv_support);
             this.tv_address = itemView.findViewById(R.id.tv_address);
             this.tv_queue_join_date = itemView.findViewById(R.id.tv_queue_join_date);
             this.tv_token = itemView.findViewById(R.id.tv_token);

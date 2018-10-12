@@ -101,7 +101,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (validateForm()) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
@@ -195,6 +194,12 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         } else {
             //Show error
         }
+        dismissProgress();
+    }
+
+    @Override
+    public void purchaseOrderCancelResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        // implementation not required here
         dismissProgress();
     }
 

@@ -98,6 +98,35 @@ public class PurchaseOrderModel {
         });
     }
 
+    public void cancel(String did, String mail, String auth, OrderServed orderServed) {
+        purchaseOrderService.cancel(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonPurchaseOrderList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response Order cancel", String.valueOf(response.body()));
+                        orderProcessedPresenter.orderProcessedResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while Order cancel");
+                        orderProcessedPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        orderProcessedPresenter.authenticationFailure();
+                    } else {
+                        orderProcessedPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Throwable t) {
+                Log.e("Order cancel fail", t.getLocalizedMessage(), t);
+                orderProcessedPresenter.orderProcessedError();
+            }
+        });
+    }
+
     public void acquire(String did, String mail, String auth, OrderServed orderServed) {
         purchaseOrderService.acquire(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonToken>() {
             @Override

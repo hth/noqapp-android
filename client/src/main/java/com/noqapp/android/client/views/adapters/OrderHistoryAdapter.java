@@ -4,9 +4,12 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.views.activities.ContactUsActivity;
 import com.noqapp.android.client.views.activities.ReviewActivity;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import android.content.Context;
@@ -59,12 +62,12 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         }
         holder.tv_order_item.setText(getOrderItems(jsonPurchaseOrderHistorical.getJsonPurchaseOrderProductHistoricalList()));
         holder.tv_order_amount.setText(String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
-        holder.tv_store_rating.setText("Rating: "+String.valueOf(jsonPurchaseOrderHistorical.getRatingCount()));
+        holder.tv_store_rating.setText("Rating: " + String.valueOf(jsonPurchaseOrderHistorical.getRatingCount()));
         holder.tv_queue_status.setText(jsonPurchaseOrderHistorical.getPresentOrderState().getDescription());
-        if(0 == jsonPurchaseOrderHistorical.getRatingCount()){
+        if (0 == jsonPurchaseOrderHistorical.getRatingCount()) {
             holder.tv_add_review.setVisibility(View.VISIBLE);
             holder.tv_store_rating.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.tv_add_review.setVisibility(View.GONE);
             holder.tv_store_rating.setVisibility(View.VISIBLE);
         }
@@ -81,6 +84,20 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
                 Intent in = new Intent(context, ReviewActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("object", jsonTokenAndQueue);
+                in.putExtras(bundle);
+                context.startActivity(in);
+            }
+        });
+        holder.tv_support.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Feedback feedback = new Feedback();
+                feedback.setMessageOrigin(MessageOriginEnum.O);
+                feedback.setCodeQR(jsonPurchaseOrderHistorical.getCodeQR());
+                feedback.setToken(jsonPurchaseOrderHistorical.getTokenNumber());
+                Intent in = new Intent(context, ContactUsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("object", feedback);
                 in.putExtras(bundle);
                 context.startActivity(in);
             }
@@ -105,6 +122,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_name;
+        private TextView tv_support;
         private TextView tv_address;
         private TextView tv_order_date;
         private TextView tv_store_rating;
@@ -117,6 +135,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
+            this.tv_support = itemView.findViewById(R.id.tv_support);
             this.tv_address = itemView.findViewById(R.id.tv_address);
             this.tv_order_date = itemView.findViewById(R.id.tv_order_date);
             this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);

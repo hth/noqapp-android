@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 public class ContactUsActivity extends BaseActivity implements FeedbackPresenter {
 
+    private Feedback feedback = new Feedback();
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,13 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
         final EditText edt_subject = findViewById(R.id.edt_subject);
         // max character 500 limit
         final EditText edt_body = findViewById(R.id.edt_body);
+        Bundle extras = getIntent().getExtras();
+        if (null != extras) {
+            Feedback fb = (Feedback) extras.getSerializable("object");
+            if (null != fb) {
+                feedback = fb;
+            }
+        }
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +53,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
                     progressDialog.setMessage("Sending feedback..");
                     progressDialog.show();
                     new FeedbackApiModel(ContactUsActivity.this).review(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
-                            new Feedback().setBody(edt_body.getText().toString()).setSubject(edt_subject.getText().toString()));
+                            feedback.setBody(edt_body.getText().toString()).setSubject(edt_subject.getText().toString()));
                 }
             }
         });

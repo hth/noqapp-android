@@ -24,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -105,6 +106,8 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
         //add all items
         QueueHistoryAdapter queueHistoryAdapter = new QueueHistoryAdapter(listData, getActivity(), this);
         rcv_order_history.setAdapter(queueHistoryAdapter);
+        if(null != listData && listData.size()==0)
+            Toast.makeText(getActivity(),"You havn't join any Queue yet :(",Toast.LENGTH_LONG).show();
     }
 
 
