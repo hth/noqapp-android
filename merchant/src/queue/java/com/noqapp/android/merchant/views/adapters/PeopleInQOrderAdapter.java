@@ -56,7 +56,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         ImageView iv_info;
         CardView cardview;
 
-        public MyViewHolder(View itemView) {
+        private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_customer_name = itemView.findViewById(R.id.tv_customer_name);
             this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
@@ -121,6 +121,12 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             @Override
             public void onClick(View v) {
                 peopleInQOrderAdapterClick.orderDoneClick(position);
+            }
+        });
+        recordHolder.tv_order_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                peopleInQOrderAdapterClick.orderCancelClick(position);
             }
         });
         recordHolder.tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
