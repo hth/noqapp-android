@@ -178,7 +178,7 @@ public class AppUtilities extends CommonHelper {
     }
 
     public static double round(float value) {
-        int scale = (int) Math.pow(10, 1);
+        int scale = (int) Math.pow(10, 2);
         return (double) Math.round(value * scale) / scale;
     }
 

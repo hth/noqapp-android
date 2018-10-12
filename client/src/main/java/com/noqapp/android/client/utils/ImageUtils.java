@@ -24,11 +24,11 @@ public class ImageUtils {
     }
 
     public static Drawable getProfilePlaceholder(Context context) {
-        return context.getResources().getDrawable(R.drawable.profile_avatar);
+        return context.getResources().getDrawable(R.drawable.profile_theme);
     }
 
     public static Drawable getProfileErrorPlaceholder(Context context) {
-        return context.getResources().getDrawable(R.drawable.profile_avatar);
+        return context.getResources().getDrawable(R.drawable.profile_theme);
     }
 
     public static int getBannerPlaceholder() {
@@ -40,6 +40,6 @@ public class ImageUtils {
     }
 
     public static int getProfilePlaceholder() {
-        return R.drawable.profile_avatar;
+        return R.drawable.profile_theme;
     }
 }

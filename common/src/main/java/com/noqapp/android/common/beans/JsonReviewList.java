@@ -46,11 +46,6 @@ public class JsonReviewList extends AbstractDomain {
         return this;
     }
 
-    public JsonReviewList addJsonReview(JsonReview jsonReview) {
-        this.jsonReviews.add(jsonReview);
-        return this;
-    }
-
     public int getAggregateRatingCount() {
         return aggregateRatingCount;
     }
@@ -71,10 +66,10 @@ public class JsonReviewList extends AbstractDomain {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("JsonReviewList{");
-        sb.append("jsonReviews=").append(jsonReviews);
-        sb.append(", error=").append(error);
-        sb.append('}');
-        return sb.toString();
+        return "JsonReviewList{" +
+                "jsonReviews=" + jsonReviews +
+                ", aggregateRatingCount=" + aggregateRatingCount +
+                ", error=" + error +
+                '}';
     }
 }

@@ -53,22 +53,29 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         rv_all_review.setItemAnimator(new DefaultItemAnimator());
         Intent bundle = getIntent();
         if (null != bundle) {
-            String codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
+            jsonReviews = (List<JsonReview>) getIntent().getExtras().getSerializable("data");
             String storeName = bundle.getStringExtra("storeName");
             String storeAddress = bundle.getStringExtra("storeAddress");
             TextView tv_store_name = findViewById(R.id.tv_store_name);
             TextView tv_address = findViewById(R.id.tv_address);
             tv_store_name.setText(storeName);
             tv_address.setText(storeAddress);
-            if (NetworkUtils.isConnectingToInternet(ShowAllReviewsActivity.this)) {
+            if (null != jsonReviews) {
+                updateUI();
+                tv_address.setVisibility(View.GONE);
+            } else {
+                jsonReviews = new ArrayList<>();
+                String codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
+                if (NetworkUtils.isConnectingToInternet(ShowAllReviewsActivity.this)) {
                     ReviewModel reviewModel = new ReviewModel();
                     reviewModel.setAllReviewPresenter(this);
                     reviewModel.review(UserUtils.getDeviceId(), codeQR);
                     progressDialog.setMessage("Getting Reviews...");
                     progressDialog.show();
 
-            } else {
-                ShowAlertInformation.showNetworkDialog(this);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(this);
+                }
             }
         }
 
@@ -99,6 +106,10 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         dismissProgress();
         if (null != jsonReviewList && jsonReviewList.getJsonReviews().size() > 0)
             jsonReviews = jsonReviewList.getJsonReviews();
+        updateUI();
+    }
+
+    private void updateUI(){
         if (jsonReviews.size() <= 0) {
             rv_all_review.setVisibility(View.GONE);
             tv_empty.setVisibility(View.VISIBLE);

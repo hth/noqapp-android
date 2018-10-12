@@ -17,6 +17,8 @@ import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonReview;
+import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
@@ -25,27 +27,35 @@ import com.squareup.picasso.Picasso;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
+import android.content.Intent;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public class ManagerProfileActivity extends ProfileActivity implements QueueManagerPresenter {
 
     private TextView tv_name;
-    private TextView tv_experience;
+    private TextView tv_experience,tv_total_review;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private LoadTabs loadTabs;
     private UserProfileFragment userProfileFragment;
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
     private MedicalDepartmentEnum medicalDepartmentEnum;
-
+    private List<JsonReview> jsonReviews = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +69,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         medicalDepartmentEnum = MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId"));
         tv_name = findViewById(R.id.tv_name);
         tv_experience = findViewById(R.id.tv_experience);
+        tv_total_review = findViewById(R.id.tv_total_review);
         tv_name.setText(managerName);
         Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
@@ -109,7 +120,27 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
                 }
             }
             userAdditionalInfoFragment.updateUI(jsonProfessionalProfile);
-            userProfileFragment.updateUI(jsonProfessionalProfile.getStores(), jsonProfessionalProfile.getAboutMe());
+            userProfileFragment.updateUI(jsonProfessionalProfile);
+
+            float val = getReviewCountTotal(jsonProfessionalProfile.getReviews());
+            if (val == 0) {
+                tv_total_review.setVisibility(View.INVISIBLE);
+            } else {
+                tv_total_review.setVisibility(View.VISIBLE);
+            }
+            tv_total_review.setText(String.valueOf(AppUtilities.round(val))+" Reviews");
+            tv_total_review.setPaintFlags(tv_total_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            tv_total_review.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent in = new Intent(ManagerProfileActivity.this, ShowAllReviewsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("data", (Serializable) jsonReviews);
+                    bundle.putString("storeName", tv_name.getText().toString());
+                    in.putExtras(bundle);
+                    startActivity(in);
+                }
+            });
         } else {
             Log.v("queueManagerResponse", "null data received");
         }
@@ -174,4 +205,26 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
             }
         }
     }
+
+    private float getReviewCountTotal(Map<String, JsonReviewList> reviews) {
+        float reviewCount = 0;
+        try {
+            if (null != reviews && reviews.size() > 0) {
+                float value = 0;
+                float div = 0;
+                for (Map.Entry<String, JsonReviewList> entry : reviews.entrySet()) {
+                    if (entry.getValue().getJsonReviews().size() > 0) {
+                        value += entry.getValue().getAggregateRatingCount() ;
+                        div += entry.getValue().getJsonReviews().size();
+                        jsonReviews.addAll(entry.getValue().getJsonReviews());
+                    }
+                }
+                reviewCount = value / div;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return reviewCount;
+    }
+
 }
