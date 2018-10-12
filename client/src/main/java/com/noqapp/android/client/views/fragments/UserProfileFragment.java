@@ -50,7 +50,8 @@ public class UserProfileFragment extends Fragment {
                     tv_name.setText(stores.get(i).getJsonQueue().getBusinessName());
                     tv_address.setText(stores.get(i).getJsonQueue().getStoreAddress());
                     try {
-                        tv_store_rating.setText("Rating- " + String.valueOf(jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getAggregateRatingCount()));
+                        tv_store_rating.setText("Rating- " + String.valueOf(jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getAggregateRatingCount()*1.0/
+                                jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getJsonReviews().size()));
                     }catch (Exception e){
                         e.printStackTrace();
                     }

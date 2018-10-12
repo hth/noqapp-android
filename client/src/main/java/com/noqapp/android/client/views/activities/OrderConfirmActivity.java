@@ -32,7 +32,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private TextView tv_serving_no;
     private TextView tv_token;
     private TextView tv_estimated_time;
-    private JsonPurchaseOrder jsonPurchaseOrder,oldjsonPurchaseOrder;
+    private JsonPurchaseOrder jsonPurchaseOrder, oldjsonPurchaseOrder;
+    private Button btn_cancel_order;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +48,14 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_address = findViewById(R.id.tv_address);
-        Button btn_cancel_order = findViewById(R.id.btn_cancel_order);
+        btn_cancel_order = findViewById(R.id.btn_cancel_order);
         initActionsViews(true);
         purchaseApiModel = new PurchaseApiModel(this);
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
         tv_store_name.setText(getIntent().getExtras().getString("storeName"));
         tv_address.setText(getIntent().getExtras().getString("storeAddress"));
 
-        if(getIntent().getBooleanExtra(NoQueueBaseFragment.KEY_FROM_LIST,false)){
+        if (getIntent().getBooleanExtra(NoQueueBaseFragment.KEY_FROM_LIST, false)) {
             tv_toolbar_title.setText(getString(R.string.order_details));
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
@@ -64,7 +66,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             } else {
                 ShowAlertInformation.showNetworkDialog(OrderConfirmActivity.this);
             }
-        }else {
+        } else {
             jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
             oldjsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("oldData");
             updateUI();
@@ -78,7 +80,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         btn_cancel_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(null != jsonPurchaseOrder) {
+                if (null != jsonPurchaseOrder) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
                         progressDialog.setMessage("Order cancel in progress..");
@@ -99,20 +101,22 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = oldjsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
-            TextView tv_title =  inflatedLayout.findViewById(R.id.tv_title);
-            TextView tv_qty =  inflatedLayout.findViewById(R.id.tv_qty);
-            TextView tv_price =  inflatedLayout.findViewById(R.id.tv_price);
-            TextView tv_total_price =  inflatedLayout.findViewById(R.id.tv_total_price);
+            TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
+            TextView tv_qty = inflatedLayout.findViewById(R.id.tv_qty);
+            TextView tv_price = inflatedLayout.findViewById(R.id.tv_price);
+            TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
             tv_title.setText(jsonPurchaseOrderProduct.getProductName());
-            tv_qty.setText("Quantity: " + jsonPurchaseOrderProduct.getProductQuantity());
-            tv_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() / 100);
+           // tv_qty.setText("Quantity: " + jsonPurchaseOrderProduct.getProductQuantity());
+            tv_price.setText(getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100)+" x "+String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
             ll_order_details.addView(inflatedLayout);
         }
         tv_serving_no.setText(String.valueOf(jsonPurchaseOrder.getServingNumber()));
         tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
-        tv_estimated_time.setText("30 Min *");
-
+        tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
+        if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
+            btn_cancel_order.setVisibility(View.GONE);
+        }
     }
 
     @Override

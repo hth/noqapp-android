@@ -211,13 +211,15 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         try {
             if (null != reviews && reviews.size() > 0) {
                 float value = 0;
+                float div = 0;
                 for (Map.Entry<String, JsonReviewList> entry : reviews.entrySet()) {
                     if (entry.getValue().getJsonReviews().size() > 0) {
-                        value += entry.getValue().getAggregateRatingCount() / entry.getValue().getJsonReviews().size();
+                        value += entry.getValue().getAggregateRatingCount() ;
+                        div += entry.getValue().getJsonReviews().size();
                         jsonReviews.addAll(entry.getValue().getJsonReviews());
                     }
                 }
-                reviewCount = value / reviews.size();
+                reviewCount = value / div;
             }
         } catch (Exception e) {
             e.printStackTrace();
