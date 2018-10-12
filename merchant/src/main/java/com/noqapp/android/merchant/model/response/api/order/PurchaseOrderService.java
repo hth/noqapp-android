@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.model.response.api.order;
 
-import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrderList;
@@ -116,7 +115,7 @@ public interface PurchaseOrderService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("api/m/o/purchaseOrder/cancel.json")
-    Call<JsonPurchaseOrder> cancel(
+    Call<JsonPurchaseOrderList> cancel(
             @Header("X-R-DID")
             String did,
 

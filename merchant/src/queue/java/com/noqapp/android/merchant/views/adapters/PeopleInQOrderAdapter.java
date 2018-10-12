@@ -36,6 +36,9 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         void PeopleInQOrderClick(int position);
 
         void orderDoneClick(int position);
+
+        void orderCancelClick(int position);
+
     }
 
     private PeopleInQOrderAdapterClick peopleInQOrderAdapterClick;
@@ -49,6 +52,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         TextView tv_order_status;
         TextView tv_order_prepared;
         TextView tv_order_done;
+        TextView tv_order_cancel;
         ImageView iv_info;
         CardView cardview;
 
@@ -62,6 +66,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             this.tv_order_status = itemView.findViewById(R.id.tv_order_status);
             this.tv_order_prepared = itemView.findViewById(R.id.tv_order_prepared);
             this.tv_order_done = itemView.findViewById(R.id.tv_order_done);
+            this.tv_order_cancel = itemView.findViewById(R.id.tv_order_cancel);
             this.iv_info = itemView.findViewById(R.id.iv_info);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
@@ -105,6 +110,12 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             recordHolder.tv_order_done.setVisibility(View.VISIBLE);
         } else {
             recordHolder.tv_order_done.setVisibility(View.GONE);
+        }
+
+        if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
+            recordHolder.tv_order_cancel.setVisibility(View.VISIBLE);
+        } else {
+            recordHolder.tv_order_cancel.setVisibility(View.GONE);
         }
         recordHolder.tv_order_done.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -208,6 +208,26 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
     }
 
+
+    @Override
+    public void orderCancelClick(int position) {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            LaunchActivity.getLaunchActivity().progressDialog.show();
+            OrderServed orderServed = new OrderServed();
+            orderServed.setCodeQR(jsonTopic.getCodeQR());
+            orderServed.setServedNumber(purchaseOrders.get(position).getToken());
+            orderServed.setGoTo(tv_counter_name.getText().toString());
+            orderServed.setQueueStatus(QueueStatusEnum.N);
+            orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
+            PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
+            purchaseOrderModel.setOrderProcessedPresenter(this);
+            purchaseOrderModel.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+        } else {
+            ShowAlertInformation.showNetworkDialog(getActivity());
+        }
+
+    }
+
     @Override
     public void acquireOrderResponse(JsonToken token) {
         //Log.v("Order acquire response",token.toString());
