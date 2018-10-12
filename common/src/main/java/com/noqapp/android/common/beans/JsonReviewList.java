@@ -31,6 +31,9 @@ public class JsonReviewList extends AbstractDomain {
     @JsonProperty("rs")
     private List<JsonReview> jsonReviews = new ArrayList<>();
 
+    @JsonProperty("ar")
+    private int aggregateRatingCount;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -45,6 +48,15 @@ public class JsonReviewList extends AbstractDomain {
 
     public JsonReviewList addJsonReview(JsonReview jsonReview) {
         this.jsonReviews.add(jsonReview);
+        return this;
+    }
+
+    public int getAggregateRatingCount() {
+        return aggregateRatingCount;
+    }
+
+    public JsonReviewList setAggregateRatingCount(int aggregateRatingCount) {
+        this.aggregateRatingCount = aggregateRatingCount;
         return this;
     }
 
