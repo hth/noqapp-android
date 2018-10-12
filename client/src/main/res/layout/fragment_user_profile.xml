@@ -5,20 +5,12 @@
               android:background="#99ffffff"
               android:orientation="vertical">
 
-    <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-        <RelativeLayout
-                android:id="@+id/layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
 
             <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/profile_layout"
                     android:layout_margin="5dp"
                     android:layout_marginTop="5dp"
                     android:background="#fff"
@@ -60,7 +52,5 @@
                 </LinearLayout>
 
             </android.support.constraint.ConstraintLayout>
-        </RelativeLayout>
-    </ScrollView>
 
 </LinearLayout>

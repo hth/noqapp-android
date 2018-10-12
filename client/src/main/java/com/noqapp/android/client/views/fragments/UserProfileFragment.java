@@ -5,6 +5,7 @@ package com.noqapp.android.client.views.fragments;
  */
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.utils.AppUtilities;
 
@@ -34,18 +35,25 @@ public class UserProfileFragment extends Fragment {
         return view;
     }
 
-    public void updateUI(List<JsonStore> stores, String aboutme) {
+    public void updateUI(JsonProfessionalProfile jsonProfessionalProfile) {
         Activity activity = getActivity();
         if (null != activity && isAdded()) {
-            tv_about_me.setText(aboutme);
+            tv_about_me.setText(jsonProfessionalProfile.getAboutMe());
+            List<JsonStore> stores = jsonProfessionalProfile.getStores();
             if (null != stores && stores.size() > 0) {
                 for (int i = 0; i < stores.size(); i++) {
                     View inflatedLayout = getLayoutInflater().inflate(R.layout.store_items, null);
                     TextView tv_name = inflatedLayout.findViewById(R.id.tv_name);
                     TextView tv_address = inflatedLayout.findViewById(R.id.tv_address);
+                    TextView tv_store_rating = inflatedLayout.findViewById(R.id.tv_store_rating);
                     TextView tv_opening_date = inflatedLayout.findViewById(R.id.tv_opening_date);
                     tv_name.setText(stores.get(i).getJsonQueue().getBusinessName());
                     tv_address.setText(stores.get(i).getJsonQueue().getStoreAddress());
+                    try {
+                        tv_store_rating.setText("Rating- " + String.valueOf(jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getAggregateRatingCount()));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     String timing = new AppUtilities().orderTheTimings(getActivity(), stores.get(i).getJsonHours());
                     tv_opening_date.setText(Html.fromHtml(timing));
                     ll_multiple_store.addView(inflatedLayout);

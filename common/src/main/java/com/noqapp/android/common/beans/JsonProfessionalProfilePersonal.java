@@ -32,7 +32,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonProfessionalProfilePersonal implements Serializable {
 
-    @JsonProperty ("nm")
+    @JsonProperty("nm")
     private String name;
 
     @JsonProperty("wp")
@@ -156,13 +156,15 @@ public class JsonProfessionalProfilePersonal implements Serializable {
     @Override
     public String toString() {
         return "JsonProfessionalProfilePersonal{" +
-                "webProfileId='" + webProfileId + '\'' +
+                "name='" + name + '\'' +
+                ", webProfileId='" + webProfileId + '\'' +
                 ", practiceStart='" + practiceStart + '\'' +
                 ", aboutMe='" + aboutMe + '\'' +
                 ", education=" + education +
                 ", licenses=" + licenses +
                 ", awards=" + awards +
                 ", dataDictionary='" + dataDictionary + '\'' +
+                ", reviews=" + reviews +
                 ", error=" + error +
                 '}';
     }

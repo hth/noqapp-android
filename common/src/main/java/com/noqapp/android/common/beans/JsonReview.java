@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
+
 /**
  * hitender
  * 10/10/18 10:14 PM
@@ -23,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonReview extends AbstractDomain {
+public class JsonReview extends AbstractDomain implements Serializable{
 
     @JsonProperty("ra")
     private int ratingCount;
