@@ -27,6 +27,7 @@ import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.client.views.activities.OrderConfirmActivity;
 import com.noqapp.android.client.views.activities.SearchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.activities.ViewAllListActivity;
@@ -109,7 +110,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
     private double lat, log;
     private String city = "";
     private boolean isFirstTimeUpdate = true;
-    private static final String SHOWCASE_ID = "sequence example";
+    private static final String SHOWCASE_ID = "screen helper";
     private boolean isProgressFirstTime = true;
     private static final int MSG_CURRENT_QUEUE = 0;
     private static final int MSG_HISTORY_QUEUE = 1;
@@ -453,7 +454,15 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                 in.putExtra(KEY_JSON_TOKEN_QUEUE, item);
                 startActivity(in);
             } else {
-                Toast.makeText(getActivity(), "call the order detail screen", Toast.LENGTH_LONG).show();
+                Intent in = new Intent(getActivity(), OrderConfirmActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(KEY_FROM_LIST, true);
+                bundle.putString(KEY_CODE_QR, item.getCodeQR());
+                bundle.putInt("token", item.getToken());
+                bundle.putString("storeName", item.getDisplayName());
+                bundle.putString("storeAddress", item.getStoreAddress());
+                in.putExtras(bundle);
+                startActivity(in);
             }
         }
     }
