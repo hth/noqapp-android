@@ -10,6 +10,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.ContactUsActivity;
 import com.noqapp.android.client.views.activities.ReviewActivity;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
@@ -69,13 +70,22 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         holder.tv_token.setText(String.valueOf(jsonQueueHistorical.getTokenNumber()));
         holder.tv_queue_status.setText(jsonQueueHistorical.getQueueUserState().getDescription());
         holder.tv_business_category.setText(jsonQueueHistorical.getBizCategoryName());
-        if (!TextUtils.isEmpty(jsonQueueHistorical.getDisplayImage()))
+        if (!TextUtils.isEmpty(jsonQueueHistorical.getDisplayImage())) {
+            String url;
+            switch (jsonQueueHistorical.getBusinessType()) {
+                case DO:
+                    url = AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonQueueHistorical.getDisplayImage());
+                    break;
+                default:
+                    url = AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonQueueHistorical.getDisplayImage());
+                    break;
+            }
             Picasso.with(context)
-                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonQueueHistorical.getDisplayImage()))
+                    .load(url)
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
                     .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(holder.iv_main);
-        else {
+        } else {
             Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
         holder.tv_name.setOnClickListener(new View.OnClickListener() {

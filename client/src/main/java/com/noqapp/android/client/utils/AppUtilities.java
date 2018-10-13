@@ -318,8 +318,8 @@ public class AppUtilities extends CommonHelper {
         String additionalText;
         DateFormat df = new SimpleDateFormat("HH:mm", Locale.US);
         String time = df.format(Calendar.getInstance().getTime());
-        int timedata = Integer.parseInt(time.replace(":", ""));
-        if (jsonTokenAndQueue.getStartHour() <= timedata && timedata <= jsonTokenAndQueue.getEndHour()) {
+        int timeData = Integer.parseInt(time.replace(":", ""));
+        if (jsonTokenAndQueue.getStartHour() <= timeData && timeData <= jsonTokenAndQueue.getEndHour()) {
             additionalText = "Open";
         } else {
             additionalText = "Closed";
@@ -403,10 +403,10 @@ public class AppUtilities extends CommonHelper {
             }
         } catch (MalformedURLException e) {
             Log.e(TAG, "Error processing Places API URL", e);
-            return resultList;
+            return null;
         } catch (IOException e) {
             Log.e(TAG, "Error connecting to Places API", e);
-            return resultList;
+            return null;
         } finally {
             if (conn != null) {
                 conn.disconnect();
@@ -446,14 +446,21 @@ public class AppUtilities extends CommonHelper {
 
 
     public static String getImageUrls(String bucket_type, String url) {
+        String location;
         switch (bucket_type) {
             case BuildConfig.PROFILE_BUCKET:
-                return BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + url;
+                location = BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + url;
+                break;
             case BuildConfig.SERVICE_BUCKET:
-                return BuildConfig.AWSS3 + BuildConfig.SERVICE_BUCKET + url;
+                location = BuildConfig.AWSS3 + BuildConfig.SERVICE_BUCKET + url;
+                break;
             default:
-                return "";
+                Log.e(TAG, "Un-supported bucketType=" + bucket_type);
+                throw new UnsupportedOperationException("Reached unsupported condition");
         }
+
+        //Log.i(TAG, "File location " + location);
+        return location;
     }
 
     public static void exportDatabase(Context context) {
