@@ -21,7 +21,9 @@ import com.noqapp.android.common.utils.ImagePathReader;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
-import org.joda.time.Period;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Years;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -346,9 +348,26 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     private void calculateAge() {
         try {
             DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB()));
-            Period period = new Period(dateTime, new DateTime());
-            String suffixYear = period.getYears() <= 1 ? " year" : " years";
-            tv_age.setText(String.valueOf(period.getYears()) + suffixYear + " (" + gender + ")");
+            DateTime now = DateTime.now();
+            int years = Years.yearsBetween(dateTime, now).getYears();
+            String age;
+            if (years <= 1) {
+                int months = Months.monthsBetween(dateTime, now).getMonths();
+                if (months <= 1) {
+                    int days = Days.daysBetween(dateTime, now).getDays();
+                    if (days == 0) {
+                        age = "Today";
+                    } else {
+                        age = days + "+ days";
+                    }
+                } else {
+                    age = months + "+ months";
+                }
+            } else {
+                age = years + "+ years";
+            }
+
+            tv_age.setText(age + " (" + gender + ")");
         } catch (Exception e) {
             e.printStackTrace();
         }
