@@ -51,7 +51,6 @@ import okhttp3.RequestBody;
 import java.io.File;
 import java.util.List;
 
-
 public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
     private TextView tv_name;
     private TextView tv_birthday;
