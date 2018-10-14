@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
+import static com.noqapp.android.common.utils.Formatter.formatRFC822;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
@@ -592,7 +594,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             @Override
             public int compare(JsonTokenAndQueue o1, JsonTokenAndQueue o2) {
                 try {
-                    return Formatter.formatRFC822.parse(o2.getServiceEndTime()).compareTo(Formatter.formatRFC822.parse(o1.getServiceEndTime()));
+                    return formatRFC822.parse(o2.getServiceEndTime()).compareTo(formatRFC822.parse(o1.getServiceEndTime()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     return 0;
