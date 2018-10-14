@@ -42,8 +42,6 @@ import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
-import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
-import com.noqapp.android.common.utils.Formatter;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -75,7 +73,6 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -330,7 +327,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
 
             //Call the history queue
             DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-            queueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+            queueApiModel.allHistoricalJoinedQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
             //Call the current queue
             QueueModel queueModel = new QueueModel();
@@ -339,7 +336,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             //Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
             //Call the history queue
             DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-            queueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
+            queueModel.getAllHistoricalJoinedQueue(UserUtils.getDeviceId(), deviceToken);
         }
         if (isProgressFirstTime) {
             pb_current.setVisibility(View.VISIBLE);
