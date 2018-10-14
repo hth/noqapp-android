@@ -79,7 +79,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ScanQueueFragment extends Scanner implements View.OnClickListener,CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
+public class ScanQueueFragment extends Scanner implements View.OnClickListener, CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     protected CardView cv_scan;
@@ -116,7 +116,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
     private static final int MSG_HISTORY_QUEUE = 1;
     private static TokenQueueViewInterface tokenQueueViewInterface;
     private static QueueHandler mHandler;
-
 
     public ScanQueueFragment() {
 
@@ -271,7 +270,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
         rv_current_activity.setItemAnimator(new DefaultItemAnimator());
         rv_current_activity.addItemDecoration(new CirclePagerIndicatorDecoration());
 
-
         //
         rv_merchant_around_you.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -357,14 +355,12 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
             b.putBoolean(KEY_FROM_LIST, fromList);
             in.putExtra("bundle", b);
             getActivity().startActivity(in);
-
         } else {
             Intent in = new Intent(getActivity(), JoinActivity.class);
             in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
             in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
             in.putExtra("isCategoryData", false);
             startActivity(in);
-
         }
     }
 
@@ -549,7 +545,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(), eej);
     }
 
     @Override
@@ -732,22 +728,18 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
             sequence.setConfig(config);
             sequence.addSequenceItem(
                     //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
-
-
                     new MaterialShowcaseView.Builder(getActivity())
                             .setTarget(autoCompleteTextView)
                             .setDismissText("GOT IT")
-                            .setContentText("Search your preferred location.")
+                            .setContentText("Search your preferred location")
                             .withRectangleShape(true)
                             .build()
-
-
             );
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(getActivity())
                             .setTarget(cv_scan)
                             .setDismissText("GOT IT")
-                            .setContentText("Click here to scan the store QRCode to join their queue")
+                            .setContentText("Click here to scan store QRCode to join their queue or place order")
                             .withRectangleShape(true)
                             .build()
             );
@@ -755,14 +747,13 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                     new MaterialShowcaseView.Builder(getActivity())
                             .setTarget(rl_current_activity)
                             .setDismissText("DONE")
-                            .setContentText("Your current join queue will be visible here")
+                            .setContentText("Your current join queue or order will be visible here")
                             .withRectangleShape(true)
                             .build()
             );
             sequence.start();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }
