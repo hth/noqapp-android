@@ -143,8 +143,4 @@ public interface QueueService {
             @Path("codeQR")
             String codeQR
     );
-
-
-
-
 }

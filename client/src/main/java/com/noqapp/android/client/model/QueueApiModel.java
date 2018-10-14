@@ -115,7 +115,7 @@ public class QueueApiModel {
         });
     }
 
-    public void allHistoricalJoinedQueues(String did, String mail, String auth, DeviceToken deviceToken) {
+    public void allHistoricalJoinedQueue(String did, String mail, String auth, DeviceToken deviceToken) {
         queueService.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {

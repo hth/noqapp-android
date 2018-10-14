@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
+import static com.noqapp.android.common.utils.Formatter.formatRFC822;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
@@ -40,8 +42,6 @@ import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
-import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
-import com.noqapp.android.common.utils.Formatter;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -73,13 +73,12 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ScanQueueFragment extends Scanner implements View.OnClickListener,CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
+public class ScanQueueFragment extends Scanner implements View.OnClickListener, CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     protected CardView cv_scan;
@@ -116,7 +115,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
     private static final int MSG_HISTORY_QUEUE = 1;
     private static TokenQueueViewInterface tokenQueueViewInterface;
     private static QueueHandler mHandler;
-
 
     public ScanQueueFragment() {
 
@@ -271,7 +269,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
         rv_current_activity.setItemAnimator(new DefaultItemAnimator());
         rv_current_activity.addItemDecoration(new CirclePagerIndicatorDecoration());
 
-
         //
         rv_merchant_around_you.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -330,7 +327,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
 
             //Call the history queue
             DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-            queueApiModel.allHistoricalJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
+            queueApiModel.allHistoricalJoinedQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
             //Call the current queue
             QueueModel queueModel = new QueueModel();
@@ -339,13 +336,12 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
             //Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
             //Call the history queue
             DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
-            queueModel.getHistoryQueueList(UserUtils.getDeviceId(), deviceToken);
+            queueModel.getAllHistoricalJoinedQueue(UserUtils.getDeviceId(), deviceToken);
         }
         if (isProgressFirstTime) {
             pb_current.setVisibility(View.VISIBLE);
             pb_recent.setVisibility(View.VISIBLE);
         }
-
     }
 
     @Override
@@ -357,14 +353,12 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
             b.putBoolean(KEY_FROM_LIST, fromList);
             in.putExtra("bundle", b);
             getActivity().startActivity(in);
-
         } else {
             Intent in = new Intent(getActivity(), JoinActivity.class);
             in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
             in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
             in.putExtra("isCategoryData", false);
             startActivity(in);
-
         }
     }
 
@@ -549,7 +543,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(getActivity(),eej);
+        new ErrorResponseHandler().processError(getActivity(), eej);
     }
 
     @Override
@@ -594,12 +588,10 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, ":History Queue Count:" + String.valueOf(historyQueueList.size()));
         Collections.sort(historyQueueList, new Comparator<JsonTokenAndQueue>() {
-            DateFormat f = Formatter.formatRFC822;
-
             @Override
             public int compare(JsonTokenAndQueue o1, JsonTokenAndQueue o2) {
                 try {
-                    return f.parse(o2.getServiceEndTime()).compareTo(f.parse(o1.getServiceEndTime()));
+                    return formatRFC822.parse(o2.getServiceEndTime()).compareTo(formatRFC822.parse(o1.getServiceEndTime()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     return 0;
@@ -613,12 +605,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
         }
     }
 
-
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated) {
-            boolean showBuzzer = false;
+            boolean showBuzzer;
             ReviewData reviewData = ReviewDB.getValue(jq.getCodeQR(), "" + jq.getToken());
             if (null != reviewData) {
                 if (!reviewData.getIsBuzzerShow().equals("1")) {
@@ -641,20 +632,24 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                 showBuzzer = true;
             }
             if (showBuzzer) {
-                if (jq.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
+                if (QueueOrderTypeEnum.Q == jq.getBusinessType().getQueueOrderType()) {
                     ContentValues cv = new ContentValues();
                     cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
                     ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
                     Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                     startActivity(blinker);
                 } else {
-                    if (jq.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
-                            jq.getPurchaseOrderState() == PurchaseOrderStateEnum.RD) {
-                        ContentValues cv = new ContentValues();
-                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
-                        ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
-                        Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
-                        startActivity(blinker);
+                    switch (jq.getPurchaseOrderState()) {
+                        case RP:
+                        case RD:
+                            ContentValues cv = new ContentValues();
+                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                            ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
+                            Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
+                            startActivity(blinker);
+                            break;
+                        default:
+                            //Do Nothing
                     }
                 }
             }
@@ -732,22 +727,18 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
             sequence.setConfig(config);
             sequence.addSequenceItem(
                     //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
-
-
                     new MaterialShowcaseView.Builder(getActivity())
                             .setTarget(autoCompleteTextView)
                             .setDismissText("GOT IT")
-                            .setContentText("Search your preferred location.")
+                            .setContentText("Search your preferred location")
                             .withRectangleShape(true)
                             .build()
-
-
             );
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(getActivity())
                             .setTarget(cv_scan)
                             .setDismissText("GOT IT")
-                            .setContentText("Click here to scan the store QRCode to join their queue")
+                            .setContentText("Click here to scan store QRCode to join their queue or place order")
                             .withRectangleShape(true)
                             .build()
             );
@@ -755,14 +746,13 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,C
                     new MaterialShowcaseView.Builder(getActivity())
                             .setTarget(rl_current_activity)
                             .setDismissText("DONE")
-                            .setContentText("Your current join queue will be visible here")
+                            .setContentText("Your current join queue or order will be visible here")
                             .withRectangleShape(true)
                             .build()
             );
             sequence.start();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }
