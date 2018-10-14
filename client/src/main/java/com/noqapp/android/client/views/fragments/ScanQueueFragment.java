@@ -589,12 +589,10 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, ":History Queue Count:" + String.valueOf(historyQueueList.size()));
         Collections.sort(historyQueueList, new Comparator<JsonTokenAndQueue>() {
-            DateFormat f = Formatter.formatRFC822;
-
             @Override
             public int compare(JsonTokenAndQueue o1, JsonTokenAndQueue o2) {
                 try {
-                    return f.parse(o2.getServiceEndTime()).compareTo(f.parse(o1.getServiceEndTime()));
+                    return Formatter.formatRFC822.parse(o2.getServiceEndTime()).compareTo(Formatter.formatRFC822.parse(o1.getServiceEndTime()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     return 0;
