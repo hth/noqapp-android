@@ -343,7 +343,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             pb_current.setVisibility(View.VISIBLE);
             pb_recent.setVisibility(View.VISIBLE);
         }
-
     }
 
     @Override
@@ -609,12 +608,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         }
     }
 
-
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated) {
-            boolean showBuzzer = false;
+            boolean showBuzzer;
             ReviewData reviewData = ReviewDB.getValue(jq.getCodeQR(), "" + jq.getToken());
             if (null != reviewData) {
                 if (!reviewData.getIsBuzzerShow().equals("1")) {
@@ -637,20 +635,24 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 showBuzzer = true;
             }
             if (showBuzzer) {
-                if (jq.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
+                if (QueueOrderTypeEnum.Q == jq.getBusinessType().getQueueOrderType()) {
                     ContentValues cv = new ContentValues();
                     cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
                     ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
                     Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                     startActivity(blinker);
                 } else {
-                    if (jq.getPurchaseOrderState() == PurchaseOrderStateEnum.RP ||
-                            jq.getPurchaseOrderState() == PurchaseOrderStateEnum.RD) {
-                        ContentValues cv = new ContentValues();
-                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
-                        ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
-                        Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
-                        startActivity(blinker);
+                    switch (jq.getPurchaseOrderState()) {
+                        case RP:
+                        case RD:
+                            ContentValues cv = new ContentValues();
+                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                            ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
+                            Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
+                            startActivity(blinker);
+                            break;
+                        default:
+                            //Do Nothing
                     }
                 }
             }
