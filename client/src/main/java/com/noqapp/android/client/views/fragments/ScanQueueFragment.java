@@ -471,7 +471,17 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
             } else {
-                Toast.makeText(getActivity(), "call the store detail screen", Toast.LENGTH_LONG).show();
+                BizStoreElastic bizStoreElastic = new BizStoreElastic();
+                bizStoreElastic.setRating(item.getRatingCount());
+                bizStoreElastic.setDisplayImage(item.getDisplayImage());
+                bizStoreElastic.setBusinessName(item.getBusinessName());
+                bizStoreElastic.setCodeQR(item.getCodeQR());
+                bizStoreElastic.setBusinessType(item.getBusinessType());
+                Intent intent = new Intent(getActivity(), StoreDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("BizStoreElastic", bizStoreElastic);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         }
     }
