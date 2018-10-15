@@ -32,6 +32,7 @@ public class DeviceModel {
     public void setDeviceRegisterPresenter(DeviceRegisterPresenter deviceRegisterPresenter) {
         this.deviceRegisterPresenter = deviceRegisterPresenter;
     }
+
     public void setAppBlacklistPresenter(AppBlacklistPresenter appBlacklistPresenter) {
         this.appBlacklistPresenter = appBlacklistPresenter;
     }
@@ -58,7 +59,7 @@ public class DeviceModel {
                         Log.e(TAG, "Empty body");
                         deviceRegisterPresenter.responseErrorPresenter(response.body().getError());
                     }
-                }else {
+                } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
                         deviceRegisterPresenter.authenticationFailure();
                     } else {

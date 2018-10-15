@@ -60,7 +60,7 @@ public class MerchantProfileModel {
      * @param auth
      */
     public void fetch(String did, String mail, String auth) {
-        merchantProfileService.fetch(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR,  mail, auth).enqueue(new Callback<JsonMerchant>() {
+        merchantProfileService.fetch(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth).enqueue(new Callback<JsonMerchant>() {
             @Override
             public void onResponse(@NonNull Call<JsonMerchant> call, @NonNull Response<JsonMerchant> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
