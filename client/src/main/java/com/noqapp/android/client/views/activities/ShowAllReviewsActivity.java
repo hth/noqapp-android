@@ -14,11 +14,15 @@ import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.beans.JsonReviewList;
 
 import android.content.Intent;
+import android.graphics.Paint;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,7 +32,7 @@ import java.util.List;
 public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPresenter {
 
     private RecyclerView rv_all_review;
-    private TextView tv_empty;
+    private TextView tv_empty,tv_review_label;
     private List<JsonReview> jsonReviews = new ArrayList<>();
 
     @Override
@@ -39,6 +43,7 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         tv_toolbar_title.setText("");
         rv_all_review = findViewById(R.id.rv_all_review);
         tv_empty = findViewById(R.id.tv_empty);
+        tv_review_label = findViewById(R.id.tv_review_label);
         if (jsonReviews.size() <= 0) {
             rv_all_review.setVisibility(View.GONE);
             tv_empty.setVisibility(View.VISIBLE);
@@ -113,13 +118,42 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
     }
 
     private void updateUI() {
-        if (jsonReviews.size() <= 0) {
+        int ratingCount = 0;
+        int listSize = 0;
+        RatingBar ratingBar = findViewById(R.id.ratingBar);
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        AppUtilities.setRatingBarColor(stars, this);
+        if (null != jsonReviews && jsonReviews.size() > 0) {
+            List<JsonReview> temp = new ArrayList<>();
+            listSize = jsonReviews.size();
+            for (int i = 0; i < jsonReviews.size(); i++) {
+                ratingCount += jsonReviews.get(i).getRatingCount();
+                if (!TextUtils.isEmpty(jsonReviews.get(i).getReview()))
+                    temp.add(jsonReviews.get(i));
+            }
+            jsonReviews = temp;
+        }
+        if (null == jsonReviews || jsonReviews.size() <= 0) {
             rv_all_review.setVisibility(View.GONE);
             tv_empty.setVisibility(View.VISIBLE);
         } else {
             rv_all_review.setVisibility(View.VISIBLE);
             tv_empty.setVisibility(View.GONE);
+            tv_review_label.setText("" + jsonReviews.size() + " Ratings with reviews");
+            tv_review_label.setPaintFlags(tv_review_label.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            try {
+                float f = ratingCount * 1.0f /
+                        listSize;
+                ratingBar.setRating(f);
+                TextView tv_rating = findViewById(R.id.tv_rating);
+                tv_rating.setText(String.valueOf(AppUtilities.round(f)));
+            } catch (Exception e) {
+                
+                e.printStackTrace();
+            }
         }
+
+
         ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviews, this);
         rv_all_review.setAdapter(showAllReviewsAdapter);
     }
