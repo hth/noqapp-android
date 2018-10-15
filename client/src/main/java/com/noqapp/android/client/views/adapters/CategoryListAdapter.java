@@ -8,7 +8,6 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
-import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 

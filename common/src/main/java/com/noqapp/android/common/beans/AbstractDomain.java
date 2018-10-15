@@ -1,8 +1,8 @@
 package com.noqapp.android.common.beans;
 
-import android.util.Log;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.StringWriter;
