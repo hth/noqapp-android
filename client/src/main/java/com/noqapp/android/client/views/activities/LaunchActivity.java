@@ -94,7 +94,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private Toast backPressToast;
     private FcmNotificationReceiver fcmNotificationReceiver;
     private ImageView iv_profile;
-    private TextView tv_name, tv_email;
+    private TextView tv_name, tv_email, tv_version;
     private ScanQueueFragment scanFragment;
     private DrawerLayout drawer;
     protected ListView mDrawerList;
@@ -229,7 +229,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     case R.drawable.language:
                         showChangeLangDialog();
                         break;
-                    case R.drawable.show_in_map:
+                    case R.drawable.contact_us:
                         Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);
                         startActivity(in);
                         break;
@@ -260,9 +260,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         });
         iv_profile = headerView.findViewById(R.id.iv_profile);
         tv_name = headerView.findViewById(R.id.tv_name);
+        tv_version = findViewById(R.id.tv_version);
         tv_email = headerView.findViewById(R.id.tv_email);
         tv_email.setOnClickListener(this);
         iv_profile.setOnClickListener(this);
+        tv_version.setOnClickListener(this);
 
         ((TextView) findViewById(R.id.tv_version)).setText(
                 BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
@@ -293,7 +295,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             if (extras.containsKey(Constants.QRCODE)
                     && extras.containsKey(Constants.ISREVIEW)
                     && extras.containsKey(Constants.TOKEN)
-            ) {
+                    ) {
                 String codeQR = extras.getString(Constants.QRCODE);
                 String token = extras.getString(Constants.TOKEN);
                 String qid = extras.getString(Constants.QID);
@@ -332,6 +334,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     startActivity(loginIntent);
                 }
                 drawer.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.tv_version:
                 break;
             case R.id.tv_email:
                 if (UserUtils.isLogin()) {
@@ -915,7 +919,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
         drawerItem.add(new NavigationBean(R.drawable.ic_star, getString(R.string.ratetheapp)));
         drawerItem.add(new NavigationBean(R.drawable.language, getString(R.string.language_setting)));
-        drawerItem.add(new NavigationBean(R.drawable.show_in_map, getString(R.string.title_activity_contact_us)));
+        drawerItem.add(new NavigationBean(R.drawable.contact_us, getString(R.string.title_activity_contact_us)));
         if (isLogin) {
             drawerItem.add(new NavigationBean(R.drawable.ic_logout, getString(R.string.logout)));
         }
