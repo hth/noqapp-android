@@ -39,6 +39,12 @@ public class JsonReview extends AbstractDomain implements Serializable{
     @JsonProperty ("nm")
     private String name;
 
+    @JsonProperty("qid")
+    private String queueUserId;
+
+    @JsonProperty("rs")
+    private boolean reviewShow;
+
     public int getRatingCount() {
         return ratingCount;
     }
@@ -72,6 +78,24 @@ public class JsonReview extends AbstractDomain implements Serializable{
 
     public JsonReview setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public JsonReview setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
+    }
+
+    public boolean isReviewShow() {
+        return reviewShow;
+    }
+
+    public JsonReview setReviewShow(boolean reviewShow) {
+        this.reviewShow = reviewShow;
         return this;
     }
 
