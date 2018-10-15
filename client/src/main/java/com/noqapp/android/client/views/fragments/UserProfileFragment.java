@@ -52,7 +52,7 @@ public class UserProfileFragment extends Fragment {
                     try {
                         double dd = AppUtilities.round(jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getAggregateRatingCount()*1.0f/
                                         jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getJsonReviews().size());
-                        tv_store_rating.setText("Rating- " + String.valueOf(dd));
+                        tv_store_rating.setText(String.valueOf(dd));
                     }catch (Exception e){
                         e.printStackTrace();
                     }

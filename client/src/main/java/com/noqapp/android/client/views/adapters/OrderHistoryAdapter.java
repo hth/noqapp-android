@@ -10,6 +10,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.ContactUsActivity;
 import com.noqapp.android.client.views.activities.ReviewActivity;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import android.content.Context;
@@ -66,6 +67,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         holder.tv_queue_status.setText(jsonPurchaseOrderHistorical.getPresentOrderState().getDescription());
         if (0 == jsonPurchaseOrderHistorical.getRatingCount()) {
             holder.tv_add_review.setVisibility(View.VISIBLE);
+            if (jsonPurchaseOrderHistorical.getPresentOrderState() != PurchaseOrderStateEnum.OD) {
+                holder.tv_add_review.setVisibility(View.GONE);
+            }
             holder.tv_store_rating.setVisibility(View.GONE);
         } else {
             holder.tv_add_review.setVisibility(View.GONE);
