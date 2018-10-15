@@ -35,6 +35,7 @@ public class QueueSettingModel {
 
     /**
      * Get setting for a specific queue.
+     *
      * @param did
      * @param mail
      * @param auth
@@ -51,10 +52,10 @@ public class QueueSettingModel {
                         Log.e(TAG, "Found error while getQueueState");
                         queueSettingPresenter.responseErrorPresenter(response.body().getError());
                     }
-                }else{
+                } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
                         queueSettingPresenter.authenticationFailure();
-                    }else{
+                    } else {
                         queueSettingPresenter.responseErrorPresenter(response.code());
                     }
                 }
@@ -80,10 +81,10 @@ public class QueueSettingModel {
                         Log.e(TAG, "Found error while removeSchedule");
                         queueSettingPresenter.responseErrorPresenter(response.body().getError());
                     }
-                }else{
+                } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
                         queueSettingPresenter.authenticationFailure();
-                    }else{
+                    } else {
                         queueSettingPresenter.responseErrorPresenter(response.code());
                     }
                 }
@@ -120,10 +121,10 @@ public class QueueSettingModel {
                         Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
                         queueSettingPresenter.responseErrorPresenter(response.body().getError());
                     }
-                }else {
+                } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
                         queueSettingPresenter.authenticationFailure();
-                    }else {
+                    } else {
                         queueSettingPresenter.responseErrorPresenter(response.code());
                     }
                 }
