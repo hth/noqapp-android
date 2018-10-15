@@ -46,6 +46,44 @@
                     android:textColor="@color/colorAddress"
                     android:textSize="@dimen/text_size_twelve"/>
 
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="0.0"
+                        android:stepSize=".5"/>
+
+                <TextView
+                        android:id="@+id/tv_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center"
+                        android:text="0.0"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/rating_text_size"/>
+
+
+                <TextView
+                        android:id="@+id/tv_review_label"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/colorAddress"
+                        android:gravity="right"
+                        android:textSize="@dimen/text_size_fourteen"/>
+            </LinearLayout>
+
             <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_all_review"
                     android:layout_width="match_parent"
