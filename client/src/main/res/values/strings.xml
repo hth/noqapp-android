@@ -293,7 +293,7 @@
     <string name="screen_order_detail">Order Summary</string>
     <string name="order_items">Order Items</string>
     <string name="history">History</string>
-    <string name="empty_review">No one has reviewed this store. Be the first to review.</string>
+    <string name="empty_review">No one has reviewed. Be the first to review.</string>
     <!-- Category Info Screen -->
 
 </resources>
