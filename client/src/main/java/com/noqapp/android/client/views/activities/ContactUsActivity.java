@@ -65,7 +65,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             Toast.makeText(this, "Feedback submitted successfully", Toast.LENGTH_LONG).show();
             finish();
         } else {
-            Toast.makeText(this, "Failed to  submit the feedback", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Failed to submit feedback", Toast.LENGTH_LONG).show();
             //Rejected from  server
             ErrorEncounteredJson eej = jsonResponse.getError();
             if (null != eej) {
