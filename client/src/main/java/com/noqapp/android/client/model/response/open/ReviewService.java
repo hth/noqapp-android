@@ -46,4 +46,16 @@ public interface ReviewService {
             @Path("codeQR")
             String codeQR
     );
+
+    @GET("open/review/reviews/levelUp/{codeQR}.json")
+    Call<JsonReviewList> reviewsLevelUp(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Path("codeQR")
+            String codeQR
+    );
 }
