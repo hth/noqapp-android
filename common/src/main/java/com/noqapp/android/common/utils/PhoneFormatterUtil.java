@@ -1,13 +1,13 @@
 package com.noqapp.android.common.utils;
 
-import android.util.Log;
+import static com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
 import com.google.i18n.phonenumbers.AsYouTypeFormatter;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
-import static com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
+import android.util.Log;
 
 /**
  * User: hitender

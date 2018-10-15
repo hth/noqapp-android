@@ -1,12 +1,10 @@
 package com.noqapp.android.common.utils;
 
-import android.util.Log;
-
-
-import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.ParseException;

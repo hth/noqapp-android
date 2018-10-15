@@ -10,7 +10,6 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.ContactUsActivity;
 import com.noqapp.android.client.views.activities.ReviewActivity;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;

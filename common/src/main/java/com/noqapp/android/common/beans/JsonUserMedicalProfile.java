@@ -1,11 +1,12 @@
 package com.noqapp.android.common.beans;
 
+import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
+import com.noqapp.android.common.model.types.medical.OccupationEnum;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
-import com.noqapp.android.common.model.types.medical.OccupationEnum;
 
 /**
  * hitender

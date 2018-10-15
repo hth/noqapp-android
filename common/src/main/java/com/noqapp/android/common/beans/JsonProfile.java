@@ -1,12 +1,13 @@
 package com.noqapp.android.common.beans;
 
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.GenderEnum;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.GenderEnum;
-import com.noqapp.android.common.model.types.UserLevelEnum;
 
 import java.io.Serializable;
 import java.util.ArrayList;

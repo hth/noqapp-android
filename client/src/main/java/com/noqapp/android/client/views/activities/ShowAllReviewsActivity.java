@@ -14,7 +14,6 @@ import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.beans.JsonReviewList;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
