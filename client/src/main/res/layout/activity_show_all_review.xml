@@ -19,7 +19,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="@string/medical_history_alert"
+                android:text="@string/empty_review"
                 android:textSize="@dimen/text_size_fourteen"/>
 
         <LinearLayout

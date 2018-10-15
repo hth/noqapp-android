@@ -31,7 +31,6 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
     private TextView tv_empty;
     private List<JsonReview> jsonReviews = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +68,11 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
                 if (NetworkUtils.isConnectingToInternet(ShowAllReviewsActivity.this)) {
                     ReviewModel reviewModel = new ReviewModel();
                     reviewModel.setAllReviewPresenter(this);
-                    reviewModel.review(UserUtils.getDeviceId(), codeQR);
+                    if (bundle.getBooleanExtra("isLevelUp", false)) {
+                        reviewModel.reviewsLevelUp(UserUtils.getDeviceId(), codeQR);
+                    } else {
+                        reviewModel.review(UserUtils.getDeviceId(), codeQR);
+                    }
                     progressDialog.setMessage("Getting Reviews...");
                     progressDialog.show();
 
@@ -109,7 +112,7 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         updateUI();
     }
 
-    private void updateUI(){
+    private void updateUI() {
         if (jsonReviews.size() <= 0) {
             rv_all_review.setVisibility(View.GONE);
             tv_empty.setVisibility(View.VISIBLE);

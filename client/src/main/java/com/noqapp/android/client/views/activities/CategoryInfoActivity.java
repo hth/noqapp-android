@@ -30,6 +30,7 @@ import com.google.common.cache.Cache;
 import com.squareup.picasso.Picasso;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -85,7 +86,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private float rating = 0;
     private int ratingCount = 0;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
-    private Bundle bundle;
     private String title = "";
 
 
@@ -126,7 +126,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         });
 
 
-        bundle = getIntent().getBundleExtra("bundle");
+        Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
             codeQR = bundle.getString(NoQueueBaseFragment.KEY_CODE_QR);
             BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
@@ -221,6 +221,22 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 tv_rating.setVisibility(View.VISIBLE);
             }
             tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
+            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            tv_rating_review.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != bizStoreElastic && bizStoreElastic.getRatingCount() > 0) {
+                        Intent in = new Intent(CategoryInfoActivity.this, ShowAllReviewsActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, codeQR);
+                        bundle.putString("storeName", bizStoreElastic.getBusinessName());
+                        bundle.putString("storeAddress", tv_address.getText().toString());
+                        bundle.putBoolean("isLevelUp",true);
+                        in.putExtras(bundle);
+                        startActivity(in);
+                    }
+                }
+            });
             codeQR = bizStoreElastic.getCodeQR();
             AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);
 

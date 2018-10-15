@@ -48,7 +48,7 @@ import java.util.Map;
 public class ManagerProfileActivity extends ProfileActivity implements QueueManagerPresenter {
 
     private TextView tv_name;
-    private TextView tv_experience,tv_total_review;
+    private TextView tv_experience, tv_total_review, tv_total_rating;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private LoadTabs loadTabs;
@@ -56,6 +56,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
     private MedicalDepartmentEnum medicalDepartmentEnum;
     private List<JsonReview> jsonReviews = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +71,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         tv_name = findViewById(R.id.tv_name);
         tv_experience = findViewById(R.id.tv_experience);
         tv_total_review = findViewById(R.id.tv_total_review);
+        tv_total_rating = findViewById(R.id.tv_total_rating);
         tv_name.setText(managerName);
         Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
@@ -124,11 +126,15 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
 
             float val = getReviewCountTotal(jsonProfessionalProfile.getReviews());
             if (val == 0) {
+
+                tv_total_rating.setVisibility(View.INVISIBLE);
                 tv_total_review.setVisibility(View.INVISIBLE);
             } else {
+                tv_total_rating.setVisibility(View.VISIBLE);
                 tv_total_review.setVisibility(View.VISIBLE);
             }
-            tv_total_review.setText(String.valueOf(AppUtilities.round(val))+" Reviews");
+            tv_total_rating.setText(String.valueOf(AppUtilities.round(val)));
+            tv_total_review.setText("Reviews");
             tv_total_review.setPaintFlags(tv_total_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_total_review.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -214,7 +220,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
                 float div = 0;
                 for (Map.Entry<String, JsonReviewList> entry : reviews.entrySet()) {
                     if (entry.getValue().getJsonReviews().size() > 0) {
-                        value += entry.getValue().getAggregateRatingCount() ;
+                        value += entry.getValue().getAggregateRatingCount();
                         div += entry.getValue().getJsonReviews().size();
                         jsonReviews.addAll(entry.getValue().getJsonReviews());
                     }

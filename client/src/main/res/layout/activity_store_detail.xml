@@ -239,6 +239,7 @@
                         android:layout_height="wrap_content"
                         android:text=""
                         android:drawableLeft="@drawable/phone_new"
+                        android:drawableTint="@color/rating_select"
                         android:drawablePadding="5dp"
                         android:layout_marginBottom="3dp"
                         android:textColor="@android:color/black"

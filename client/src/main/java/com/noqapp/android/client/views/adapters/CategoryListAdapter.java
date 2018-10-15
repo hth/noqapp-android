@@ -6,6 +6,9 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
+import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
@@ -14,6 +17,8 @@ import com.squareup.picasso.Picasso;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -54,13 +59,31 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getPhone()));
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
         holder.tv_address.setText(jsonQueue.getAddress());
+        holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         if (jsonQueue.getRatingCount() == 0) {
             holder.tv_store_review.setText("No Review");
+            holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
         } else if (jsonQueue.getRatingCount() == 1) {
             holder.tv_store_review.setText("1 Review");
         } else {
             holder.tv_store_review.setText(String.valueOf(jsonQueue.getRatingCount()) + " Reviews");
         }
+
+        holder.tv_store_review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (jsonQueue.getRatingCount() > 0) {
+                    Intent in = new Intent(context, ShowAllReviewsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
+                    bundle.putString("storeName", jsonQueue.getDisplayName());
+                    bundle.putString("storeAddress", AppUtilities.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
+                    in.putExtras(bundle);
+                    context.startActivity(in);
+                }
+            }
+        });
         holder.tv_phoneno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

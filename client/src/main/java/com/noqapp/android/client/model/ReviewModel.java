@@ -102,4 +102,33 @@ public class ReviewModel {
             }
         });
     }
+
+    public void reviewsLevelUp(String did, String codeQR) {
+        reviewService.reviewsLevelUp(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonReviewList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonReviewList> call, @NonNull Response<JsonReviewList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Resp: all reviewLevelUp", String.valueOf(response.body()));
+                        allReviewPresenter.allReviewResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Error all reviewsLevelUp " + response.body().getError());
+                        allReviewPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        allReviewPresenter.authenticationFailure();
+                    } else {
+                        allReviewPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonReviewList> call, @NonNull Throwable t) {
+                Log.e("Failure all reviewsLevelUp ", t.getLocalizedMessage(), t);
+                allReviewPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
 }
