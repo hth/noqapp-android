@@ -214,7 +214,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             });
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             ratingBar.setRating(rating);
-            tv_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
+            tv_rating.setText(String.valueOf(AppUtilities.round(rating)));
             if (tv_rating.getText().toString().equals("0.0")) {
                 tv_rating.setVisibility(View.INVISIBLE);
             } else {
@@ -225,7 +225,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_rating_review.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (null != bizStoreElastic && bizStoreElastic.getRatingCount() > 0) {
+                    if (null != bizStoreElastic && ratingCount > 0) {
                         Intent in = new Intent(CategoryInfoActivity.this, ShowAllReviewsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, codeQR);
