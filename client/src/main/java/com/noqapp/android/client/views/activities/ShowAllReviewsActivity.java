@@ -140,7 +140,6 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
             rv_all_review.setVisibility(View.VISIBLE);
             tv_empty.setVisibility(View.GONE);
             tv_review_label.setText("" + jsonReviews.size() + " Ratings with reviews");
-            tv_review_label.setPaintFlags(tv_review_label.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             try {
                 float f = ratingCount * 1.0f /
                         listSize;
