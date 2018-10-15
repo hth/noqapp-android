@@ -6,12 +6,17 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -65,13 +70,35 @@ public class SearchAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
         if (viewHolder instanceof MyViewHolder) {
-            MyViewHolder holder = (MyViewHolder) viewHolder;
-            BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
+            final MyViewHolder holder = (MyViewHolder) viewHolder;
+            final BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
             holder.tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(),bizStoreElastic.getArea()));
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
-            holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getRatingCount() == 0 ? "No" : bizStoreElastic.getRatingCount()) + " Reviews");
+            if(bizStoreElastic.getRatingCount() > 0){
+                holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getRatingCount()) + " Reviews");
+                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            }else{
+                holder.tv_store_review.setText("No Reviews");
+                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
+            }
+
+            holder.tv_store_review.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (bizStoreElastic.getRatingCount() > 0) {
+                        Intent in = new Intent(context, ShowAllReviewsActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                        bundle.putString("storeName", bizStoreElastic.getDisplayName());
+                        bundle.putString("storeAddress", holder.tv_address.getText().toString());
+                        in.putExtras(bundle);
+                        context.startActivity(in);
+                    }
+                }
+            });
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
                 Picasso.with(context)
                         .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))

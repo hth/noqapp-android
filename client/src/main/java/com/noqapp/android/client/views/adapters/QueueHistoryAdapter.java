@@ -12,6 +12,7 @@ import com.noqapp.android.client.views.activities.ContactUsActivity;
 import com.noqapp.android.client.views.activities.ReviewActivity;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
+import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import com.squareup.picasso.Picasso;
@@ -100,8 +101,11 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                 listener.onStoreItemClick(jsonQueueHistorical);
             }
         });
-        if(0 == jsonQueueHistorical.getRatingCount()){
+        if(0 == jsonQueueHistorical.getRatingCount()) {
             holder.tv_add_review.setVisibility(View.VISIBLE);
+            if (jsonQueueHistorical.getQueueUserState() != QueueUserStateEnum.S) {
+                holder.tv_add_review.setVisibility(View.GONE);
+            }
             holder.tv_store_rating.setVisibility(View.GONE);
         }else{
             holder.tv_add_review.setVisibility(View.GONE);
