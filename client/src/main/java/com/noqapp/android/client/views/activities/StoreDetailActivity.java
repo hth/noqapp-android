@@ -61,7 +61,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     private JsonStore jsonStore = null;
     private JsonQueue jsonQueue = null;
-    private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for,  tv_store_name, tv_store_address, tv_store_timings, tv_header_menu, tv_header_famous;
+    private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for, tv_store_name, tv_store_address, tv_store_timings, tv_header_menu, tv_header_famous;
     private BizStoreElastic bizStoreElastic;
     private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView rv_thumb_images, rv_photos;
@@ -133,13 +133,16 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_rating_review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(StoreDetailActivity.this, ShowAllReviewsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
-                bundle.putString("storeName", jsonQueue.getDisplayName());
-                bundle.putString("storeAddress", tv_store_address.getText().toString());
-                in.putExtras(bundle);
-                startActivity(in);
+
+                if (null != jsonQueue && jsonQueue.getRatingCount() > 0) {
+                    Intent in = new Intent(StoreDetailActivity.this, ShowAllReviewsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
+                    bundle.putString("storeName", jsonQueue.getDisplayName());
+                    bundle.putString("storeAddress", tv_store_address.getText().toString());
+                    in.putExtras(bundle);
+                    startActivity(in);
+                }
             }
         });
 
@@ -263,6 +266,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         }
         if (jsonQueue.getRatingCount() == 0) {
             tv_rating_review.setText("No Review");
+            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
         } else if (jsonQueue.getRatingCount() == 1) {
             tv_rating_review.setText("1 Review");
         } else {
