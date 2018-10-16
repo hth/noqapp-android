@@ -214,14 +214,31 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 time = time + " " + red;
             }
             tv_hour_saved.setText(Html.fromHtml(time));
+            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            tv_rating_review.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
+                        Intent in = new Intent(JoinActivity.this, ShowAllReviewsActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
+                        bundle.putString("storeName", jsonQueue.getDisplayName());
+                        bundle.putString("storeAddress", AppUtilities.getStoreAddress(jsonQueue.getTown(),jsonQueue.getArea()));
+                        in.putExtras(bundle);
+                        startActivity(in);
+                    }
+                }
+            });
             ratingBar.setRating(jsonQueue.getRating());
             String reviewText;
-            if (jsonQueue.getRatingCount() == 0) {
+            if (jsonQueue.getReviewCount() == 0) {
                 reviewText = "No Review";
-            } else if (jsonQueue.getRatingCount() == 1) {
+                tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
+            } else if (jsonQueue.getReviewCount() == 1) {
                 reviewText = "1 Review";
             } else {
-                reviewText = String.valueOf(jsonQueue.getRatingCount()) + " Reviews";
+                reviewText = String.valueOf(jsonQueue.getReviewCount()) + " Reviews";
             }
             tv_rating_review.setText(reviewText);
             codeQR = jsonQueue.getCodeQR();

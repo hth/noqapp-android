@@ -74,8 +74,8 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
-            if(bizStoreElastic.getRatingCount() > 0){
-                holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getRatingCount()) + " Reviews");
+            if(bizStoreElastic.getReviewCount() > 0){
+                holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getReviewCount()) + " Reviews");
                 holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             }else{
                 holder.tv_store_review.setText("No Reviews");
@@ -86,7 +86,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
 
-                    if (bizStoreElastic.getRatingCount() > 0) {
+                    if (bizStoreElastic.getReviewCount() > 0) {
                         Intent in = new Intent(context, ShowAllReviewsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, bizStoreElastic.getCodeQR());

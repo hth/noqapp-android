@@ -105,7 +105,7 @@ public class BizStoreElastic implements Serializable {
     private float rating;
 
     @JsonProperty("RC")
-    private int ratingCount;
+    private int reviewCount;
 
     @JsonProperty("BID")
     private String bizNameId;
@@ -340,12 +340,12 @@ public class BizStoreElastic implements Serializable {
         return this;
     }
 
-    public int getRatingCount() {
-        return ratingCount;
+    public int getReviewCount() {
+        return reviewCount;
     }
 
-    public BizStoreElastic setRatingCount(int ratingCount) {
-        this.ratingCount = ratingCount;
+    public BizStoreElastic setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
         return this;
     }
 
@@ -514,7 +514,7 @@ public class BizStoreElastic implements Serializable {
                 ", placeId='" + placeId + '\'' +
                 ", placeType=" + Arrays.toString(placeType) +
                 ", rating=" + rating +
-                ", ratingCount=" + ratingCount +
+                ", reviewCount=" + reviewCount +
                 ", bizNameId='" + bizNameId + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", codeQR='" + codeQR + '\'' +

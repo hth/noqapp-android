@@ -76,8 +76,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
             holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
             holder.tv_business_category.setText(bizStoreElastic.getBizCategoryName());
             holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName()) ? View.GONE : View.VISIBLE);
-            if(bizStoreElastic.getRatingCount() > 0){
-                holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getRatingCount()) + " Reviews");
+            if(bizStoreElastic.getReviewCount() > 0){
+                holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getReviewCount()) + " Reviews");
                 holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             }else{
                 holder.tv_store_review.setText("No Reviews");
@@ -88,7 +88,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
 
-                    if (bizStoreElastic.getRatingCount() > 0) {
+                    if (bizStoreElastic.getReviewCount() > 0) {
                         Intent in = new Intent(context, ShowAllReviewsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, bizStoreElastic.getCodeQR());

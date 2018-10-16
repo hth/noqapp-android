@@ -134,7 +134,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             @Override
             public void onClick(View v) {
 
-                if (null != jsonQueue && jsonQueue.getRatingCount() > 0) {
+                if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
                     Intent in = new Intent(StoreDetailActivity.this, ShowAllReviewsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
@@ -264,13 +264,13 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         } else {
             tv_rating.setVisibility(View.VISIBLE);
         }
-        if (jsonQueue.getRatingCount() == 0) {
+        if (jsonQueue.getReviewCount() == 0) {
             tv_rating_review.setText("No Review");
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
-        } else if (jsonQueue.getRatingCount() == 1) {
+        } else if (jsonQueue.getReviewCount() == 1) {
             tv_rating_review.setText("1 Review");
         } else {
-            tv_rating_review.setText(String.valueOf(jsonQueue.getRatingCount()) + " Reviews");
+            tv_rating_review.setText(String.valueOf(jsonQueue.getReviewCount()) + " Reviews");
         }
         AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);
         //

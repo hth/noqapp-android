@@ -9,7 +9,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.activities.CategoryInfoActivity;
+import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.adapters.QueueHistoryAdapter;
@@ -61,14 +61,10 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
             case DO:
             case BK:
                 // open hospital/Bank profile
-                Bundle b = new Bundle();
-                b.putString(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
-                b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
-                b.putBoolean("CallCategory", true);
-                b.putBoolean("isCategoryData", false);
-                b.putSerializable("BizStoreElastic", null);
-                Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
-                in.putExtra("bundle", b);
+                Intent in = new Intent(getActivity(), JoinActivity.class);
+                in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
+                in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
+                in.putExtra("isCategoryData", false);
                 startActivity(in);
                 break;
             default:
