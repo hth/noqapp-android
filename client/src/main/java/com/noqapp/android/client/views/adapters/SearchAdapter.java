@@ -3,12 +3,10 @@ package com.noqapp.android.client.views.adapters;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
-import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.squareup.picasso.Picasso;
@@ -76,6 +74,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
+            holder.tv_business_category.setText(bizStoreElastic.getBizCategoryName());
+            holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName()) ? View.GONE : View.VISIBLE);
             if(bizStoreElastic.getRatingCount() > 0){
                 holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getRatingCount()) + " Reviews");
                 holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -119,8 +119,6 @@ public class SearchAdapter extends RecyclerView.Adapter {
             } else {
                 holder.tv_store_rating.setVisibility(View.VISIBLE);
             }
-            // holder.tv_store_special.setText();
-            StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
             holder.tv_bussiness_name.setText(bizStoreElastic.getBusinessName());
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
@@ -135,8 +133,6 @@ public class SearchAdapter extends RecyclerView.Adapter {
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.GONE); // hide temporary
                     holder.tv_status.setText(AppUtilities.getStoreOpenStatus(bizStoreElastic));
-                    String time = Formatter.duration(storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
-                    //holder.tv_category_name.setText(time);
                     holder.tv_category_name.setText("");
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());
                     break;
@@ -161,6 +157,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
 
         private TextView tv_name;
         private TextView tv_bussiness_name;
+        private TextView tv_business_category;
         private TextView tv_address;
         private TextView tv_phoneno;
         private TextView tv_store_rating;
@@ -175,6 +172,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
             this.tv_bussiness_name = itemView.findViewById(R.id.tv_bussiness_name);
+            this.tv_business_category = itemView.findViewById(R.id.tv_business_category);
             this.tv_address = itemView.findViewById(R.id.tv_address);
             this.tv_phoneno = itemView.findViewById(R.id.tv_phoneno);
             this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);

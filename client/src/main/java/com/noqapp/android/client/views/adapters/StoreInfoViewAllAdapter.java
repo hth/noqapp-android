@@ -74,8 +74,6 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
-            holder.tv_business_category.setText(bizStoreElastic.getBizCategoryName());
-            holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName()) ? View.GONE : View.VISIBLE);
             if(bizStoreElastic.getRatingCount() > 0){
                 holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getRatingCount()) + " Reviews");
                 holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -134,8 +132,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.VISIBLE);
                     holder.tv_status.setText(AppUtilities.getStoreOpenStatus(bizStoreElastic));
-                    String time = Formatter.duration(storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
-                    holder.tv_category_name.setText(time);
+                    holder.tv_category_name.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());
                     break;
             }

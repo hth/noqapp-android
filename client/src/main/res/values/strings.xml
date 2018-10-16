@@ -3,20 +3,20 @@
     <string name="title_activity_launch">NoQApp</string>
     <!--Screen Name-->
     <string name="tab_scan">NoQApp</string>
-    <string name="screen_qdetails">QDetails</string>
+    <string name="screen_qdetails">Queue Details</string>
     <string name="screen_invite">Invite</string>
     <string name="screen_review">Review</string>
     <string name="screen_notification">Notifications</string>
     <string name="screen_legal">Legal</string>
     <string name="screen_invite_details">Invite Details</string>
-    <string name="screen_join">QJoin</string>
+    <string name="screen_join">Join Queue</string>
     <string name="screen_search">Search</string>
     <string name="screen_profile">Profile</string>
     <string name="screen_edit_profile">Edit Profile</string>
     <string name="screen_view_all">View All</string>
 
     <string name="action_settings">Settings</string>
-    <string name="join">QJoin</string>
+    <string name="join">Confirm Queue</string>
     <string name="cancel">Cancel</string>
     <string name="ratetheapp">Rate the app</string>
     <string name="legal">Legal</string>

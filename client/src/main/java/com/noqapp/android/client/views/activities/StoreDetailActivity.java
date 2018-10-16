@@ -361,7 +361,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             tv_menu.setClickable(false);
             tv_menu.setText("Closed");
         }
-        tv_store_timings.setText(Html.fromHtml(new AppUtilities().orderTheTimings(this, jsonStore.getJsonHours())));
+        tv_store_timings.setText(Html.fromHtml(new AppUtilities().formatWeeklyTimings(this, jsonStore.getJsonHours())));
     }
 
 

@@ -56,7 +56,7 @@ public class UserProfileFragment extends Fragment {
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-                    String timing = new AppUtilities().orderTheTimings(getActivity(), stores.get(i).getJsonHours());
+                    String timing = new AppUtilities().formatWeeklyTimings(getActivity(), stores.get(i).getJsonHours());
                     tv_opening_date.setText(Html.fromHtml(timing));
                     ll_multiple_store.addView(inflatedLayout);
                 }

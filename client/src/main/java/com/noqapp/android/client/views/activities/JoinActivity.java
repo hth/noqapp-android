@@ -16,7 +16,6 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.squareup.picasso.Picasso;
@@ -206,8 +205,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
             tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
-            String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) +
-                    " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour());
+            String time = new AppUtilities().formatTodayStoreTiming(this,jsonQueue.getStartHour(),jsonQueue.getEndHour());
             if (jsonQueue.getDelayedInMinutes() > 0) {
                 int hours = jsonQueue.getDelayedInMinutes() / 60;
                 int minutes = jsonQueue.getDelayedInMinutes() % 60;

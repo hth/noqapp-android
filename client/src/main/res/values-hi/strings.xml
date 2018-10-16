@@ -3,20 +3,20 @@
     <string name="title_activity_launch">NoQApp</string>
     <!--Screen Name-->
     <string name="tab_scan">NoQueue</string>
-    <string name="screen_qdetails">QDetails</string>
+    <string name="screen_qdetails">Queue Details</string>
     <string name="screen_invite">आमंत्रण</string>
     <string name="screen_review">समीक्षा</string>
     <string name="screen_notification">सूचनाएं</string>
     <string name="screen_legal">वैधानिक</string>
     <string name="screen_invite_details">आमंत्रण विवरण</string>
-    <string name="screen_join">QJoin</string>
+    <string name="screen_join">Join Queue</string>
     <string name="screen_search">तलाशी</string>
     <string name="screen_profile">प्रोफाइल</string>
     <string name="screen_edit_profile">प्रोफाइल एडिट करें</string>
     <string name="screen_view_all">समग्र अवलोकन</string>
 
     <string name="action_settings">सेटिंग्स</string>
-    <string name="join">जुड़ें</string>
+    <string name="join">Confirm Queue</string>
     <string name="cancel">रद्द करें</string>
     <string name="ratetheapp">एप्लिकेशन का मूल्यांकन करें</string>
     <string name="legal">वैधानिक</string>

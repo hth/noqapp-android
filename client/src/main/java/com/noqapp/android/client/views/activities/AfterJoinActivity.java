@@ -169,8 +169,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     tv_add.setVisibility(View.GONE);
                     tv_name.setVisibility(View.GONE);
             }
-            String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getStartHour()) +
-                    " - " + Formatter.convertMilitaryTo12HourFormat(jsonTokenAndQueue.getEndHour());
+            String time = new AppUtilities().formatTodayStoreTiming(this,jsonTokenAndQueue.getStartHour(),jsonTokenAndQueue.getEndHour());;
             if (jsonTokenAndQueue.getDelayedInMinutes() > 0) {
                 String red = "<font color='#e92270'><b>Late " + jsonTokenAndQueue.getDelayedInMinutes() + " minutes.</b></font>";
                 time = time + " " + red;

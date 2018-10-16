@@ -151,7 +151,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     isValid = false;
 
                 }
-                Toast.makeText(this, "distance is:" + distance, Toast.LENGTH_LONG).show();
             }
         }
 

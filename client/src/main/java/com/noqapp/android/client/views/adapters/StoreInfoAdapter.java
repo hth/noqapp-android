@@ -7,7 +7,6 @@ import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.common.utils.Formatter;
 
 import com.squareup.picasso.Picasso;
 
@@ -61,11 +60,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
                 holder.tv_name.setText(item.getDisplayName());
                 holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
                 StoreHourElastic storeHourElastic =  AppUtilities.getStoreHourElastic(item.getStoreHourElasticList());
-                String time = Formatter.duration(storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
-                if (1 == storeHourElastic.getStartHour() && 2359 == storeHourElastic.getEndHour()) {
-                    time = context.getString(R.string.whole_day);
-                }
-                holder.tv_detail.setText(time);
+                holder.tv_detail.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
         }
         if (!TextUtils.isEmpty(item.getDisplayImage())) {
             Picasso.with(context)
