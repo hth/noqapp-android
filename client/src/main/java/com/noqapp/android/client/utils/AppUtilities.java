@@ -187,17 +187,17 @@ public class AppUtilities extends CommonHelper {
         switch (bussinessType) {
             case DO:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.hospital));
-               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
+                // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
                 tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_gradient));
                 break;
             case BK:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.bank));
-               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
+                // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
                 tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_gradient));
                 break;
             default:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.store));
-               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
+                // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
                 tv_store_rating.setBackground(ContextCompat.getDrawable(context, R.drawable.round_corner_gradient));
         }
     }
@@ -206,15 +206,15 @@ public class AppUtilities extends CommonHelper {
         switch (bussinessType) {
             case DO:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.hospital));
-               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
+                // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_hospital));
                 break;
             case BK:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.bank));
-               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
+                // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_bank));
                 break;
             default:
                 iv.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.store));
-               // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
+                // iv.setColorFilter(context.getResources().getColor(R.color.bussiness_store));
         }
     }
 
@@ -487,7 +487,7 @@ public class AppUtilities extends CommonHelper {
         }
     }
 
-    public String orderTheTimings(Context context, List<JsonHour> jsonHoursList) {
+    public String formatWeeklyTimings(Context context, List<JsonHour> jsonHoursList) {
         String output = "";
         if (null != jsonHoursList && jsonHoursList.size() > 0) {
             HashMap<String, String> temp = new LinkedHashMap<>();
@@ -553,7 +553,7 @@ public class AppUtilities extends CommonHelper {
         ShowAlertInformation.showAuthenticErrorDialog(context);
     }
 
-    public static String getStoreAddress(String town, String area){
+    public static String getStoreAddress(String town, String area) {
         String address = "";
         if (!TextUtils.isEmpty(town)) {
             address = town;
@@ -562,5 +562,19 @@ public class AppUtilities extends CommonHelper {
             address = area + ", " + address;
         }
         return address;
+    }
+
+    public String formatTodayStoreTiming(Context context, StoreHourElastic storeHourElastic) {
+        return formatTodayStoreTiming(context, storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
+    }
+
+    public String formatTodayStoreTiming(Context context, int startHour, int endHour) {
+        String key = Formatter.duration(startHour, endHour);
+        if (1 == startHour && 2359 == endHour) {
+            key = context.getString(R.string.whole_day);
+            return key;
+        } else {
+            return context.getString(R.string.store_today_hour) + " " + key;
+        }
     }
 }

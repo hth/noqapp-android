@@ -23,6 +23,7 @@ import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.google.common.cache.Cache;
@@ -84,7 +85,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private BizStoreElastic bizStoreElastic;
     private boolean isFuture = false;
     private float rating = 0;
-    private int ratingCount = 0;
+    private int reviewCount = 0;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     private String title = "";
 
@@ -131,7 +132,11 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             codeQR = bundle.getString(NoQueueBaseFragment.KEY_CODE_QR);
             BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
             if (null != bizStoreElastic) {
-                progressDialog.setMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
+                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO || bizStoreElastic.getBusinessType() == BusinessTypeEnum.BK) {
+                    progressDialog.setMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
+                } else {
+                    progressDialog.setMessage("Loading ...");
+                }
             } else {
                 progressDialog.setMessage("Loading ...");
             }
@@ -173,9 +178,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @Override
     public void responseErrorPresenter(int errorCode) {
         dismissProgress();
-        if (errorCode == Constants.INVALID_BAR_CODE){
+        if (errorCode == Constants.INVALID_BAR_CODE) {
             ShowAlertInformation.showBarcodeErrorDialog(this);
-        }else {
+        } else {
             new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
         }
     }
@@ -188,7 +193,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
@@ -220,18 +225,18 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             } else {
                 tv_rating.setVisibility(View.VISIBLE);
             }
-            tv_rating_review.setText(String.valueOf(ratingCount == 0 ? "No" : ratingCount) + " Reviews");
+            tv_rating_review.setText(String.valueOf(reviewCount == 0 ? "No" : reviewCount) + " Reviews");
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (null != bizStoreElastic && ratingCount > 0) {
+                    if (null != bizStoreElastic && reviewCount > 0) {
                         Intent in = new Intent(CategoryInfoActivity.this, ShowAllReviewsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, codeQR);
                         bundle.putString("storeName", bizStoreElastic.getBusinessName());
                         bundle.putString("storeAddress", tv_address.getText().toString());
-                        bundle.putBoolean("isLevelUp",true);
+                        bundle.putBoolean("isLevelUp", true);
                         in.putExtras(bundle);
                         startActivity(in);
                     }
@@ -244,7 +249,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 // clear all the segments before load new
                 sc_amenities.removeAllSegments();
                 sc_facility.removeAllSegments();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
@@ -345,14 +350,14 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 // AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
             }
 
-            if (jsonQueue.getRatingCount() != 0) {
+            if (jsonQueue.getReviewCount() != 0) {
                 ratingQueue += jsonQueue.getRating();
-                ratingCountQueue += jsonQueue.getRatingCount();
+                ratingCountQueue += jsonQueue.getReviewCount();
                 queueWithRating++;
             }
         }
         rating = ratingQueue / queueWithRating;
-        ratingCount = ratingCountQueue;
+        reviewCount = ratingCountQueue;
         cacheQueue.put(QUEUE, queueMap);
     }
 

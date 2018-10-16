@@ -125,7 +125,7 @@ public class JsonQueue implements Serializable {
     private float rating;
 
     @JsonProperty("rc")
-    private int ratingCount;
+    private int reviewCount;
 
     @JsonProperty("as")
     private long averageServiceTime;
@@ -406,12 +406,17 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
-    public int getRatingCount() {
-        return ratingCount;
+    public JsonQueue setCreated(String created) {
+        this.created = created;
+        return this;
     }
 
-    public JsonQueue setRatingCount(int ratingCount) {
-        this.ratingCount = ratingCount;
+    public int getReviewCount() {
+        return reviewCount;
+    }
+
+    public JsonQueue setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
         return this;
     }
 
@@ -629,7 +634,7 @@ public class JsonQueue implements Serializable {
         sb.append(", serviceEndTime='").append(serviceEndTime).append('\'');
         sb.append(", created='").append(created).append('\'');
         sb.append(", rating=").append(rating);
-        sb.append(", ratingCount=").append(ratingCount);
+        sb.append(", reviewCount=").append(reviewCount);
         sb.append(", averageServiceTime=").append(averageServiceTime);
         sb.append(", remoteJoinAvailable=").append(remoteJoinAvailable);
         sb.append(", allowLoggedInUser=").append(allowLoggedInUser);

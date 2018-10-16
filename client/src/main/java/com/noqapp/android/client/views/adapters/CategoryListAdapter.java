@@ -59,20 +59,20 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
         holder.tv_address.setText(jsonQueue.getAddress());
         holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        if (jsonQueue.getRatingCount() == 0) {
+        if (jsonQueue.getReviewCount() == 0) {
             holder.tv_store_review.setText("No Review");
-            holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
-        } else if (jsonQueue.getRatingCount() == 1) {
+            holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+        } else if (jsonQueue.getReviewCount() == 1) {
             holder.tv_store_review.setText("1 Review");
         } else {
-            holder.tv_store_review.setText(String.valueOf(jsonQueue.getRatingCount()) + " Reviews");
+            holder.tv_store_review.setText(String.valueOf(jsonQueue.getReviewCount()) + " Reviews");
         }
 
         holder.tv_store_review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (jsonQueue.getRatingCount() > 0) {
+                if (jsonQueue.getReviewCount() > 0) {
                     Intent in = new Intent(context, ShowAllReviewsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
@@ -99,13 +99,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_join.setText("Closed");
         } else {
             holder.tv_store_timing.setVisibility(View.VISIBLE);
-            String key = Formatter.duration(storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
-            if (1 == storeHourElastic.getStartHour() && 2359 == storeHourElastic.getEndHour()) {
-                key = context.getString(R.string.whole_day);
-                holder.tv_store_timing.setText(key);
-            } else {
-                holder.tv_store_timing.setText(context.getString(R.string.store_today_hour) + " " + key);
-            }
+            holder.tv_store_timing.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
             holder.tv_join.setBackgroundColor(ContextCompat.getColor(context, R.color.button_color));
             holder.tv_join.setText("Walk-in");
         }

@@ -16,7 +16,6 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.squareup.picasso.Picasso;
@@ -206,8 +205,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
             tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
-            String time = getString(R.string.store_hour) + " " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getStartHour()) +
-                    " - " + Formatter.convertMilitaryTo12HourFormat(jsonQueue.getEndHour());
+            String time = new AppUtilities().formatTodayStoreTiming(this,jsonQueue.getStartHour(),jsonQueue.getEndHour());
             if (jsonQueue.getDelayedInMinutes() > 0) {
                 int hours = jsonQueue.getDelayedInMinutes() / 60;
                 int minutes = jsonQueue.getDelayedInMinutes() % 60;
@@ -216,14 +214,31 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 time = time + " " + red;
             }
             tv_hour_saved.setText(Html.fromHtml(time));
+            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            tv_rating_review.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
+                        Intent in = new Intent(JoinActivity.this, ShowAllReviewsActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
+                        bundle.putString("storeName", jsonQueue.getDisplayName());
+                        bundle.putString("storeAddress", AppUtilities.getStoreAddress(jsonQueue.getTown(),jsonQueue.getArea()));
+                        in.putExtras(bundle);
+                        startActivity(in);
+                    }
+                }
+            });
             ratingBar.setRating(jsonQueue.getRating());
             String reviewText;
-            if (jsonQueue.getRatingCount() == 0) {
+            if (jsonQueue.getReviewCount() == 0) {
                 reviewText = "No Review";
-            } else if (jsonQueue.getRatingCount() == 1) {
+                tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
+            } else if (jsonQueue.getReviewCount() == 1) {
                 reviewText = "1 Review";
             } else {
-                reviewText = String.valueOf(jsonQueue.getRatingCount()) + " Reviews";
+                reviewText = String.valueOf(jsonQueue.getReviewCount()) + " Reviews";
             }
             tv_rating_review.setText(reviewText);
             codeQR = jsonQueue.getCodeQR();
