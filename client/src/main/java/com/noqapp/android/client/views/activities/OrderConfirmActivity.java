@@ -12,6 +12,7 @@ import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
 import android.os.Bundle;
@@ -95,6 +96,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
     private void updateUI() {
         tv_tax_amt.setText(getString(R.string.rupee) + "" + "0.0");
+        if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
+            jsonPurchaseOrder.setOrderPrice("0");
+        }
         tv_due_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         tv_total_order_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         for (int i = 0; i < oldjsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
@@ -106,9 +110,15 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             TextView tv_price = inflatedLayout.findViewById(R.id.tv_price);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
             tv_title.setText(jsonPurchaseOrderProduct.getProductName());
-           // tv_qty.setText("Quantity: " + jsonPurchaseOrderProduct.getProductQuantity());
-            tv_price.setText(getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100)+" x "+String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            // tv_qty.setText("Quantity: " + jsonPurchaseOrderProduct.getProductQuantity());
+            tv_price.setText(getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
+            if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {
+                //added for  Pharmacy order place from merchant side directly
+                findViewById(R.id.ll_amount).setVisibility(View.GONE);
+                tv_price.setVisibility(View.GONE);
+                tv_total_price.setVisibility(View.GONE);
+            }
             ll_order_details.addView(inflatedLayout);
         }
         tv_serving_no.setText(String.valueOf(jsonPurchaseOrder.getServingNumber()));
