@@ -49,7 +49,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     private TextView tv_hour_saved;
     private TextView tv_rating_review;
     private TextView tv_add, add_person;
-    private RatingBar ratingBar;
+    private TextView tv_rating;
     private Spinner sp_name_list;
 
     private String codeQR;
@@ -80,7 +80,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     joinQueue();
             }
         });
-        ratingBar = findViewById(R.id.ratingBar);
+        tv_rating = findViewById(R.id.tv_rating);
         tv_add = findViewById(R.id.tv_add);
         add_person = findViewById(R.id.add_person);
         tv_add.setPaintFlags(tv_add.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -95,8 +95,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_join));
-        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        AppUtilities.setRatingBarColor(stars, this);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,7 +228,12 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     }
                 }
             });
-            ratingBar.setRating(jsonQueue.getRating());
+            tv_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
+            if (tv_rating.getText().toString().equals("0.0")) {
+                tv_rating.setVisibility(View.INVISIBLE);
+            } else {
+                tv_rating.setVisibility(View.VISIBLE);
+            }
             String reviewText;
             if (jsonQueue.getReviewCount() == 0) {
                 reviewText = "No Review";

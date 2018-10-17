@@ -23,20 +23,29 @@
     <color name="black_transparent">#A6000000</color>
 
 
-    <color name="segment_bg_color">#fef4ee</color>
+    <color name="segment_bg_color">#e5f8fa</color>
     <color name="segment_text_color">#928c9d</color>
 
     <color name="button_color">#CF5C3F</color>
     <color name="button_disable">#cccccc</color>
 
-    <color name="rating_select">#d36c52</color>
-    <color name="rating_unselect">#f8a87a</color>
+    <color name="rating_select">#f4511e</color>
+    <color name="rating_unselect">#f89678</color>
 
     <color name="text_header_color">#606060</color>
     <color name="dialog_theme_color">#f5a339</color>
 
     <color name="theme_color_light">#f8a87a</color>
     <color name="theme_color_dark">#d36c52</color>
+
+
+    <color name="theme_color_red">#f4511e</color>
+    <color name="btn_color">#f4511e</color>
+    <color name="review_color">#a1a1a1</color>
+    <color name="theme_aqua">#80deea</color>
+
+
+
 
 
 

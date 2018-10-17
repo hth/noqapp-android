@@ -73,8 +73,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private TextView tv_address_title;
     private TextView tv_rating_review;
     private TextView tv_rating;
-    private RatingBar ratingBar;
-    private ImageView iv_business_icon;
     private RecyclerView rv_categories;
     private RecyclerView rv_thumb_images;
     private ImageView iv_category_banner;
@@ -101,8 +99,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         tv_address_title = findViewById(R.id.tv_address_title);
         tv_rating_review = findViewById(R.id.tv_rating_review);
         tv_rating = findViewById(R.id.tv_rating);
-        ratingBar = findViewById(R.id.ratingBar);
-        iv_business_icon = findViewById(R.id.iv_business_icon);
         rv_categories = findViewById(R.id.rv_categories);
         rv_thumb_images = findViewById(R.id.rv_thumb_images);
         iv_category_banner = findViewById(R.id.iv_category_banner);
@@ -111,8 +107,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         sc_facility = findViewById(R.id.sc_facility);
         initActionsViews(false);
         listener = this;
-        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        AppUtilities.setRatingBarColor(stars, this);
         tv_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,8 +212,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 }
             });
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
-            ratingBar.setRating(rating);
-            tv_rating.setText(String.valueOf(AppUtilities.round(rating)));
+            tv_rating.setText(String.valueOf(AppUtilities.round(rating))+" -");
             if (tv_rating.getText().toString().equals("0.0")) {
                 tv_rating.setVisibility(View.INVISIBLE);
             } else {
@@ -243,8 +236,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 }
             });
             codeQR = bizStoreElastic.getCodeQR();
-            AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);
-
             try {
                 // clear all the segments before load new
                 sc_amenities.removeAllSegments();
@@ -298,7 +289,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
-                    btn_join_queues.setText("Find a Doctor");
+                    btn_join_queues.setText("Find Doctor");
                     tv_toolbar_title.setText("Medical");
                     title = "Select a Doctor";
                     break;
@@ -308,7 +299,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     title = "Select a Service";
                     break;
                 default:
-                    btn_join_queues.setText("Join a Queue");
+                    btn_join_queues.setText("Join Queue");
                     tv_toolbar_title.setText("Departments");
                     title = "Select a Queue";
             }

@@ -47,8 +47,6 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
             }
         });
 
-
-        new AppUtilities().setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType());
         holder.tv_total_value.setText(String.valueOf(dataSet.get(listPosition).getServingNumber()));
         if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
             if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() == 0) {
@@ -100,11 +98,10 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         private TextView tv_name;
         private TextView tv_detail;
         private TextView tv_address;
-        private ImageView iv_store_icon;
         private CardView card_view;
         private TextView tv_total_value;
         private TextView tv_current_value;
-        private TextView tv_estimated_time;
+
         private TextView tv_total;
 
         private MyViewHolder(View itemView) {
@@ -114,9 +111,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
             this.tv_address = itemView.findViewById(R.id.tv_address);
             this.tv_current_value = itemView.findViewById(R.id.tv_current_value);
             this.tv_total_value = itemView.findViewById(R.id.tv_total_value);
-            this.tv_estimated_time = itemView.findViewById(R.id.tv_estimated_time);
             this.tv_total = itemView.findViewById(R.id.tv_total);
-            this.iv_store_icon = itemView.findViewById(R.id.iv_store_icon);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }

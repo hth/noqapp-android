@@ -191,7 +191,7 @@
                                     android:layout_marginRight="10dp"
                                     android:layout_marginTop="10dp"
                                     android:layout_gravity="right"
-                                    android:background="@drawable/grey_gradient_round"
+                                    android:background="@drawable/blue_gradient_round"
                                     android:gravity="center_vertical"
                                     android:orientation="vertical">
 
@@ -207,7 +207,7 @@
                                         android:gravity="center"
                                         android:text="@string/serving_now"
                                         android:textColor="#505050"
-                                        android:textSize="8.5sp"/>
+                                        android:textSize="@dimen/join_section_small_text"/>
                             </LinearLayout>
 
                         </FrameLayout>
@@ -235,7 +235,7 @@
                                     android:layout_marginRight="20dp"
                                     android:layout_marginTop="10dp"
                                     android:layout_gravity="left"
-                                    android:background="@drawable/blue_gradient_round"
+                                    android:background="@drawable/orange_gradient"
                                     android:gravity="center_vertical"
                                     android:orientation="vertical">
 
@@ -251,7 +251,7 @@
                                         android:gravity="center"
                                         android:text="@string/your_token"
                                         android:textColor="@android:color/white"
-                                        android:textSize="8.5sp"/>
+                                        android:textSize="@dimen/join_section_small_text"/>
                             </LinearLayout>
                         </FrameLayout>
 
@@ -369,12 +369,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/btn_standard_height"
                             android:layout_margin="20dp"
-                            android:background="@drawable/grey_gradient"
+                            android:background="@drawable/btn_bg_inactive"
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
                             android:text="@string/cancel"
                             android:textAllCaps="true"
-                            android:textColor="@color/colorMobile"
+                            android:textColor="@color/btn_color"
                             android:textSize="@dimen/text_size_sixteen"
                             android:textStyle="normal"/>
 

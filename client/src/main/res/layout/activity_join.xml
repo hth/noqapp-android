@@ -102,34 +102,26 @@
                                     android:paddingLeft="10dp"
                                     android:paddingRight="10dp">
 
-                                <RatingBar
-                                        android:id="@+id/ratingBar"
-                                        style="?android:attr/ratingBarStyleSmall"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
-                                        android:isIndicator="true"
-                                        android:numStars="5"
-                                        android:rating="0.0"
-                                        android:stepSize=".5"/>
-
                                 <TextView
                                         android:id="@+id/tv_rating"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_toRightOf="@+id/ratingBar"
-                                        android:text="space"
-                                        android:textColor="@color/colorAddress"
-                                        android:textSize="@dimen/text_size_twelve"
+                                        android:layout_centerVertical="true"
+                                        android:layout_toLeftOf="@+id/tv_rating_review"
+                                        android:layout_alignParentLeft="true"
+                                        android:text="0.0"
+                                        android:drawableLeft="@drawable/ic_star_white_fill"
+                                        android:drawableTint="@color/theme_color_red"
+                                        android:drawablePadding="5dp"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/rating_text_size"
                                         android:visibility="invisible"/>
-
 
                                 <TextView
                                         android:id="@+id/tv_rating_review"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentRight="true"
-                                        android:layout_toRightOf="@+id/tv_rating"
                                         android:gravity="right"
                                         android:text=""
                                         android:textColor="@color/colorAddress"
@@ -182,15 +174,15 @@
                                 android:id="@+id/tv_serving_no"
                                 style="@style/style_join_queue_tv"
                                 android:gravity="center"
-                                android:textColor="@android:color/white"
+                                android:textColor="@android:color/black"
                                 android:textSize="28.3sp"/>
 
                         <TextView
                                 style="@style/style_join_queue_tv"
                                 android:gravity="center"
                                 android:text="@string/currently_serving"
-                                android:textColor="@android:color/white"
-                                android:textSize="8.5sp"/>
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/join_section_small_text"/>
                     </LinearLayout>
 
                 </FrameLayout>
@@ -234,7 +226,7 @@
                                 android:gravity="center"
                                 android:text="@string/people_in_queue"
                                 android:textColor="#505050"
-                                android:textSize="8.5sp"/>
+                                android:textSize="@dimen/join_section_small_text"/>
                     </LinearLayout>
                 </FrameLayout>
 
@@ -280,7 +272,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/add_dependent"
                         android:textAllCaps="true"
-                        android:textColor="#f79359"
+                        android:textColor="@color/theme_color_red"
                         android:textSize="@dimen/text_size_twelve"/>
 
 
@@ -355,7 +347,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/btn_standard_height"
                             android:layout_margin="20dp"
-                            android:background="@drawable/blue_gradient_or"
+                            android:background="@drawable/btn_bg_enable"
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
                             android:text="@string/join"

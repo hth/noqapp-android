@@ -8,7 +8,7 @@
                                                                                app:radiusForEverySegment="true"
                                                                                app:segmentHorizontalMargin="@dimen/segment_margin"
                                                                                app:segmentVerticalMargin="@dimen/segment_margin"
-                                                                               app:textSize="@dimen/text_size_ten"
+                                                                               app:textSize="@dimen/text_size_fourteen"
                                                                                app:selectedBackgroundColor="@color/segment_bg_color"
                                                                                app:selectedStrokeColor="@color/segment_bg_color"
                                                                                app:selectedTextColor="@color/segment_text_color"

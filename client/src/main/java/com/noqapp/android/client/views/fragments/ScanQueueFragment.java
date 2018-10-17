@@ -66,6 +66,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
@@ -80,7 +81,7 @@ import java.util.List;
 public class ScanQueueFragment extends Scanner implements View.OnClickListener, CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
-    protected CardView cv_scan;
+    protected RelativeLayout rl_scan;
     protected RecyclerView rv_recent_activity;
     protected RecyclerView rv_current_activity;
     protected TextView tv_current_title;
@@ -158,7 +159,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
 
-        cv_scan = view.findViewById(R.id.cv_scan);
+        rl_scan = view.findViewById(R.id.rl_scan);
         rv_recent_activity = view.findViewById(R.id.rv_recent_activity);
         rv_current_activity = view.findViewById(R.id.rv_current_activity);
         tv_current_title = view.findViewById(R.id.tv_current_title);
@@ -175,7 +176,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         rl_current_activity = view.findViewById(R.id.rl_current_activity);
         tv_no_thanks = view.findViewById(R.id.tv_no_thanks);
         tv_update = view.findViewById(R.id.tv_update);
-        cv_scan.setOnClickListener(this);
+        rl_scan.setOnClickListener(this);
         tv_recent_view_all.setOnClickListener(this);
         tv_near_view_all.setOnClickListener(this);
         return view;
@@ -310,7 +311,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         }
         try {
             tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getFCMToken());
-            tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
+           // tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -687,7 +688,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
-            case R.id.cv_scan:
+            case R.id.rl_scan:
                 startScanningBarcode();
                 break;
             case R.id.tv_recent_view_all:
@@ -745,7 +746,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             );
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(getActivity())
-                            .setTarget(cv_scan)
+                            .setTarget(rl_scan)
                             .setDismissText("GOT IT")
                             .setContentText("Click here to scan store QRCode to join their queue or place order")
                             .withRectangleShape(true)

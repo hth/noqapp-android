@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:card_view="http://schemas.android.com/apk/res-auto"
               android:id="@+id/ll_cat_info"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -30,123 +31,128 @@
                         android:orientation="vertical"
                         android:weightSum="1">
 
-                    <ImageView
-                            android:id="@+id/iv_category_banner"
+                    <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="220dp"
-                            android:layout_alignParentTop="true"
-                            android:scaleType="fitXY"/>
-
-                    <RelativeLayout
-                            android:id="@+id/rl_mid_content"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_alignParentLeft="true"
-                            android:layout_marginTop="195dp"
-                            android:gravity="center_vertical"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp">
+                            android:layout_alignParentTop="true">
 
                         <ImageView
-                                android:id="@+id/iv_business_icon"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_alignParentLeft="true"
-                                android:background="@drawable/round_corner_business"
-                                android:src="@mipmap/bank"
-                                android:padding="7dp"/>
+                                android:id="@+id/iv_category_banner"
+                                android:layout_width="match_parent"
+                                android:layout_height="220dp"
+                                android:scaleType="fitXY"/>
 
-                        <RelativeLayout
-                                android:id="@+id/rl_rating"
-                                android:layout_width="wrap_content"
+                        <View
+                                android:layout_width="match_parent"
+                                android:layout_height="220dp"
+                                android:background="@drawable/image_foreground"/>
+                    </FrameLayout>
+
+
+                    <android.support.v7.widget.CardView
+                            android:id="@+id/cardview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="150dp"
+                            android:padding="10dp"
+                            card_view:cardBackgroundColor="@android:color/white"
+                            card_view:cardCornerRadius="4dp">
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true">
-
-                            <RatingBar
-                                    android:id="@+id/ratingBar"
-                                    style="?android:attr/ratingBarStyleSmall"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:isIndicator="true"
-                                    android:numStars="5"
-                                    android:rating="0.0"
-                                    android:stepSize=".5"/>
+                                android:padding="10dp"
+                                android:orientation="vertical">
 
                             <TextView
-                                    android:id="@+id/tv_rating"
-                                    android:layout_width="@dimen/rating_radius"
-                                    android:layout_height="@dimen/rating_radius"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_toRightOf="@+id/ratingBar"
-                                    android:gravity="center"
-                                    android:text="0.0"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="@dimen/rating_text_size"/>
-
+                                    android:id="@+id/tv_store_name"
+                                    style="@style/style_join_queue_tv"
+                                    android:layout_marginTop="3dp"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_eighteen"
+                                    android:textStyle="bold"/>
 
                             <TextView
-                                    android:id="@+id/tv_rating_review"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/ratingBar"
-                                    android:layout_marginTop="10dp"
+                                    android:id="@+id/tv_address"
+                                    style="@style/style_join_queue_tv"
+                                    android:layout_marginBottom="3dp"
                                     android:textColor="@color/colorAddress"
-                                    android:textSize="@dimen/text_size_twelve"/>
-                        </RelativeLayout>
-                    </RelativeLayout>
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
+                            <RelativeLayout
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical">
+
+                                <TextView
+                                        android:id="@+id/tv_rating"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:layout_toLeftOf="@+id/tv_rating_review"
+                                        android:gravity="center"
+                                        android:text="0.0"
+                                        android:drawableLeft="@mipmap/star_fill"
+                                        android:drawablePadding="5dp"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/rating_text_size"/>
+
+                                <TextView
+                                        android:id="@+id/tv_rating_review"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/review_color"
+                                        android:textSize="@dimen/text_size_twelve"/>
+
+                            </RelativeLayout>
+
+                            <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@color/review_color"/>
+
+                            <Button
+                                    android:id="@+id/btn_join_queues"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/btn_standard_height"
+                                    android:paddingLeft="20dp"
+                                    android:paddingRight="20dp"
+
+                                    android:layout_gravity="right"
+                                    android:background="@drawable/btn_bg_enable"
+                                    android:textAllCaps="true"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
 
                     <LinearLayout
                             android:id="@+id/ll_dep_info"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/rl_mid_content"
+                            android:layout_below="@+id/cardview"
                             android:orientation="vertical"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp">
 
 
                         <TextView
-                                android:id="@+id/tv_store_name"
-                                style="@style/style_join_queue_tv"
-                                android:layout_marginTop="3dp"
-                                android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_fourteen"
-                                android:textStyle="bold"/>
-
-                        <TextView
-                                android:id="@+id/tv_address"
-                                style="@style/style_join_queue_tv"
-                                android:layout_marginBottom="3dp"
-                                android:textColor="@color/colorAddress"
-                                android:textSize="@dimen/text_size_twelve"/>
-
-                        <Button
-                                android:id="@+id/btn_join_queues"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/btn_standard_height"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@color/button_color"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textSize="@dimen/text_size_fourteen"/>
-
-                        <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="@android:color/darker_gray"/>
-
-                        <TextView
                                 android:id="@+id/tv_photos"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginBottom="5dp"
+                                android:layout_marginTop="10dp"
                                 android:text="@string/photo"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_twelve"/>
+                                android:textSize="@dimen/text_size_fourteen"
+                                android:textStyle="bold"/>
 
                         <android.support.v7.widget.RecyclerView
                                 android:id="@+id/rv_thumb_images"
@@ -158,9 +164,11 @@
                                 android:id="@+id/tv_amenities"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginBottom="5dp"
+                                android:layout_marginTop="10dp"
                                 android:text="@string/amenities"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_twelve"/>
+                                android:textSize="@dimen/text_size_fourteen"
+                                android:textStyle="bold"/>
 
 
                         <include
@@ -171,9 +179,11 @@
                                 android:id="@+id/tv_facilities"
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginBottom="5dp"
+                                android:layout_marginTop="10dp"
                                 android:text="@string/facility"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_twelve"/>
+                                android:textSize="@dimen/text_size_fourteen"
+                                android:textStyle="bold"/>
 
                         <include
                                 layout="@layout/lay_segment"
@@ -183,32 +193,36 @@
                         <TextView
                                 style="@style/style_join_queue_tv"
                                 android:layout_marginBottom="5dp"
+                                android:layout_marginTop="10dp"
                                 android:text="@string/phonenumber"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_twelve"/>
+                                android:textSize="@dimen/text_size_fourteen"
+                                android:textStyle="bold"/>
 
                         <TextView
                                 android:id="@+id/tv_mobile"
                                 style="@style/style_join_queue_tv"
-                                android:layout_marginBottom="3dp"
-                                android:drawableLeft="@drawable/phone_new"
-                                android:drawableTint="@color/rating_select"
+                                android:drawableLeft="@mipmap/phone"
                                 android:drawablePadding="5dp"
-                                android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_twelve"/>
-
-                        <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
                                 android:layout_marginBottom="10dp"
-                                android:background="@android:color/darker_gray"/>
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_fourteen"/>
+
+                        <TextView
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/address"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_fourteen"
+                                android:textStyle="bold"/>
 
 
                         <TextView
                                 android:id="@+id/tv_complete_address"
                                 style="@style/style_join_queue_tv"
-                                android:textColor="@color/colorAddress"
-                                android:textSize="@dimen/text_size_twelve"/>
+                                android:textColor="@color/text_header_color"
+                                android:textSize="@dimen/text_size_fourteen"/>
 
                         <TextView
                                 android:id="@+id/tv_address_title"
@@ -216,12 +230,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:text="@string/maps_direction"
-                                android:drawableLeft="@drawable/show_in_map"
-                                android:drawableTint="@color/rating_select"
+                                android:drawableLeft="@mipmap/show_in_map"
                                 android:layout_marginBottom="10dp"
                                 android:drawablePadding="5dp"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_twelve"/>
+                                android:textSize="@dimen/text_size_fourteen"
+                                android:textStyle="bold"/>
                     </LinearLayout>
 
                     <android.support.v7.widget.RecyclerView

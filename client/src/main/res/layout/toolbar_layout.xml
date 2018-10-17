@@ -18,8 +18,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
-                android:background="@mipmap/back"
-                android:backgroundTint="#000000"
+                android:background="@drawable/back"
+                android:backgroundTint="@color/theme_color_red"
                 android:padding="12dp" />
 
         <TextView
@@ -98,7 +98,7 @@
                     android:background="@drawable/ic_home"
                     android:clipToPadding="false"
                     android:focusable="true"
-                    android:backgroundTint="#000000"
+                    android:backgroundTint="@color/theme_color_red"
                     android:visibility="gone" />
         </RelativeLayout>
 
