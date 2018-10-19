@@ -73,12 +73,11 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
             Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
         holder.tv_address.setText(AppUtilities.getStoreAddress(item.getTown(),item.getArea()));
-        AppUtilities.setStoreDrawable(context, holder.iv_store_icon, item.getBusinessType(), holder.tv_store_rating);
-        holder.tv_distance.setText(AppUtilities.calculateDistanceInKm(
+        holder.tv_distance.setText(String.valueOf(AppUtilities.calculateDistance(
                 (float) lat,
                 (float) log,
                 (float) GeoHashUtils.decodeLatitude(item.getGeoHash()),
-                (float) GeoHashUtils.decodeLongitude(item.getGeoHash())));
+                (float) GeoHashUtils.decodeLongitude(item.getGeoHash()))));
 
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(item.getRating())));
         if(holder.tv_store_rating.getText().toString().equals("0.0"))
@@ -113,7 +112,6 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         private TextView tv_distance;
         private TextView tv_status;
         private ImageView iv_main;
-        private ImageView iv_store_icon;
         private CardView card_view;
 
         private MyViewHolder(View itemView) {
@@ -125,7 +123,6 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
             this.tv_status = itemView.findViewById(R.id.tv_status);
             this.iv_main = itemView.findViewById(R.id.iv_main);
-            this.iv_store_icon = itemView.findViewById(R.id.iv_store_icon);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }

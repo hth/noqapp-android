@@ -88,7 +88,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     private TextView tv_badge;
-    private TextView tv_toolbar_title;
+    public TextView tv_location;
 
     private long lastPress;
     private Toast backPressToast;
@@ -98,7 +98,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private ScanQueueFragment scanFragment;
     private DrawerLayout drawer;
     protected ListView mDrawerList;
-    private ImageView actionbarBack;
     public static DatabaseHelper dbHandler;
     public static Locale locale;
     public static SharedPreferences languagepref;
@@ -122,8 +121,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
         setContentView(R.layout.activity_launch);
         tv_badge = findViewById(R.id.tv_badge);
-        actionbarBack = findViewById(R.id.actionbarBack);
-        tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        tv_location = findViewById(R.id.tv_location);
         ImageView iv_search = findViewById(R.id.iv_search);
         ImageView iv_notification = findViewById(R.id.iv_notification);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
@@ -157,11 +155,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
 
         iv_search.setOnClickListener(this);
-        actionbarBack.setOnClickListener(this);
+        tv_location.setOnClickListener(this);
         iv_notification.setOnClickListener(this);
         fl_notification.setVisibility(View.VISIBLE);
         iv_search.setVisibility(View.VISIBLE);
-        actionbarBack.setVisibility(View.GONE);
         initProgress();
         scanFragment = new ScanQueueFragment();
         replaceFragmentWithoutBackStack(R.id.frame_layout, scanFragment);
@@ -285,8 +282,17 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public void updateLocationUI() {
         if (null != scanFragment) {
             scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
+            tv_location.setText(cityName);
         }
     }
+
+    public void updateLocationInfo(double lat, double log, String city){
+        latitute = lat;
+        longitute = log;
+        cityName = city;
+        updateLocationUI();
+    }
+
 
     @Override
     public void onNewIntent(Intent intent) {
@@ -316,6 +322,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             case R.id.actionbarBack:
                 onBackPressed();
                 break;
+            case R.id.tv_location: {
+                Intent intent = new Intent(launchActivity, SelectLocationActivity.class);
+                startActivity(intent);
+            }
+            break;
             case R.id.iv_search:
                 scanFragment.callSearch();
                 break;
@@ -353,9 +364,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
     }
 
-    public void setActionBarTitle(String title) {
-        tv_toolbar_title.setText(title);
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -488,10 +496,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-    }
-
-    public void enableDisableBack(boolean isShown) {
-        actionbarBack.setVisibility(isShown ? View.VISIBLE : View.GONE);
     }
 
 
@@ -744,9 +748,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             callReviewActivity(codeQR, token);
                             // this code is added to close the join & after join screen if the request is processed
                             //TODO @Chandra update the order screen if open
-//                            if (activityCommunicator != null) {
-//                                activityCommunicator.requestProcessed(codeQR, token);
-//                            }
+                            if (activityCommunicator != null) {
+                                activityCommunicator.requestProcessed(codeQR, token);
+                            }
                         }
                     } else if (object instanceof JsonTopicOrderData) {
                         updateNotification(object, codeQR);
@@ -777,6 +781,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         String go_to = "";
         String messageOrigin = "";
         String current_serving = "";
+        PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
         if (object instanceof JsonTopicQueueData) {
             current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
             go_to = ((JsonTopicQueueData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
@@ -785,6 +790,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             current_serving = String.valueOf(((JsonTopicOrderData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
             go_to = ((JsonTopicOrderData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
             messageOrigin = ((JsonTopicOrderData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
+            purchaseOrderStateEnum = ((JsonTopicOrderData) object).getPurchaseOrderState();
         }
         ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
         for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
@@ -792,6 +798,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             if (null != jtk) {
                 //update DB & after join screen
                 jtk.setServingNumber(Integer.parseInt(current_serving));
+
+                if (object instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(current_serving) <= 0) {
+                    jtk.setPurchaseOrderState(purchaseOrderStateEnum);
+                }
                 /*
                  * Save codeQR of goto & show it in after join screen on app
                  * Review DB for review key && current serving == token no.

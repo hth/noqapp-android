@@ -61,7 +61,7 @@
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_star_white_fill"
                             android:drawablePadding="5dp"
-                            android:drawableTint="@color/theme_color_dark"
+                            android:drawableTint="@color/theme_color_red"
                             android:paddingLeft="5dp"
                             android:textSize="@dimen/text_size_twelve"/>
                 </LinearLayout>

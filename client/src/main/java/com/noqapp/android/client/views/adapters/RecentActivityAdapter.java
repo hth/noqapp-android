@@ -54,13 +54,13 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
 
         JsonTokenAndQueue jsonTokenAndQueue = dataSet.get(listPosition);
         holder.tv_name.setText(jsonTokenAndQueue.getDisplayName());
-        holder.tv_distance.setText(AppUtilities.calculateDistanceInKm(
+        holder.tv_distance.setText(String.valueOf(AppUtilities.calculateDistance(
                 (float) lat,
                 (float) log,
                 (float) GeoHashUtils.decodeLatitude(jsonTokenAndQueue.getGeoHash()),
-                (float) GeoHashUtils.decodeLongitude(jsonTokenAndQueue.getGeoHash())));
+                (float) GeoHashUtils.decodeLongitude(jsonTokenAndQueue.getGeoHash()))));
         //   holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
-        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonTokenAndQueue.getTown(),jsonTokenAndQueue.getArea()));
+        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonTokenAndQueue.getTown(), jsonTokenAndQueue.getArea()));
         try {
             holder.tv_detail.setText("Last visit: " + CommonHelper.SDF_YYYY_MM_DD.format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonTokenAndQueue.getServiceEndTime())));
         } catch (Exception e) {
@@ -68,21 +68,18 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
             holder.tv_detail.setText("");
         }
         holder.tv_status.setText(AppUtilities.getStoreOpenStatus(jsonTokenAndQueue));
-        AppUtilities.setStoreDrawable(context, holder.iv_store_icon, jsonTokenAndQueue.getBusinessType(), holder.tv_store_rating);
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonTokenAndQueue.getRatingCount())));
-        if(holder.tv_store_rating.getText().toString().equals("0.0"))
+        if (holder.tv_store_rating.getText().toString().equals("0.0"))
             holder.tv_store_rating.setVisibility(View.INVISIBLE);
         else
             holder.tv_store_rating.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(jsonTokenAndQueue.getDisplayImage())) {
-            String url = AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonTokenAndQueue.getDisplayImage());
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonTokenAndQueue.getDisplayImage()))
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
                     .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(holder.iv_main);
-        }
-        else {
+        } else {
             Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
         holder.card_view.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +113,6 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
         private TextView tv_distance;
         private TextView tv_status;
         private ImageView iv_main;
-        private ImageView iv_store_icon;
         private CardView card_view;
 
         public MyViewHolder(View itemView) {
@@ -128,7 +124,6 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
             this.tv_status = itemView.findViewById(R.id.tv_status);
             this.iv_main = itemView.findViewById(R.id.iv_main);
-            this.iv_store_icon = itemView.findViewById(R.id.iv_store_icon);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
