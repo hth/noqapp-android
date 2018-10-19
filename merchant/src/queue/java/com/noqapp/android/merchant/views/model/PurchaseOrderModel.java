@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.views.model;
 
 import com.noqapp.android.common.beans.order.JsonPurchaseOrderList;
-import com.noqapp.android.merchant.model.response.api.order.PurchaseOrderService;
+import com.noqapp.android.merchant.model.response.api.store.PurchaseOrderService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
