@@ -88,7 +88,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     private TextView tv_badge;
-    private TextView tv_location;
+    public TextView tv_location;
 
     private long lastPress;
     private Toast backPressToast;
@@ -282,8 +282,17 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public void updateLocationUI() {
         if (null != scanFragment) {
             scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
+            tv_location.setText(cityName);
         }
     }
+
+    public void updateLocationInfo(double lat, double log, String city){
+        latitute = lat;
+        longitute = log;
+        cityName = city;
+        updateLocationUI();
+    }
+
 
     @Override
     public void onNewIntent(Intent intent) {
@@ -313,10 +322,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             case R.id.actionbarBack:
                 onBackPressed();
                 break;
+            case R.id.tv_location: {
+                Intent intent = new Intent(launchActivity, SelectLocationActivity.class);
+                startActivity(intent);
+            }
+            break;
             case R.id.iv_search:
-                scanFragment.callSearch();
-                break;
-            case R.id.tv_location:
                 scanFragment.callSearch();
                 break;
             case R.id.iv_notification:

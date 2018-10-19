@@ -85,7 +85,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     protected RecyclerView rv_recent_activity;
     protected RecyclerView rv_current_activity;
     protected TextView tv_current_title;
-    protected TextView tv_auto;
     protected TextView tv_deviceId;
     protected RecyclerView rv_merchant_around_you;
     protected TextView tv_recent_view_all;
@@ -93,7 +92,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     protected ProgressBar pb_current;
     protected ProgressBar pb_recent;
     protected ProgressBar pb_near;
-    protected AutoCompleteTextView autoCompleteTextView;
     protected CardView cv_update_location;
     protected LinearLayout rl_current_activity;
     protected TextView tv_no_thanks;
@@ -126,7 +124,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 getNearMeInfo(cityName, "" + latitude, "" + longitude);
                 lat = latitude;
                 log = longitude;
-                AppUtilities.setAutoCompleteText(autoCompleteTextView, cityName);
                 city = cityName;
                 isFirstTimeUpdate = false;
             } else {
@@ -137,7 +134,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                         getNearMeInfo(cityName, "" + latitude, "" + longitude);
                         lat = latitude;
                         log = longitude;
-                        AppUtilities.setAutoCompleteText(autoCompleteTextView, cityName);
                         city = cityName;
                         cv_update_location.setVisibility(View.GONE);
                     }
@@ -163,7 +159,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         rv_recent_activity = view.findViewById(R.id.rv_recent_activity);
         rv_current_activity = view.findViewById(R.id.rv_current_activity);
         tv_current_title = view.findViewById(R.id.tv_current_title);
-        tv_auto = view.findViewById(R.id.tv_auto);
         tv_deviceId = view.findViewById(R.id.tv_deviceId);
         rv_merchant_around_you = view.findViewById(R.id.rv_merchant_around_you);
         tv_recent_view_all = view.findViewById(R.id.tv_recent_view_all);
@@ -171,7 +166,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         pb_current = view.findViewById(R.id.pb_current);
         pb_recent = view.findViewById(R.id.pb_recent);
         pb_near = view.findViewById(R.id.pb_near);
-        autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         cv_update_location = view.findViewById(R.id.cv_update_location);
         rl_current_activity = view.findViewById(R.id.rl_current_activity);
         tv_no_thanks = view.findViewById(R.id.tv_no_thanks);
@@ -185,73 +179,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    String city_name = (String) parent.getItemAtPosition(position);
-                    LatLng latLng = AppUtilities.getLocationFromAddress(getActivity(), city_name);
-                    if (null != latLng) {
-                        lat = latLng.latitude;
-                        log = latLng.longitude;
-                    } else {
-                        lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
-                        log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
-                    }
-                    city = city_name;
-                    getNearMeInfo(city_name, String.valueOf(lat), String.valueOf(log));
-                    new AppUtilities().hideKeyBoard(getActivity());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-            }
-        });
-        autoCompleteTextView.setThreshold(3);
-        autoCompleteTextView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_LEFT = 0;
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (autoCompleteTextView.getRight() - autoCompleteTextView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        autoCompleteTextView.setText("");
-                        return true;
-                    }
-//                    if (event.getRawX() <= (10+autoCompleteTextView.getLeft() + autoCompleteTextView.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-//                        // your action here
-//                        lat = LaunchActivity.getLaunchActivity().latitute;
-//                        log = LaunchActivity.getLaunchActivity().longitute;
-//                        city = LaunchActivity.getLaunchActivity().cityName;
-//                        autoCompleteTextView.setText(city);
-//                        getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
-//                        new AppUtilities().hideKeyBoard(getActivity());
-//                        return true;
-//                    }
-                }
-                return false;
-            }
-        });
-        tv_auto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
-                    lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
-                    log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
-                    city = LaunchActivity.getLaunchActivity().getDefaultCity();
-                    AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
-                    getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
-                } else {
-                    lat = LaunchActivity.getLaunchActivity().latitute;
-                    log = LaunchActivity.getLaunchActivity().longitute;
-                    city = LaunchActivity.getLaunchActivity().cityName;
-                    AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
-                    getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
-                    new AppUtilities().hideKeyBoard(getActivity());
-                }
-            }
-        });
         tokenQueueViewInterface = this;
         currentClickListner = this;
         recentClickListner = this;
@@ -286,13 +214,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
             log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
             city = LaunchActivity.getLaunchActivity().getDefaultCity();
-            AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
             getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
         } else {
             lat = LaunchActivity.getLaunchActivity().latitute;
             log = LaunchActivity.getLaunchActivity().longitute;
             city = LaunchActivity.getLaunchActivity().cityName;
-            AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
             getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
         }
     }
@@ -735,7 +661,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             sequence.addSequenceItem(
                     //autoCompleteTextView, "Click here to scan the store QRCode to join their queue", "GOT IT"
                     new MaterialShowcaseView.Builder(getActivity())
-                            .setTarget(autoCompleteTextView)
+                            .setTarget(LaunchActivity.getLaunchActivity().tv_location)
                             .setDismissText("GOT IT")
                             .setContentText("Search your preferred location")
                             .withRectangleShape(true)
