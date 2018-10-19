@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.model.response.api.order;
+package com.noqapp.android.merchant.model.response.api.store;
 
 import com.noqapp.android.common.beans.order.JsonPurchaseOrderList;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
@@ -17,7 +17,7 @@ public interface PurchaseOrderService {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/o/purchaseOrder/showOrders/{codeQR}.json")
+    @POST("api/m/s/purchaseOrder/showOrders/{codeQR}.json")
     Call<JsonPurchaseOrderList> fetch(
             @Header("X-R-DID")
             String did,
@@ -41,7 +41,7 @@ public interface PurchaseOrderService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/o/purchaseOrder/served.json")
+    @POST("api/m/s/purchaseOrder/served.json")
     Call<JsonToken> served(
             @Header("X-R-DID")
             String did,
@@ -66,7 +66,7 @@ public interface PurchaseOrderService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MERCHANT_COULD_NOT_ACQUIRE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/o/purchaseOrder/acquire.json")
+    @POST("api/m/s/purchaseOrder/acquire.json")
     Call<JsonToken> acquire(
             @Header("X-R-DID")
             String did,
@@ -90,7 +90,7 @@ public interface PurchaseOrderService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/o/purchaseOrder/actionOnOrder.json")
+    @POST("api/m/s/purchaseOrder/actionOnOrder.json")
     Call<JsonPurchaseOrderList> actionOnOrder(
             @Header("X-R-DID")
             String did,
@@ -114,7 +114,7 @@ public interface PurchaseOrderService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/o/purchaseOrder/cancel.json")
+    @POST("api/m/s/purchaseOrder/cancel.json")
     Call<JsonPurchaseOrderList> cancel(
             @Header("X-R-DID")
             String did,
