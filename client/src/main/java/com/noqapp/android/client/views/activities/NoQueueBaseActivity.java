@@ -177,15 +177,17 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static void clearPreferences() {
-        // Clear all data except DID & FCM Token
+        // Clear all data except DID , FCM Token, previousUserQID & showHelper
         String did = sharedPreferences.getString(APIConstant.Key.XR_DID, "");
         String fcmToken = getFCMToken();
         String previousUserQID = getPreviousUserQID();
+        boolean showHelper = getShowHelper();
         getSharedPreferencesEditor().clear().commit();
         SharedPreferences.Editor editor = getSharedPreferencesEditor();
         editor.putString(APIConstant.Key.XR_DID, did);
         editor.putString(FCM_TOKEN, fcmToken);
         editor.putString(KEY_PREVIOUS_USER_QID, previousUserQID);
+        editor.putBoolean(KEY_SHOW_HELPER, showHelper);
         editor.commit();
     }
 
