@@ -11,27 +11,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ImageView
-                android:id="@+id/actionbarBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/back"
-                android:backgroundTint="@color/theme_color_red"
-                android:padding="12dp" />
+
 
         <TextView
-                android:id="@+id/tv_toolbar_title"
+                android:id="@+id/tv_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/rl_right"
-                android:layout_toRightOf="@+id/actionbarBack"
-                android:padding="5dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="left"
+                android:layout_alignParentLeft="true"
+                android:padding="10dp"
+                android:drawableRight="@drawable/ic_arrow_down"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/map_icon"
+                android:gravity="center"
+                android:text="Mumbai"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"/>

@@ -168,6 +168,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 bundle.putSerializable("oldData", this.jsonPurchaseOrder);
                 bundle.putString("storeName", getIntent().getExtras().getString("storeName"));
                 bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
+                bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, getIntent().getExtras().getString(NoQueueBaseActivity.KEY_CODE_QR));
                 in.putExtras(bundle);
                 startActivity(in);
                 NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));

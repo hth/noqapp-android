@@ -143,7 +143,7 @@
         <!--<item name="listPreferredItemHeightSmall">40dp</item>&lt;!&ndash; item size in menu&ndash;&gt;-->
     </style>
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@android:color/black</item>
+        <item name="color">@color/theme_color_red</item>
     </style>
 
 </resources>

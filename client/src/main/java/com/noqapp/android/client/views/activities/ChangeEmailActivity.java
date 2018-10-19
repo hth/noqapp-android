@@ -28,6 +28,7 @@ import android.widget.Toast;
 public class ChangeEmailActivity extends BaseActivity implements View.OnClickListener, MigrateEmailPresenter, ProfilePresenter {
 
     private TextView tv_header;
+    private TextView tv_msg;
     private EditText edt_email;
     private EditText edt_otp;
     private Button btn_verify_email;
@@ -38,6 +39,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_verify);
         tv_header = findViewById(R.id.tv_header);
+        tv_msg = findViewById(R.id.tv_msg);
         edt_email = findViewById(R.id.edt_email);
         edt_otp = findViewById(R.id.edt_otp);
         btn_verify_email = findViewById(R.id.btn_verify_email);
@@ -93,6 +95,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             btn_validate_otp.setVisibility(View.VISIBLE);
             edt_otp.setVisibility(View.VISIBLE);
+            tv_msg.setVisibility(View.VISIBLE);
             edt_email.setVisibility(View.GONE);
             btn_verify_email.setVisibility(View.GONE);
             tv_header.setText("Verification code");

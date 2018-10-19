@@ -3,12 +3,14 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.PurchaseApiModel;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
+import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
@@ -23,7 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter {
+public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter ,ActivityCommunicator {
 
     private PurchaseApiModel purchaseApiModel;
     private TextView tv_total_order_amt;
@@ -32,9 +34,11 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private LinearLayout ll_order_details;
     private TextView tv_serving_no;
     private TextView tv_token;
+    private TextView tv_status;
     private TextView tv_estimated_time;
     private JsonPurchaseOrder jsonPurchaseOrder, oldjsonPurchaseOrder;
     private Button btn_cancel_order;
+    private String codeQR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +50,23 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         ll_order_details = findViewById(R.id.ll_order_details);
         tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_token = findViewById(R.id.tv_token);
+        tv_status = findViewById(R.id.tv_status);
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_address = findViewById(R.id.tv_address);
         btn_cancel_order = findViewById(R.id.btn_cancel_order);
+        LaunchActivity.getLaunchActivity().activityCommunicator = this;
         initActionsViews(true);
         purchaseApiModel = new PurchaseApiModel(this);
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
         tv_store_name.setText(getIntent().getExtras().getString("storeName"));
         tv_address.setText(getIntent().getExtras().getString("storeAddress"));
-
+        codeQR = getIntent().getExtras().getString(NoQueueBaseFragment.KEY_CODE_QR);
         if (getIntent().getBooleanExtra(NoQueueBaseFragment.KEY_FROM_LIST, false)) {
             tv_toolbar_title.setText(getString(R.string.order_details));
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 progressDialog.setMessage("Order details fetching in progress..");
-                String codeQR = getIntent().getExtras().getString(NoQueueBaseFragment.KEY_CODE_QR);
                 int token = getIntent().getExtras().getInt("token");
                 purchaseApiModel.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
             } else {
@@ -75,6 +80,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LaunchActivity.getLaunchActivity().activityCommunicator = null;
                 iv_home.performClick();
             }
         });
@@ -122,6 +128,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             ll_order_details.addView(inflatedLayout);
         }
         tv_serving_no.setText(String.valueOf(jsonPurchaseOrder.getServingNumber()));
+        tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
         tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
@@ -133,6 +140,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     public void onBackPressed() {
         super.onBackPressed();
         iv_home.performClick();
+        LaunchActivity.getLaunchActivity().activityCommunicator = null;
     }
 
     @Override
@@ -181,4 +189,41 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         if (null != eej)
             new ErrorResponseHandler().processError(this, eej);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LaunchActivity.getLaunchActivity().activityCommunicator = null;
+    }
+
+    @Override
+    public boolean updateUI(String qrCode, JsonTokenAndQueue jq, String go_to) {
+        if (codeQR.equals(qrCode) && String.valueOf(jsonPurchaseOrder.getToken()).equals(String.valueOf(jq.getServingNumber()))) {
+            //updating the current order status
+            if (jq.getToken() - jq.getServingNumber() <= 0) {
+                switch (jq.getPurchaseOrderState()) {
+                    case OP:
+                        tv_status.setText("Order being prepared");
+                        break;
+                    case RD:
+                    case RP:
+                    case OD:
+                        tv_status.setText(jq.getPurchaseOrderState().getDescription());
+                        break;
+                    default:
+                        tv_status.setText(jq.getPurchaseOrderState().getDescription());
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void requestProcessed(String qrCode, String token) {
+        if (codeQR.equals(qrCode) && String.valueOf(jsonPurchaseOrder.getToken()).equals(token)) {
+            //remove the screen from stack
+            finish();
+        }
+    }
+
 }

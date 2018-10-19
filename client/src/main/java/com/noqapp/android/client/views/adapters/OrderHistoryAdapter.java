@@ -62,7 +62,12 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
             e.printStackTrace();
         }
         holder.tv_order_item.setText(getOrderItems(jsonPurchaseOrderHistorical.getJsonPurchaseOrderProductHistoricalList()));
-        holder.tv_order_amount.setText(String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
+        try {
+            holder.tv_order_amount.setText(String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
+        }catch (Exception e){
+            holder.tv_order_amount.setText("0");
+            e.printStackTrace();
+        }
         holder.tv_store_rating.setText("Rating: " + String.valueOf(jsonPurchaseOrderHistorical.getRatingCount()));
         holder.tv_queue_status.setText(jsonPurchaseOrderHistorical.getPresentOrderState().getDescription());
         if (0 == jsonPurchaseOrderHistorical.getRatingCount()) {

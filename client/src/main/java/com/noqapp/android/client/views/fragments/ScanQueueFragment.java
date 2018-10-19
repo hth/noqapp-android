@@ -300,9 +300,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     @Override
     public void onResume() {
         super.onResume();
-
-        LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.tab_scan));
-        LaunchActivity.getLaunchActivity().enableDisableBack(false);
         if (null != getActivity() && isAdded()) {
             /* Update the current Queue & history queue so that user get the latest queue status & get reflected in DB. */
             if (LaunchActivity.getLaunchActivity().isOnline()) {

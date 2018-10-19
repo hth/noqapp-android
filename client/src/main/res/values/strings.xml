@@ -2,7 +2,6 @@
     <string name="app_name">NoQApp</string>LaunchActivity
     <string name="title_activity_launch">NoQApp</string>
     <!--Screen Name-->
-    <string name="tab_scan">NoQApp</string>
     <string name="screen_qdetails">Queue Details</string>
     <string name="screen_invite">Invite</string>
     <string name="screen_review">Review</string>
@@ -294,6 +293,7 @@
     <string name="order_items">Order Items</string>
     <string name="history">History</string>
     <string name="empty_review">No one has reviewed. Be the first to review.</string>
+    <string name="check_your_email">Please check your email to get the code</string>
     <!-- Category Info Screen -->
 
 </resources>
