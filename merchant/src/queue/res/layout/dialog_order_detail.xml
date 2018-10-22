@@ -1,14 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:card_view="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_gravity="center"
-              android:orientation="vertical"
-              android:background="@drawable/order_bg">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="25dp"
+                android:background="@drawable/order_bg">
 
     <RelativeLayout
             android:id="@+id/ll_top"
             android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
             android:layout_height="50dp"
             android:background="@color/color_action_bar">
 
@@ -37,22 +38,50 @@
 
     <android.support.v7.widget.CardView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="25dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_below="@+id/ll_top"
+            android:layout_above="@+id/cv_footer"
             card_view:cardBackgroundColor="@android:color/white"
             card_view:cardCornerRadius="4dp">
 
-        <ListView
-                android:id="@+id/listview"
-                android:layout_width="wrap_content"
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/tv_item_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:layout_marginBottom="5dp"
+                    android:textStyle="bold"
+                    android:padding="10dp"/>
+
+            <ListView
+                    android:id="@+id/listview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:layout_marginBottom="5dp"
+                    android:fadeScrollbars="false"/>
+        </LinearLayout>
+
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp"
+            android:id="@+id/cv_footer"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="25dp"
+
+            android:layout_alignParentBottom="true"
             card_view:cardBackgroundColor="@android:color/white"
             card_view:cardCornerRadius="4dp">
 
@@ -61,29 +90,90 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <TextView
-                    android:id="@+id/tv_payment_mode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:padding="10dp"
-                    android:textSize="@dimen/text_size_twelve"/>
 
-            <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:padding="10dp"
-                    android:textSize="@dimen/text_size_twelve"/>
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:padding="5dp"
+                    android:layout_height="match_parent">
 
-            <TextView
-                    android:id="@+id/tv_cost"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="@dimen/text_size_twelve"/>
+
+                <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/tv_cost"
+                        android:text="Total Cost: "
+                        android:textSize="@dimen/text_size_twelve"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/tv_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:paddingRight="5dp"
+                        android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:padding="5dp"
+                    android:layout_height="match_parent">
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/tv_payment_mode"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:text="Payment Mode:"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/tv_payment_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="5dp"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:padding="5dp"
+                    android:layout_height="match_parent">
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/tv_address"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:textStyle="bold"
+                        android:text="Delivery Address:"
+                        android:textColor="@android:color/black"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="5dp"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</RelativeLayout>
