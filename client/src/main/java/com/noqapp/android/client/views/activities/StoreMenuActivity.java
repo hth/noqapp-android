@@ -11,8 +11,8 @@ import com.noqapp.android.client.views.adapters.MenuAdapter;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.FragmentDummy;
-import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 
 import android.content.Intent;
 import android.os.Bundle;
