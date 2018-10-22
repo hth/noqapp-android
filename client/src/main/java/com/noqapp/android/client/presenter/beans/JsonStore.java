@@ -2,6 +2,7 @@ package com.noqapp.android.client.presenter.beans;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonHour;
+import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
