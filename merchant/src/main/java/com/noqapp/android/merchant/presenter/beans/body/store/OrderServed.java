@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.presenter.beans.body.order;
+package com.noqapp.android.merchant.presenter.beans.body.store;
 
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;

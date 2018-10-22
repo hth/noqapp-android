@@ -12,7 +12,7 @@ import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
+import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;

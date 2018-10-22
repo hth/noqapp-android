@@ -4,7 +4,7 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.merchant.model.response.api.store.PurchaseOrderService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
-import com.noqapp.android.merchant.presenter.beans.body.order.OrderServed;
+import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
