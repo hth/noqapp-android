@@ -2,17 +2,22 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.StoreProductModel;
-import com.noqapp.android.merchant.presenter.StoreProductPresenter;
+import com.noqapp.android.merchant.views.model.StoreProductModel;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
+import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.MenuAdapter;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.FragmentDummy;
@@ -29,18 +34,20 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ProductListActivity extends AppCompatActivity implements StoreProductPresenter, MenuHeaderAdapter.OnItemClickListener {
+public class ProductListActivity extends AppCompatActivity implements StoreProductPresenter, ActionOnProductPresenter, MenuHeaderAdapter.OnItemClickListener, MenuAdapter.MenuItemUpdate {
 
     private ProgressDialog progressDialog;
     private RecyclerView rcv_header;
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
-    private HashMap<String, ChildData> orders = new HashMap<>();
+    private String codeQR = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -51,7 +58,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prod_list);
         initProgress();
-        ArrayList<JsonTopic> jsonTopics = (ArrayList<JsonTopic>) getIntent().getExtras().getSerializable("jsonTopic");
+        codeQR = getIntent().getStringExtra("codeQR");
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
@@ -67,7 +74,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             progressDialog.show();
             StoreProductModel storeProductModel = new StoreProductModel();
             storeProductModel.setStoreProductPresenter(this);
-            storeProductModel.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),jsonTopics.get(0).getCodeQR());
+            storeProductModel.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -76,7 +83,8 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
@@ -94,7 +102,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
+        progressDialog.setMessage("Fetching data...");
     }
 
     private void dismissProgress() {
@@ -106,14 +114,9 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     @Override
     public void storeProductResponse(JsonStore jsonStore) {
         dismissProgress();
-        if(null != jsonStore) {
-
-            //
+        if (null != jsonStore) {
             String defaultCategory = "Un-Categorized";
-            //  {
-            //TODO @Chandra Optimize the loop
             final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
-
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
             final HashMap<String, List<ChildData>> listDataChild = new HashMap<>();
             for (int l = 0; l < jsonStoreCategories.size(); l++) {
@@ -136,20 +139,20 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             }
 
             rcv_header = findViewById(R.id.rcv_header);
-            List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
-            HashMap<String, List<ChildData>> expandableListDetail = listDataChild;
+            // List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
+            //HashMap<String, List<ChildData>> expandableListDetail = listDataChild;
             viewPager = findViewById(R.id.pager);
             TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
             ArrayList<Integer> removeEmptyData = new ArrayList<>();
-            for (int i = 0; i < expandableListTitle.size(); i++) {
-                if (expandableListDetail.get(expandableListTitle.get(i).getCategoryId()).size() > 0)
-                    adapter.addFragment(new FragmentDummy(expandableListDetail.get(expandableListTitle.get(i).getCategoryId())), "FRAG" + i);
+            for (int i = 0; i < jsonStoreCategories.size(); i++) {
+                if (listDataChild.get(jsonStoreCategories.get(i).getCategoryId()).size() > 0)
+                    adapter.addFragment(new FragmentDummy(listDataChild.get(jsonStoreCategories.get(i).getCategoryId()), this), "FRAG" + i);
                 else
                     removeEmptyData.add(i);
             }
             // Remove the categories which having zero items
             for (int j = removeEmptyData.size() - 1; j >= 0; j--) {
-                expandableListTitle.remove((int) removeEmptyData.get(j));
+                jsonStoreCategories.remove((int) removeEmptyData.get(j));
             }
             rcv_header.setHasFixedSize(true);
             LinearLayoutManager horizontalLayoutManagaer
@@ -157,10 +160,12 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             rcv_header.setLayoutManager(horizontalLayoutManagaer);
             rcv_header.setItemAnimator(new DefaultItemAnimator());
 
-            menuAdapter = new MenuHeaderAdapter(expandableListTitle, this, this);
+            menuAdapter = new MenuHeaderAdapter(jsonStoreCategories, this, this);
             rcv_header.setAdapter(menuAdapter);
+            menuAdapter.notifyDataSetChanged();
+            viewPager.setAdapter(null);
             viewPager.setAdapter(adapter);
-            orders.clear();
+            adapter.notifyDataSetChanged();
             viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -187,5 +192,36 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     @Override
     public void menuHeaderClick(int pos) {
         viewPager.setCurrentItem(pos);
+    }
+
+    @Override
+    public void menuItemUpdate(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum) {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.setMessage("Updating data...");
+            progressDialog.show();
+            StoreProductModel storeProductModel = new StoreProductModel();
+            storeProductModel.setActionOnProductPresenter(this);
+            storeProductModel.actionOnProduct(UserUtils.getEmail(), UserUtils.getAuth(), codeQR, actionTypeEnum, jsonStoreProduct);
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
+    }
+
+    @Override
+    public void actionOnProductResponse(JsonResponse jsonResponse) {
+        dismissProgress();
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            Toast.makeText(this, "Action perform successfully", Toast.LENGTH_LONG).show();
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.show();
+                StoreProductModel storeProductModel = new StoreProductModel();
+                storeProductModel.setStoreProductPresenter(this);
+                storeProductModel.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            } else {
+                ShowAlertInformation.showNetworkDialog(this);
+            }
+        } else {
+            Toast.makeText(this, "Failed to perform action", Toast.LENGTH_LONG).show();
+        }
     }
 }

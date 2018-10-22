@@ -14,4 +14,6 @@ public class BaseConstants {
     //error codes
     public static final int SERVER_RESPONSE_CODE_SUCESS = 200;
     public static final int INVALID_CREDENTIAL = 401;
+
+    public static int SUCCESS = 1;
 }

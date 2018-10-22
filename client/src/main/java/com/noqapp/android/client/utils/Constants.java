@@ -45,7 +45,6 @@ public class Constants extends BaseConstants{
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
     private static String VERSION_RELEASE;
 
-    public static int SUCCESS = 1;
 
     /**
      * Computes App version.
