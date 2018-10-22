@@ -91,6 +91,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected Button btn_next;
     protected Button btn_start;
     private ImageView iv_edit;
+    protected ImageView iv_product_list;
     protected boolean queueStatusOuter = false;
     private int lastSelectedPos = -1;
     private LinearLayoutManager horizontalLayoutManagaer;
@@ -143,6 +144,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         tv_next = itemView.findViewById(R.id.tv_next);
         tv_start = itemView.findViewById(R.id.tv_start);
         iv_edit = itemView.findViewById(R.id.iv_edit);
+        iv_product_list = itemView.findViewById(R.id.iv_product_list);
         ImageView iv_settings = itemView.findViewById(R.id.iv_settings);
         iv_settings.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,13 +17,15 @@ public class FragmentDummy extends Fragment {
     private View view;
     private List<ChildData> childData;
     private ListView listView;
+    private MenuAdapter.MenuItemUpdate menuItemUpdate;
 
     public FragmentDummy() {
         // Required empty public constructor
     }
 
-    public FragmentDummy(List<ChildData> childData) {
+    public FragmentDummy(List<ChildData> childData,MenuAdapter.MenuItemUpdate menuItemUpdate) {
         this.childData = childData;
+        this.menuItemUpdate = menuItemUpdate;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class FragmentDummy extends Fragment {
         }
         view = inflater.inflate(R.layout.fragment_dummy, container, false);
         listView = view.findViewById(R.id.listView);
-        MenuAdapter menuAdapter = new MenuAdapter(getActivity(), childData);
+        MenuAdapter menuAdapter = new MenuAdapter(getActivity(), childData, menuItemUpdate);
         listView.setAdapter(menuAdapter);
         return view;
     }

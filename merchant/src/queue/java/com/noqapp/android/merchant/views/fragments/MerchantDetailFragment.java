@@ -17,6 +17,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.ProductListActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQOrderAdapter;
 import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
@@ -25,8 +26,10 @@ import com.noqapp.android.merchant.views.model.PurchaseOrderModel;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -37,6 +40,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,7 +53,17 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View view =  super.onCreateView(inflater, container, savedInstanceState);
+        iv_product_list.setVisibility(View.VISIBLE);
+        iv_product_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ProductListActivity.class);
+                intent.putExtra("codeQR", jsonTopic.getCodeQR());
+                ((Activity) context).startActivity(intent);
+            }
+        });
+        return view;
     }
 
     @Override

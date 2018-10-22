@@ -3,25 +3,32 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.merchant.R;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 public class MenuAdapter extends BaseAdapter {
     private Context context;
     private List<ChildData> menuItemsList;
+    private MenuItemUpdate menuItemUpdate;
 
-    public MenuAdapter(Context context, List<ChildData> menuItemsList) {
+    public MenuAdapter(Context context, List<ChildData> menuItemsList, MenuItemUpdate menuItemUpdate) {
         this.context = context;
         this.menuItemsList = menuItemsList;
+        this.menuItemUpdate = menuItemUpdate;
     }
 
     public int getCount() {
@@ -48,6 +55,7 @@ public class MenuAdapter extends BaseAdapter {
             childViewHolder.tv_price = convertView.findViewById(R.id.tv_price);
             childViewHolder.tv_discounted_price = convertView.findViewById(R.id.tv_discounted_price);
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
+            childViewHolder.iv_delete = convertView.findViewById(R.id.iv_delete);
             convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder) convertView
@@ -55,7 +63,7 @@ public class MenuAdapter extends BaseAdapter {
         }
         final JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
-      //  childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
+        //  childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
         //TODO chandra use County Code of the store to decide on Currency type
         childViewHolder.tv_price.setText(context.getString(R.string.rupee) + " " + jsonStoreProduct.getDisplayPrice());
         childViewHolder.tv_discounted_price.setText(
@@ -76,8 +84,42 @@ public class MenuAdapter extends BaseAdapter {
             default:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
         }
+        childViewHolder.iv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                LayoutInflater inflater = LayoutInflater.from(context);
+                builder.setTitle(null);
+                View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
+                builder.setView(customDialogView);
+                final AlertDialog mAlertDialog = builder.create();
+                mAlertDialog.setCanceledOnTouchOutside(false);
+                TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+                TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+                tvtitle.setText("Delete Menu Item");
+                tv_msg.setText("Do you want to delete it from Menu Item List?");
+                Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+                Button btn_no = customDialogView.findViewById(R.id.btn_no);
+                btn_no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAlertDialog.dismiss();
+                    }
+                });
+                btn_yes.setOnClickListener(new View.OnClickListener() {
 
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Deleted from Menu Item List", Toast.LENGTH_LONG).show();
+                        menuItemUpdate.menuItemUpdate(jsonStoreProduct, ActionTypeEnum.REMOVE);
+                        mAlertDialog.dismiss();
+                    }
+                });
+                mAlertDialog.show();
+
+            }
+        });
         return convertView;
     }
 
@@ -93,5 +135,10 @@ public class MenuAdapter extends BaseAdapter {
         TextView tv_value;
         TextView tv_discounted_price;
         TextView tv_cat;
+        ImageView iv_delete;
+    }
+
+    public interface MenuItemUpdate {
+        void menuItemUpdate(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum);
     }
 }
