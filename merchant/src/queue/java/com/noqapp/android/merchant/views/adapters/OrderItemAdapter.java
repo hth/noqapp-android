@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.merchant.R;
 
 import android.content.Context;
