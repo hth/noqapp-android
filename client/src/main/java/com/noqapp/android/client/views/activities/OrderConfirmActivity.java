@@ -12,8 +12,8 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 

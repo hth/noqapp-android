@@ -1,7 +1,7 @@
-package com.noqapp.android.client.views.adapters;
+package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.client.R;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
+import com.noqapp.android.merchant.R;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -47,8 +47,8 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.My
         JsonStoreCategory jsonTokenAndQueue = dataSet.get(listPosition);
         holder.tv_menu_header.setText(jsonTokenAndQueue.getCategoryName());
         if (selected_pos == listPosition) {
-            holder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.colorActionbar));
-            holder.tv_menu_header.setTextColor(ContextCompat.getColor(context, R.color.colorActionbar));
+            holder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.color_action_bar));
+            holder.tv_menu_header.setTextColor(ContextCompat.getColor(context, R.color.color_action_bar));
         } else {
             holder.ll_header.setBackgroundColor(Color.WHITE);
             holder.tv_menu_header.setTextColor(Color.BLACK);

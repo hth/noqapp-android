@@ -177,4 +177,8 @@
     <string name="legal">Legal</string>
     <string name="privacy_in_short">Privacy Quick Overview</string>
     <string name="bullet">\u27A3</string>
+    <string name="product_list">Products</string>
+    <string name="screen_product_list">Products List</string>
+
+    <string name="rupee">\u20B9</string>
 </resources>

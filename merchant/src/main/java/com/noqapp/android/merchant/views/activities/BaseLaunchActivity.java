@@ -212,6 +212,12 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                     case R.drawable.language:
                         showChangeLangDialog();
                         break;
+                    case R.drawable.product_list: {
+                        Intent intent = new Intent(launchActivity, ProductListActivity.class);
+                        intent.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+                        startActivity(intent);
+                    }
+                    break;
 
                     case R.drawable.legal: {
                         Intent in = new Intent(launchActivity, PrivacyActivity.class);
@@ -705,6 +711,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void updateMenuList(boolean showChart) {
         drawerItem.clear();
         drawerItem.add(new NavigationBean(R.drawable.profile_red, "Profile"));
+        drawerItem.add(new NavigationBean(R.drawable.product_list, getString(R.string.product_list)));
         drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
         drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, "Share the app"));
         drawerItem.add(new NavigationBean(R.drawable.ic_star, "Rate the app"));

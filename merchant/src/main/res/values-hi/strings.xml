@@ -114,4 +114,6 @@
     <string name="scheduling_ending">Until Day</string>
     <string name="error_invalid_captcha">Entered captcha is not matching with given captcha</string>
     <string name="legal">वैधानिक</string>
+    <string name="product_list">Products</string>
+    <string name="screen_product_list">Products List</string>
 </resources>

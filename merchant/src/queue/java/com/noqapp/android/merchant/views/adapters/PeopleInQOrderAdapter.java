@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.beans.order.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.order.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
@@ -169,24 +169,21 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         View customDialogView = inflater.inflate(R.layout.dialog_order_detail, null, false);
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
         ListView listview = customDialogView.findViewById(R.id.listview);
+        //listview.setScrollBarFadeDuration(0);
+        TextView tv_item_count = customDialogView.findViewById(R.id.tv_item_count);
         TextView tv_payment_mode = customDialogView.findViewById(R.id.tv_payment_mode);
         TextView tv_address = customDialogView.findViewById(R.id.tv_address);
         TextView tv_cost = customDialogView.findViewById(R.id.tv_cost);
-        tv_address.setText(Html.fromHtml("<font color=\"black\"><b>Delivery Address: </b></font>" + jsonPurchaseOrder.getDeliveryAddress()));
-        tv_payment_mode.setText(Html.fromHtml("<font color=\"black\"><b>Payment Mode: </b></font>" + jsonPurchaseOrder.getPaymentType().getDescription()));
+        tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
+        tv_payment_mode.setText(Html.fromHtml(jsonPurchaseOrder.getPaymentType().getDescription()));
         try {
-            tv_cost.setText(Html.fromHtml("<font color=\"black\"><b>Total Cost: </b></font>" + (Integer.parseInt(jsonPurchaseOrder.getOrderPrice())) / 100));
+            tv_cost.setText(Html.fromHtml(String.valueOf(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) / 100)));
         } catch (Exception e) {
-            tv_cost.setText(Html.fromHtml("<font color=\"black\"><b>Total Cost: </b></font>" + 0 / 100));
+            tv_cost.setText(Html.fromHtml(String.valueOf(0 / 100)));
         }
         builder.setView(customDialogView);
-        ArrayList<String> data = new ArrayList<>();
-        if (null != jsonPurchaseOrderProductList & jsonPurchaseOrderProductList.size() > 0) {
-            for (int i = 0; i < jsonPurchaseOrderProductList.size(); i++) {
-                data.add(jsonPurchaseOrderProductList.get(i).getProductName() + "                               " + jsonPurchaseOrderProductList.get(i).getProductQuantity());
-            }
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, data);
+        tv_item_count.setText("Total Items: ("+jsonPurchaseOrderProductList.size()+")");
+        OrderItemAdapter adapter = new OrderItemAdapter(mContext, jsonPurchaseOrderProductList);
         listview.setAdapter(adapter);
         final AlertDialog mAlertDialog = builder.create();
         //mAlertDialog.setCanceledOnTouchOutside(false);

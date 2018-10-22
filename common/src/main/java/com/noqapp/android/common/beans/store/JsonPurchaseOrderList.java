@@ -1,4 +1,4 @@
-package com.noqapp.android.common.beans.order;
+package com.noqapp.android.common.beans.store;
 
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;

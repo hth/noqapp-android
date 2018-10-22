@@ -1,4 +1,4 @@
-package com.noqapp.android.common.beans.order;
+package com.noqapp.android.common.beans.store;
 
 import com.noqapp.android.common.model.types.order.ProductTypeEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;

@@ -1,4 +1,4 @@
-package com.noqapp.android.client.presenter.beans;
+package com.noqapp.android.merchant.presenter.beans.store;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonHour;
@@ -33,9 +33,6 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonStore implements Serializable {
 
-    @JsonProperty("queue")
-    private JsonQueue jsonQueue;
-
     @JsonProperty("hours")
     private List<JsonHour> jsonHours = new LinkedList<>();
 
@@ -47,15 +44,6 @@ public class JsonStore implements Serializable {
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
-
-    public JsonQueue getJsonQueue() {
-        return jsonQueue;
-    }
-
-    public JsonStore setJsonQueue(JsonQueue jsonQueue) {
-        this.jsonQueue = jsonQueue;
-        return this;
-    }
 
     public List<JsonHour> getJsonHours() {
         return jsonHours;
@@ -94,9 +82,8 @@ public class JsonStore implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("JsonStore{");
-        sb.append("jsonQueue=").append(jsonQueue);
-        sb.append(", jsonHours=").append(jsonHours);
+        final StringBuilder sb = new StringBuilder("JsonStore{");
+        sb.append("jsonHours=").append(jsonHours);
         sb.append(", jsonStoreCategories=").append(jsonStoreCategories);
         sb.append(", jsonStoreProducts=").append(jsonStoreProducts);
         sb.append(", error=").append(error);
