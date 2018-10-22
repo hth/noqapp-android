@@ -1,4 +1,4 @@
-package com.noqapp.android.client.presenter.beans;
+package com.noqapp.android.common.beans;
 
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 

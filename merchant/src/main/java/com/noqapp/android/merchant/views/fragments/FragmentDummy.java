@@ -1,9 +1,8 @@
-package com.noqapp.android.client.views.fragments;
+package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.client.R;
 import com.noqapp.android.common.beans.ChildData;
-import com.noqapp.android.client.views.activities.StoreMenuActivity;
-import com.noqapp.android.client.views.adapters.MenuAdapter;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.adapters.MenuAdapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,22 +13,17 @@ import android.widget.ListView;
 
 import java.util.List;
 
-
 public class FragmentDummy extends Fragment {
     private View view;
     private List<ChildData> childData;
     private ListView listView;
-    private StoreMenuActivity storeMenuActivity;
-    private MenuAdapter.CartOrderUpdate cartOrderUpdate;
 
     public FragmentDummy() {
         // Required empty public constructor
     }
 
-    public FragmentDummy(List<ChildData> childData, StoreMenuActivity storeMenuActivity, MenuAdapter.CartOrderUpdate cartOrderUpdate) {
+    public FragmentDummy(List<ChildData> childData) {
         this.childData = childData;
-        this.storeMenuActivity = storeMenuActivity;
-        this.cartOrderUpdate = cartOrderUpdate;
     }
 
     @Override
@@ -47,7 +41,7 @@ public class FragmentDummy extends Fragment {
         }
         view = inflater.inflate(R.layout.fragment_dummy, container, false);
         listView = view.findViewById(R.id.listView);
-        MenuAdapter menuAdapter = new MenuAdapter(getActivity(), childData, storeMenuActivity, cartOrderUpdate);
+        MenuAdapter menuAdapter = new MenuAdapter(getActivity(), childData);
         listView.setAdapter(menuAdapter);
         return view;
     }

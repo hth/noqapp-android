@@ -5,6 +5,7 @@ import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Path;
 
 public interface StoreProductService {
 
@@ -21,6 +22,9 @@ public interface StoreProductService {
             String mail,
 
             @Header("X-R-AUTH")
-            String auth
+            String auth,
+
+            @Path("codeQR")
+            String codeQR
     );
 }
