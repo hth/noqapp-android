@@ -12,11 +12,9 @@ import android.support.v4.view.ViewPager;
 
 public class OrderQueueHistoryActivity extends BaseActivity {
 
-
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private LoadTabs loadTabs;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +28,10 @@ public class OrderQueueHistoryActivity extends BaseActivity {
         loadTabs.execute();
     }
 
-
-
     private void setupViewPager(ViewPager viewPager) {
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OrderHistoryFragment(), "Order History");
-        adapter.addFragment(new QueueHistoryFragment(), "Queue History");
+        adapter.addFragment(new QueueHistoryFragment(), "Queue");
+        adapter.addFragment(new OrderHistoryFragment(), "Order");
         viewPager.setAdapter(adapter);
     }
 
@@ -46,7 +42,6 @@ public class OrderQueueHistoryActivity extends BaseActivity {
             loadTabs.cancel(true);
         }
     }
-
 
     private class LoadTabs extends AsyncTask<String, String, String> {
         @Override
