@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -9,6 +10,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.ContactUsActivity;
 import com.noqapp.android.client.views.activities.ReviewActivity;
+import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -16,11 +18,14 @@ import com.noqapp.android.common.utils.CommonHelper;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -56,65 +61,49 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         holder.tv_name.setText(jsonPurchaseOrderHistorical.getDisplayName());
         holder.tv_address.setText(AppUtilities.getStoreAddress(jsonPurchaseOrderHistorical.getTown(), jsonPurchaseOrderHistorical.getArea()));
         try {
-            holder.tv_order_date.setText(CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.
+            holder.tv_order_date.setText(CommonHelper.SDF_DD_MMM_YY_HH_MM_A.
                     format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonPurchaseOrderHistorical.getCreated())));
         } catch (Exception e) {
             e.printStackTrace();
         }
         holder.tv_order_item.setText(getOrderItems(jsonPurchaseOrderHistorical.getJsonPurchaseOrderProductHistoricalList()));
         try {
-            holder.tv_order_amount.setText(String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
-        }catch (Exception e){
+            holder.tv_order_amount.setText(context.getString(R.string.rupee) +" "+ String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
+        } catch (Exception e) {
             holder.tv_order_amount.setText("0");
             e.printStackTrace();
         }
-        holder.tv_store_rating.setText("Rating: " + String.valueOf(jsonPurchaseOrderHistorical.getRatingCount()));
         holder.tv_queue_status.setText(jsonPurchaseOrderHistorical.getPresentOrderState().getDescription());
-        if (0 == jsonPurchaseOrderHistorical.getRatingCount()) {
-            holder.tv_add_review.setVisibility(View.VISIBLE);
-            if (jsonPurchaseOrderHistorical.getPresentOrderState() != PurchaseOrderStateEnum.OD) {
-                holder.tv_add_review.setVisibility(View.GONE);
-            }
-            holder.tv_store_rating.setVisibility(View.GONE);
-        } else {
-            holder.tv_add_review.setVisibility(View.GONE);
-            holder.tv_store_rating.setVisibility(View.VISIBLE);
+        switch (jsonPurchaseOrderHistorical.getPresentOrderState()) {
+            case CO:
+                holder.tv_queue_status.setTextColor(ContextCompat.getColor(context, R.color.colorMobile));
+                break;
+            case OD:
+                holder.tv_queue_status.setTextColor(ContextCompat.getColor(context, R.color.green));
+                break;
+            default:
+                holder.tv_queue_status.setTextColor(ContextCompat.getColor(context, R.color.text_header_color));
         }
-        holder.tv_add_review.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
-                jsonTokenAndQueue.setQueueUserId(jsonPurchaseOrderHistorical.getQueueUserId());
-                jsonTokenAndQueue.setDisplayName(jsonPurchaseOrderHistorical.getDisplayName());
-                jsonTokenAndQueue.setStoreAddress(jsonPurchaseOrderHistorical.getStoreAddress());
-                jsonTokenAndQueue.setBusinessType(jsonPurchaseOrderHistorical.getBusinessType());
-                jsonTokenAndQueue.setCodeQR(jsonPurchaseOrderHistorical.getCodeQR());
-                jsonTokenAndQueue.setToken(jsonPurchaseOrderHistorical.getTokenNumber());
-                Intent in = new Intent(context, ReviewActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("object", jsonTokenAndQueue);
-                in.putExtras(bundle);
-                context.startActivity(in);
-            }
-        });
-        holder.tv_support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Feedback feedback = new Feedback();
-                feedback.setMessageOrigin(MessageOriginEnum.O);
-                feedback.setCodeQR(jsonPurchaseOrderHistorical.getCodeQR());
-                feedback.setToken(jsonPurchaseOrderHistorical.getTokenNumber());
-                Intent in = new Intent(context, ContactUsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("object", feedback);
-                in.putExtras(bundle);
-                context.startActivity(in);
-            }
-        });
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
+        holder.iv_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onStoreItemClick(jsonPurchaseOrderHistorical, v, listPosition);
+            }
+        });
+        holder.btn_reorder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BizStoreElastic bizStoreElastic = new BizStoreElastic();
+                bizStoreElastic.setRating(jsonPurchaseOrderHistorical.getRatingCount());
+                bizStoreElastic.setDisplayImage("");
+                bizStoreElastic.setBusinessName(jsonPurchaseOrderHistorical.getDisplayName());
+                bizStoreElastic.setCodeQR(jsonPurchaseOrderHistorical.getCodeQR());
+                bizStoreElastic.setBusinessType(jsonPurchaseOrderHistorical.getBusinessType());
+                Intent intent = new Intent(context, StoreDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("BizStoreElastic", bizStoreElastic);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
     }
@@ -128,30 +117,28 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         void onStoreItemClick(JsonPurchaseOrderHistorical item, View view, int pos);
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    private class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_name;
-        private TextView tv_support;
         private TextView tv_address;
         private TextView tv_order_date;
-        private TextView tv_store_rating;
-        private TextView tv_add_review;
         private TextView tv_order_amount;
         private TextView tv_order_item;
         private TextView tv_queue_status;
+        private ImageView iv_details;
+        private Button btn_reorder;
         private CardView card_view;
 
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
-            this.tv_support = itemView.findViewById(R.id.tv_support);
             this.tv_address = itemView.findViewById(R.id.tv_address);
             this.tv_order_date = itemView.findViewById(R.id.tv_order_date);
-            this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
-            this.tv_add_review = itemView.findViewById(R.id.tv_add_review);
             this.tv_order_amount = itemView.findViewById(R.id.tv_order_amount);
             this.tv_order_item = itemView.findViewById(R.id.tv_order_item);
             this.tv_queue_status = itemView.findViewById(R.id.tv_queue_status);
+            this.btn_reorder = itemView.findViewById(R.id.btn_reorder);
+            this.iv_details = itemView.findViewById(R.id.iv_details);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }

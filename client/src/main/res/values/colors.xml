@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#999999</color>
     <color name="colorPrimaryDark">#999999</color>
-    <color name="colorAccent">#f8a87a</color>
+    <color name="colorAccent">#f4511e</color>
     <color name="colorActionbar">#F79359</color>
     <color name="colorAddress">#403648</color>
     <color name="colorMobile">#f4511e</color>
@@ -43,6 +43,8 @@
     <color name="btn_color">#f4511e</color>
     <color name="review_color">#a1a1a1</color>
     <color name="theme_aqua">#80deea</color>
+
+    <color name="green">#329932</color>
 
 
 

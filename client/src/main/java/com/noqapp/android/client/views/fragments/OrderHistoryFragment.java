@@ -88,7 +88,7 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         listData = new ArrayList<>(jsonPurchaseOrderHistoricalList.getJsonPurchaseOrderHistoricals());
         OrderHistoryAdapter orderHistoryAdapter = new OrderHistoryAdapter(listData, getActivity(), this);
         rcv_order_history.setAdapter(orderHistoryAdapter);
-        if(null != listData && listData.size()==0)
-            Toast.makeText(getActivity(),"You havn't order yet :(",Toast.LENGTH_LONG).show();
+        if (null != listData && listData.size() == 0)
+            Toast.makeText(getActivity(), "You havn't order yet :(", Toast.LENGTH_LONG).show();
     }
 }

@@ -23,7 +23,7 @@
                     android:layout_height="50dp"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:background="@drawable/round_corner_white"
+                    android:background="@drawable/round_corner_business"
                     android:scaleType="centerInside"
                     android:layout_alignParentLeft="true"/>
 

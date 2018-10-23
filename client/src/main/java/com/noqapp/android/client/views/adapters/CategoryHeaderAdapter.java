@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CategoryHeaderAdapter extends RecyclerView.Adapter<CategoryHeaderAdapter.ViewHolder> {
+public class CategoryHeaderAdapter extends RecyclerView.Adapter {
 
     private final OnItemClickListener listener;
     private List<JsonCategory> categories;
@@ -30,7 +30,7 @@ public class CategoryHeaderAdapter extends RecyclerView.Adapter<CategoryHeaderAd
     }
 
     @Override
-    public CategoryHeaderAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context).inflate(R.layout.menu_header_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
@@ -38,21 +38,22 @@ public class CategoryHeaderAdapter extends RecyclerView.Adapter<CategoryHeaderAd
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder Vholder, final int position) {
+        ViewHolder holder = (ViewHolder) Vholder;
         final JsonCategory jsonCategory = categories.get(position);
-        Vholder.tv_menu_header.setOnClickListener(new View.OnClickListener() {
+        holder.tv_menu_header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onCategoryItemClick(position, jsonCategory);
             }
         });
-        Vholder.tv_menu_header.setText(jsonCategory.getCategoryName());
+        holder.tv_menu_header.setText(jsonCategory.getCategoryName());
         if (selected_pos == position) {
-            Vholder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.theme_color_dark));
-            Vholder.tv_menu_header.setTextColor(ContextCompat.getColor(context, R.color.theme_color_dark));
+            holder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.theme_color_dark));
+            holder.tv_menu_header.setTextColor(ContextCompat.getColor(context, R.color.theme_color_dark));
         } else {
-            Vholder.ll_header.setBackgroundColor(Color.WHITE);
-            Vholder.tv_menu_header.setTextColor(Color.BLACK);
+            holder.ll_header.setBackgroundColor(Color.WHITE);
+            holder.tv_menu_header.setTextColor(Color.BLACK);
         }
     }
 
@@ -70,7 +71,7 @@ public class CategoryHeaderAdapter extends RecyclerView.Adapter<CategoryHeaderAd
         void onCategoryItemClick(int pos, JsonCategory jsonCategory);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    private class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_menu_header;
         private LinearLayout ll_header;
 
