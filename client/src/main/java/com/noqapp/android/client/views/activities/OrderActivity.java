@@ -90,7 +90,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            //tv_qty.setText("Quantity: " + jsonPurchaseOrderProduct.getProductQuantity());
             tv_title.setText(jsonPurchaseOrderProduct.getProductName()+" "+getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100)+" x "+String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
             ll_order_details.addView(inflatedLayout);

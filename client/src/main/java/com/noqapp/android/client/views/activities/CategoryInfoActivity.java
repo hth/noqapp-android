@@ -32,7 +32,6 @@ import com.squareup.picasso.Picasso;
 
 import android.content.Intent;
 import android.graphics.Paint;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,7 +39,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 

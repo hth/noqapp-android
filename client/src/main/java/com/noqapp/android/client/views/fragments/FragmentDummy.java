@@ -1,9 +1,9 @@
 package com.noqapp.android.client.views.fragments;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.client.views.activities.StoreMenuActivity;
 import com.noqapp.android.client.views.adapters.MenuAdapter;
+import com.noqapp.android.common.beans.ChildData;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

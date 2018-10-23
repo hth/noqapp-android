@@ -1,9 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
@@ -11,8 +9,10 @@ import com.noqapp.android.client.views.adapters.MenuAdapter;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.FragmentDummy;
+import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.beans.store.JsonStoreCategory;
 
 import android.content.Intent;
 import android.os.Bundle;
