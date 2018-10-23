@@ -69,7 +69,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         rg_address = findViewById(R.id.rg_address);
         edt_address = findViewById(R.id.edt_address);
         edt_phone = findViewById(R.id.edt_phone);
-        Button tv_place_order = findViewById(R.id.tv_place_order);
+        final Button tv_place_order = findViewById(R.id.tv_place_order);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         initActionsViews(false);
         purchaseApiModel = new PurchaseApiModel(this);
@@ -112,6 +112,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
 
                         purchaseApiModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        tv_place_order.setEnabled(false);
+                        tv_place_order.setClickable(false);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                     }
