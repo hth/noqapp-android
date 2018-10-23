@@ -5,11 +5,9 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 
-
 import com.google.android.gms.maps.model.LatLng;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;

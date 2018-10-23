@@ -1,10 +1,6 @@
 package com.noqapp.android.client.utils;
 
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -21,6 +17,10 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Create this Class from tutorial :

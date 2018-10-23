@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.fragments;
 
 import static com.noqapp.android.common.utils.Formatter.formatRFC822;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.model.QueueApiModel;
@@ -34,7 +33,6 @@ import com.noqapp.android.client.views.activities.SearchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.activities.ViewAllListActivity;
 import com.noqapp.android.client.views.adapters.CurrentActivityAdapter;
-import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.RecentActivityAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
@@ -59,11 +57,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;

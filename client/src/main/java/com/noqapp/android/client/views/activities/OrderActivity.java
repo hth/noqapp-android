@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRadioButton;
@@ -56,7 +57,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private JsonPurchaseOrder jsonPurchaseOrder;
     private ProfileModel profileModel;
     private PurchaseApiModel purchaseApiModel;
-
+    private long mLastClickTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +69,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         rg_address = findViewById(R.id.rg_address);
         edt_address = findViewById(R.id.edt_address);
         edt_phone = findViewById(R.id.edt_phone);
-        Button tv_place_order = findViewById(R.id.tv_place_order);
+        final Button tv_place_order = findViewById(R.id.tv_place_order);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         initActionsViews(false);
         purchaseApiModel = new PurchaseApiModel(this);
@@ -90,7 +91,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            //tv_qty.setText("Quantity: " + jsonPurchaseOrderProduct.getProductQuantity());
             tv_title.setText(jsonPurchaseOrderProduct.getProductName()+" "+getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100)+" x "+String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
             ll_order_details.addView(inflatedLayout);
@@ -98,6 +98,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (validateForm()) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
@@ -108,6 +112,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
 
                         purchaseApiModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        tv_place_order.setEnabled(false);
+                        tv_place_order.setClickable(false);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                     }
