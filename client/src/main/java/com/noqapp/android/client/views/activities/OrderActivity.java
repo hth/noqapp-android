@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRadioButton;
@@ -56,7 +57,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private JsonPurchaseOrder jsonPurchaseOrder;
     private ProfileModel profileModel;
     private PurchaseApiModel purchaseApiModel;
-
+    private long mLastClickTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +98,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (validateForm()) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
