@@ -1,7 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import static com.noqapp.android.common.utils.Formatter.formatRFC822;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.model.QueueApiModel;
@@ -33,12 +31,12 @@ import com.noqapp.android.client.views.activities.SearchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.activities.ViewAllListActivity;
 import com.noqapp.android.client.views.adapters.CurrentActivityAdapter;
-import com.noqapp.android.client.views.adapters.RecentActivityAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -70,22 +68,21 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-public class ScanQueueFragment extends Scanner implements View.OnClickListener, CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
+public class ScanQueueFragment extends Scanner implements View.OnClickListener, CurrentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     protected RelativeLayout rl_scan;
-    protected RecyclerView rv_recent_activity;
+    protected RecyclerView rv_health_care;
     protected RecyclerView rv_current_activity;
     protected TextView tv_current_title;
     protected TextView tv_deviceId;
     protected RecyclerView rv_merchant_around_you;
-    protected TextView tv_recent_view_all;
+    protected TextView tv_health_care_view_all;
     protected TextView tv_near_view_all;
     protected ProgressBar pb_current;
-    protected ProgressBar pb_recent;
+    protected ProgressBar pb_health_care;
     protected ProgressBar pb_near;
     protected CardView cv_update_location;
     protected LinearLayout rl_current_activity;
@@ -93,10 +90,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     protected TextView tv_update;
 
     private boolean fromList = false;
-    private RecentActivityAdapter recentActivityAdapter;
     private ArrayList<BizStoreElastic> nearMeData;
+    private ArrayList<BizStoreElastic> nearMeHospital;
     private CurrentActivityAdapter.OnItemClickListener currentClickListner;
-    private RecentActivityAdapter.OnItemClickListener recentClickListner;
     private StoreInfoAdapter.OnItemClickListener storeListener;
     private String scrollId = "";
     private double lat, log;
@@ -151,22 +147,22 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         View view = inflater.inflate(R.layout.fragment_scan_queue, container, false);
 
         rl_scan = view.findViewById(R.id.rl_scan);
-        rv_recent_activity = view.findViewById(R.id.rv_recent_activity);
+        rv_health_care = view.findViewById(R.id.rv_health_care);
         rv_current_activity = view.findViewById(R.id.rv_current_activity);
         tv_current_title = view.findViewById(R.id.tv_current_title);
         tv_deviceId = view.findViewById(R.id.tv_deviceId);
         rv_merchant_around_you = view.findViewById(R.id.rv_merchant_around_you);
-        tv_recent_view_all = view.findViewById(R.id.tv_recent_view_all);
+        tv_health_care_view_all = view.findViewById(R.id.tv_health_care_view_all);
         tv_near_view_all = view.findViewById(R.id.tv_near_view_all);
         pb_current = view.findViewById(R.id.pb_current);
-        pb_recent = view.findViewById(R.id.pb_recent);
+        pb_health_care = view.findViewById(R.id.pb_health_care);
         pb_near = view.findViewById(R.id.pb_near);
         cv_update_location = view.findViewById(R.id.cv_update_location);
         rl_current_activity = view.findViewById(R.id.rl_current_activity);
         tv_no_thanks = view.findViewById(R.id.tv_no_thanks);
         tv_update = view.findViewById(R.id.tv_update);
         rl_scan.setOnClickListener(this);
-        tv_recent_view_all.setOnClickListener(this);
+        tv_health_care_view_all.setOnClickListener(this);
         tv_near_view_all.setOnClickListener(this);
         return view;
     }
@@ -177,13 +173,12 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
 
         tokenQueueViewInterface = this;
         currentClickListner = this;
-        recentClickListner = this;
         storeListener = this;
         mHandler = new QueueHandler();
-        rv_recent_activity.setHasFixedSize(true);
+        rv_health_care.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        rv_recent_activity.setLayoutManager(horizontalLayoutManager);
-        rv_recent_activity.setItemAnimator(new DefaultItemAnimator());
+        rv_health_care.setLayoutManager(horizontalLayoutManager);
+        rv_health_care.setItemAnimator(new DefaultItemAnimator());
 
         //
         rv_current_activity.setHasFixedSize(true);
@@ -200,7 +195,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            callCurrentAndRecentQueue();
+            callCurrentAndHistoryQueue();
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -224,18 +219,18 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         if (null != getActivity() && isAdded()) {
             /* Update the current Queue & history queue so that user get the latest queue status & get reflected in DB. */
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                callCurrentAndRecentQueue();
+                callCurrentAndHistoryQueue();
             }
         }
         try {
             tv_deviceId.setText(UserUtils.getDeviceId() + "\n" + NoQueueBaseActivity.getFCMToken());
-           // tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
+            // tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void callCurrentAndRecentQueue() {
+    private void callCurrentAndHistoryQueue() {
         if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
             //Call the current queue
             QueueApiModel queueApiModel = new QueueApiModel();
@@ -258,7 +253,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         }
         if (isProgressFirstTime) {
             pb_current.setVisibility(View.VISIBLE);
-            pb_recent.setVisibility(View.VISIBLE);
+            pb_health_care.setVisibility(View.VISIBLE);
         }
     }
 
@@ -295,8 +290,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             storeInfoParam.setScrollId("");
             if (isProgressFirstTime) {
                 pb_near.setVisibility(View.VISIBLE);
+                pb_health_care.setVisibility(View.VISIBLE);
             }
-            new NearMeModel(this).nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
+            NearMeModel nearMeModel = new NearMeModel(this);
+            nearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
+            nearMeModel.nearMeHospitalAndDoctors(UserUtils.getDeviceId(), storeInfoParam);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -305,7 +303,12 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     @Override
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
         nearMeData = new ArrayList<>();
-        nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
+        for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
+            if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.PH &&
+                    bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.DO) {
+                nearMeData.add(bizStoreElasticList.getBizStoreElastics().get(i));
+            }
+        }
         //sort the list, give the Comparator the current location
         Collections.sort(nearMeData, new SortPlaces(new LatLng(lat, log)));
         StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener, lat, log);
@@ -313,10 +316,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         Log.v("NearMe", bizStoreElasticList.toString());
         scrollId = bizStoreElasticList.getScrollId();
         pb_near.setVisibility(View.GONE);
-        if (null != recentActivityAdapter) {
-            recentActivityAdapter.updateLatLong(lat, log);
-            recentActivityAdapter.notifyDataSetChanged();
-        }
         tv_near_view_all.setVisibility(nearMeData.size() == 0 ? View.GONE : View.VISIBLE);
         isProgressFirstTime = false;
         if (NoQueueBaseActivity.getShowHelper() && isAdded()) {
@@ -328,6 +327,30 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     @Override
     public void nearMeError() {
         pb_near.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void nearMeHospitalResponse(BizStoreElasticList bizStoreElasticList) {
+        nearMeHospital = new ArrayList<>();
+        for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
+            if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() == BusinessTypeEnum.PH ||
+                    bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() == BusinessTypeEnum.DO) {
+                nearMeHospital.add(bizStoreElasticList.getBizStoreElastics().get(i));
+            }
+        }
+        //sort the list, give the Comparator the current location
+        Collections.sort(nearMeHospital, new SortPlaces(new LatLng(lat, log)));
+        StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeHospital, getActivity(), storeListener, lat, log);
+        rv_health_care.setAdapter(storeInfoAdapter);
+        Log.v("NearMe Hospital", bizStoreElasticList.toString());
+        scrollId = bizStoreElasticList.getScrollId();
+        pb_health_care.setVisibility(View.GONE);
+        tv_health_care_view_all.setVisibility(nearMeHospital.size() == 0 ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void nearMeHospitalError() {
+        pb_health_care.setVisibility(View.GONE);
     }
 
     @Override
@@ -379,31 +402,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         }
     }
 
-    @Override
-    public void recentItemClick(JsonTokenAndQueue item, View view, int pos) {
-        if (null != item) {
-            if (item.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
-                Intent in = new Intent(getActivity(), JoinActivity.class);
-                in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
-                in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
-                in.putExtra("isCategoryData", false);
-                startActivity(in);
-            } else {
-                BizStoreElastic bizStoreElastic = new BizStoreElastic();
-                bizStoreElastic.setRating(item.getRatingCount());
-                bizStoreElastic.setDisplayImage(item.getDisplayImage());
-                bizStoreElastic.setBusinessName(item.getBusinessName());
-                bizStoreElastic.setCodeQR(item.getCodeQR());
-                bizStoreElastic.setBusinessType(item.getBusinessType());
-                Intent intent = new Intent(getActivity(), StoreDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("BizStoreElastic", bizStoreElastic);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        }
-    }
-
     private void nearClick() {
         Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
         intent.putExtra("list", (Serializable) nearMeData);
@@ -414,12 +412,14 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         startActivity(intent);
     }
 
-    private void recentClick() {
+    private void healthCareClick() {
         Intent intent = new Intent(getActivity(), ViewAllListActivity.class);
-        Bundle bundle = new Bundle();
-        // bundle.putSerializable("data", data1);
-        intent.putExtras(bundle);
-        // startActivity(intent);
+        intent.putExtra("list", (Serializable) nearMeHospital);
+        intent.putExtra("scrollId", scrollId);
+        intent.putExtra("lat", "" + lat);
+        intent.putExtra("long", "" + log);
+        intent.putExtra("city", city);
+        startActivity(intent);
     }
 
     @Override
@@ -435,7 +435,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter();
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.saveHistoryTokenQueue(tokenAndQueues, sinceBeginning);
-        pb_recent.setVisibility(View.GONE);
     }
 
     @Override
@@ -443,7 +442,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         Log.d(TAG, "History queue Error");
         LaunchActivity.getLaunchActivity().dismissProgress();
         passMsgToHandler(false);
-        pb_recent.setVisibility(View.GONE);
     }
 
     @Override
@@ -459,7 +457,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         LaunchActivity.getLaunchActivity().dismissProgress();
         AppUtilities.authenticationProcessing(getActivity());
         pb_current.setVisibility(View.GONE);
-        pb_recent.setVisibility(View.GONE);
+        pb_health_care.setVisibility(View.GONE);
         pb_near.setVisibility(View.GONE);
     }
 
@@ -515,22 +513,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     public void tokenHistoryQueueList(List<JsonTokenAndQueue> historyQueueList) {
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, ":History Queue Count:" + String.valueOf(historyQueueList.size()));
-        Collections.sort(historyQueueList, new Comparator<JsonTokenAndQueue>() {
-            @Override
-            public int compare(JsonTokenAndQueue o1, JsonTokenAndQueue o2) {
-                try {
-                    return formatRFC822.parse(o2.getServiceEndTime()).compareTo(formatRFC822.parse(o1.getServiceEndTime()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 0;
-                }
-            }
-        });
-        if (null != getActivity() && isAdded()) {
-            recentActivityAdapter = new RecentActivityAdapter(historyQueueList, getActivity(), recentClickListner, lat, log);
-            rv_recent_activity.setAdapter(recentActivityAdapter);
-            recentActivityAdapter.notifyDataSetChanged();
-        }
     }
 
     public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
@@ -609,8 +591,8 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             case R.id.rl_scan:
                 startScanningBarcode();
                 break;
-            case R.id.tv_recent_view_all:
-                recentClick();
+            case R.id.tv_health_care_view_all:
+                healthCareClick();
                 break;
             case R.id.tv_near_view_all:
                 nearClick();

@@ -120,6 +120,16 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
     }
 
     @Override
+    public void nearMeHospitalResponse(BizStoreElasticList bizStoreElasticList) {
+        //Do nothing
+    }
+
+    @Override
+    public void nearMeHospitalError() {
+
+    }
+
+    @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         new ErrorResponseHandler().processError(this, eej);
     }

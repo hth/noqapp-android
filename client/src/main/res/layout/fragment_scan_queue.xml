@@ -203,7 +203,7 @@
 
 
             <LinearLayout
-                    android:id="@+id/rl_recent_activity"
+                    android:id="@+id/rl_health_care"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -220,17 +220,17 @@
                         android:padding="5dp">
 
                     <TextView
-                            android:id="@+id/tv_recent_title"
+                            android:id="@+id/tv_health_care_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
-                            android:text="@string/recent_activity"
+                            android:text="@string/health_care"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold"/>
 
                     <TextView
-                            android:id="@+id/tv_recent_view_all"
+                            android:id="@+id/tv_health_care_view_all"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -246,7 +246,7 @@
                         android:layout_height="wrap_content">
 
                     <android.support.v7.widget.RecyclerView
-                            android:id="@+id/rv_recent_activity"
+                            android:id="@+id/rv_health_care"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="5dp"
@@ -256,7 +256,7 @@
                             android:scrollbarStyle="outsideInset"/>
 
                     <ProgressBar
-                            android:id="@+id/pb_recent"
+                            android:id="@+id/pb_health_care"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
