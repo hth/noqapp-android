@@ -63,15 +63,12 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private JsonQueue jsonQueue = null;
     private TextView tv_contact_no, tv_address, tv_address_title, tv_known_for, tv_store_name, tv_store_address, tv_store_timings, tv_header_menu, tv_header_famous;
     private BizStoreElastic bizStoreElastic;
-    private CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView rv_thumb_images, rv_photos;
-    private AppBarLayout appBarLayout;
-    private ImageView iv_business_icon;
     private boolean canAddItem = true;
-    private RelativeLayout rl_mid_content;
     private TextView tv_rating, tv_rating_review;
     private SegmentedControl sc_amenities, sc_delivery_types, sc_payment_mode;
     private Button tv_menu;
+    private ImageView iv_category_banner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,36 +86,15 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_menu = findViewById(R.id.tv_menu);
         tv_rating_review = findViewById(R.id.tv_rating_review);
         tv_rating = findViewById(R.id.tv_rating);
-
+        iv_category_banner = findViewById(R.id.iv_category_banner);
         sc_payment_mode = findViewById(R.id.sc_payment_mode);
         sc_delivery_types = findViewById(R.id.sc_delivery_types);
         sc_amenities = findViewById(R.id.sc_amenities);
-        ImageView collapseImageView = findViewById(R.id.backdrop);
-        rl_mid_content = findViewById(R.id.rl_mid_content);
-        iv_business_icon = findViewById(R.id.iv_business_icon);
-        appBarLayout = findViewById(R.id.appbar);
-        RatingBar ratingBar = findViewById(R.id.ratingBar);
-        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (verticalOffset == 0) {
-                    rl_mid_content.setVisibility(View.VISIBLE);
-                } else {
-                    rl_mid_content.setVisibility(View.GONE);
-                }
-            }
-        });
-        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        AppUtilities.setRatingBarColor(stars, this);
+        initActionsViews(false);
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        final Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        collapsingToolbar.setTitle(" ");
         bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
-        ratingBar.setRating(bizStoreElastic.getRating());
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rv_thumb_images = findViewById(R.id.rv_thumb_images);
         rv_thumb_images.setHasFixedSize(true);
@@ -145,16 +121,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 }
             }
         });
-
-        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
-            Picasso.with(this)
-                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
-                    .placeholder(ImageUtils.getBannerPlaceholder(this))
-                    .error(ImageUtils.getBannerErrorPlaceholder(this))
-                    .into(collapseImageView);
-        else {
-            Picasso.with(this).load(ImageUtils.getBannerPlaceholder()).into(collapseImageView);
-        }
         progressDialog.setMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
         if (NetworkUtils.isConnectingToInternet(this)) {
             progressDialog.show();
@@ -212,6 +178,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     private void populateStore() {
         jsonQueue = jsonStore.getJsonQueue();
+        tv_toolbar_title.setText(jsonQueue.getDisplayName());
         tv_contact_no.setText(jsonQueue.getStorePhone());
         tv_address.setText(jsonQueue.getStoreAddress());
         tv_address.setOnClickListener(new View.OnClickListener() {
@@ -238,25 +205,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         }
         sc_payment_mode.removeAllSegments();
         sc_payment_mode.addSegments(payment_data);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = true;
-            int scrollRange = -1;
-
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbar.setTitle(jsonQueue.getDisplayName());
-                    isShow = true;
-                } else if (isShow) {
-                    collapsingToolbar.setTitle(" ");//be careful there should be a space between double quote otherwise it won't work
-                    isShow = false;
-                }
-            }
-        });
-
 
         tv_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
         if (tv_rating.getText().toString().equals("0.0")) {
@@ -266,13 +214,21 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         }
         if (jsonQueue.getReviewCount() == 0) {
             tv_rating_review.setText("No Review");
-            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
+            tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
         } else if (jsonQueue.getReviewCount() == 1) {
             tv_rating_review.setText("1 Review");
         } else {
             tv_rating_review.setText(String.valueOf(jsonQueue.getReviewCount()) + " Reviews");
         }
-        AppUtilities.setStoreDrawable(this, iv_business_icon, bizStoreElastic.getBusinessType(), tv_rating);
+        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
+            Picasso.with(this)
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
+                    .placeholder(ImageUtils.getBannerPlaceholder(this))
+                    .error(ImageUtils.getBannerErrorPlaceholder(this))
+                    .into(iv_category_banner);
+        else {
+            Picasso.with(this).load(ImageUtils.getBannerPlaceholder()).into(iv_category_banner);
+        }
         //
         List<AmenityEnum> amenities = jsonQueue.getAmenities();
         ArrayList<String> amenitiesdata = new ArrayList<>();

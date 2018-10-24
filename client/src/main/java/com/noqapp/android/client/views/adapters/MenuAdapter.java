@@ -51,6 +51,7 @@ public class MenuAdapter extends BaseAdapter {
             convertView = infalInflater.inflate(R.layout.list_item_menu_child, viewGroup, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_child_title = convertView.findViewById(R.id.tv_child_title);
+            childViewHolder.tv_child_title_details = convertView.findViewById(R.id.tv_child_title_details);
             childViewHolder.tv_value = convertView.findViewById(R.id.tv_value);
             childViewHolder.tv_price = convertView.findViewById(R.id.tv_price);
             childViewHolder.tv_discounted_price = convertView.findViewById(R.id.tv_discounted_price);
@@ -64,6 +65,7 @@ public class MenuAdapter extends BaseAdapter {
         }
         final JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
+        childViewHolder.tv_child_title_details.setText(jsonStoreProduct.getProductInfo());
         childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
         //TODO chandra use County Code of the store to decide on Currency type
         childViewHolder.tv_price.setText(context.getString(R.string.rupee) + " " + jsonStoreProduct.getDisplayPrice());
@@ -147,6 +149,7 @@ public class MenuAdapter extends BaseAdapter {
 
     public final class ChildViewHolder {
         TextView tv_child_title;
+        TextView tv_child_title_details;
         TextView tv_price;
         TextView tv_value;
         TextView tv_discounted_price;

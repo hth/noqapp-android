@@ -124,7 +124,6 @@
                                     android:layout_height="@dimen/btn_standard_height"
                                     android:paddingLeft="20dp"
                                     android:paddingRight="20dp"
-
                                     android:layout_gravity="right"
                                     android:background="@drawable/btn_bg_enable"
                                     android:textAllCaps="true"
