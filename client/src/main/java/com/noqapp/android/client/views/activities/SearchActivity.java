@@ -209,6 +209,16 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
     @Override
+    public void nearMeHospitalResponse(BizStoreElasticList bizStoreElasticList) {
+            // Do nothing
+    }
+
+    @Override
+    public void nearMeHospitalError() {
+        dismissProgress();
+    }
+
+    @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
         new ErrorResponseHandler().processError(this,eej);
@@ -225,4 +235,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         dismissProgress();
         AppUtilities.authenticationProcessing(this);
     }
+
+
+
 }

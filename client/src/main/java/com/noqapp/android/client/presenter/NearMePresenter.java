@@ -13,4 +13,8 @@ public interface NearMePresenter extends ResponseErrorPresenter {
     void nearMeResponse(BizStoreElasticList bizStoreElasticList);
 
     void nearMeError();
+
+    void nearMeHospitalResponse(BizStoreElasticList bizStoreElasticList);
+
+    void nearMeHospitalError();
 }

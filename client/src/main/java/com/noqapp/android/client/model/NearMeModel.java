@@ -21,7 +21,6 @@ import retrofit2.Response;
  */
 
 public class NearMeModel {
-    private final String TAG = NearMeModel.class.getSimpleName();
     private static final NearMeService nearmeService;
     private NearMePresenter nearMePresenter;
 
@@ -61,6 +60,38 @@ public class NearMeModel {
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("NearMe failed", t.getLocalizedMessage(), t);
                 nearMePresenter.nearMeError();
+            }
+        });
+    }
+
+    /**
+     * @param did
+     * @param storeInfoParam
+     */
+    public void nearMeHospitalAndDoctors(String did, StoreInfoParam storeInfoParam) {
+        nearmeService.nearMe(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
+            @Override
+            public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response NearMeHospital", String.valueOf(response.body()));
+                        nearMePresenter.nearMeHospitalResponse(response.body());
+                    } else {
+                        nearMePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        nearMePresenter.authenticationFailure();
+                    } else {
+                        nearMePresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
+                Log.e("NearMeHospital failed", t.getLocalizedMessage(), t);
+                nearMePresenter.nearMeHospitalError();
             }
         });
     }
