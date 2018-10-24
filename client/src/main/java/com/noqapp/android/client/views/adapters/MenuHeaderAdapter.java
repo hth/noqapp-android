@@ -47,8 +47,8 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.My
         JsonStoreCategory jsonTokenAndQueue = dataSet.get(listPosition);
         holder.tv_menu_header.setText(jsonTokenAndQueue.getCategoryName());
         if (selected_pos == listPosition) {
-            holder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.colorActionbar));
-            holder.tv_menu_header.setTextColor(ContextCompat.getColor(context, R.color.colorActionbar));
+            holder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.theme_color_red));
+            holder.tv_menu_header.setTextColor(ContextCompat.getColor(context, R.color.theme_color_red));
         } else {
             holder.ll_header.setBackgroundColor(Color.WHITE);
             holder.tv_menu_header.setTextColor(Color.BLACK);
