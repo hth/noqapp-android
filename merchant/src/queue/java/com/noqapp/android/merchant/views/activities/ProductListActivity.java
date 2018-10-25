@@ -237,6 +237,9 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         View customDialogView = inflater.inflate(R.layout.dialog_edit_prod_list, null, false);
 
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
+        TextView tv_toolbar_title = customDialogView.findViewById(R.id.tv_toolbar_title);
+        if(actionTypeEnum == ActionTypeEnum.ADD)
+            tv_toolbar_title.setText("Add Product");
         final Spinner sp_category_type = customDialogView.findViewById(R.id.sp_category_type);
         final Spinner sp_product_type = customDialogView.findViewById(R.id.sp_product_type);
         final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
