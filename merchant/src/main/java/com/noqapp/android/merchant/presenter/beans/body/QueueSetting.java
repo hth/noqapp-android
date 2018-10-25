@@ -71,8 +71,8 @@ public class QueueSetting {
     @JsonProperty ("scUn")
     private String scheduledUntilDay;
 
-    @JsonProperty("ac")
-    private ActionTypeEnum actionType;
+    @JsonProperty("sa")
+    private ActionTypeEnum storeActionType;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -203,12 +203,12 @@ public class QueueSetting {
         return this;
     }
 
-    public ActionTypeEnum getActionType() {
-        return actionType;
+    public ActionTypeEnum getStoreActionType() {
+        return storeActionType;
     }
 
-    public QueueSetting setActionType(ActionTypeEnum actionType) {
-        this.actionType = actionType;
+    public QueueSetting setStoreActionType(ActionTypeEnum storeActionType) {
+        this.storeActionType = storeActionType;
         return this;
     }
 
