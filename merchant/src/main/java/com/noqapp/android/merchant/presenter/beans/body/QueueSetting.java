@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.presenter.beans.body;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -69,6 +70,9 @@ public class QueueSetting {
 
     @JsonProperty ("scUn")
     private String scheduledUntilDay;
+
+    @JsonProperty("ac")
+    private ActionTypeEnum actionType;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -196,6 +200,15 @@ public class QueueSetting {
 
     public QueueSetting setScheduledUntilDay(String scheduledUntilDay) {
         this.scheduledUntilDay = scheduledUntilDay;
+        return this;
+    }
+
+    public ActionTypeEnum getActionType() {
+        return actionType;
+    }
+
+    public QueueSetting setActionType(ActionTypeEnum actionType) {
+        this.actionType = actionType;
         return this;
     }
 
