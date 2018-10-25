@@ -6,7 +6,10 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.order.ProductTypeEnum;
+import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.adapters.EnumAdapter;
 import com.noqapp.android.merchant.views.model.StoreProductModel;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
@@ -22,17 +25,24 @@ import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.FragmentDummy;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +57,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
     private String codeQR = "";
+    private ArrayList<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +127,8 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         dismissProgress();
         if (null != jsonStore) {
             String defaultCategory = "Un-Categorized";
-            final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
+            jsonStoreCategories.clear();
+            jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
             final HashMap<String, List<ChildData>> listDataChild = new HashMap<>();
             for (int l = 0; l < jsonStoreCategories.size(); l++) {
@@ -208,6 +220,82 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     }
 
     @Override
+    public void addOrEditProduct(final JsonStoreProduct temp, final ActionTypeEnum actionTypeEnum) {
+        final JsonStoreProduct jsonStoreProduct = null!= temp? temp:new JsonStoreProduct();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_edit_prod_list, null, false);
+
+        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
+        final Spinner sp_category_type = customDialogView.findViewById(R.id.sp_category_type);
+        final Spinner sp_product_type = customDialogView.findViewById(R.id.sp_product_type);
+        final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
+        final EditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
+        final EditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
+        final EditText edt_prod_description = customDialogView.findViewById(R.id.edt_prod_description);
+        final EditText edt_prod_discount = customDialogView.findViewById(R.id.edt_prod_discount);
+        if(null != temp) {
+            edt_prod_name.setText(jsonStoreProduct.getProductName());
+            edt_prod_price.setText(jsonStoreProduct.getDisplayPrice());
+            edt_prod_description.setText(jsonStoreProduct.getProductInfo());
+            edt_prod_discount.setText(jsonStoreProduct.getDisplayDiscount());
+        }
+        List<String> prodTypes = ProductTypeEnum.asListOfDescription();
+        prodTypes.add(0, "Select product type");
+        List<String> prodUnits = UnitOfMeasurementEnum.asListOfDescription();
+        prodUnits.add(0, "Select product unit");
+
+        List<String> categories = new ArrayList<>();
+        for (int i = 0; i < jsonStoreCategories.size(); i++) {
+            categories.add(jsonStoreCategories.get(i).getCategoryName());
+        }
+        categories.add(0, "Select product category");
+        sp_category_type.setAdapter(new EnumAdapter(this, categories));
+        sp_product_type.setAdapter(new EnumAdapter(this, prodTypes));
+        sp_unit.setAdapter(new EnumAdapter(this, prodUnits));
+        builder.setView(customDialogView);
+
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        Button btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
+        btn_create_token.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (sp_category_type.getSelectedItemPosition() == 0) {
+                    Toast.makeText(ProductListActivity.this, "Please select product category", Toast.LENGTH_LONG).show();
+                }else if (sp_product_type.getSelectedItemPosition() == 0) {
+                    Toast.makeText(ProductListActivity.this, "Please select product type", Toast.LENGTH_LONG).show();
+                } else if (sp_unit.getSelectedItemPosition() == 0) {
+                    Toast.makeText(ProductListActivity.this, "Please select product unit", Toast.LENGTH_LONG).show();
+                } else {
+                    if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount)) {
+                                jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
+                                jsonStoreProduct.setProductInfo(edt_prod_description.getText().toString());
+                                jsonStoreProduct.setProductPrice(Integer.parseInt(edt_prod_price.getText().toString()) * 100);
+                                jsonStoreProduct.setProductDiscount(Integer.parseInt(edt_prod_discount.getText().toString()) * 100);
+                                jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(sp_product_type.getSelectedItem().toString()));
+                                jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
+                                jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString()));
+                        menuItemUpdate(jsonStoreProduct, actionTypeEnum);
+                        mAlertDialog.dismiss();
+                    }
+                }
+            }
+        });
+
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertDialog.dismiss();
+            }
+        });
+        mAlertDialog.show();
+    }
+
+
+    @Override
     public void actionOnProductResponse(JsonResponse jsonResponse) {
         dismissProgress();
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
@@ -223,5 +311,36 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         } else {
             Toast.makeText(this, "Failed to perform action", Toast.LENGTH_LONG).show();
         }
+    }
+
+
+    private boolean validate(EditText... views) {
+        boolean isValid = true;
+        for (EditText v : views) {
+            v.setError(null);
+        }
+        new AppUtils().hideKeyBoard(this);
+        String errorMsg = "";
+        for (EditText v : views) {
+            if (TextUtils.isEmpty(v.getText().toString())) {
+                v.setError(getString(R.string.error_field_required));
+                if (isValid) {
+                    isValid = false;
+                    errorMsg = getString(R.string.error_all_field_required);
+                }
+            }
+        }
+        if (!TextUtils.isEmpty(errorMsg))
+            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+        return isValid;
+    }
+
+    private String getCategoryID(String category){
+        for (int i = 0; i < jsonStoreCategories.size(); i++) {
+            if(category.equals(jsonStoreCategories.get(i).getCategoryName())){
+                return jsonStoreCategories.get(i).getCategoryId();
+            }
+        }
+        return "";
     }
 }

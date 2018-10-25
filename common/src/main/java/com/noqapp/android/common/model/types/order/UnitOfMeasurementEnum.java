@@ -1,11 +1,16 @@
 package com.noqapp.android.common.model.types.order;
 
+import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
+
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by hitender on 4/1/18.
  */
 public enum UnitOfMeasurementEnum {
     CN("CN", "count"),
-//    DZ("DZ", "dozen"),
+    DZ("DZ", "dozen"),
     MG("MG", "mg"),
     GM("GM", "gm"),
     KG("KG", "kg"),
@@ -31,5 +36,22 @@ public enum UnitOfMeasurementEnum {
     @Override
     public String toString() {
         return description;
+    }
+
+    public static List<String> asListOfDescription() {
+        List<String> a = new LinkedList<>();
+        for(UnitOfMeasurementEnum unitOfMeasurementEnum : UnitOfMeasurementEnum.values()) {
+            a.add(unitOfMeasurementEnum.description);
+        }
+        return a;
+    }
+
+    public static UnitOfMeasurementEnum getEnum(String description){
+        for(UnitOfMeasurementEnum unitOfMeasurementEnum : UnitOfMeasurementEnum.values()) {
+            if(description.equals(unitOfMeasurementEnum.description)) {
+                return unitOfMeasurementEnum;
+            }
+        }
+        return UnitOfMeasurementEnum.CN;
     }
 }

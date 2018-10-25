@@ -102,6 +102,7 @@
 
     <!-- Strings related to login -->
     <string name="error_field_required">This field is required</string>
+    <string name="error_all_field_required">All fields are required</string>
     <string name="prompt_user_name">User Name</string>
     <string name="prompt_gender">Gender</string>
     <string name="prompt_marital_status">marital status</string>
@@ -181,4 +182,9 @@
     <string name="screen_product_list">Products List</string>
 
     <string name="rupee">\u20B9</string>
+    <string name="edit_prod">Edit Product</string>
+    <string name="product_name">Name</string>
+    <string name="product_price">Product price</string>
+    <string name="product_desc">Product description</string>
+    <string name="product_discount">Product discount</string>
 </resources>

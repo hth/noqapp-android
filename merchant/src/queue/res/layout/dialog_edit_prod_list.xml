@@ -1,0 +1,152 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@android:color/white">
+
+    <RelativeLayout
+            android:id="@+id/ll_top"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/color_action_bar">
+
+        <ImageView
+                android:id="@+id/actionbarBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/cross"
+                android:padding="10dp"/>
+
+
+        <TextView
+                android:id="@+id/tv_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/edit_prod"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_top"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:padding="20dp">
+
+
+        <LinearLayout
+                android:id="@+id/ll_center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+            <Spinner
+                    android:id="@+id/sp_category_type"
+                    android:layout_width="@dimen/edit_field_width"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/sp_background"
+                    android:layout_marginBottom="10dp"/>
+
+            <Spinner
+                    android:id="@+id/sp_product_type"
+                    android:layout_width="@dimen/edit_field_width"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/sp_background"
+                    android:layout_marginBottom="10dp"/>
+
+            <Spinner
+                    android:id="@+id/sp_unit"
+                    android:layout_width="@dimen/edit_field_width"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/sp_background"
+                    android:layout_marginBottom="10dp"/>
+
+            <EditText
+                    android:id="@+id/edt_prod_name"
+                    android:layout_width="@dimen/edit_field_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:background="@drawable/edt_roun_rect"
+                    android:hint="@string/product_name"
+                    android:inputType="text"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:padding="10dp"/>
+
+            <EditText
+                    android:id="@+id/edt_prod_price"
+                    android:layout_width="@dimen/edit_field_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="@string/product_price"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:maxLength="5"
+                    android:inputType="numberDecimal"
+                    android:background="@drawable/edt_roun_rect"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:padding="10dp"/>
+
+            <EditText
+                    android:id="@+id/edt_prod_description"
+                    android:layout_width="@dimen/edit_field_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="@string/product_desc"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:background="@drawable/edt_roun_rect"
+                    android:inputType="text"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:padding="10dp"/>
+
+            <EditText
+                    android:id="@+id/edt_prod_discount"
+                    android:layout_width="@dimen/edit_field_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="@string/product_discount"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:maxLength="5"
+                    android:inputType="numberDecimal"
+                    android:background="@drawable/edt_roun_rect"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:padding="10dp"/>
+
+            <Button
+                    android:id="@+id/btn_create_token"
+                    android:layout_width="@dimen/edit_field_width"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/button_drawable_red"
+                    android:text="@string/update"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_sixteen"/>
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</RelativeLayout>

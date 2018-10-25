@@ -4,20 +4,29 @@ package com.noqapp.android.merchant.views.adapters;
 import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.order.ProductTypeEnum;
+import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.Dictionary;
 import java.util.List;
 
 public class MenuAdapter extends BaseAdapter {
@@ -52,10 +61,12 @@ public class MenuAdapter extends BaseAdapter {
             convertView = infalInflater.inflate(R.layout.list_item_menu_child, viewGroup, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_child_title = convertView.findViewById(R.id.tv_child_title);
+            childViewHolder.tv_child_title_details = convertView.findViewById(R.id.tv_child_title_details);
             childViewHolder.tv_price = convertView.findViewById(R.id.tv_price);
             childViewHolder.tv_discounted_price = convertView.findViewById(R.id.tv_discounted_price);
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
             childViewHolder.iv_delete = convertView.findViewById(R.id.iv_delete);
+            childViewHolder.iv_edit = convertView.findViewById(R.id.iv_edit);
             convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder) convertView
@@ -63,6 +74,7 @@ public class MenuAdapter extends BaseAdapter {
         }
         final JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
+        childViewHolder.tv_child_title_details.setText(jsonStoreProduct.getProductInfo());
         //  childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
         //TODO chandra use County Code of the store to decide on Currency type
         childViewHolder.tv_price.setText(context.getString(R.string.rupee) + " " + jsonStoreProduct.getDisplayPrice());
@@ -120,6 +132,12 @@ public class MenuAdapter extends BaseAdapter {
 
             }
         });
+        childViewHolder.iv_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menuItemUpdate.addOrEditProduct(jsonStoreProduct, ActionTypeEnum.EDIT);
+            }
+        });
         return convertView;
     }
 
@@ -131,14 +149,20 @@ public class MenuAdapter extends BaseAdapter {
 
     public final class ChildViewHolder {
         TextView tv_child_title;
+        TextView tv_child_title_details;
         TextView tv_price;
         TextView tv_value;
         TextView tv_discounted_price;
         TextView tv_cat;
         ImageView iv_delete;
+        ImageView iv_edit;
     }
 
     public interface MenuItemUpdate {
         void menuItemUpdate(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum);
+
+        void addOrEditProduct(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum);
+
     }
+
 }
