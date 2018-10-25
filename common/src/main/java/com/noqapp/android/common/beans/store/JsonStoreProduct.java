@@ -59,7 +59,7 @@ public class JsonStoreProduct implements Serializable {
     @JsonProperty("pr")
     private String productReference;
 
-    @JsonProperty("A")
+    @JsonProperty("a")
     private boolean active = true;
 
     public String getProductId() {
