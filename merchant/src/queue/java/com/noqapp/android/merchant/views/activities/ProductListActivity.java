@@ -14,7 +14,6 @@ import com.noqapp.android.merchant.views.model.StoreProductModel;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
 import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -25,7 +24,6 @@ import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.FragmentDummy;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -35,6 +33,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +55,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     private RecyclerView rcv_header;
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
+    private TextView tv_name;
     private String codeQR = "";
     private ArrayList<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
 
@@ -72,6 +72,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         codeQR = getIntent().getStringExtra("codeQR");
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        tv_name = findViewById(R.id.tv_name);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
@@ -151,8 +152,6 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             }
 
             rcv_header = findViewById(R.id.rcv_header);
-            // List<JsonStoreCategory> expandableListTitle = jsonStoreCategories;
-            //HashMap<String, List<ChildData>> expandableListDetail = listDataChild;
             viewPager = findViewById(R.id.pager);
             TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
             ArrayList<Integer> removeEmptyData = new ArrayList<>();
@@ -172,6 +171,16 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             rcv_header.setLayoutManager(horizontalLayoutManagaer);
             rcv_header.setItemAnimator(new DefaultItemAnimator());
 
+            if(jsonStoreCategories.size()>0){
+                tv_name.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
+                tv_name.setText("Add Product");
+                tv_name.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addOrEditProduct(null,ActionTypeEnum.ADD);
+                    }
+                });
+            }
             menuAdapter = new MenuHeaderAdapter(jsonStoreCategories, this, this);
             rcv_header.setAdapter(menuAdapter);
             menuAdapter.notifyDataSetChanged();
