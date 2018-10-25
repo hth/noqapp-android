@@ -223,8 +223,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             tv_store_close.setEnabled(false);
             tv_token_available.setEnabled(false);
             tv_token_not_available.setEnabled(false);
+
+
+        }
+
+        if((LaunchActivity.getLaunchActivity().getUserLevel() != UserLevelEnum.S_MANAGER)){
             toggleDayClosed.setClickable(false);
-            toggleStoreOffline.setClickable(false);
             toggleDayClosed.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -232,6 +236,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                     return false;
                 }
             });
+            toggleStoreOffline.setClickable(false);
             toggleStoreOffline.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -240,6 +245,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 }
             });
         }
+
         Button btn_update_time = findViewById(R.id.btn_update_time);
         Button btn_update_delay = findViewById(R.id.btn_update_delay);
         Button btn_update_scheduling = findViewById(R.id.btn_update_scheduling);
