@@ -238,6 +238,7 @@ public class QueueSetting {
                 ", untilDay='" + untilDay + '\'' +
                 ", scheduledFromDay='" + scheduledFromDay + '\'' +
                 ", scheduledUntilDay='" + scheduledUntilDay + '\'' +
+                ", storeActionType=" + storeActionType +
                 ", error=" + error +
                 '}';
     }

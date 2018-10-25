@@ -22,6 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
+                android:paddingBottom="10dp"
                 android:orientation="vertical">
 
             <TextView
@@ -547,6 +548,48 @@
 
                     <ToggleButton
                             android:id="@+id/toggleDayClosed"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0.2"
+                            android:background="@null"
+                            android:drawableRight="@drawable/toggle_selector"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:textOff=""
+                            android:textOn=""/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="4dp">
+
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:minHeight="@dimen/cell_size"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/screen_padding"
+                        android:paddingRight="@dimen/screen_padding">
+
+                    <TextView
+                            android:id="@+id/tv_store_offline"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8"
+                            android:text="@string/store_offline"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/color_total_val"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <ToggleButton
+                            android:id="@+id/toggleStoreOffline"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"

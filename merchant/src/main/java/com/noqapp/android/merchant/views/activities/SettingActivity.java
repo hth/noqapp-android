@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
@@ -55,7 +56,7 @@ import java.util.Locale;
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack, iv_delete_scheduling;
-    private ToggleButton toggleDayClosed, togglePreventJoin, toggleTodayClosed;
+    private ToggleButton toggleDayClosed, togglePreventJoin, toggleTodayClosed, toggleStoreOffline;
     private String codeQR;
     protected boolean isDialog = false;
     private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute, tv_close_day_of_week;
@@ -95,6 +96,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         toggleDayClosed = findViewById(R.id.toggleDayClosed);
         toggleTodayClosed = findViewById(R.id.toggleTodayClosed);
         togglePreventJoin = findViewById(R.id.togglePreventJoin);
+        toggleStoreOffline = findViewById(R.id.toggleStoreOffline);
         String title = getIntent().getStringExtra("title");
         codeQR = getIntent().getStringExtra("codeQR");
         if (null != title) {
@@ -103,6 +105,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         toggleDayClosed.setOnClickListener(this);
         toggleTodayClosed.setOnClickListener(this);
         togglePreventJoin.setOnClickListener(this);
+        toggleStoreOffline.setOnClickListener(this);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,7 +224,15 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             tv_token_available.setEnabled(false);
             tv_token_not_available.setEnabled(false);
             toggleDayClosed.setClickable(false);
+            toggleStoreOffline.setClickable(false);
             toggleDayClosed.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
+                    return false;
+                }
+            });
+            toggleStoreOffline.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
@@ -319,6 +330,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             toggleDayClosed.setChecked(queueSetting.isDayClosed());
             togglePreventJoin.setChecked(queueSetting.isPreventJoining());
             toggleTodayClosed.setChecked(queueSetting.isTempDayClosed());
+            toggleStoreOffline.setChecked(queueSetting.getStoreActionType() == ActionTypeEnum.INACTIVE);
             tv_token_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenAvailableFrom()));
             tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
             tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
@@ -404,8 +416,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 toggleDayClosed.setChecked(!toggleDayClosed.isChecked());
             } else if (v.getId() == R.id.togglePreventJoin) {
                 togglePreventJoin.setChecked(!togglePreventJoin.isChecked());
-            } else {
+            } else if (v.getId() == R.id.toggleTodayClosed) {
                 toggleTodayClosed.setChecked(!toggleTodayClosed.isChecked());
+            } else {
+                toggleStoreOffline.setChecked(!toggleStoreOffline.isChecked());
             }
         }
     }
@@ -417,7 +431,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         queueSetting.setDayClosed(toggleDayClosed.isChecked());
         queueSetting.setPreventJoining(togglePreventJoin.isChecked());
         queueSetting.setTempDayClosed(toggleTodayClosed.isChecked());
-
+        queueSetting.setStoreActionType(toggleStoreOffline.isChecked() ? ActionTypeEnum.INACTIVE : ActionTypeEnum.ACTIVE);
         if (StringUtils.isNotBlank(tv_token_available.getText().toString())) {
             queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
         }
@@ -568,7 +582,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         return endTime.isBefore(startTime);
     }
 
-    private boolean isSpecificSettingEditAllowed(){
-        return (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER)||(LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR);
+    private boolean isSpecificSettingEditAllowed() {
+        return (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) || (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR);
     }
 }

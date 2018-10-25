@@ -172,6 +172,7 @@ public class JsonStoreProduct implements Serializable {
                 ", productType=" + productType +
                 ", unitOfMeasurement=" + unitOfMeasurement +
                 ", productReference='" + productReference + '\'' +
+                ", active=" + active +
                 '}';
     }
 }
