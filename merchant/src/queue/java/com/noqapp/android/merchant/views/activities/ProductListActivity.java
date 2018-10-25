@@ -285,8 +285,8 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
                     if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount)) {
                                 jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
                                 jsonStoreProduct.setProductInfo(edt_prod_description.getText().toString());
-                                jsonStoreProduct.setProductPrice(Integer.parseInt(edt_prod_price.getText().toString()) * 100);
-                                jsonStoreProduct.setProductDiscount(Integer.parseInt(edt_prod_discount.getText().toString()) * 100);
+                                jsonStoreProduct.setProductPrice((int)(Float.parseFloat(edt_prod_price.getText().toString()) * 100));
+                                jsonStoreProduct.setProductDiscount((int)(Float.parseFloat(edt_prod_discount.getText().toString()) * 100));
                                 jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(sp_product_type.getSelectedItem().toString()));
                                 jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
                                 jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString()));

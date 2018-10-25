@@ -100,7 +100,7 @@
                     android:hint="@string/product_price"
                     android:maxLines="1"
                     android:minLines="1"
-                    android:maxLength="5"
+                    android:maxLength="7"
                     android:inputType="numberDecimal"
                     android:background="@drawable/edt_roun_rect"
                     android:textSize="@dimen/text_size_fourteen"
