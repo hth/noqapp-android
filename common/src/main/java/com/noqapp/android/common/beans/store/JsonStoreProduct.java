@@ -59,6 +59,9 @@ public class JsonStoreProduct implements Serializable {
     @JsonProperty("pr")
     private String productReference;
 
+    @JsonProperty("A")
+    private boolean active = true;
+
     public String getProductId() {
         return productId;
     }
@@ -146,6 +149,15 @@ public class JsonStoreProduct implements Serializable {
 
     public String getDisplayDiscount() {
         return new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public JsonStoreProduct setActive(boolean active) {
+        this.active = active;
+        return this;
     }
 
     @Override
