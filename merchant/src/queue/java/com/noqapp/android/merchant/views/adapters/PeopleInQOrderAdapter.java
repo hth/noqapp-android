@@ -196,11 +196,14 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         View customDialogView = inflater.inflate(R.layout.dialog_order_detail, null, false);
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
         ListView listview = customDialogView.findViewById(R.id.listview);
-        //listview.setScrollBarFadeDuration(0);
         TextView tv_item_count = customDialogView.findViewById(R.id.tv_item_count);
         TextView tv_payment_mode = customDialogView.findViewById(R.id.tv_payment_mode);
         TextView tv_address = customDialogView.findViewById(R.id.tv_address);
         TextView tv_cost = customDialogView.findViewById(R.id.tv_cost);
+        TextView tv_notes = customDialogView.findViewById(R.id.tv_notes);
+        CardView cv_notes = customDialogView.findViewById(R.id.cv_notes);
+        tv_notes.setText("Additional Notes: "+jsonPurchaseOrder.getAdditionalNote());
+        cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote())?View.GONE:View.VISIBLE);
         tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
         tv_payment_mode.setText(Html.fromHtml(jsonPurchaseOrder.getPaymentType().getDescription()));
         try {

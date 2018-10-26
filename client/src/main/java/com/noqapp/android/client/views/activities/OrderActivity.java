@@ -331,6 +331,5 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         dismissProgress();
 
     }
-
-
+    
 }
