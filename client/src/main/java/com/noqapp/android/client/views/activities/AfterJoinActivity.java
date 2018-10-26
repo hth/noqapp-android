@@ -98,7 +98,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         TextView tv_name = findViewById(R.id.tv_name);
         ImageView iv_profile = findViewById(R.id.iv_profile);
         TextView tv_rating_review = findViewById(R.id.tv_rating_review);
-        RatingBar ratingBar = findViewById(R.id.ratingBar);
         btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
