@@ -94,6 +94,9 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
     @JsonProperty("u")
     private String created;
 
+    @JsonProperty("an")
+    private String additionalNote;
+
     @JsonProperty("pops")
     private List<JsonPurchaseOrderProductHistorical> jsonPurchaseOrderProductHistoricalList = new ArrayList<>();
 
@@ -250,6 +253,15 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
 
     public JsonPurchaseOrderHistorical setCreated(String created) {
         this.created = created;
+        return this;
+    }
+
+    public String getAdditionalNote() {
+        return additionalNote;
+    }
+
+    public JsonPurchaseOrderHistorical setAdditionalNote(String additionalNote) {
+        this.additionalNote = additionalNote;
         return this;
     }
 
