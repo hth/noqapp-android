@@ -330,8 +330,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             //Likely hood of blank bizCategoryId
             String bizCategoryId = bizStoreElastic.getBizCategoryId() == null ? "" : bizStoreElastic.getBizCategoryId();
 
-
-            if(bizStoreElastic.isActive()) {
+            /* When level up, check if queue is offline. */
+            if (bizStoreElastic.isActive()) {
                 if (!queueMap.containsKey(bizCategoryId)) {
                     ArrayList<BizStoreElastic> bizStoreElasticArrayList = new ArrayList<>();
                     bizStoreElasticArrayList.add(bizStoreElastic);
