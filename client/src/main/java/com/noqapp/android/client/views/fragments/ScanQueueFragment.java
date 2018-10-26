@@ -306,9 +306,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
             if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.PH &&
                     bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.DO) {
-                if (bizStoreElasticList.getBizStoreElastics().get(i).isActive()) {
-                    nearMeData.add(bizStoreElasticList.getBizStoreElastics().get(i));
-                }
+                nearMeData.add(bizStoreElasticList.getBizStoreElastics().get(i));
             }
         }
         //sort the list, give the Comparator the current location
@@ -337,9 +335,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
             if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() == BusinessTypeEnum.PH ||
                     bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() == BusinessTypeEnum.DO) {
-                if (bizStoreElasticList.getBizStoreElastics().get(i).isActive()) {
-                    nearMeHospital.add(bizStoreElasticList.getBizStoreElastics().get(i));
-                }
+                nearMeHospital.add(bizStoreElasticList.getBizStoreElastics().get(i));
             }
         }
         //sort the list, give the Comparator the current location

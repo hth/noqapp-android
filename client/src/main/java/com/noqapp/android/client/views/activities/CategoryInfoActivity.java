@@ -325,24 +325,28 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         Map<String, ArrayList<BizStoreElastic>> queueMap = new HashMap<>();
         float ratingQueue = 0;
         int ratingCountQueue = 0, queueWithRating = 0;
-        for (BizStoreElastic jsonQueue : bizStoreElasticList.getBizStoreElastics()) {
+        for (BizStoreElastic bizStoreElastic : bizStoreElasticList.getBizStoreElastics()) {
 
             //Likely hood of blank bizCategoryId
-            String bizCategoryId = jsonQueue.getBizCategoryId() == null ? "" : jsonQueue.getBizCategoryId();
-            if (!queueMap.containsKey(bizCategoryId)) {
-                ArrayList<BizStoreElastic> jsonQueues = new ArrayList<>();
-                jsonQueues.add(jsonQueue);
-                queueMap.put(bizCategoryId, jsonQueues);
-            } else {
-                ArrayList<BizStoreElastic> jsonQueues = queueMap.get(bizCategoryId);
-                jsonQueues.add(jsonQueue);
-                // AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
-            }
+            String bizCategoryId = bizStoreElastic.getBizCategoryId() == null ? "" : bizStoreElastic.getBizCategoryId();
 
-            if (jsonQueue.getReviewCount() != 0) {
-                ratingQueue += jsonQueue.getRating();
-                ratingCountQueue += jsonQueue.getReviewCount();
-                queueWithRating++;
+
+            if(bizStoreElastic.isActive()) {
+                if (!queueMap.containsKey(bizCategoryId)) {
+                    ArrayList<BizStoreElastic> bizStoreElasticArrayList = new ArrayList<>();
+                    bizStoreElasticArrayList.add(bizStoreElastic);
+                    queueMap.put(bizCategoryId, bizStoreElasticArrayList);
+                } else {
+                    ArrayList<BizStoreElastic> jsonQueues = queueMap.get(bizCategoryId);
+                    jsonQueues.add(bizStoreElastic);
+                    // AppUtilities.sortJsonQueues(systemHourMinutes, jsonQueues);
+                }
+
+                if (bizStoreElastic.getReviewCount() != 0) {
+                    ratingQueue += bizStoreElastic.getRating();
+                    ratingCountQueue += bizStoreElastic.getReviewCount();
+                    queueWithRating++;
+                }
             }
         }
         rating = ratingQueue / queueWithRating;
