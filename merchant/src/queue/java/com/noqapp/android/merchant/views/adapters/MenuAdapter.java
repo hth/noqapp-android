@@ -4,29 +4,23 @@ package com.noqapp.android.merchant.views.adapters;
 import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
-import com.noqapp.android.common.model.types.order.ProductTypeEnum;
-import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
 
-import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Arrays;
-import java.util.Dictionary;
 import java.util.List;
 
 public class MenuAdapter extends BaseAdapter {
@@ -67,6 +61,7 @@ public class MenuAdapter extends BaseAdapter {
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
             childViewHolder.iv_delete = convertView.findViewById(R.id.iv_delete);
             childViewHolder.iv_edit = convertView.findViewById(R.id.iv_edit);
+            childViewHolder.rl_menu_child = convertView.findViewById(R.id.rl_menu_child);
             convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder) convertView
@@ -138,6 +133,12 @@ public class MenuAdapter extends BaseAdapter {
                 menuItemUpdate.addOrEditProduct(jsonStoreProduct, ActionTypeEnum.EDIT);
             }
         });
+
+        if(jsonStoreProduct.isActive()){
+            childViewHolder.rl_menu_child.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
+        }else{
+            childViewHolder.rl_menu_child.setBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
+        }
         return convertView;
     }
 
@@ -156,9 +157,11 @@ public class MenuAdapter extends BaseAdapter {
         TextView tv_cat;
         ImageView iv_delete;
         ImageView iv_edit;
+        RelativeLayout rl_menu_child;
     }
 
     public interface MenuItemUpdate {
+
         void menuItemUpdate(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum);
 
         void addOrEditProduct(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum);

@@ -17,12 +17,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAdapter.MyViewHolder> {
@@ -126,7 +125,35 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         recordHolder.tv_order_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                peopleInQOrderAdapterClick.orderCancelClick(position);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                LayoutInflater inflater = LayoutInflater.from(context);
+                builder.setTitle(null);
+                View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
+                builder.setView(customDialogView);
+                final AlertDialog mAlertDialog = builder.create();
+                mAlertDialog.setCanceledOnTouchOutside(false);
+                TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+                TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+                tvtitle.setText("Cancel Order");
+                tv_msg.setText("Do you want to cancel the order?");
+                Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+                Button btn_no = customDialogView.findViewById(R.id.btn_no);
+                btn_no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAlertDialog.dismiss();
+                    }
+                });
+                btn_yes.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        peopleInQOrderAdapterClick.orderCancelClick(position);
+                        mAlertDialog.dismiss();
+                    }
+                });
+                mAlertDialog.show();
+
             }
         });
         recordHolder.tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
@@ -182,7 +209,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             tv_cost.setText(Html.fromHtml(String.valueOf(0 / 100)));
         }
         builder.setView(customDialogView);
-        tv_item_count.setText("Total Items: ("+jsonPurchaseOrderProductList.size()+")");
+        tv_item_count.setText("Total Items: (" + jsonPurchaseOrderProductList.size() + ")");
         OrderItemAdapter adapter = new OrderItemAdapter(mContext, jsonPurchaseOrderProductList);
         listview.setAdapter(adapter);
         final AlertDialog mAlertDialog = builder.create();

@@ -188,4 +188,6 @@
     <string name="product_desc">Product description</string>
     <string name="product_discount">Product discount</string>
     <string name="store_offline">Go Offline</string>
+    <string name="store_on">Online</string>
+    <string name="store_offline_1">Offline</string>
 </resources>

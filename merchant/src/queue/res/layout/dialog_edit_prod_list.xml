@@ -51,6 +51,43 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
+            <TextView
+                    style="@style/style_register_tv"
+                    android:text="@string/store_offline"
+                    android:layout_width="match_parent"/>
+
+            <LinearLayout
+                    android:id="@+id/ll_store_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:weightSum="1">
+
+                <TextView
+                        android:id="@+id/tv_online"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_weight=".5"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/store_on"
+                        android:textSize="@dimen/text_size_fourteen"/>
+
+                <TextView
+                        android:id="@+id/tv_offline"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_weight=".5"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/store_offline_1"
+                        android:textSize="@dimen/text_size_fourteen"/>
+
+            </LinearLayout>
 
             <Spinner
                     android:id="@+id/sp_category_type"

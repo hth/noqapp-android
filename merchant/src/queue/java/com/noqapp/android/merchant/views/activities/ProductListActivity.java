@@ -26,6 +26,8 @@ import com.noqapp.android.merchant.views.fragments.FragmentDummy;
 
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -34,7 +36,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -171,13 +176,13 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             rcv_header.setLayoutManager(horizontalLayoutManagaer);
             rcv_header.setItemAnimator(new DefaultItemAnimator());
 
-            if(jsonStoreCategories.size()>0){
-                tv_name.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
+            if (jsonStoreCategories.size() > 0) {
+                tv_name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
                 tv_name.setText("Add Product");
                 tv_name.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addOrEditProduct(null,ActionTypeEnum.ADD);
+                        addOrEditProduct(null, ActionTypeEnum.ADD);
                     }
                 });
             }
@@ -230,7 +235,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
 
     @Override
     public void addOrEditProduct(final JsonStoreProduct temp, final ActionTypeEnum actionTypeEnum) {
-        final JsonStoreProduct jsonStoreProduct = null!= temp? temp:new JsonStoreProduct();
+        final JsonStoreProduct jsonStoreProduct = null != temp ? temp : new JsonStoreProduct();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         builder.setTitle(null);
@@ -238,8 +243,51 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
 
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
         TextView tv_toolbar_title = customDialogView.findViewById(R.id.tv_toolbar_title);
-        if(actionTypeEnum == ActionTypeEnum.ADD)
+        if (actionTypeEnum == ActionTypeEnum.ADD)
             tv_toolbar_title.setText("Add Product");
+        final TextView tv_online = customDialogView.findViewById(R.id.tv_online);
+        final TextView tv_offline = customDialogView.findViewById(R.id.tv_offline);
+        tv_online.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_offline.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_online.setBackgroundResource(R.drawable.gender_redbg);
+                SpannableString ss = new SpannableString("Online  ");
+                Drawable d = getResources().getDrawable(R.drawable.check_white);
+                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
+                ss.setSpan(span, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                tv_online.setText(ss);
+                tv_online.setTextColor(Color.WHITE);
+                tv_offline.setTextColor(Color.BLACK);
+                tv_offline.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+                jsonStoreProduct.setActive(true);
+                menuItemUpdate(jsonStoreProduct, ActionTypeEnum.ACTIVE);
+               // mAlertDialog.dismiss();
+
+            }
+        });
+
+        tv_offline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_offline.setBackgroundResource(R.drawable.gender_redbg);
+                tv_online.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_online.setTextColor(Color.BLACK);
+                tv_offline.setTextColor(Color.WHITE);
+                SpannableString ss = new SpannableString("Offline  ");
+                Drawable d = getResources().getDrawable(R.drawable.check_white);
+                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
+                ss.setSpan(span, 8, 9, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                tv_offline.setText(ss);
+                jsonStoreProduct.setActive(false);
+                menuItemUpdate(jsonStoreProduct, ActionTypeEnum.INACTIVE);
+               // mAlertDialog.dismiss();
+
+            }
+        });
         final Spinner sp_category_type = customDialogView.findViewById(R.id.sp_category_type);
         final Spinner sp_product_type = customDialogView.findViewById(R.id.sp_product_type);
         final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
@@ -247,12 +295,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         final EditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
         final EditText edt_prod_description = customDialogView.findViewById(R.id.edt_prod_description);
         final EditText edt_prod_discount = customDialogView.findViewById(R.id.edt_prod_discount);
-        if(null != temp) {
-            edt_prod_name.setText(jsonStoreProduct.getProductName());
-            edt_prod_price.setText(jsonStoreProduct.getDisplayPrice());
-            edt_prod_description.setText(jsonStoreProduct.getProductInfo());
-            edt_prod_discount.setText(jsonStoreProduct.getDisplayDiscount());
-        }
+
         List<String> prodTypes = ProductTypeEnum.asListOfDescription();
         prodTypes.add(0, "Select product type");
         List<String> prodUnits = UnitOfMeasurementEnum.asListOfDescription();
@@ -266,6 +309,41 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         sp_category_type.setAdapter(new EnumAdapter(this, categories));
         sp_product_type.setAdapter(new EnumAdapter(this, prodTypes));
         sp_unit.setAdapter(new EnumAdapter(this, prodUnits));
+
+        if (null != temp) {
+            edt_prod_name.setText(jsonStoreProduct.getProductName());
+            edt_prod_price.setText(jsonStoreProduct.getDisplayPrice());
+            edt_prod_description.setText(jsonStoreProduct.getProductInfo());
+            edt_prod_discount.setText(jsonStoreProduct.getDisplayDiscount());
+            sp_category_type.setSelection(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId()));
+            sp_unit.setSelection(getItemPosition(prodUnits,jsonStoreProduct.getUnitOfMeasurement().getDescription()));
+            sp_product_type.setSelection(getItemPosition(prodTypes,jsonStoreProduct.getProductType().getDescription()));
+            if (jsonStoreProduct.isActive()) {
+                tv_offline.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_online.setBackgroundResource(R.drawable.gender_redbg);
+                SpannableString ss = new SpannableString("Online  ");
+                Drawable d = getResources().getDrawable(R.drawable.check_white);
+                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
+                ss.setSpan(span, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                tv_online.setText(ss);
+                tv_online.setTextColor(Color.WHITE);
+                tv_offline.setTextColor(Color.BLACK);
+                tv_offline.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            } else {
+                tv_offline.setBackgroundResource(R.drawable.gender_redbg);
+                tv_online.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_online.setTextColor(Color.BLACK);
+                tv_offline.setTextColor(Color.WHITE);
+                SpannableString ss = new SpannableString("Offline  ");
+                Drawable d = getResources().getDrawable(R.drawable.check_white);
+                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
+                ss.setSpan(span, 8, 9, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                tv_offline.setText(ss);
+            }
+        }
+
         builder.setView(customDialogView);
 
         final AlertDialog mAlertDialog = builder.create();
@@ -277,19 +355,19 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             public void onClick(View v) {
                 if (sp_category_type.getSelectedItemPosition() == 0) {
                     Toast.makeText(ProductListActivity.this, "Please select product category", Toast.LENGTH_LONG).show();
-                }else if (sp_product_type.getSelectedItemPosition() == 0) {
+                } else if (sp_product_type.getSelectedItemPosition() == 0) {
                     Toast.makeText(ProductListActivity.this, "Please select product type", Toast.LENGTH_LONG).show();
                 } else if (sp_unit.getSelectedItemPosition() == 0) {
                     Toast.makeText(ProductListActivity.this, "Please select product unit", Toast.LENGTH_LONG).show();
                 } else {
                     if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount)) {
-                                jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
-                                jsonStoreProduct.setProductInfo(edt_prod_description.getText().toString());
-                                jsonStoreProduct.setProductPrice((int)(Float.parseFloat(edt_prod_price.getText().toString()) * 100));
-                                jsonStoreProduct.setProductDiscount((int)(Float.parseFloat(edt_prod_discount.getText().toString()) * 100));
-                                jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(sp_product_type.getSelectedItem().toString()));
-                                jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
-                                jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString()));
+                        jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
+                        jsonStoreProduct.setProductInfo(edt_prod_description.getText().toString());
+                        jsonStoreProduct.setProductPrice((int) (Float.parseFloat(edt_prod_price.getText().toString()) * 100));
+                        jsonStoreProduct.setProductDiscount((int) (Float.parseFloat(edt_prod_discount.getText().toString()) * 100));
+                        jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(sp_product_type.getSelectedItem().toString()));
+                        jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
+                        jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString()));
                         menuItemUpdate(jsonStoreProduct, actionTypeEnum);
                         mAlertDialog.dismiss();
                     }
@@ -347,12 +425,30 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         return isValid;
     }
 
-    private String getCategoryID(String category){
+    private String getCategoryID(String category) {
         for (int i = 0; i < jsonStoreCategories.size(); i++) {
-            if(category.equals(jsonStoreCategories.get(i).getCategoryName())){
+            if (category.equals(jsonStoreCategories.get(i).getCategoryName())) {
                 return jsonStoreCategories.get(i).getCategoryId();
             }
         }
         return "";
+    }
+
+    private int getCategoryItemPosition(String category) {
+        for (int i = 0; i < jsonStoreCategories.size(); i++) {
+            if (category.equals(jsonStoreCategories.get(i).getCategoryId())) {
+                return i+1;
+            }
+        }
+        return 0;
+    }
+
+    private int getItemPosition(List<String> data, String value) {
+        for (int i = 0; i < data.size(); i++) {
+            if (value.equals(data.get(i))) {
+                return i;
+            }
+        }
+        return 0;
     }
 }
