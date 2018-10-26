@@ -53,6 +53,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private RadioGroup rg_address;
     private EditText edt_address;
     private EditText edt_phone;
+    private EditText edt_optional;
 
     private JsonPurchaseOrder jsonPurchaseOrder;
     private ProfileModel profileModel;
@@ -69,6 +70,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         rg_address = findViewById(R.id.rg_address);
         edt_address = findViewById(R.id.edt_address);
         edt_phone = findViewById(R.id.edt_phone);
+        edt_optional = findViewById(R.id.edt_optional);
         final Button tv_place_order = findViewById(R.id.tv_place_order);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         initActionsViews(false);
@@ -110,6 +112,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         jsonPurchaseOrder.setDeliveryType(DeliveryTypeEnum.HD);
                         jsonPurchaseOrder.setPaymentType(PaymentTypeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
+                        jsonPurchaseOrder.setAdditionalNote(edt_optional.getText().toString());
 
                         purchaseApiModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                         tv_place_order.setEnabled(false);

@@ -267,5 +267,6 @@
     <string name="empty_review">No one has reviewed. Be the first to review.</string>
     <string name="rejoin">Rejoin</string>
     <string name="reorder">Reorder</string>
+    <string name="additional">Specific instruction, If any</string>
 
 </resources>

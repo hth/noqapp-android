@@ -7,7 +7,6 @@ import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.merchant.R;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;

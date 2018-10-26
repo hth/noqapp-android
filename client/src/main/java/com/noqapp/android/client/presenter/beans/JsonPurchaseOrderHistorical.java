@@ -348,6 +348,12 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
                 ", transactionId='" + transactionId + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", created='" + created + '\'' +
+                ", additionalNote='" + additionalNote + '\'' +
+                ", jsonPurchaseOrderProductHistoricalList=" + jsonPurchaseOrderProductHistoricalList +
+                ", storeAddress='" + storeAddress + '\'' +
+                ", area='" + area + '\'' +
+                ", town='" + town + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
                 '}';
     }
 }

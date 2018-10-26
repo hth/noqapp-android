@@ -135,6 +135,18 @@
 
                 </RadioGroup>
 
+                <EditText
+                        android:id="@+id/edt_optional"
+                        style="@style/style_register_edt"
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="@string/additional"
+                        android:maxLength="64"
+                        android:textSize="@dimen/text_size_fourteen"/>
+
+
                 <LinearLayout
                         android:id="@+id/ll_order_details"
                         android:layout_width="match_parent"
