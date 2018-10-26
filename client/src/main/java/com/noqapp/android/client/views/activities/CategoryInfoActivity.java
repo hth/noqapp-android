@@ -62,6 +62,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private final Cache<String, Map<String, ArrayList<BizStoreElastic>>> cacheQueue = newBuilder()
             .maximumSize(1)
             .build();
+
     private final String QUEUE = "queue";
     private final String CATEGORY = "category";
     private TextView tv_store_name;
@@ -84,7 +85,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private int reviewCount = 0;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     private String title = "";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +117,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 joinClick();
             }
         });
-
-
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
             codeQR = bundle.getString(NoQueueBaseFragment.KEY_CODE_QR);
@@ -147,9 +145,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         }
         RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);
         rv_categories.setLayoutManager(recyclerViewLayoutManager);
-
     }
-
 
     @Override
     public void onResume() {
@@ -210,7 +206,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 }
             });
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
-            tv_rating.setText(String.valueOf(AppUtilities.round(rating))+" -");
+            tv_rating.setText(String.valueOf(AppUtilities.round(rating)) + " -");
             if (tv_rating.getText().toString().equals("0.0")) {
                 tv_rating.setVisibility(View.INVISIBLE);
             } else {
@@ -305,7 +301,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             //TODO(chandra) when its empty do something nice
         }
 
-
         dismissProgress();
     }
 
@@ -357,10 +352,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     public List<JsonCategory> getCategoryThatArePopulated() {
         Map<String, JsonCategory> categoryMap = new HashMap<>();
         Map<String, ArrayList<BizStoreElastic>> queueMap = new HashMap<>();
-        if (null != cacheCategory.getIfPresent(CATEGORY))
+        if (null != cacheCategory.getIfPresent(CATEGORY)) {
             categoryMap = cacheCategory.getIfPresent(CATEGORY);
-        if (null != cacheQueue.getIfPresent(QUEUE))
+        }
+        if (null != cacheQueue.getIfPresent(QUEUE)) {
             queueMap = cacheQueue.getIfPresent(QUEUE);
+        }
 
         Set<String> categoryKey = categoryMap.keySet();
         Set<String> queueKey = queueMap.keySet();
@@ -398,5 +395,4 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             startActivity(in);
         }
     }
-
 }
