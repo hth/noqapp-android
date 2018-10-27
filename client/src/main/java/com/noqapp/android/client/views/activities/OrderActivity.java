@@ -59,6 +59,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private ProfileModel profileModel;
     private PurchaseApiModel purchaseApiModel;
     private long mLastClickTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,14 +94,14 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName()+" "+getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100)+" x "+String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
             ll_order_details.addView(inflatedLayout);
         }
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000){
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
@@ -331,5 +332,4 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         dismissProgress();
 
     }
-    
 }
