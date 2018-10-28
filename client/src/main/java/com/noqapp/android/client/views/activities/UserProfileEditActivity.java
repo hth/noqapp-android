@@ -124,7 +124,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
     }
 
     private void loadProfilePic() {
@@ -142,15 +141,15 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         }
     }
 
-
     @Override
     public void imageUploadResponse(JsonResponse jsonResponse) {
         dismissProgress();
         Log.v("Image upload", "" + jsonResponse.getResponse());
-        if (Constants.SUCCESS == jsonResponse.getResponse())
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
             Toast.makeText(this, "Profile image change successfully!", Toast.LENGTH_LONG).show();
-        else
+        } else {
             Toast.makeText(this, "Failed to update profile image", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

@@ -43,10 +43,7 @@ public class SliderPagerAdapter extends PagerAdapter {
                 .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
                 .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional
                 .into(im_slider);
-
-
         container.addView(view);
-
         return view;
     }
 
