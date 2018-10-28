@@ -3,8 +3,6 @@ package com.noqapp.android.merchant.views.fragments;
 /**
  * Created by chandra on 5/7/17.
  */
-
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.merchant.BuildConfig;
@@ -43,7 +41,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class PatientProfileFragment extends Fragment implements PatientProfilePresenter {
-
     private ImageView iv_profile;
     private String gender = "";
     private TextView tv_name;
@@ -105,7 +102,6 @@ public class PatientProfileFragment extends Fragment implements PatientProfilePr
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void patientProfileResponse(JsonProfile jsonProfile) {
@@ -203,7 +199,6 @@ public class PatientProfileFragment extends Fragment implements PatientProfilePr
         }
         loadProfilePic(jsonProfile.getProfileImage());
     }
-
 
     private void initProgress() {
         progressDialog = new ProgressDialog(getActivity());
