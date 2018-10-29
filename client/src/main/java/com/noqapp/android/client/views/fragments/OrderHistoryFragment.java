@@ -38,9 +38,13 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         rcv_order_history = view.findViewById(R.id.rcv_order_history);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            OrderQueueHistoryModel orderQueueHistoryModel = new OrderQueueHistoryModel();
-            orderQueueHistoryModel.setOrderHistoryPresenter(this);
-            orderQueueHistoryModel.orders(UserUtils.getEmail(), UserUtils.getAuth());
+            if (UserUtils.isLogin()) {
+                OrderQueueHistoryModel orderQueueHistoryModel = new OrderQueueHistoryModel();
+                orderQueueHistoryModel.setOrderHistoryPresenter(this);
+                orderQueueHistoryModel.orders(UserUtils.getEmail(), UserUtils.getAuth());
+            } else {
+                Toast.makeText(getActivity(), "Please login to see the details", Toast.LENGTH_LONG).show();
+            }
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

@@ -48,6 +48,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
 
         holder.tv_total_value.setText(String.valueOf(dataSet.get(listPosition).getServingNumber()));
         if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
+            holder.tv_current_title.setText(context.getString(R.string.token));
             if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() == 0) {
                 holder.tv_total.setText("It's your turn!!!");
                 holder.tv_total_value.setVisibility(View.GONE);
@@ -59,6 +60,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
                 holder.tv_total_value.setVisibility(View.VISIBLE);
             }
         } else if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+            holder.tv_current_title.setText(context.getString(R.string.order));
             if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() <= 0) {
                 switch (jsonTokenAndQueue.getPurchaseOrderState()) {
                     case OP:
@@ -98,6 +100,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         private CardView card_view;
         private TextView tv_total_value;
         private TextView tv_current_value;
+        private TextView tv_current_title;
 
         private TextView tv_total;
 
@@ -107,6 +110,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
             this.tv_detail = itemView.findViewById(R.id.tv_detail);
             this.tv_address = itemView.findViewById(R.id.tv_address);
             this.tv_current_value = itemView.findViewById(R.id.tv_current_value);
+            this.tv_current_title = itemView.findViewById(R.id.tv_current);
             this.tv_total_value = itemView.findViewById(R.id.tv_total_value);
             this.tv_total = itemView.findViewById(R.id.tv_total);
             this.card_view = itemView.findViewById(R.id.card_view);

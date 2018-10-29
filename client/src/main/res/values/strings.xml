@@ -297,8 +297,9 @@
     <string name="check_your_email">Please check your email to get the code</string>
     <string name="rejoin">Rejoin</string>
     <string name="reorder">Reorder</string>
-    <string name="additional">Specify instruction, If any</string>
+    <string name="additional">Specify delivery/order instruction, If any</string>
     <string name="error_name_exist">A profile with this name already added</string>
+    <string name="order">ORDER</string>
     <!-- Category Info Screen -->
 
 </resources>
