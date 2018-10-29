@@ -34,8 +34,8 @@ public class CirclePagerIndicatorDecoration extends RecyclerView.ItemDecoration 
      */
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
     private final Paint mPaint = new Paint();
-    private int colorActive = 0xFFd36c52;
-    private int colorInactive = 0x66f8a87a;
+    private int colorActive = 0xFFf4511e;
+    private int colorInactive = 0x66f78561;
 
     public CirclePagerIndicatorDecoration() {
         mPaint.setStrokeCap(Paint.Cap.ROUND);
