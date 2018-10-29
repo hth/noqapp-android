@@ -129,10 +129,10 @@ public class MenuAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private double calculateDiscountPrice(String displayPrice, String discountPercentage) {
+    private double calculateDiscountPrice(String displayPrice, String discountAmount) {
         double price = Double.valueOf(displayPrice);
-        double discountPercentageValue = Double.valueOf(discountPercentage);
-        return price - (price * discountPercentageValue) / 100;
+        double discountAmountValue = Double.valueOf(discountAmount);
+        return (price - discountAmountValue);
     }
 
     private int showCartAmount() {

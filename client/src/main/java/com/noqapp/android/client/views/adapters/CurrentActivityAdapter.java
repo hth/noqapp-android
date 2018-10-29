@@ -38,7 +38,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
         final JsonTokenAndQueue jsonTokenAndQueue = dataSet.get(listPosition);
         holder.tv_name.setText(jsonTokenAndQueue.getDisplayName());
-        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonTokenAndQueue.getTown(),jsonTokenAndQueue.getArea()));
+        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonTokenAndQueue.getTown(), jsonTokenAndQueue.getArea()));
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,9 +64,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
                     case OP:
                         holder.tv_total.setText("Order being prepared");
                         break;
-                    case RD:
-                    case RP:
-                    case OD:
+                    default:
                         holder.tv_total.setText(jsonTokenAndQueue.getPurchaseOrderState().getDescription());
                         break;
                 }

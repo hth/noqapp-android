@@ -8,6 +8,7 @@ import com.noqapp.android.merchant.R;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,10 +54,13 @@ public class MenuAdapter extends BaseAdapter {
             convertView = infalInflater.inflate(R.layout.list_item_menu_child, viewGroup, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_child_title = convertView.findViewById(R.id.tv_child_title);
+            childViewHolder.tv_child_title_details = convertView.findViewById(R.id.tv_child_title_details);
             childViewHolder.tv_price = convertView.findViewById(R.id.tv_price);
             childViewHolder.tv_discounted_price = convertView.findViewById(R.id.tv_discounted_price);
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
             childViewHolder.iv_delete = convertView.findViewById(R.id.iv_delete);
+            childViewHolder.iv_edit = convertView.findViewById(R.id.iv_edit);
+            childViewHolder.rl_menu_child = convertView.findViewById(R.id.rl_menu_child);
             convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder) convertView
@@ -63,6 +68,7 @@ public class MenuAdapter extends BaseAdapter {
         }
         final JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
+        childViewHolder.tv_child_title_details.setText(jsonStoreProduct.getProductInfo());
         //  childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
         //TODO chandra use County Code of the store to decide on Currency type
         childViewHolder.tv_price.setText(context.getString(R.string.rupee) + " " + jsonStoreProduct.getDisplayPrice());
@@ -120,25 +126,45 @@ public class MenuAdapter extends BaseAdapter {
 
             }
         });
+        childViewHolder.iv_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menuItemUpdate.addOrEditProduct(jsonStoreProduct, ActionTypeEnum.EDIT);
+            }
+        });
+
+        if (jsonStoreProduct.isActive()) {
+            childViewHolder.rl_menu_child.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
+        } else {
+            childViewHolder.rl_menu_child.setBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
+        }
         return convertView;
     }
 
-    private double calculateDiscountPrice(String displayPrice, String discountPercentage) {
+    private double calculateDiscountPrice(String displayPrice, String discountAmount) {
         double price = Double.valueOf(displayPrice);
-        double discountPercentageValue = Double.valueOf(discountPercentage);
-        return price - (price * discountPercentageValue) / 100;
+        double discountAmountValue = Double.valueOf(discountAmount);
+        return (price - discountAmountValue);
     }
 
     public final class ChildViewHolder {
         TextView tv_child_title;
+        TextView tv_child_title_details;
         TextView tv_price;
         TextView tv_value;
         TextView tv_discounted_price;
         TextView tv_cat;
         ImageView iv_delete;
+        ImageView iv_edit;
+        RelativeLayout rl_menu_child;
     }
 
     public interface MenuItemUpdate {
+
         void menuItemUpdate(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum);
+
+        void addOrEditProduct(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum);
+
     }
+
 }

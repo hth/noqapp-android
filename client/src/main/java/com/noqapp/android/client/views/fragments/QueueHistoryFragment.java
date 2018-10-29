@@ -11,6 +11,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.QueueHistoryDetailActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.adapters.QueueHistoryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -57,24 +58,11 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
 
     @Override
     public void onStoreItemClick(JsonQueueHistorical item) {
-        switch (item.getBusinessType()) {
-            case DO:
-            case BK:
-                // open hospital/Bank profile
-                Intent in = new Intent(getActivity(), JoinActivity.class);
-                in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
-                in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
-                in.putExtra("isCategoryData", false);
-                startActivity(in);
-                break;
-            default:
-                // open order screen
-                Intent intent = new Intent(getActivity(), StoreDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("BizStoreElastic", null);
-                intent.putExtras(bundle);
-                startActivity(intent);
-        }
+        Intent intent = new Intent(getActivity(), QueueHistoryDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("data", item);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
 

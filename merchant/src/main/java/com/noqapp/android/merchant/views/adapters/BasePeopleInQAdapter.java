@@ -42,9 +42,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     private final Context context;
     private List<JsonQueuedPerson> dataSet;
     private int glowPosition = -1;
-    String qCodeQR;
-    ManageQueueModel manageQueueModel;
-    BusinessCustomerModel businessCustomerModel;
+    protected String qCodeQR;
+    protected ManageQueueModel manageQueueModel;
+    protected BusinessCustomerModel businessCustomerModel;
     private QueueStatusEnum queueStatusEnum;
 
     // for medical Only
@@ -114,7 +114,6 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         TextView tv_create_case;
         TextView tv_change_name;
         TextView tv_business_customer_id;
-        TextView tv_first_time;
         TextView tv_join_timing;
         ImageView iv_info;
         ImageView iv_new;
@@ -130,7 +129,6 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             this.tv_create_case = itemView.findViewById(R.id.tv_create_case);
             this.tv_change_name = itemView.findViewById(R.id.tv_change_name);
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
-            this.tv_first_time = itemView.findViewById(R.id.tv_first_time);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
             this.iv_info = itemView.findViewById(R.id.iv_info);
             this.iv_new = itemView.findViewById(R.id.iv_new);
@@ -231,8 +229,6 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 Log.e(TAG, "Reached unsupported condition state=" + jsonQueuedPerson.getQueueUserState());
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
-
-        recordHolder.tv_first_time.setVisibility(jsonQueuedPerson.isClientVisitedThisBusiness() ? View.GONE : View.VISIBLE);
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -36,7 +36,6 @@ public class SearchAdapter extends RecyclerView.Adapter {
     private ArrayList<BizStoreElastic> dataSet;
 
 
-
     public SearchAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
@@ -70,18 +69,18 @@ public class SearchAdapter extends RecyclerView.Adapter {
         if (viewHolder instanceof MyViewHolder) {
             final MyViewHolder holder = (MyViewHolder) viewHolder;
             final BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
-            holder.tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(),bizStoreElastic.getArea()));
+            holder.tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
             holder.tv_business_category.setText(bizStoreElastic.getBizCategoryName());
             holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName()) ? View.GONE : View.VISIBLE);
-            if(bizStoreElastic.getReviewCount() > 0){
+            if (bizStoreElastic.getReviewCount() > 0) {
                 holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getReviewCount()) + " Reviews");
                 holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            }else{
+            } else {
                 holder.tv_store_review.setText("No Reviews");
-                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
+                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
             }
 
             holder.tv_store_review.setOnClickListener(new View.OnClickListener() {
@@ -99,13 +98,13 @@ public class SearchAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
-            if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
+            if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage())) {
                 Picasso.with(context)
                         .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                         .placeholder(ImageUtils.getThumbPlaceholder(context))
                         .error(ImageUtils.getThumbErrorPlaceholder(context))
                         .into(holder.iv_main);
-            else {
+            } else {
                 Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }
             holder.card_view.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +145,6 @@ public class SearchAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return dataSet.size();
     }
-
 
 
     public interface OnItemClickListener {

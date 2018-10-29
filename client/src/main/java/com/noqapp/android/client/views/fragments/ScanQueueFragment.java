@@ -293,8 +293,8 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 pb_health_care.setVisibility(View.VISIBLE);
             }
             NearMeModel nearMeModel = new NearMeModel(this);
-            nearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
-            nearMeModel.nearMeHospitalAndDoctors(UserUtils.getDeviceId(), storeInfoParam);
+            nearMeModel.otherMerchant(UserUtils.getDeviceId(), storeInfoParam);
+            nearMeModel.healthCare(UserUtils.getDeviceId(), storeInfoParam);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -557,6 +557,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                             ReviewDB.updateReviewRecord(jq.getCodeQR(), String.valueOf(jq.getToken()), cv);
                             Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                             startActivity(blinker);
+                            break;
+                        case CO:
+                            ShowAlertInformation.showInfoDisplayDialog(getActivity(), jq.getBusinessName() + " has cancelled your order. Sorry for your inconvenience. :(");
                             break;
                         default:
                             //Do Nothing

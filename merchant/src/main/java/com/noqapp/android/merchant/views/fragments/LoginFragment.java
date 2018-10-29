@@ -11,6 +11,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
@@ -117,7 +118,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             LaunchActivity.getLaunchActivity().setUserInformation("", "", email, auth, true);
             LaunchActivity.getLaunchActivity().progressDialog.setMessage("Fetching your profile...");
             merchantProfileModel.setMerchantPresenter(this);
-            merchantProfileModel.fetch(LaunchActivity.getLaunchActivity().getDeviceID(), email, auth);
+            merchantProfileModel.fetch(BaseLaunchActivity.getDeviceID(), email, auth);
             if (!userList.contains(email)) {
                 userList.add(email);
                 LaunchActivity.getLaunchActivity().setUserList(userList);

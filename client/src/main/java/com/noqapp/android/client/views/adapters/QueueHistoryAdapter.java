@@ -5,10 +5,16 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.views.activities.JoinActivity;
+import com.noqapp.android.client.views.activities.QueueHistoryDetailActivity;
+import com.noqapp.android.client.views.activities.StoreDetailActivity;
+import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -64,14 +70,31 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         holder.btn_rejoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onStoreItemClick(jsonQueueHistorical);
+                switch (jsonQueueHistorical.getBusinessType()) {
+                    case DO:
+                    case BK:
+                        // open hospital/Bank profile
+                        Intent in = new Intent(context, JoinActivity.class);
+                        in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
+                        in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
+                        in.putExtra("isCategoryData", false);
+                        context.startActivity(in);
+                        break;
+                    default:
+                        // open order screen
+                        Intent intent = new Intent(context, StoreDetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("BizStoreElastic", null);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                }
             }
         });
         holder.iv_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //navigate to detail screen
-                Toast.makeText(context,"View Detail screen",Toast.LENGTH_LONG).show();
+                listener.onStoreItemClick(jsonQueueHistorical);
             }
         });
 
@@ -90,48 +113,6 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
             default:
                 holder.tv_queue_status.setTextColor(ContextCompat.getColor(context, R.color.text_header_color));
         }
-
-//        if(0 == jsonQueueHistorical.getRatingCount()) {
-//            holder.tv_add_review.setVisibility(View.VISIBLE);
-//            if (jsonQueueHistorical.getQueueUserState() != QueueUserStateEnum.S) {
-//                holder.tv_add_review.setVisibility(View.GONE);
-//            }
-//            holder.tv_store_rating.setVisibility(View.GONE);
-//        }else{
-//            holder.tv_add_review.setVisibility(View.GONE);
-//            holder.tv_store_rating.setVisibility(View.VISIBLE);
-//        }
-//        holder.tv_add_review.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
-//                jsonTokenAndQueue.setQueueUserId(jsonQueueHistorical.getQueueUserId());
-//                jsonTokenAndQueue.setDisplayName(jsonQueueHistorical.getDisplayName());
-//                jsonTokenAndQueue.setStoreAddress(jsonQueueHistorical.getStoreAddress());
-//                jsonTokenAndQueue.setBusinessType(jsonQueueHistorical.getBusinessType());
-//                jsonTokenAndQueue.setCodeQR(jsonQueueHistorical.getCodeQR());
-//                jsonTokenAndQueue.setToken(jsonQueueHistorical.getTokenNumber());
-//                Intent in = new Intent(context, ReviewActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("object", jsonTokenAndQueue);
-//                in.putExtras(bundle);
-//                context.startActivity(in);
-//            }
-//        });
-//        holder.tv_support.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Feedback feedback = new Feedback();
-//                feedback.setMessageOrigin(MessageOriginEnum.Q);
-//                feedback.setCodeQR(jsonQueueHistorical.getCodeQR());
-//                feedback.setToken(jsonQueueHistorical.getTokenNumber());
-//                Intent in = new Intent(context, ContactUsActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("object", feedback);
-//                in.putExtras(bundle);
-//                context.startActivity(in);
-//            }
-//        });
     }
 
     @Override

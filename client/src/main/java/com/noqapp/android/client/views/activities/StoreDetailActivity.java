@@ -274,13 +274,17 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         }
         for (int k = 0; k < jsonStoreProducts.size(); k++) {
             if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
-                listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
+                if (jsonStoreProducts.get(k).isActive()) {
+                    listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
+                }
             } else {
                 //TODO(hth) when product without category else it will drop
                 if (null == listDataChild.get(defaultCategory)) {
                     listDataChild.put(defaultCategory, new ArrayList<ChildData>());
                 }
-                listDataChild.get(defaultCategory).add(new ChildData(0, jsonStoreProducts.get(k)));
+                if (jsonStoreProducts.get(k).isActive()) {
+                    listDataChild.get(defaultCategory).add(new ChildData(0, jsonStoreProducts.get(k)));
+                }
             }
         }
 

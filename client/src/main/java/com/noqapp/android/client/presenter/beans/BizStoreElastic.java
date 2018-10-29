@@ -151,6 +151,9 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("ED")
     private List<JsonNameDatePair> education;
 
+    @JsonProperty("A")
+    private boolean active = true;
+
     public String getId() {
         return id;
     }
@@ -490,6 +493,15 @@ public class BizStoreElastic implements Serializable {
         }
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public BizStoreElastic setActive(boolean active) {
+        this.active = active;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "BizStoreElastic{" +
@@ -529,6 +541,7 @@ public class BizStoreElastic implements Serializable {
                 ", facilities=" + facilities +
                 ", webProfileId='" + webProfileId + '\'' +
                 ", education=" + education +
+                ", active=" + active +
                 '}';
     }
 }

@@ -64,14 +64,13 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
 
         }
         Vholder.tv_title.setText(jsonCategory.getCategoryName());
-        if (!TextUtils.isEmpty(jsonCategory.getDisplayImage()))
+        if (!TextUtils.isEmpty(jsonCategory.getDisplayImage())) {
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonCategory.getDisplayImage()))
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
                     .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(Vholder.iv_main);
-
-
+        }
         Vholder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

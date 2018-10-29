@@ -4,6 +4,7 @@ package com.noqapp.android.merchant.views.fragments;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -16,6 +17,7 @@ import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.ProductListActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQOrderAdapter;
@@ -40,7 +42,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,7 +55,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  super.onCreateView(inflater, container, savedInstanceState);
-        iv_product_list.setVisibility(View.VISIBLE);
+        iv_product_list.setVisibility(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() == BusinessTypeEnum.RS? View.VISIBLE:View.INVISIBLE);
         iv_product_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +143,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     LaunchActivity.getLaunchActivity().progressDialog.show();
                     setDispensePresenter();
                     manageQueueModel.dispenseToken(
-                            LaunchActivity.getLaunchActivity().getDeviceID(),
+                            BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
                             codeQR);
@@ -205,6 +206,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
+                LaunchActivity.getLaunchActivity().progressDialog.setMessage("Completing the order...");
                 OrderServed orderServed = new OrderServed();
                 orderServed.setCodeQR(jsonTopic.getCodeQR());
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
@@ -227,6 +229,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     public void orderCancelClick(int position) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             LaunchActivity.getLaunchActivity().progressDialog.show();
+            LaunchActivity.getLaunchActivity().progressDialog.setMessage("Canceling the order...");
             OrderServed orderServed = new OrderServed();
             orderServed.setCodeQR(jsonTopic.getCodeQR());
             orderServed.setServedNumber(purchaseOrders.get(position).getToken());

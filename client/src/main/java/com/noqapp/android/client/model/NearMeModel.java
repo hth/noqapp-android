@@ -36,8 +36,8 @@ public class NearMeModel {
      * @param did
      * @param storeInfoParam
      */
-    public void nearMeStore(String did, StoreInfoParam storeInfoParam) {
-        nearmeService.nearMe(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
+    public void otherMerchant(String did, StoreInfoParam storeInfoParam) {
+        nearmeService.otherMerchant(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -68,8 +68,8 @@ public class NearMeModel {
      * @param did
      * @param storeInfoParam
      */
-    public void nearMeHospitalAndDoctors(String did, StoreInfoParam storeInfoParam) {
-        nearmeService.nearMe(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
+    public void healthCare(String did, StoreInfoParam storeInfoParam) {
+        nearmeService.healthCare(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

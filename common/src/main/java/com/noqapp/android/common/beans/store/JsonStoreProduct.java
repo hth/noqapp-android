@@ -52,12 +52,21 @@ public class JsonStoreProduct implements Serializable {
     @JsonProperty("t")
     private ProductTypeEnum productType;
 
+    @JsonProperty("uv")
+    private int unitValue;
+
+    @JsonProperty("ps")
+    private int packageSize;
+
     @JsonProperty("um")
     private UnitOfMeasurementEnum unitOfMeasurement;
 
     //TODO product info references to html location for more detail like for Medicine.
     @JsonProperty("pr")
     private String productReference;
+
+    @JsonProperty("a")
+    private boolean active = true;
 
     public String getProductId() {
         return productId;
@@ -122,6 +131,24 @@ public class JsonStoreProduct implements Serializable {
         return this;
     }
 
+    public int getUnitValue() {
+        return unitValue;
+    }
+
+    public JsonStoreProduct setUnitValue(int unitValue) {
+        this.unitValue = unitValue;
+        return this;
+    }
+
+    public int getPackageSize() {
+        return packageSize;
+    }
+
+    public JsonStoreProduct setPackageSize(int packageSize) {
+        this.packageSize = packageSize;
+        return this;
+    }
+
     public UnitOfMeasurementEnum getUnitOfMeasurement() {
         return unitOfMeasurement;
     }
@@ -148,6 +175,15 @@ public class JsonStoreProduct implements Serializable {
         return new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public JsonStoreProduct setActive(boolean active) {
+        this.active = active;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "JsonStoreProduct{" +
@@ -160,6 +196,7 @@ public class JsonStoreProduct implements Serializable {
                 ", productType=" + productType +
                 ", unitOfMeasurement=" + unitOfMeasurement +
                 ", productReference='" + productReference + '\'' +
+                ", active=" + active +
                 '}';
     }
 }

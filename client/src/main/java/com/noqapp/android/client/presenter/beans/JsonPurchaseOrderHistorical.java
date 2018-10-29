@@ -94,6 +94,9 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
     @JsonProperty("u")
     private String created;
 
+    @JsonProperty("an")
+    private String additionalNote;
+
     @JsonProperty("pops")
     private List<JsonPurchaseOrderProductHistorical> jsonPurchaseOrderProductHistoricalList = new ArrayList<>();
 
@@ -253,6 +256,15 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
         return this;
     }
 
+    public String getAdditionalNote() {
+        return additionalNote;
+    }
+
+    public JsonPurchaseOrderHistorical setAdditionalNote(String additionalNote) {
+        this.additionalNote = additionalNote;
+        return this;
+    }
+
     public String getTransactionId() {
         return transactionId;
     }
@@ -336,6 +348,12 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
                 ", transactionId='" + transactionId + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", created='" + created + '\'' +
+                ", additionalNote='" + additionalNote + '\'' +
+                ", jsonPurchaseOrderProductHistoricalList=" + jsonPurchaseOrderProductHistoricalList +
+                ", storeAddress='" + storeAddress + '\'' +
+                ", area='" + area + '\'' +
+                ", town='" + town + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
                 '}';
     }
 }

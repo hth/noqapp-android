@@ -27,7 +27,7 @@
             android:id="@+id/rcv_header"
             android:layout_width="match_parent"
             android:layout_below="@+id/expandableListView"
-            android:background="@color/colorActionbar"
+            android:background="@android:color/white"
             android:layout_height="50dp"
             android:paddingBottom="1dp"/>
 

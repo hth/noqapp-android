@@ -84,6 +84,9 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty ("c")
     private String created;
 
+    @JsonProperty("an")
+    private String additionalNote;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -236,6 +239,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setCreated(String created) {
         this.created = created;
+        return this;
+    }
+
+    public String getAdditionalNote() {
+        return additionalNote;
+    }
+
+    public JsonPurchaseOrder setAdditionalNote(String additionalNote) {
+        this.additionalNote = additionalNote;
         return this;
     }
 

@@ -204,7 +204,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         } else if (v == tv_male) {
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-            tv_male.setBackgroundResource(R.drawable.blue_gradient);
+            tv_male.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.theme_aqua));
             SpannableString ss = new SpannableString("Male  ");
             Drawable d = getResources().getDrawable(R.drawable.check_white);
             d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
@@ -216,7 +216,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             tv_female.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         } else if (v == tv_female) {
             gender = "F";
-            tv_female.setBackgroundResource(R.drawable.blue_gradient);
+            tv_female.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.theme_aqua));
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
             tv_female.setCompoundDrawablePadding(0);
             tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -288,8 +288,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             isValid = false;
         }
 
-        if(!TextUtils.isEmpty(errorMsg))
-            Toast.makeText(this,errorMsg,Toast.LENGTH_LONG).show();
+        if (!TextUtils.isEmpty(errorMsg))
+            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
         return isValid;
     }
 

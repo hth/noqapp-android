@@ -182,7 +182,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             Picasso.with(context).load(
                     AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonQueue.getDisplayImage()))
                     .placeholder(context.getResources().getDrawable(R.drawable.profile_theme))
-                    .error(context.getResources().getDrawable(R.drawable.profile_theme)).into(holder.iv_main);
+                    .error(context.getResources().getDrawable(R.drawable.profile_theme))
+                    .into(holder.iv_main);
         } else {
             Picasso.with(context).load(R.drawable.profile_theme).into(holder.iv_main);
         }

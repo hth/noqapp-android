@@ -14,6 +14,7 @@ import com.noqapp.android.common.utils.CommonHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         TextView tv_support = findViewById(R.id.tv_support);
         TextView tv_store_rating = findViewById(R.id.tv_store_rating);
         TextView tv_add_review = findViewById(R.id.tv_add_review);
+        TextView tv_additional_info = findViewById(R.id.tv_additional_info);
         Button btn_reorder = findViewById(R.id.btn_reorder);
         final JsonPurchaseOrderHistorical jsonPurchaseOrder = (JsonPurchaseOrderHistorical) getIntent().getExtras().getSerializable("data");
         if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
@@ -118,7 +120,6 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
-            //tv_title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.circle_green, 0, 0, 0);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
             tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
@@ -136,6 +137,8 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             e.printStackTrace();
             tv_order_date.setText("Order timing: Exception");
         }
+        tv_additional_info.setText("Additional Note: "+jsonPurchaseOrder.getAdditionalNote());
+        tv_additional_info.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote())?View.GONE:View.VISIBLE);
     }
 
 }

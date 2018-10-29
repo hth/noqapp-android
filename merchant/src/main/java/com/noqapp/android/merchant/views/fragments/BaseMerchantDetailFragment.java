@@ -21,6 +21,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.LoginActivity;
 import com.noqapp.android.merchant.views.activities.RegistrationActivity;
@@ -79,7 +80,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected EditText edt_mobile;
     protected RecyclerView rv_queue_people;
     protected ProgressBar progressDialog;
-    private View itemView;
     protected JsonTopic jsonTopic = null;
     protected TextView tv_counter_name;
 
@@ -90,11 +90,9 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected Button btn_skip;
     protected Button btn_next;
     protected Button btn_start;
-    private ImageView iv_edit;
     protected ImageView iv_product_list;
     protected boolean queueStatusOuter = false;
     private int lastSelectedPos = -1;
-    private LinearLayoutManager horizontalLayoutManagaer;
     protected ManageQueueModel manageQueueModel;
     protected ArrayList<JsonTopic> topicsList;
     protected ImageView iv_generate_token, iv_queue_history;
@@ -113,7 +111,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             currrentpos = bundle.getInt("position");
         }
 
-        itemView = inflater.inflate(R.layout.viewpager_item, container, false);
+        View itemView = inflater.inflate(R.layout.viewpager_item, container, false);
         context = getActivity();
         manageQueueModel = new ManageQueueModel();
         manageQueueModel.setManageQueuePresenter(this);
@@ -130,7 +128,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         rv_queue_people = itemView.findViewById(R.id.rv_queue_people);
         tv_counter_name = itemView.findViewById(R.id.tv_counter_name);
         rv_queue_people.setHasFixedSize(true);
-        horizontalLayoutManagaer
+        LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         rv_queue_people.setLayoutManager(horizontalLayoutManagaer);
         rv_queue_people.setItemAnimator(new DefaultItemAnimator());
@@ -143,7 +141,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
         tv_next = itemView.findViewById(R.id.tv_next);
         tv_start = itemView.findViewById(R.id.tv_start);
-        iv_edit = itemView.findViewById(R.id.iv_edit);
+        ImageView iv_edit = itemView.findViewById(R.id.iv_edit);
         iv_product_list = itemView.findViewById(R.id.iv_product_list);
         ImageView iv_settings = itemView.findViewById(R.id.iv_settings);
         iv_settings.setOnClickListener(new View.OnClickListener() {
@@ -539,7 +537,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         served.setGoTo(tv_counter_name.getText().toString());
                         setPresenter();
                         manageQueueModel.served(
-                                LaunchActivity.getLaunchActivity().getDeviceID(),
+                                BaseLaunchActivity.getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),
                                 served);
@@ -567,7 +565,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                             served.setGoTo(tv_counter_name.getText().toString());
                             setPresenter();
                             manageQueueModel.served(
-                                    LaunchActivity.getLaunchActivity().getDeviceID(),
+                                    BaseLaunchActivity.getDeviceID(),
                                     LaunchActivity.getLaunchActivity().getEmail(),
                                     LaunchActivity.getLaunchActivity().getAuth(),
                                     served);
@@ -616,7 +614,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                                         served.setGoTo(tv_counter_name.getText().toString());
                                         setPresenter();
                                         manageQueueModel.served(
-                                                LaunchActivity.getLaunchActivity().getDeviceID(),
+                                                BaseLaunchActivity.getDeviceID(),
                                                 LaunchActivity.getLaunchActivity().getEmail(),
                                                 LaunchActivity.getLaunchActivity().getAuth(),
                                                 served);
@@ -648,7 +646,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                                 served.setGoTo(tv_counter_name.getText().toString());
                                 setPresenter();
                                 manageQueueModel.served(
-                                        LaunchActivity.getLaunchActivity().getDeviceID(),
+                                        BaseLaunchActivity.getDeviceID(),
                                         LaunchActivity.getLaunchActivity().getEmail(),
                                         LaunchActivity.getLaunchActivity().getAuth(),
                                         served);
@@ -699,7 +697,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         served.setGoTo(tv_counter_name.getText().toString());
                         served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
                         manageQueueModel.acquire(
-                                LaunchActivity.getLaunchActivity().getDeviceID(),
+                                BaseLaunchActivity.getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),
                                 served);
@@ -724,7 +722,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(phoneNo, countryShortName);
         setDispensePresenter();
         manageQueueModel.dispenseTokenWithClientInfo(
-                LaunchActivity.getLaunchActivity().getDeviceID(),
+                BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(),
                 new JsonBusinessCustomerLookup().setCodeQR(topicsList.get(currrentpos).getCodeQR()).setCustomerPhone(phoneNoWithCode));

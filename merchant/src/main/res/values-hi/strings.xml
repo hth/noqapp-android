@@ -116,4 +116,12 @@
     <string name="legal">वैधानिक</string>
     <string name="product_list">Products</string>
     <string name="screen_product_list">Products List</string>
+    <string name="edit_prod">Edit Product</string>
+    <string name="product_name">Name</string>
+    <string name="product_price">Product price</string>
+    <string name="product_desc">Product description</string>
+    <string name="product_discount">Product discount</string>
+    <string name="store_offline">Go Offline</string>
+    <string name="store_on">Online</string>
+    <string name="store_offline_1">Offline</string>
 </resources>

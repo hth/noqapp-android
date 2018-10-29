@@ -104,6 +104,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_margin="5dp"
                             android:background="@drawable/edit"
+                            android:backgroundTint="@color/button_color"
                             android:scaleType="centerInside"/>
 
                 </RelativeLayout>
@@ -135,11 +136,11 @@
                             android:paddingBottom="10dp"
                             android:layout_marginLeft="5dp"
                             android:layout_weight=".4"
-                            android:background="@drawable/blue_gradient"
+                            android:background="@color/theme_aqua"
                             android:gravity="center"
                             android:text="@string/change_number"
                             android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -170,6 +171,7 @@
                             android:layout_height="@dimen/image_height"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/edit"
+                            android:backgroundTint="@color/button_color"
                             android:scaleType="centerInside"/>
                 </RelativeLayout>
 
@@ -304,6 +306,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_margin="5dp"
                             android:background="@drawable/add_user"
+                            android:backgroundTint="@color/button_color"
                             android:scaleType="centerInside"/>
 
                 </RelativeLayout>

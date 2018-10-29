@@ -120,34 +120,26 @@
                                             android:paddingLeft="10dp"
                                             android:paddingRight="10dp">
 
-                                        <RatingBar
-                                                android:id="@+id/ratingBar"
-                                                style="?android:attr/ratingBarStyleSmall"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:isIndicator="true"
-                                                android:numStars="5"
-                                                android:rating="0.0"
-                                                android:stepSize=".5"/>
-
                                         <TextView
                                                 android:id="@+id/tv_rating"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:layout_toRightOf="@+id/ratingBar"
-                                                android:text="space"
-                                                android:textColor="@color/colorAddress"
-                                                android:textSize="@dimen/text_size_twelve"
+                                                android:layout_centerVertical="true"
+                                                android:layout_toLeftOf="@+id/tv_rating_review"
+                                                android:layout_alignParentLeft="true"
+                                                android:text="0.0"
+                                                android:drawableLeft="@drawable/ic_star_white_fill"
+                                                android:drawableTint="@color/theme_color_red"
+                                                android:drawablePadding="5dp"
+                                                android:textColor="@android:color/black"
+                                                android:textSize="@dimen/rating_text_size"
                                                 android:visibility="invisible"/>
-
 
                                         <TextView
                                                 android:id="@+id/tv_rating_review"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_alignParentRight="true"
-                                                android:layout_toRightOf="@+id/tv_rating"
                                                 android:gravity="right"
                                                 android:text=""
                                                 android:textColor="@color/colorAddress"

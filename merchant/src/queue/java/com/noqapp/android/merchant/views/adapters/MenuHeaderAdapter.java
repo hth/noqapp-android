@@ -44,8 +44,7 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.My
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        JsonStoreCategory jsonTokenAndQueue = dataSet.get(listPosition);
-        holder.tv_menu_header.setText(jsonTokenAndQueue.getCategoryName());
+        holder.tv_menu_header.setText(dataSet.get(listPosition).getCategoryName());
         if (selected_pos == listPosition) {
             holder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.color_action_bar));
             holder.tv_menu_header.setTextColor(ContextCompat.getColor(context, R.color.color_action_bar));
