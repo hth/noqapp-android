@@ -298,6 +298,7 @@
     <string name="rejoin">Rejoin</string>
     <string name="reorder">Reorder</string>
     <string name="additional">Specific instruction, If any</string>
+    <string name="error_name_exist">A profile with this name already added</string>
     <!-- Category Info Screen -->
 
 </resources>

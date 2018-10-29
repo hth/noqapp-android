@@ -51,8 +51,10 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 
@@ -74,6 +76,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
     private ProfileModel profileModel;
+    private List<String> nameList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +102,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
         dependentProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.DEPENDENT_PROFILE);
         // gaurdianProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.KEY_USER_PROFILE);
+        nameList = getIntent().getStringArrayListExtra("nameList");
+
         updateUI();
         tv_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
@@ -357,6 +362,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             } else {
                 btn_update.setText("Add Family Members");
                 progressDialog.setMessage("Adding family member....");
+                tv_toolbar_title.setText("Add Profile");
             }
         } else {
             edt_Name.setText(NoQueueBaseActivity.getUserName());
@@ -389,20 +395,25 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         edt_Mail.setError(null);
         tv_birthday.setError(null);
         new AppUtilities().hideKeyBoard(this);
-
-        if (TextUtils.isEmpty(edt_Name.getText())) {
+        String name = edt_Name.getText().toString().toUpperCase();
+        if (TextUtils.isEmpty(name)) {
             edt_Name.setError(getString(R.string.error_name_blank));
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Name.getText()) && edt_Name.getText().length() < 4) {
+        if (!TextUtils.isEmpty(name) && name.length() < 4) {
             edt_Name.setError(getString(R.string.error_name_length));
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Mail.getText()) && !new CommonHelper().isValidEmail(edt_Mail.getText())) {
+        if(((null == dependentProfile && isDependent && nameList.contains(name))) ||(null == dependentProfile && !isDependent && !NoQueueBaseActivity.getUserName().toUpperCase().equals(name) && nameList.contains(name))||
+                (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))){
+            edt_Name.setError(getString(R.string.error_name_exist));
+            isValid = false;
+        }
+        if (!TextUtils.isEmpty(edt_Mail.getText().toString()) && !new CommonHelper().isValidEmail(edt_Mail.getText().toString())) {
             edt_Mail.setError(getString(R.string.error_invalid_email));
             isValid = false;
         }
-        if (TextUtils.isEmpty(tv_birthday.getText())) {
+        if (TextUtils.isEmpty(tv_birthday.getText().toString())) {
             tv_birthday.setError(getString(R.string.error_dob_blank));
             isValid = false;
         }

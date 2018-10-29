@@ -50,6 +50,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
@@ -68,7 +69,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     private LinearLayout ll_dependent;
     private ImageView iv_profile;
     private String gender = "";
-
+    private ArrayList<String> nameList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,8 +109,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             public void onClick(View v) {
                 Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
                 in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, true);
-                // in.putExtra(NoQueueBaseActivity.DEPENDENT_PROFILE,new JsonProfile());
-
+                in.putStringArrayListExtra("nameList", nameList);
                 startActivity(in);
             }
         });
@@ -165,7 +165,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             case R.id.iv_edit:
                 Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
                 in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
-                // in.putExtra(NoQueueBaseActivity.KEY_USER_PROFILE,LaunchActivity.getLaunchActivity().getUserProfile());
+                in.putStringArrayListExtra("nameList", nameList);
                 startActivity(in);
                 break;
 
@@ -314,6 +314,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             e.printStackTrace();
         }
         List<JsonProfile> jsonProfiles = NoQueueBaseActivity.getUserProfile().getDependents();
+        nameList.clear();
+        nameList.add(NoQueueBaseActivity.getUserName().toUpperCase());
         ll_dependent.removeAllViews();
         if (null != jsonProfiles && jsonProfiles.size() > 0) {
             for (int j = 0; j < jsonProfiles.size(); j++) {
@@ -329,10 +331,12 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                         Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
                         in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, true);
                         in.putExtra(NoQueueBaseActivity.DEPENDENT_PROFILE, jsonProfile);
+                        in.putStringArrayListExtra("nameList", nameList);
                         startActivity(in);
                     }
                 });
                 ll_dependent.addView(listitem_dependent);
+                nameList.add(jsonProfile.getName().toUpperCase());
             }
         }
         loadProfilePic();
