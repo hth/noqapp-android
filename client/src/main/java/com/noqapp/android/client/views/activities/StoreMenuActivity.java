@@ -44,14 +44,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_menu);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initActionsViews(true);
         tv_toolbar_title.setText("Menu");
         ExpandableListView expandableListView = findViewById(R.id.expandableListView);
         rcv_header = findViewById(R.id.rcv_header);
@@ -134,7 +127,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                             bundle.putString("storeName", jsonQueue.getDisplayName());
                             bundle.putString("storeAddress", jsonQueue.getStoreAddress());
                             bundle.putInt("deliveryRange", jsonQueue.getDeliveryRange());
-                            bundle.putString("topic",jsonQueue.getTopic());
+                            bundle.putString("topic", jsonQueue.getTopic());
                             bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
                             intent.putExtras(bundle);
                             startActivity(intent);
