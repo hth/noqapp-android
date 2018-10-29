@@ -133,18 +133,18 @@ public class MenuAdapter extends BaseAdapter {
             }
         });
 
-        if(jsonStoreProduct.isActive()){
+        if (jsonStoreProduct.isActive()) {
             childViewHolder.rl_menu_child.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
-        }else{
+        } else {
             childViewHolder.rl_menu_child.setBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
         }
         return convertView;
     }
 
-    private double calculateDiscountPrice(String displayPrice, String discountPercentage) {
+    private double calculateDiscountPrice(String displayPrice, String discountAmount) {
         double price = Double.valueOf(displayPrice);
-        double discountPercentageValue = Double.valueOf(discountPercentage);
-        return price - (price * discountPercentageValue) / 100;
+        double discountAmountValue = Double.valueOf(discountAmount);
+        return (price - discountAmountValue);
     }
 
     public final class ChildViewHolder {
