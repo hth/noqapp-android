@@ -558,6 +558,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                             Intent blinker = new Intent(getActivity(), BlinkerActivity.class);
                             startActivity(blinker);
                             break;
+                        case CO:
+                            ShowAlertInformation.showInfoDisplayDialog(getActivity(), jq.getBusinessName() + " has cancelled your order. Sorry for your inconvenience. :(");
+                            break;
                         default:
                             //Do Nothing
                     }

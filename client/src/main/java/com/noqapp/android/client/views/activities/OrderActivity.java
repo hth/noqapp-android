@@ -105,6 +105,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
+                progressDialog.show();
                 if (validateForm()) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
@@ -121,6 +122,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                     }
+                }else{
+                    dismissProgress();
                 }
             }
         });

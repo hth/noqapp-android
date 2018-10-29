@@ -206,6 +206,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
+                LaunchActivity.getLaunchActivity().progressDialog.setMessage("Completing the order...");
                 OrderServed orderServed = new OrderServed();
                 orderServed.setCodeQR(jsonTopic.getCodeQR());
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
@@ -228,6 +229,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     public void orderCancelClick(int position) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             LaunchActivity.getLaunchActivity().progressDialog.show();
+            LaunchActivity.getLaunchActivity().progressDialog.setMessage("Canceling the order...");
             OrderServed orderServed = new OrderServed();
             orderServed.setCodeQR(jsonTopic.getCodeQR());
             orderServed.setServedNumber(purchaseOrders.get(position).getToken());
