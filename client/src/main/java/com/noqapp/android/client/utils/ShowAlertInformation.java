@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -196,6 +197,12 @@ public class ShowAlertInformation {
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog.getWindow().setLayout(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         dialog.show();
+    }
+
+    public void showSnakeBar(View view, String msg) {
+        Snackbar snackbar = Snackbar
+                .make(view, msg, Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
 }

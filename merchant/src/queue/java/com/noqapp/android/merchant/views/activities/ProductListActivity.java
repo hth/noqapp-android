@@ -29,6 +29,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +44,6 @@ import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -297,10 +297,12 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         final Spinner sp_category_type = customDialogView.findViewById(R.id.sp_category_type);
         final Spinner sp_product_type = customDialogView.findViewById(R.id.sp_product_type);
         final Spinner sp_unit = customDialogView.findViewById(R.id.sp_unit);
-        final EditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
-        final EditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
-        final EditText edt_prod_description = customDialogView.findViewById(R.id.edt_prod_description);
-        final EditText edt_prod_discount = customDialogView.findViewById(R.id.edt_prod_discount);
+        final TextInputEditText edt_prod_name = customDialogView.findViewById(R.id.edt_prod_name);
+        final TextInputEditText edt_prod_price = customDialogView.findViewById(R.id.edt_prod_price);
+        final TextInputEditText edt_prod_description = customDialogView.findViewById(R.id.edt_prod_description);
+        final TextInputEditText edt_prod_discount = customDialogView.findViewById(R.id.edt_prod_discount);
+        final TextInputEditText edt_prod_unit_value = customDialogView.findViewById(R.id.edt_prod_unit_value);
+        final TextInputEditText edt_prod_pack_size = customDialogView.findViewById(R.id.edt_prod_pack_size);
 
         List<String> prodTypes = ProductTypeEnum.asListOfDescription();
         prodTypes.add(0, "Select product type");
@@ -321,6 +323,8 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             edt_prod_price.setText(jsonStoreProduct.getDisplayPrice());
             edt_prod_description.setText(jsonStoreProduct.getProductInfo());
             edt_prod_discount.setText(jsonStoreProduct.getDisplayDiscount());
+            edt_prod_pack_size.setText(String.valueOf(jsonStoreProduct.getPackageSize()));
+            edt_prod_unit_value.setText(String.valueOf(jsonStoreProduct.getUnitValue()));
             sp_category_type.setSelection(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId()));
             sp_unit.setSelection(getItemPosition(prodUnits, jsonStoreProduct.getUnitOfMeasurement().getDescription()));
             sp_product_type.setSelection(getItemPosition(prodTypes, jsonStoreProduct.getProductType().getDescription()));
@@ -351,7 +355,6 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         }
 
         builder.setView(customDialogView);
-
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         Button btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
@@ -366,7 +369,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
                 } else if (sp_unit.getSelectedItemPosition() == 0) {
                     Toast.makeText(ProductListActivity.this, "Please select product unit", Toast.LENGTH_LONG).show();
                 } else {
-                    if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount)) {
+                    if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount,edt_prod_unit_value,edt_prod_pack_size)) {
                         jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
                         jsonStoreProduct.setProductInfo(edt_prod_description.getText().toString());
                         jsonStoreProduct.setProductPrice((int) (Float.parseFloat(edt_prod_price.getText().toString()) * 100));
@@ -374,6 +377,8 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
                         jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(sp_product_type.getSelectedItem().toString()));
                         jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
                         jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString()));
+                        jsonStoreProduct.setPackageSize(Integer.parseInt(edt_prod_pack_size.getText().toString()));
+                        jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString()));
                         menuItemUpdate(jsonStoreProduct, actionTypeEnum);
                         mAlertDialog.dismiss();
                     }
@@ -410,14 +415,14 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     }
 
 
-    private boolean validate(EditText... views) {
+    private boolean validate(TextInputEditText... views) {
         boolean isValid = true;
-        for (EditText v : views) {
+        for (TextInputEditText v : views) {
             v.setError(null);
         }
         new AppUtils().hideKeyBoard(this);
         String errorMsg = "";
-        for (EditText v : views) {
+        for (TextInputEditText  v : views) {
             if (TextUtils.isEmpty(v.getText().toString())) {
                 v.setError(getString(R.string.error_field_required));
                 if (isValid) {

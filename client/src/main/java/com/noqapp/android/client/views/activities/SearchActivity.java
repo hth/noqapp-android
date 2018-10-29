@@ -30,6 +30,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -49,15 +50,17 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private NearMeModel nearMeModel;
     private EditText edt_search;
     private AutoCompleteTextView autoCompleteTextView;
+    private LinearLayout ll_search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         RecyclerView rv_search = findViewById(R.id.rv_search);
-        edt_search= findViewById(R.id.edt_search);
-        TextView tv_auto= findViewById(R.id.tv_auto);
-        autoCompleteTextView= findViewById(R.id.autoCompleteTextView);
+        edt_search = findViewById(R.id.edt_search);
+        TextView tv_auto = findViewById(R.id.tv_auto);
+        autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
+        ll_search = findViewById(R.id.ll_search);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_search));
         nearMeModel = new NearMeModel(this);
@@ -199,6 +202,8 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         listData.clear();
         listData.addAll(nearMeData);
         searchAdapter.notifyDataSetChanged();
+        if (bizStoreElasticList.getBizStoreElastics().size() == 0)
+            new ShowAlertInformation().showSnakeBar(ll_search, "Search element not found");
         dismissProgress();
 
     }
@@ -210,7 +215,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
 
     @Override
     public void nearMeHospitalResponse(BizStoreElasticList bizStoreElasticList) {
-            // Do nothing
+        // Do nothing
     }
 
     @Override
@@ -221,7 +226,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this,eej);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
@@ -235,7 +240,6 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         dismissProgress();
         AppUtilities.authenticationProcessing(this);
     }
-
 
 
 }

@@ -190,4 +190,6 @@
     <string name="store_offline">Go Offline</string>
     <string name="store_on">Online</string>
     <string name="store_offline_1">Offline</string>
+    <string name="product_pack_size">Product pack size</string>
+    <string name="product_unit_value">Product unit value</string>
 </resources>

@@ -25,17 +25,13 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -74,7 +70,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         edt_optional = findViewById(R.id.edt_optional);
         final Button tv_place_order = findViewById(R.id.tv_place_order);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
-        initActionsViews(false);
+        initActionsViews(true);
         purchaseApiModel = new PurchaseApiModel(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
         tv_toolbar_title.setText(getString(R.string.screen_order));
@@ -250,7 +246,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         Log.e("address list: ", notificationsList.toString());
         rg_address.removeAllViews();
         for (int i = 0; i < notificationsList.size(); i++) {
-            final AppCompatRadioButton rdbtn = new AppCompatRadioButton(this);
+
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View radio_view = inflater.inflate(R.layout.list_item_radio, null, false);
+            final AppCompatRadioButton rdbtn = radio_view.findViewById(R.id.acrb);
             rdbtn.setId((i * 2) + i);
             rdbtn.setTag(notificationsList.get(i).getId());
             rdbtn.setText(notificationsList.get(i).getAddress());
@@ -311,24 +310,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     return false;
                 }
             });
-            rdbtn.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.cancel_grey), null);
-            rdbtn.setCompoundDrawablePadding(20);
-            ColorStateList colorStateList = new ColorStateList(
-                    new int[][]{
-                            new int[]{-android.R.attr.state_checked},
-                            new int[]{android.R.attr.state_checked}
-                    },
-                    new int[]{
-
-                            Color.DKGRAY
-                            , Color.rgb(242, 81, 112),
-                    }
-            );
-            CompoundButtonCompat.setButtonTintList(rdbtn, colorStateList);
-            float paddingDp = 10f;
-            // Convert to pixels
-            int paddingPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, paddingDp, this.getResources().getDisplayMetrics());
-            rdbtn.setPadding(paddingPx, paddingPx, paddingPx, paddingPx);
             rg_address.addView(rdbtn);
         }
         rg_address.setVisibility(View.VISIBLE);
