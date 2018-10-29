@@ -174,7 +174,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             case R.id.tv_male:
                 gender = "M";
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_male.setBackgroundResource(R.drawable.blue_gradient);
+                tv_male.setBackgroundColor(ContextCompat.getColor(UserProfileEditActivity.this, R.color.theme_aqua));
                 SpannableString ss = new SpannableString("Male  ");
                 Drawable d = getResources().getDrawable(R.drawable.check_white);
                 d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
@@ -187,7 +187,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 break;
             case R.id.tv_female:
                 gender = "F";
-                tv_female.setBackgroundResource(R.drawable.blue_gradient);
+                tv_female.setBackgroundColor(ContextCompat.getColor(UserProfileEditActivity.this, R.color.theme_aqua));
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_female.setCompoundDrawablePadding(0);
                 tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -315,7 +315,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         // updateUI();
         finish();
     }
-
 
 
     @Override

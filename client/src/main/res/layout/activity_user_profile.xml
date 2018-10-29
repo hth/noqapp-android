@@ -136,7 +136,7 @@
                             android:paddingBottom="10dp"
                             android:layout_marginLeft="5dp"
                             android:layout_weight=".4"
-                            android:background="@drawable/blue_gradient"
+                            android:background="@color/theme_aqua"
                             android:gravity="center"
                             android:text="@string/change_number"
                             android:textColor="@color/white"

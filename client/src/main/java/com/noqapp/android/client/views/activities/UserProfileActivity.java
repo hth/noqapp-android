@@ -32,6 +32,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -280,7 +281,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             case R.id.tv_male:
                 gender = "M";
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_male.setBackgroundResource(R.drawable.blue_gradient);
+                tv_male.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this, R.color.theme_aqua));
                 SpannableString ss = new SpannableString("Male  ");
                 Drawable d = getResources().getDrawable(R.drawable.check_white);
                 d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
@@ -293,7 +294,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 break;
             case R.id.tv_female:
                 gender = "F";
-                tv_female.setBackgroundResource(R.drawable.blue_gradient);
+                tv_female.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this, R.color.theme_aqua));
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_female.setCompoundDrawablePadding(0);
                 tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
