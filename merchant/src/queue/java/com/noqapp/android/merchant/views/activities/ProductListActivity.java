@@ -243,10 +243,16 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
 
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
         TextView tv_toolbar_title = customDialogView.findViewById(R.id.tv_toolbar_title);
-        if (actionTypeEnum == ActionTypeEnum.ADD)
-            tv_toolbar_title.setText("Add Product");
+        TextView tv_offline_title = customDialogView.findViewById(R.id.tv_offline_title);
         final TextView tv_online = customDialogView.findViewById(R.id.tv_online);
         final TextView tv_offline = customDialogView.findViewById(R.id.tv_offline);
+        if (actionTypeEnum == ActionTypeEnum.ADD) {
+            tv_toolbar_title.setText("Add Product");
+            tv_online.setVisibility(View.GONE);
+            tv_offline.setVisibility(View.GONE);
+            tv_offline_title.setVisibility(View.GONE);
+        }
+
         tv_online.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,7 +270,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
 
                 jsonStoreProduct.setActive(true);
                 menuItemUpdate(jsonStoreProduct, ActionTypeEnum.ACTIVE);
-               // mAlertDialog.dismiss();
+                // mAlertDialog.dismiss();
 
             }
         });
@@ -284,7 +290,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
                 tv_offline.setText(ss);
                 jsonStoreProduct.setActive(false);
                 menuItemUpdate(jsonStoreProduct, ActionTypeEnum.INACTIVE);
-               // mAlertDialog.dismiss();
+                // mAlertDialog.dismiss();
 
             }
         });
@@ -316,8 +322,8 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             edt_prod_description.setText(jsonStoreProduct.getProductInfo());
             edt_prod_discount.setText(jsonStoreProduct.getDisplayDiscount());
             sp_category_type.setSelection(getCategoryItemPosition(jsonStoreProduct.getStoreCategoryId()));
-            sp_unit.setSelection(getItemPosition(prodUnits,jsonStoreProduct.getUnitOfMeasurement().getDescription()));
-            sp_product_type.setSelection(getItemPosition(prodTypes,jsonStoreProduct.getProductType().getDescription()));
+            sp_unit.setSelection(getItemPosition(prodUnits, jsonStoreProduct.getUnitOfMeasurement().getDescription()));
+            sp_product_type.setSelection(getItemPosition(prodTypes, jsonStoreProduct.getProductType().getDescription()));
             if (jsonStoreProduct.isActive()) {
                 tv_offline.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_online.setBackgroundResource(R.drawable.gender_redbg);
@@ -437,7 +443,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     private int getCategoryItemPosition(String category) {
         for (int i = 0; i < jsonStoreCategories.size(); i++) {
             if (category.equals(jsonStoreCategories.get(i).getCategoryId())) {
-                return i+1;
+                return i + 1;
             }
         }
         return 0;
