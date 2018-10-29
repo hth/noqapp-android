@@ -293,8 +293,8 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 pb_health_care.setVisibility(View.VISIBLE);
             }
             NearMeModel nearMeModel = new NearMeModel(this);
-            nearMeModel.nearMeStore(UserUtils.getDeviceId(), storeInfoParam);
-            nearMeModel.nearMeHospitalAndDoctors(UserUtils.getDeviceId(), storeInfoParam);
+            nearMeModel.otherMerchant(UserUtils.getDeviceId(), storeInfoParam);
+            nearMeModel.healthCare(UserUtils.getDeviceId(), storeInfoParam);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

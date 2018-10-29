@@ -35,8 +35,24 @@ public interface NearMeService {
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
-    @POST("open/search/nearMe.json")
-    Call<BizStoreElasticList> nearMe(
+    @POST("open/search/healthCare.json")
+    Call<BizStoreElasticList> healthCare(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Body
+            StoreInfoParam storeInfoParam
+    );
+
+    /**
+     * Errors
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
+    @POST("open/search/otherMerchant.json")
+    Call<BizStoreElasticList> otherMerchant(
             @Header("X-R-DID")
             String did,
 
