@@ -18,8 +18,7 @@
             android:layout_below="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/tv_modify_email"
-            >
+            android:layout_above="@+id/tv_modify_email">
 
         <RelativeLayout
                 android:id="@+id/layout"
