@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.fragments;
 
 import static com.noqapp.android.common.utils.Formatter.formatRFC822;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.model.QueueApiModel;
@@ -257,7 +256,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
 
             //Call the history queue
-            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), BuildConfig.VERSION_NAME);
+            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
             queueApiModel.allHistoricalJoinedQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
             //Call the current queue
@@ -266,7 +265,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
             //Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
             //Call the history queue
-            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken(), BuildConfig.VERSION_NAME);
+            DeviceToken deviceToken = new DeviceToken(FirebaseInstanceId.getInstance().getToken());
             queueModel.getAllHistoricalJoinedQueue(UserUtils.getDeviceId(), deviceToken);
         }
         if (isProgressFirstTime) {

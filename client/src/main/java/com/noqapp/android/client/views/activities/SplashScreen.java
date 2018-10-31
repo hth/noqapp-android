@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceModel;
@@ -118,7 +117,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     }
 
     private void sendRegistrationToServer(String refreshToken) {
-        DeviceToken deviceToken = new DeviceToken(refreshToken, BuildConfig.VERSION_NAME);
+        DeviceToken deviceToken = new DeviceToken(refreshToken);
         //  NoQueueBaseActivity.setFCMToken(refreshToken);
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");

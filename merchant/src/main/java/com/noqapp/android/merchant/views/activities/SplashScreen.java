@@ -5,7 +5,6 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
-import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.APIConstant;
 import com.noqapp.android.merchant.model.DeviceModel;
@@ -99,7 +98,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
     }
 
     private void sendRegistrationToServer(String refreshToken) {
-        DeviceToken deviceToken = new DeviceToken(refreshToken, BuildConfig.VERSION_NAME);
+        DeviceToken deviceToken = new DeviceToken(refreshToken);
         SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         deviceId = sharedpreferences.getString(APIConstant.Key.XR_DID, "");
         if (StringUtils.isBlank(deviceId)) {
