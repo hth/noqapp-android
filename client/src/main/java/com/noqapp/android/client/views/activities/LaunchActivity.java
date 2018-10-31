@@ -889,7 +889,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         NoQueueBaseActivity.setDeviceID(deviceId);
         DeviceModel deviceModel = new DeviceModel();
         deviceModel.setDeviceRegisterPresenter(this);
-        deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken()));
+        deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken(), Constants.appVersion()));
     }
 
     @Override

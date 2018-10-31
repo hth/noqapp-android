@@ -36,9 +36,13 @@ public class DeviceToken {
     @JsonProperty("os")
     private String osVersion;
 
-    public DeviceToken(String fcmToken) {
+    @JsonProperty("av")
+    private String appVersion;
+
+    public DeviceToken(String fcmToken, String appVersion) {
         this.fcmToken = fcmToken;
         this.model = Build.MODEL;
         this.osVersion = Build.VERSION.RELEASE;
+        this.appVersion = appVersion;
     }
 }
