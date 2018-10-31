@@ -198,7 +198,7 @@ public final class QueueModel {
      * @param did
      */
     public void getAllHistoricalJoinedQueue(String did, DeviceToken deviceToken) {
-        queueService.getAllHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, Constants.appVersion(), deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
+        queueService.getAllHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

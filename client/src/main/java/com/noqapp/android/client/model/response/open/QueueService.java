@@ -104,9 +104,6 @@ public interface QueueService {
             @Header ("X-R-AF")
             String appFlavor,
 
-            @Header("X-R-VR")
-            String versionRelease,
-
             @Body
             DeviceToken deviceToken
     );
