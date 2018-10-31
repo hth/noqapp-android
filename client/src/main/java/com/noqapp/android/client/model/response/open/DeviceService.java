@@ -31,6 +31,9 @@ public interface DeviceService {
             @Header ("X-R-AF")
             String appFlavor,
 
+            @Header("X-R-VR")
+            String versionRelease,
+
             @Body
             DeviceToken deviceToken
     );
