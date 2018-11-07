@@ -5,7 +5,6 @@ package com.noqapp.android.common.model.types;
  * Date: 5/7/17 8:21 AM
  */
 public enum FirebaseMessageTypeEnum {
-
     C("C", "Client"),
     M("M", "Merchant"),
     P("P", "Personal");
