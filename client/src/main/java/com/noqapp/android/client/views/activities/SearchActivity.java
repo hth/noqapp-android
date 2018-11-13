@@ -74,7 +74,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_search.setLayoutManager(horizontalLayoutManagaer);
         rv_search.setItemAnimator(new DefaultItemAnimator());
-        searchAdapter = new SearchAdapter(listData, this, this);
+        searchAdapter = new SearchAdapter(listData, this, this,Double.parseDouble(lat),Double.parseDouble(longitute));
         rv_search.setAdapter(searchAdapter);
 
         edt_search.setOnTouchListener(new View.OnTouchListener() {
@@ -198,7 +198,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         if (scrollId == null)
             scrollId = "";
         //sort the list, give the Comparator the current location
-        Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));
+       // Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));
         listData.clear();
         listData.addAll(nearMeData);
         searchAdapter.notifyDataSetChanged();

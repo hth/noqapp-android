@@ -4,6 +4,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
@@ -34,12 +35,14 @@ public class SearchAdapter extends RecyclerView.Adapter {
     private final int VIEW_PROG = 0;
     private final OnItemClickListener listener;
     private ArrayList<BizStoreElastic> dataSet;
+    private double lat, log;
 
-
-    public SearchAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener) {
+    public SearchAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener,double lat, double log) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
+        this.lat = lat;
+        this.log = log;
     }
 
     @Override
@@ -73,6 +76,11 @@ public class SearchAdapter extends RecyclerView.Adapter {
             holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
             holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
+            holder.tv_distance.setText(String.valueOf(AppUtilities.calculateDistance(
+                    (float) lat,
+                    (float) log,
+                    (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
+                    (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
             holder.tv_business_category.setText(bizStoreElastic.getBizCategoryName());
             holder.tv_business_category.setVisibility(TextUtils.isEmpty(bizStoreElastic.getBizCategoryName()) ? View.GONE : View.VISIBLE);
             if (bizStoreElastic.getReviewCount() > 0) {
@@ -163,6 +171,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
         private TextView tv_category_name;
         private TextView tv_store_special;
         private TextView tv_status;
+        private TextView tv_distance;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -178,6 +187,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
             this.tv_category_name = itemView.findViewById(R.id.tv_category_name);
             this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
             this.tv_status = itemView.findViewById(R.id.tv_status);
+            this.tv_distance = itemView.findViewById(R.id.tv_distance);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
