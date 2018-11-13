@@ -1,41 +1,64 @@
-package com.noqapp.android.client.views.activities;
+package com.noqapp.android.client.views.fragments;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.GPSTracker;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-
-public class SelectLocationActivity extends BaseActivity implements GPSTracker.LocationCommunicator {
-    GPSTracker gpsTracker;
-    AutoCompleteTextView autoCompleteTextView;
+public class ChangeLocationFragment extends Fragment implements GPSTracker.LocationCommunicator {
     private double lat, log;
     private String city = "";
+    private GPSTracker gpsTracker;
+    private AutoCompleteTextView autoCompleteTextView;
+    public ChangeLocationFragment() {
+
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location);
-        initActionsViews(false);
-        gpsTracker = new GPSTracker(this, this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_change_location, container, false);
+        gpsTracker = new GPSTracker(getActivity(), this);
         if (gpsTracker.isLocationEnabled()) {
             gpsTracker.getLocation();
         } else {
             gpsTracker.showSettingsAlert();
         }
 
-        TextView tv_auto = findViewById(R.id.tv_auto);
+        TextView tv_auto = view.findViewById(R.id.tv_auto);
+        ImageView  actionbarBack = view.findViewById(R.id.actionbarBack);
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
+                    lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
+                    log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
+                    city = LaunchActivity.getLaunchActivity().getDefaultCity();
+                } else {
+                    lat = LaunchActivity.getLaunchActivity().latitute;
+                    log = LaunchActivity.getLaunchActivity().longitute;
+                    city = LaunchActivity.getLaunchActivity().cityName;
+                    new AppUtilities().hideKeyBoard(getActivity());
+                }
+                LaunchActivity.getLaunchActivity().updateLocationInfo(lat,log,city);
+            }
+        });
         tv_auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,29 +70,30 @@ public class SelectLocationActivity extends BaseActivity implements GPSTracker.L
                     lat = LaunchActivity.getLaunchActivity().latitute;
                     log = LaunchActivity.getLaunchActivity().longitute;
                     city = LaunchActivity.getLaunchActivity().cityName;
-                    new AppUtilities().hideKeyBoard(SelectLocationActivity.this);
+                    new AppUtilities().hideKeyBoard(getActivity());
                 }
             }
         });
-        autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
-        autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
+        autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
+        autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
                     String city_name = (String) parent.getItemAtPosition(position);
-                    LatLng latLng = AppUtilities.getLocationFromAddress(SelectLocationActivity.this, city_name);
+                    LatLng latLng = AppUtilities.getLocationFromAddress(getActivity(), city_name);
                     if (null != latLng) {
                         lat = latLng.latitude;
                         log = latLng.longitude;
                         LaunchActivity.getLaunchActivity().updateLocationInfo(lat,log,city_name);
-                        finish();
+                        //finish();
+
                     } else {
                         //lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
-                      //  log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
+                        //  log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
                     }
                     city = city_name;
-                    new AppUtilities().hideKeyBoard(SelectLocationActivity.this);
+                    new AppUtilities().hideKeyBoard(getActivity());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -101,6 +125,13 @@ public class SelectLocationActivity extends BaseActivity implements GPSTracker.L
                 return false;
             }
         });
+        return view;
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        LaunchActivity.getLaunchActivity().getSupportActionBar().hide();
     }
 
     @Override

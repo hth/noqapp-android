@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.fragments;
 
 import static com.noqapp.android.common.utils.Formatter.formatRFC822;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.model.QueueApiModel;
