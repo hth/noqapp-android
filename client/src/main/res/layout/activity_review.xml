@@ -186,40 +186,90 @@
                             android:textColor="@color/colorAddress"
                             android:textSize="@dimen/text_size_fourteen"/>
 
+                    <RadioGroup
+                            android:id="@+id/rg_save_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+
+                        <RadioButton
+                                android:id="@+id/rb_1"
+                                android:layout_width="@dimen/review_radius"
+                                android:layout_height="@dimen/review_radius"
+                                android:background="@drawable/time_save_unselect"
+                                android:textColor="@android:color/black"
+                                android:layout_margin="5dp"
+                                android:textSize="10sp"
+                                android:gravity="center"
+                                android:button="@null"
+                                android:tag="1"
+                                android:text="30 min"/>
+
+                        <RadioButton
+                                android:id="@+id/rb_2"
+                                android:layout_width="@dimen/review_radius"
+                                android:layout_height="@dimen/review_radius"
+                                android:background="@drawable/time_save_unselect"
+                                android:textColor="@android:color/black"
+                                android:layout_margin="5dp"
+                                android:textSize="10sp"
+                                android:gravity="center"
+                                android:button="@null"
+                                android:tag="2"
+                                android:text="1 hr"/>
+
+                        <RadioButton
+                                android:id="@+id/rb_3"
+                                android:layout_width="@dimen/review_radius"
+                                android:layout_height="@dimen/review_radius"
+                                android:background="@drawable/time_save_unselect"
+                                android:textColor="@android:color/black"
+                                android:layout_margin="5dp"
+                                android:textSize="10sp"
+                                android:gravity="center"
+                                android:button="@null"
+                                android:tag="3"
+                                android:text="2 hr"/>
+
+                        <RadioButton
+                                android:id="@+id/rb_4"
+                                android:layout_width="@dimen/review_radius"
+                                android:layout_height="@dimen/review_radius"
+                                android:background="@drawable/time_save_unselect"
+                                android:textColor="@android:color/black"
+                                android:layout_margin="5dp"
+                                android:textSize="10sp"
+                                android:gravity="center"
+                                android:button="@null"
+                                android:tag="4"
+                                android:text="3 hr"/>
+
+                        <RadioButton
+                                android:id="@+id/rb_5"
+                                android:layout_width="@dimen/review_radius"
+                                android:layout_height="@dimen/review_radius"
+                                android:background="@drawable/time_save_unselect"
+                                android:textColor="@android:color/black"
+                                android:layout_margin="5dp"
+                                android:textSize="10sp"
+                                android:gravity="center"
+                                android:button="@null"
+                                android:tag="5"
+                                android:text="4 hr"/>
+
+
+                    </RadioGroup>
+
+
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
-
                             android:orientation="vertical"
                             android:weightSum="1">
 
-                        <com.noqapp.android.client.views.customviews.SeekbarWithIntervals
-                                android:id="@+id/seekbarWithIntervals"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:visibility="gone"/>
-
-
-                        <android.support.v7.widget.AppCompatSeekBar
-
-                                android:id="@+id/seekbarAppCompact"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:max="4"
-                                android:maxHeight="15dp"
-                                android:minHeight="15dp"
-                                android:progress="0"
-                                android:progressDrawable="@drawable/seek_style"
-                                android:scaleY="-0.55"
-                                android:splitTrack="false"
-                                android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
-                                android:thumb="@drawable/circle_bg_drawable"
-                                android:thumbOffset="8dp"
-                                android:tickMark="@drawable/seekbar_seprator"
-                                android:tickMarkTintMode="@android:color/transparent"
-                                seek_view:tickMarkTint="@android:color/transparent"/>
 
                         <TextView
                                 android:id="@+id/tv_hr_saved"
