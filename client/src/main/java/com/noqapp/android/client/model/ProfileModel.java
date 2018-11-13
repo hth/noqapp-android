@@ -260,8 +260,8 @@ public class ProfileModel {
         });
     }
 
-    public void removeImage(String did, String mail, String auth, String profileImageOfQid) {
-        profileService.remove(did, Constants.DEVICE_TYPE, mail, auth, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
+    public void removeImage(String did, String mail, String auth, UpdateProfile updateProfile) {
+        profileService.remove(did, Constants.DEVICE_TYPE, mail, auth, updateProfile).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -269,7 +269,7 @@ public class ProfileModel {
                         Log.d("Response uploadImage", String.valueOf(response.body()));
                         imageUploadPresenter.imageRemoveResponse(response.body());
                     } else {
-                        Log.e(TAG, "Failed image upload");
+                        Log.e(TAG, "Failed image remove");
                         imageUploadPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {

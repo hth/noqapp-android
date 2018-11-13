@@ -191,7 +191,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 progressDialog.setMessage("Removing profile image");
                 RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), NoQueueBaseActivity.getUserProfile().getQueueUserId());
                 profileModel.setImageUploadPresenter(this);
-                profileModel.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), NoQueueBaseActivity.getUserProfile().getQueueUserId());
+                UpdateProfile userProfile = new UpdateProfile().setQueueUserId(NoQueueBaseActivity.getUserProfile().getQueueUserId());
+                profileModel.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), userProfile);
 
             }
             break;

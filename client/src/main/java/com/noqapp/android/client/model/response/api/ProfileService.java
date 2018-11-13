@@ -200,6 +200,6 @@ public interface ProfileService {
             String auth,
 
             @Body
-            String profileImageOfQid
+            UpdateProfile updateProfile
     );
 }
