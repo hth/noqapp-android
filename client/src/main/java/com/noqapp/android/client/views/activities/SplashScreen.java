@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.DeviceModel;
