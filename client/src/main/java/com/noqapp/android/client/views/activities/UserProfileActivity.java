@@ -151,6 +151,19 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     @Override
+    public void imageRemoveResponse(JsonResponse jsonResponse) {
+        dismissProgress();
+        Log.v("Image removed", "" + jsonResponse.getResponse());
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+            NoQueueBaseActivity.setUserProfileUri("");
+            Toast.makeText(this, "Profile image removed successfully!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Failed to remove profile image", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
     public void imageUploadError() {
         dismissProgress();
     }
@@ -160,7 +173,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         int id = v.getId();
         switch (id) {
             case R.id.iv_profile:
-                selectImage();
+               // selectImage();
                 break;
             case R.id.iv_edit:
                 Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);

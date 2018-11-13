@@ -260,6 +260,35 @@ public class ProfileModel {
         });
     }
 
+    public void removeImage(String did, String mail, String auth, String profileImageOfQid) {
+        profileService.remove(did, Constants.DEVICE_TYPE, mail, auth, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response uploadImage", String.valueOf(response.body()));
+                        imageUploadPresenter.imageRemoveResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed image upload");
+                        imageUploadPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        imageUploadPresenter.authenticationFailure();
+                    } else {
+                        imageUploadPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("uploadImage failure", t.getLocalizedMessage(), t);
+                imageUploadPresenter.imageUploadError();
+            }
+        });
+    }
+
     public void changeMail(final String mail, final String auth, MigrateMail migrateMail) {
         profileService.changeMail(mail, auth, migrateMail).enqueue(new Callback<JsonResponse>() {
             @Override

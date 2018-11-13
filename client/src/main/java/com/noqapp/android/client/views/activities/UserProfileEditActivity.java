@@ -71,6 +71,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     private EditText edt_Mail;
     private TextView tv_male;
     private TextView tv_female;
+    private TextView tv_remove_image;
 
     private DatePickerDialog fromDatePickerDialog;
     private boolean isDependent = false;
@@ -92,6 +93,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         edt_Mail = findViewById(R.id.edt_email);
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
+        tv_remove_image = findViewById(R.id.tv_remove_image);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_edit_profile));
         iv_profile = findViewById(R.id.iv_profile);
@@ -109,6 +111,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
         btn_update.setOnClickListener(this);
+        tv_remove_image.setOnClickListener(this);
         edt_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -140,9 +143,13 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         .placeholder(ImageUtils.getProfilePlaceholder(this))
                         .error(ImageUtils.getProfileErrorPlaceholder(this))
                         .into(iv_profile);
+                tv_remove_image.setVisibility(View.VISIBLE);
+            } else {
+                tv_remove_image.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            tv_remove_image.setVisibility(View.GONE);
         }
     }
 
@@ -158,6 +165,19 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
     @Override
+    public void imageRemoveResponse(JsonResponse jsonResponse) {
+        dismissProgress();
+        Log.v("Image removed", "" + jsonResponse.getResponse());
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+            NoQueueBaseActivity.setUserProfileUri("");
+            Toast.makeText(this, "Profile image removed successfully!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Failed to remove profile image", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
     public void imageUploadError() {
         dismissProgress();
     }
@@ -166,6 +186,15 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
+            case R.id.tv_remove_image: {
+                progressDialog.show();
+                progressDialog.setMessage("Removing profile image");
+                RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), NoQueueBaseActivity.getUserProfile().getQueueUserId());
+                profileModel.setImageUploadPresenter(this);
+                profileModel.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), NoQueueBaseActivity.getUserProfile().getQueueUserId());
+
+            }
+            break;
             case R.id.iv_profile:
                 selectImage();
                 break;
@@ -404,8 +433,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             edt_Name.setError(getString(R.string.error_name_length));
             isValid = false;
         }
-        if(((null == dependentProfile && isDependent && nameList.contains(name))) ||(null == dependentProfile && !isDependent && !NoQueueBaseActivity.getUserName().toUpperCase().equals(name) && nameList.contains(name))||
-                (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))){
+        if (((null == dependentProfile && isDependent && nameList.contains(name))) || (null == dependentProfile && !isDependent && !NoQueueBaseActivity.getUserName().toUpperCase().equals(name) && nameList.contains(name)) ||
+                (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))) {
             edt_Name.setError(getString(R.string.error_name_exist));
             isValid = false;
         }
