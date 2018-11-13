@@ -183,7 +183,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             @Override
             public void onClick(View v) {
                 if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                    new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
+                    new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber("IN", phoneNo));
             }
         });
         recordHolder.rl_status.setOnClickListener(new View.OnClickListener() {
