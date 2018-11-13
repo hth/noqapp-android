@@ -23,7 +23,7 @@
                     android:id="@+id/profile_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#80deea"
+                    android:background="@color/review_color"
                     android:layout_alignParentTop="true"
                     android:elevation="0dp"
                     android:paddingBottom="15dp"

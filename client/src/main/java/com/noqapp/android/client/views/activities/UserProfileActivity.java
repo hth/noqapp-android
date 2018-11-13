@@ -174,7 +174,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         switch (id) {
             case R.id.iv_profile:
                // selectImage();
-                break;
+               // break;
             case R.id.iv_edit:
                 Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
                 in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
