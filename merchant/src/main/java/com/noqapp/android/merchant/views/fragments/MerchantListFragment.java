@@ -13,6 +13,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.AutocompleteAdapter;
 import com.noqapp.android.merchant.views.adapters.MerchantListAdapter;
@@ -198,7 +199,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
                 manageQueueModel.getQueues(
-                        LaunchActivity.getLaunchActivity().getDeviceID(),
+                        BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth());
             } else {
@@ -456,7 +457,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             swipeRefreshLayout.setRefreshing(true);
             manageQueueModel.getQueues(
-                    LaunchActivity.getLaunchActivity().getDeviceID(),
+                    BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
         } else {
