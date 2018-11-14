@@ -7,6 +7,7 @@ import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonUserAddress;
 import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -118,7 +119,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                     }
-                }else{
+                } else {
                     dismissProgress();
                 }
             }
@@ -205,6 +206,12 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     @Override
     public void purchaseOrderCancelResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        // implementation not required here
+        dismissProgress();
+    }
+
+    @Override
+    public void purchaseOrderActivateResponse(JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical) {
         // implementation not required here
         dismissProgress();
     }

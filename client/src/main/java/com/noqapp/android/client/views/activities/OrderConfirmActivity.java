@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.PurchaseApiModel;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -163,6 +164,11 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             //Show error
         }
         dismissProgress();
+    }
+
+    @Override
+    public void purchaseOrderActivateResponse(JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical) {
+
     }
 
 

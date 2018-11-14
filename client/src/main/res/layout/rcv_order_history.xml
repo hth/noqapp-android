@@ -133,6 +133,21 @@
                         android:layout_weight=".5">
 
                     <Button
+                            android:id="@+id/btn_activate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:background="@drawable/btn_bg_inactive"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:layout_gravity="right"
+                            android:text="@string/activate"
+                            android:textAllCaps="true"
+                            android:textColor="@color/btn_color"
+                            android:textSize="@dimen/text_size_fourteen"
+                            android:visibility="gone"
+                            android:textStyle="normal"/>
+
+                    <Button
                             android:id="@+id/btn_reorder"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"

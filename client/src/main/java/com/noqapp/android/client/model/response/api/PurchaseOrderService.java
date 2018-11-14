@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model.response.api;
 
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 
@@ -65,7 +66,7 @@ public interface PurchaseOrderService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("api/c/purchaseOrder/activate.json")
-    Call<JsonPurchaseOrder> activate(
+    Call<JsonPurchaseOrderHistorical> activate(
             @Header("X-R-DID")
             String did,
 
@@ -79,7 +80,7 @@ public interface PurchaseOrderService {
             String auth,
 
             @Body
-            JsonPurchaseOrder jsonPurchaseOrder
+            JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical
     );
 
     /**

@@ -1,6 +1,7 @@
 package com.noqapp.android.client.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
@@ -111,6 +112,10 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
 
     @JsonProperty("cs")
     private String countryShortName;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
 
     public String getQueueUserId() {
         return queueUserId;
@@ -327,6 +332,15 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public JsonPurchaseOrderHistorical setError(ErrorEncounteredJson error) {
+        this.error = error;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "JsonPurchaseOrderHistorical{" +
@@ -354,6 +368,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
                 ", area='" + area + '\'' +
                 ", town='" + town + '\'' +
                 ", countryShortName='" + countryShortName + '\'' +
+                ", error=" + error +
                 '}';
     }
 }
