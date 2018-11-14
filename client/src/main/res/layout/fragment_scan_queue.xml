@@ -230,6 +230,12 @@
                             android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold"/>
 
+                    <View
+                            android:layout_width="50dp"
+                            android:layout_height="@dimen/bottom_view_height"
+                            android:layout_below="@+id/tv_recent_title"
+                            android:background="@color/theme_aqua"/>
+
                     <TextView
                             android:id="@+id/tv_recent_view_all"
                             android:layout_width="wrap_content"
@@ -294,6 +300,12 @@
                             android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold"/>
 
+                    <View
+                            android:layout_width="50dp"
+                            android:layout_height="@dimen/bottom_view_height"
+                            android:layout_below="@+id/tv_health_care_title"
+                            android:background="@color/theme_aqua"/>
+
                     <TextView
                             android:id="@+id/tv_health_care_view_all"
                             android:layout_width="wrap_content"
@@ -356,6 +368,12 @@
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_fourteen"
                             android:textStyle="bold"/>
+
+                    <View
+                            android:layout_width="50dp"
+                            android:layout_height="@dimen/bottom_view_height"
+                            android:layout_below="@+id/tv_merchant_title"
+                            android:background="@color/theme_aqua"/>
 
                     <TextView
                             android:id="@+id/tv_near_view_all"
