@@ -29,6 +29,7 @@
     <dimen name="store_sub_headers">12sp</dimen>
     <dimen name="btn_height">25dp</dimen>
     <dimen name="rating_radius">35dp</dimen>
+    <dimen name="review_radius">40dp</dimen>
     <dimen name="rating_padding">8dp</dimen>
     <dimen name="rating_text_size">12sp</dimen>
     <dimen name="mhd_header_size">12sp</dimen>
@@ -52,6 +53,6 @@
     <dimen name="btn_standard_height">40dp</dimen>
 
     <dimen name="join_section_small_text">10sp</dimen>
-
+    <dimen name="bottom_view_height">3dp</dimen>
 
 </resources>

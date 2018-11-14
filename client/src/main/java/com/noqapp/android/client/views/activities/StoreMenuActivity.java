@@ -23,8 +23,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -107,12 +105,12 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                         int price = 0;
                         for (ChildData value : getOrder.values()) {
-                            ll.add(new JsonPurchaseOrderProduct()
+                             ll.add(new JsonPurchaseOrderProduct()
                                     .setProductId(value.getJsonStoreProduct().getProductId())
-                                    .setProductPrice(value.getJsonStoreProduct().getProductPrice())
+                                    .setProductPrice(value.getFinalDiscountedPrice()*100)
                                     .setProductQuantity(value.getChildInput())
                                     .setProductName(value.getJsonStoreProduct().getProductName()));
-                            price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
+                            price += value.getChildInput() * value.getFinalDiscountedPrice()*100;
                         }
                         if (price / 100 >= jsonQueue.getMinimumDeliveryOrder()) {
                             JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()

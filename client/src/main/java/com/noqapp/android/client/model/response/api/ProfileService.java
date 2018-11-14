@@ -199,7 +199,7 @@ public interface ProfileService {
             @Header("X-R-AUTH")
             String auth,
 
-            @Part("profileImageOfQid")
-            RequestBody profileImageOfQid
+            @Body
+            UpdateProfile updateProfile
     );
 }

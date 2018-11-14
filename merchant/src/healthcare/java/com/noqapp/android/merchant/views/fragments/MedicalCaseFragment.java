@@ -28,6 +28,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.Utils.AnimationUtils;
 import com.noqapp.android.merchant.views.Utils.TestCaseString;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
@@ -796,7 +797,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                             }
                         }
                         medicalHistoryModel.add(
-                                LaunchActivity.getLaunchActivity().getDeviceID(),
+                                BaseLaunchActivity.getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),
                                 jsonMedicalRecord);

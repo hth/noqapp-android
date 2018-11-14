@@ -71,12 +71,15 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     private EditText edt_Mail;
     private TextView tv_male;
     private TextView tv_female;
+    private TextView tv_remove_image;
 
     private DatePickerDialog fromDatePickerDialog;
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
     private ProfileModel profileModel;
     private List<String> nameList = new ArrayList<>();
+    private String imageUrl = "";
+    private String qUserId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,11 +95,11 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         edt_Mail = findViewById(R.id.edt_email);
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
+        tv_remove_image = findViewById(R.id.tv_remove_image);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_edit_profile));
         iv_profile = findViewById(R.id.iv_profile);
         profileModel = new ProfileModel();
-        loadProfilePic();
         iv_profile.setOnClickListener(this);
         progressDialog.setMessage("Updating profile....");
         isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
@@ -109,6 +112,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
         btn_update.setOnClickListener(this);
+        tv_remove_image.setOnClickListener(this);
         edt_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -134,15 +138,19 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     private void loadProfilePic() {
         Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
-            if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
+            if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.with(this)
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
+                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
                         .placeholder(ImageUtils.getProfilePlaceholder(this))
                         .error(ImageUtils.getProfileErrorPlaceholder(this))
                         .into(iv_profile);
+                tv_remove_image.setVisibility(View.VISIBLE);
+            } else {
+                tv_remove_image.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            tv_remove_image.setVisibility(View.GONE);
         }
     }
 
@@ -151,9 +159,27 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         dismissProgress();
         Log.v("Image upload", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(this, "Profile image change successfully!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Profile image change successfully! Change will be reflect after 5 min", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "Failed to update profile image", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void imageRemoveResponse(JsonResponse jsonResponse) {
+        dismissProgress();
+        Log.v("Image removed", "" + jsonResponse.getResponse());
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+            tv_remove_image.setVisibility(View.GONE);
+            if (isDependent) {
+                setDependentProfileImageUrl("");
+            } else {
+                NoQueueBaseActivity.setUserProfileUri("");
+            }
+            Toast.makeText(this, "Profile image removed successfully!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Failed to remove profile image", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -166,6 +192,13 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
+            case R.id.tv_remove_image: {
+                progressDialog.show();
+                progressDialog.setMessage("Removing profile image");
+                profileModel.setImageUploadPresenter(this);
+                profileModel.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new UpdateProfile().setQueueUserId(qUserId));
+            }
+            break;
             case R.id.iv_profile:
                 selectImage();
                 break;
@@ -179,7 +212,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             case R.id.tv_male:
                 gender = "M";
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_male.setBackgroundColor(ContextCompat.getColor(UserProfileEditActivity.this, R.color.theme_aqua));
+                tv_male.setBackgroundColor(ContextCompat.getColor(UserProfileEditActivity.this, R.color.review_color));
                 SpannableString ss = new SpannableString("Male  ");
                 Drawable d = getResources().getDrawable(R.drawable.check_white);
                 d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
@@ -192,7 +225,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 break;
             case R.id.tv_female:
                 gender = "F";
-                tv_female.setBackgroundColor(ContextCompat.getColor(UserProfileEditActivity.this, R.color.theme_aqua));
+                tv_female.setBackgroundColor(ContextCompat.getColor(UserProfileEditActivity.this, R.color.review_color));
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_female.setCompoundDrawablePadding(0);
                 tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -220,7 +253,11 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     iv_profile.setImageBitmap(bitmap);
 
                     String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
-                    NoQueueBaseActivity.setUserProfileUri(convertedPath);
+                    if (isDependent) {
+                        setDependentProfileImageUrl(convertedPath);
+                    } else {
+                        NoQueueBaseActivity.setUserProfileUri(convertedPath);
+                    }
 
                     if (!TextUtils.isEmpty(convertedPath)) {
                         progressDialog.show();
@@ -228,7 +265,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                        RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), NoQueueBaseActivity.getUserProfile().getQueueUserId());
+                        RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), qUserId);
                         profileModel.setImageUploadPresenter(this);
                         profileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
@@ -349,6 +386,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 edt_Name.setText(dependentProfile.getName());
                 tv_name.setText(dependentProfile.getName());
                 edt_address.setText(dependentProfile.getAddress());
+                imageUrl = dependentProfile.getProfileImage();
+                qUserId = dependentProfile.getQueueUserId();
                 if (dependentProfile.getGender().name().equals("M")) {
                     onClick(tv_male);
                 } else {
@@ -363,11 +402,17 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 btn_update.setText("Add Family Members");
                 progressDialog.setMessage("Adding family member....");
                 tv_toolbar_title.setText("Add Profile");
+                iv_profile.setEnabled(false);
+                iv_profile.setClickable(false);
+                imageUrl = "";
+                qUserId = "";
             }
         } else {
             edt_Name.setText(NoQueueBaseActivity.getUserName());
             tv_name.setText(NoQueueBaseActivity.getUserName());
             edt_address.setText(NoQueueBaseActivity.getAddress());
+            imageUrl = NoQueueBaseActivity.getUserProfileUri();
+            qUserId = NoQueueBaseActivity.getUserProfile().getQueueUserId();
             if (NoQueueBaseActivity.getGender().equals("M")) {
                 onClick(tv_male);
             } else {
@@ -404,8 +449,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             edt_Name.setError(getString(R.string.error_name_length));
             isValid = false;
         }
-        if(((null == dependentProfile && isDependent && nameList.contains(name))) ||(null == dependentProfile && !isDependent && !NoQueueBaseActivity.getUserName().toUpperCase().equals(name) && nameList.contains(name))||
-                (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))){
+        if (((null == dependentProfile && isDependent && nameList.contains(name))) || (null == dependentProfile && !isDependent && !NoQueueBaseActivity.getUserName().toUpperCase().equals(name) && nameList.contains(name)) ||
+                (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))) {
             edt_Name.setError(getString(R.string.error_name_exist));
             isValid = false;
         }
@@ -424,6 +469,23 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     protected void onResume() {
         super.onResume();
         updateUI();
+    }
+
+    private void setDependentProfileImageUrl(String path) {
+        List<JsonProfile> jsonProfiles = NoQueueBaseActivity.getUserProfile().getDependents();
+        if (null != jsonProfiles && jsonProfiles.size() > 0) {
+            for (int j = 0; j < jsonProfiles.size(); j++) {
+                final JsonProfile jsonProfile = jsonProfiles.get(j);
+                if (jsonProfile.getQueueUserId().equals(qUserId)) {
+                    jsonProfiles.get(j).setProfileImage(path);
+                    break;
+                }
+            }
+        }
+        JsonProfile jsonProfile = NoQueueBaseActivity.getUserProfile();
+        jsonProfile.setDependents(jsonProfiles);
+        NoQueueBaseActivity.setUserProfile(jsonProfile);
+
     }
 }
 

@@ -1,14 +1,25 @@
 package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.PurchaseApiModel;
+import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistorical;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,21 +32,26 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class OrderHistoryAdapter extends RecyclerView.Adapter {
+public class OrderHistoryAdapter extends RecyclerView.Adapter implements PurchaseOrderPresenter {
     private final Context context;
     private final OnItemClickListener listener;
     private ArrayList<JsonPurchaseOrderHistorical> dataSet;
+    private ProgressDialog progressDialog;
 
     public OrderHistoryAdapter(ArrayList<JsonPurchaseOrderHistorical> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Activating order in progress...");
     }
 
 
@@ -62,7 +78,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         }
         holder.tv_order_item.setText(getOrderItems(jsonPurchaseOrderHistorical.getJsonPurchaseOrderProductHistoricalList()));
         try {
-            holder.tv_order_amount.setText(context.getString(R.string.rupee) +" "+ String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
+            holder.tv_order_amount.setText(context.getString(R.string.rupee) + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
         } catch (Exception e) {
             holder.tv_order_amount.setText("0");
             e.printStackTrace();
@@ -84,6 +100,14 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
                 listener.onStoreItemClick(jsonPurchaseOrderHistorical, v, listPosition);
             }
         });
+        if (jsonPurchaseOrderHistorical.getBusinessType() == BusinessTypeEnum.PH && (jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.PO ||
+                jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.OP)) {
+            holder.btn_activate.setVisibility(View.VISIBLE);
+            holder.btn_reorder.setVisibility(View.GONE);
+        } else {
+            holder.btn_activate.setVisibility(View.GONE);
+            holder.btn_reorder.setVisibility(View.VISIBLE);
+        }
         holder.btn_reorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,11 +124,62 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
                 context.startActivity(intent);
             }
         });
+        holder.btn_activate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    progressDialog.show();
+                    new PurchaseApiModel(OrderHistoryAdapter.this).activateOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderHistorical);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(context);
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+
+    @Override
+    public void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        // implementation not required here
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void purchaseOrderCancelResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        // implementation not required here
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void purchaseOrderActivateResponse(JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical) {
+        if (null != jsonPurchaseOrderHistorical) {
+            Toast.makeText(context, "Order activated successfully.", Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+        }
+    }
+
+
+    @Override
+    public void authenticationFailure() {
+        progressDialog.dismiss();
+        AppUtilities.authenticationProcessing(context);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        progressDialog.dismiss();
+        new ErrorResponseHandler().processFailureResponseCode(context, errorCode);
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        progressDialog.dismiss();
+        if (null != eej)
+            new ErrorResponseHandler().processError(context, eej);
     }
 
     public interface OnItemClickListener {
@@ -121,6 +196,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
         private TextView tv_queue_status;
         private ImageView iv_details;
         private Button btn_reorder;
+        private Button btn_activate;
         private CardView card_view;
 
         private MyViewHolder(View itemView) {
@@ -132,6 +208,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter {
             this.tv_order_item = itemView.findViewById(R.id.tv_order_item);
             this.tv_queue_status = itemView.findViewById(R.id.tv_queue_status);
             this.btn_reorder = itemView.findViewById(R.id.btn_reorder);
+            this.btn_activate = itemView.findViewById(R.id.btn_activate);
             this.iv_details = itemView.findViewById(R.id.iv_details);
             this.card_view = itemView.findViewById(R.id.card_view);
         }

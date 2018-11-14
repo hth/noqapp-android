@@ -10,6 +10,7 @@ import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
 
@@ -52,7 +53,7 @@ public class MedicalRecordListFragment extends Fragment implements MedicalRecord
         medicalHistoryModel = new MedicalHistoryModel(this);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             //  progressDialog.show();
-            medicalHistoryModel.fetch(LaunchActivity.getLaunchActivity().getDeviceID(),
+            medicalHistoryModel.fetch(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), new FindMedicalProfile().setCodeQR(getArguments().getString("qCodeQR")).setQueueUserId(getArguments().getString("qUserId")));
         } else {

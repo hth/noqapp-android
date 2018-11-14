@@ -17,7 +17,6 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.customviews.SeekbarWithIntervals;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -26,17 +25,19 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatSeekBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RatingBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,9 +53,12 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     private TextView tv_hr_saved;
     private TextView tv_badge;
     private EditText edt_review;
-    private AppCompatSeekBar seekbarAppCompact;
     private JsonTokenAndQueue jtk;
     private ProgressDialog progressDialog;
+    private RadioButton rb_1,rb_2,rb_3,rb_4,rb_5;
+    private RadioGroup rg_save_time;
+    private int selectedRadio = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +78,32 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         TextView tv_details = findViewById(R.id.tv_details);
         tv_badge = findViewById(R.id.tv_badge);
         edt_review = findViewById(R.id.edt_review);
-        SeekbarWithIntervals seekbarWithIntervals = findViewById(R.id.seekbarWithIntervals);
-        seekbarAppCompact = findViewById(R.id.seekbarAppCompact);
+
+        rb_1 = findViewById(R.id.rb_1);
+        rb_2 = findViewById(R.id.rb_2);
+        rb_3 = findViewById(R.id.rb_3);
+        rb_4 = findViewById(R.id.rb_4);
+        rb_5 = findViewById(R.id.rb_5);
+
+        rg_save_time = findViewById(R.id.rg_save_time);
+        rg_save_time.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                for (int i=0;i<rg_save_time.getChildCount();i++) {
+                    View o = rg_save_time.getChildAt(i);
+                    if (o instanceof RadioButton) {
+                        o.setBackground(ContextCompat.getDrawable(ReviewActivity.this,R.drawable.time_save_unselect));
+                        ((RadioButton) o).setTextColor(Color.BLACK);
+                    }
+                }
+                RadioButton rb = findViewById(checkedId);
+                rb.setBackground(ContextCompat.getDrawable(ReviewActivity.this,R.drawable.time_save_select));
+                rb.setTextColor(Color.WHITE);
+                tv_hr_saved.setText(getSeekbarLabel(Integer.parseInt(rb.getTag().toString())));
+            }
+        });
+        rb_4.setChecked(true);
         final Bundle extras = getIntent().getExtras();
 
         if (null != extras) {
@@ -134,45 +162,6 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
             }
         });
-        seekbarAppCompact.setProgress(Constants.DEFAULT_REVIEW_TIME_SAVED);
-        seekbarAppCompact.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                //Toast.makeText(ReviewActivity.this, "onStopTrackingTouch", Toast.LENGTH_SHORT).show();
-                tv_hr_saved.setText(getSeekbarLabel(seekBar.getProgress() + 1));
-            }
-        });
-
-        seekbarWithIntervals.setIntervals(getIntervals());
-        seekbarWithIntervals.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                //Toast.makeText(ReviewActivity.this, "onStopTrackingTouch", Toast.LENGTH_SHORT).show();
-                tv_hr_saved.setText(getSeekbarLabel(seekBar.getProgress() + 1));
-            }
-        });
-        seekbarWithIntervals.setProgress(Constants.DEFAULT_REVIEW_TIME_SAVED);
-        tv_hr_saved.setText(getSeekbarLabel(Constants.DEFAULT_REVIEW_TIME_SAVED + 1));
         tv_toolbar_title.setText(getString(R.string.screen_review));
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,7 +177,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         QueueReview rr = new QueueReview();
                         rr.setCodeQR(jtk.getCodeQR());
                         rr.setToken(jtk.getToken());
-                        rr.setHoursSaved(seekbarAppCompact.getProgress() + 1);
+                        rr.setHoursSaved(selectedRadio); // update according select radio
                         rr.setRatingCount(Math.round(ratingBar.getRating()));
                         rr.setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
                         /* New instance of progressbar because it is a new activity. */
@@ -276,17 +265,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 //        }
     }
 
-    private List<String> getIntervals() {
-        return new ArrayList<String>() {{
-            add(getString(R.string.radio_save_30min));
-            add(getString(R.string.radio_save_1hr));
-            add(getString(R.string.radio_save_2hr));
-            add(getString(R.string.radio_save_3hr));
-            add(getString(R.string.radio_save_4hr));
-        }};
-    }
-
     private String getSeekbarLabel(int pos) {
+        selectedRadio = pos;
         switch (pos) {
             case 1:
                 return getString(R.string.time_saved) + getString(R.string.radio_save_30min_f);

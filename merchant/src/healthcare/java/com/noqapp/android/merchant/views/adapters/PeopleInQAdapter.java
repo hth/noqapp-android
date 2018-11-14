@@ -11,6 +11,7 @@ import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseHistoryTabbed;
 
@@ -72,7 +73,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                                 changeUserInQueue.setExistingQueueUserId(jsonQueuedPerson.getQueueUserId());
 
                                 manageQueueModel.changeUserInQueue(
-                                        LaunchActivity.getLaunchActivity().getDeviceID(),
+                                        BaseLaunchActivity.getDeviceID(),
                                         LaunchActivity.getLaunchActivity().getEmail(),
                                         LaunchActivity.getLaunchActivity().getAuth(), changeUserInQueue);
                                 mAlertDialog.dismiss();
@@ -151,12 +152,12 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                             jsonBusinessCustomer.setBusinessCustomerId(edt_id.getText().toString());
                             if (TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())) {
                                 businessCustomerModel.addId(
-                                        LaunchActivity.getLaunchActivity().getDeviceID(),
+                                        BaseLaunchActivity.getDeviceID(),
                                         LaunchActivity.getLaunchActivity().getEmail(),
                                         LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
                             } else {
                                 businessCustomerModel.editId(
-                                        LaunchActivity.getLaunchActivity().getDeviceID(),
+                                        BaseLaunchActivity.getDeviceID(),
                                         LaunchActivity.getLaunchActivity().getEmail(),
                                         LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
                             }

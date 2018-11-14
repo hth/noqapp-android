@@ -22,6 +22,7 @@ import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.NavigationDrawerAdapter;
+import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
@@ -60,6 +61,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -287,6 +289,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     }
 
     public void updateLocationInfo(double lat, double log, String city){
+        replaceFragmentWithoutBackStack(R.id.frame_layout, scanFragment);
+        getSupportActionBar().show();
         latitute = lat;
         longitute = log;
         cityName = city;
@@ -323,8 +327,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 onBackPressed();
                 break;
             case R.id.tv_location: {
-                Intent intent = new Intent(launchActivity, SelectLocationActivity.class);
-                startActivity(intent);
+               // Intent intent = new Intent(launchActivity, SelectLocationActivity.class);
+               // startActivity(intent);
+                replaceFragmentWithoutBackStack(R.id.frame_layout, new ChangeLocationFragment());
             }
             break;
             case R.id.iv_search:
@@ -481,6 +486,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Override
     public void onBackPressed() {
+
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+        if(f instanceof ChangeLocationFragment){
+            updateLocationInfo(latitute,longitute,cityName);
+            return;
+        }
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastPress > 3000) {
             backPressToast = Toast.makeText(launchActivity, getString(R.string.exit_app), Toast.LENGTH_LONG);

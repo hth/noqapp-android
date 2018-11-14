@@ -9,7 +9,6 @@ import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.SearchAdapter;
@@ -34,7 +33,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by chandra on 5/7/17.
@@ -74,7 +72,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_search.setLayoutManager(horizontalLayoutManagaer);
         rv_search.setItemAnimator(new DefaultItemAnimator());
-        searchAdapter = new SearchAdapter(listData, this, this);
+        searchAdapter = new SearchAdapter(listData, this, this,Double.parseDouble(lat),Double.parseDouble(longitute));
         rv_search.setAdapter(searchAdapter);
 
         edt_search.setOnTouchListener(new View.OnTouchListener() {
@@ -198,7 +196,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         if (scrollId == null)
             scrollId = "";
         //sort the list, give the Comparator the current location
-        Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));
+       // Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));
         listData.clear();
         listData.addAll(nearMeData);
         searchAdapter.notifyDataSetChanged();

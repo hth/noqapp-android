@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.utils;
 
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +25,6 @@ public class UserUtils {
     }
 
     public static String getDeviceId() {
-        return LaunchActivity.getLaunchActivity().getDeviceID();
+        return BaseLaunchActivity.getDeviceID();
     }
 }

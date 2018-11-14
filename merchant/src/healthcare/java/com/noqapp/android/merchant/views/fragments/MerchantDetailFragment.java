@@ -6,6 +6,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import android.content.Context;
@@ -107,7 +108,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
                             edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
                         }
                         manageQueueModel.dispenseTokenWithClientInfo(
-                                LaunchActivity.getLaunchActivity().getDeviceID(),
+                                BaseLaunchActivity.getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),
                                 new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));

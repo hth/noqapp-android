@@ -23,7 +23,7 @@
                     android:id="@+id/profile_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#80deea"
+                    android:background="@color/review_color"
                     android:layout_alignParentTop="true"
                     android:elevation="0dp"
                     android:paddingBottom="15dp"
@@ -41,6 +41,19 @@
                         android:src="@drawable/profile_avatar"
                         app:border_color="@android:color/white"
                         app:border_width="3dp"/>
+
+
+                <TextView
+                        android:id="@+id/tv_remove_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="Remove Image"
+                        android:layout_alignParentRight="true"
+                        android:textColor="#fff"
+                        android:textSize="@dimen/text_size_sixteen"
+                        android:textStyle="bold"/>
 
                 <TextView
                         android:id="@+id/tv_name"

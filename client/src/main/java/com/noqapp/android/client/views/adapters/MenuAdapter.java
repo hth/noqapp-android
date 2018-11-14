@@ -72,7 +72,7 @@ public class MenuAdapter extends BaseAdapter {
         childViewHolder.tv_discounted_price.setText(
                 context.getString(R.string.rupee)
                         + " "
-                        + calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount()));
+                        + childData.getFinalDiscountedPrice());
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
@@ -129,18 +129,14 @@ public class MenuAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private double calculateDiscountPrice(String displayPrice, String discountAmount) {
-        double price = Double.valueOf(displayPrice);
-        double discountAmountValue = Double.valueOf(discountAmount);
-        return (price - discountAmountValue);
-    }
+
 
     private int showCartAmount() {
         int price = 0;
         for (ChildData value : storeMenuActivity.getOrders().values()) {
-            price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
+            price += value.getChildInput() * value.getFinalDiscountedPrice();
         }
-        return price / 100;
+        return price ;
     }
 
     public interface CartOrderUpdate {
