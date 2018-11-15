@@ -46,6 +46,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,7 +62,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
 
 
     private TextView tv_profile_name;
-    private TextView tv_remove_image;
+    private Button tv_remove_image;
     private ImageView iv_profile;
     private final int SELECT_PICTURE = 110;
     private final int STORAGE_PERMISSION_CODE = 102;
