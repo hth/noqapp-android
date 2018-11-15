@@ -10,7 +10,7 @@
     <dimen name="tab_screen_padding">350dp</dimen>
     <dimen name="edit_icon_size">24dp</dimen>
     <dimen name="mhd_header_size">14sp</dimen>
-    <dimen name="mhd_sub_header_size">12dp</dimen>
+    <dimen name="mhd_sub_header_size">14dp</dimen>
     <dimen name="title_size">18sp</dimen>
     <dimen name="profile_image_size">75sp</dimen>
     <dimen name="profile_image_padding">5sp</dimen>

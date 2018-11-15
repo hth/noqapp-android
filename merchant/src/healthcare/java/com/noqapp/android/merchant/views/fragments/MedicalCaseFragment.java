@@ -752,7 +752,6 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                         jsonMedicalRecord.setFormVersion(FormVersionEnum.valueOf(BuildConfig.MEDICAL_FORM_VERSION));
                         jsonMedicalRecord.setCodeQR(qCodeQR);
                         jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
-                        jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
                         jsonMedicalRecord.setChiefComplain(actv_complaints.getText().toString());
                         jsonMedicalRecord.setPastHistory(actv_past_history.getText().toString());
                         jsonMedicalRecord.setFamilyHistory(actv_family_history.getText().toString());

@@ -1,5 +1,10 @@
 package com.noqapp.android.common.utils;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Years;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -92,4 +97,31 @@ public class CommonHelper {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
+    public String calculateAge(String dob) {
+        String age = "";
+        try {
+            DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(dob));
+            DateTime now = DateTime.now();
+            int years = Years.yearsBetween(dateTime, now).getYears();
+
+            if (years <= 1) {
+                int months = Months.monthsBetween(dateTime, now).getMonths();
+                if (months <= 1) {
+                    int days = Days.daysBetween(dateTime, now).getDays();
+                    if (days == 0) {
+                        age = "Today";
+                    } else {
+                        age = days + "+ days";
+                    }
+                } else {
+                    age = months + "+ months";
+                }
+            } else {
+                age = years + "+ years";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return age;
+    }
 }
