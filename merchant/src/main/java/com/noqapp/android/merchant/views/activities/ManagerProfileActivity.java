@@ -6,6 +6,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.ImagePathReader;
@@ -14,6 +15,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
@@ -46,6 +48,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -58,6 +61,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
 
 
     private TextView tv_profile_name;
+    private TextView tv_remove_image;
     private ImageView iv_profile;
     private final int SELECT_PICTURE = 110;
     private final int STORAGE_PERMISSION_CODE = 102;
@@ -93,7 +97,9 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         tv_profile_name = findViewById(R.id.tv_profile_name);
         merchantProfileModel = new MerchantProfileModel();
         iv_profile = findViewById(R.id.iv_profile);
+        tv_remove_image = findViewById(R.id.tv_remove_image);
         iv_profile.setOnClickListener(this);
+        tv_remove_image.setOnClickListener(this);
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
         loadTabs = new LoadTabs();
@@ -114,7 +120,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         if (null != jsonMerchant) {
             LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
             LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
-            LaunchActivity.getLaunchActivity().setUserName();
+            LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
             tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
             userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
             if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
@@ -180,9 +186,13 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
                 Picasso.with(this)
                         .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageUrl)
                         .into(iv_profile);
+                tv_remove_image.setVisibility(View.VISIBLE);
+            }else {
+                tv_remove_image.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            tv_remove_image.setVisibility(View.GONE);
         }
     }
 
@@ -194,6 +204,13 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             case R.id.iv_profile:
                 selectImage();
                 break;
+            case R.id.tv_remove_image: {
+                progressDialog.show();
+                progressDialog.setMessage("Removing profile image");
+                merchantProfileModel.setImageUploadPresenter(this);
+                merchantProfileModel.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new UpdateProfile().setQueueUserId(LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId()));
+            }
+            break;
             case R.id.iv_edit:
                 // selectImage();
                 break;
@@ -229,6 +246,8 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
                     // NoQueueBaseActivity.setUserProfileUri(convertedPath);
 
                     if (!TextUtils.isEmpty(convertedPath)) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Updating profile image");
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
@@ -311,12 +330,28 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
 
     @Override
     public void imageUploadResponse(JsonResponse jsonResponse) {
+        dismissProgress();
         Log.v("Image upload", "" + jsonResponse.getResponse());
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            Toast.makeText(this, "Profile image change successfully! Change will be reflect after 5 min", Toast.LENGTH_LONG).show();
+            tv_remove_image.setVisibility(View.VISIBLE);
+        } else {
+            Toast.makeText(this, "Failed to update profile image", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void imageRemoveResponse(JsonResponse jsonResponse) {
-        
+        dismissProgress();
+        Log.v("Image removed", "" + jsonResponse.getResponse());
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
+            tv_remove_image.setVisibility(View.GONE);
+            LaunchActivity.getLaunchActivity().setUserProfile( LaunchActivity.getLaunchActivity().getUserProfile().setProfileImage(""));
+            Toast.makeText(this, "Profile image removed successfully!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Failed to remove profile image", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
