@@ -5,11 +5,8 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.MedicalCaseFragment;
-import com.noqapp.android.merchant.views.fragments.MedicalRecordListFragment;
-import com.noqapp.android.merchant.views.fragments.PatientProfileFragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,9 +22,6 @@ public class MedicalCaseHistoryTabbed extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private LoadTabs loadTabs;
-    private MedicalCaseFragment medicalCaseFragment;
-    private PatientProfileFragment patientProfileFragment;
-    private MedicalRecordListFragment medicalRecordListFragment;
     private long lastPress;
     private Toast backPressToast;
 
@@ -63,24 +57,14 @@ public class MedicalCaseHistoryTabbed extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         try {
-            medicalCaseFragment = new MedicalCaseFragment();
+            MedicalCaseFragment medicalCaseFragment = new MedicalCaseFragment();
             Bundle b = new Bundle();
             b.putSerializable("data", getIntent().getSerializableExtra("data"));
             b.putString("qCodeQR", getIntent().getStringExtra("qCodeQR"));
             medicalCaseFragment.setArguments(b);
 
-            patientProfileFragment = new PatientProfileFragment();
-            Bundle bppf = new Bundle();
-            bppf.putString("qUserId", ((JsonQueuedPerson) getIntent().getSerializableExtra("data")).getQueueUserId());
-            bppf.putString("qCodeQR", getIntent().getStringExtra("qCodeQR"));
-            patientProfileFragment.setArguments(bppf);
-            medicalRecordListFragment = new MedicalRecordListFragment();
-            medicalRecordListFragment.setArguments(bppf);
-
             TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
             adapter.addFragment(medicalCaseFragment, "Medical Case");
-            adapter.addFragment(patientProfileFragment, "Patient Profile");
-            adapter.addFragment(medicalRecordListFragment, "Patient Medical Records");
             viewPager.setAdapter(adapter);
         }catch (Exception e){
             e.printStackTrace();

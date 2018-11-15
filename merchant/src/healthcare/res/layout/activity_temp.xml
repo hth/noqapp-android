@@ -5,28 +5,27 @@
               android:background="#99ffffff"
               android:orientation="vertical">
 
-    <FrameLayout
-            android:id="@+id/frame_layout"
+    <RelativeLayout
+            android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-        <TextView
-                android:id="@+id/tv_empty"
+        <com.noqapp.android.merchant.views.customviews.MyViewPager
+                android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/medical_history_alert"
-                android:textSize="@dimen/text_size_twelve" />
+                android:layout_above="@+id/rcv_header"/>
 
-        <ListView
-                android:id="@+id/listview"
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv_header"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@null"/>
+                android:layout_height="50dp"
+                android:paddingBottom="1dp"
+                android:layout_alignParentBottom="true"/>
 
-    </FrameLayout>
+
+    </RelativeLayout>
 
 
 </LinearLayout>
