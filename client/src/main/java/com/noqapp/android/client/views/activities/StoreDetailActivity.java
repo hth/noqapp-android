@@ -21,7 +21,6 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 
@@ -352,9 +351,14 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     }
 
     private boolean isOrderNow() {
-        return jsonQueue.getBusinessType() != BusinessTypeEnum.PH &&
-                jsonQueue.getBusinessType() != BusinessTypeEnum.PY &&
-                jsonQueue.getBusinessType() != BusinessTypeEnum.PT &&
-                jsonQueue.getBusinessType() != BusinessTypeEnum.RA;
+        switch (jsonQueue.getBusinessType()) {
+            case PH:
+            case PY:
+            case PT:
+            case RA:
+                return false;
+            default:
+                return true;
+        }
     }
 }
