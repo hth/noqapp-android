@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
                 android:layout_marginTop="3dp"
-                android:textSize="@dimen/text_size_ten"/>
+                android:textSize="@dimen/text_size_twelve"/>
 
 
         <RelativeLayout
@@ -62,7 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
-                android:layout_marginTop="3dp">
+                android:layout_marginTop="3dp"
+                android:visibility="gone">
 
             <TextView
                     android:id="@+id/tv_status_msg"
@@ -88,65 +89,60 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
                 android:layout_marginTop="3dp"
-                android:textSize="@dimen/text_size_ten"/>
+                android:textSize="@dimen/text_size_twelve"/>
 
         <TextView
                 android:id="@+id/tv_order_prepared"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:background="@color/colorAccent"
+                android:layout_marginBottom="5dp"
+                android:padding="10dp"
+                android:background="@drawable/button_drawable_red"
                 android:textColor="@android:color/white"
                 android:text="Order prepared"
                 android:layout_marginTop="3dp"
-                android:textSize="@dimen/text_size_ten"/>
+                android:gravity="center"
+                android:textSize="@dimen/text_size_twelve"/>
 
         <TextView
                 android:id="@+id/tv_order_done"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:background="@color/colorAccent"
+                android:layout_marginBottom="5dp"
+                android:padding="10dp"
+                android:background="@drawable/button_drawable_red"
                 android:textColor="@android:color/white"
                 android:text="Order Done"
+                android:gravity="center"
                 android:layout_marginTop="3dp"
-                android:textSize="@dimen/text_size_ten"/>
+                android:textSize="@dimen/text_size_twelve"/>
 
         <TextView
                 android:id="@+id/tv_order_cancel"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:padding="10dp"
                 android:background="@drawable/button_drawable_red"
                 android:textColor="@android:color/white"
                 android:text="Cancel Order"
+                android:gravity="center"
                 android:layout_marginTop="3dp"
-                android:textSize="@dimen/text_size_ten"/>
+                android:textSize="@dimen/text_size_twelve"/>
 
 
         <TextView
                 android:id="@+id/tv_order_data"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
-                android:padding="5dp"
+                android:padding="10dp"
                 android:background="@drawable/btn_bg_grey"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="3dp"
                 android:text="View order details"
-                android:textSize="@dimen/text_size_ten"/>
+                android:gravity="center"
+                android:textSize="@dimen/text_size_twelve"/>
 
     </LinearLayout>
 
