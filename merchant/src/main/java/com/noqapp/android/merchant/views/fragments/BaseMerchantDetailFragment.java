@@ -83,7 +83,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected JsonTopic jsonTopic = null;
     protected TextView tv_counter_name;
 
-    protected TextView tv_title, tv_total_value, tv_current_value, tv_timing, tv_start, tv_next;
+    protected TextView tv_title, tv_total_value, tv_current_value, tv_timing, tv_start, tv_next,tv_skip;
     private Chronometer chronometer;
     protected int currrentpos = 0;
     protected static AdapterCallback mAdapterCallback;
@@ -141,6 +141,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
         tv_next = itemView.findViewById(R.id.tv_next);
         tv_start = itemView.findViewById(R.id.tv_start);
+        tv_skip = itemView.findViewById(R.id.tv_skip);
         ImageView iv_edit = itemView.findViewById(R.id.iv_edit);
         iv_product_list = itemView.findViewById(R.id.iv_product_list);
         ImageView iv_settings = itemView.findViewById(R.id.iv_settings);

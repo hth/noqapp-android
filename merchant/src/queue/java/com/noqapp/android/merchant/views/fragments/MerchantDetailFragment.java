@@ -301,6 +301,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 btn_start.setText(context.getString(R.string.start));
                 btn_start.setBackgroundResource(R.mipmap.start);
                 btn_skip.setVisibility(View.GONE);
+                tv_skip.setVisibility(View.GONE);
 
                 if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
                         || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
