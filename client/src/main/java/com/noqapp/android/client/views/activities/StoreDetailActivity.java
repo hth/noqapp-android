@@ -21,7 +21,6 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 
@@ -289,7 +288,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (jsonQueue.getBusinessType() != BusinessTypeEnum.PH) {
+                if (isOrderNow()) {
                     Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
@@ -305,7 +304,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         });
         if (isStoreOpenToday(jsonStore)) {
             tv_menu.setClickable(true);
-            if (jsonQueue.getBusinessType() != BusinessTypeEnum.PH) {
+            if (isOrderNow()) {
                 tv_menu.setText("Order Now");
             } else {
                 tv_menu.setText("Visit Store");
@@ -349,5 +348,17 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         String time = df.format(Calendar.getInstance().getTime());
         int timeData = Integer.parseInt(time.replace(":", ""));
         return jsonHour.getStartHour() <= timeData && timeData <= jsonHour.getEndHour();
+    }
+
+    private boolean isOrderNow() {
+        switch (jsonQueue.getBusinessType()) {
+            case PH:
+            case PY:
+            case PT:
+            case RA:
+                return false;
+            default:
+                return true;
+        }
     }
 }
