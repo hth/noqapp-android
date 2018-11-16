@@ -289,7 +289,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (jsonQueue.getBusinessType() != BusinessTypeEnum.PH) {
+                if (isOrderNow()) {
                     Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
@@ -305,7 +305,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         });
         if (isStoreOpenToday(jsonStore)) {
             tv_menu.setClickable(true);
-            if (jsonQueue.getBusinessType() != BusinessTypeEnum.PH) {
+            if (isOrderNow()) {
                 tv_menu.setText("Order Now");
             } else {
                 tv_menu.setText("Visit Store");
@@ -349,5 +349,12 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         String time = df.format(Calendar.getInstance().getTime());
         int timeData = Integer.parseInt(time.replace(":", ""));
         return jsonHour.getStartHour() <= timeData && timeData <= jsonHour.getEndHour();
+    }
+
+    private boolean isOrderNow() {
+        return jsonQueue.getBusinessType() != BusinessTypeEnum.PH &&
+                jsonQueue.getBusinessType() != BusinessTypeEnum.PY &&
+                jsonQueue.getBusinessType() != BusinessTypeEnum.PT &&
+                jsonQueue.getBusinessType() != BusinessTypeEnum.RA;
     }
 }
