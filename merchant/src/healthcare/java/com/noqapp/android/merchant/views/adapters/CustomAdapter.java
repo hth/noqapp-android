@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.DataObj;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -64,13 +64,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        // init the item view's
         CheckBox name;
         ImageView image;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            // get the reference of item view's
             name = itemView.findViewById(R.id.name);
             image = itemView.findViewById(R.id.image);
 
@@ -96,7 +94,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                 temp.add( personNames.get(i).getName());
             }
         }
-
         return temp;
     }
 }

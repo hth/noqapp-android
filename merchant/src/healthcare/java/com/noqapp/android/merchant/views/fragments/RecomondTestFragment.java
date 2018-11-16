@@ -1,9 +1,9 @@
 package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.DataObj;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.CustomAdapter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -104,12 +104,18 @@ public class RecomondTestFragment extends Fragment {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().getRadiologyList();
                         temp.add(new DataObj(edt_item.getText().toString(),false));
                         MedicalCaseActivity.getMedicalCaseActivity().setRadiologyList(temp);
+                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+                        recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
+
                         CustomAdapter customAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getRadiologyList());
                         recyclerView.setAdapter(customAdapter);
                     }else {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().getPathologyList();
                         temp.add(new DataObj(edt_item.getText().toString(),false));
                         MedicalCaseActivity.getMedicalCaseActivity().setPathologyList(temp);
+                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+                        recyclerView_one.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
+
                         CustomAdapter customAdapter1 = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getPathologyList());
                         recyclerView_one.setAdapter(customAdapter1);
                     }
