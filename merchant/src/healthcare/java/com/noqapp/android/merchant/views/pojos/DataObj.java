@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.model;
+package com.noqapp.android.merchant.views.pojos;
 
 public class DataObj {
     private String name;

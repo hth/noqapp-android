@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.DataObj;
 import com.noqapp.android.merchant.model.MedicalCasePojo;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -12,6 +11,7 @@ import com.noqapp.android.merchant.views.fragments.PrintFragment;
 import com.noqapp.android.merchant.views.fragments.RecomondTestFragment;
 import com.noqapp.android.merchant.views.fragments.SymptomsFragment;
 import com.noqapp.android.merchant.views.fragments.TreatmentFragment;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;

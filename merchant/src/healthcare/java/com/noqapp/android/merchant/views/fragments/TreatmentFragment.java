@@ -9,11 +9,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,10 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.DataObj;
+
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.CustomAdapter;
+import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class TreatmentFragment extends Fragment {
 
@@ -33,8 +37,7 @@ public class TreatmentFragment extends Fragment {
     private ListView list_view;
     private TextView tv_add_instruction,tv_add_new;
     private CustomAdapter medicineAdapter;
-    private ArrayAdapter<String> instructionAdapter;
-    private String instruction = "";
+    private MultiSelectListAdapter instructionAdapter;
 
     @Nullable
     @Override
@@ -71,14 +74,18 @@ public class TreatmentFragment extends Fragment {
         medicineAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getMedicineList());
         recyclerView.setAdapter(medicineAdapter); // set the Adapter to RecyclerView
 
-        instructionAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, MedicalCaseActivity.getMedicalCaseActivity().getInstructionList());
+        list_view.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        List<DataObj> DataObjList = new ArrayList<>();
+        for (int i = 0; i <MedicalCaseActivity.getMedicalCaseActivity().getInstructionList().size() ; i++) {
+            DataObj DataObj = new DataObj();
+            DataObj.setName(MedicalCaseActivity.getMedicalCaseActivity().getInstructionList().get(i));
+            DataObj.setSelect(false);
+            DataObjList.add(DataObj);
+        }
+        instructionAdapter = new MultiSelectListAdapter(getActivity(),DataObjList);
         list_view.setAdapter(instructionAdapter);
-        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                instruction = instructionAdapter.getItem(position);
-            }
-        });
+
+
     }
 
 
@@ -114,14 +121,20 @@ public class TreatmentFragment extends Fragment {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().getMedicineList();
                         temp.add(new DataObj(edt_item.getText().toString(),false));
                         MedicalCaseActivity.getMedicalCaseActivity().setMedicineList(temp);
+                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+                        recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
+
                         CustomAdapter customAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getMedicineList());
                         recyclerView.setAdapter(customAdapter); // set the Adapter to RecyclerView
                     }else {
                         ArrayList<String> temp = MedicalCaseActivity.getMedicalCaseActivity().getInstructionList();
                         temp.add(edt_item.getText().toString());
                         MedicalCaseActivity.getMedicalCaseActivity().setInstructionList(temp);
-                        ArrayAdapter<String> zooAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, MedicalCaseActivity.getMedicalCaseActivity().getInstructionList());
-                        list_view.setAdapter(zooAdapter);
+                        DataObj dataObj = new DataObj();
+                        dataObj.setName(edt_item.getText().toString());
+                        dataObj.setSelect(false);
+                        instructionAdapter.addData(dataObj);
+                        list_view.setAdapter(instructionAdapter);
                     }
                     Toast.makeText(getActivity(),"'"+edt_item.getText().toString()+"' added successfully to list",Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();
@@ -133,6 +146,6 @@ public class TreatmentFragment extends Fragment {
 
     public void saveData() {
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setJsonMedicineList(medicineAdapter.getSelectedDataList());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setInstructions(instruction);
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setInstructions(instructionAdapter.getAllSelectedString());
     }
 }
