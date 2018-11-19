@@ -22,15 +22,11 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -55,11 +51,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     protected final int STATE_VERIFY_SUCCESS = 4;
     protected final int STATE_SIGN_IN_FAILED = 5;
     protected final int STATE_SIGN_IN_SUCCESS = 6;
-    protected final int READ_AND_RECEIVE_SMS_PERMISSION_CODE = 101;
-    protected final String[] READ_AND_RECEIVE_SMS_PERMISSION_PERMS = {
-            Manifest.permission.RECEIVE_SMS,
-            Manifest.permission.READ_SMS
-    };
     protected PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     protected String mVerificationId;
     protected FirebaseAuth mAuth;
@@ -235,40 +226,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             e.printStackTrace();
         }
     }
-
-    protected boolean isReadAndReceiveSMSPermissionAllowed() {
-        //Getting the permission status
-        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS);
-        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS);
-        //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
-            return true;
-        //If permission is not granted returning false
-        return false;
-    }
-
-    protected void requestReadAndReceiveSMSPermissionAllowed() {
-        ActivityCompat.requestPermissions(
-                this,
-                READ_AND_RECEIVE_SMS_PERMISSION_PERMS,
-                READ_AND_RECEIVE_SMS_PERMISSION_CODE
-        );
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == READ_AND_RECEIVE_SMS_PERMISSION_CODE) {
-
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                countryCode = edt_phone_code.getText().toString();
-                startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
-            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                //No permission allowed
-                //Do nothing
-            }
-        }
-    }
-
 
     protected void enableViews(View... views) {
         for (View v : views) {
@@ -454,22 +411,18 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
     private void actionLogin() {
         if (validate()) {
-            if (isReadAndReceiveSMSPermissionAllowed()) {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.show();
-                    progressDialog.setMessage("Generating OTP");
-                    //@TODO @Chandra update the country code dynamic
-                    countryCode = edt_phone_code.getText().toString();
-                    startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.show();
+                progressDialog.setMessage("Generating OTP");
+                //@TODO @Chandra update the country code dynamic
+                countryCode = edt_phone_code.getText().toString();
+                startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 
-                    Answers.getInstance().logLogin(new LoginEvent()
-                            .putMethod("Phone")
-                            .putSuccess(true));
-                } else {
-                    ShowAlertInformation.showNetworkDialog(this);
-                }
+                Answers.getInstance().logLogin(new LoginEvent()
+                        .putMethod("Phone")
+                        .putSuccess(true));
             } else {
-                requestReadAndReceiveSMSPermissionAllowed();
+                ShowAlertInformation.showNetworkDialog(this);
             }
         }
     }
