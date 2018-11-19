@@ -268,18 +268,19 @@
                     <RadioButton
                             android:id="@+id/rb_days"
                             android:layout_width="wrap_content"
-                            android:layout_height="38dp"
+                            android:layout_height="@dimen/rb_height"
                             android:text="@string/days"
                             style="@style/RadioButton"/>
 
                     <RadioButton
                             android:id="@+id/rb_months"
                             android:layout_width="wrap_content"
-                            android:layout_height="38dp"
+                            android:layout_height="@dimen/rb_height"
                             android:text="@string/month"
                             style="@style/RadioButton"/>
                 </info.hoang8f.android.segmented.SegmentedGroup>
             </LinearLayout>
+
             <Button
                     android:id="@+id/btn_submit"
                     android:layout_width="wrap_content"

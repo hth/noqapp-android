@@ -4,4 +4,5 @@
     <dimen name="segment_margin">5dp</dimen>
     <dimen name="segment_corner_radius">5dp</dimen>
     <dimen name="segment_border_width">2dp</dimen>
+    <dimen name="rb_height">38dp</dimen>
 </resources>
