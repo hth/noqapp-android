@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="DiscreteSlider">
-        <attr name="tickMarkCount" format="integer" />
-        <attr name="tickMarkRadius" format="dimension" />
-        <attr name="position" format="integer" />
-        <attr name="horizontalBarThickness" format="dimension" />
-        <attr name="backdropFillColor" format="color" />
-        <attr name="backdropStrokeColor" format="color" />
-        <attr name="backdropStrokeWidth" format="dimension" />
-        <attr name="thumb" format="reference" />
-        <attr name="progressDrawable" format="reference" />
-    </declare-styleable>
-
     <declare-styleable name="AvatarImageBehavior">
         <attr name="finalYPosition" format="dimension"/>
         <attr name="startXPosition" format="dimension"/>
