@@ -18,6 +18,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapterNew;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,16 +27,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import info.hoang8f.android.segmented.SegmentedGroup;
 
 import java.util.ArrayList;
 
 public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
-    private TextView tv_patient_name,tv_address,tv_info,tv_symptoms,tv_diagnosis,tv_instruction,tv_radiology,tv_pathology;
+    private TextView tv_patient_name,tv_address,tv_info,tv_symptoms,tv_diagnosis,tv_instruction,tv_radiology,tv_pathology,actv_followup;
     private MedicalHistoryModel medicalHistoryModel;
     private Button btn_submit;
+    private ListView lv_medicine;
+    private MedicalRecordAdapterNew adapter;
+    private SegmentedGroup rg_duration;
     private JsonPreferredBusinessList jsonPreferredBusinessList;
     @Nullable
     @Override
@@ -50,6 +57,9 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_instruction = v.findViewById(R.id.tv_instruction);
         tv_radiology = v.findViewById(R.id.tv_radiology);
         tv_pathology = v.findViewById(R.id.tv_pathology);
+        lv_medicine = v.findViewById(R.id.lv_medicine);
+        actv_followup = v.findViewById(R.id.actv_followup);
+        rg_duration = v.findViewById(R.id.rg_duration);
         btn_submit = v.findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,17 +101,17 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
               //      jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(sp_preferred_list.getSelectedItemPosition()).getBizStoreId());
 
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
-               // jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
+                jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
                 jsonMedicalRecord.setPlanToPatient(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getInstructions());
-//                if (!actv_followup.getText().toString().equals("")) {
-//                    String value = actv_followup.getText().toString();
-//                    int selectedId = rg_duration.getCheckedRadioButtonId();
-//                    if (selectedId == R.id.rb_months) {
-//                        jsonMedicalRecord.setFollowUpInDays(String.valueOf(Integer.parseInt(value) * 30));
-//                    } else {
-//                        jsonMedicalRecord.setFollowUpInDays(value);
-//                    }
-//                }
+                if (!actv_followup.getText().toString().equals("")) {
+                    String value = actv_followup.getText().toString();
+                    int selectedId = rg_duration.getCheckedRadioButtonId();
+                    if (selectedId == R.id.rb_months) {
+                        jsonMedicalRecord.setFollowUpInDays(String.valueOf(Integer.parseInt(value) * 30));
+                    } else {
+                        jsonMedicalRecord.setFollowUpInDays(value);
+                    }
+                }
                 medicalHistoryModel.add(
                         BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
@@ -121,6 +131,8 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_instruction.setText(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getInstructions());
         tv_radiology.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getRadiologyList()));
         tv_pathology.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getPathologyList()));
+        adapter = new MedicalRecordAdapterNew(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getJsonMedicineList());
+        lv_medicine.setAdapter(adapter);
     }
 
 

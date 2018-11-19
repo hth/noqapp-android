@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
@@ -75,23 +76,36 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         }
     }
 
-    public String getSelectedData(){
+    public String getSelectedData() {
         String data = "";
         for (int i = 0; i < personNames.size(); i++) {
-            if(personNames.get(i).isSelect()){
-                data += personNames.get(i).getName() +", ";
+            if (personNames.get(i).isSelect()) {
+                data += personNames.get(i).getName() + ", ";
             }
         }
-        if(data.endsWith(", "))
-            data = data.substring(0,data.length()-2);
+        if (data.endsWith(", "))
+            data = data.substring(0, data.length() - 2);
         return data;
     }
 
-    public ArrayList<String> getSelectedDataList(){
-        ArrayList<String> temp  = new ArrayList<>();
+    public ArrayList<String> getSelectedDataList() {
+        ArrayList<String> temp = new ArrayList<>();
         for (int i = 0; i < personNames.size(); i++) {
-            if(personNames.get(i).isSelect()){
-                temp.add( personNames.get(i).getName());
+            if (personNames.get(i).isSelect()) {
+                temp.add(personNames.get(i).getName());
+            }
+        }
+        return temp;
+    }
+
+    public ArrayList<JsonMedicalMedicine> getSelectedDataListObject() {
+        ArrayList<JsonMedicalMedicine> temp = new ArrayList<>();
+        for (int i = 0; i < personNames.size(); i++) {
+            if (personNames.get(i).isSelect()) {
+                JsonMedicalMedicine jsonMedicalMedicine = new JsonMedicalMedicine();
+                jsonMedicalMedicine.setName(personNames.get(i).getName());
+                jsonMedicalMedicine.setPharmacyCategory(personNames.get(i).getCategory());
+                temp.add(jsonMedicalMedicine);
             }
         }
         return temp;

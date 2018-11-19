@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalCasePojo;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -259,21 +260,21 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         diagnosisList.add(new DataObj("Lower respiratory tract infection", false));
 
         medicineList.clear();
-        medicineList.add(new DataObj("Tab  Crocin (500 mg)", false));
-        medicineList.add(new DataObj("Syr  Ondem", false));
-        medicineList.add(new DataObj("Syr  Adrenaline", false));
-        medicineList.add(new DataObj("Tab  Albendazole", false));
-        medicineList.add(new DataObj("Cap  B-complex", false));
-        medicineList.add(new DataObj("Tab  Balofloxacin", false));
-        medicineList.add(new DataObj("Tab  Calcium", false));
-        medicineList.add(new DataObj("Cap  Carbimazole", false));
-        medicineList.add(new DataObj("Oil  Castor Oil", false));
-        medicineList.add(new DataObj("Tab  Erdosteine", false));
+        medicineList.add(new DataObj("Tab  Crocin (500 mg)", PharmacyCategoryEnum.TA.getDescription(),false));
+        medicineList.add(new DataObj("Syr  Ondem", PharmacyCategoryEnum.SY.getDescription(),false));
+        medicineList.add(new DataObj("Syr  Adrenaline", PharmacyCategoryEnum.SY.getDescription(),false));
+        medicineList.add(new DataObj("Tab  Albendazole", PharmacyCategoryEnum.TA.getDescription(),false));
+        medicineList.add(new DataObj("Cap  B-complex", PharmacyCategoryEnum.CA.getDescription(),false));
+        medicineList.add(new DataObj("Tab  Balofloxacin", PharmacyCategoryEnum.TA.getDescription(),false));
+        medicineList.add(new DataObj("Tab  Calcium", PharmacyCategoryEnum.TA.getDescription(),false));
+        medicineList.add(new DataObj("Cap  Carbimazole", PharmacyCategoryEnum.CA.getDescription(),false));
+        medicineList.add(new DataObj("Oil  Castor Oil", PharmacyCategoryEnum.LO.getDescription(),false));
+        medicineList.add(new DataObj("Tab  Erdosteine", PharmacyCategoryEnum.TA.getDescription(),false));
 
-        medicineList.add(new DataObj("Cap  Folic Acid", false));
-        medicineList.add(new DataObj("Tab  Heparin", false));
-        medicineList.add(new DataObj("High Protein Supplement", false));
-        medicineList.add(new DataObj("Cap  Fluoride", false));
+        medicineList.add(new DataObj("Cap  Folic Acid", PharmacyCategoryEnum.CA.getDescription(),false));
+        medicineList.add(new DataObj("Tab  Heparin", PharmacyCategoryEnum.TA.getDescription(),false));
+        medicineList.add(new DataObj("High Protein Supplement", PharmacyCategoryEnum.PW.getDescription(),false));
+        medicineList.add(new DataObj("Cap  Fluoride", PharmacyCategoryEnum.CA.getDescription(),false));
 
         instructionList.clear();
         instructionList.add("Steam Inhalation");

@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.model;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class MedicalCasePojo {
     private ArrayList<String> radiologyList;
     private ArrayList<String> pathologyList;
 
-    private List<String> jsonMedicineList;
+    private List<JsonMedicalMedicine> jsonMedicineList;
 
     public String getName() {
         return name;
@@ -181,11 +182,11 @@ public class MedicalCasePojo {
         return this;
     }
 
-    public List<String> getJsonMedicineList() {
+    public List<JsonMedicalMedicine> getJsonMedicineList() {
         return jsonMedicineList;
     }
 
-    public MedicalCasePojo setJsonMedicineList(List<String> jsonMedicineList) {
+    public MedicalCasePojo setJsonMedicineList(List<JsonMedicalMedicine> jsonMedicineList) {
         this.jsonMedicineList = jsonMedicineList;
         return this;
     }

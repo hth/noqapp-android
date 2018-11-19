@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -145,7 +144,7 @@ public class TreatmentFragment extends Fragment {
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setJsonMedicineList(medicineAdapter.getSelectedDataList());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setJsonMedicineList(medicineAdapter.getSelectedDataListObject());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setInstructions(instructionAdapter.getAllSelectedString());
     }
 }
