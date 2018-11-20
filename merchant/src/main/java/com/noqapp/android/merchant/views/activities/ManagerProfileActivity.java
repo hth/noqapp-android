@@ -313,11 +313,6 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     }
 
     @Override
-    public void imageRemoveResponse(JsonResponse jsonResponse) {
-
-    }
-
-    @Override
     public void imageUploadError() {
 
     }
