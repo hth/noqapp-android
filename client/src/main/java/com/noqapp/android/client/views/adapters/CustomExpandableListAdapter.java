@@ -32,14 +32,16 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, List<ChildData>> listDataChild;
     private CartUpdate cartUpdate;
+    private String currencySymbol;
     private HashMap<String, ChildData> orders = new HashMap<>();
 
     public CustomExpandableListAdapter(Context context, List<JsonStoreCategory> listDataHeader,
-                                       HashMap<String, List<ChildData>> listDataChild, CartUpdate cartUpdate) {
+                                       HashMap<String, List<ChildData>> listDataChild, CartUpdate cartUpdate,String currencySymbol) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
         this.cartUpdate = cartUpdate;
+        this.currencySymbol = currencySymbol;
         orders.clear();
     }
 
@@ -89,9 +91,9 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
         //TODO chandra use County Code of the store to decide on Currency type
-        childViewHolder.tv_price.setText(context.getString(R.string.rupee) + " " + jsonStoreProduct.getDisplayPrice());
+        childViewHolder.tv_price.setText(currencySymbol + " " + jsonStoreProduct.getDisplayPrice());
         childViewHolder.tv_discounted_price.setText(
-                context.getString(R.string.rupee)
+                currencySymbol
                         + " "
                         + calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount()));
         if (jsonStoreProduct.getProductDiscount() > 0) {

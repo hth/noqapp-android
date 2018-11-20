@@ -22,12 +22,14 @@ public class MenuAdapter extends BaseAdapter {
     private List<ChildData> menuItemsList;
     private StoreMenuActivity storeMenuActivity;
     private CartOrderUpdate cartOrderUpdate;
+    private String currencySymbol;
 
-    public MenuAdapter(Context context, List<ChildData> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate) {
+    public MenuAdapter(Context context, List<ChildData> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate,String currencySymbol) {
         this.context = context;
         this.menuItemsList = menuItemsList;
         this.storeMenuActivity = storeMenuActivity;
         this.cartOrderUpdate = cartOrderUpdate;
+        this.currencySymbol = currencySymbol;
     }
 
     public int getCount() {
@@ -67,10 +69,9 @@ public class MenuAdapter extends BaseAdapter {
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_child_title_details.setText(jsonStoreProduct.getProductInfo());
         childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
-        //TODO chandra use County Code of the store to decide on Currency type
-        childViewHolder.tv_price.setText(context.getString(R.string.rupee) + " " + jsonStoreProduct.getDisplayPrice());
+        childViewHolder.tv_price.setText(currencySymbol + " " + jsonStoreProduct.getDisplayPrice());
         childViewHolder.tv_discounted_price.setText(
-                context.getString(R.string.rupee)
+                currencySymbol
                         + " "
                         + childData.getFinalDiscountedPrice());
         if (jsonStoreProduct.getProductDiscount() > 0) {

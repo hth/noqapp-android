@@ -18,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
 
@@ -28,8 +29,10 @@ public class CommonHelper {
     public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     public static final SimpleDateFormat SDF_YYYY_MM_DD_HH_MM_A = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
     public static final SimpleDateFormat SDF_DD_MMM_YY_HH_MM_A = new SimpleDateFormat("dd MMM yy, hh:mm a", Locale.getDefault());
+    public static String CURRENCY_SYMBOL = "currencySymbol";
 
     private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+
     public static String convertDOBToValidFormat(String dob) {
         try {
             Date date = SDF_DOB_FROM_UI.parse(dob);
@@ -124,4 +127,15 @@ public class CommonHelper {
         }
         return age;
     }
+
+    public static String getCurrencySymbol(String countryCode) {
+        try {
+            Locale localeTemp = new Locale("", countryCode);
+            return Currency.getInstance(localeTemp).getSymbol(localeTemp);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
 }

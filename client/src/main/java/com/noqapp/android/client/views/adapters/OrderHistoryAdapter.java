@@ -78,7 +78,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
         }
         holder.tv_order_item.setText(getOrderItems(jsonPurchaseOrderHistorical.getJsonPurchaseOrderProductHistoricalList()));
         try {
-            holder.tv_order_amount.setText(context.getString(R.string.rupee) + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
+            holder.tv_order_amount.setText(AppUtilities.getCurrencySymbol(jsonPurchaseOrderHistorical.getCountryShortName()) + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
         } catch (Exception e) {
             holder.tv_order_amount.setText("0");
             e.printStackTrace();

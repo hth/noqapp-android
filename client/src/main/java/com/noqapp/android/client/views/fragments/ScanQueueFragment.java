@@ -420,6 +420,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 bundle.putInt("token", item.getToken());
                 bundle.putString("storeName", item.getDisplayName());
                 bundle.putString("storeAddress", item.getStoreAddress());
+                bundle.putString(AppUtilities.CURRENCY_SYMBOL, AppUtilities.getCurrencySymbol(item.getCountryShortName()));
                 in.putExtras(bundle);
                 startActivity(in);
             }
