@@ -53,9 +53,7 @@ import okhttp3.RequestBody;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-
 public class ManagerProfileActivity extends AppCompatActivity implements View.OnClickListener, MerchantPresenter, ImageUploadPresenter {
-
 
     private TextView tv_profile_name;
     private ImageView iv_profile;

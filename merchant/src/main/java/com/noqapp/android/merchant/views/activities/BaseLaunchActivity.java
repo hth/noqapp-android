@@ -136,16 +136,17 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         sharedpreferences = this.getPreferences(Context.MODE_PRIVATE);
         languagepref = PreferenceManager.getDefaultSharedPreferences(this);
         languagepref.registerOnSharedPreferenceChangeListener(this);
-        language = languagepref.getString(
-                "pref_language", "");
-
+        language = languagepref.getString("pref_language", "");
 
         if (null != getIntent().getExtras()) {
-            if(!TextUtils.isEmpty(getIntent().getStringExtra("fcmToken")))
+            if (!TextUtils.isEmpty(getIntent().getStringExtra("fcmToken"))) {
                 setFCMToken(getIntent().getStringExtra("fcmToken"));
-            if(!TextUtils.isEmpty(getIntent().getStringExtra("deviceId")))
+            }
+
+            if (!TextUtils.isEmpty(getIntent().getStringExtra("deviceId"))) {
                 setDeviceID(getIntent().getStringExtra("deviceId"));
-           // Toast.makeText(this,"Device ID: "+getDeviceID(),Toast.LENGTH_LONG).show();
+            }
+            // Toast.makeText(this,"Device ID: "+getDeviceID(),Toast.LENGTH_LONG).show();
         }
 
         deviceModel = new DeviceModel();
