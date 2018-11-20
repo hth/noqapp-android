@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -70,10 +71,10 @@ public class MenuAdapter extends BaseAdapter {
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_child_title_details.setText(jsonStoreProduct.getProductInfo());
         //  childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
-        //TODO chandra use County Code of the store to decide on Currency type
-        childViewHolder.tv_price.setText(context.getString(R.string.rupee) + " " + jsonStoreProduct.getDisplayPrice());
+        String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
+        childViewHolder.tv_price.setText(currencySymbol + " " + jsonStoreProduct.getDisplayPrice());
         childViewHolder.tv_discounted_price.setText(
-                context.getString(R.string.rupee)
+                currencySymbol
                         + " "
                         + calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount()));
         if (jsonStoreProduct.getProductDiscount() > 0) {

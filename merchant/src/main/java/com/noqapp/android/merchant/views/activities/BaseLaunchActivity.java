@@ -421,12 +421,17 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         String json = new Gson().toJson(jsonProfile);
         editor.putString(KEY_USER_PROFILE, json);
         editor.apply();
+        sharedpreferences.edit().putString(AppUtils.CURRENCY_SYMBOL, AppUtils.getCurrencySymbol(jsonProfile.getCountryShortName())).apply();
     }
 
     public JsonProfile getUserProfile() {
         String json = sharedpreferences.getString(KEY_USER_PROFILE, "");
         return new Gson().fromJson(json, JsonProfile.class);
 
+    }
+
+    public static String getCurrencySymbol(){
+        return sharedpreferences.getString(AppUtils.CURRENCY_SYMBOL, "");
     }
 
     public static String getDeviceID() {
