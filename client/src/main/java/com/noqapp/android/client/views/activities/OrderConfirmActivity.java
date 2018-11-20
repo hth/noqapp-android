@@ -40,6 +40,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private JsonPurchaseOrder jsonPurchaseOrder, oldjsonPurchaseOrder;
     private Button btn_cancel_order;
     private String codeQR;
+    private int currentServing = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_store_name.setText(getIntent().getExtras().getString("storeName"));
         tv_address.setText(getIntent().getExtras().getString("storeAddress"));
         codeQR = getIntent().getExtras().getString(NoQueueBaseFragment.KEY_CODE_QR);
+        currentServing = getIntent().getExtras().getInt("currentServing");
         if (getIntent().getBooleanExtra(NoQueueBaseFragment.KEY_FROM_LIST, false)) {
             tv_toolbar_title.setText(getString(R.string.order_details));
             if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -124,8 +126,20 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             }
             ll_order_details.addView(inflatedLayout);
         }
-        tv_serving_no.setText(String.valueOf(jsonPurchaseOrder.getServingNumber()));
-        tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+        int currentTemp = currentServing == -1 ? jsonPurchaseOrder.getServingNumber() : currentServing;
+        tv_serving_no.setText(jsonPurchaseOrder.getToken() - currentTemp <= 0? String.valueOf(jsonPurchaseOrder.getToken()):String.valueOf(currentTemp));
+        switch (jsonPurchaseOrder.getPresentOrderState()) {
+            case OP:
+                tv_status.setText("Order being prepared");
+                break;
+            case RD:
+            case RP:
+            case OD:
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+                break;
+            default:
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+        }
         tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
@@ -216,6 +230,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                         tv_status.setText(jq.getPurchaseOrderState().getDescription());
                 }
             }
+            int currentTemp = currentServing == -1 ? jq.getServingNumber() : currentServing;
+            tv_serving_no.setText(jq.getToken() - currentTemp <= 0? String.valueOf(jsonPurchaseOrder.getToken()):String.valueOf(currentTemp));
         }
         return false;
     }
