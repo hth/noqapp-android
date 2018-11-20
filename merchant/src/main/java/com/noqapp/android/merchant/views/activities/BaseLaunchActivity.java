@@ -52,6 +52,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,8 +141,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
 
         if (null != getIntent().getExtras()) {
-            setFCMToken(getIntent().getStringExtra("fcmToken"));
-            setDeviceID(getIntent().getStringExtra("deviceId"));
+            if(!TextUtils.isEmpty(getIntent().getStringExtra("fcmToken")))
+                setFCMToken(getIntent().getStringExtra("fcmToken"));
+            if(!TextUtils.isEmpty(getIntent().getStringExtra("deviceId")))
+                setDeviceID(getIntent().getStringExtra("deviceId"));
+           // Toast.makeText(this,"Device ID: "+getDeviceID(),Toast.LENGTH_LONG).show();
         }
 
         deviceModel = new DeviceModel();
