@@ -1,6 +1,4 @@
-package com.noqapp.android.client.presenter.beans;
-
-import com.noqapp.android.common.beans.AbstractDomain;
+package com.noqapp.android.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

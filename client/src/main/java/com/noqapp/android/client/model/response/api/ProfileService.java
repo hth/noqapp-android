@@ -1,7 +1,7 @@
 package com.noqapp.android.client.model.response.api;
 
-import com.noqapp.android.client.presenter.beans.JsonUserAddress;
-import com.noqapp.android.client.presenter.beans.JsonUserAddressList;
+import com.noqapp.android.common.beans.JsonUserAddress;
+import com.noqapp.android.common.beans.JsonUserAddressList;
 import com.noqapp.android.client.presenter.beans.body.ChangeMailOTP;
 import com.noqapp.android.client.presenter.beans.body.MigrateMail;
 import com.noqapp.android.client.presenter.beans.body.MigratePhone;
