@@ -414,7 +414,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 progressDialog.setMessage("Generating OTP");
-                //@TODO @Chandra update the country code dynamic
                 countryCode = edt_phone_code.getText().toString();
                 startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 

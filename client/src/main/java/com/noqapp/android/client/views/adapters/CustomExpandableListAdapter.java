@@ -36,7 +36,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, ChildData> orders = new HashMap<>();
 
     public CustomExpandableListAdapter(Context context, List<JsonStoreCategory> listDataHeader,
-                                       HashMap<String, List<ChildData>> listDataChild, CartUpdate cartUpdate,String currencySymbol) {
+                                       HashMap<String, List<ChildData>> listDataChild, CartUpdate cartUpdate, String currencySymbol) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
@@ -71,8 +71,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         final ChildViewHolder childViewHolder;
         final ChildData childData = (ChildData) getChild(groupPosition, childPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_menu_child, parent, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_child_title = convertView.findViewById(R.id.tv_child_title);
@@ -84,13 +83,11 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
             convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
-            childViewHolder = (ChildViewHolder) convertView
-                    .getTag(R.layout.list_item_menu_child);
+            childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_menu_child);
         }
         JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
-        //TODO chandra use County Code of the store to decide on Currency type
         childViewHolder.tv_price.setText(currencySymbol + " " + jsonStoreProduct.getDisplayPrice());
         childViewHolder.tv_discounted_price.setText(
                 currencySymbol
@@ -158,8 +155,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition).getCategoryId())
-                .size();
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition).getCategoryId()).size();
     }
 
     @Override
@@ -186,8 +182,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     ) {
         String headerTitle = ((JsonStoreCategory) getGroup(groupPosition)).getCategoryName();
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_menu_group, parent, false);
         }
 
