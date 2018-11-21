@@ -272,5 +272,6 @@
     <string name="error_name_exist">A profile with this name already added</string>
     <string name="order">ORDER</string>
     <string name="activate">Activate</string>
+    <string name="change_address">Change Address</string>
 
 </resources>

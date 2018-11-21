@@ -40,6 +40,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,8 +49,10 @@ import java.util.TimeZone;
 
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, ProfileAddressPresenter {
     private RadioGroup rg_address;
-    private EditText edt_address;
-    private EditText edt_phone;
+    private TextView tv_address;
+    private RelativeLayout rl_address;
+    private EditText edt_phone, edt_add_address;
+    private Button btn_add_address;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
     private ProfileModel profileModel;
@@ -66,7 +69,48 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
         TextView tv_due_amt = findViewById(R.id.tv_due_amt);
         rg_address = findViewById(R.id.rg_address);
-        edt_address = findViewById(R.id.edt_address);
+        rl_address = findViewById(R.id.rl_address);
+        tv_address = findViewById(R.id.tv_address);
+
+        edt_add_address = findViewById(R.id.edt_add_address);
+        btn_add_address = findViewById(R.id.btn_add_address);
+        TextView tv_add_address = findViewById(R.id.tv_add_address);
+        TextView tv_change_address = findViewById(R.id.tv_change_address);
+        TextView tv_cancel = findViewById(R.id.tv_cancel);
+        tv_change_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rl_address.setVisibility(View.VISIBLE);
+            }
+        });
+        btn_add_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edt_add_address.setError(null);
+                if (TextUtils.isEmpty(edt_add_address.getText().toString())) {
+                    edt_add_address.setError(getString(R.string.error_field_required));
+                } else {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Adding address in progress..");
+                        profileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
+                    }
+                }
+            }
+        });
+        tv_add_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edt_add_address.setVisibility(View.VISIBLE);
+                btn_add_address.setVisibility(View.VISIBLE);
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rl_address.setVisibility(View.GONE);
+            }
+        });
         edt_phone = findViewById(R.id.edt_phone);
         edt_optional = findViewById(R.id.edt_optional);
         final Button tv_place_order = findViewById(R.id.tv_place_order);
@@ -78,8 +122,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_toolbar_title.setText(getString(R.string.screen_order));
         tv_user_name.setText(NoQueueBaseActivity.getUserName());
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
-        edt_address.setText(NoQueueBaseActivity.getAddress());
-        edt_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        tv_address.setText(NoQueueBaseActivity.getAddress());
+        tv_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         profileModel = new ProfileModel();
         profileModel.setProfilePresenter(this);
         profileModel.setProfileAddressPresenter(this);
@@ -104,11 +148,12 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 progressDialog.show();
+                progressDialog.setMessage("Order placing in progress..");
                 if (validateForm()) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
                         progressDialog.setMessage("Order placing in progress..");
-                        jsonPurchaseOrder.setDeliveryAddress(edt_address.getText().toString());
+                        jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString());
                         jsonPurchaseOrder.setDeliveryType(DeliveryTypeEnum.HD);
                         jsonPurchaseOrder.setPaymentType(PaymentTypeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
@@ -119,21 +164,23 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         tv_place_order.setClickable(false);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
+                        dismissProgress();
                     }
                 } else {
                     dismissProgress();
                 }
             }
         });
-        if (LaunchActivity.getLaunchActivity().isOnline()) {//&& !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
-            profileModel.getProfileAllAddress(UserUtils.getEmail(), UserUtils.getAuth());
-        }
+        JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
+        jsonUserAddressList.setJsonUserAddresses(LaunchActivity.getUserProfile().getJsonUserAddresses());
+        profileAddressResponse(jsonUserAddressList);
+        rl_address.setVisibility(View.GONE);
     }
 
     private boolean validateForm() {
         boolean isValid = true;
         edt_phone.setError(null);
-        edt_address.setError(null);
+        tv_address.setError(null);
         if (edt_phone.getText().toString().equals("")) {
             edt_phone.setError("Please enter mobile no.");
             isValid = false;
@@ -142,11 +189,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             edt_phone.setError("Please enter valid mobile no.");
             isValid = false;
         }
-        if (edt_address.getText().toString().equals("")) {
-            edt_address.setError("Please enter delivery address.");
+        if (tv_address.getText().toString().equals("")) {
+            tv_address.setError("Please enter delivery address.");
             isValid = false;
         } else {
-            LatLng latLng_d = AppUtilities.getLocationFromAddress(this, edt_address.getText().toString());
+            LatLng latLng_d = AppUtilities.getLocationFromAddress(this, tv_address.getText().toString());
             LatLng latLng_s = AppUtilities.getLocationFromAddress(this, getIntent().getExtras().getString("storeAddress"));
             if (null != latLng_d && null != latLng_s) {
                 float distance = (float) AppUtilities.calculateDistance(
@@ -155,7 +202,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         (float) latLng_d.latitude,
                         (float) latLng_d.longitude);
                 if (distance > getIntent().getExtras().getInt("deliveryRange")) {
-                    edt_address.setError("Please change the address. This address is very far from the store");
+                    tv_address.setError("Please change the address. This address is very far from the store");
                     isValid = false;
 
                 }
@@ -183,7 +230,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
                 profileModel.setProfilePresenter(this);
                 if (TextUtils.isEmpty(NoQueueBaseActivity.getAddress())) {
-                    String address = edt_address.getText().toString();
+                    String address = tv_address.getText().toString();
                     UpdateProfile updateProfile = new UpdateProfile();
                     updateProfile.setAddress(address);
                     updateProfile.setFirstName(NoQueueBaseActivity.getUserName());
@@ -193,10 +240,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     updateProfile.setQueueUserId(NoQueueBaseActivity.getUserProfile().getQueueUserId());
                     profileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
-                if (LaunchActivity.getLaunchActivity().isOnline() && !NoQueueBaseActivity.getAddress().equals(edt_address.getText().toString())) {
-                    profileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_address.getText().toString()).setId(""));
-                }
-
             } else {
                 Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
             }
@@ -251,17 +294,21 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     @Override
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
-        final List<JsonUserAddress> notificationsList = jsonUserAddressList.getJsonUserAddresses();
-        Log.e("address list: ", notificationsList.toString());
+        final List<JsonUserAddress> addressList = jsonUserAddressList.getJsonUserAddresses();
+        JsonProfile jp = LaunchActivity.getUserProfile();
+        jp.setJsonUserAddresses(addressList);
+        LaunchActivity.setUserProfile(jp);
+        Log.e("address list: ", addressList.toString());
         rg_address.removeAllViews();
-        for (int i = 0; i < notificationsList.size(); i++) {
+        for (int i = 0; i < addressList.size(); i++) {
 
             LayoutInflater inflater = LayoutInflater.from(this);
             View radio_view = inflater.inflate(R.layout.list_item_radio, null, false);
             final AppCompatRadioButton rdbtn = radio_view.findViewById(R.id.acrb);
             rdbtn.setId((i * 2) + i);
-            rdbtn.setTag(notificationsList.get(i).getId());
-            rdbtn.setText(notificationsList.get(i).getAddress());
+            rdbtn.setTag(addressList.get(i).getId());
+            rdbtn.setText(addressList.get(i).getAddress());
+            rdbtn.setPadding(10, 20, 10, 20);
             rdbtn.setLayoutParams(
                     new RadioGroup.LayoutParams(
                             android.view.ViewGroup.LayoutParams.FILL_PARENT,
@@ -321,8 +368,29 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             });
             rg_address.addView(rdbtn);
         }
-        rg_address.setVisibility(View.VISIBLE);
+        rg_address.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                AppCompatRadioButton radioButtonChosen = group.findViewById(checkedId);
+                tv_address.setText(radioButtonChosen.getText());
+                rl_address.setVisibility(View.GONE);
+
+            }
+        });
+        rl_address.setVisibility(View.VISIBLE);
+        edt_add_address.setVisibility(View.GONE);
+        btn_add_address.setVisibility(View.GONE);
+        edt_add_address.setText("");
         dismissProgress();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (rl_address.getVisibility() == View.VISIBLE) {
+            rl_address.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
