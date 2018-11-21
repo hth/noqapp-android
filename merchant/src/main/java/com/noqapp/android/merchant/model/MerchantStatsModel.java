@@ -33,7 +33,7 @@ public class MerchantStatsModel {
         merchantStatsService.doctor(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<HealthCareStatList>() {
             @Override
             public void onResponse(Call<HealthCareStatList> call, Response<HealthCareStatList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         chartPresenter.chartResponse(response.body());
                         Log.v("Chart Response ", response.body().toString());

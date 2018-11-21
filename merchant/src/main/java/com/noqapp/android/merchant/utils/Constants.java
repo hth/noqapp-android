@@ -36,7 +36,7 @@ public class Constants extends BaseConstants {
     public static final String CUSTOMER_ACQUIRE = "acquire_customer";
     //error codes
     public static final int INVALID_CREDENTIAL = 401;
-    public static final int SERVER_RESPONSE_CODE_SUCESS = 200;
+    public static final int SERVER_RESPONSE_CODE_SUCCESS = 200;
     private static final String TAG = Constants.class.getName();
     private static String VERSION_RELEASE;
 

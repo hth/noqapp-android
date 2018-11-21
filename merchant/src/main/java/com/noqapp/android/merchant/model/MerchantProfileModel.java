@@ -63,7 +63,7 @@ public class MerchantProfileModel {
         merchantProfileService.fetch(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth).enqueue(new Callback<JsonMerchant>() {
             @Override
             public void onResponse(@NonNull Call<JsonMerchant> call, @NonNull Response<JsonMerchant> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         merchantPresenter.merchantResponse(response.body());
                         Log.d("fetch", String.valueOf(response.body()));
@@ -92,7 +92,7 @@ public class MerchantProfileModel {
         merchantProfileService.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Update profile", String.valueOf(response.body()));
                         profilePresenter.profileResponse(response.body(), mail, auth);
@@ -121,7 +121,7 @@ public class MerchantProfileModel {
         merchantProfileService.update(mail, auth, jsonProfessionalProfilePersonal).enqueue(new Callback<JsonProfessionalProfilePersonal>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfilePersonal> call, @NonNull Response<JsonProfessionalProfilePersonal> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Update profess profile", String.valueOf(response.body()));
                         merchantProfessionalPresenter.merchantProfessionalResponse(response.body());
@@ -150,7 +150,7 @@ public class MerchantProfileModel {
         merchantProfileService.upload(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("upload", String.valueOf(response.body()));
                         imageUploadPresenter.imageUploadResponse(response.body());
@@ -179,7 +179,7 @@ public class MerchantProfileModel {
         merchantProfileService.remove(did, Constants.DEVICE_TYPE, mail, auth, updateProfile).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response uploadImage", String.valueOf(response.body()));
                         imageUploadPresenter.imageRemoveResponse(response.body());
