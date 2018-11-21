@@ -52,6 +52,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
         switch (item.getBusinessType()) {
             case DO:
             case BK:
+            case HS:
                 holder.tv_name.setText(item.getBusinessName());
                 holder.tv_status.setText("");
                 holder.tv_detail.setText("");

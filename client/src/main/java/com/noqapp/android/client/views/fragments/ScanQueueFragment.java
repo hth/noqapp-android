@@ -382,6 +382,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         switch (item.getBusinessType()) {
             case DO:
             case BK:
+            case HS:
                 // open hospital/Bank profile
                 Bundle b = new Bundle();
                 b.putString(KEY_CODE_QR, item.getCodeQR());

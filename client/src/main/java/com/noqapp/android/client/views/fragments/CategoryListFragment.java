@@ -66,6 +66,7 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
         switch (item.getBusinessType()) {
             case DO:
             case BK:
+            case HS:
                 // open hospital profile
                 Intent in = new Intent(getActivity(), JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
