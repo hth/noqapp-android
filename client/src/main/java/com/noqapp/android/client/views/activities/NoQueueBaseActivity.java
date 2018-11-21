@@ -27,7 +27,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     private static final String PREKEY_DOB = "dateOfBirth";
     private static final String PREKEY_ADD = "address";
     private static final String PREKEY_PROFILE_IMAGE = "imageUri";
-    //TODO add address from profile
     private static final String PREKEY_GENDER = "gender";
     private static final String PREKEY_INVITECODE = "invitecode";
     private static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
@@ -131,7 +130,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static String getDeviceID() {
-        //TODO(hth) why empty. Set device id when empty
         return sharedPreferences.getString(APIConstant.Key.XR_DID, "");
     }
 
