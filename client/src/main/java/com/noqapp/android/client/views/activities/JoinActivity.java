@@ -253,6 +253,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             switch (jsonQueue.getBusinessType()) {
                 case DO:
                 case PH:
+                case HS:
                     tv_add.setVisibility(View.VISIBLE);
                     add_person.setVisibility(View.VISIBLE);
                     sp_name_list.setVisibility(View.VISIBLE);
