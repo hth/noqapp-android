@@ -48,8 +48,9 @@ public class JsonQueuedDependent implements Serializable {
     @JsonProperty ("qu")
     private QueueUserStateEnum queueUserState;
 
+    /* Format: 15+ days. */
     @JsonProperty ("age")
-    private long age;
+    private String age;
 
     @JsonProperty ("g")
     private GenderEnum gender;
@@ -108,11 +109,11 @@ public class JsonQueuedDependent implements Serializable {
         return this;
     }
 
-    public long getAge() {
+    public String getAge() {
         return age;
     }
 
-    public JsonQueuedDependent setAge(long age) {
+    public JsonQueuedDependent setAge(String age) {
         this.age = age;
         return this;
     }
