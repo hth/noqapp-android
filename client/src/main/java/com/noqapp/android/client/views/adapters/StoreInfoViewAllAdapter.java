@@ -149,8 +149,6 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        /* When location permission on install is being asked, and after approval click on view all. */
-        //TODO add check for dataSet is not null
         return dataSet.size();
     }
 

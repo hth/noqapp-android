@@ -335,7 +335,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
         @Override
         public void afterTextChanged(Editable editable) {
-            // TODO Auto-generated method stub
             String text = editable.toString();
             switch (view.getId()) {
 
@@ -366,12 +365,10 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
         @Override
         public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-            // TODO Auto-generated method stub
         }
 
         @Override
         public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-            // TODO Auto-generated method stub
         }
     }
 

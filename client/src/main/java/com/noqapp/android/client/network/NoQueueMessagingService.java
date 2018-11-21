@@ -20,6 +20,7 @@ import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
@@ -201,7 +202,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         ((JsonAlertData) object).getCodeQR(),
                                         body,
                                         title,
-                                        ((JsonAlertData) object).getBusinessType().getName());
+                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
 
                                 sendNotification(title, body, false);
                             } else if (object instanceof JsonClientData) {
@@ -264,7 +265,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         ((JsonAlertData) object).getCodeQR(),
                                         body,
                                         title,
-                                        ((JsonAlertData) object).getBusinessType().getName());
+                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
                             }
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {

@@ -63,8 +63,6 @@ public class NotificationListAdapter extends BaseAdapter {
         }
         recordHolder.tv_title.setText(notificationsList.get(position).getTitle());
         recordHolder.tv_msg.setText(notificationsList.get(position).getMsg());
-        BusinessTypeEnum businessType = notificationsList.get(position).getBusinessType();
-        new AppUtilities().setStoreDrawable(context, recordHolder.iv_business, businessType);
         try {
             String dateString = notificationsList.get(position).getNotificationCreate();
             SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault());

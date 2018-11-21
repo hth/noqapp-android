@@ -35,6 +35,7 @@ import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
@@ -705,7 +706,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                 ((JsonAlertData) object).getCodeQR(),
                                 ((JsonAlertData) object).getBody(),
                                 ((JsonAlertData) object).getTitle(),
-                                ((JsonAlertData) object).getBusinessType().getName());
+                                ((JsonAlertData) object).getBusinessType()== null? BusinessTypeEnum.PA.getName():((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() + " is " + ((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();
@@ -789,7 +790,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                             }
                             callReviewActivity(codeQR, token);
                             // this code is added to close the join & after join screen if the request is processed
-                            //TODO @Chandra update the order screen if open
+                            // Update the order screen/ Join Screen if open
                             if (activityCommunicator != null) {
                                 activityCommunicator.requestProcessed(codeQR, token);
                             }
@@ -804,7 +805,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                 ((JsonAlertData) object).getCodeQR(),
                                 ((JsonAlertData) object).getBody(),
                                 ((JsonAlertData) object).getTitle(),
-                                ((JsonAlertData) object).getBusinessType().getName());
+                                ((JsonAlertData) object).getBusinessType()== null? BusinessTypeEnum.PA.getName():((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() + " is " + ((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();
