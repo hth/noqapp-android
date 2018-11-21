@@ -28,7 +28,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
@@ -40,6 +42,7 @@ import android.support.annotation.ColorInt;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
@@ -575,6 +578,38 @@ public class AppUtilities extends CommonHelper {
             return key;
         } else {
             return context.getString(R.string.store_today_hour) + " " + key;
+        }
+    }
+
+    public static void shareTheApp(Context context) {
+        Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.launcher);
+        if (drawable instanceof BitmapDrawable) {
+            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            Uri bitmapUri = null;
+            try {
+                File file = new File(Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
+                file.getParentFile().mkdirs();
+                FileOutputStream out = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+                out.close();
+                if (Build.VERSION.SDK_INT < 24) {
+                    bitmapUri = Uri.fromFile(file);
+                } else {
+                    bitmapUri = Uri.parse(file.getPath()); // Work-around for new SDKs, doesn't work on older ones.
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (bitmapUri != null) {
+                Intent shareIntent = new Intent();
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "I am inviting you to join our app. A simple and secure app developed by us. Check out my app at: https://play.google.com/store/apps/details?id=" + context.getPackageName());
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+                shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                shareIntent.setType("image/*");
+                context.startActivity(Intent.createChooser(shareIntent, "Share my app"));
+            }
         }
     }
 }

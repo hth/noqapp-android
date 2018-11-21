@@ -92,7 +92,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_discounted_price.setText(
                 currencySymbol
                         + " "
-                        + calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount()));
+                        + + childData.getFinalDiscountedPrice());
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
@@ -204,18 +204,12 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    private double calculateDiscountPrice(String displayPrice, String discountPercentage) {
-        double price = Double.valueOf(displayPrice);
-        double discountPercentageValue = Double.valueOf(discountPercentage);
-        return price - (price * discountPercentageValue) / 100;
-    }
-
     private int showCartAmount() {
         int price = 0;
         for (ChildData value : getOrders().values()) {
-            price += value.getChildInput() * value.getJsonStoreProduct().getProductPrice();
+            price += value.getChildInput() * value.getFinalDiscountedPrice();
         }
-        return price / 100;
+        return price ;
     }
 
     public interface CartUpdate {
