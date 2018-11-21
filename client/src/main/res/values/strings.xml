@@ -167,7 +167,6 @@
     <string name="medical_history_details">Case History</string>
 
 
-    <string name="rupee">\u20B9</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="error_field_required">This field is required</string>

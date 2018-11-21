@@ -39,7 +39,7 @@ public class StoreProductModel {
         storeProductService.storeProduct(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonStore>() {
             @Override
             public void onResponse(@NonNull Call<JsonStore> call, @NonNull Response<JsonStore> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("storeProduct response", String.valueOf(response.body()));
                         storeProductPresenter.storeProductResponse(response.body());
@@ -68,7 +68,7 @@ public class StoreProductModel {
         storeProductService.actionOnProduct( mail, auth, codeQR,actionTypeEnum,jsonStoreProduct).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("actionOnProductResponse", String.valueOf(response.body()));
                         actionOnProductPresenter.actionOnProductResponse(response.body());

@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
@@ -37,6 +38,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
     private HashMap<String, ChildData> orders = new HashMap<>();
+    private String currencySymbol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +50,10 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
         rcv_header = findViewById(R.id.rcv_header);
         tv_place_order = findViewById(R.id.tv_place_order);
         jsonQueue = (JsonQueue) getIntent().getSerializableExtra("jsonQueue");
+        currencySymbol = AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());
         List<JsonStoreCategory> expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
         HashMap<String, List<ChildData>> expandableListDetail = (HashMap<String, List<ChildData>>) getIntent().getExtras().getSerializable("listDataChild");
-        CustomExpandableListAdapter expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail, this);
+        CustomExpandableListAdapter expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail, this, currencySymbol);
         expandableListView.setAdapter(expandableListAdapter);
 
         viewPager = findViewById(R.id.pager);
@@ -58,7 +61,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
         ArrayList<Integer> removeEmptyData = new ArrayList<>();
         for (int i = 0; i < expandableListTitle.size(); i++) {
             if (expandableListDetail.get(expandableListTitle.get(i).getCategoryId()).size() > 0)
-                adapter.addFragment(new FragmentDummy(expandableListDetail.get(expandableListTitle.get(i).getCategoryId()), this, this), "FRAG" + i);
+                adapter.addFragment(new FragmentDummy(expandableListDetail.get(expandableListTitle.get(i).getCategoryId()), this, this, currencySymbol), "FRAG" + i);
             else
                 removeEmptyData.add(i);
         }
@@ -105,12 +108,12 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                         int price = 0;
                         for (ChildData value : getOrder.values()) {
-                             ll.add(new JsonPurchaseOrderProduct()
+                            ll.add(new JsonPurchaseOrderProduct()
                                     .setProductId(value.getJsonStoreProduct().getProductId())
-                                    .setProductPrice(value.getFinalDiscountedPrice()*100)
+                                    .setProductPrice(value.getFinalDiscountedPrice() * 100)
                                     .setProductQuantity(value.getChildInput())
                                     .setProductName(value.getJsonStoreProduct().getProductName()));
-                            price += value.getChildInput() * value.getFinalDiscountedPrice()*100;
+                            price += value.getChildInput() * value.getFinalDiscountedPrice() * 100;
                         }
                         if (price / 100 >= jsonQueue.getMinimumDeliveryOrder()) {
                             JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
@@ -126,6 +129,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                             bundle.putString("storeAddress", jsonQueue.getStoreAddress());
                             bundle.putInt("deliveryRange", jsonQueue.getDeliveryRange());
                             bundle.putString("topic", jsonQueue.getTopic());
+                            bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
                             bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
                             intent.putExtras(bundle);
                             startActivity(intent);

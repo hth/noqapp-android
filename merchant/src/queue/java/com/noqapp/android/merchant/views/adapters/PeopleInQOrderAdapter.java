@@ -40,7 +40,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
 
     }
 
-    private PeopleInQOrderAdapterClick peopleInQOrderAdapterClick;
+    protected PeopleInQOrderAdapterClick peopleInQOrderAdapterClick;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_customer_name;
@@ -156,7 +156,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
 
             }
         });
-        recordHolder.tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+        recordHolder.tv_order_status.setText("Status: "+jsonPurchaseOrder.getPresentOrderState().getDescription());
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
             recordHolder.tv_order_prepared.setVisibility(View.VISIBLE);
         } else {

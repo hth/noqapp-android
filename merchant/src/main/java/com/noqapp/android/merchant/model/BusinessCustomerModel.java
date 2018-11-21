@@ -35,7 +35,7 @@ public class BusinessCustomerModel {
         businessCustomerService.addId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("addId", String.valueOf(response.body()));
                         queuePersonListPresenter.queuePersonListResponse(response.body());
@@ -65,7 +65,7 @@ public class BusinessCustomerModel {
         businessCustomerService.editId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("editId", String.valueOf(response.body()));
                         queuePersonListPresenter.queuePersonListResponse(response.body());

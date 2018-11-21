@@ -26,7 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter ,ActivityCommunicator {
+public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter, ActivityCommunicator {
 
     private PurchaseApiModel purchaseApiModel;
     private TextView tv_total_order_amt;
@@ -40,6 +40,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private JsonPurchaseOrder jsonPurchaseOrder, oldjsonPurchaseOrder;
     private Button btn_cancel_order;
     private String codeQR;
+    private int currentServing = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_store_name.setText(getIntent().getExtras().getString("storeName"));
         tv_address.setText(getIntent().getExtras().getString("storeAddress"));
         codeQR = getIntent().getExtras().getString(NoQueueBaseFragment.KEY_CODE_QR);
+        currentServing = getIntent().getExtras().getInt("currentServing");
         if (getIntent().getBooleanExtra(NoQueueBaseFragment.KEY_FROM_LIST, false)) {
             tv_toolbar_title.setText(getString(R.string.order_details));
             if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -102,20 +104,21 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     }
 
     private void updateUI() {
-        tv_tax_amt.setText(getString(R.string.rupee) + "" + "0.0");
+        String currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
+        tv_tax_amt.setText(currencySymbol + "" + "0.0");
         if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
             jsonPurchaseOrder.setOrderPrice("0");
         }
-        tv_due_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
-        tv_total_order_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         for (int i = 0; i < oldjsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = oldjsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName()+" "+getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
-            tv_total_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + currencySymbol + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_total_price.setText(currencySymbol + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
             if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {
                 //added for  Pharmacy order place from merchant side directly
                 findViewById(R.id.ll_amount).setVisibility(View.GONE);
@@ -123,8 +126,20 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             }
             ll_order_details.addView(inflatedLayout);
         }
-        tv_serving_no.setText(String.valueOf(jsonPurchaseOrder.getServingNumber()));
-        tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+        int currentTemp = currentServing == -1 ? jsonPurchaseOrder.getServingNumber() : currentServing;
+        tv_serving_no.setText(jsonPurchaseOrder.getToken() - currentTemp <= 0? String.valueOf(jsonPurchaseOrder.getToken()):String.valueOf(currentTemp));
+        switch (jsonPurchaseOrder.getPresentOrderState()) {
+            case OP:
+                tv_status.setText("Order being prepared");
+                break;
+            case RD:
+            case RP:
+            case OD:
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+                break;
+            default:
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+        }
         tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
@@ -215,6 +230,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                         tv_status.setText(jq.getPurchaseOrderState().getDescription());
                 }
             }
+            int currentTemp = currentServing == -1 ? jq.getServingNumber() : currentServing;
+            tv_serving_no.setText(jq.getToken() - currentTemp <= 0? String.valueOf(jsonPurchaseOrder.getToken()):String.valueOf(currentTemp));
         }
         return false;
     }

@@ -44,7 +44,7 @@ public class PurchaseOrderModel {
         purchaseOrderService.fetch(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonPurchaseOrderList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Get order list", String.valueOf(response.body()));
                         purchaseOrderPresenter.purchaseOrderResponse(response.body());
@@ -73,7 +73,7 @@ public class PurchaseOrderModel {
         purchaseOrderService.actionOnOrder(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonPurchaseOrderList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("actionOnOrder", String.valueOf(response.body()));
                         orderProcessedPresenter.orderProcessedResponse(response.body());
@@ -102,7 +102,7 @@ public class PurchaseOrderModel {
         purchaseOrderService.cancel(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonPurchaseOrderList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response Order cancel", String.valueOf(response.body()));
                         orderProcessedPresenter.orderProcessedResponse(response.body());
@@ -131,7 +131,7 @@ public class PurchaseOrderModel {
         purchaseOrderService.acquire(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("order acquire", String.valueOf(response.body()));
                         acquireOrderPresenter.acquireOrderResponse(response.body());
@@ -160,7 +160,7 @@ public class PurchaseOrderModel {
         purchaseOrderService.served(did, Constants.DEVICE_TYPE, mail, auth, orderServed).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("order served", String.valueOf(response.body()));
                         acquireOrderPresenter.acquireOrderResponse(response.body());

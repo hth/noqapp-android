@@ -418,8 +418,10 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 bundle.putBoolean(KEY_FROM_LIST, true);
                 bundle.putString(KEY_CODE_QR, item.getCodeQR());
                 bundle.putInt("token", item.getToken());
+                bundle.putInt("currentServing", item.getServingNumber());
                 bundle.putString("storeName", item.getDisplayName());
                 bundle.putString("storeAddress", item.getStoreAddress());
+                bundle.putString(AppUtilities.CURRENCY_SYMBOL, AppUtilities.getCurrencySymbol(item.getCountryShortName()));
                 in.putExtras(bundle);
                 startActivity(in);
             }

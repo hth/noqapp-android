@@ -160,6 +160,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         Log.v("Image upload", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             Toast.makeText(this, "Profile image change successfully! Change will be reflect after 5 min", Toast.LENGTH_LONG).show();
+            tv_remove_image.setVisibility(View.VISIBLE);
         } else {
             Toast.makeText(this, "Failed to update profile image", Toast.LENGTH_LONG).show();
         }

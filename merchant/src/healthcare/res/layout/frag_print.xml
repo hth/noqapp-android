@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+            <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="About Patient"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+
+            <TableLayout
+                    android:id="@+id/tabla_cuerpo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:stretchColumns="0,1">
+
+                <TableRow
+                        android:id="@+id/tableRow1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Patient Name"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
+                            android:id="@+id/tv_patient_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+
+                </TableRow>
+
+                <TableRow
+                        android:id="@+id/tableRow5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Address"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
+                            android:id="@+id/tv_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                </TableRow>
+
+                <TableRow
+                        android:id="@+id/tableRow6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Additional Info"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
+                            android:id="@+id/tv_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="78.5 Kg"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                </TableRow>
+            </TableLayout>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Symptoms:"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+
+            <TextView
+                    android:id="@+id/tv_symptoms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:paddingLeft="10dp"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Diagnosis:"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+
+            <TextView
+                    android:id="@+id/tv_diagnosis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:paddingLeft="10dp"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Test Investigation:"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Radiology:"
+                    android:textSize="16sp"
+                    android:padding="10dp"/>
+
+            <TextView
+                    android:id="@+id/tv_radiology"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:paddingLeft="10dp"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pahtology:"
+                    android:textSize="16sp"
+                    android:padding="10dp"/>
+
+            <TextView
+                    android:id="@+id/tv_pathology"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:paddingLeft="10dp"/>
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Medicines:"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+
+            <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                    android:id="@+id/lv_medicine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Instructions:"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+
+            <TextView
+                    android:id="@+id/tv_instruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:paddingLeft="10dp"
+                    />
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/mds_follow_up"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <AutoCompleteTextView
+                        android:id="@+id/actv_followup"
+                        style="@style/style_mdh_details"
+                        android:layout_width="200dp"
+                        android:layout_marginRight="50dp"
+                        android:digits="0123456789"
+                        android:inputType="numberSigned"
+                        android:maxLength="2"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:text=""/>
+
+
+                <info.hoang8f.android.segmented.SegmentedGroup
+
+                        android:id="@+id/rg_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/segment_margin"
+                        android:layout_marginRight="@dimen/segment_margin"
+                        android:orientation="horizontal"
+                        segmentedgroup:sc_border_width="@dimen/segment_border_width"
+                        segmentedgroup:sc_corner_radius="@dimen/segment_corner_radius">
+
+                    <RadioButton
+                            android:id="@+id/rb_days"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/rb_height"
+                            android:text="@string/days"
+                            style="@style/RadioButton"/>
+
+                    <RadioButton
+                            android:id="@+id/rb_months"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/rb_height"
+                            android:text="@string/month"
+                            style="@style/RadioButton"/>
+                </info.hoang8f.android.segmented.SegmentedGroup>
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_drawable"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:paddingLeft="90dp"
+                    android:paddingRight="90dp"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorMobile"
+                    android:textSize="@dimen/text_size_fourteen"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

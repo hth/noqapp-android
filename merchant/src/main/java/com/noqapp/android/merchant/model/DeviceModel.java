@@ -51,7 +51,7 @@ public class DeviceModel {
         deviceService.register(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, "Registered device " + String.valueOf(response.body()));
                         deviceRegisterPresenter.deviceRegisterResponse(response.body());
@@ -84,7 +84,7 @@ public class DeviceModel {
         deviceService.isSupportedAppVersion(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null != response.body().getError()) {
                         Log.d(TAG, "Oldest supported version " + String.valueOf(response.body()));
                         appBlacklistPresenter.appBlacklistError();

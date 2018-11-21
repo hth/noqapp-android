@@ -55,6 +55,27 @@ public enum DailyFrequencyEnum {
         return a;
     }
 
+    public static String getValueFromTimes(String input){
+        try {
+            switch (input) {
+                case "1":
+                    return "OD";
+                case "2":
+                    return "TD";
+                case "3":
+                    return "HD";
+                case "4":
+                    return "FD";
+                case "5":
+                    return "VD";
+                default:
+                    return input;
+            }
+        }catch (Exception e){
+            return input;
+        }
+    }
+
     public static String getValue(String input){
         try {
             switch (input) {

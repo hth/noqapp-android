@@ -21,15 +21,17 @@ public class FragmentDummy extends Fragment {
     private ListView listView;
     private StoreMenuActivity storeMenuActivity;
     private MenuAdapter.CartOrderUpdate cartOrderUpdate;
+    private String currencySymbol;
 
     public FragmentDummy() {
         // Required empty public constructor
     }
 
-    public FragmentDummy(List<ChildData> childData, StoreMenuActivity storeMenuActivity, MenuAdapter.CartOrderUpdate cartOrderUpdate) {
+    public FragmentDummy(List<ChildData> childData, StoreMenuActivity storeMenuActivity, MenuAdapter.CartOrderUpdate cartOrderUpdate,String currencySymbol) {
         this.childData = childData;
         this.storeMenuActivity = storeMenuActivity;
         this.cartOrderUpdate = cartOrderUpdate;
+        this.currencySymbol = currencySymbol;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class FragmentDummy extends Fragment {
         }
         view = inflater.inflate(R.layout.fragment_dummy, container, false);
         listView = view.findViewById(R.id.listView);
-        MenuAdapter menuAdapter = new MenuAdapter(getActivity(), childData, storeMenuActivity, cartOrderUpdate);
+        MenuAdapter menuAdapter = new MenuAdapter(getActivity(), childData, storeMenuActivity, cartOrderUpdate,currencySymbol);
         listView.setAdapter(menuAdapter);
         return view;
     }

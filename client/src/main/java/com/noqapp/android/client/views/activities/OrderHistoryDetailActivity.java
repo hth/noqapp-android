@@ -6,6 +6,7 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
@@ -53,7 +54,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
             jsonPurchaseOrder.setOrderPrice("0");
         }
-
+        String currencySymbol = AppUtilities.getCurrencySymbol(jsonPurchaseOrder.getCountryShortName());
         tv_support.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,33 +113,33 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             }
         });
         tv_store_rating.setText(String.valueOf(jsonPurchaseOrder.getRatingCount()));
-        tv_tax_amt.setText(getString(R.string.rupee) + "" + "0.0");
-        tv_due_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
-        tv_total_order_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        tv_tax_amt.setText(currencySymbol + "" + "0.0");
+        tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         for (int i = 0; i < jsonPurchaseOrder.getJsonPurchaseOrderProductHistoricalList().size(); i++) {
             JsonPurchaseOrderProductHistorical jsonPurchaseOrderProduct = jsonPurchaseOrder.getJsonPurchaseOrderProductHistoricalList().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
-            tv_total_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + currencySymbol + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_total_price.setText(currencySymbol + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
             ll_order_details.addView(inflatedLayout);
         }
         tv_store_name.setText(jsonPurchaseOrder.getDisplayName());
         tv_address.setText(jsonPurchaseOrder.getStoreAddress());
-        tv_payment_mode.setText("Paid via "+jsonPurchaseOrder.getPaymentType().getDescription());
+        tv_payment_mode.setText("Paid via " + jsonPurchaseOrder.getPaymentType().getDescription());
         tv_delivery_address.setText(jsonPurchaseOrder.getDeliveryAddress());
         tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
-        tv_order_number.setText("ORDER NO.  "+String.valueOf(jsonPurchaseOrder.getTokenNumber()));
+        tv_order_number.setText("ORDER NO.  " + String.valueOf(jsonPurchaseOrder.getTokenNumber()));
         try {
             tv_order_date.setText(CommonHelper.SDF_DD_MMM_YY_HH_MM_A.format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonPurchaseOrder.getCreated())));
         } catch (Exception e) {
             e.printStackTrace();
             tv_order_date.setText("Order timing: Exception");
         }
-        tv_additional_info.setText("Additional Note: "+jsonPurchaseOrder.getAdditionalNote());
-        tv_additional_info.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote())?View.GONE:View.VISIBLE);
+        tv_additional_info.setText("Additional Note: " + jsonPurchaseOrder.getAdditionalNote());
+        tv_additional_info.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
     }
 
 }

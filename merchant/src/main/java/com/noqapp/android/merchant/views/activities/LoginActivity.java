@@ -31,14 +31,10 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -60,11 +56,6 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     public static LoginCallBack loginCallBack;
     private ProgressDialog progressDialog;
     private final String TAG = LoginActivity.class.getSimpleName();
-    private final int READ_AND_RECEIVE_SMS_PERMISSION_CODE = 101;
-    private final String[] READ_AND_RECEIVE_SMS_PERMISSION_PERMS = {
-            Manifest.permission.RECEIVE_SMS,
-            Manifest.permission.READ_SMS
-    };
     private final int STATE_INITIALIZED = 1;
     private final int STATE_CODE_SENT = 2;
     private final int STATE_VERIFY_FAILED = 3;
@@ -190,23 +181,20 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
 
     private void action_Login() {
         if (validate()) {
-            if (isReadAndReceiveSMSPermissionAllowed()) {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.show();
-                    progressDialog.setMessage("Generating OTP");
-                    countryCode = edt_phone_code.getText().toString();
-                    //@TODO @Chandra update the country code dynamic
-                    startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.show();
+                progressDialog.setMessage("Generating OTP");
+                countryCode = edt_phone_code.getText().toString();
+                //@TODO @Chandra update the country code dynamic
+                startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 
-                    Answers.getInstance().logLogin(new LoginEvent()
-                            .putMethod("Phone")
-                            .putSuccess(true));
-                } else {
-                    ShowAlertInformation.showNetworkDialog(this);
-                }
+                Answers.getInstance().logLogin(new LoginEvent()
+                        .putMethod("Phone")
+                        .putSuccess(true));
             } else {
-                requestReadAndReceiveSMSPermissionAllowed();
+                ShowAlertInformation.showNetworkDialog(this);
             }
+
         }
     }
 
@@ -272,39 +260,6 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                         dismissProgress();
                     }
                 });
-    }
-
-    private boolean isReadAndReceiveSMSPermissionAllowed() {
-        //Getting the permission status
-        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS);
-        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS);
-        //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
-            return true;
-        //If permission is not granted returning false
-        return false;
-    }
-
-    private void requestReadAndReceiveSMSPermissionAllowed() {
-        ActivityCompat.requestPermissions(
-                this,
-                READ_AND_RECEIVE_SMS_PERMISSION_PERMS,
-                READ_AND_RECEIVE_SMS_PERMISSION_CODE
-        );
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == READ_AND_RECEIVE_SMS_PERMISSION_CODE) {
-
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //@TODO @Chandra update the country code dynamic
-                startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
-            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                //No permission allowed
-                //Do nothing
-            }
-        }
     }
 
     @Override

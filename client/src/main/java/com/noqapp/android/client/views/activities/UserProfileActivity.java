@@ -353,7 +353,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             }
         }
         loadProfilePic();
-        calculateAge();
+        tv_age.setText(new AppUtilities().calculateAge(NoQueueBaseActivity.getUserDOB()) + " (" + gender + ")");
     }
 
     @Override
@@ -362,32 +362,5 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         updateUI();
     }
 
-    private void calculateAge() {
-        try {
-            DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueBaseActivity.getUserDOB()));
-            DateTime now = DateTime.now();
-            int years = Years.yearsBetween(dateTime, now).getYears();
-            String age;
-            if (years <= 1) {
-                int months = Months.monthsBetween(dateTime, now).getMonths();
-                if (months <= 1) {
-                    int days = Days.daysBetween(dateTime, now).getDays();
-                    if (days == 0) {
-                        age = "Today";
-                    } else {
-                        age = days + "+ days";
-                    }
-                } else {
-                    age = months + "+ months";
-                }
-            } else {
-                age = years + "+ years";
-            }
-
-            tv_age.setText(age + " (" + gender + ")");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
 

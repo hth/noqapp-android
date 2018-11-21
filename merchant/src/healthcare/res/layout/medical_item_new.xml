@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_margin="10dp"
+              android:weightSum="1">
+
+
+    <TextView
+            android:id="@+id/tv_medication"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight=".2"
+            android:background="@drawable/square_grey_bg"
+            android:textSize="@dimen/text_size_medication"
+            android:padding="10dp"/>
+
+    <TextView
+            android:id="@+id/tv_medicine_name"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight=".25"
+            android:background="@drawable/square_grey_bg"
+            android:textSize="@dimen/text_size_medication"
+            android:padding="10dp"/>
+
+    <TextView
+            android:id="@+id/tv_dose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight="0"
+            android:background="@drawable/square_grey_bg"
+            android:textSize="@dimen/text_size_medication"
+            android:padding="5dp"/>
+
+
+    <info.hoang8f.android.segmented.SegmentedGroup
+
+            android:id="@+id/sg_medication_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/segment_margin"
+            android:layout_marginRight="@dimen/segment_margin"
+            android:orientation="horizontal"
+            segmentedgroup:sc_border_width="@dimen/segment_border_width"
+            segmentedgroup:sc_corner_radius="@dimen/segment_corner_radius">
+
+        <RadioButton
+                android:id="@+id/button21"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/rb_height"
+                android:text="Before Food"
+                style="@style/RadioButton"/>
+
+        <RadioButton
+                android:id="@+id/button22"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/rb_height"
+                android:text="After Food"
+                style="@style/RadioButton"/>
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
+    <info.hoang8f.android.segmented.SegmentedGroup
+
+            android:id="@+id/sg_daily_frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/segment_margin"
+            android:layout_marginRight="@dimen/segment_margin"
+            android:orientation="horizontal"
+            segmentedgroup:sc_border_width="@dimen/segment_border_width"
+            segmentedgroup:sc_corner_radius="@dimen/segment_corner_radius">
+
+        <RadioButton
+                android:id="@+id/button212"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/rb_height"
+                android:text="1"
+                style="@style/RadioButton"/>
+
+        <RadioButton
+                android:id="@+id/button222"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/rb_height"
+                android:text="2"
+                style="@style/RadioButton"/>
+
+        <RadioButton
+                android:id="@+id/button242"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/rb_height"
+                android:text="3"
+                style="@style/RadioButton"/>
+
+        <RadioButton
+                android:id="@+id/button232"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/rb_height"
+                android:text="4"
+                style="@style/RadioButton"/>
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
+
+    <Spinner
+            android:id="@+id/sp_course"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawSelectorOnTop="true"
+            android:entries="@array/days_array"
+            android:theme="@style/ThemeOverlay.AppCompat.Light"
+            />
+
+
+</LinearLayout>

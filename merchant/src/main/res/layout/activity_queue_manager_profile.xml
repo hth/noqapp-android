@@ -12,7 +12,7 @@
     <RelativeLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="150dp"
             android:background="@color/colorPrimary">
 
 
@@ -22,35 +22,40 @@
                 android:layout_height="@dimen/profile_image_size"
                 android:clickable="true"
                 android:elevation="5dp"
-                android:layout_margin="@dimen/profile_image_padding"
+                android:layout_marginLeft="@dimen/profile_image_padding"
                 android:scaleType="centerCrop"
+                android:layout_alignParentTop="true"
                 android:src="@drawable/profile_avatar"
                 app:border_color="#FFFFFFFF"
                 app:border_width="3dp"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="12dp"/>
+                android:layout_alignParentStart="true"/>
 
-        <LinearLayout
-                android:id="@+id/profile_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+        <TextView
+                android:id="@+id/tv_profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/iv_profile"
-                android:layout_above="@+id/tabs"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:text=""
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="0dp"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
-            <TextView
-                    android:id="@+id/tv_profile_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_marginLeft="30dp"
-                    android:textColor="#fff"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+        <Button
+                android:id="@+id/tv_remove_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Remove Image"
+                android:layout_toRightOf="@+id/iv_profile"
+                android:layout_alignBottom="@+id/iv_profile"
+                android:background="@android:color/transparent"
+                android:textColor="#fff"
+                android:clickable="true"
+                android:textSize="@dimen/text_size_fourteen"/>
 
-
-        </LinearLayout>
 
         <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"

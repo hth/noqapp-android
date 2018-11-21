@@ -13,7 +13,7 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.MedicalCaseHistoryTabbed;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -184,7 +184,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
             if (!TextUtils.isEmpty(jsonQueuedPerson.getQueueUserId())) {
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
-                    Intent intent = new Intent(context, MedicalCaseHistoryTabbed.class);
+                    Intent intent = new Intent(context, MedicalCaseActivity.class);
                     intent.putExtra("qCodeQR", qCodeQR);
                     intent.putExtra("data", jsonQueuedPerson);
                     context.startActivity(intent);

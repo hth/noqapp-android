@@ -51,11 +51,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private EditText edt_address;
     private EditText edt_phone;
     private EditText edt_optional;
-
     private JsonPurchaseOrder jsonPurchaseOrder;
     private ProfileModel profileModel;
     private PurchaseApiModel purchaseApiModel;
     private long mLastClickTime = 0;
+    private String currencySymbol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +74,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         initActionsViews(true);
         purchaseApiModel = new PurchaseApiModel(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
+        currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
         tv_user_name.setText(NoQueueBaseActivity.getUserName());
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
@@ -82,17 +83,17 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         profileModel = new ProfileModel();
         profileModel.setProfilePresenter(this);
         profileModel.setProfileAddressPresenter(this);
-        tv_tax_amt.setText(getString(R.string.rupee) + "" + "0.0");
-        tv_due_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
-        tv_total_order_amt.setText(getString(R.string.rupee) + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        tv_tax_amt.setText(currencySymbol + "" + "0.0");
+        tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + getString(R.string.rupee) + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
-            tv_total_price.setText(getString(R.string.rupee) + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + currencySymbol + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_total_price.setText(currencySymbol + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
             ll_order_details.addView(inflatedLayout);
         }
         tv_place_order.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +176,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 bundle.putSerializable("oldData", this.jsonPurchaseOrder);
                 bundle.putString("storeName", getIntent().getExtras().getString("storeName"));
                 bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
+                bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
                 bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, getIntent().getExtras().getString(NoQueueBaseActivity.KEY_CODE_QR));
                 in.putExtras(bundle);
                 startActivity(in);

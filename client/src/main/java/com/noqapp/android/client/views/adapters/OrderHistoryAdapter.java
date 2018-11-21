@@ -49,9 +49,6 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Activating order in progress...");
     }
 
 
@@ -78,7 +75,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
         }
         holder.tv_order_item.setText(getOrderItems(jsonPurchaseOrderHistorical.getJsonPurchaseOrderProductHistoricalList()));
         try {
-            holder.tv_order_amount.setText(context.getString(R.string.rupee) + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
+            holder.tv_order_amount.setText(AppUtilities.getCurrencySymbol(jsonPurchaseOrderHistorical.getCountryShortName()) + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));
         } catch (Exception e) {
             holder.tv_order_amount.setText("0");
             e.printStackTrace();
@@ -128,6 +125,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
             @Override
             public void onClick(View v) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    progressDialog = new ProgressDialog(context);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Activating order in progress...");
                     progressDialog.show();
                     new PurchaseApiModel(OrderHistoryAdapter.this).activateOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderHistorical);
                 } else {

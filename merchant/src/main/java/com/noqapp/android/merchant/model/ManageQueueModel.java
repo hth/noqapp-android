@@ -66,7 +66,7 @@ public class ManageQueueModel {
         manageQueueService.getQueues(did, Constants.DEVICE_TYPE, Constants.appVersion(), mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Get all assigned queues", String.valueOf(response.body()));
                         topicPresenter.topicPresenterResponse(response.body());
@@ -100,7 +100,7 @@ public class ManageQueueModel {
         manageQueueService.served(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                             Log.d(TAG, "served" + response.body().toString());
@@ -140,7 +140,7 @@ public class ManageQueueModel {
         manageQueueService.acquire(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                             Log.d(TAG, "acquire" + response.body().toString());
@@ -175,7 +175,7 @@ public class ManageQueueModel {
         manageQueueService.showClients(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("showClients", String.valueOf(response.body()));
                         queuePersonListPresenter.queuePersonListResponse(response.body());
@@ -205,7 +205,7 @@ public class ManageQueueModel {
         manageQueueService.showClientsHistorical(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("showClientsHistorical", String.valueOf(response.body()));
                         queuePersonListPresenter.queuePersonListResponse(response.body());
@@ -235,7 +235,7 @@ public class ManageQueueModel {
         manageQueueService.dispenseTokenWithoutClientInfo(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("dispTokenWithoutCInfo", String.valueOf(response.body()));
                         dispenseTokenPresenter.dispenseTokenResponse(response.body());
@@ -267,7 +267,7 @@ public class ManageQueueModel {
         manageQueueService.dispenseTokenWithClientInfo(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomerLookup).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("dispTokenWithClientInfo", String.valueOf(response.body()));
                         dispenseTokenPresenter.dispenseTokenResponse(response.body());
@@ -299,7 +299,7 @@ public class ManageQueueModel {
         manageQueueService.changeUserInQueue(did, Constants.DEVICE_TYPE, mail, auth, changeUserInQueue).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("changeUserInQueue", String.valueOf(response.body()));
                         queuePersonListPresenter.queuePersonListResponse(response.body());

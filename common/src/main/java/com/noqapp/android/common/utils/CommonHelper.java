@@ -1,5 +1,10 @@
 package com.noqapp.android.common.utils;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Years;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
 
@@ -23,8 +29,10 @@ public class CommonHelper {
     public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     public static final SimpleDateFormat SDF_YYYY_MM_DD_HH_MM_A = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
     public static final SimpleDateFormat SDF_DD_MMM_YY_HH_MM_A = new SimpleDateFormat("dd MMM yy, hh:mm a", Locale.getDefault());
+    public static String CURRENCY_SYMBOL = "currencySymbol";
 
     private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+
     public static String convertDOBToValidFormat(String dob) {
         try {
             Date date = SDF_DOB_FROM_UI.parse(dob);
@@ -90,6 +98,44 @@ public class CommonHelper {
 
     public boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+    public String calculateAge(String dob) {
+        String age = "";
+        try {
+            DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(dob));
+            DateTime now = DateTime.now();
+            int years = Years.yearsBetween(dateTime, now).getYears();
+
+            if (years <= 1) {
+                int months = Months.monthsBetween(dateTime, now).getMonths();
+                if (months <= 1) {
+                    int days = Days.daysBetween(dateTime, now).getDays();
+                    if (days == 0) {
+                        age = "Today";
+                    } else {
+                        age = days + "+ days";
+                    }
+                } else {
+                    age = months + "+ months";
+                }
+            } else {
+                age = years + "+ years";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return age;
+    }
+
+    public static String getCurrencySymbol(String countryCode) {
+        try {
+            Locale localeTemp = new Locale("", countryCode);
+            return Currency.getInstance(localeTemp).getSymbol(localeTemp);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
 }

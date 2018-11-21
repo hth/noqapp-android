@@ -49,6 +49,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -58,10 +59,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -110,6 +114,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public ActivityCommunicator activityCommunicator;
     protected ArrayList<NavigationBean> drawerItem = new ArrayList<>();
     private NavigationDrawerAdapter drawerAdapter;
+    private final int STORAGE_PERMISSION_CODE = 102;
+    private final String[] STORAGE_PERMISSION_PERMS = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -204,7 +212,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                         }
                         break;
                     case R.drawable.ic_menu_share:
-                        AppUtilities.shareTheApp(launchActivity);
+                        if (isExternalStoragePermissionAllowed()) {
+                            AppUtilities.shareTheApp(launchActivity);
+                        } else {
+                            requestStoragePermission();
+                        }
                         break;
                     case R.drawable.legal: {
                         Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
@@ -294,7 +306,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
     }
 
-    public void updateLocationInfo(double lat, double log, String city){
+    public void updateLocationInfo(double lat, double log, String city) {
         replaceFragmentWithoutBackStack(R.id.frame_layout, scanFragment);
         getSupportActionBar().show();
         latitute = lat;
@@ -333,8 +345,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 onBackPressed();
                 break;
             case R.id.tv_location: {
-               // Intent intent = new Intent(launchActivity, SelectLocationActivity.class);
-               // startActivity(intent);
                 replaceFragmentWithoutBackStack(R.id.frame_layout, new ChangeLocationFragment());
             }
             break;
@@ -393,6 +403,21 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            try {
+                //both remaining permission allowed
+                if (grantResults.length == 2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+                    AppUtilities.shareTheApp(launchActivity);
+                } else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//one remaining permission allowed
+                    AppUtilities.shareTheApp(launchActivity);
+                } else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    //No permission allowed
+                    //Do nothing
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initProgress() {
@@ -494,8 +519,8 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public void onBackPressed() {
 
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-        if(f instanceof ChangeLocationFragment){
-            updateLocationInfo(latitute,longitute,cityName);
+        if (f instanceof ChangeLocationFragment) {
+            updateLocationInfo(latitute, longitute, cityName);
             return;
         }
         long currentTime = System.currentTimeMillis();
@@ -955,5 +980,23 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
+    }
+
+    private boolean isExternalStoragePermissionAllowed() {
+        //Getting the permission status
+        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //If permission is granted returning true
+        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
+            return true;
+        //If permission is not granted returning false
+        return false;
+    }
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(
+                this,
+                STORAGE_PERMISSION_PERMS,
+                STORAGE_PERMISSION_CODE);
     }
 }
