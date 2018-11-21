@@ -10,273 +10,363 @@
 
     <include layout="@layout/toolbar_layout"/>
 
-    <RelativeLayout
-            android:id="@+id/layout"
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <ScrollView
+        <RelativeLayout
+                android:id="@+id/layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/tv_place_order"
-                android:layout_alignParentTop="true">
+                android:paddingBottom="10dp"
+                android:layout_height="match_parent">
+
+            <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/tv_place_order"
+                    android:layout_alignParentTop="true">
+
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                    <TextView
+                            android:id="@+id/tv_user_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="left"
+                            android:maxLines="2"
+                            android:text=""
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+
+                    <TextView
+                            android:id="@+id/address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:text="@string/deliver_address"
+                            android:drawableLeft="@drawable/ic_location"
+                            android:gravity="bottom"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <TextView
+                            android:id="@+id/tv_address"
+                            style="@style/style_register_tv"
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@null"
+                            android:hint="@string/add_address"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <TextView
+                            android:id="@+id/tv_change_address"
+                            style="@style/style_register_tv"
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="right"
+                            android:hint="@string/change_address"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <EditText
+                            android:id="@+id/edt_phone"
+                            style="@style/style_register_edt"
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:hint="@string/mobile_no"
+                            android:inputType="phone"
+                            android:maxLength="12"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <TextView
+                            android:id="@+id/tv_payment_mode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="left"
+                            android:text="@string/payment_mode"
+                            android:textSize="@dimen/store_info"/>
+
+                    <RadioGroup
+                            android:id="@+id/rg_payment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal">
+
+                        <android.support.v7.widget.AppCompatRadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:text="@string/payment_mode_cash"
+                                android:textSize="@dimen/text_size_twelve"
+                                app:buttonTint="@color/colorAccent"/>
+
+                        <android.support.v7.widget.AppCompatRadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:text="@string/payment_mode_wallet"
+                                android:textSize="@dimen/text_size_twelve"
+                                app:buttonTint="@color/colorAccent"/>
+
+                        <android.support.v7.widget.AppCompatRadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:text="@string/payment_mode_cards"
+                                android:textSize="@dimen/text_size_twelve"
+                                app:buttonTint="@color/colorAccent"/>
+
+                        <android.support.v7.widget.AppCompatRadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:text="@string/payment_mode_online"
+                                android:textSize="@dimen/text_size_twelve"
+                                app:buttonTint="@color/colorAccent"/>
+
+                    </RadioGroup>
+
+                    <EditText
+                            android:id="@+id/edt_optional"
+                            style="@style/style_register_edt"
+                            android:layout_width="match_parent"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:hint="@string/additional"
+                            android:maxLength="64"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <android.support.v7.widget.CardView
+                            android:id="@+id/card_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            card_view:cardBackgroundColor="@color/white"
+                            card_view:cardCornerRadius="5dp"
+                            card_view:cardElevation="2dp"
+                            card_view:cardUseCompatPadding="true">
+
+                        <LinearLayout
+                                android:id="@+id/ll_order_details"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:orientation="vertical">
+
+                            <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="left"
+                                    android:text="@string/order_details"
+                                    android:textStyle="bold"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/store_info"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:gravity="left"
+                                android:text="@string/total_amount"
+                                android:textSize="@dimen/store_info"/>
+
+                        <TextView
+                                android:id="@+id/tv_total_order_amt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:gravity="right"
+                                android:textSize="@dimen/store_info"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:gravity="left"
+                                android:text="@string/total_tax"
+                                android:textSize="@dimen/store_info"/>
+
+                        <TextView
+                                android:id="@+id/tv_tax_amt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:gravity="right"
+                                android:textSize="@dimen/store_info"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:gravity="left"
+                                android:text="@string/payment_due"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_fourteen"/>
+
+                        <TextView
+                                android:id="@+id/tv_due_amt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:gravity="right"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_fourteen"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <Button
+                    android:id="@+id/tv_place_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_standard_height"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="10dp"
+                    android:paddingRight="10dp"
+                    android:background="@drawable/btn_bg_enable"
+                    android:drawableRight="@drawable/order_arrow"
+                    android:text="@string/order_now"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_fourteen"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:id="@+id/rl_address"
+                android:visibility="visible"
+                android:background="#e6f3f8"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="match_parent">
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:gravity="bottom">
 
-                <TextView
-                        android:id="@+id/tv_user_name"
+                <RelativeLayout
+
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:gravity="left"
-                        android:maxLines="2"
-                        android:text=""
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:padding="10dp"
+                        android:layout_height="wrap_content">
 
+                    <TextView
+                            android:layout_alignParentLeft="true"
+                            android:layout_width="wrap_content"
+                            android:text="Select Address"
+                            android:textSize="@dimen/text_size_sixteen"
+                            android:padding="10dp"
+                            android:layout_height="wrap_content"/>
 
-                <TextView
-                        android:id="@+id/address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:text="@string/deliver_address"
-                        android:textSize="@dimen/text_size_fourteen"/>
-
-                <EditText
-                        android:id="@+id/edt_address"
-                        style="@style/style_register_edt"
-                        android:layout_width="match_parent"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:hint="@string/add_address"
-                        android:textSize="@dimen/text_size_fourteen"/>
+                    <TextView
+                            android:id="@+id/tv_cancel"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="wrap_content"
+                            android:text="Cancel"
+                            android:textSize="@dimen/text_size_sixteen"
+                            android:padding="10dp"
+                            android:layout_height="wrap_content"/>
+                </RelativeLayout>
 
                 <RadioGroup
                         android:id="@+id/rg_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:padding="10dp"
                         android:orientation="vertical"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:visibility="gone"/>
-
-                <EditText
-                        android:id="@+id/edt_phone"
-                        style="@style/style_register_edt"
-                        android:layout_width="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:hint="@string/mobile_no"
-                        android:inputType="phone"
-                        android:maxLength="12"
-                        android:textSize="@dimen/text_size_fourteen"/>
+                        android:background="@android:color/white"/>
 
                 <TextView
-                        android:id="@+id/tv_payment_mode"
+                        android:id="@+id/tv_add_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
+                        android:padding="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:gravity="left"
-                        android:text="@string/payment_mode"
-                        android:textSize="@dimen/store_info"/>
-
-                <RadioGroup
-                        android:id="@+id/rg_payment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="horizontal">
-
-                    <android.support.v7.widget.AppCompatRadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="@string/payment_mode_cash"
-                            android:textSize="@dimen/text_size_twelve"
-                            app:buttonTint="@color/colorAccent"/>
-
-                    <android.support.v7.widget.AppCompatRadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:text="@string/payment_mode_wallet"
-                            android:textSize="@dimen/text_size_twelve"
-                            app:buttonTint="@color/colorAccent"/>
-
-                    <android.support.v7.widget.AppCompatRadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:text="@string/payment_mode_cards"
-                            android:textSize="@dimen/text_size_twelve"
-                            app:buttonTint="@color/colorAccent"/>
-
-                    <android.support.v7.widget.AppCompatRadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:text="@string/payment_mode_online"
-                            android:textSize="@dimen/text_size_twelve"
-                            app:buttonTint="@color/colorAccent"/>
-
-                </RadioGroup>
+                        android:textColor="@color/theme_color_dark"
+                        android:text="Add Address"/>
 
                 <EditText
-                        android:id="@+id/edt_optional"
+                        android:id="@+id/edt_add_address"
                         style="@style/style_register_edt"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:visibility="gone"/>
+
+                <Button
+                        android:id="@+id/btn_add_address"
                         android:layout_width="match_parent"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:hint="@string/additional"
-                        android:maxLength="64"
-                        android:textSize="@dimen/text_size_fourteen"/>
-
-                <android.support.v7.widget.CardView
-                        android:id="@+id/card_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        card_view:cardBackgroundColor="@color/white"
-                        card_view:cardCornerRadius="5dp"
-                        card_view:cardElevation="2dp"
-                        card_view:cardUseCompatPadding="true">
-
-                    <LinearLayout
-                            android:id="@+id/ll_order_details"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:orientation="vertical">
-
-                        <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginTop="10dp"
-                                android:gravity="left"
-                                android:text="@string/order_details"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/black"
-                                android:textSize="@dimen/store_info"/>
-
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="horizontal">
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="@string/total_amount"
-                            android:textSize="@dimen/store_info"/>
-
-                    <TextView
-                            android:id="@+id/tv_total_order_amt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textSize="@dimen/store_info"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="horizontal">
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="@string/total_tax"
-                            android:textSize="@dimen/store_info"/>
-
-                    <TextView
-                            android:id="@+id/tv_tax_amt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textSize="@dimen/store_info"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="horizontal">
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="@string/payment_due"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"/>
-
-                    <TextView
-                            android:id="@+id/tv_due_amt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"/>
-                </RelativeLayout>
-
+                        android:layout_height="@dimen/btn_standard_height"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/grey_gradient"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:text="@string/update"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorMobile"
+                        android:textSize="@dimen/text_size_sixteen"
+                        android:textStyle="normal"
+                        android:visibility="gone"/>
             </LinearLayout>
-
-        </ScrollView>
-
-        <Button
-                android:id="@+id/tv_place_order"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_standard_height"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="10dp"
-                android:paddingRight="10dp"
-                android:background="@drawable/btn_bg_enable"
-                android:drawableRight="@drawable/order_arrow"
-                android:text="@string/order_now"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_fourteen"/>
-    </RelativeLayout>
-
+        </RelativeLayout>
+    </FrameLayout>
 </LinearLayout>
 
 
