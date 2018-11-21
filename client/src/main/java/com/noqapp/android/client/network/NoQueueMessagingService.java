@@ -101,50 +101,58 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData() != null) {
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");
-            String messageOrigin = remoteMessage.getData().get(Constants.MESSAGE_ORIGIN);
+            MessageOriginEnum messageOrigin = MessageOriginEnum.valueOf(remoteMessage.getData().get(Constants.MESSAGE_ORIGIN));
+
             Object object = null;
-            if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.Q.name())) {
-                try {
-                    ObjectMapper mapper = new ObjectMapper();
-                    object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicQueueData.class);
-                    Log.e("FCM", object.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.QR.name())) {
-                try {
-                    ObjectMapper mapper = new ObjectMapper();
-                    object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientData.class);
-                    Log.e("FCM Queue Review", object.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.OR.name())) {
-                try {
-                    ObjectMapper mapper = new ObjectMapper();
-                    object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientOrderData.class);
-                    Log.e("FCM Order Review", object.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name())) {
-                try {
-                    ObjectMapper mapper = new ObjectMapper();
-                    object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicOrderData.class);
-                    Log.e("FCM order ", object.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.A.name())||messageOrigin.equalsIgnoreCase(MessageOriginEnum.D.name())) {
-                try {
-                    ObjectMapper mapper = new ObjectMapper();
-                    object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonAlertData.class);
-                    Log.e("FCM Review store", object.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                // object = null;
+            switch (messageOrigin) {
+                case Q:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicQueueData.class);
+                        Log.e("FCM", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case QR:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientData.class);
+                        Log.e("FCM Queue Review", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case OR:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientOrderData.class);
+                        Log.e("FCM Order Review", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case O:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicOrderData.class);
+                        Log.e("FCM order ", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case A:
+                case D:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonAlertData.class);
+                        Log.e("FCM Review store", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    // object = null;
             }
             try {
                 if (!isAppIsInBackground(getApplicationContext())) {
