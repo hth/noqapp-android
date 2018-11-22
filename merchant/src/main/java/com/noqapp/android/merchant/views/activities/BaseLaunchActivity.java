@@ -217,6 +217,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                         startActivity(in);
                         break;
                     }
+                    case R.mipmap.me_select:
+                        callPreference();
+                        break;
                     default:
                 }
                 mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -430,7 +433,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     }
 
-    public static String getCurrencySymbol(){
+    public static String getCurrencySymbol() {
         return sharedpreferences.getString(AppUtils.CURRENCY_SYMBOL, "");
     }
 
@@ -732,6 +735,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         sharedpreferences.edit().clear().apply();
         setDeviceID(did);
         setFCMToken(fcmToken);
+    }
+
+    public void callPreference(){
+
     }
 
 }

@@ -54,4 +54,35 @@
         <item>45 days</item>
         <item>60 days</item>
     </string-array>
+
+
+    <string-array name="category_array">
+        <item>Select Test Type</item>
+        <item>Pathology</item>
+        <item>Radiology</item>
+    </string-array>
+
+    <string-array name="search_array">
+        <item>VSC Pelvis (TVS)</item>
+        <item>4D Anamoly</item>
+        <item>VSC (obst) NT</item>
+        <item>VSC (obst) c</item>
+        <item>BS 2hrs after 75gm of glucos</item>
+        <item>Hb Electrophoresis</item>
+        <item>HCV</item>
+        <item>Color Doppler</item>
+        <item>ANC profile</item>
+        <item>HbA1C</item>
+        <item>T3T4T5H</item>
+    </string-array>
+
+    <string-array name="sub_category_array">
+        <item>Select Sub Test Type</item>
+        <item>Sonography</item>
+        <item>ECGX-Ray</item>
+        <item>MRI</item>
+        <item>Urine Test</item>
+        <item>Blood Test</item>
+        <item>PET</item>
+    </string-array>
 </resources>
