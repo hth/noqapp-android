@@ -32,6 +32,9 @@
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/colorAccent"/>
+        <meta-data
+                android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version"/>
 
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.SplashScreen"
@@ -72,6 +75,14 @@
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.MedicalHistoryDetailActivity"
+                android:theme="@style/BaseTheme"
+                android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name="com.noqapp.android.merchant.views.activities.PreferenceActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
@@ -169,10 +180,18 @@
             </intent-filter>
         </service>
 
-
+        <meta-data
+                android:name=
+                        "com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+                android:value="com.noqapp.android.merchant.views.activities.CastOptionsProvider"/>
         <meta-data
                 android:name="io.fabric.ApiKey"
                 android:value="fc745aa326a54082165c333f7a03cee25b12f3ff"/>
+
+        <service
+                android:name="com.noqapp.android.merchant.views.activities.PresentationService"
+                android:exported="false"
+                />
     </application>
 
 </manifest>

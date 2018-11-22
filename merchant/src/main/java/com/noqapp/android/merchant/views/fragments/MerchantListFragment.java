@@ -58,6 +58,11 @@ import java.util.List;
 public class MerchantListFragment extends Fragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener {
 
     public static int selected_pos = 0;
+
+    public MerchantDetailFragment getMerchantDetailFragment() {
+        return merchantDetailFragment;
+    }
+
     public MerchantDetailFragment merchantDetailFragment;
     private Handler timerHandler;
     private MerchantListAdapter adapter;

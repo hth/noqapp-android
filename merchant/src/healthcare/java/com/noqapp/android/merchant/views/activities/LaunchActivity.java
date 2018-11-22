@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.noqapp.android.common.beans.NavigationBean;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -87,5 +88,18 @@ public class LaunchActivity extends BaseLaunchActivity {
 
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
+    }
+
+    @Override
+    public void updateMenuList(boolean showChart) {
+        super.updateMenuList(showChart);
+        drawerItem.add(1,new NavigationBean(R.mipmap.me_select, "Prefrence"));
+    }
+
+    @Override
+    public void callPreference() {
+        super.callPreference();
+        Intent intentPreference = new Intent(launchActivity, PreferenceActivity.class);
+        startActivity(intentPreference);
     }
 }
