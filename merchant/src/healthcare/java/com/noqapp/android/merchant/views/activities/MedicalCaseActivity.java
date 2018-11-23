@@ -219,6 +219,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         radiologyList.add(new DataObj("VSC (obst) NT", false));
         radiologyList.add(new DataObj("VSC (obst) c", false));
         radiologyList.add(new DataObj("Color Doppler", false));
+        radiologyList.addAll(LaunchActivity.getSelectedTest());
 
 
         pathologyList.clear();

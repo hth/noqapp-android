@@ -9,6 +9,7 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import com.crashlytics.android.answers.Answers;
 
@@ -25,9 +26,21 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import io.fabric.sdk.android.Fabric;
 
+import java.util.ArrayList;
+
 public class LaunchActivity extends BaseLaunchActivity {
 
     private TextView tv_badge;
+
+    public static ArrayList<DataObj> getSelectedTest() {
+        return selectedTest;
+    }
+
+    public static void setSelectedTest(ArrayList<DataObj> selectedTest) {
+        LaunchActivity.selectedTest = selectedTest;
+    }
+
+    public static ArrayList<DataObj> selectedTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

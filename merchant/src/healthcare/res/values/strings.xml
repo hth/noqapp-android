@@ -78,11 +78,12 @@
 
     <string-array name="sub_category_array">
         <item>Select Sub Test Type</item>
-        <item>Sonography</item>
-        <item>ECGX-Ray</item>
         <item>MRI</item>
-        <item>Urine Test</item>
-        <item>Blood Test</item>
-        <item>PET</item>
+        <item>SCAN</item>
+        <item>SONO</item>
+        <item>XRAY</item>
+        <item>PHYS</item>
+        <item>PATH</item>
+
     </string-array>
 </resources>
