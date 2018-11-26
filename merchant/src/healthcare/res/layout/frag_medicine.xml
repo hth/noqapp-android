@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+
+    <AutoCompleteTextView
+        android:id="@+id/actv_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_search"
+        android:drawableRight="@drawable/ic_cancel"
+        android:drawablePadding="20dp"
+        android:drawableTint="@color/colorAccent"
+        android:hint="Search medicine"
+        android:inputType="text"
+        android:maxLines="1"
+        android:minLines="1"
+        android:padding="10dp"
+        android:textColor="@android:color/black" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edt_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edt_roun_rect"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btn_add"
+            android:hint="Add item"
+            android:inputType="text"
+            android:maxLines="1"
+            android:minLines="1"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="25dp"
+            android:text="ADD" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Selected List"
+        android:textSize="@dimen/text_size_sixteen" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <ListView
+            android:id="@+id/lv_tests"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:padding="10dp" />
+
+        <ExpandableListView
+            android:id="@+id/lvExp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:padding="10dp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
+
+

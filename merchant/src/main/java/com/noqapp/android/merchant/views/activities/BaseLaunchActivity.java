@@ -139,8 +139,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         languagepref.registerOnSharedPreferenceChangeListener(this);
         language = languagepref.getString(
                 "pref_language", "");
-
-
         if (null != getIntent().getExtras()) {
             setFCMToken(getIntent().getStringExtra("fcmToken"));
             setDeviceID(getIntent().getStringExtra("deviceId"));
@@ -157,7 +155,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 locale = Locale.ENGLISH;
                 language = "en_US";
             }
-
         } else {
             locale = Locale.ENGLISH;
             language = "en_US";
@@ -172,8 +169,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 }
             }
         };
-
-
     }
 
     protected void initDrawer() {
@@ -183,7 +178,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         if (isLoggedIn()) {
             updateMenuList(getUserLevel() == UserLevelEnum.S_MANAGER);
         }
-
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -242,8 +236,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 onBackPressed();
             }
         });
-
-
         if (isLoggedIn()) {
             if (isAccessGrant()) {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -283,7 +275,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 list_fragment.setLayoutParams(lp1);
                 list_detail_fragment.setLayoutParams(lp0);
             }
-
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }

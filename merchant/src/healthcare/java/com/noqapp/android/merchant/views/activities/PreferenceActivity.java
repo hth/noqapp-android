@@ -27,6 +27,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
+import com.noqapp.android.merchant.views.fragments.MedicineFragment;
 import com.noqapp.android.merchant.views.fragments.PreferenceHCServiceFragment;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.utils.TestCaseObjects;
@@ -65,6 +66,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     private ArrayList<String> masterDataXray = new ArrayList<>();
     private ArrayList<String> masterDataPath = new ArrayList<>();
     private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment, preferenceScanFragment, preferenceXrayFragment;
+    private MedicineFragment medicineFragment;
     public TestCaseObjects testCaseObjects;
 
     public static PreferenceActivity getPreferenceActivity() {
@@ -95,7 +97,8 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         data.add("SONOGRAPHY");
         data.add("X-RAY");
         data.add("Pathology");
-
+        data.add("Medicine");
+        medicineFragment = new MedicineFragment();
         preferencePathFragment = new PreferenceHCServiceFragment();
         preferencePathFragment.setArguments(getBundle(4));
         preferenceMriFragment = new PreferenceHCServiceFragment();
@@ -112,6 +115,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         adapter.addFragment(preferenceSonoFragment, "FRAG" + 2);
         adapter.addFragment(preferenceXrayFragment, "FRAG" + 3);
         adapter.addFragment(preferencePathFragment, "FRAG" + 4);
+        adapter.addFragment(medicineFragment, "FRAG" + 5);
 
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
