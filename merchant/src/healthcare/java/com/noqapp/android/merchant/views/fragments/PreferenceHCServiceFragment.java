@@ -27,7 +27,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.PreferenceActivity;
 import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
@@ -41,7 +41,12 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
     private ArrayAdapter<String> listAdapter;
     private ProgressDialog progressDialog;
     private ArrayList<String> masterDataString = new ArrayList<>();
-    private ArrayList<DataObj> checkList = new ArrayList<>();
+
+    public ArrayList<DataObj> getSelectedList() {
+        return selectedList;
+    }
+
+    private ArrayList<DataObj> selectedList = new ArrayList<>();
     private MultiSelectListAdapter multiSelectListAdapter;
     private ArrayAdapter<String> actvAdapter;
 
@@ -54,9 +59,9 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
         lv_tests = v.findViewById(R.id.lv_tests);
         lv_all_tests = v.findViewById(R.id.lv_all_tests);
         actv_search = v.findViewById(R.id.actv_search);
-        checkList = LaunchActivity.getSelectedTest();
-        if (null == checkList)
-            checkList = new ArrayList<>();
+        selectedList = getPreviousList(getArguments().getInt("type"));
+        if (null == selectedList)
+            selectedList = new ArrayList<>();
         actv_search.setThreshold(1);
         actv_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -65,8 +70,8 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
                 DataObj dataObj = new DataObj();
                 dataObj.setName(value);
                 dataObj.setSelect(false);
-                if (!checkList.contains(dataObj)) {
-                    checkList.add(dataObj);
+                if (!selectedList.contains(dataObj)) {
+                    selectedList.add(dataObj);
                     multiSelectListAdapter.notifyDataSetChanged();
                     actv_search.setText("");
                 } else {
@@ -94,7 +99,7 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
             }
         });
 
-        multiSelectListAdapter = new MultiSelectListAdapter(getActivity(), checkList);
+        multiSelectListAdapter = new MultiSelectListAdapter(getActivity(), selectedList);
         lv_tests.setAdapter(multiSelectListAdapter);
         lv_all_tests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -102,8 +107,8 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
                 DataObj dataObj = new DataObj();
                 dataObj.setName(masterDataString.get(position));
                 dataObj.setSelect(false);
-                if (!checkList.contains(dataObj)) {
-                    checkList.add(dataObj);
+                if (!selectedList.contains(dataObj)) {
+                    selectedList.add(dataObj);
                     multiSelectListAdapter.notifyDataSetChanged();
                 }
             }
@@ -133,7 +138,7 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
             DataObj dataObj = new DataObj();
             dataObj.setName(edt_add.getText().toString());
             dataObj.setSelect(false);
-            checkList.add(dataObj);
+            selectedList.add(dataObj);
             multiSelectListAdapter.notifyDataSetChanged();
             edt_add.setText("");
             Toast.makeText(getActivity(), "Test updated Successfully", Toast.LENGTH_LONG).show();
@@ -196,4 +201,23 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
                 return HealthCareServiceEnum.PATH;
         }
     }
+
+    private ArrayList<DataObj> getPreviousList(int pos) {
+        switch (pos) {
+            case 0:
+                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getMriList();
+            case 1:
+                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getScanList();
+            case 2:
+                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getSonoList();
+            case 3:
+                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getXrayList();
+            case 4:
+                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
+            default:
+                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
+        }
+    }
+
+
 }

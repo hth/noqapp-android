@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
@@ -27,6 +28,9 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.PreferenceHCServiceFragment;
+import com.noqapp.android.merchant.views.pojos.DataObj;
+import com.noqapp.android.merchant.views.utils.TestCaseObjects;
+import com.noqapp.android.merchant.views.utils.TestCaseString;
 
 import org.rauschig.jarchivelib.Archiver;
 import org.rauschig.jarchivelib.ArchiverFactory;
@@ -35,6 +39,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class PreferenceActivity extends AppCompatActivity implements FilePresenter, MenuHeaderAdapter.OnItemClickListener {
@@ -48,6 +55,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     private ViewPager viewPager;
     private long lastPress;
     private Toast backPressToast;
+    private static PreferenceActivity preferenceActivity;
     private ArrayList<String> data = new ArrayList<>();
     private ArrayList<JsonMasterLab> masterData = new ArrayList<>();
     private ArrayList<String> masterDataString = new ArrayList<>();
@@ -57,6 +65,11 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     private ArrayList<String> masterDataXray = new ArrayList<>();
     private ArrayList<String> masterDataPath = new ArrayList<>();
     private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment, preferenceScanFragment, preferenceXrayFragment;
+    public TestCaseObjects testCaseObjects;
+
+    public static PreferenceActivity getPreferenceActivity() {
+        return preferenceActivity;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +81,12 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
         initProgress();
+        preferenceActivity = this;
+        try {
+            testCaseObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), TestCaseObjects.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         viewPager = findViewById(R.id.pager);
         viewPager.setOffscreenPageLimit(5);
         rcv_header = findViewById(R.id.rcv_header);
@@ -153,7 +172,14 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
             //super.onBackPressed();
             finish();
         }
-        // LaunchActivity.setSelectedTest(multiSelectListAdapter.getAllSelectedList());
+        Map<String, List<DataObj>> mapList = new HashMap<>();
+        mapList.put(HealthCareServiceEnum.MRI.getName(),preferenceMriFragment.getSelectedList());
+        mapList.put(HealthCareServiceEnum.SCAN.getName(),preferenceScanFragment.getSelectedList());
+        mapList.put(HealthCareServiceEnum.SONO.getName(),preferenceSonoFragment.getSelectedList());
+        mapList.put(HealthCareServiceEnum.XRAY.getName(),preferenceXrayFragment.getSelectedList());
+        mapList.put(HealthCareServiceEnum.PATH.getName(),preferencePathFragment.getSelectedList());
+
+        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
     }
 
 

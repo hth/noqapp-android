@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.views.Utils;
+package com.noqapp.android.merchant.views.utils;
 
 import java.util.ArrayList;
 

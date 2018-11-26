@@ -31,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -94,6 +95,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_USER_AUTH = "auth";
     protected final String KEY_LAST_UPDATE = "last_update";
     protected final String KEY_SUGGESTION = "suggestions";
+    protected final String KEY_SUGGESTION_PREF = "suggestionsPrefs";
     protected final String KEY_MEDICINES = "medicines";
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
@@ -332,6 +334,14 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void setSuggestions(Map<String, List<String>> map) {
         String strInput = new Gson().toJson(map);
         sharedpreferences.edit().putString(KEY_SUGGESTION, strInput).apply();
+    }
+    public String getSuggestionsPrefs() {
+        return sharedpreferences.getString(KEY_SUGGESTION_PREF, null);
+    }
+
+    public void setSuggestionsPrefs(Map<String, List<DataObj>> map) {
+        String strInput = new Gson().toJson(map);
+        sharedpreferences.edit().putString(KEY_SUGGESTION_PREF, strInput).apply();
     }
 
     public void setFavouriteMedicines(List<JsonMedicalMedicine> jsonMedicalMedicines) {

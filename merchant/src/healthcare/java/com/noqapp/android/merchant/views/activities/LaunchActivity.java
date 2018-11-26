@@ -32,16 +32,6 @@ public class LaunchActivity extends BaseLaunchActivity {
 
     private TextView tv_badge;
 
-    public static ArrayList<DataObj> getSelectedTest() {
-        return selectedTest;
-    }
-
-    public static void setSelectedTest(ArrayList<DataObj> selectedTest) {
-        LaunchActivity.selectedTest = selectedTest;
-    }
-
-    public static ArrayList<DataObj> selectedTest;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

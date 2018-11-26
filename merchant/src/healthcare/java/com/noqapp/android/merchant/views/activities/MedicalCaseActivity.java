@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.google.gson.Gson;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalCasePojo;
@@ -13,6 +14,7 @@ import com.noqapp.android.merchant.views.fragments.RecomondTestFragment;
 import com.noqapp.android.merchant.views.fragments.SymptomsFragment;
 import com.noqapp.android.merchant.views.fragments.TreatmentFragment;
 import com.noqapp.android.merchant.views.pojos.DataObj;
+import com.noqapp.android.merchant.views.utils.TestCaseObjects;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -39,6 +41,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     private RecomondTestFragment recomondTestFragment;
     private TreatmentFragment treatmentFragment;
     private PrintFragment printFragment;
+    private TestCaseObjects testCaseObjects;
 
     public MedicalCasePojo getMedicalCasePojo() {
         return medicalCasePojo;
@@ -119,6 +122,12 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temp);
         medicalCaseActivity = this;
+
+        try {
+            testCaseObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), TestCaseObjects.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         initLists();
         medicalCasePojo = new MedicalCasePojo();
         viewPager =  findViewById(R.id.pager);
@@ -219,8 +228,12 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         radiologyList.add(new DataObj("VSC (obst) NT", false));
         radiologyList.add(new DataObj("VSC (obst) c", false));
         radiologyList.add(new DataObj("Color Doppler", false));
-        radiologyList.addAll(LaunchActivity.getSelectedTest());
-
+        // Add selected list
+        radiologyList.addAll(testCaseObjects.getMriList());
+        radiologyList.addAll(testCaseObjects.getScanList());
+        radiologyList.addAll(testCaseObjects.getSonoList());
+        radiologyList.addAll(testCaseObjects.getXrayList());
+        //
 
         pathologyList.clear();
         pathologyList.add(new DataObj("ANC profile", false));
@@ -229,6 +242,9 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         pathologyList.add(new DataObj("HbA1C", false));
         pathologyList.add(new DataObj("Hb Electrophoresis", false));
         pathologyList.add(new DataObj("BS 2hrs after 75gm of glucos", false));
+        // Add selected list
+        pathologyList.addAll(testCaseObjects.getPathologyList());
+        //
 
         symptomsList.clear();
         symptomsList.add(new DataObj("Fever", false));

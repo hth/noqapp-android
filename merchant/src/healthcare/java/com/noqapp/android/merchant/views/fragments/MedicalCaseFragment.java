@@ -27,8 +27,9 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.Utils.AnimationUtils;
-import com.noqapp.android.merchant.views.Utils.TestCaseString;
+import com.noqapp.android.merchant.views.pojos.DataObj;
+import com.noqapp.android.merchant.views.utils.AnimationUtils;
+import com.noqapp.android.merchant.views.utils.TestCaseString;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
@@ -143,6 +144,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
 
     //
     private Map<String, List<String>> map = null;
+    private Map<String, List<DataObj>> mapList = null;
     private String qCodeQR = "";
     private AutoCompleteTextView actv_medicine_name, actv_complaints, actv_family_history, actv_past_history, actv_known_allergy, actv_clinical_finding, actv_provisional, actv_investigation, actv_instruction, actv_followup;
     private EditText edt_weight, edt_bp, edt_pulse, edt_temperature, edt_oxygen;
