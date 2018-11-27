@@ -89,7 +89,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
             e.printStackTrace();
         }
         viewPager = findViewById(R.id.pager);
-        viewPager.setOffscreenPageLimit(5);
+
         rcv_header = findViewById(R.id.rcv_header);
         data.add("MRI");
         data.add("SCAN");
@@ -126,6 +126,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         menuAdapter = new MenuHeaderAdapter(data, this, this);
         rcv_header.setAdapter(menuAdapter);
         menuAdapter.notifyDataSetChanged();
+        viewPager.setOffscreenPageLimit(data.size());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
         adapter.notifyDataSetChanged();

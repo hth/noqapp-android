@@ -48,7 +48,8 @@ public class MedicineFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        selectedList = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMedicineList();
+        if(null != PreferenceActivity.getPreferenceActivity().testCaseObjects)
+         selectedList = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMedicineList();
         if (null == selectedList)
             selectedList = new ArrayList<>();
         multiSelectListAdapter = new MultiSelectListAdapter(getActivity(), selectedList);
