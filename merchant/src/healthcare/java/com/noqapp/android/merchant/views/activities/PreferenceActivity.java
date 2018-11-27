@@ -87,7 +87,10 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
             testCaseObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), TestCaseObjects.class);
         } catch (Exception e) {
             e.printStackTrace();
+            testCaseObjects = new TestCaseObjects();
         }
+        if( null == testCaseObjects)
+            testCaseObjects = new TestCaseObjects();
         viewPager = findViewById(R.id.pager);
 
         rcv_header = findViewById(R.id.rcv_header);

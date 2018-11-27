@@ -20,6 +20,7 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapterNew;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,10 +46,12 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private MedicalRecordAdapterNew adapter;
     private SegmentedGroup rg_duration;
     private JsonPreferredBusinessList jsonPreferredBusinessList;
+    private ProgressDialog progressDialog;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_print, container, false);
+        initProgress();
         medicalHistoryModel = new MedicalHistoryModel(this);
         tv_patient_name = v.findViewById(R.id.tv_patient_name);
         tv_address = v.findViewById(R.id.tv_address);
@@ -67,6 +71,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                 jsonMedicalRecord.setRecordReferenceId(MedicalCaseActivity.getMedicalCaseActivity().jsonQueuedPerson.getRecordReferenceId());
                 jsonMedicalRecord.setFormVersion(FormVersionEnum.valueOf(BuildConfig.MEDICAL_FORM_VERSION));
@@ -154,6 +159,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
     @Override
     public void medicalRecordResponse(JsonResponse jsonResponse) {
+        dismissProgress();
         if (1 == jsonResponse.getResponse()) {
             Toast.makeText(getActivity(), "Medical History updated Successfully", Toast.LENGTH_LONG).show();
             getActivity().finish();
@@ -164,21 +170,36 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
         new ErrorResponseHandler().processError(getActivity(), eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
     @Override
     public void medicalRecordError() {
+        dismissProgress();
         Toast.makeText(getActivity(), "Failed to update", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void authenticationFailure() {
+        dismissProgress();
         AppUtils.authenticationProcessing();
+    }
+
+    private void initProgress() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Uploading data...");
+    }
+
+    protected void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 }

@@ -82,7 +82,10 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
             testCaseObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), TestCaseObjects.class);
         } catch (Exception e) {
             e.printStackTrace();
+            testCaseObjects = new TestCaseObjects();
         }
+        if( null == testCaseObjects)
+            testCaseObjects = new TestCaseObjects();
         initLists();
         medicalCasePojo = new MedicalCasePojo();
         viewPager =  findViewById(R.id.pager);
