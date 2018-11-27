@@ -31,7 +31,6 @@ import com.noqapp.android.merchant.views.fragments.MedicineFragment;
 import com.noqapp.android.merchant.views.fragments.PreferenceHCServiceFragment;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.utils.TestCaseObjects;
-import com.noqapp.android.merchant.views.utils.TestCaseString;
 
 import org.rauschig.jarchivelib.Archiver;
 import org.rauschig.jarchivelib.ArchiverFactory;
@@ -182,6 +181,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         mapList.put(HealthCareServiceEnum.SONO.getName(),preferenceSonoFragment.getSelectedList());
         mapList.put(HealthCareServiceEnum.XRAY.getName(),preferenceXrayFragment.getSelectedList());
         mapList.put(HealthCareServiceEnum.PATH.getName(),preferencePathFragment.getSelectedList());
+        mapList.put("MEDICINE",medicineFragment.getSelectedList());
 
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
     }

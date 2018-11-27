@@ -11,9 +11,11 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.adapters.ExpandableListAdapter;
+import com.noqapp.android.merchant.views.activities.PreferenceActivity;
+import com.noqapp.android.merchant.views.adapters.CustomExpandListAdapter;
 import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
@@ -22,28 +24,36 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MedicineFragment extends Fragment {
-    private ExpandableListAdapter listAdapter;
+    private CustomExpandListAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
     private ListView lv_tests;
     private ArrayList<DataObj> selectedList = new ArrayList<>();
     private MultiSelectListAdapter multiSelectListAdapter;
+
+    public ArrayList<DataObj> getSelectedList() {
+        return selectedList;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_medicine, container, false);
-        expListView =  v.findViewById(R.id.lvExp);
+        expListView = v.findViewById(R.id.lvExp);
         lv_tests = v.findViewById(R.id.lv_tests);
         prepareListData();
         try {
             Log.e("medicine", LaunchActivity.getLaunchActivity().getFavouriteMedicines().toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        selectedList = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMedicineList();
+        if (null == selectedList)
+            selectedList = new ArrayList<>();
         multiSelectListAdapter = new MultiSelectListAdapter(getActivity(), selectedList);
         lv_tests.setAdapter(multiSelectListAdapter);
-        listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+        listAdapter = new CustomExpandListAdapter(getActivity(), listDataHeader, listDataChild);
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
@@ -75,6 +85,7 @@ public class MedicineFragment extends Fragment {
                         listDataHeader.get(groupPosition)).get(
                         childPosition));
                 dataObj.setSelect(false);
+                dataObj.setCategory(getCategory(listDataHeader.get(groupPosition)));
                 if (!selectedList.contains(dataObj)) {
                     selectedList.add(dataObj);
                     multiSelectListAdapter.notifyDataSetChanged();
@@ -121,5 +132,22 @@ public class MedicineFragment extends Fragment {
         listDataChild.put(listDataHeader.get(2), syrup);
         listDataChild.put(listDataHeader.get(3), powder);
         listDataChild.put(listDataHeader.get(4), injection);
+    }
+
+    private String getCategory(String header) {
+        switch (header) {
+            case "Tablet":
+                return PharmacyCategoryEnum.TA.getDescription();
+            case "Capsule":
+                return PharmacyCategoryEnum.CA.getDescription();
+            case "Syrup":
+                return PharmacyCategoryEnum.SY.getDescription();
+            case "Powder":
+                return PharmacyCategoryEnum.PW.getDescription();
+            case "Injection":
+                return PharmacyCategoryEnum.IJ.getDescription();
+            default:
+                return PharmacyCategoryEnum.TA.getDescription();
+        }
     }
 }

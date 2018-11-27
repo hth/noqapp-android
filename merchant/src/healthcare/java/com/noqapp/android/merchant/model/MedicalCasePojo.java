@@ -20,14 +20,17 @@ public class MedicalCasePojo {
     private String temperature;
     private String oxygenLevel;
     private String symptoms;
+    private String clinicalFindings;
+    private String examinationResults;
     private String diagnosis;
+    private String provisionalDiagnosis;
     private String instructions;
     private String followup;
 
-    private ArrayList<String> radiologyList;
-    private ArrayList<String> pathologyList;
+    private ArrayList<String> radiologyList = new ArrayList<>();
+    private ArrayList<String> pathologyList = new ArrayList<>();
 
-    private List<JsonMedicalMedicine> jsonMedicineList;
+    private List<JsonMedicalMedicine> jsonMedicineList = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -137,12 +140,39 @@ public class MedicalCasePojo {
         return this;
     }
 
+    public String getClinicalFindings() {
+        return clinicalFindings;
+    }
+
+    public MedicalCasePojo setClinicalFindings(String clinicalFindings) {
+        this.clinicalFindings = clinicalFindings;
+        return this;
+    }
+
+    public String getExaminationResults() {
+        return examinationResults;
+    }
+
+    public MedicalCasePojo setExaminationResults(String examinationResults) {
+        this.examinationResults = examinationResults;
+        return this;
+    }
+
     public String getDiagnosis() {
         return diagnosis;
     }
 
     public MedicalCasePojo setDiagnosis(String diagnosis) {
         this.diagnosis = diagnosis;
+        return this;
+    }
+
+    public String getProvisionalDiagnosis() {
+        return provisionalDiagnosis;
+    }
+
+    public MedicalCasePojo setProvisionalDiagnosis(String provisionalDiagnosis) {
+        this.provisionalDiagnosis = provisionalDiagnosis;
         return this;
     }
 
@@ -206,7 +236,10 @@ public class MedicalCasePojo {
                 ", temperature='" + temperature + '\'' +
                 ", oxygenLevel='" + oxygenLevel + '\'' +
                 ", symptoms='" + symptoms + '\'' +
+                ", clinicalFindings='" + clinicalFindings + '\'' +
+                ", examinationResults='" + examinationResults + '\'' +
                 ", diagnosis='" + diagnosis + '\'' +
+                ", provisionalDiagnosis='" + provisionalDiagnosis + '\'' +
                 ", instructions='" + instructions + '\'' +
                 ", followup='" + followup + '\'' +
                 ", radiologyList=" + radiologyList +

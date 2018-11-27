@@ -17,44 +17,61 @@ public class TestCaseObjects {
     private ArrayList<DataObj> sonoList = new ArrayList<>();
     @SerializedName("XRAY")
     private ArrayList<DataObj> xrayList = new ArrayList<>();
+    @SerializedName("MEDICINE")
+    private ArrayList<DataObj> medicineList = new ArrayList<>();
+
 
     public ArrayList<DataObj> getPathologyList() {
         return pathologyList;
     }
 
-    public void setPathologyList(ArrayList<DataObj> pathologyList) {
+    public TestCaseObjects setPathologyList(ArrayList<DataObj> pathologyList) {
         this.pathologyList = pathologyList;
+        return this;
     }
 
     public ArrayList<DataObj> getMriList() {
         return mriList;
     }
 
-    public void setMriList(ArrayList<DataObj> mriList) {
+    public TestCaseObjects setMriList(ArrayList<DataObj> mriList) {
         this.mriList = mriList;
+        return this;
     }
 
     public ArrayList<DataObj> getScanList() {
         return scanList;
     }
 
-    public void setScanList(ArrayList<DataObj> scanList) {
+    public TestCaseObjects setScanList(ArrayList<DataObj> scanList) {
         this.scanList = scanList;
+        return this;
     }
 
     public ArrayList<DataObj> getSonoList() {
         return sonoList;
     }
 
-    public void setSonoList(ArrayList<DataObj> sonoList) {
+    public TestCaseObjects setSonoList(ArrayList<DataObj> sonoList) {
         this.sonoList = sonoList;
+        return this;
     }
 
     public ArrayList<DataObj> getXrayList() {
         return xrayList;
     }
 
-    public void setXrayList(ArrayList<DataObj> xrayList) {
+    public TestCaseObjects setXrayList(ArrayList<DataObj> xrayList) {
         this.xrayList = xrayList;
+        return this;
+    }
+
+    public ArrayList<DataObj> getMedicineList() {
+        return medicineList;
+    }
+
+    public TestCaseObjects setMedicineList(ArrayList<DataObj> medicineList) {
+        this.medicineList = medicineList;
+        return this;
     }
 }

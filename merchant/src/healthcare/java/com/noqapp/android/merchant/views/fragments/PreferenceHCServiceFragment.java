@@ -203,6 +203,9 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
     }
 
     private ArrayList<DataObj> getPreviousList(int pos) {
+        if(null == PreferenceActivity.getPreferenceActivity().testCaseObjects)
+            return null;
+        else
         switch (pos) {
             case 0:
                 return PreferenceActivity.getPreferenceActivity().testCaseObjects.getMriList();

@@ -1,11 +1,8 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.CustomAdapter;
-import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
@@ -22,31 +19,26 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import java.util.ArrayList;
-import java.util.List;
 
-public class SymptomsFragment extends Fragment {
+public class DiagnosisFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private TextView tv_add_new;
-    private CustomAdapter symptomsAdapter;
-    private ListView listview;
+    private RecyclerView rcv_provisional_diagnosis;
+    private CustomAdapter provisionalDiagnosisAdapter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.frag_symptoms, container, false);
-        recyclerView = v.findViewById(R.id.recyclerView);
-        tv_add_new = v.findViewById(R.id.tv_add_new);
-        listview = v.findViewById(R.id.listview);
-        tv_add_new.setOnClickListener(new View.OnClickListener() {
+        View v = inflater.inflate(R.layout.frag_diagnosis, container, false);
+        TextView tv_add_provisional_diagnosis = v.findViewById(R.id.tv_add_provisional_diagnosis);
+        rcv_provisional_diagnosis = v.findViewById(R.id.rcv_provisional_diagnosis);
+        tv_add_provisional_diagnosis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddItemDialog(getActivity(),"Add Symptoms");
+                AddItemDialog(getActivity(), "Add Provisional Diagnosis", true);
             }
         });
         return v;
@@ -55,14 +47,14 @@ public class SymptomsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+        rcv_provisional_diagnosis.setLayoutManager(staggeredGridLayoutManager);
+        provisionalDiagnosisAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
+        rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
-        symptomsAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
-        recyclerView.setAdapter(symptomsAdapter);
     }
 
-    private void AddItemDialog(final Context mContext, String title) {
+    private void AddItemDialog(final Context mContext, String title, final boolean isMedicine) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
@@ -90,14 +82,18 @@ public class SymptomsFragment extends Fragment {
                 if (edt_item.getText().toString().equals("")) {
                     edt_item.setError("Empty field not allowed");
                 } else {
+                    if (isMedicine) {
+                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList();
+                        temp.add(new DataObj(edt_item.getText().toString(), false));
+                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setProvisionalDiagnosisList(temp);
+                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+                        rcv_provisional_diagnosis.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
-                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList();
-                    temp.add(new DataObj(edt_item.getText().toString(), false));
-                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSymptomsList(temp);
-                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-                    recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
-                    symptomsAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
-                    recyclerView.setAdapter(symptomsAdapter);
+                        provisionalDiagnosisAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
+                        rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
+                    } else {
+
+                    }
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();
                 }
@@ -107,12 +103,7 @@ public class SymptomsFragment extends Fragment {
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setSymptoms(symptomsAdapter.getSelectedData());
-    }
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setProvisionalDiagnosis(provisionalDiagnosisAdapter.getSelectedData());
 
-    public void updateList(List<JsonMedicalRecord> jsonMedicalRecords){
-        MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(getActivity(), jsonMedicalRecords);
-        listview.setAdapter(adapter);
     }
-
 }
