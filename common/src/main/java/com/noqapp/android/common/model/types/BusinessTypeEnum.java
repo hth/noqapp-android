@@ -19,7 +19,7 @@ public enum BusinessTypeEnum implements Serializable {
     GS("GS", "Grocery Store", O),
     CF("CF", "Cafe", O),
     DO("DO", "Hospital/Doctor", Q),
-    HS("HS", "Health Care Services", O),
+    HS("HS", "Health Care Services", O),    //Users cannot directly order these, as these have to be prescribed
     PH("PH", "Pharmacy", O),                //Users cannot directly order these, as these have to be prescribed
     PW("PW", "Place of Worship", Q),
     MU("MU", "Museum", Q),
