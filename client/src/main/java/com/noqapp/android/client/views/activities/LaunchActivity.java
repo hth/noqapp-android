@@ -139,8 +139,14 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         launchActivity = this;
 //        NoQueueBaseActivity.saveMailAuth("","");
         if (null != getIntent().getExtras()) {
-            NoQueueBaseActivity.setFCMToken(getIntent().getStringExtra("fcmToken"));
-            NoQueueBaseActivity.setDeviceID(getIntent().getStringExtra("deviceId"));
+            if (!TextUtils.isEmpty(getIntent().getStringExtra("fcmToken"))) {
+                NoQueueBaseActivity.setFCMToken(getIntent().getStringExtra("fcmToken"));
+            }
+
+            if (!TextUtils.isEmpty(getIntent().getStringExtra("deviceId"))) {
+                NoQueueBaseActivity.setDeviceID(getIntent().getStringExtra("deviceId"));
+            }
+            // Toast.makeText(this,"Device ID: "+UserUtils.getDeviceId(),Toast.LENGTH_LONG).show();
         }
         Log.v("device id check", getDeviceID());
         setReviewShown(false);//Reset the flag when app is killed
