@@ -1,6 +1,5 @@
 package com.noqapp.android.common.fcm.data;
 
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -11,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * hitender
- * 8/1/18 6:43 PM
+ * 2018-11-27 14:32
  */
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
@@ -28,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonAlertData extends JsonData {
+public class JsonMedicalFollowUp extends JsonData {
 
     @JsonProperty("mo")
     private MessageOriginEnum messageOrigin;
@@ -36,35 +35,20 @@ public class JsonAlertData extends JsonData {
     @JsonProperty("mi")
     private String messageId;
 
-    @JsonProperty("bt")
-    private BusinessTypeEnum businessType;
-
     @JsonProperty("qr")
     private String codeQR;
+
+    @JsonProperty ("qid")
+    private String queueUserId;
+
+    @JsonProperty ("fd")
+    private String followUpDay;
 
     public MessageOriginEnum getMessageOrigin() {
         return messageOrigin;
     }
 
-    public BusinessTypeEnum getBusinessType() {
-        return businessType;
-    }
-
-    public JsonAlertData setBusinessType(BusinessTypeEnum businessType) {
-        this.businessType = businessType;
-        return this;
-    }
-
-    public String getCodeQR() {
-        return codeQR;
-    }
-
-    public JsonAlertData setCodeQR(String codeQR) {
-        this.codeQR = codeQR;
-        return this;
-    }
-
-    public JsonAlertData setMessageOrigin(MessageOriginEnum messageOrigin) {
+    public JsonMedicalFollowUp setMessageOrigin(MessageOriginEnum messageOrigin) {
         this.messageOrigin = messageOrigin;
         return this;
     }
@@ -73,18 +57,35 @@ public class JsonAlertData extends JsonData {
         return messageId;
     }
 
-    public JsonAlertData setMessageId(String messageId) {
+    public JsonMedicalFollowUp setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
 
-    @Override
-    public String toString() {
-        return super.toString()+"JsonAlertData{" +
-                "messageOrigin=" + messageOrigin +
-                ", messageId='" + messageId + '\'' +
-                ", businessType=" + businessType +
-                ", codeQR='" + codeQR + '\'' +
-                '}';
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonMedicalFollowUp setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public JsonMedicalFollowUp setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
+    }
+
+    public String getFollowUpDay() {
+        return followUpDay;
+    }
+
+    public JsonMedicalFollowUp setFollowUpDay(String followUpDay) {
+        this.followUpDay = followUpDay;
+        return this;
     }
 }
