@@ -379,6 +379,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                 .setLights(Color.parseColor("#ffb400"), 50, 10)
                 .setSound(defaultSoundUri);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
@@ -413,6 +414,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                 .setLights(Color.parseColor("#ffb400"), 50, 10)
                 .setSound(defaultSoundUri);
         if (isVibrate)
@@ -473,7 +475,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             Log.e("difference in day : ", String.valueOf(diffInDays));
 
             Calendar c = Calendar.getInstance();
-            c.setTime(endDate);
+            c.setTime(startDate);
             Calendar calendar = Calendar.getInstance();
             calendar.set(c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
             calendar.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
