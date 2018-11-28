@@ -310,8 +310,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public ArrayList<String> getUserList() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String json = sharedPrefs.getString(KEY_USER_LIST, null);
-        Type type = new TypeToken<ArrayList<String>>() {
-        }.getType();
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
         ArrayList<String> arrayList = new Gson().fromJson(json, type);
         return arrayList == null ? new ArrayList<String>() : arrayList;
     }
