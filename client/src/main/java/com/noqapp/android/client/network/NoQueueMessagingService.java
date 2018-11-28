@@ -253,6 +253,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         ReviewDB.insert(cv);
                                     }
                                     sendNotification(title, body, codeQR, false, token);//pass codeQR to open skip screen
+                                }else{
+                                    sendNotification(title, body, false);
                                 }
                             }
                         } else {
